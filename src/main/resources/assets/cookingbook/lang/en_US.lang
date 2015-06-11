@@ -11,4 +11,5 @@ cookingbook:sort_by_name.tooltip=Sort by Name
 cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored
 cookingbook:sort_by_saturation.tooltip=Sort by Saturation
 
-cookingbook:no_ingredients=No\ningredients
+cookingbook:no_ingredients=Not\nenough\ningredients
+cookingbook:no_selection=Select an item\non the right to\nsee it's recipe.

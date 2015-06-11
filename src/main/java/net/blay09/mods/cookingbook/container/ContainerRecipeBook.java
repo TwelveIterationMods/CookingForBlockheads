@@ -77,6 +77,7 @@ public class ContainerRecipeBook extends Container {
 		}
 		sortRecipes(new ComparatorName());
 		updateRecipeList();
+		setCraftMatrix(null);
 
 		craftBook = new InventoryCraftBook(this, sourceInventory);
 	}
@@ -111,6 +112,7 @@ public class ContainerRecipeBook extends Container {
 		} else {
 			for(SlotPreview previewSlot : previewSlots) {
 				previewSlot.setIngredient(null);
+				previewSlot.setEnabled(false);
 			}
 		}
 	}
@@ -145,6 +147,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void updateRecipeList() {
+		boolean noRecipes = getAvailableRecipeCount() == 0;
 		for(int i = 0; i < recipeBook.getSizeInventory(); i++) {
 			int recipeIdx = i + scrollOffset * 3;
 			if(recipeIdx < sortedRecipes.size()) {
@@ -153,6 +156,7 @@ public class ContainerRecipeBook extends Container {
 				recipeBook.setFoodItem(i, null);
 			}
 			recipeSlots[i].putStack(recipeBook.getStackInSlot(i));
+			recipeSlots[i].setEnabled(!noRecipes);
 		}
 	}
 
@@ -264,5 +268,9 @@ public class ContainerRecipeBook extends Container {
 	public void sortRecipes(Comparator<ItemStack> comparator) {
 		Collections.sort(sortedRecipes, comparator);
 		updateRecipeList();
+	}
+
+	public boolean hasSelection() {
+		return currentRecipeList != null;
 	}
 }

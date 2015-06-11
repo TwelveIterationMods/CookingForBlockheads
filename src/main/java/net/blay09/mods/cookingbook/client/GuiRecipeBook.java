@@ -41,12 +41,14 @@ public class GuiRecipeBook extends GuiContainer {
 	private GuiButtonSort btnSortSaturation;
 
 	private final String[] noIngredients;
+	private final String[] noSelection;
 
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
 		this.container = container;
 
 		noIngredients = StatCollector.translateToLocal("cookingbook:no_ingredients").split("\\\\n");
+		noSelection = StatCollector.translateToLocal("cookingbook:no_selection").split("\\\\n");
 	}
 
 	@Override
@@ -156,7 +158,13 @@ public class GuiRecipeBook extends GuiContainer {
 		btnSortHunger.enabled = hasRecipes;
 		btnSortSaturation.enabled = hasRecipes;
 
-		if(container.isFurnaceMode()) {
+		if(!container.hasSelection()) {
+			int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRendererObj.FONT_HEIGHT;
+			for(String s : noSelection) {
+				fontRendererObj.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
+				curY += fontRendererObj.FONT_HEIGHT + 5;
+			}
+		} else if(container.isFurnaceMode()) {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 174, 54, 54);
 		} else {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 174, 54, 54);
@@ -166,7 +174,7 @@ public class GuiRecipeBook extends GuiContainer {
 
 		if(container.getAvailableRecipeCount() == 0) {
 			GuiContainer.drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
-			int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRendererObj.FONT_HEIGHT + fontRendererObj.FONT_HEIGHT / 2;
+			int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRendererObj.FONT_HEIGHT;
 			for(String s : noIngredients) {
 				fontRendererObj.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
 				curY += fontRendererObj.FONT_HEIGHT + 5;
