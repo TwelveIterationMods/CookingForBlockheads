@@ -276,6 +276,6 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public boolean canClickCraft(int slotIndex) {
-		return allowCrafting && currentRecipeList != null && recipeBook.getFoodList(slotIndex) == currentRecipeList;
+		return allowCrafting && currentRecipeList != null && recipeBook.getFoodList(slotIndex) == currentRecipeList && !currentRecipeList.get(currentRecipeIdx).isSmeltingRecipe();
 	}
 }
