@@ -5,6 +5,7 @@ import net.blay09.mods.cookingbook.food.IFoodRecipe;
 import net.blay09.mods.cookingbook.food.ingredient.DefaultIngredient;
 import net.blay09.mods.cookingbook.food.ingredient.OreDictIngredient;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.List;
@@ -40,6 +41,11 @@ public class ShapedOreCraftingFood implements IFoodRecipe {
     @Override
     public boolean isSmeltingRecipe() {
         return false;
+    }
+
+    @Override
+    public IRecipe getCraftingRecipe() {
+        return recipe;
     }
 
 }

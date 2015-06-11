@@ -9,7 +9,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +17,7 @@ import java.util.List;
 public class ContainerRecipeBook extends Container {
 
 	private final IInventory sourceInventory;
+	private final boolean allowCrafting;
 	private final InventoryRecipeBook recipeBook;
 	private final InventoryRecipeBookMatrix craftMatrix;
 	private final SlotPreview[] previewSlots = new SlotPreview[9];
@@ -25,13 +25,16 @@ public class ContainerRecipeBook extends Container {
 	private final ArrayListMultimap<String, IFoodRecipe> availableRecipes = ArrayListMultimap.create();
 	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
 
+	private final InventoryCraftBook craftBook;
+
 	private boolean furnaceMode;
 	private int scrollOffset;
 	private List<IFoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
 
-	public ContainerRecipeBook(InventoryPlayer playerInventory, IInventory sourceInventory) {
+	public ContainerRecipeBook(InventoryPlayer playerInventory, IInventory sourceInventory, boolean allowCrafting) {
 		this.sourceInventory = sourceInventory;
+		this.allowCrafting = allowCrafting;
 
 		craftMatrix = new InventoryRecipeBookMatrix();
 		for(int i = 0; i < 3; i++) {
@@ -72,8 +75,10 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
+		sortRecipes(new ComparatorName());
+		updateRecipeList();
 
-		setScrollOffset(0);
+		craftBook = new InventoryCraftBook(this, sourceInventory);
 	}
 
 	public void setCraftMatrix(IFoodRecipe recipe) {
@@ -167,9 +172,14 @@ public class ContainerRecipeBook extends Container {
 
 	@Override
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
-		if(mode == 0 && slotIdx > 0 && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
+		if((mode == 0 || mode == 1) && slotIdx > 0 && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
 			SlotRecipe slot = (SlotRecipe) inventorySlots.get(slotIdx);
-			currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
+			List<IFoodRecipe> newRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
+			if(allowCrafting && currentRecipeList != null && currentRecipeList == newRecipeList) {
+				tryCraft(player, currentRecipeList, currentRecipeIdx, mode == 1);
+				return null;
+			}
+			currentRecipeList = newRecipeList;
 			currentRecipeIdx = 0;
 			if(currentRecipeList != null) {
 				setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
@@ -177,6 +187,38 @@ public class ContainerRecipeBook extends Container {
 			return null;
 		}
 		return super.slotClick(slotIdx, button, mode, player);
+	}
+
+	private void tryCraft(EntityPlayer player, List<IFoodRecipe> recipeList, int recipeIdx, boolean isShiftDown) {
+		IFoodRecipe recipe = recipeList.get(recipeIdx);
+		if(recipe.isSmeltingRecipe()) {
+			return;
+		}
+		if(!isShiftDown) {
+			if(craftBook.canMouseItemHold(player, recipe)) {
+				ItemStack craftingResult = craftBook.craft(player, sourceInventory, recipe);
+				if(craftingResult != null) {
+					ItemStack mouseItem = player.inventory.getItemStack();
+					if (mouseItem != null) {
+						mouseItem.stackSize += craftingResult.stackSize;
+					} else {
+						player.inventory.setItemStack(craftingResult);
+					}
+				}
+			}
+		} else {
+			ItemStack craftingResult;
+			while((craftingResult = craftBook.craft(player, sourceInventory, recipe)) != null) {
+				if(!player.inventory.addItemStackToInventory(craftingResult)) {
+					if (player.inventory.getItemStack() == null) {
+						player.inventory.setItemStack(craftingResult);
+					} else {
+						player.dropPlayerItemWithRandomChoice(craftingResult, false);
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	@Override

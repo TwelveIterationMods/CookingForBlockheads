@@ -5,6 +5,7 @@ import net.blay09.mods.cookingbook.food.IFoodIngredient;
 import net.blay09.mods.cookingbook.food.IFoodRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 
 public class SmeltingFood implements IFoodRecipe {
 
@@ -31,6 +32,11 @@ public class SmeltingFood implements IFoodRecipe {
     @Override
     public boolean isSmeltingRecipe() {
         return true;
+    }
+
+    @Override
+    public IRecipe getCraftingRecipe() {
+        return null;
     }
 
 }

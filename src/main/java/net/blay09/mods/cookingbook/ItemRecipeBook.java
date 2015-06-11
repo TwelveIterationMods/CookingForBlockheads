@@ -69,7 +69,7 @@ public class ItemRecipeBook extends Item {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		player.openGui(CookingBook.instance, GuiHandler.GUI_ID_RECIPEBOOK, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		player.openGui(CookingBook.instance, itemStack.getMetadata() == 0 ? GuiHandler.GUI_ID_RECIPEBOOK : GuiHandler.GUI_ID_CRAFTBOOK, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		return itemStack;
 	}
 

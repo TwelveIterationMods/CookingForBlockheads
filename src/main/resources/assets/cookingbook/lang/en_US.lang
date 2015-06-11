@@ -5,7 +5,7 @@ cookingbook:recipebook.tooltip=Recipe Book
 cookingbook:recipebook.tooltipDesc=Shows food you can make with the\nthings you have in your inventory.
 
 cookingbook:recipebook_tier2.tooltip=Crafting Book
-cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the\nthings you have in your inventory.
+cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou have in your inventory.
 
 cookingbook:sort_by_name.tooltip=Sort by Name
 cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored

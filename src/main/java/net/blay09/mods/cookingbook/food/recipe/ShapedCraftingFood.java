@@ -6,6 +6,7 @@ import net.blay09.mods.cookingbook.food.IFoodIngredient;
 import net.blay09.mods.cookingbook.food.IFoodRecipe;
 import net.blay09.mods.cookingbook.food.ingredient.ToolIngredient;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 
 public class ShapedCraftingFood implements IFoodRecipe {
@@ -40,6 +41,11 @@ public class ShapedCraftingFood implements IFoodRecipe {
     @Override
     public boolean isSmeltingRecipe() {
         return false;
+    }
+
+    @Override
+    public IRecipe getCraftingRecipe() {
+        return recipe;
     }
 
 }

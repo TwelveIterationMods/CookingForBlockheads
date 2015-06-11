@@ -6,9 +6,11 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {}
@@ -16,7 +18,8 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		GameRegistry.registerItem(CookingBook.itemRecipeBook, "recipebook");
 
-		CraftingManager.getInstance().addRecipe(new ItemStack(CookingBook.itemRecipeBook), " B ", "SCS", " B ", 'B', Items.bread, 'S', Items.wheat_seeds, 'C', Items.book);
+		FurnaceRecipes.instance().addSmelting(Items.book, new ItemStack(CookingBook.itemRecipeBook), 0f);
+		CraftingManager.getInstance().addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(CookingBook.instance, new GuiHandler());
 	}

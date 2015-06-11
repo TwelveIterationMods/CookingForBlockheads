@@ -12,18 +12,22 @@ public class GuiHandler implements IGuiHandler {
 
     public static final int GUI_ID_RECIPEBOOK = 1;
     public static final int GUI_ID_RECIPEBOOK_WORLD = 2;
+    public static final int GUI_ID_CRAFTBOOK = 3;
+    public static final int GUI_ID_CRAFTBOOK_WORLD = 4;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new ContainerRecipeBook(player.inventory, player.inventory);
+                return new ContainerRecipeBook(player.inventory, player.inventory, false);
             case GUI_ID_RECIPEBOOK_WORLD:
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if(tileEntity instanceof IInventory) {
-                    return new ContainerRecipeBook(player.inventory, (IInventory) tileEntity);
+                    return new ContainerRecipeBook(player.inventory, (IInventory) tileEntity, false);
                 }
                 break;
+            case GUI_ID_CRAFTBOOK:
+                return new ContainerRecipeBook(player.inventory, player.inventory, true);
         }
         return null;
     }
@@ -32,13 +36,15 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player.inventory, player.inventory));
+                return new GuiRecipeBook(new ContainerRecipeBook(player.inventory, player.inventory, false));
             case GUI_ID_RECIPEBOOK_WORLD:
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if(tileEntity instanceof IInventory) {
-                    return new GuiRecipeBook(new ContainerRecipeBook(player.inventory, (IInventory) tileEntity));
+                    return new GuiRecipeBook(new ContainerRecipeBook(player.inventory, (IInventory) tileEntity, false));
                 }
                 break;
+            case GUI_ID_CRAFTBOOK:
+                return new GuiRecipeBook(new ContainerRecipeBook(player.inventory, player.inventory, true));
         }
         return null;
     }
