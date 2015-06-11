@@ -1,0 +1,16 @@
+[
+{
+  "modid": "cookingbook",
+  "name": "Cooking for Blockheads",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["BlayTheNinth"],
+  "credits": "BlayTheNinth",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

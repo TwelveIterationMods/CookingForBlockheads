@@ -1,0 +1,67 @@
+def BUILD_NUMBER = System.getenv("BUILD_NUMBER") ?: "0"
+def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
+def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
+def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'forge'
+
+version = "1.0" + BUILD_NUMBER
+group= "net.blay09.mods"
+archivesBaseName = "cookingbook"
+
+minecraft {
+    version = "1.7.10-10.13.3.1408-1.7.10"
+    runDir = "eclipse"
+    
+    mappings = "stable_12"
+}
+
+jar {
+    appendix "mc" + minecraft.version
+}
+
+dependencies {
+}
+
+idea {
+    module {
+        inheritOutputDirs = true;
+    }
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

@@ -1,0 +1,11 @@
+/eclipse
+/*.txt
+/build
+/.gradle
+/.settings
+/.classpath
+/*.ipr
+/*.iws
+/*.iml
+/out
+/gradle.properties
