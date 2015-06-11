@@ -11,7 +11,7 @@ public class ComparatorSaturation implements Comparator<ItemStack> {
     public int compare(ItemStack o1, ItemStack o2) {
         ItemFood f1 = (ItemFood) o1.getItem();
         ItemFood f2 = (ItemFood) o2.getItem();
-        return (int) (f2.getSaturationModifier(o2) - f1.getSaturationModifier(o1));
+        return (int) (f2.getSaturationModifier(o2) * 100 - f1.getSaturationModifier(o1) * 100);
     }
 
 }
