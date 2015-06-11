@@ -1,3 +1,8 @@
 item.cookingbook:recipebook.name=Cooking for Blockheads
+item.cookingbook:recipebook_tier2.name=Cooking for Blockheads II (WIP)
+
 cookingbook:recipebook.tooltip=Recipe Book
 cookingbook:recipebook.tooltipDesc=Shows food you can make with the\nthings you have in your inventory.
+
+cookingbook:recipebook_tier2.tooltip=Crafting Book
+cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the\nthings you have in your inventory.
