@@ -7,6 +7,6 @@ public interface IFoodIngredient {
     int getStackSize();
     void increaseStackSize(int stackSize);
     IFoodIngredient copy();
-    ItemStack getItemStack();
+    ItemStack[] getItemStacks();
     boolean isOptional();
 }

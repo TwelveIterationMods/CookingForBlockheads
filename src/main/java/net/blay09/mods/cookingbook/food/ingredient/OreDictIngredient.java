@@ -45,8 +45,8 @@ public class OreDictIngredient implements IFoodIngredient {
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return validItemList.get(0);
+    public ItemStack[] getItemStacks() {
+        return validItemList.toArray(new ItemStack[validItemList.size()]);
     }
 
     @Override

@@ -35,8 +35,8 @@ public class DefaultIngredient implements IFoodIngredient {
     }
 
     @Override
-    public ItemStack getItemStack() {
-        return itemStack;
+    public ItemStack[] getItemStacks() {
+        return new ItemStack[] { itemStack };
     }
 
     @Override

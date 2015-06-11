@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class ContainerRecipeBook extends Container {
 
+	private final InventoryPlayer sourceInventory;
 	private final InventoryRecipeBook recipeBook;
 	private final InventoryRecipeBookMatrix craftMatrix;
 	private final SlotPreview[] previewSlots = new SlotPreview[9];
@@ -24,6 +25,8 @@ public class ContainerRecipeBook extends Container {
 	private boolean furnaceMode;
 
 	public ContainerRecipeBook(InventoryPlayer inventory) {
+		this.sourceInventory = inventory;
+
 		craftMatrix = new InventoryRecipeBookMatrix();
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
@@ -66,13 +69,22 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void setScrollOffset(int scrollOffset) {
-		for(int i = 0; i < 12; i++) {
+		for(int i = 0; i < recipeBook.getSizeInventory(); i++) {
 			int recipeIdx = i + scrollOffset * 3;
 			if(recipeIdx < sortedRecipes.size()) {
 				recipeBook.setFoodItem(i, availableRecipes.get(sortedRecipes.get(recipeIdx).toString()).get(0));
 			} else {
 				recipeBook.setFoodItem(i, null);
 			}
+		}
+	}
+
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+
+		for(SlotPreview previewSlot : previewSlots) {
+			previewSlot.update();
 		}
 	}
 
@@ -89,11 +101,12 @@ public class ContainerRecipeBook extends Container {
 			if(foodItem != null) {
 				furnaceMode = foodItem.isSmeltingRecipe();
 				if(furnaceMode) {
-					for (int i = 0; i < previewSlots.length; i++) {
-						previewSlots[i].setIngredient(null);
-						previewSlots[i].setEnabled(false);
+					for(SlotPreview previewSlot : previewSlots) {
+						previewSlot.setIngredient(null);
+						previewSlot.setEnabled(false);
 					}
 					previewSlots[4].setIngredient(foodItem.getCraftMatrix()[0]);
+					previewSlots[4].setSourceInventory(sourceInventory);
 					previewSlots[4].setEnabled(true);
 				} else {
 					int offset = 0;
@@ -107,6 +120,7 @@ public class ContainerRecipeBook extends Container {
 						} else {
 							previewSlots[i].setIngredient(null);
 						}
+						previewSlots[i].setSourceInventory(sourceInventory);
 						previewSlots[i].setEnabled(true);
 					}
 				}
