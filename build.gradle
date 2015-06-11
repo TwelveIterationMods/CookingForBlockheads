@@ -22,7 +22,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0" + BUILD_NUMBER
+version = "1.0." + BUILD_NUMBER
 group= "net.blay09.mods"
 archivesBaseName = "cookingbook"
 
