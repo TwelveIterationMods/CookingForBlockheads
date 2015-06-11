@@ -7,6 +7,7 @@ import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -39,9 +40,13 @@ public class GuiRecipeBook extends GuiContainer {
 	private GuiButtonSort btnSortHunger;
 	private GuiButtonSort btnSortSaturation;
 
+	private final String[] noIngredients;
+
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
 		this.container = container;
+
+		noIngredients = StatCollector.translateToLocal("cookingbook:no_ingredients").split("\\\\n");
 	}
 
 	@Override
@@ -57,13 +62,13 @@ public class GuiRecipeBook extends GuiContainer {
 		btnNextRecipe.visible = false;
 		buttonList.add(btnNextRecipe);
 
-		btnSortName = new GuiButtonSort(this, 2, width / 2 + 87, height / 2 - 80, 196, "cookingbook:sort_by_name.tooltip");
+		btnSortName = new GuiButtonSort(2, width / 2 + 87, height / 2 - 80, 196, "cookingbook:sort_by_name.tooltip");
 		buttonList.add(btnSortName);
 
-		btnSortHunger = new GuiButtonSort(this, 3, width / 2 + 87, height / 2 - 60, 216, "cookingbook:sort_by_hunger.tooltip");
+		btnSortHunger = new GuiButtonSort(3, width / 2 + 87, height / 2 - 60, 216, "cookingbook:sort_by_hunger.tooltip");
 		buttonList.add(btnSortHunger);
 
-		btnSortSaturation = new GuiButtonSort(this, 4, width / 2 + 87, height / 2 - 40, 236, "cookingbook:sort_by_saturation.tooltip");
+		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "cookingbook:sort_by_saturation.tooltip");
 		buttonList.add(btnSortSaturation);
 
 		recalculateScrollBar();
@@ -142,13 +147,14 @@ public class GuiRecipeBook extends GuiContainer {
 			}
 		}
 
-		if(container.hasVariants()) {
-			btnPrevRecipe.visible = true;
-			btnNextRecipe.visible = true;
-		} else {
-			btnPrevRecipe.visible = false;
-			btnNextRecipe.visible = false;
-		}
+		boolean hasVariants = container.hasVariants();
+		btnPrevRecipe.visible = hasVariants;
+		btnNextRecipe.visible = hasVariants;
+
+		boolean hasRecipes = container.getAvailableRecipeCount() > 0;
+		btnSortName.enabled = hasRecipes;
+		btnSortHunger.enabled = hasRecipes;
+		btnSortSaturation.enabled = hasRecipes;
 
 		if(container.isFurnaceMode()) {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 174, 54, 54);
@@ -157,17 +163,26 @@ public class GuiRecipeBook extends GuiContainer {
 		}
 
 		GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
+
+		if(container.getAvailableRecipeCount() == 0) {
+			GuiContainer.drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
+			int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRendererObj.FONT_HEIGHT + fontRendererObj.FONT_HEIGHT / 2;
+			for(String s : noIngredients) {
+				fontRendererObj.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
+				curY += fontRendererObj.FONT_HEIGHT + 5;
+			}
+		}
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if(btnSortName.isMouseOver()) {
+		if(btnSortName.isMouseOver() && btnSortName.enabled) {
 			drawHoveringText(btnSortName.getTooltipLines(), mouseX, mouseY);
-		} else if(btnSortHunger.isMouseOver()) {
+		} else if(btnSortHunger.isMouseOver() && btnSortHunger.enabled) {
 			drawHoveringText(btnSortHunger.getTooltipLines(), mouseX, mouseY);
-		} else if(btnSortSaturation.isMouseOver()) {
+		} else if(btnSortSaturation.isMouseOver() && btnSortSaturation.enabled) {
 			drawHoveringText(btnSortSaturation.getTooltipLines(), mouseX, mouseY);
 		}
 	}

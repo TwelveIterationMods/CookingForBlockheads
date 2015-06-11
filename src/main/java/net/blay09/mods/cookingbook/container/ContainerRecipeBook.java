@@ -172,8 +172,6 @@ public class ContainerRecipeBook extends Container {
 			currentRecipeIdx = 0;
 			if(currentRecipeList != null) {
 				setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
-			} else {
-				setCraftMatrix(null);
 			}
 			return null;
 		}

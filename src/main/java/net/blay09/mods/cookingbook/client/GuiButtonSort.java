@@ -13,21 +13,23 @@ public class GuiButtonSort extends GuiButton {
 
     private static final ResourceLocation guiTexture = new ResourceLocation("cookingbook", "textures/gui/gui.png");
 
-    private final GuiRecipeBook parentScreen;
     private final int texCoordX;
     private final int texCoordY;
     private final int texCoordHoverX;
     private final int texCoordHoverY;
+    private final int texCoordDisabledX;
+    private final int texCoordDisabledY;
     private final List<String> tooltipLines = new ArrayList<String>();
 
-    public GuiButtonSort(GuiRecipeBook parentScreen, int buttonId, int x, int y, int texCoordX, String tooltipName) {
+    public GuiButtonSort(int buttonId, int x, int y, int texCoordX, String tooltipName) {
         super(buttonId, x, y, 20, 20, "");
-        this.parentScreen = parentScreen;
         this.texCoordX = texCoordX;
         this.texCoordHoverX = texCoordX;
+        this.texCoordDisabledX = texCoordX;
         this.texCoordY = 0;
         this.texCoordHoverY = 20;
-        tooltipLines.add(I18n.format(tooltipName));
+        this.texCoordDisabledY = 40;
+        this.tooltipLines.add(I18n.format(tooltipName));
     }
 
     @Override
@@ -36,7 +38,10 @@ public class GuiButtonSort extends GuiButton {
 
         int texX = texCoordX;
         int texY = texCoordY;
-        if(hovered) {
+        if(!enabled) {
+            texX = texCoordDisabledX;
+            texY = texCoordDisabledY;
+        } else if(hovered) {
             texX = texCoordHoverX;
             texY = texCoordHoverY;
         }
