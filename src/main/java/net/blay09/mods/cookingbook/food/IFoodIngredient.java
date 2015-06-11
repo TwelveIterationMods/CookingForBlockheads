@@ -4,9 +4,6 @@ import net.minecraft.item.ItemStack;
 
 public interface IFoodIngredient {
     boolean isValidItem(ItemStack itemStack);
-    int getStackSize();
-    void increaseStackSize(int stackSize);
-    IFoodIngredient copy();
     ItemStack[] getItemStacks();
     boolean isOptional();
 }

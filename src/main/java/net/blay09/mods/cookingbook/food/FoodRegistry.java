@@ -62,36 +62,20 @@ public class FoodRegistry {
     }
 
     public static boolean isAvailableFor(IFoodIngredient[] craftMatrix, IInventory inventory) {
-        List<IFoodIngredient> ingredients = new ArrayList<IFoodIngredient>();
-        for (IFoodIngredient craftMatrixItem : craftMatrix) {
-            if (craftMatrixItem != null && !craftMatrixItem.isOptional()) {
-                boolean found = false;
-                for (IFoodIngredient stackIngredient : ingredients) {
-                    if (stackIngredient.equals(craftMatrixItem)) {
-                        stackIngredient.increaseStackSize(craftMatrixItem.getStackSize());
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    ingredients.add(craftMatrixItem.copy());
+        int[] usedStackSize = new int[inventory.getSizeInventory()];
+        boolean[] itemFound = new boolean[craftMatrix.length];
+        for(int i = 0; i < craftMatrix.length; i++) {
+            for(int j = 0; j < inventory.getSizeInventory(); j++) {
+                ItemStack itemStack = inventory.getStackInSlot(j);
+                if(itemStack != null && craftMatrix[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j] > 0) {
+                    usedStackSize[j]++;
+                    itemFound[i] = true;
+                    break;
                 }
             }
         }
-
-        for(int i = 0; i < inventory.getSizeInventory(); i++) {
-            ItemStack itemStack = inventory.getStackInSlot(i);
-            if(itemStack != null) {
-                for (IFoodIngredient ingredient : ingredients) {
-                    if (ingredient.isValidItem(itemStack)) {
-                        ingredient.increaseStackSize(-itemStack.stackSize);
-                    }
-                }
-            }
-        }
-
-        for (IFoodIngredient ingredient : ingredients) {
-            if(ingredient.getStackSize() > 0) {
+        for(int i = 0; i < itemFound.length; i++) {
+            if(!itemFound[i]) {
                 return false;
             }
         }

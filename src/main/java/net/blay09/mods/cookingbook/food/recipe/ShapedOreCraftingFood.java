@@ -21,7 +21,7 @@ public class ShapedOreCraftingFood implements IFoodRecipe {
         for(int i = 0; i < recipe.getInput().length; i++) {
             Object input = recipe.getInput()[i];
             if(input instanceof ItemStack) {
-                craftMatrix[i] = new DefaultIngredient(((ItemStack) input)).copy();
+                craftMatrix[i] = new DefaultIngredient(((ItemStack) input));
             } else if(input instanceof List) {
                 craftMatrix[i] = new OreDictIngredient((List<ItemStack>) input);
             }

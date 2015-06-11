@@ -1,10 +1,7 @@
 package net.blay09.mods.cookingbook.client;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.blay09.mods.cookingbook.container.ComparatorHunger;
-import net.blay09.mods.cookingbook.container.ComparatorName;
-import net.blay09.mods.cookingbook.container.ComparatorSaturation;
-import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
+import net.blay09.mods.cookingbook.container.*;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -203,12 +200,16 @@ public class GuiRecipeBook extends GuiContainer {
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
-		if(hoverSlot != null && event.itemStack == hoverSlot.getStack()) {
+		if(hoverSlot != null && hoverSlot instanceof SlotRecipe && event.itemStack == hoverSlot.getStack()) {
 			if(container.canClickCraft(hoverSlot.getSlotIndex())) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_all"));
+				if(container.isMissingTools()) {
+					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_tools"));
 				} else {
-					event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_one"));
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+						event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_all"));
+					} else {
+						event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_one"));
+					}
 				}
 			} else {
 				event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_see_recipe"));

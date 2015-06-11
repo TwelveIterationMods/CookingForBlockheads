@@ -32,6 +32,7 @@ public class ContainerRecipeBook extends Container {
 	private int scrollOffset;
 	private List<IFoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
+	private boolean isMissingTools;
 
 	public ContainerRecipeBook(InventoryPlayer playerInventory, IInventory sourceInventory, boolean allowCrafting) {
 		this.sourceInventory = sourceInventory;
@@ -187,7 +188,12 @@ public class ContainerRecipeBook extends Container {
 			currentRecipeList = newRecipeList;
 			currentRecipeIdx = 0;
 			if(currentRecipeList != null) {
-				setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+				IFoodRecipe recipe = currentRecipeList.get(currentRecipeIdx);
+				setCraftMatrix(recipe);
+				if(!recipe.isSmeltingRecipe()) {
+					craftBook.prepareRecipe(sourceInventory, recipe);
+					isMissingTools = !recipe.getCraftingRecipe().matches(craftBook, player.worldObj);
+				}
 			}
 			return null;
 		}
@@ -277,5 +283,9 @@ public class ContainerRecipeBook extends Container {
 
 	public boolean canClickCraft(int slotIndex) {
 		return allowCrafting && currentRecipeList != null && recipeBook.getFoodList(slotIndex) == currentRecipeList && !currentRecipeList.get(currentRecipeIdx).isSmeltingRecipe();
+	}
+
+	public boolean isMissingTools() {
+		return isMissingTools;
 	}
 }

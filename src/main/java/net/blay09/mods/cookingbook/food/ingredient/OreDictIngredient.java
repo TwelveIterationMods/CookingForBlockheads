@@ -30,21 +30,6 @@ public class OreDictIngredient implements IFoodIngredient {
     }
 
     @Override
-    public int getStackSize() {
-        return stackSize;
-    }
-
-    @Override
-    public void increaseStackSize(int stackSize) {
-        this.stackSize += stackSize;
-    }
-
-    @Override
-    public IFoodIngredient copy() {
-        return new OreDictIngredient(validItemList, stackSize);
-    }
-
-    @Override
     public ItemStack[] getItemStacks() {
         return validItemList.toArray(new ItemStack[validItemList.size()]);
     }

@@ -23,7 +23,7 @@ public class InventoryCraftBook extends InventoryCrafting {
         this.sourceInventory = sourceInventory;
     }
 
-    private void prepareRecipe(IInventory inventory, IFoodRecipe recipe) {
+    public void prepareRecipe(IInventory inventory, IFoodRecipe recipe) {
         IFoodIngredient[] ingredients = recipe.getCraftMatrix();
         int[] usedStackSize = new int[inventory.getSizeInventory()];
         for(int i = 0; i < getSizeInventory(); i++) {

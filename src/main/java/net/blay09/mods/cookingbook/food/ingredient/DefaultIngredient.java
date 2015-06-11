@@ -20,21 +20,6 @@ public class DefaultIngredient implements IFoodIngredient {
     }
 
     @Override
-    public int getStackSize() {
-        return itemStack.stackSize;
-    }
-
-    @Override
-    public void increaseStackSize(int stackSize) {
-        itemStack.stackSize += stackSize;
-    }
-
-    @Override
-    public IFoodIngredient copy() {
-        return new DefaultIngredient(itemStack.copy());
-    }
-
-    @Override
     public ItemStack[] getItemStacks() {
         return new ItemStack[] { itemStack };
     }

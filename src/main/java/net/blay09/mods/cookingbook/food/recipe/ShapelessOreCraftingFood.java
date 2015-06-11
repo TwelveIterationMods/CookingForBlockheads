@@ -25,9 +25,9 @@ public class ShapelessOreCraftingFood implements IFoodRecipe {
             Object input = recipe.getInput().get(i);
             if(input instanceof ItemStack) {
                 if(PamsHarvestcraft.isToolItem((ItemStack) input)) {
-                    craftMatrix[i] = new ToolIngredient(((ItemStack) input)).copy();
+                    craftMatrix[i] = new ToolIngredient(((ItemStack) input));
                 } else {
-                    craftMatrix[i] = new DefaultIngredient(((ItemStack) input)).copy();
+                    craftMatrix[i] = new DefaultIngredient(((ItemStack) input));
                 }
             } else if(input instanceof ArrayList) {
                 List<ItemStack> list = (List<ItemStack>) input;

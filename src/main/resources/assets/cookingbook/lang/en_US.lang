@@ -16,3 +16,4 @@ cookingbook:no_selection=Select an item\non the right to\nsee it's recipe.
 cookingbook:click_to_see_recipe=Click to see recipe
 cookingbook:click_to_craft_one=Click again to craft
 cookingbook:click_to_craft_all=Shift-Click to craft all
+cookingbook:missing_tools=Missing tools to craft
