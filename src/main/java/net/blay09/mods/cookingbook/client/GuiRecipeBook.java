@@ -1,13 +1,20 @@
 package net.blay09.mods.cookingbook.client;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.container.ComparatorHunger;
 import net.blay09.mods.cookingbook.container.ComparatorName;
 import net.blay09.mods.cookingbook.container.ComparatorSaturation;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -43,12 +50,16 @@ public class GuiRecipeBook extends GuiContainer {
 	private final String[] noIngredients;
 	private final String[] noSelection;
 
+	private Slot hoverSlot;
+
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
 		this.container = container;
 
 		noIngredients = StatCollector.translateToLocal("cookingbook:no_ingredients").split("\\\\n");
 		noSelection = StatCollector.translateToLocal("cookingbook:no_selection").split("\\\\n");
+
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
@@ -74,6 +85,12 @@ public class GuiRecipeBook extends GuiContainer {
 		buttonList.add(btnSortSaturation);
 
 		recalculateScrollBar();
+	}
+
+	@Override
+	public void onGuiClosed() {
+		super.onGuiClosed();
+		MinecraftForge.EVENT_BUS.unregister(this);
 	}
 
 	@Override
@@ -180,6 +197,23 @@ public class GuiRecipeBook extends GuiContainer {
 				curY += fontRendererObj.FONT_HEIGHT + 5;
 			}
 		}
+
+		hoverSlot = getSlotAtPosition(mouseX, mouseY);
+	}
+
+	@SubscribeEvent
+	public void onItemTooltip(ItemTooltipEvent event) {
+		if(hoverSlot != null && event.itemStack == hoverSlot.getStack()) {
+			if(container.canClickCraft(hoverSlot.getSlotIndex())) {
+				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_all"));
+				} else {
+					event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_one"));
+				}
+			} else {
+				event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_see_recipe"));
+			}
+		}
 	}
 
 	@Override
@@ -201,6 +235,21 @@ public class GuiRecipeBook extends GuiContainer {
 		container.setScrollOffset(this.currentOffset);
 
 		recalculateScrollBar();
+	}
+
+	private Slot getSlotAtPosition(int x, int y) {
+		for (int k = 0; k < inventorySlots.inventorySlots.size(); ++k) {
+			Slot slot = (Slot) inventorySlots.inventorySlots.get(k);
+
+			if(isMouseOverSlot(slot, x, y)) {
+				return slot;
+			}
+		}
+		return null;
+	}
+
+	private boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
+		return isPointInRegion(slotIn.xDisplayPosition, slotIn.yDisplayPosition, 16, 16, mouseX, mouseY);
 	}
 
 }

@@ -9,6 +9,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -272,5 +273,9 @@ public class ContainerRecipeBook extends Container {
 
 	public boolean hasSelection() {
 		return currentRecipeList != null;
+	}
+
+	public boolean canClickCraft(int slotIndex) {
+		return allowCrafting && currentRecipeList != null && recipeBook.getFoodList(slotIndex) == currentRecipeList;
 	}
 }

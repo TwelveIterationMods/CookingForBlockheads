@@ -1,5 +1,5 @@
 item.cookingbook:recipebook.name=Cooking for Blockheads
-item.cookingbook:recipebook_tier2.name=Cooking for Blockheads II (NYI)
+item.cookingbook:recipebook_tier2.name=Cooking for Blockheads II
 
 cookingbook:recipebook.tooltip=Recipe Book
 cookingbook:recipebook.tooltipDesc=Shows food you can make with the\nthings you have in your inventory.
@@ -13,3 +13,6 @@ cookingbook:sort_by_saturation.tooltip=Sort by Saturation
 
 cookingbook:no_ingredients=Not\nenough\ningredients
 cookingbook:no_selection=Select an item\non the right to\nsee it's recipe.
+cookingbook:click_to_see_recipe=Click to see recipe
+cookingbook:click_to_craft_one=Click again to craft
+cookingbook:click_to_craft_all=Shift-Click to craft all
