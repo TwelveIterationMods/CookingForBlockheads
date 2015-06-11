@@ -59,9 +59,9 @@ public class GuiRecipeBook extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseMovedOrUp(int mouseX, int mouseY, int type) {
-		super.mouseMovedOrUp(mouseX, mouseY, type);
-		if (type != -1 && mouseClickY != -1) {
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		super.mouseReleased(mouseX, mouseY, state);
+		if (state != -1 && mouseClickY != -1) {
 			mouseClickY = -1;
 			indexWhenClicked = 0;
 			lastNumberOfMoves = 0;

@@ -38,11 +38,6 @@ public class InventoryRecipeBook implements IInventory {
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
@@ -56,12 +51,6 @@ public class InventoryRecipeBook implements IInventory {
     }
 
     @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
-
-    @Override
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
         return false;
     }
@@ -72,5 +61,20 @@ public class InventoryRecipeBook implements IInventory {
 
     public IFoodRecipe getFoodItem(int i) {
         return inventory[i];
+    }
+
+    @Override
+    public boolean isCustomInventoryName() {
+        return false;
+    }
+
+    @Override
+    public void openChest() {
+
+    }
+
+    @Override
+    public void closeChest() {
+
     }
 }

@@ -40,7 +40,7 @@ public class FoodRegistry {
                 }
             }
         }
-        for(Object obj : FurnaceRecipes.smelting().getSmeltingList().entrySet()) {
+        for(Object obj : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
             Map.Entry entry = (Map.Entry) obj;
             ItemStack sourceStack = null;
             if(entry.getKey() instanceof Item) {

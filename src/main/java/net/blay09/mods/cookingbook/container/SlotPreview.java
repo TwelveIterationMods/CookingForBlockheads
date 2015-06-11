@@ -35,7 +35,8 @@ public class SlotPreview extends Slot {
     }
 
     @Override
-    public boolean func_111238_b() {
+    public boolean canBeHovered() {
         return enabled;
     }
+
 }
