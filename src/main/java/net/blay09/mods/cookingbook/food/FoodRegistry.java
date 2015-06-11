@@ -67,7 +67,7 @@ public class FoodRegistry {
         for(int i = 0; i < craftMatrix.length; i++) {
             if(craftMatrix[i].isOptional()) {
                 itemFound[i] = true;
-                break;
+                continue;
             }
             for(int j = 0; j < inventory.getSizeInventory(); j++) {
                 ItemStack itemStack = inventory.getStackInSlot(j);
