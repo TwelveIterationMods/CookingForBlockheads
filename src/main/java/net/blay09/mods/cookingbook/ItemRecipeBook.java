@@ -3,8 +3,10 @@ package net.blay09.mods.cookingbook;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -18,6 +20,18 @@ public class ItemRecipeBook extends Item {
 		setTextureName("cookingbook:recipebook");
 		setCreativeTab(CreativeTabs.tabFood);
 	}
+
+//	@Override
+//	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+//		if(player.isSneaking()) {
+//			TileEntity tileEntity = world.getTileEntity(x, y, z);
+//			if(tileEntity instanceof IInventory) {
+//				player.openGui(CookingBook.instance, GuiHandler.GUI_ID_RECIPEBOOK_WORLD, world, x, y, z);
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {

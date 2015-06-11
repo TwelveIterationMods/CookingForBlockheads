@@ -6,26 +6,26 @@ import net.blay09.mods.cookingbook.food.IFoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ContainerRecipeBook extends Container {
 
-	private final InventoryPlayer sourceInventory;
+	private final IInventory sourceInventory;
 	private final InventoryRecipeBook recipeBook;
 	private final InventoryRecipeBookMatrix craftMatrix;
 	private final SlotPreview[] previewSlots = new SlotPreview[9];
+	private final SlotRecipe[] recipeSlots = new SlotRecipe[12];
 	private final ArrayListMultimap<String, IFoodRecipe> availableRecipes = ArrayListMultimap.create();
 	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
 	private boolean furnaceMode;
 
-	public ContainerRecipeBook(InventoryPlayer inventory) {
-		this.sourceInventory = inventory;
+	public ContainerRecipeBook(InventoryPlayer playerInventory, IInventory sourceInventory) {
+		this.sourceInventory = sourceInventory;
 
 		craftMatrix = new InventoryRecipeBookMatrix();
 		for(int i = 0; i < 3; i++) {
@@ -39,24 +39,25 @@ public class ContainerRecipeBook extends Container {
 		recipeBook = new InventoryRecipeBook();
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 3; j++) {
-				addSlotToContainer(new SlotRecipe(recipeBook, j + i * 3, 102 + j * 18, 11 + i * 18));
+				recipeSlots[j + i * 3] = new SlotRecipe(recipeBook, j + i * 3, 102 + j * 18, 11 + i * 18);
+				addSlotToContainer(recipeSlots[j + i * 3]);
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
+				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 150));
+			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 150));
 		}
 
 		for(IFoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
-				if(FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), inventory)) {
+				if(FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventory)) {
 					String foodStackString = foodStack.toString();
 					if(!availableRecipes.containsKey(foodStackString)) {
 						sortedRecipes.add(foodStack);
@@ -77,6 +78,8 @@ public class ContainerRecipeBook extends Container {
 			} else {
 				recipeBook.setFoodItem(i, null);
 			}
+			System.out.println(i + ": " + recipeBook.getStackInSlot(i));
+			recipeSlots[i].putStack(recipeBook.getStackInSlot(i));
 		}
 	}
 
@@ -121,6 +124,7 @@ public class ContainerRecipeBook extends Container {
 							previewSlots[i].setIngredient(null);
 						}
 						previewSlots[i].setEnabled(true);
+						previewSlots[i].update();
 					}
 				}
 			}
