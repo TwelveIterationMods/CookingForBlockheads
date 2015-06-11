@@ -1,10 +1,14 @@
 package net.blay09.mods.cookingbook.container;
 
 import net.blay09.mods.cookingbook.food.IFoodIngredient;
+import net.blay09.mods.cookingbook.food.ingredient.OreDictIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SlotPreview extends Slot {
 
@@ -36,6 +40,20 @@ public class SlotPreview extends Slot {
         this.ingredient = ingredient;
         if(ingredient != null) {
             visibleStacks = ingredient.getItemStacks();
+            if(ingredient instanceof OreDictIngredient && !ingredient.isOptional()) {
+                List<ItemStack> visibleStackList = new ArrayList<ItemStack>();
+                for(ItemStack visibleStack : visibleStacks) {
+                    for(int i = 0; i < sourceInventory.getSizeInventory(); i++) {
+                        ItemStack itemStack = sourceInventory.getStackInSlot(i);
+                        if(itemStack != null) {
+                            if(itemStack.getHasSubtypes() ? itemStack.isItemEqual(visibleStack) : itemStack.getItem() == visibleStack.getItem()) {
+                                visibleStackList.add(visibleStack);
+                            }
+                        }
+                    }
+                }
+                visibleStacks = visibleStackList.toArray(new ItemStack[visibleStackList.size()]);
+            }
             visibleItemTime = ITEM_SWITCH_TIME;
             visibleItemIndex = 0;
         } else {
@@ -45,7 +63,7 @@ public class SlotPreview extends Slot {
     }
 
     public void update() {
-        if(visibleStacks != null) {
+        if(visibleStacks != null && visibleStacks.length > 0) {
             visibleItemTime++;
             if(visibleItemTime >= ITEM_SWITCH_TIME) {
                 visibleItemIndex++;

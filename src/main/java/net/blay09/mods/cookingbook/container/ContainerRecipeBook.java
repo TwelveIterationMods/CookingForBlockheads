@@ -31,6 +31,7 @@ public class ContainerRecipeBook extends Container {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				previewSlots[j + i * 3] = new SlotPreview(craftMatrix, j + i * 3, 23 + j * 18, 20 + i * 18);
+				previewSlots[j + i * 3].setSourceInventory(sourceInventory);
 				addSlotToContainer(previewSlots[j + i * 3]);
 			}
 		}
@@ -106,7 +107,6 @@ public class ContainerRecipeBook extends Container {
 						previewSlot.setEnabled(false);
 					}
 					previewSlots[4].setIngredient(foodItem.getCraftMatrix()[0]);
-					previewSlots[4].setSourceInventory(sourceInventory);
 					previewSlots[4].setEnabled(true);
 				} else {
 					int offset = 0;
@@ -120,7 +120,6 @@ public class ContainerRecipeBook extends Container {
 						} else {
 							previewSlots[i].setIngredient(null);
 						}
-						previewSlots[i].setSourceInventory(sourceInventory);
 						previewSlots[i].setEnabled(true);
 					}
 				}
