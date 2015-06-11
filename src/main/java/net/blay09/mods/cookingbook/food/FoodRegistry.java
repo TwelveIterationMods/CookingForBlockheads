@@ -65,6 +65,10 @@ public class FoodRegistry {
         int[] usedStackSize = new int[inventory.getSizeInventory()];
         boolean[] itemFound = new boolean[craftMatrix.length];
         for(int i = 0; i < craftMatrix.length; i++) {
+            if(craftMatrix[i].isOptional()) {
+                itemFound[i] = true;
+                break;
+            }
             for(int j = 0; j < inventory.getSizeInventory(); j++) {
                 ItemStack itemStack = inventory.getStackInSlot(j);
                 if(itemStack != null && craftMatrix[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j] > 0) {
