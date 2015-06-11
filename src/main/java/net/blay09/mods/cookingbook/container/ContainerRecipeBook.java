@@ -11,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -219,7 +220,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void sortRecipes(Comparator<ItemStack> comparator) {
-		sortedRecipes.sort(comparator);
+		Collections.sort(sortedRecipes, comparator);
 		updateRecipeList();
 	}
 }
