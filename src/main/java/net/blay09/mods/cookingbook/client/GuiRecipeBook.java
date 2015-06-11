@@ -1,13 +1,16 @@
 package net.blay09.mods.cookingbook.client;
 
+import net.blay09.mods.cookingbook.container.ComparatorHunger;
+import net.blay09.mods.cookingbook.container.ComparatorName;
+import net.blay09.mods.cookingbook.container.ComparatorSaturation;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class GuiRecipeBook extends GuiContainer {
 
@@ -32,6 +35,10 @@ public class GuiRecipeBook extends GuiContainer {
 	private GuiButton btnNextRecipe;
 	private GuiButton btnPrevRecipe;
 
+	private GuiButtonSort btnSortName;
+	private GuiButtonSort btnSortHunger;
+	private GuiButtonSort btnSortSaturation;
+
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
 		this.container = container;
@@ -50,6 +57,15 @@ public class GuiRecipeBook extends GuiContainer {
 		btnNextRecipe.visible = false;
 		buttonList.add(btnNextRecipe);
 
+		btnSortName = new GuiButtonSort(this, 2, width / 2 + 87, height / 2 - 80, 196, "cookingbook:sort_by_name.tooltip");
+		buttonList.add(btnSortName);
+
+		btnSortHunger = new GuiButtonSort(this, 3, width / 2 + 87, height / 2 - 60, 216, "cookingbook:sort_by_hunger.tooltip");
+		buttonList.add(btnSortHunger);
+
+		btnSortSaturation = new GuiButtonSort(this, 4, width / 2 + 87, height / 2 - 40, 236, "cookingbook:sort_by_saturation.tooltip");
+		buttonList.add(btnSortSaturation);
+
 		recalculateScrollBar();
 	}
 
@@ -61,6 +77,12 @@ public class GuiRecipeBook extends GuiContainer {
 			container.prevRecipe();
 		} else if(button == btnNextRecipe) {
 			container.nextRecipe();
+		} else if(button == btnSortName) {
+			container.sortRecipes(new ComparatorName());
+		} else if(button == btnSortHunger) {
+			container.sortRecipes(new ComparatorHunger());
+		} else if(button == btnSortSaturation) {
+			container.sortRecipes(new ComparatorSaturation());
 		}
 	}
 
@@ -137,6 +159,19 @@ public class GuiRecipeBook extends GuiContainer {
 		GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 	}
 
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		if(btnSortName.isMouseOver()) {
+			drawHoveringText(btnSortName.getTooltipLines(), mouseX, mouseY);
+		} else if(btnSortHunger.isMouseOver()) {
+			drawHoveringText(btnSortHunger.getTooltipLines(), mouseX, mouseY);
+		} else if(btnSortSaturation.isMouseOver()) {
+			drawHoveringText(btnSortSaturation.getTooltipLines(), mouseX, mouseY);
+		}
+	}
+
 	public void setCurrentOffset(int currentOffset) {
 		this.currentOffset = Math.max(0, Math.min(currentOffset, (int) Math.ceil(container.getAvailableRecipeCount() / 3f) - VISIBLE_ROWS));
 
@@ -144,4 +179,5 @@ public class GuiRecipeBook extends GuiContainer {
 
 		recalculateScrollBar();
 	}
+
 }

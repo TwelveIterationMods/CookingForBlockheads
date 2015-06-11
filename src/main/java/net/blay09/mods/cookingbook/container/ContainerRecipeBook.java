@@ -11,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContainerRecipeBook extends Container {
@@ -24,6 +25,7 @@ public class ContainerRecipeBook extends Container {
 	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
 
 	private boolean furnaceMode;
+	private int scrollOffset;
 	private List<IFoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
 
@@ -132,6 +134,11 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void setScrollOffset(int scrollOffset) {
+		this.scrollOffset = scrollOffset;
+		updateRecipeList();
+	}
+
+	public void updateRecipeList() {
 		for(int i = 0; i < recipeBook.getSizeInventory(); i++) {
 			int recipeIdx = i + scrollOffset * 3;
 			if(recipeIdx < sortedRecipes.size()) {
@@ -211,5 +218,10 @@ public class ContainerRecipeBook extends Container {
 
 	public boolean isFurnaceMode() {
 		return furnaceMode;
+	}
+
+	public void sortRecipes(Comparator<ItemStack> comparator) {
+		sortedRecipes.sort(comparator);
+		updateRecipeList();
 	}
 }
