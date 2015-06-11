@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.client;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -28,6 +29,9 @@ public class GuiRecipeBook extends GuiContainer {
 	private int indexWhenClicked;
 	private int lastNumberOfMoves;
 
+	private GuiButton btnNextRecipe;
+	private GuiButton btnPrevRecipe;
+
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
 		this.container = container;
@@ -37,7 +41,27 @@ public class GuiRecipeBook extends GuiContainer {
 	public void initGui() {
 		ySize = 174;
 		super.initGui();
+
+		btnPrevRecipe = new GuiButton(0, width / 2 - 79, height / 2 - 51, 13, 20, "<");
+		btnPrevRecipe.visible = false;
+		buttonList.add(btnPrevRecipe);
+
+		btnNextRecipe = new GuiButton(1, width / 2 - 9, height / 2 - 51, 13, 20, ">");
+		btnNextRecipe.visible = false;
+		buttonList.add(btnNextRecipe);
+
 		recalculateScrollBar();
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button) {
+		super.actionPerformed(button);
+
+		if(button == btnPrevRecipe) {
+			container.prevRecipe();
+		} else if(button == btnNextRecipe) {
+			container.nextRecipe();
+		}
 	}
 
 	public void recalculateScrollBar()
@@ -96,10 +120,18 @@ public class GuiRecipeBook extends GuiContainer {
 			}
 		}
 
-		if(container.isFurnaceMode()) {
-			drawTexturedModalRect(guiLeft + 22, guiTop + 19, 54, 174, 54, 54);
+		if(container.hasVariants()) {
+			btnPrevRecipe.visible = true;
+			btnNextRecipe.visible = true;
 		} else {
-			drawTexturedModalRect(guiLeft + 22, guiTop + 19, 0, 174, 54, 54);
+			btnPrevRecipe.visible = false;
+			btnNextRecipe.visible = false;
+		}
+
+		if(container.isFurnaceMode()) {
+			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 174, 54, 54);
+		} else {
+			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 174, 54, 54);
 		}
 
 		GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);

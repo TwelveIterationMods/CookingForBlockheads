@@ -5,18 +5,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import java.util.List;
+
 public class InventoryRecipeBook implements IInventory {
 
-    private final IFoodRecipe[] inventory = new IFoodRecipe[12];
+    private final List[] recipes = new List[12];
+    private final ItemStack[] outputItem = new ItemStack[12];
 
     @Override
     public int getSizeInventory() {
-        return inventory.length;
+        return recipes.length;
     }
 
     @Override
     public ItemStack getStackInSlot(int i) {
-        return inventory[i] != null ? inventory[i].getOutputItem() : null;
+        return outputItem[i];
     }
 
     @Override
@@ -55,12 +58,11 @@ public class InventoryRecipeBook implements IInventory {
         return false;
     }
 
-    public void setFoodItem(int i, IFoodRecipe foodItem) {
-        inventory[i] = foodItem;
-    }
-
-    public IFoodRecipe getFoodItem(int i) {
-        return inventory[i];
+    public void setFoodItem(int i, List<IFoodRecipe> recipes) {
+        this.recipes[i] = recipes;
+        if(recipes != null) {
+            outputItem[i] = recipes.get(0).getOutputItem();
+        }
     }
 
     @Override
@@ -69,12 +71,12 @@ public class InventoryRecipeBook implements IInventory {
     }
 
     @Override
-    public void openChest() {
-
-    }
+    public void openChest() {}
 
     @Override
-    public void closeChest() {
+    public void closeChest() {}
 
+    public List<IFoodRecipe> getFoodList(int slotIndex) {
+        return (List<IFoodRecipe>) recipes[slotIndex];
     }
 }

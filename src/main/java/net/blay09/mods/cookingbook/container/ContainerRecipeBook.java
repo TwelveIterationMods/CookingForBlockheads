@@ -22,7 +22,10 @@ public class ContainerRecipeBook extends Container {
 	private final SlotRecipe[] recipeSlots = new SlotRecipe[12];
 	private final ArrayListMultimap<String, IFoodRecipe> availableRecipes = ArrayListMultimap.create();
 	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
+
 	private boolean furnaceMode;
+	private List<IFoodRecipe> currentRecipeList;
+	private int currentRecipeIdx;
 
 	public ContainerRecipeBook(InventoryPlayer playerInventory, IInventory sourceInventory) {
 		this.sourceInventory = sourceInventory;
@@ -30,7 +33,7 @@ public class ContainerRecipeBook extends Container {
 		craftMatrix = new InventoryRecipeBookMatrix();
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				previewSlots[j + i * 3] = new SlotPreview(craftMatrix, j + i * 3, 23 + j * 18, 20 + i * 18);
+				previewSlots[j + i * 3] = new SlotPreview(craftMatrix, j + i * 3, 24 + j * 18, 20 + i * 18);
 				previewSlots[j + i * 3].setSourceInventory(sourceInventory);
 				addSlotToContainer(previewSlots[j + i * 3]);
 			}
@@ -70,15 +73,72 @@ public class ContainerRecipeBook extends Container {
 		setScrollOffset(0);
 	}
 
+	public void setCraftMatrix(IFoodRecipe recipe) {
+		if(recipe != null) {
+			furnaceMode = recipe.isSmeltingRecipe();
+			if(furnaceMode) {
+				for(SlotPreview previewSlot : previewSlots) {
+					previewSlot.setIngredient(null);
+					previewSlot.setEnabled(false);
+				}
+				previewSlots[4].setIngredient(recipe.getCraftMatrix()[0]);
+				previewSlots[4].setEnabled(true);
+				previewSlots[4].update();
+			} else {
+				int offset = 0;
+				if (recipe.getCraftMatrix().length <= 3) {
+					offset += 3;
+				}
+				for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+					int recipeIdx = i - offset;
+					if (recipeIdx >= 0 && recipeIdx < recipe.getCraftMatrix().length) {
+						previewSlots[i].setIngredient(recipe.getCraftMatrix()[recipeIdx]);
+					} else {
+						previewSlots[i].setIngredient(null);
+					}
+					previewSlots[i].setEnabled(true);
+					previewSlots[i].update();
+				}
+			}
+		} else {
+			for(SlotPreview previewSlot : previewSlots) {
+				previewSlot.setIngredient(null);
+			}
+		}
+	}
+
+	public boolean hasVariants() {
+		return currentRecipeList != null && currentRecipeList.size() > 1;
+	}
+
+	public void prevRecipe() {
+		if(currentRecipeList != null) {
+			currentRecipeIdx--;
+			if (currentRecipeIdx < 0) {
+				currentRecipeIdx = currentRecipeList.size() - 1;
+			}
+			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+		}
+	}
+
+	public void nextRecipe() {
+		if(currentRecipeList != null) {
+			currentRecipeIdx++;
+			if (currentRecipeIdx >= currentRecipeList.size()) {
+				currentRecipeIdx = 0;
+			}
+			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+		}
+	}
+
 	public void setScrollOffset(int scrollOffset) {
 		for(int i = 0; i < recipeBook.getSizeInventory(); i++) {
 			int recipeIdx = i + scrollOffset * 3;
 			if(recipeIdx < sortedRecipes.size()) {
-				recipeBook.setFoodItem(i, availableRecipes.get(sortedRecipes.get(recipeIdx).toString()).get(0));
+				recipeBook.setFoodItem(i, availableRecipes.get(sortedRecipes.get(recipeIdx).toString()));
 			} else {
 				recipeBook.setFoodItem(i, null);
 			}
-			System.out.println(i + ": " + recipeBook.getStackInSlot(i));
 			recipeSlots[i].putStack(recipeBook.getStackInSlot(i));
 		}
 	}
@@ -101,32 +161,12 @@ public class ContainerRecipeBook extends Container {
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
 		if(mode == 0 && slotIdx > 0 && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
 			SlotRecipe slot = (SlotRecipe) inventorySlots.get(slotIdx);
-			IFoodRecipe foodItem = recipeBook.getFoodItem(slot.getSlotIndex());
-			if(foodItem != null) {
-				furnaceMode = foodItem.isSmeltingRecipe();
-				if(furnaceMode) {
-					for(SlotPreview previewSlot : previewSlots) {
-						previewSlot.setIngredient(null);
-						previewSlot.setEnabled(false);
-					}
-					previewSlots[4].setIngredient(foodItem.getCraftMatrix()[0]);
-					previewSlots[4].setEnabled(true);
-				} else {
-					int offset = 0;
-					if (foodItem.getCraftMatrix().length <= 3) {
-						offset += 3;
-					}
-					for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-						int recipeIdx = i - offset;
-						if (recipeIdx >= 0 && recipeIdx < foodItem.getCraftMatrix().length) {
-							previewSlots[i].setIngredient(foodItem.getCraftMatrix()[recipeIdx]);
-						} else {
-							previewSlots[i].setIngredient(null);
-						}
-						previewSlots[i].setEnabled(true);
-						previewSlots[i].update();
-					}
-				}
+			currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
+			currentRecipeIdx = 0;
+			if(currentRecipeList != null) {
+				setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+			} else {
+				setCraftMatrix(null);
 			}
 			return null;
 		}
