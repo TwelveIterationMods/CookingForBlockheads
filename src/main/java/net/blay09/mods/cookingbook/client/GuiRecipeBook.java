@@ -216,9 +216,9 @@ public class GuiRecipeBook extends GuiContainer {
 					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_tools"));
 				} else {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-						event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_all"));
+						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_craft_all"));
 					} else {
-						event.toolTip.add("\u00a7e" + I18n.format("cookingbook:click_to_craft_one"));
+						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_craft_one"));
 					}
 				}
 			} else {
