@@ -170,19 +170,21 @@ public class ContainerRecipeBook extends Container {
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
 		if((mode == 0 || mode == 1) && slotIdx > 0 && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
 			SlotRecipe slot = (SlotRecipe) inventorySlots.get(slotIdx);
-			if(allowCrafting && currentRecipeKey != null && slot.getStack() != null && slot.getStack().toString().equals(currentRecipeKey)) {
-				tryCraft(player, currentRecipeList, currentRecipeIdx, mode == 1);
-				return null;
-			}
-			currentRecipeKey = slot.getStack() != null ? slot.getStack().toString() : null;
-			currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
-			currentRecipeIdx = 0;
-			if(currentRecipeList != null) {
-				FoodRecipe recipe = currentRecipeList.get(currentRecipeIdx);
-				setCraftMatrix(recipe);
-				if(!recipe.isSmeltingRecipe()) {
-					craftBook.prepareRecipe(player, sourceInventory, recipe);
-					isMissingTools = !craftBook.matches(player.worldObj);
+			if(slot.getStack() != null) {
+				if (allowCrafting && currentRecipeKey != null && slot.getStack().toString().equals(currentRecipeKey)) {
+					tryCraft(player, currentRecipeList, currentRecipeIdx, mode == 1);
+					return null;
+				}
+				currentRecipeKey = slot.getStack().toString();
+				currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
+				currentRecipeIdx = 0;
+				if (currentRecipeList != null) {
+					FoodRecipe recipe = currentRecipeList.get(currentRecipeIdx);
+					setCraftMatrix(recipe);
+					if (!recipe.isSmeltingRecipe()) {
+						craftBook.prepareRecipe(player, sourceInventory, recipe);
+						isMissingTools = !craftBook.matches(player.worldObj);
+					}
 				}
 			}
 			return null;
