@@ -12,7 +12,7 @@ cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored
 cookingbook:sort_by_saturation.tooltip=Sort by Saturation
 
 cookingbook:no_ingredients=Not\nenough\ningredients
-cookingbook:no_selection=Select an item\non the right to\nsee it's recipe.
+cookingbook:no_selection=Select an item\non the right to\nsee its recipe.
 cookingbook:click_to_see_recipe=Click to see recipe
 cookingbook:click_to_craft_one=Click again to craft
 cookingbook:click_to_craft_all=Shift-Click to craft all

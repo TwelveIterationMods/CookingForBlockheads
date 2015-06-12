@@ -2,6 +2,8 @@ package net.blay09.mods.cookingbook.client;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.container.*;
+import net.blay09.mods.cookingbook.network.MessageSort;
+import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -28,6 +30,7 @@ public class GuiRecipeBook extends GuiContainer {
 	private static final int VISIBLE_ROWS = 4;
 
 	private final ContainerRecipeBook container;
+	private boolean registered;
 	private int scrollBarScaledHeight;
 	private int scrollBarXPos;
 	private int scrollBarYPos;
@@ -55,8 +58,6 @@ public class GuiRecipeBook extends GuiContainer {
 
 		noIngredients = StatCollector.translateToLocal("cookingbook:no_ingredients").split("\\\\n");
 		noSelection = StatCollector.translateToLocal("cookingbook:no_selection").split("\\\\n");
-
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
@@ -82,12 +83,20 @@ public class GuiRecipeBook extends GuiContainer {
 		buttonList.add(btnSortSaturation);
 
 		recalculateScrollBar();
+
+		if(!registered) {
+			MinecraftForge.EVENT_BUS.register(this);
+			registered = true;
+		}
 	}
 
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-		MinecraftForge.EVENT_BUS.unregister(this);
+		if(registered) {
+			MinecraftForge.EVENT_BUS.unregister(this);
+			registered = false;
+		}
 	}
 
 	@Override
@@ -99,10 +108,13 @@ public class GuiRecipeBook extends GuiContainer {
 		} else if(button == btnNextRecipe) {
 			container.nextRecipe();
 		} else if(button == btnSortName) {
+			NetworkHandler.instance.sendToServer(new MessageSort(0));
 			container.sortRecipes(new ComparatorName());
 		} else if(button == btnSortHunger) {
+			NetworkHandler.instance.sendToServer(new MessageSort(1));
 			container.sortRecipes(new ComparatorHunger());
 		} else if(button == btnSortSaturation) {
+			NetworkHandler.instance.sendToServer(new MessageSort(2));
 			container.sortRecipes(new ComparatorSaturation());
 		}
 	}

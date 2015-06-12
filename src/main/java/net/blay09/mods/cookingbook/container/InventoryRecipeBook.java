@@ -62,6 +62,8 @@ public class InventoryRecipeBook implements IInventory {
         this.recipes[i] = recipes;
         if(recipes != null) {
             outputItem[i] = recipes.get(0).getOutputItem();
+        } else {
+            outputItem[i] = null;
         }
     }
 
