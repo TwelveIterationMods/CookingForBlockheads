@@ -10,7 +10,9 @@ public class NetworkHandler {
     public static final SimpleNetworkWrapper instance = NetworkRegistry.INSTANCE.newSimpleChannel(CookingBook.MOD_ID);
 
     public static void init() {
-        instance.registerMessage(HandlerSort.class, MessageSort.class, 0, Side.CLIENT);
+        instance.registerMessage(HandlerSort.class, MessageSort.class, 0, Side.SERVER);
+        instance.registerMessage(HandlerSwitchRecipe.class, MessageSwitchRecipe.class, 1, Side.SERVER);
+        instance.registerMessage(HandlerSyncList.class, MessageSyncList.class, 2, Side.CLIENT);
     }
 
 }

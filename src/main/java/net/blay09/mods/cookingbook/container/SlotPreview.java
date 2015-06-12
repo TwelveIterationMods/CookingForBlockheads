@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingbook.container;
 
-import net.blay09.mods.cookingbook.food.IFoodIngredient;
-import net.blay09.mods.cookingbook.food.ingredient.OreDictIngredient;
+import net.blay09.mods.cookingbook.food.FoodIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -14,7 +13,7 @@ public class SlotPreview extends Slot {
 
     private static final int ITEM_SWITCH_TIME = 20;
 
-    private IFoodIngredient ingredient;
+    private FoodIngredient ingredient;
     private ItemStack[] visibleStacks;
     private IInventory sourceInventory;
     private boolean enabled = true;
@@ -36,11 +35,11 @@ public class SlotPreview extends Slot {
         return false;
     }
 
-    public void setIngredient(IFoodIngredient ingredient) {
+    public void setIngredient(FoodIngredient ingredient) {
         this.ingredient = ingredient;
         if(ingredient != null) {
             visibleStacks = ingredient.getItemStacks();
-            if(ingredient instanceof OreDictIngredient && !ingredient.isOptional()) {
+            if(ingredient.getItemStacks().length > 1 && !ingredient.isToolItem()) {
                 List<ItemStack> visibleStackList = new ArrayList<ItemStack>();
                 for(ItemStack visibleStack : visibleStacks) {
                     for(int i = 0; i < sourceInventory.getSizeInventory(); i++) {

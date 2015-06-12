@@ -2,6 +2,7 @@ package net.blay09.mods.cookingbook.food;
 
 import com.google.common.collect.ArrayListMultimap;
 import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
+import net.blay09.mods.cookingbook.container.InventoryCraftBook;
 import net.blay09.mods.cookingbook.food.recipe.*;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
@@ -9,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -19,7 +21,8 @@ import java.util.Map;
 
 public class FoodRegistry {
 
-    private static final ArrayListMultimap<ItemFood, IFoodRecipe> foodItems = ArrayListMultimap.create();
+    private static final List<IRecipe> recipeList = new ArrayList<IRecipe>();
+    private static final ArrayListMultimap<ItemFood, FoodRecipe> foodItems = ArrayListMultimap.create();
 
     public static void init() {
         for(Object obj : CraftingManager.getInstance().getRecipeList()) {
@@ -29,6 +32,7 @@ public class FoodRegistry {
                 if(PamsHarvestcraft.isWeirdBrokenRecipe(recipe)) {
                     continue;
                 }
+                recipeList.add(recipe);
                 if(recipe instanceof ShapedRecipes) {
                     foodItems.put((ItemFood) output.getItem(), new ShapedCraftingFood((ShapedRecipes) recipe));
                 } else if(recipe instanceof ShapelessRecipes) {
@@ -57,15 +61,15 @@ public class FoodRegistry {
         }
     }
 
-    public static Collection<IFoodRecipe> getFoodRecipes() {
+    public static Collection<FoodRecipe> getFoodRecipes() {
         return foodItems.values();
     }
 
-    public static boolean isAvailableFor(IFoodIngredient[] craftMatrix, IInventory inventory) {
+    public static boolean isAvailableFor(FoodIngredient[] craftMatrix, IInventory inventory) {
         int[] usedStackSize = new int[inventory.getSizeInventory()];
         boolean[] itemFound = new boolean[craftMatrix.length];
         for(int i = 0; i < craftMatrix.length; i++) {
-            if(craftMatrix[i].isOptional()) {
+            if(craftMatrix[i].isToolItem()) {
                 itemFound[i] = true;
                 continue;
             }
@@ -84,5 +88,14 @@ public class FoodRegistry {
             }
         }
         return true;
+    }
+
+    public static IRecipe findMatchingRecipe(InventoryCraftBook craftBook, World worldObj) {
+        for(IRecipe recipe : recipeList) {
+            if(recipe.matches(craftBook, worldObj)) {
+                return recipe;
+            }
+        }
+        return null;
     }
 }

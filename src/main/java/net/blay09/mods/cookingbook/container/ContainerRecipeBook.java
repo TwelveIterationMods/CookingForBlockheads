@@ -2,9 +2,11 @@ package net.blay09.mods.cookingbook.container;
 
 import com.google.common.collect.ArrayListMultimap;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
-import net.blay09.mods.cookingbook.food.IFoodRecipe;
+import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.network.MessageSyncList;
+import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -17,28 +19,33 @@ import java.util.List;
 
 public class ContainerRecipeBook extends Container {
 
+	private final EntityPlayer player;
 	private final IInventory sourceInventory;
 	private final boolean allowCrafting;
+	private final boolean isClientSide;
 	private final InventoryRecipeBook recipeBook;
 	private final InventoryRecipeBookMatrix craftMatrix;
 	private final SlotPreview[] previewSlots = new SlotPreview[9];
 	private final SlotRecipe[] recipeSlots = new SlotRecipe[12];
-	private final ArrayListMultimap<String, IFoodRecipe> availableRecipes = ArrayListMultimap.create();
+	private final ArrayListMultimap<String, FoodRecipe> availableRecipes = ArrayListMultimap.create();
 	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
 
 	private final InventoryCraftBook craftBook;
 
+	private boolean isDirty;
 	private boolean furnaceMode;
 	private int scrollOffset;
 	private String currentRecipeKey;
-	private List<IFoodRecipe> currentRecipeList;
+	private List<FoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
 	private boolean isMissingTools;
 	private Comparator<ItemStack> currentSort = new ComparatorName();
 
-	public ContainerRecipeBook(InventoryPlayer playerInventory, IInventory sourceInventory, boolean allowCrafting) {
+	public ContainerRecipeBook(EntityPlayer player, IInventory sourceInventory, boolean allowCrafting, boolean isClientSide) {
+		this.player = player;
 		this.sourceInventory = sourceInventory;
 		this.allowCrafting = allowCrafting;
+		this.isClientSide = isClientSide;
 
 		craftMatrix = new InventoryRecipeBookMatrix();
 		for(int i = 0; i < 3; i++) {
@@ -59,49 +66,24 @@ public class ContainerRecipeBook extends Container {
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
+				addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 150));
+			addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 150));
 		}
 
-		updateAvailableRecipes();
-		sortRecipes(currentSort);
+		if(!isClientSide) {
+			updateAvailableRecipes();
+			sortRecipes(currentSort);
+		}
 		updateRecipeList();
-		setCraftMatrix(null);
 
 		craftBook = new InventoryCraftBook(this, sourceInventory);
 	}
 
-	public void updateAvailableRecipes() {
-		availableRecipes.clear();
-		sortedRecipes.clear();
-		for(IFoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
-			ItemStack foodStack = foodRecipe.getOutputItem();
-			if(foodStack != null) {
-				if(FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventory)) {
-					String foodStackString = foodStack.toString();
-					if(!availableRecipes.containsKey(foodStackString)) {
-						sortedRecipes.add(foodStack);
-					}
-					availableRecipes.put(foodStackString, foodRecipe);
-				}
-			}
-		}
-		currentRecipeList = currentRecipeKey != null ? availableRecipes.get(currentRecipeKey) : null;
-		if(currentRecipeList == null || currentRecipeList.isEmpty()) {
-			currentRecipeIdx = 0;
-			currentRecipeList = null;
-			currentRecipeKey = null;
-			setCraftMatrix(null);
-		} else if(currentRecipeIdx >= currentRecipeList.size()) {
-			currentRecipeIdx = 0;
-		}
-	}
-
-	public void setCraftMatrix(IFoodRecipe recipe) {
+	public void setCraftMatrix(FoodRecipe recipe) {
 		if(recipe != null) {
 			furnaceMode = recipe.isSmeltingRecipe();
 			if(furnaceMode) {
@@ -140,26 +122,6 @@ public class ContainerRecipeBook extends Container {
 		return currentRecipeList != null && currentRecipeList.size() > 1;
 	}
 
-	public void prevRecipe() {
-		if(currentRecipeList != null) {
-			currentRecipeIdx--;
-			if (currentRecipeIdx < 0) {
-				currentRecipeIdx = currentRecipeList.size() - 1;
-			}
-			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
-		}
-	}
-
-	public void nextRecipe() {
-		if(currentRecipeList != null) {
-			currentRecipeIdx++;
-			if (currentRecipeIdx >= currentRecipeList.size()) {
-				currentRecipeIdx = 0;
-			}
-			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
-		}
-	}
-
 	public void setScrollOffset(int scrollOffset) {
 		this.scrollOffset = scrollOffset;
 		updateRecipeList();
@@ -177,11 +139,22 @@ public class ContainerRecipeBook extends Container {
 			recipeSlots[i].putStack(recipeBook.getStackInSlot(i));
 			recipeSlots[i].setEnabled(!noRecipes);
 		}
+		if(noRecipes) {
+			setCraftMatrix(null);
+			currentRecipeKey = null;
+			currentRecipeList = null;
+			currentRecipeIdx = 0;
+		}
 	}
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
+
+		if(isDirty) {
+			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
+			isDirty = false;
+		}
 
 		for(SlotPreview previewSlot : previewSlots) {
 			previewSlot.update();
@@ -205,11 +178,11 @@ public class ContainerRecipeBook extends Container {
 			currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
 			currentRecipeIdx = 0;
 			if(currentRecipeList != null) {
-				IFoodRecipe recipe = currentRecipeList.get(currentRecipeIdx);
+				FoodRecipe recipe = currentRecipeList.get(currentRecipeIdx);
 				setCraftMatrix(recipe);
 				if(!recipe.isSmeltingRecipe()) {
-					craftBook.prepareRecipe(sourceInventory, recipe);
-					isMissingTools = !recipe.getCraftingRecipe().matches(craftBook, player.worldObj);
+					craftBook.prepareRecipe(player, sourceInventory, recipe);
+					isMissingTools = !craftBook.matches(player.worldObj);
 				}
 			}
 			return null;
@@ -217,8 +190,8 @@ public class ContainerRecipeBook extends Container {
 		return super.slotClick(slotIdx, button, mode, player);
 	}
 
-	private void tryCraft(EntityPlayer player, List<IFoodRecipe> recipeList, int recipeIdx, boolean isShiftDown) {
-		IFoodRecipe recipe = recipeList.get(recipeIdx);
+	private void tryCraft(EntityPlayer player, List<FoodRecipe> recipeList, int recipeIdx, boolean isShiftDown) {
+		FoodRecipe recipe = recipeList.get(recipeIdx);
 		if(recipe.isSmeltingRecipe()) {
 			return;
 		}
@@ -247,9 +220,11 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
-		updateAvailableRecipes();
-		sortRecipes(currentSort);
-		updateRecipeList();
+		if(!isClientSide) {
+			updateAvailableRecipes();
+			sortRecipes(currentSort);
+			updateRecipeList();
+		}
 	}
 
 	@Override
@@ -292,12 +267,6 @@ public class ContainerRecipeBook extends Container {
 		return furnaceMode;
 	}
 
-	public void sortRecipes(Comparator<ItemStack> comparator) {
-		currentSort = comparator;
-		Collections.sort(sortedRecipes, comparator);
-		updateRecipeList();
-	}
-
 	public boolean hasSelection() {
 		return currentRecipeList != null;
 	}
@@ -308,5 +277,71 @@ public class ContainerRecipeBook extends Container {
 
 	public boolean isMissingTools() {
 		return isMissingTools;
+	}
+
+	// Server Only
+
+	public void updateAvailableRecipes() {
+		availableRecipes.clear();
+		sortedRecipes.clear();
+		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
+			ItemStack foodStack = foodRecipe.getOutputItem();
+			if(foodStack != null) {
+				if(FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventory)) {
+					String foodStackString = foodStack.toString();
+					if(!availableRecipes.containsKey(foodStackString)) {
+						sortedRecipes.add(foodStack);
+					}
+					availableRecipes.put(foodStackString, foodRecipe);
+				}
+			}
+		}
+		currentRecipeList = currentRecipeKey != null ? availableRecipes.get(currentRecipeKey) : null;
+		if(currentRecipeList == null || currentRecipeList.isEmpty()) {
+			currentRecipeIdx = 0;
+			currentRecipeList = null;
+			currentRecipeKey = null;
+			setCraftMatrix(null);
+		} else if(currentRecipeIdx >= currentRecipeList.size()) {
+			currentRecipeIdx = 0;
+		}
+		isDirty = true;
+	}
+
+	public void sortRecipes(Comparator<ItemStack> comparator) {
+		currentSort = comparator;
+		Collections.sort(sortedRecipes, comparator);
+		updateRecipeList();
+		isDirty = true;
+	}
+
+	public void prevRecipe() {
+		if(currentRecipeList != null) {
+			currentRecipeIdx--;
+			if (currentRecipeIdx < 0) {
+				currentRecipeIdx = currentRecipeList.size() - 1;
+			}
+			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+		}
+	}
+
+	public void nextRecipe() {
+		if(currentRecipeList != null) {
+			currentRecipeIdx++;
+			if (currentRecipeIdx >= currentRecipeList.size()) {
+				currentRecipeIdx = 0;
+			}
+			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+		}
+	}
+
+	// Client Only
+
+	public void setAvailableItems(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes) {
+		this.sortedRecipes.clear();
+		this.sortedRecipes.addAll(sortedRecipes);
+		this.availableRecipes.clear();
+		this.availableRecipes.putAll(availableRecipes);
+		updateRecipeList();
 	}
 }

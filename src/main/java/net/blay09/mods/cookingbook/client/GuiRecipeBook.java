@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.client;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.container.*;
 import net.blay09.mods.cookingbook.network.MessageSort;
+import net.blay09.mods.cookingbook.network.MessageSwitchRecipe;
 import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -104,18 +105,15 @@ public class GuiRecipeBook extends GuiContainer {
 		super.actionPerformed(button);
 
 		if(button == btnPrevRecipe) {
-			container.prevRecipe();
+			NetworkHandler.instance.sendToServer(new MessageSwitchRecipe(-1));
 		} else if(button == btnNextRecipe) {
-			container.nextRecipe();
+			NetworkHandler.instance.sendToServer(new MessageSwitchRecipe(1));
 		} else if(button == btnSortName) {
 			NetworkHandler.instance.sendToServer(new MessageSort(0));
-			container.sortRecipes(new ComparatorName());
 		} else if(button == btnSortHunger) {
 			NetworkHandler.instance.sendToServer(new MessageSort(1));
-			container.sortRecipes(new ComparatorHunger());
 		} else if(button == btnSortSaturation) {
 			NetworkHandler.instance.sendToServer(new MessageSort(2));
-			container.sortRecipes(new ComparatorSaturation());
 		}
 	}
 

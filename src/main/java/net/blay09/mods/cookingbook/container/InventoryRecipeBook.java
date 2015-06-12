@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.container;
 
-import net.blay09.mods.cookingbook.food.IFoodRecipe;
+import net.blay09.mods.cookingbook.food.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -58,7 +58,7 @@ public class InventoryRecipeBook implements IInventory {
         return false;
     }
 
-    public void setFoodItem(int i, List<IFoodRecipe> recipes) {
+    public void setFoodItem(int i, List<FoodRecipe> recipes) {
         this.recipes[i] = recipes;
         if(recipes != null) {
             outputItem[i] = recipes.get(0).getOutputItem();
@@ -78,7 +78,7 @@ public class InventoryRecipeBook implements IInventory {
     @Override
     public void closeChest() {}
 
-    public List<IFoodRecipe> getFoodList(int slotIndex) {
-        return (List<IFoodRecipe>) recipes[slotIndex];
+    public List<FoodRecipe> getFoodList(int slotIndex) {
+        return (List<FoodRecipe>) recipes[slotIndex];
     }
 }

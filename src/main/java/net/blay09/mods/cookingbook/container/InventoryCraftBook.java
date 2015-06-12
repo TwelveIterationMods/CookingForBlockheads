@@ -1,15 +1,18 @@
 package net.blay09.mods.cookingbook.container;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import net.blay09.mods.cookingbook.food.IFoodIngredient;
-import net.blay09.mods.cookingbook.food.IFoodRecipe;
+import net.blay09.mods.cookingbook.food.FoodRegistry;
+import net.blay09.mods.cookingbook.food.FoodIngredient;
+import net.blay09.mods.cookingbook.food.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
@@ -17,14 +20,15 @@ public class InventoryCraftBook extends InventoryCrafting {
 
     private final IInventory sourceInventory;
     private final int[] sourceInventorySlots = new int[9];
+    private IRecipe currentRecipe;
 
     public InventoryCraftBook(Container container, IInventory sourceInventory) {
         super(container, 3, 3);
         this.sourceInventory = sourceInventory;
     }
 
-    public void prepareRecipe(IInventory inventory, IFoodRecipe recipe) {
-        IFoodIngredient[] ingredients = recipe.getCraftMatrix();
+    public IRecipe prepareRecipe(EntityPlayer player, IInventory inventory, FoodRecipe recipe) {
+        FoodIngredient[] ingredients = recipe.getCraftMatrix();
         int[] usedStackSize = new int[inventory.getSizeInventory()];
         for(int i = 0; i < getSizeInventory(); i++) {
             setInventorySlotContents(i, null);
@@ -43,12 +47,17 @@ public class InventoryCraftBook extends InventoryCrafting {
                 }
             }
         }
+        currentRecipe = FoodRegistry.findMatchingRecipe(this, player.worldObj);
+        return currentRecipe;
     }
 
-    public ItemStack craft(EntityPlayer player, IInventory sourceInventory, IFoodRecipe recipe) {
-        prepareRecipe(sourceInventory, recipe);
-        if(recipe.getCraftingRecipe().matches(this, player.worldObj)) {
-            ItemStack craftingResult = recipe.getCraftingRecipe().getCraftingResult(this);
+    public ItemStack craft(EntityPlayer player, IInventory sourceInventory, FoodRecipe recipe) {
+        prepareRecipe(player, sourceInventory, recipe);
+        if(currentRecipe == null) {
+            return null;
+        }
+        if(currentRecipe.matches(this, player.worldObj)) {
+            ItemStack craftingResult = currentRecipe.getCraftingResult(this);
             if(craftingResult != null) {
                 // Fire FML Events
                 FMLCommonHandler.instance().firePlayerCraftingEvent(player, craftingResult, this);
@@ -92,12 +101,16 @@ public class InventoryCraftBook extends InventoryCrafting {
         return null;
     }
 
-    public boolean canMouseItemHold(EntityPlayer player, IFoodRecipe recipe) {
+    public boolean canMouseItemHold(EntityPlayer player, FoodRecipe recipe) {
         ItemStack mouseItem = player.inventory.getItemStack();
         if(mouseItem == null) {
             return true;
         }
-        ItemStack craftingResult = recipe.getCraftingRecipe().getCraftingResult(this);
+        IRecipe craftingRecipe = FoodRegistry.findMatchingRecipe(this, player.worldObj);
+        if(craftingRecipe == null) {
+            return false;
+        }
+        ItemStack craftingResult = craftingRecipe.getCraftingResult(this);
         if(!craftingResult.isItemEqual(mouseItem)) {
             return false;
         }
@@ -105,5 +118,9 @@ public class InventoryCraftBook extends InventoryCrafting {
             return false;
         }
         return true;
+    }
+
+    public boolean matches(World worldObj) {
+        return currentRecipe != null && currentRecipe.matches(this, worldObj);
     }
 }
