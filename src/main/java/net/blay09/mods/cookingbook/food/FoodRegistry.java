@@ -69,7 +69,7 @@ public class FoodRegistry {
         int[] usedStackSize = new int[inventory.getSizeInventory()];
         boolean[] itemFound = new boolean[craftMatrix.length];
         for(int i = 0; i < craftMatrix.length; i++) {
-            if(craftMatrix[i].isToolItem()) {
+            if(craftMatrix[i] == null || craftMatrix[i].isToolItem()) {
                 itemFound[i] = true;
                 continue;
             }
