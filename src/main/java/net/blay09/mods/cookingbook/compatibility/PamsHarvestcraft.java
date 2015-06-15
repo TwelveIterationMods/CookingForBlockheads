@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.compatibility;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -10,15 +11,41 @@ import java.util.List;
 
 public class PamsHarvestcraft {
 
+    private static final String PAMS_MOD_ID = "harvestcraft";
+
     private static final String[] PAMS_TOOLS = new String[] {
-        "item.cuttingboardItem",
-        "item.potItem",
-        "item.skilletItem",
-        "item.saucepanItem",
-        "item.bakewareItem",
-        "item.mortarandpestleItem",
-        "item.mixingbowlItem",
-        "item.juicerItem"
+            "item.cuttingboardItem",
+            "item.potItem",
+            "item.skilletItem",
+            "item.saucepanItem",
+            "item.bakewareItem",
+            "item.mortarandpestleItem",
+            "item.mixingbowlItem",
+            "item.juicerItem"
+    };
+
+    private static final String[] ADDITIONAL_RECIPES = new String[] {
+            "flourItem",
+            "doughItem",
+            "cornmealItem",
+            "freshwaterItem",
+            "pastaItem",
+            "vanillaItem",
+            "butterItem",
+            "heavycreamItem",
+            "saltItem",
+            "freshmilkItem",
+            "mayoItem",
+            "cocoapowderItem",
+            "ketchupItem",
+            "vinegarItem",
+            "mustardItem",
+            "blackpepperItem",
+            "groundcinnamonItem",
+            "groundnutmegItem",
+            "saladdressingItem",
+            "batterItem",
+            "oliveoilItem"
     };
 
     public static boolean isToolItem(ItemStack itemStack) {
@@ -53,6 +80,15 @@ public class PamsHarvestcraft {
             }
         }
         return false;
+    }
+
+    public static void addAdditionalRecipes(List<ItemStack> additionalRecipes) {
+        for(String s : ADDITIONAL_RECIPES) {
+            ItemStack itemStack = GameRegistry.findItemStack(PAMS_MOD_ID, s, 1);
+            if(itemStack != null) {
+                additionalRecipes.add(itemStack);
+            }
+        }
     }
 
 }

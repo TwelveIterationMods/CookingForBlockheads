@@ -5,6 +5,8 @@ import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
 import net.blay09.mods.cookingbook.container.InventoryCraftBook;
 import net.blay09.mods.cookingbook.food.recipe.*;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -22,28 +24,35 @@ import java.util.Map;
 public class FoodRegistry {
 
     private static final List<IRecipe> recipeList = new ArrayList<IRecipe>();
-    private static final ArrayListMultimap<ItemFood, FoodRecipe> foodItems = ArrayListMultimap.create();
+    private static final ArrayListMultimap<Item, FoodRecipe> foodItems = ArrayListMultimap.create();
 
     public static void init() {
+        List<ItemStack> additionalRecipes = new ArrayList<ItemStack>();
+        additionalRecipes.add(new ItemStack(Items.cake));
+        PamsHarvestcraft.addAdditionalRecipes(additionalRecipes);
+
+        // Crafting Recipes of Food Items
         for(Object obj : CraftingManager.getInstance().getRecipeList()) {
             IRecipe recipe = (IRecipe) obj;
             ItemStack output = recipe.getRecipeOutput();
-            if(output != null && output.getItem() instanceof ItemFood) {
-                if(PamsHarvestcraft.isWeirdBrokenRecipe(recipe)) {
-                    continue;
-                }
-                recipeList.add(recipe);
-                if(recipe instanceof ShapedRecipes) {
-                    foodItems.put((ItemFood) output.getItem(), new ShapedCraftingFood((ShapedRecipes) recipe));
-                } else if(recipe instanceof ShapelessRecipes) {
-                    foodItems.put((ItemFood) output.getItem(), new ShapelessCraftingFood((ShapelessRecipes) recipe));
-                } else if(recipe instanceof ShapelessOreRecipe) {
-                    foodItems.put((ItemFood) output.getItem(), new ShapelessOreCraftingFood((ShapelessOreRecipe) recipe));
-                } else if(recipe instanceof ShapedOreRecipe) {
-                    foodItems.put((ItemFood) output.getItem(), new ShapedOreCraftingFood((ShapedOreRecipe) recipe));
+            if(output != null) {
+                if (output.getItem() instanceof ItemFood) {
+                    if (PamsHarvestcraft.isWeirdBrokenRecipe(recipe)) {
+                        continue;
+                    }
+                    addFoodRecipe(recipe);
+                } else {
+                    for (ItemStack itemStack : additionalRecipes) {
+                        if (itemStack.getHasSubtypes() ? itemStack.isItemEqual(recipe.getRecipeOutput()) : itemStack.getItem() == recipe.getRecipeOutput().getItem()) {
+                            addFoodRecipe(recipe);
+                            break;
+                        }
+                    }
                 }
             }
         }
+
+        // Smelting Recipes of Food Items
         for(Object obj : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
             Map.Entry entry = (Map.Entry) obj;
             ItemStack sourceStack = null;
@@ -56,7 +65,30 @@ public class FoodRegistry {
             }
             ItemStack resultStack = (ItemStack) entry.getValue();
             if(resultStack.getItem() instanceof ItemFood) {
-                foodItems.put((ItemFood) resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
+                foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
+            } else {
+                for(ItemStack itemStack : additionalRecipes) {
+                    if (itemStack.getHasSubtypes() ? itemStack.isItemEqual(resultStack) : itemStack.getItem() == resultStack.getItem()) {
+                        foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void addFoodRecipe(IRecipe recipe) {
+        ItemStack output = recipe.getRecipeOutput();
+        if(output != null) {
+            recipeList.add(recipe);
+            if (recipe instanceof ShapedRecipes) {
+                foodItems.put(output.getItem(), new ShapedCraftingFood((ShapedRecipes) recipe));
+            } else if (recipe instanceof ShapelessRecipes) {
+                foodItems.put(output.getItem(), new ShapelessCraftingFood((ShapelessRecipes) recipe));
+            } else if (recipe instanceof ShapelessOreRecipe) {
+                foodItems.put(output.getItem(), new ShapelessOreCraftingFood((ShapelessOreRecipe) recipe));
+            } else if (recipe instanceof ShapedOreRecipe) {
+                foodItems.put(output.getItem(), new ShapedOreCraftingFood((ShapedOreRecipe) recipe));
             }
         }
     }
