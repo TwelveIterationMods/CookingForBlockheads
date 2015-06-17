@@ -13,6 +13,7 @@ public class NetworkHandler {
         instance.registerMessage(HandlerSort.class, MessageSort.class, 0, Side.SERVER);
         instance.registerMessage(HandlerSwitchRecipe.class, MessageSwitchRecipe.class, 1, Side.SERVER);
         instance.registerMessage(HandlerSyncList.class, MessageSyncList.class, 2, Side.CLIENT);
+        instance.registerMessage(HandlerClickRecipe.class, MessageClickRecipe.class, 3, Side.SERVER);
     }
 
 }

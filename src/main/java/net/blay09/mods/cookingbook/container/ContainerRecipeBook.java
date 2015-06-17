@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.container;
 import com.google.common.collect.ArrayListMultimap;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.network.MessageClickRecipe;
 import net.blay09.mods.cookingbook.network.MessageSyncList;
 import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -168,12 +169,21 @@ public class ContainerRecipeBook extends Container {
 
 	@Override
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
-		if((mode == 0 || mode == 1) && slotIdx > 0 && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
+		if(isClientSide && (mode == 0 || mode == 1)) {
+			clickRecipe(slotIdx, mode == 1);
+			NetworkHandler.instance.sendToServer(new MessageClickRecipe(slotIdx, scrollOffset, mode == 1));
+			return null;
+		}
+		return super.slotClick(slotIdx, button, mode, player);
+	}
+
+	public void clickRecipe(int slotIdx, boolean shiftClick) {
+		if(slotIdx > 0 && slotIdx < inventorySlots.size() && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
 			SlotRecipe slot = (SlotRecipe) inventorySlots.get(slotIdx);
-			if(slot.getStack() != null) {
+			if (slot.getStack() != null) {
 				if (allowCrafting && currentRecipeKey != null && slot.getStack().toString().equals(currentRecipeKey)) {
-					tryCraft(player, currentRecipeList, currentRecipeIdx, mode == 1);
-					return null;
+					tryCraft(player, currentRecipeList, currentRecipeIdx, shiftClick);
+					return;
 				}
 				currentRecipeKey = slot.getStack().toString();
 				currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
@@ -187,9 +197,7 @@ public class ContainerRecipeBook extends Container {
 					}
 				}
 			}
-			return null;
 		}
-		return super.slotClick(slotIdx, button, mode, player);
 	}
 
 	private void tryCraft(EntityPlayer player, List<FoodRecipe> recipeList, int recipeIdx, boolean isShiftDown) {
