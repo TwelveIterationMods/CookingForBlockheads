@@ -16,7 +16,7 @@ public class HandlerSyncList implements IMessageHandler<MessageSyncList, IMessag
     public IMessage onMessage(MessageSyncList message, MessageContext ctx) {
         Container container = FMLClientHandler.instance().getClientPlayerEntity().openContainer;
         if(container instanceof ContainerRecipeBook) {
-            ((ContainerRecipeBook) container).setAvailableItems(message.sortedRecipes, message.availableRecipes);
+            ((ContainerRecipeBook) container).setAvailableItems(message.sortedRecipes, message.availableRecipes, message.getCurrentRecipeIndex());
         }
         return null;
     }

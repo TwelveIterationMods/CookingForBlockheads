@@ -76,7 +76,7 @@ public class ContainerRecipeBook extends Container {
 		}
 
 		if(!isClientSide) {
-			updateAvailableRecipes();
+			findAvailableRecipes();
 			sortRecipes(currentSort);
 		}
 		updateRecipeList();
@@ -153,7 +153,7 @@ public class ContainerRecipeBook extends Container {
 		super.detectAndSendChanges();
 
 		if(isDirty && !isClientSide) {
-			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
+			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes, currentRecipeIdx), (EntityPlayerMP) player);
 			isDirty = false;
 		}
 
@@ -172,7 +172,6 @@ public class ContainerRecipeBook extends Container {
 		if(isClientSide && (mode == 0 || mode == 1)) {
 			clickRecipe(slotIdx, mode == 1);
 			NetworkHandler.instance.sendToServer(new MessageClickRecipe(slotIdx, scrollOffset, mode == 1));
-			return null;
 		}
 		return super.slotClick(slotIdx, button, mode, player);
 	}
@@ -231,7 +230,7 @@ public class ContainerRecipeBook extends Container {
 			}
 		}
 		if(!isClientSide) {
-			updateAvailableRecipes();
+			findAvailableRecipes();
 			sortRecipes(currentSort);
 			updateRecipeList();
 		}
@@ -291,7 +290,7 @@ public class ContainerRecipeBook extends Container {
 
 	// Server Only
 
-	public void updateAvailableRecipes() {
+	public void findAvailableRecipes() {
 		availableRecipes.clear();
 		sortedRecipes.clear();
 		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
@@ -347,12 +346,13 @@ public class ContainerRecipeBook extends Container {
 
 	// Client Only
 
-	public void setAvailableItems(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes) {
+	public void setAvailableItems(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes, int currentRecipeIdx) {
 		this.sortedRecipes.clear();
 		this.sortedRecipes.addAll(sortedRecipes);
 		this.availableRecipes.clear();
 		this.availableRecipes.putAll(availableRecipes);
 		updateRecipeList();
+		this.currentRecipeIdx = currentRecipeIdx;
 		markDirty(true);
 	}
 

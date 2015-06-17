@@ -16,16 +16,19 @@ public class MessageSyncList implements IMessage {
 
     public final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
     public final ArrayListMultimap<String, FoodRecipe> availableRecipes = ArrayListMultimap.create();
+    private int currentRecipeIdx;
 
     public MessageSyncList() {}
 
-    public MessageSyncList(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes) {
+    public MessageSyncList(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes, int currentRecipeIdx) {
         this.sortedRecipes.addAll(sortedRecipes);
         this.availableRecipes.putAll(availableRecipes);
+        this.currentRecipeIdx = currentRecipeIdx;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        currentRecipeIdx = buf.readByte();
         int itemCount = buf.readInt();
         for(int i = 0; i < itemCount; i++) {
             ItemStack itemStack = ByteBufUtils.readItemStack(buf);
@@ -51,6 +54,7 @@ public class MessageSyncList implements IMessage {
 
     @Override
     public void toBytes(ByteBuf buf) {
+        buf.writeByte(currentRecipeIdx);
         buf.writeInt(sortedRecipes.size());
         for(ItemStack itemStack : sortedRecipes) {
             ByteBufUtils.writeItemStack(buf, itemStack);
@@ -71,4 +75,7 @@ public class MessageSyncList implements IMessage {
         }
     }
 
+    public int getCurrentRecipeIndex() {
+        return currentRecipeIdx;
+    }
 }
