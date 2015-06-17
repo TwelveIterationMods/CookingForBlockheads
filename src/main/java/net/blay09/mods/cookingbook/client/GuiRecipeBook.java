@@ -165,7 +165,7 @@ public class GuiRecipeBook extends GuiContainer {
 		drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
 		if (mouseClickY != -1) {
-			float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / Math.max(1, (container.getAvailableRecipeCount() / 3) - VISIBLE_ROWS);
+			float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / Math.max(1, (int) Math.ceil(container.getAvailableRecipeCount() / 3f) - VISIBLE_ROWS);
 			if (pixelsPerFilter != 0) {
 				int numberOfFiltersMoved = (int) ((mouseY - mouseClickY) / pixelsPerFilter);
 				if (numberOfFiltersMoved != lastNumberOfMoves) {
