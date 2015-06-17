@@ -29,6 +29,7 @@ public class FoodRegistry {
     public static void init() {
         List<ItemStack> additionalRecipes = new ArrayList<ItemStack>();
         additionalRecipes.add(new ItemStack(Items.cake));
+        additionalRecipes.add(new ItemStack(Items.sugar));
         PamsHarvestcraft.addAdditionalRecipes(additionalRecipes);
 
         // Crafting Recipes of Food Items
