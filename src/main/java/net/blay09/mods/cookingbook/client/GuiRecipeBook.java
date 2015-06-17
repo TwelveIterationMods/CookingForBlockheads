@@ -117,9 +117,9 @@ public class GuiRecipeBook extends GuiContainer {
 
 	public void recalculateScrollBar() {
 		int scrollBarTotalHeight = SCROLLBAR_HEIGHT - 1;
-		this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.round(container.getAvailableRecipeCount() / 3f)))));
+		this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.ceil(container.getAvailableRecipeCount() / 3f)))));
 		this.scrollBarXPos = guiLeft + xSize - SCROLLBAR_WIDTH - 9;
-		this.scrollBarYPos = guiTop + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1, (container.getAvailableRecipeCount() / 3) - VISIBLE_ROWS));
+		this.scrollBarYPos = guiTop + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1, (int) Math.ceil((container.getAvailableRecipeCount() / 3f)) - VISIBLE_ROWS));
 	}
 
 	@Override
