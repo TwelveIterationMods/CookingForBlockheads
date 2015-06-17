@@ -1,11 +1,15 @@
-item.cookingbook:recipebook.name=Cooking for Blockheads
+item.cookingbook:recipebook_tier1.name=Cooking for Blockheads
 item.cookingbook:recipebook_tier2.name=Cooking for Blockheads II
+item.cookingbook:recipebook_tier3.name=Cooking for Blockheads III
 
-cookingbook:recipebook.tooltip=Recipe Book
-cookingbook:recipebook.tooltipDesc=Shows food you can make with the\nthings you have in your inventory.
+cookingbook:recipebook_tier1.tooltip=Recipe Book
+cookingbook:recipebook_tier1.tooltipDesc=Shows food you can make with the\nthings you have in your inventory.
 
 cookingbook:recipebook_tier2.tooltip=Crafting Book
 cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou have in your inventory.
+
+cookingbook:recipebook_tier3.tooltip=Smelting Book
+cookingbook:recipebook_tier3.tooltipDesc=Can craft and cook food using the things\nyou have in your inventory.
 
 cookingbook:sort_by_name.tooltip=Sort by Name
 cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored

@@ -17,11 +17,12 @@ import java.util.List;
 public class ItemRecipeBook extends Item {
 
 	private IIcon iconTier2;
+	private IIcon iconTier3;
 
 	public ItemRecipeBook() {
 		setMaxStackSize(1);
 		setUnlocalizedName("cookingbook:recipebook");
-		setTextureName("cookingbook:recipebook");
+		setTextureName("cookingbook:recipebook_tier1");
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}
@@ -31,6 +32,7 @@ public class ItemRecipeBook extends Item {
 		super.registerIcons(register);
 
 		iconTier2 = register.registerIcon("cookingbook:recipebook_tier2");
+		iconTier3 = register.registerIcon("cookingbook:recipebook_tier3");
 	}
 
 	@Override
@@ -45,6 +47,7 @@ public class ItemRecipeBook extends Item {
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
 		super.getSubItems(item, creativeTabs, list);
 		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
 	}
 
 	@Override
@@ -54,18 +57,6 @@ public class ItemRecipeBook extends Item {
 			default: return itemIcon;
 		}
 	}
-
-	//	@Override
-//	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-//		if(player.isSneaking()) {
-//			TileEntity tileEntity = world.getTileEntity(x, y, z);
-//			if(tileEntity instanceof IInventory) {
-//				player.openGui(CookingBook.instance, GuiHandler.GUI_ID_RECIPEBOOK_WORLD, world, x, y, z);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
@@ -77,14 +68,19 @@ public class ItemRecipeBook extends Item {
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean isShiftDown) {
 		super.addInformation(itemStack, player, list, isShiftDown);
 
-		if(itemStack.getMetadata() == 0) {
-			list.add("\u00a7e" + I18n.format("cookingbook:recipebook.tooltip"));
-			for (String s : I18n.format("cookingbook:recipebook.tooltipDesc").split("\\\\n")) {
+		if(itemStack.getMetadata() == 1) {
+			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier2.tooltip"));
+			for (String s : I18n.format("cookingbook:recipebook_tier2.tooltipDesc").split("\\\\n")) {
+				list.add("\u00a77" + s);
+			}
+		} else if(itemStack.getMetadata() == 2) {
+			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier3.tooltip"));
+			for (String s : I18n.format("cookingbook:recipebook_tier3.tooltipDesc").split("\\\\n")) {
 				list.add("\u00a77" + s);
 			}
 		} else {
-			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier2.tooltip"));
-			for (String s : I18n.format("cookingbook:recipebook_tier2.tooltipDesc").split("\\\\n")) {
+			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier1.tooltip"));
+			for (String s : I18n.format("cookingbook:recipebook_tier1.tooltipDesc").split("\\\\n")) {
 				list.add("\u00a77" + s);
 			}
 		}

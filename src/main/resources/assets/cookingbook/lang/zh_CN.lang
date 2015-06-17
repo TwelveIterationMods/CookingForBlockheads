@@ -1,11 +1,14 @@
-item.cookingbook:recipebook.name=傻瓜烹饪
+item.cookingbook:recipebook_tier1.name=傻瓜烹饪
 item.cookingbook:recipebook_tier2.name=傻瓜烹饪II
 
-cookingbook:recipebook.tooltip=食谱
-cookingbook:recipebook.tooltipDesc=显示你背包食材能够烹饪的食物.
+cookingbook:recipebook_tier1.tooltip=食谱
+cookingbook:recipebook_tier1.tooltipDesc=显示你背包食材能够烹饪的食物.
 
 cookingbook:recipebook_tier2.tooltip=烹饪书
 cookingbook:recipebook_tier2.tooltipDesc=能够使用背包食材烹饪食物.
+
+#cookingbook:recipebook_tier3.tooltip=
+#cookingbook:recipebook_tier3.tooltipDesc=
 
 cookingbook:sort_by_name.tooltip=按名称排列
 cookingbook:sort_by_hunger.tooltip=按饥饿值排列
