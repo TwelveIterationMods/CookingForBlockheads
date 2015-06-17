@@ -103,8 +103,10 @@ public class GuiRecipeBook extends GuiContainer {
 		super.actionPerformed(button);
 
 		if(button == btnPrevRecipe) {
+			container.prevRecipe();
 			NetworkHandler.instance.sendToServer(new MessageSwitchRecipe(-1));
 		} else if(button == btnNextRecipe) {
+			container.nextRecipe();
 			NetworkHandler.instance.sendToServer(new MessageSwitchRecipe(1));
 		} else if(button == btnSortName) {
 			NetworkHandler.instance.sendToServer(new MessageSort(0));

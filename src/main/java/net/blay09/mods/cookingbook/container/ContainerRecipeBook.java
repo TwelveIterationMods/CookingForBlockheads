@@ -153,7 +153,7 @@ public class ContainerRecipeBook extends Container {
 		super.detectAndSendChanges();
 
 		if(isDirty && !isClientSide) {
-			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes, currentRecipeIdx), (EntityPlayerMP) player);
+			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
 			isDirty = false;
 		}
 
@@ -232,7 +232,6 @@ public class ContainerRecipeBook extends Container {
 		if(!isClientSide) {
 			findAvailableRecipes();
 			sortRecipes(currentSort);
-			updateRecipeList();
 		}
 	}
 
@@ -346,13 +345,12 @@ public class ContainerRecipeBook extends Container {
 
 	// Client Only
 
-	public void setAvailableItems(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes, int currentRecipeIdx) {
+	public void setAvailableItems(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes) {
 		this.sortedRecipes.clear();
 		this.sortedRecipes.addAll(sortedRecipes);
 		this.availableRecipes.clear();
 		this.availableRecipes.putAll(availableRecipes);
 		updateRecipeList();
-		this.currentRecipeIdx = currentRecipeIdx;
 		markDirty(true);
 	}
 
