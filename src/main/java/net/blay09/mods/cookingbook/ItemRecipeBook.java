@@ -21,7 +21,7 @@ public class ItemRecipeBook extends Item {
 
 	public ItemRecipeBook() {
 		setMaxStackSize(1);
-		setUnlocalizedName("cookingbook:recipebook");
+		setUnlocalizedName("cookingbook:recipebook_tier1");
 		setTextureName("cookingbook:recipebook_tier1");
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
@@ -39,6 +39,8 @@ public class ItemRecipeBook extends Item {
 	public String getUnlocalizedName(ItemStack stack) {
 		if(stack.getMetadata() == 1) {
 			return "item.cookingbook:recipebook_tier2";
+		} else if(stack.getMetadata() == 2) {
+			return "item.cookingbook:recipebook_tier1";
 		}
 		return super.getUnlocalizedName(stack);
 	}
@@ -54,6 +56,7 @@ public class ItemRecipeBook extends Item {
 	public IIcon getIconFromDamage(int damage) {
 		switch(damage) {
 			case 1: return iconTier2;
+			case 2: return iconTier3;
 			default: return itemIcon;
 		}
 	}

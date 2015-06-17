@@ -8,7 +8,7 @@ cookingbook:recipebook_tier1.tooltipDesc=Shows food you can make with the\nthing
 cookingbook:recipebook_tier2.tooltip=Crafting Book
 cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou have in your inventory.
 
-cookingbook:recipebook_tier3.tooltip=Smelting Book
+cookingbook:recipebook_tier3.tooltip=Smelting Book (NYI)
 cookingbook:recipebook_tier3.tooltipDesc=Can craft and cook food using the things\nyou have in your inventory.
 
 cookingbook:sort_by_name.tooltip=Sort by Name

@@ -23,6 +23,9 @@ public class CommonProxy {
 		if(CookingBook.enableCraftingBook) {
 			CraftingManager.getInstance().addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
 		}
+		if(CookingBook.enableSmeltingBook) {
+//			CraftingManager.getInstance().addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 2), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
+		}
 
 		NetworkHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(CookingBook.instance, new GuiHandler());
