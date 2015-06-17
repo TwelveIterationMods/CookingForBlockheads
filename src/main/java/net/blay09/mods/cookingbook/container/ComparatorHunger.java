@@ -7,6 +7,8 @@ import java.util.Comparator;
 
 public class ComparatorHunger implements Comparator<ItemStack> {
 
+    private final ComparatorName fallback = new ComparatorName();
+
     @Override
     public int compare(ItemStack o1, ItemStack o2) {
         if(!(o1.getItem() instanceof ItemFood)) {
@@ -16,7 +18,11 @@ public class ComparatorHunger implements Comparator<ItemStack> {
         }
         ItemFood f1 = (ItemFood) o1.getItem();
         ItemFood f2 = (ItemFood) o2.getItem();
-        return f2.getHealAmount(o2) - f1.getHealAmount(o1);
+        int result = f2.getHealAmount(o2) - f1.getHealAmount(o1);
+        if(result == 0) {
+            return fallback.compare(o1, o2);
+        }
+        return result;
     }
 
 }

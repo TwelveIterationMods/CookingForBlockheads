@@ -152,6 +152,12 @@ public class ContainerRecipeBook extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
+		if(player.inventory.inventoryChanged) {
+			findAvailableRecipes();
+			sortRecipes(currentSort);
+			player.inventory.inventoryChanged = false;
+		}
+
 		if(isDirty && !isClientSide) {
 			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
 			isDirty = false;
