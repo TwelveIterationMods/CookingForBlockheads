@@ -156,7 +156,7 @@ public class GuiRecipeBook extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		if(container.isDirty()) {
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 			container.markDirty(false);
 		}
 
