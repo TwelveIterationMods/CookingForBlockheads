@@ -151,7 +151,7 @@ public class ContainerRecipeBook extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		if(isDirty) {
+		if(isDirty && !isClientSide) {
 			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
 			isDirty = false;
 		}
@@ -345,5 +345,14 @@ public class ContainerRecipeBook extends Container {
 		this.availableRecipes.clear();
 		this.availableRecipes.putAll(availableRecipes);
 		updateRecipeList();
+		markDirty(true);
+	}
+
+	public boolean isDirty() {
+		return isDirty;
+	}
+
+	public void markDirty(boolean dirty) {
+		this.isDirty = dirty;
 	}
 }

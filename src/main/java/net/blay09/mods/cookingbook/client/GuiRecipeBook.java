@@ -83,8 +83,6 @@ public class GuiRecipeBook extends GuiContainer {
 		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "cookingbook:sort_by_saturation.tooltip");
 		buttonList.add(btnSortSaturation);
 
-		recalculateScrollBar();
-
 		if(!registered) {
 			MinecraftForge.EVENT_BUS.register(this);
 			registered = true;
@@ -117,8 +115,7 @@ public class GuiRecipeBook extends GuiContainer {
 		}
 	}
 
-	public void recalculateScrollBar()
-	{
+	public void recalculateScrollBar() {
 		int scrollBarTotalHeight = SCROLLBAR_HEIGHT - 1;
 		this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.round(container.getAvailableRecipeCount() / 3f)))));
 		this.scrollBarXPos = guiLeft + xSize - SCROLLBAR_WIDTH - 9;
@@ -156,6 +153,11 @@ public class GuiRecipeBook extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+		if(container.isDirty()) {
+			recalculateScrollBar();
+			container.markDirty(false);
+		}
+
 		GL11.glColor4f(1f, 1f, 1f, 1f);
 		mc.getTextureManager().bindTexture(guiTexture);
 		int x = (width - xSize) / 2;
