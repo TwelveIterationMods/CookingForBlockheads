@@ -11,9 +11,13 @@ public class ComparatorSaturation implements Comparator<ItemStack> {
 
     @Override
     public int compare(ItemStack o1, ItemStack o2) {
-        if(!(o1.getItem() instanceof ItemFood)) {
+        boolean isFirstFood = o1.getItem() instanceof ItemFood;
+        boolean isSecondFood = o2.getItem() instanceof ItemFood;
+        if(!isFirstFood && !isSecondFood) {
+            return 0;
+        } else if(!isFirstFood) {
             return 1;
-        } else if(!(o2.getItem() instanceof ItemFood)) {
+        } else if(!isSecondFood) {
             return -1;
         }
         ItemFood f1 = (ItemFood) o1.getItem();

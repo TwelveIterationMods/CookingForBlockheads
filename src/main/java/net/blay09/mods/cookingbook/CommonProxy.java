@@ -19,6 +19,7 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		GameRegistry.registerItem(CookingBook.itemRecipeBook, "recipebook");
 
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(CookingBook.itemRecipeBook, 3), Items.book, Items.apple);
 		FurnaceRecipes.instance().addSmelting(Items.book, new ItemStack(CookingBook.itemRecipeBook), 0f);
 		if(CookingBook.enableCraftingBook) {
 			CraftingManager.getInstance().addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);

@@ -16,6 +16,7 @@ import java.util.List;
 
 public class ItemRecipeBook extends Item {
 
+	private IIcon iconTier0;
 	private IIcon iconTier2;
 	private IIcon iconTier3;
 
@@ -31,6 +32,7 @@ public class ItemRecipeBook extends Item {
 	public void registerIcons(IIconRegister register) {
 		super.registerIcons(register);
 
+		iconTier0 = register.registerIcon("cookingbook:recipebook_tier0");
 		iconTier2 = register.registerIcon("cookingbook:recipebook_tier2");
 		iconTier3 = register.registerIcon("cookingbook:recipebook_tier3");
 	}
@@ -40,13 +42,16 @@ public class ItemRecipeBook extends Item {
 		if(stack.getMetadata() == 1) {
 			return "item.cookingbook:recipebook_tier2";
 		} else if(stack.getMetadata() == 2) {
-			return "item.cookingbook:recipebook_tier1";
+			return "item.cookingbook:recipebook_tier3";
+		} else if(stack.getMetadata() == 3) {
+			return "item.cookingbook:recipebook_tier0";
 		}
 		return super.getUnlocalizedName(stack);
 	}
 
 	@Override
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
+		list.add(new ItemStack(item, 1, 3));
 		super.getSubItems(item, creativeTabs, list);
 		list.add(new ItemStack(item, 1, 1));
 		list.add(new ItemStack(item, 1, 2));
@@ -57,13 +62,29 @@ public class ItemRecipeBook extends Item {
 		switch(damage) {
 			case 1: return iconTier2;
 			case 2: return iconTier3;
+			case 3: return iconTier0;
 			default: return itemIcon;
 		}
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		player.openGui(CookingBook.instance, itemStack.getMetadata() == 0 ? GuiHandler.GUI_ID_RECIPEBOOK : GuiHandler.GUI_ID_CRAFTBOOK, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		int guiId = GuiHandler.GUI_ID_RECIPEBOOK;
+		switch(itemStack.getMetadata()) {
+			case 0:
+				guiId = GuiHandler.GUI_ID_RECIPEBOOK;
+				break;
+			case 1:
+				guiId = GuiHandler.GUI_ID_CRAFTBOOK;
+				break;
+			case 2:
+				guiId = GuiHandler.GUI_ID_SMELTBOOK;
+				break;
+			case 3:
+				guiId = GuiHandler.GUI_ID_NOFILTERBOOK;
+				break;
+		}
+		player.openGui(CookingBook.instance, guiId, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		return itemStack;
 	}
 
@@ -79,6 +100,11 @@ public class ItemRecipeBook extends Item {
 		} else if(itemStack.getMetadata() == 2) {
 			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier3.tooltip"));
 			for (String s : I18n.format("cookingbook:recipebook_tier3.tooltipDesc").split("\\\\n")) {
+				list.add("\u00a77" + s);
+			}
+		} else if(itemStack.getMetadata() == 3) {
+			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier0.tooltip"));
+			for (String s : I18n.format("cookingbook:recipebook_tier0.tooltipDesc").split("\\\\n")) {
 				list.add("\u00a77" + s);
 			}
 		} else {

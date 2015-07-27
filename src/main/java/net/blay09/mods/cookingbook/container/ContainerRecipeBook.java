@@ -23,6 +23,7 @@ public class ContainerRecipeBook extends Container {
 	private final EntityPlayer player;
 	private final IInventory sourceInventory;
 	private final boolean allowCrafting;
+	private final boolean noFilter;
 	private final boolean isClientSide;
 	private final InventoryRecipeBook recipeBook;
 	private final InventoryRecipeBookMatrix craftMatrix;
@@ -42,10 +43,11 @@ public class ContainerRecipeBook extends Container {
 	private boolean isMissingTools;
 	private Comparator<ItemStack> currentSort = new ComparatorName();
 
-	public ContainerRecipeBook(EntityPlayer player, IInventory sourceInventory, boolean allowCrafting, boolean isClientSide) {
+	public ContainerRecipeBook(EntityPlayer player, IInventory sourceInventory, boolean allowCrafting, boolean noFilter, boolean isClientSide) {
 		this.player = player;
 		this.sourceInventory = sourceInventory;
 		this.allowCrafting = allowCrafting;
+		this.noFilter = noFilter;
 		this.isClientSide = isClientSide;
 
 		craftMatrix = new InventoryRecipeBookMatrix();
@@ -301,7 +303,7 @@ public class ContainerRecipeBook extends Container {
 		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
-				if(FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventory)) {
+				if(noFilter || FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventory)) {
 					String foodStackString = foodStack.toString();
 					if(!availableRecipes.containsKey(foodStackString)) {
 						sortedRecipes.add(foodStack);

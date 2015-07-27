@@ -12,24 +12,23 @@ import net.minecraft.world.World;
 public class GuiHandler implements IGuiHandler {
 
     public static final int GUI_ID_RECIPEBOOK = 1;
-    public static final int GUI_ID_RECIPEBOOK_WORLD = 2;
-    public static final int GUI_ID_CRAFTBOOK = 3;
-    public static final int GUI_ID_CRAFTBOOK_WORLD = 4;
+    public static final int GUI_ID_CRAFTBOOK = 2;
+    public static final int GUI_ID_SMELTBOOK = 3;
+    public static final int GUI_ID_NOFILTERBOOK = 4;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new ContainerRecipeBook(player, player.inventory, false, false);
-//            case GUI_ID_RECIPEBOOK_WORLD:
-//                TileEntity tileEntity = world.getTileEntity(x, y, z);
-//                if(tileEntity instanceof IInventory) {
-//                    return new ContainerRecipeBook(player.inventory, (IInventory) tileEntity, false);
-//                }
-//                break;
+                return new ContainerRecipeBook(player, player.inventory, false, false, false);
             case GUI_ID_CRAFTBOOK:
                 if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 1) {
-                    return new ContainerRecipeBook(player, player.inventory, CookingBook.enableCraftingBook, false);
+                    return new ContainerRecipeBook(player, player.inventory, CookingBook.enableCraftingBook, false, false);
+                }
+                break;
+            case GUI_ID_NOFILTERBOOK:
+                if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 3) {
+                    return new ContainerRecipeBook(player, player.inventory, false, true, false);
                 }
                 break;
         }
@@ -40,18 +39,11 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, player.inventory, false, true));
-//            case GUI_ID_RECIPEBOOK_WORLD:
-//                TileEntity tileEntity = world.getTileEntity(x, y, z);
-//                if(tileEntity instanceof IInventory) {
-//                    return new GuiRecipeBook(new ContainerRecipeBook(player.inventory, (IInventory) tileEntity, false));
-//                }
-//                break;
+                return new GuiRecipeBook(new ContainerRecipeBook(player, player.inventory, false, false, true));
             case GUI_ID_CRAFTBOOK:
-                if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 1) {
-                    return new GuiRecipeBook(new ContainerRecipeBook(player, player.inventory, CookingBook.enableCraftingBook, true));
-                }
-                break;
+                return new GuiRecipeBook(new ContainerRecipeBook(player, player.inventory, CookingBook.enableCraftingBook, false, true));
+            case GUI_ID_NOFILTERBOOK:
+                return new GuiRecipeBook(new ContainerRecipeBook(player, player.inventory, false, true, true));
         }
         return null;
     }
