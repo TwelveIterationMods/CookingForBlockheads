@@ -3,7 +3,7 @@ item.cookingbook:recipebook_tier1.name=傻瓜烹饪手册I
 item.cookingbook:recipebook_tier2.name=傻瓜烹饪手册II
 item.cookingbook:recipebook_tier3.name=傻瓜烹饪手册III
 
-cookingbook:recipebook_tier0.tooltip=#NoFilter Edition
+cookingbook:recipebook_tier0.tooltip=#无过滤版
 cookingbook:recipebook_tier0.tooltipDesc=显示所有的食谱.
 
 cookingbook:recipebook_tier1.tooltip=食谱
