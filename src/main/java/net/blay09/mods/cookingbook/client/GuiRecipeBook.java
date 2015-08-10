@@ -9,7 +9,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,8 +16,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
-import java.util.List;
 
 public class GuiRecipeBook extends GuiContainer {
 
@@ -87,6 +84,8 @@ public class GuiRecipeBook extends GuiContainer {
 			MinecraftForge.EVENT_BUS.register(this);
 			registered = true;
 		}
+
+		recalculateScrollBar();
 	}
 
 	@Override
@@ -155,7 +154,7 @@ public class GuiRecipeBook extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		if(container.isDirty()) {
+		if(container.isRecipeListDirty()) {
 			setCurrentOffset(currentOffset);
 			container.markDirty(false);
 		}
@@ -192,7 +191,7 @@ public class GuiRecipeBook extends GuiContainer {
 				fontRendererObj.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
 				curY += fontRendererObj.FONT_HEIGHT + 5;
 			}
-		} else if(container.isFurnaceMode()) {
+		} else if(container.isFurnaceRecipe()) {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 174, 54, 54);
 		} else {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 174, 54, 54);
@@ -215,7 +214,7 @@ public class GuiRecipeBook extends GuiContainer {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
 		if(hoverSlot != null && hoverSlot instanceof SlotRecipe && event.itemStack == hoverSlot.getStack()) {
-			if(container.canClickCraft(hoverSlot.getSlotIndex())) {
+			if(container.gotRecipeInfo() && container.canClickCraft(hoverSlot.getSlotIndex())) {
 				if(container.isMissingTools()) {
 					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_tools"));
 				} else {

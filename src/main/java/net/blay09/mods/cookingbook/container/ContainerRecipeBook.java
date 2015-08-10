@@ -1,9 +1,12 @@
 package net.blay09.mods.cookingbook.container;
 
 import com.google.common.collect.ArrayListMultimap;
-import net.blay09.mods.cookingbook.food.FoodRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.network.MessageClickRecipe;
+import net.blay09.mods.cookingbook.network.MessageRecipeInfo;
 import net.blay09.mods.cookingbook.network.MessageSyncList;
 import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +15,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S2FPacketSetSlot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,49 +25,55 @@ import java.util.List;
 public class ContainerRecipeBook extends Container {
 
 	private final EntityPlayer player;
-	private final IInventory sourceInventory;
 	private final boolean allowCrafting;
-	private final boolean noFilter;
 	private final boolean isClientSide;
+
 	private final InventoryRecipeBook recipeBook;
+	private final SlotRecipe[] recipeBookSlots = new SlotRecipe[12];
 	private final InventoryRecipeBookMatrix craftMatrix;
-	private final SlotPreview[] previewSlots = new SlotPreview[9];
-	private final SlotRecipe[] recipeSlots = new SlotRecipe[12];
+	private final SlotCraftMatrix[] craftMatrixSlots = new SlotCraftMatrix[9];
+
 	private final ArrayListMultimap<String, FoodRecipe> availableRecipes = ArrayListMultimap.create();
 	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
 
 	private final InventoryCraftBook craftBook;
-
-	private boolean isDirty;
-	private boolean furnaceMode;
+	private Comparator<ItemStack> currentSort = new ComparatorName();
 	private int scrollOffset;
+	private boolean isFurnaceRecipe;
+
+	private boolean isSelectionDirty;
+	private boolean isRecipeListDirty;
+
+	private int syncSlotIndex = -1;
+	private int currentSlotIndex = -1;
+	private FoodRecipe currentRecipe;
+	private boolean hasVariants;
+	private boolean isMissingTools;
+
 	private String currentRecipeKey;
 	private List<FoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
-	private boolean isMissingTools;
-	private Comparator<ItemStack> currentSort = new ComparatorName();
+	private IInventory[] sourceInventories;
+	private boolean noFilter;
 
-	public ContainerRecipeBook(EntityPlayer player, IInventory sourceInventory, boolean allowCrafting, boolean noFilter, boolean isClientSide) {
+	public ContainerRecipeBook(EntityPlayer player, boolean allowCrafting, boolean isClientSide) {
 		this.player = player;
-		this.sourceInventory = sourceInventory;
 		this.allowCrafting = allowCrafting;
-		this.noFilter = noFilter;
 		this.isClientSide = isClientSide;
 
 		craftMatrix = new InventoryRecipeBookMatrix();
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				previewSlots[j + i * 3] = new SlotPreview(craftMatrix, j + i * 3, 24 + j * 18, 20 + i * 18);
-				previewSlots[j + i * 3].setSourceInventory(sourceInventory);
-				addSlotToContainer(previewSlots[j + i * 3]);
+				craftMatrixSlots[j + i * 3] = new SlotCraftMatrix(player, craftMatrix, j + i * 3, 24 + j * 18, 20 + i * 18);
+				addSlotToContainer(craftMatrixSlots[j + i * 3]);
 			}
 		}
 
 		recipeBook = new InventoryRecipeBook();
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 3; j++) {
-				recipeSlots[j + i * 3] = new SlotRecipe(recipeBook, j + i * 3, 102 + j * 18, 11 + i * 18);
-				addSlotToContainer(recipeSlots[j + i * 3]);
+				recipeBookSlots[j + i * 3] = new SlotRecipe(recipeBook, j + i * 3, 102 + j * 18, 11 + i * 18);
+				addSlotToContainer(recipeBookSlots[j + i * 3]);
 			}
 		}
 
@@ -77,26 +87,24 @@ public class ContainerRecipeBook extends Container {
 			addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 150));
 		}
 
-		if(!isClientSide) {
-			findAvailableRecipes();
-			sortRecipes(currentSort);
-		}
 		updateRecipeList();
 
-		craftBook = new InventoryCraftBook(this, sourceInventory);
+		craftBook = new InventoryCraftBook(this);
 	}
 
 	public void setCraftMatrix(FoodRecipe recipe) {
 		if(recipe != null) {
-			furnaceMode = recipe.isSmeltingRecipe();
-			if(furnaceMode) {
-				for(SlotPreview previewSlot : previewSlots) {
+			isFurnaceRecipe = recipe.isSmeltingRecipe();
+			if(isFurnaceRecipe) {
+				for(SlotCraftMatrix previewSlot : craftMatrixSlots) {
 					previewSlot.setIngredient(null);
 					previewSlot.setEnabled(false);
 				}
-				previewSlots[4].setIngredient(recipe.getCraftMatrix()[0]);
-				previewSlots[4].setEnabled(true);
-				previewSlots[4].update();
+				craftMatrixSlots[4].setIngredient(recipe.getCraftMatrix()[0]);
+				craftMatrixSlots[4].setEnabled(true);
+				if(!isClientSide) {
+					craftMatrixSlots[4].updateVisibleStacks();
+				}
 			} else {
 				int offset = 0;
 				if (recipe.getCraftMatrix().length <= 3) {
@@ -105,16 +113,18 @@ public class ContainerRecipeBook extends Container {
 				for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
 					int recipeIdx = i - offset;
 					if (recipeIdx >= 0 && recipeIdx < recipe.getCraftMatrix().length) {
-						previewSlots[i].setIngredient(recipe.getCraftMatrix()[recipeIdx]);
+						craftMatrixSlots[i].setIngredient(recipe.getCraftMatrix()[recipeIdx]);
 					} else {
-						previewSlots[i].setIngredient(null);
+						craftMatrixSlots[i].setIngredient(null);
 					}
-					previewSlots[i].setEnabled(true);
-					previewSlots[i].update();
+					craftMatrixSlots[i].setEnabled(true);
+					if(!isClientSide) {
+						craftMatrixSlots[i].updateVisibleStacks();
+					}
 				}
 			}
 		} else {
-			for(SlotPreview previewSlot : previewSlots) {
+			for(SlotCraftMatrix previewSlot : craftMatrixSlots) {
 				previewSlot.setIngredient(null);
 				previewSlot.setEnabled(false);
 			}
@@ -122,7 +132,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public boolean hasVariants() {
-		return currentRecipeList != null && currentRecipeList.size() > 1;
+		return hasVariants;
 	}
 
 	public void setScrollOffset(int scrollOffset) {
@@ -139,34 +149,17 @@ public class ContainerRecipeBook extends Container {
 			} else {
 				recipeBook.setFoodItem(i, null);
 			}
-			recipeSlots[i].putStack(recipeBook.getStackInSlot(i));
-			recipeSlots[i].setEnabled(!noRecipes);
+			recipeBookSlots[i].putStack(recipeBook.getStackInSlot(i));
+			recipeBookSlots[i].setEnabled(!noRecipes);
 		}
 		if(noRecipes) {
 			setCraftMatrix(null);
-			currentRecipeKey = null;
-			currentRecipeList = null;
-			currentRecipeIdx = 0;
-		}
-	}
-
-	@Override
-	public void detectAndSendChanges() {
-		super.detectAndSendChanges();
-
-		if(player.inventory.inventoryChanged) {
-			findAvailableRecipes();
-			sortRecipes(currentSort);
-			player.inventory.inventoryChanged = false;
-		}
-
-		if(isDirty && !isClientSide) {
-			NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
-			isDirty = false;
-		}
-
-		for(SlotPreview previewSlot : previewSlots) {
-			previewSlot.update();
+			if(!isClientSide) {
+				currentRecipeList = null;
+				currentRecipeIdx = -1;
+			}
+		} else if(!isClientSide) {
+			currentRecipeList = availableRecipes.get(currentRecipeKey);
 		}
 	}
 
@@ -176,10 +169,13 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
-		if(isClientSide && (mode == 0 || mode == 1)) {
-			clickRecipe(slotIdx, mode == 1);
-			NetworkHandler.instance.sendToServer(new MessageClickRecipe(slotIdx, scrollOffset, mode == 1));
+		if((mode == 0 || mode == 1)) {
+			if(isClientSide) {
+				clickRecipe(slotIdx, mode == 1);
+				NetworkHandler.instance.sendToServer(new MessageClickRecipe(slotIdx, scrollOffset, mode == 1));
+			}
 		}
 		return super.slotClick(slotIdx, button, mode, player);
 	}
@@ -188,45 +184,47 @@ public class ContainerRecipeBook extends Container {
 		if(slotIdx > 0 && slotIdx < inventorySlots.size() && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
 			SlotRecipe slot = (SlotRecipe) inventorySlots.get(slotIdx);
 			if (slot.getStack() != null) {
-				if (allowCrafting && currentRecipeKey != null && slot.getStack().toString().equals(currentRecipeKey)) {
-					tryCraft(player, currentRecipeList, currentRecipeIdx, shiftClick);
+				if(!isClientSide && canClickCraft(slot.getSlotIndex())) {
+					tryCraft(player, currentRecipe, shiftClick);
 					return;
 				}
-				currentRecipeKey = slot.getStack().toString();
-				currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
-				currentRecipeIdx = 0;
-				if (currentRecipeList != null) {
-					FoodRecipe recipe = currentRecipeList.get(currentRecipeIdx);
-					setCraftMatrix(recipe);
-					if (!recipe.isSmeltingRecipe()) {
-						craftBook.prepareRecipe(player, sourceInventory, recipe);
-						isMissingTools = !craftBook.matches(player.worldObj);
+				int oldSlotIndex = currentSlotIndex;
+				currentSlotIndex = slot.getSlotIndex();
+				if(oldSlotIndex != currentSlotIndex) {
+					if(!isClientSide) {
+						currentRecipeKey = recipeBook.getStackInSlot(slot.getSlotIndex()).toString();
+						currentRecipeList = recipeBook.getFoodList(slot.getSlotIndex());
+						currentRecipeIdx = 0;
+						currentRecipe = currentRecipeList.get(currentRecipeIdx);
+						setCraftMatrix(currentRecipe);
+						isSelectionDirty = true;
 					}
 				}
 			}
 		}
 	}
 
-	private void tryCraft(EntityPlayer player, List<FoodRecipe> recipeList, int recipeIdx, boolean isShiftDown) {
-		FoodRecipe recipe = recipeList.get(recipeIdx);
+	private void tryCraft(EntityPlayer player, FoodRecipe recipe, boolean isShiftDown) {
 		if(recipe.isSmeltingRecipe()) {
 			return;
 		}
 		if(!isShiftDown) {
 			if(craftBook.canMouseItemHold(player, recipe)) {
-				ItemStack craftingResult = craftBook.craft(player, sourceInventory, recipe);
+				ItemStack craftingResult = craftBook.craft(player, recipe);
 				if(craftingResult != null) {
 					ItemStack mouseItem = player.inventory.getItemStack();
 					if (mouseItem != null) {
 						mouseItem.stackSize += craftingResult.stackSize;
+						((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(-1, 0, mouseItem));
 					} else {
 						player.inventory.setItemStack(craftingResult);
+						((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(-1, 0, craftingResult));
 					}
 				}
 			}
 		} else {
 			ItemStack craftingResult;
-			while((craftingResult = craftBook.craft(player, sourceInventory, recipe)) != null) {
+			while((craftingResult = craftBook.craft(player, recipe)) != null) {
 				if(!player.inventory.addItemStackToInventory(craftingResult)) {
 					if (player.inventory.getItemStack() == null) {
 						player.inventory.setItemStack(craftingResult);
@@ -236,10 +234,6 @@ public class ContainerRecipeBook extends Container {
 					break;
 				}
 			}
-		}
-		if(!isClientSide) {
-			findAvailableRecipes();
-			sortRecipes(currentSort);
 		}
 	}
 
@@ -279,80 +273,31 @@ public class ContainerRecipeBook extends Container {
 		return sortedRecipes.size();
 	}
 
-	public boolean isFurnaceMode() {
-		return furnaceMode;
+	public boolean isFurnaceRecipe() {
+		return isFurnaceRecipe;
 	}
 
 	public boolean hasSelection() {
-		return currentRecipeList != null;
+		return currentRecipe != null;
 	}
 
 	public boolean canClickCraft(int slotIndex) {
-		return allowCrafting && currentRecipeKey != null && recipeBook.getStackInSlot(slotIndex).toString().equals(currentRecipeKey) && !currentRecipeList.get(currentRecipeIdx).isSmeltingRecipe();
+		return allowCrafting && currentSlotIndex == slotIndex && currentRecipe != null && !currentRecipe.isSmeltingRecipe();
 	}
 
 	public boolean isMissingTools() {
 		return isMissingTools;
 	}
 
-	// Server Only
-
-	public void findAvailableRecipes() {
-		availableRecipes.clear();
-		sortedRecipes.clear();
-		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
-			ItemStack foodStack = foodRecipe.getOutputItem();
-			if(foodStack != null) {
-				if(noFilter || FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventory)) {
-					String foodStackString = foodStack.toString();
-					if(!availableRecipes.containsKey(foodStackString)) {
-						sortedRecipes.add(foodStack);
-					}
-					availableRecipes.put(foodStackString, foodRecipe);
-				}
-			}
-		}
-		currentRecipeList = currentRecipeKey != null ? availableRecipes.get(currentRecipeKey) : null;
-		if(currentRecipeList == null || currentRecipeList.isEmpty()) {
-			currentRecipeIdx = 0;
-			currentRecipeList = null;
-			currentRecipeKey = null;
-			setCraftMatrix(null);
-		} else if(currentRecipeIdx >= currentRecipeList.size()) {
-			currentRecipeIdx = 0;
-		}
-		isDirty = true;
+	public boolean isRecipeListDirty() {
+		return isRecipeListDirty;
 	}
 
-	public void sortRecipes(Comparator<ItemStack> comparator) {
-		currentSort = comparator;
-		Collections.sort(sortedRecipes, comparator);
-		updateRecipeList();
-		isDirty = true;
+	public void markDirty(boolean dirty) {
+		this.isRecipeListDirty = dirty;
 	}
 
-	public void prevRecipe() {
-		if(currentRecipeList != null) {
-			currentRecipeIdx--;
-			if (currentRecipeIdx < 0) {
-				currentRecipeIdx = currentRecipeList.size() - 1;
-			}
-			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
-		}
-	}
-
-	public void nextRecipe() {
-		if(currentRecipeList != null) {
-			currentRecipeIdx++;
-			if (currentRecipeIdx >= currentRecipeList.size()) {
-				currentRecipeIdx = 0;
-			}
-			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
-		}
-	}
-
-	// Client Only
-
+	@SideOnly(Side.CLIENT)
 	public void setAvailableItems(List<ItemStack> sortedRecipes, ArrayListMultimap<String, FoodRecipe> availableRecipes) {
 		this.sortedRecipes.clear();
 		this.sortedRecipes.addAll(sortedRecipes);
@@ -362,11 +307,139 @@ public class ContainerRecipeBook extends Container {
 		markDirty(true);
 	}
 
-	public boolean isDirty() {
-		return isDirty;
+	public boolean gotRecipeInfo() {
+		return syncSlotIndex == currentSlotIndex;
 	}
 
-	public void markDirty(boolean dirty) {
-		this.isDirty = dirty;
+	/**
+	 * SERVER ONLY
+	 * @param sourceInventories
+	 * @return
+	 */
+	public ContainerRecipeBook setSourceInventories(IInventory... sourceInventories) {
+		this.sourceInventories = sourceInventories;
+		findAvailableRecipes();
+		sortRecipes(currentSort);
+		craftBook.setInventories(sourceInventories);
+		for(int i = 0; i < craftMatrixSlots.length; i++) {
+			craftMatrixSlots[i].setSourceInventories(sourceInventories);
+		}
+		return this;
+	}
+
+	/**
+	 * SERVER ONLY
+	 */
+	public void findAvailableRecipes() {
+		availableRecipes.clear();
+		sortedRecipes.clear();
+		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
+			ItemStack foodStack = foodRecipe.getOutputItem();
+			if(foodStack != null) {
+				if(noFilter || FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventories)) {
+					String foodStackString = foodStack.toString();
+					if(!availableRecipes.containsKey(foodStackString)) {
+						sortedRecipes.add(foodStack);
+					}
+					availableRecipes.put(foodStackString, foodRecipe);
+				}
+			}
+		}
+		isRecipeListDirty = true;
+	}
+
+	/**
+	 * SERVER ONLY
+	 * @param comparator
+	 */
+	public void sortRecipes(Comparator<ItemStack> comparator) {
+		currentSort = comparator;
+		Collections.sort(sortedRecipes, comparator);
+		updateRecipeList();
+		isRecipeListDirty = true;
+	}
+
+	/**
+	 * SERVER ONLY
+	 */
+	public void prevRecipe() {
+		if(currentRecipeList != null) {
+			currentRecipeIdx--;
+			if (currentRecipeIdx < 0) {
+				currentRecipeIdx = currentRecipeList.size() - 1;
+			}
+			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+			isSelectionDirty = true;
+		}
+	}
+
+	/**
+	 * SERVER ONLY
+	 */
+	public void nextRecipe() {
+		if(currentRecipeList != null) {
+			currentRecipeIdx++;
+			if (currentRecipeIdx >= currentRecipeList.size()) {
+				currentRecipeIdx = 0;
+			}
+			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+			isSelectionDirty = true;
+		}
+	}
+
+	/**
+	 * SERVER ONLY
+	 */
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+
+		if(!isClientSide) {
+			if (player.inventory.inventoryChanged) {
+				findAvailableRecipes();
+				sortRecipes(currentSort);
+				player.inventory.inventoryChanged = false;
+			}
+
+			if (isSelectionDirty) {
+				isSelectionDirty = false;
+				if (currentRecipe != null && !currentRecipe.isSmeltingRecipe()) {
+					craftBook.prepareRecipe(player, currentRecipe);
+					isMissingTools = !craftBook.matches(player.worldObj);
+				} else {
+					isMissingTools = false;
+				}
+				hasVariants = currentRecipeList != null && currentRecipeList.size() > 1;
+				NetworkHandler.instance.sendTo(new MessageRecipeInfo(currentSlotIndex, currentRecipe, isMissingTools, hasVariants), (EntityPlayerMP) player);
+			}
+
+			if (isRecipeListDirty) {
+				NetworkHandler.instance.sendTo(new MessageSyncList(sortedRecipes, availableRecipes), (EntityPlayerMP) player);
+				isRecipeListDirty = false;
+			}
+
+			for (SlotCraftMatrix previewSlot : craftMatrixSlots) {
+				previewSlot.update();
+			}
+		}
+	}
+
+	/**
+	 * SERVER ONLY
+	 * @return
+	 */
+	public ContainerRecipeBook setNoFilter() {
+		this.noFilter = true;
+		return this;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void setSelectedRecipe(int currentSlotIndex, FoodRecipe currentRecipe, boolean hasVariants, boolean isMissingTools) {
+		this.currentSlotIndex = currentSlotIndex;
+		this.syncSlotIndex = currentSlotIndex;
+		this.currentRecipe = currentRecipe;
+		this.hasVariants = hasVariants;
+		this.isMissingTools = isMissingTools;
+		setCraftMatrix(currentRecipe);
 	}
 }

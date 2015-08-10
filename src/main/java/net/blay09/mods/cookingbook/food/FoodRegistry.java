@@ -5,7 +5,6 @@ import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
 import net.blay09.mods.cookingbook.container.InventoryCraftBook;
 import net.blay09.mods.cookingbook.food.recipe.*;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -98,20 +97,25 @@ public class FoodRegistry {
         return foodItems.values();
     }
 
-    public static boolean isAvailableFor(FoodIngredient[] craftMatrix, IInventory inventory) {
-        int[] usedStackSize = new int[inventory.getSizeInventory()];
+    public static boolean isAvailableFor(FoodIngredient[] craftMatrix, IInventory[] inventories) {
+        int[][] usedStackSize = new int[inventories.length][];
+        for(int i = 0; i < usedStackSize.length; i++) {
+            usedStackSize[i] = new int[inventories[i].getSizeInventory()];
+        }
         boolean[] itemFound = new boolean[craftMatrix.length];
         for(int i = 0; i < craftMatrix.length; i++) {
             if(craftMatrix[i] == null || craftMatrix[i].isToolItem()) {
                 itemFound[i] = true;
                 continue;
             }
-            for(int j = 0; j < inventory.getSizeInventory(); j++) {
-                ItemStack itemStack = inventory.getStackInSlot(j);
-                if(itemStack != null && craftMatrix[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j] > 0) {
-                    usedStackSize[j]++;
-                    itemFound[i] = true;
-                    break;
+            for(int j = 0; j < inventories.length; j++) {
+                for (int k = 0; k < inventories[j].getSizeInventory(); k++) {
+                    ItemStack itemStack = inventories[j].getStackInSlot(k);
+                    if (itemStack != null && craftMatrix[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
+                        usedStackSize[j][k]++;
+                        itemFound[i] = true;
+                        break;
+                    }
                 }
             }
         }

@@ -32,18 +32,7 @@ public class MessageSyncList implements IMessage {
             List<FoodRecipe> recipeList = availableRecipes.get(itemStack.toString());
             int recipeCount = buf.readInt();
             for(int j = 0; j < recipeCount; j++) {
-                ItemStack outputItem = ByteBufUtils.readItemStack(buf);
-                FoodIngredient[] craftMatrix = new FoodIngredient[buf.readByte()];
-                for(int k = 0; k < craftMatrix.length; k++) {
-                    ItemStack[] itemStacks = new ItemStack[buf.readByte()];
-                    for(int l = 0; l < itemStacks.length; l++) {
-                        itemStacks[l] = ByteBufUtils.readItemStack(buf);
-                    }
-                    boolean isOptional = buf.readBoolean();
-                    craftMatrix[k] = new FoodIngredient(itemStacks, isOptional);
-                }
-                boolean isSmeltingRecipe = buf.readBoolean();
-                recipeList.add(new RemoteCraftingFood(outputItem, craftMatrix, isSmeltingRecipe));
+                recipeList.add(RemoteCraftingFood.read(buf));
             }
             sortedRecipes.add(itemStack);
         }
@@ -57,16 +46,7 @@ public class MessageSyncList implements IMessage {
             List<FoodRecipe> recipeList = availableRecipes.get(itemStack.toString());
             buf.writeInt(recipeList.size());
             for(FoodRecipe recipe : recipeList) {
-                ByteBufUtils.writeItemStack(buf, itemStack);
-                buf.writeByte(recipe.getCraftMatrix().length);
-                for(FoodIngredient ingredient : recipe.getCraftMatrix()) {
-                    buf.writeByte(ingredient.getItemStacks().length);
-                    for(ItemStack ingredientStack : ingredient.getItemStacks()) {
-                        ByteBufUtils.writeItemStack(buf, ingredientStack);
-                    }
-                    buf.writeBoolean(ingredient.isToolItem());
-                }
-                buf.writeBoolean(recipe.isSmeltingRecipe());
+                RemoteCraftingFood.write(buf, recipe);
             }
         }
     }

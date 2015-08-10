@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingbook.container;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.food.FoodIngredient;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
@@ -18,31 +20,39 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class InventoryCraftBook extends InventoryCrafting {
 
-    private final IInventory sourceInventory;
+    private final int[] sourceInventories = new int[9];
     private final int[] sourceInventorySlots = new int[9];
     private IRecipe currentRecipe;
 
-    public InventoryCraftBook(Container container, IInventory sourceInventory) {
+    private IInventory[] inventories;
+
+    public InventoryCraftBook(Container container) {
         super(container, 3, 3);
-        this.sourceInventory = sourceInventory;
     }
 
-    public IRecipe prepareRecipe(EntityPlayer player, IInventory inventory, FoodRecipe recipe) {
+    public IRecipe prepareRecipe(EntityPlayer player, FoodRecipe recipe) {
         FoodIngredient[] ingredients = recipe.getCraftMatrix();
-        int[] usedStackSize = new int[inventory.getSizeInventory()];
+        int[][] usedStackSize = new int[inventories.length][];
+        for(int i = 0; i < usedStackSize.length; i++) {
+            usedStackSize[i] = new int[inventories[i].getSizeInventory()];
+        }
         for(int i = 0; i < getSizeInventory(); i++) {
             setInventorySlotContents(i, null);
+            sourceInventories[i] = -1;
             sourceInventorySlots[i] = -1;
         }
         for(int i = 0; i < ingredients.length; i++) {
             if(ingredients[i] != null) {
-                for(int j = 0; j < inventory.getSizeInventory(); j++) {
-                    ItemStack itemStack = inventory.getStackInSlot(j);
-                    if(itemStack != null && ingredients[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j] > 0) {
-                        usedStackSize[j]++;
-                        setInventorySlotContents(i, itemStack);
-                        sourceInventorySlots[i] = j;
-                        break;
+                for(int j = 0; j < inventories.length; j++) {
+                    for (int k = 0; k < inventories[j].getSizeInventory(); k++) {
+                        ItemStack itemStack = inventories[j].getStackInSlot(k);
+                        if (itemStack != null && ingredients[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
+                            usedStackSize[j][k]++;
+                            setInventorySlotContents(i, itemStack);
+                            sourceInventories[i] = j;
+                            sourceInventorySlots[i] = k;
+                            break;
+                        }
                     }
                 }
             }
@@ -51,8 +61,8 @@ public class InventoryCraftBook extends InventoryCrafting {
         return currentRecipe;
     }
 
-    public ItemStack craft(EntityPlayer player, IInventory sourceInventory, FoodRecipe recipe) {
-        prepareRecipe(player, sourceInventory, recipe);
+    public ItemStack craft(EntityPlayer player, FoodRecipe recipe) {
+        prepareRecipe(player, recipe);
         if(currentRecipe == null) {
             return null;
         }
@@ -90,8 +100,8 @@ public class InventoryCraftBook extends InventoryCrafting {
                             }
                         }
 
-                        if(sourceInventorySlots[i] != -1 && getStackInSlot(i) == null) {
-                            sourceInventory.setInventorySlotContents(sourceInventorySlots[i], null);
+                        if (sourceInventories[i] != -1 && sourceInventorySlots[i] != -1 && getStackInSlot(i) == null) {
+                            inventories[sourceInventories[i]].setInventorySlotContents(sourceInventorySlots[i], null);
                         }
                     }
                 }
@@ -122,5 +132,13 @@ public class InventoryCraftBook extends InventoryCrafting {
 
     public boolean matches(World worldObj) {
         return currentRecipe != null && currentRecipe.matches(this, worldObj);
+    }
+
+    /**
+     * SERVER ONLY
+     * @param inventories
+     */
+    public void setInventories(IInventory[] inventories) {
+        this.inventories = inventories;
     }
 }
