@@ -20,7 +20,7 @@ public class CommonProxy {
 		GameRegistry.registerItem(CookingBook.itemRecipeBook, "recipebook");
 		GameRegistry.registerBlock(CookingBook.blockCookingTable, ItemBlockCookingTable.class, "cookingtable");
 
-		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(CookingBook.itemRecipeBook, 3), Items.book, Items.apple);
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 3), Items.book, Items.painting);
 		FurnaceRecipes.instance().addSmelting(Items.book, new ItemStack(CookingBook.itemRecipeBook), 0f);
 		if(CookingBook.enableCraftingBook) {
 			CraftingManager.getInstance().addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
