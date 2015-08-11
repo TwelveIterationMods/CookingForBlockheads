@@ -16,7 +16,7 @@ cookingbook:recipebook_tier2.tooltipDesc=能够使用背包食材合成食物.
 cookingbook:recipebook_tier3.tooltip=熔炉书(NYI)
 cookingbook:recipebook_tier3.tooltipDesc=能够使用背包食材合成及烹饪食物.
 
-cookingbook:cookingtable.tooltip=Desc=能使用相邻容器食材合成食物
+cookingbook:cookingtable.tooltipDesc=能使用相邻容器食材合成食物
 
 cookingbook:sort_by_name.tooltip=按名称排列
 cookingbook:sort_by_hunger.tooltip=按饥饿值排列

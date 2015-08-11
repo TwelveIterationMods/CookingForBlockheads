@@ -16,7 +16,7 @@ cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou ha
 cookingbook:recipebook_tier3.tooltip=Smelting Book (NYI)
 cookingbook:recipebook_tier3.tooltipDesc=Can craft and cook food using the things\nyou have in your inventory.
 
-cookingbook:cookingtable.tooltip=Desc=Can craft food using the things from adjacent inventories.
+cookingbook:cookingtable.tooltipDesc=Can craft food using the things from adjacent inventories.
 
 cookingbook:sort_by_name.tooltip=Sort by Name
 cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored
