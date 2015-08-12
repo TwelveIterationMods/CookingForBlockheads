@@ -1,7 +1,10 @@
 package net.blay09.mods.cookingbook;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
+import net.blay09.mods.cookingbook.client.GuiCookingOven;
 import net.blay09.mods.cookingbook.client.GuiRecipeBook;
+import net.blay09.mods.cookingbook.container.ContainerCookingOven;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,9 +19,9 @@ public class GuiHandler implements IGuiHandler {
 
     public static final int GUI_ID_RECIPEBOOK = 1;
     public static final int GUI_ID_CRAFTBOOK = 2;
-    public static final int GUI_ID_SMELTBOOK = 3;
-    public static final int GUI_ID_NOFILTERBOOK = 4;
-    public static final int GUI_ID_COOKINGTABLE = 5;
+    public static final int GUI_ID_NOFILTERBOOK = 3;
+    public static final int GUI_ID_COOKINGTABLE = 4;
+    public static final int GUI_ID_COOKINGOVEN = 5;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -50,6 +53,11 @@ public class GuiHandler implements IGuiHandler {
                     return new ContainerRecipeBook(player, true, false).setSourceInventories(inventories.toArray(new IInventory[inventories.size()]));
                 }
                 break;
+            case GUI_ID_COOKINGOVEN:
+                if(world.getBlock(x, y, z) == CookingBook.blockCookingOven) {
+                    return new ContainerCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
+                }
+                break;
         }
         return null;
     }
@@ -65,6 +73,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiRecipeBook(new ContainerRecipeBook(player, true, true));
             case GUI_ID_COOKINGTABLE:
                 return new GuiRecipeBook(new ContainerRecipeBook(player, true, true));
+            case GUI_ID_COOKINGOVEN:
+                return new GuiCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
         }
         return null;
     }

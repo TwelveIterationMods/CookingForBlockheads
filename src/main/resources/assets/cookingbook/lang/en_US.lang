@@ -1,8 +1,11 @@
 item.cookingbook:recipebook_tier0.name=Cooking for Blockheads
 item.cookingbook:recipebook_tier1.name=Cooking for Blockheads I
 item.cookingbook:recipebook_tier2.name=Cooking for Blockheads II
-item.cookingbook:recipebook_tier3.name=Cooking for Blockheads III
+
 tile.cookingbook:cookingtable.name=Cooking Table
+tile.cookingbook:cookingoven.name=Cooking Oven
+
+container.cookingbook:cookingoven=Cooking Oven
 
 cookingbook:recipebook_tier0.tooltip=#NoFilter Edition
 cookingbook:recipebook_tier0.tooltipDesc=Shows all food recipes.
@@ -13,10 +16,8 @@ cookingbook:recipebook_tier1.tooltipDesc=Shows food you can make with the\nthing
 cookingbook:recipebook_tier2.tooltip=Crafting Book
 cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou have in your inventory.
 
-cookingbook:recipebook_tier3.tooltip=Smelting Book (NYI)
-cookingbook:recipebook_tier3.tooltipDesc=Can craft and cook food using the things\nyou have in your inventory.
-
-cookingbook:cookingtable.tooltipDesc=Can craft food using the things from adjacent inventories.
+cookingbook:cookingtable.tooltipDesc=Can craft food using the things from\nadjacent inventories.
+cookingbook:cookingoven.tooltipDesc=Can be placed next to a cooking table\nto enable smelting abilities.
 
 cookingbook:sort_by_name.tooltip=Sort by Name
 cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored

@@ -1,7 +1,10 @@
-package net.blay09.mods.cookingbook;
+package net.blay09.mods.cookingbook.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.GuiHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockCookingTable extends BlockContainer {
+public class BlockCookingTable extends Block {
 
     @SideOnly(Side.CLIENT)
     private IIcon iconTop;
@@ -20,17 +23,12 @@ public class BlockCookingTable extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon iconFront;
 
-    protected BlockCookingTable() {
+    public BlockCookingTable() {
         super(Material.wood);
 
         setUnlocalizedName("cookingbook:cookingtable");
         setTextureName("cookingbook:cooking_table_side");
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityCookingTable();
     }
 
     @Override

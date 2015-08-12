@@ -1,7 +1,6 @@
 item.cookingbook:recipebook_tier0.name=傻瓜烹饪手册
 item.cookingbook:recipebook_tier1.name=傻瓜烹饪手册I
 item.cookingbook:recipebook_tier2.name=傻瓜烹饪手册II
-item.cookingbook:recipebook_tier3.name=傻瓜烹饪手册III
 tile.cookingbook:cookingtable.name=烹饪桌
 
 cookingbook:recipebook_tier0.tooltip=#无过滤版
@@ -12,9 +11,6 @@ cookingbook:recipebook_tier1.tooltipDesc=显示你背包食材能够烹饪的食
 
 cookingbook:recipebook_tier2.tooltip=合成书
 cookingbook:recipebook_tier2.tooltipDesc=能够使用背包食材合成食物.
-
-cookingbook:recipebook_tier3.tooltip=熔炉书(NYI)
-cookingbook:recipebook_tier3.tooltipDesc=能够使用背包食材合成及烹饪食物.
 
 cookingbook:cookingtable.tooltipDesc=能使用相邻容器食材合成食物
 

@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingbook;
+package net.blay09.mods.cookingbook.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockCookingTable extends ItemBlock {
+public class ItemBlockCookingOven extends ItemBlock {
 
-    public ItemBlockCookingTable(Block block) {
+    public ItemBlockCookingOven(Block block) {
         super(block);
     }
 
@@ -21,7 +21,7 @@ public class ItemBlockCookingTable extends ItemBlock {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean flag) {
         super.addInformation(itemStack, player, list, flag);
 
-        for (String s : I18n.format("cookingbook:cookingtable.tooltipDesc").split("\\\\n")) {
+        for (String s : I18n.format("cookingbook:cookingoven.tooltipDesc").split("\\\\n")) {
             list.add("\u00a77" + s);
         }
     }

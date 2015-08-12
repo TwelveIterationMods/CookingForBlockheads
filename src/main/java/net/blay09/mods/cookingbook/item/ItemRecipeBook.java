@@ -1,5 +1,7 @@
-package net.blay09.mods.cookingbook;
+package net.blay09.mods.cookingbook.item;
 
+import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.GuiHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,7 +20,6 @@ public class ItemRecipeBook extends Item {
 
 	private IIcon iconTier0;
 	private IIcon iconTier2;
-	private IIcon iconTier3;
 
 	public ItemRecipeBook() {
 		setMaxStackSize(1);
@@ -34,15 +35,12 @@ public class ItemRecipeBook extends Item {
 
 		iconTier0 = register.registerIcon("cookingbook:recipebook_tier0");
 		iconTier2 = register.registerIcon("cookingbook:recipebook_tier2");
-		iconTier3 = register.registerIcon("cookingbook:recipebook_tier3");
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		if(stack.getMetadata() == 1) {
 			return "item.cookingbook:recipebook_tier2";
-		} else if(stack.getMetadata() == 2) {
-			return "item.cookingbook:recipebook_tier3";
 		} else if(stack.getMetadata() == 3) {
 			return "item.cookingbook:recipebook_tier0";
 		}
@@ -52,16 +50,14 @@ public class ItemRecipeBook extends Item {
 	@Override
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
 		list.add(new ItemStack(item, 1, 3));
-		super.getSubItems(item, creativeTabs, list);
+		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));
-		list.add(new ItemStack(item, 1, 2));
 	}
 
 	@Override
 	public IIcon getIconFromDamage(int damage) {
 		switch(damage) {
 			case 1: return iconTier2;
-			case 2: return iconTier3;
 			case 3: return iconTier0;
 			default: return itemIcon;
 		}
@@ -76,9 +72,6 @@ public class ItemRecipeBook extends Item {
 				break;
 			case 1:
 				guiId = GuiHandler.GUI_ID_CRAFTBOOK;
-				break;
-			case 2:
-				guiId = GuiHandler.GUI_ID_SMELTBOOK;
 				break;
 			case 3:
 				guiId = GuiHandler.GUI_ID_NOFILTERBOOK;
@@ -95,11 +88,6 @@ public class ItemRecipeBook extends Item {
 		if(itemStack.getMetadata() == 1) {
 			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier2.tooltip"));
 			for (String s : I18n.format("cookingbook:recipebook_tier2.tooltipDesc").split("\\\\n")) {
-				list.add("\u00a77" + s);
-			}
-		} else if(itemStack.getMetadata() == 2) {
-			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier3.tooltip"));
-			for (String s : I18n.format("cookingbook:recipebook_tier3.tooltipDesc").split("\\\\n")) {
 				list.add("\u00a77" + s);
 			}
 		} else if(itemStack.getMetadata() == 3) {
