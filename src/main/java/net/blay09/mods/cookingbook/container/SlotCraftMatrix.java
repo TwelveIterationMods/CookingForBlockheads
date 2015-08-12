@@ -41,9 +41,6 @@ public class SlotCraftMatrix extends Slot {
 
     public void setIngredient(FoodIngredient ingredient) {
         this.ingredient = ingredient;
-        if(ingredient == null) {
-            putStack(null);
-        }
     }
 
     public void setEnabled(boolean enabled) {
@@ -84,6 +81,8 @@ public class SlotCraftMatrix extends Slot {
             visibleItemTime = ITEM_SWITCH_TIME;
             visibleItemIndex = 0;
         } else {
+            putStack(null);
+            ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, null));
             visibleStacks = null;
         }
         update();

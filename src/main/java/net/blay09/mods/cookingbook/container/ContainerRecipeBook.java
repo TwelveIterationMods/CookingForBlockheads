@@ -110,6 +110,9 @@ public class ContainerRecipeBook extends Container {
 				for(SlotCraftMatrix previewSlot : craftMatrixSlots) {
 					previewSlot.setIngredient(null);
 					previewSlot.setEnabled(false);
+					if(!isClientSide) {
+						previewSlot.updateVisibleStacks();
+					}
 				}
 				craftMatrixSlots[4].setIngredient(recipe.getCraftMatrix()[0]);
 				craftMatrixSlots[4].setEnabled(true);
@@ -261,7 +264,6 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
-
 	}
 
 	private void tryCraft(EntityPlayer player, FoodRecipe recipe, boolean isShiftDown) {
