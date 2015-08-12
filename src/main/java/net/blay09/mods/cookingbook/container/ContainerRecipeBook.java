@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.container;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.network.MessageClickRecipe;
@@ -16,6 +17,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +30,7 @@ public class ContainerRecipeBook extends Container {
 
 	private final EntityPlayer player;
 	private final boolean allowCrafting;
+	private final boolean allowSmelting;
 	private final boolean isClientSide;
 
 	private final InventoryRecipeBook recipeBook;
@@ -49,16 +54,22 @@ public class ContainerRecipeBook extends Container {
 	private FoodRecipe currentRecipe;
 	private boolean hasVariants;
 	private boolean isMissingTools;
+	private boolean isMissingOven;
 
 	private String currentRecipeKey;
 	private List<FoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
 	private IInventory[] sourceInventories;
 	private boolean noFilter;
+	private World tileWorld;
+	private int tileX;
+	private int tileY;
+	private int tileZ;
 
-	public ContainerRecipeBook(EntityPlayer player, boolean allowCrafting, boolean isClientSide) {
+	public ContainerRecipeBook(EntityPlayer player, boolean allowCrafting, boolean allowSmelting, boolean isClientSide) {
 		this.player = player;
 		this.allowCrafting = allowCrafting;
+		this.allowSmelting = allowSmelting;
 		this.isClientSide = isClientSide;
 
 		craftMatrix = new InventoryRecipeBookMatrix();
@@ -187,6 +198,9 @@ public class ContainerRecipeBook extends Container {
 				if(!isClientSide && canClickCraft(slot.getSlotIndex())) {
 					tryCraft(player, currentRecipe, shiftClick);
 					return;
+				} else if(!isClientSide && !isMissingOven && canClickSmelt(slot.getSlotIndex())) {
+					trySmelt(player, currentRecipe, shiftClick);
+					return;
 				}
 				int oldSlotIndex = currentSlotIndex;
 				currentSlotIndex = slot.getSlotIndex();
@@ -202,6 +216,52 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
+	}
+
+	private void trySmelt(EntityPlayer player, FoodRecipe recipe, boolean isShiftDown) {
+		if(!recipe.isSmeltingRecipe()) {
+			return;
+		}
+		for(int i = 0; i < sourceInventories.length; i++) {
+			for(int j = 0; j < sourceInventories[i].getSizeInventory(); j++) {
+				ItemStack itemStack = sourceInventories[i].getStackInSlot(j);
+				if(itemStack != null) {
+					for (ItemStack ingredientStack : recipe.getCraftMatrix()[0].getItemStacks()) {
+						if (itemStack.getHasSubtypes() ? itemStack.isItemEqual(ingredientStack) : itemStack.getItem() == ingredientStack.getItem()) {
+							int count = isShiftDown ? Math.min(itemStack.stackSize, ingredientStack.getMaxStackSize()) : 1;
+							TileEntityCookingOven tileEntity = findCookingOven();
+							int[] ovenInputSlots = tileEntity.getSlotsForFace(ForgeDirection.UP.ordinal());
+							int ovenFirstSlot = -1;
+							for (int ovenSlot : ovenInputSlots) {
+								ItemStack ovenStack = tileEntity.getStackInSlot(ovenSlot);
+								if (ovenStack != null && (ovenStack.getHasSubtypes() ? itemStack.isItemEqual(ovenStack) : itemStack.getItem() == ovenStack.getItem())) {
+									ovenFirstSlot = ovenSlot;
+									break;
+								}
+							}
+							if (ovenFirstSlot == -1) {
+								for (int ovenSlot : ovenInputSlots) {
+									if (tileEntity.getStackInSlot(ovenSlot) == null) {
+										ovenFirstSlot = ovenSlot;
+										break;
+									}
+								}
+							}
+							if (ovenFirstSlot != -1) {
+								tileEntity.setInventorySlotContents(ovenFirstSlot, itemStack.splitStack(count));
+								tileEntity.markDirty();
+								if (itemStack.stackSize == 0) {
+									sourceInventories[i].setInventorySlotContents(j, null);
+								}
+								return;
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	private void tryCraft(EntityPlayer player, FoodRecipe recipe, boolean isShiftDown) {
@@ -279,6 +339,10 @@ public class ContainerRecipeBook extends Container {
 
 	public boolean hasSelection() {
 		return currentRecipe != null;
+	}
+
+	public boolean canClickSmelt(int slotIndex) {
+		return allowSmelting && currentSlotIndex == slotIndex && currentRecipe != null && currentRecipe.isSmeltingRecipe();
 	}
 
 	public boolean canClickCraft(int slotIndex) {
@@ -410,7 +474,8 @@ public class ContainerRecipeBook extends Container {
 					isMissingTools = false;
 				}
 				hasVariants = currentRecipeList != null && currentRecipeList.size() > 1;
-				NetworkHandler.instance.sendTo(new MessageRecipeInfo(currentSlotIndex, currentRecipe, isMissingTools, hasVariants), (EntityPlayerMP) player);
+				isMissingOven = findCookingOven() == null;
+				NetworkHandler.instance.sendTo(new MessageRecipeInfo(currentSlotIndex, currentRecipe, isMissingTools, hasVariants, isMissingOven), (EntityPlayerMP) player);
 			}
 
 			if (isRecipeListDirty) {
@@ -433,13 +498,50 @@ public class ContainerRecipeBook extends Container {
 		return this;
 	}
 
+	/**
+	 * SERVER ONLY
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public ContainerRecipeBook setTilePosition(World world, int x, int y, int z) {
+		this.tileWorld = world;
+		this.tileX = x;
+		this.tileY = y;
+		this.tileZ = z;
+		return this;
+	}
+
+	/**
+	 * SERVER ONLY
+	 * @return
+	 */
+	public TileEntityCookingOven findCookingOven() {
+		for(ForgeDirection direction : ForgeDirection.values()) {
+			if(direction == ForgeDirection.UNKNOWN) {
+				continue;
+			}
+			TileEntity tileEntity = tileWorld.getTileEntity(tileX + direction.offsetX, tileY + direction.offsetY, tileZ + direction.offsetZ);
+			if(tileEntity != null && tileEntity.getClass() == TileEntityCookingOven.class) {
+				return (TileEntityCookingOven) tileEntity;
+			}
+		}
+		return null;
+	}
+
 	@SideOnly(Side.CLIENT)
-	public void setSelectedRecipe(int currentSlotIndex, FoodRecipe currentRecipe, boolean hasVariants, boolean isMissingTools) {
+	public void setSelectedRecipe(int currentSlotIndex, FoodRecipe currentRecipe, boolean hasVariants, boolean isMissingTools, boolean isMissingOven) {
 		this.currentSlotIndex = currentSlotIndex;
 		this.syncSlotIndex = currentSlotIndex;
 		this.currentRecipe = currentRecipe;
 		this.hasVariants = hasVariants;
 		this.isMissingTools = isMissingTools;
+		this.isMissingOven = isMissingOven;
 		setCraftMatrix(currentRecipe);
+	}
+
+	public boolean isMissingOven() {
+		return isMissingOven;
 	}
 }

@@ -51,4 +51,5 @@ public class BlockCookingTable extends Block {
         }
         return true;
     }
+
 }

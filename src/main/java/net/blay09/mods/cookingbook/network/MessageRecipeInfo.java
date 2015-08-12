@@ -11,14 +11,16 @@ public class MessageRecipeInfo implements IMessage {
     public FoodRecipe recipe;
     public boolean isMissingTools;
     public boolean hasVariants;
+    public boolean canSmelt;
 
     public MessageRecipeInfo() {}
 
-    public MessageRecipeInfo(int slotIndex, FoodRecipe recipe, boolean isMissingTools, boolean hasVariants) {
+    public MessageRecipeInfo(int slotIndex, FoodRecipe recipe, boolean isMissingTools, boolean hasVariants, boolean canSmelt) {
         this.slotIndex = slotIndex;
         this.recipe = recipe;
         this.isMissingTools = isMissingTools;
         this.hasVariants = hasVariants;
+        this.canSmelt = canSmelt;
     }
 
     @Override
@@ -29,6 +31,7 @@ public class MessageRecipeInfo implements IMessage {
         }
         isMissingTools = buf.readBoolean();
         hasVariants = buf.readBoolean();
+        canSmelt = buf.readBoolean();
     }
 
     @Override
@@ -41,5 +44,6 @@ public class MessageRecipeInfo implements IMessage {
         }
         buf.writeBoolean(isMissingTools);
         buf.writeBoolean(hasVariants);
+        buf.writeBoolean(canSmelt);
     }
 }

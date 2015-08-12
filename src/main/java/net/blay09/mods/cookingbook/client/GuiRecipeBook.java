@@ -215,13 +215,23 @@ public class GuiRecipeBook extends GuiContainer {
 	public void onItemTooltip(ItemTooltipEvent event) {
 		if(hoverSlot != null && hoverSlot instanceof SlotRecipe && event.itemStack == hoverSlot.getStack()) {
 			if(container.gotRecipeInfo() && container.canClickCraft(hoverSlot.getSlotIndex())) {
-				if(container.isMissingTools()) {
+				if (container.isMissingTools()) {
 					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_tools"));
 				} else {
 					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_craft_all"));
 					} else {
 						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_craft_one"));
+					}
+				}
+			} else if(container.gotRecipeInfo() && container.canClickSmelt(hoverSlot.getSlotIndex())) {
+				if(container.isMissingOven()) {
+					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_oven"));
+				} else {
+					if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_smelt_all"));
+					} else {
+						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_smelt_one"));
 					}
 				}
 			} else {

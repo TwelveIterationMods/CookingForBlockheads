@@ -27,20 +27,21 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new ContainerRecipeBook(player, false, false).setSourceInventories(player.inventory);
+                return new ContainerRecipeBook(player, false, false, false).setSourceInventories(player.inventory);
             case GUI_ID_CRAFTBOOK:
                 if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 1) {
-                    return new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false).setSourceInventories(player.inventory);
+                    return new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, false).setSourceInventories(player.inventory);
                 }
                 break;
             case GUI_ID_NOFILTERBOOK:
                 if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 3) {
-                    return new ContainerRecipeBook(player, false, false).setSourceInventories(player.inventory).setNoFilter();
+                    return new ContainerRecipeBook(player, false, false, false).setSourceInventories(player.inventory).setNoFilter();
                 }
                 break;
             case GUI_ID_COOKINGTABLE:
                 if(world.getBlock(x, y, z) == CookingBook.blockCookingTable) {
                     List<IInventory> inventories = new ArrayList<IInventory>();
+                    boolean hasOven = false;
                     for(ForgeDirection direction : ForgeDirection.values()) {
                         if(direction == ForgeDirection.UNKNOWN) {
                             continue;
@@ -49,8 +50,11 @@ public class GuiHandler implements IGuiHandler {
                         if(tileEntity instanceof IInventory) {
                             inventories.add((IInventory) tileEntity);
                         }
+                        if(tileEntity != null && tileEntity.getClass() == TileEntityCookingOven.class) {
+                            hasOven = true;
+                        }
                     }
-                    return new ContainerRecipeBook(player, true, false).setSourceInventories(inventories.toArray(new IInventory[inventories.size()]));
+                    return new ContainerRecipeBook(player, true, hasOven, false).setSourceInventories(inventories.toArray(new IInventory[inventories.size()])).setTilePosition(world, x, y, z);
                 }
                 break;
             case GUI_ID_COOKINGOVEN:
@@ -66,13 +70,13 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, false, true));
+                return new GuiRecipeBook(new ContainerRecipeBook(player, false, false, true));
             case GUI_ID_CRAFTBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, CookingBook.enableCraftingBook, true));
+                return new GuiRecipeBook(new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, true));
             case GUI_ID_NOFILTERBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, true, true));
+                return new GuiRecipeBook(new ContainerRecipeBook(player, true, false, true));
             case GUI_ID_COOKINGTABLE:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, true, true));
+                return new GuiRecipeBook(new ContainerRecipeBook(player, true, true, true));
             case GUI_ID_COOKINGOVEN:
                 return new GuiCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
         }
