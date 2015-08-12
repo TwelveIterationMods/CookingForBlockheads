@@ -247,7 +247,7 @@ public class ContainerRecipeBook extends Container {
 									}
 								}
 							}
-							if (ovenFirstSlot != -1) {
+							if (ovenFirstSlot != -1 && (tileEntity != sourceInventories[i] || (j >= 4 && j <= 6))) {
 								tileEntity.setInventorySlotContents(ovenFirstSlot, itemStack.splitStack(count));
 								tileEntity.markDirty();
 								if (itemStack.stackSize == 0) {
