@@ -29,6 +29,8 @@ public class BlockCookingTable extends Block {
         setUnlocalizedName("cookingbook:cookingtable");
         setTextureName("cookingbook:cooking_table_side");
         setCreativeTab(CreativeTabs.tabDecorations);
+        setStepSound(soundTypeWood);
+        setHardness(2.5f);
     }
 
     @Override

@@ -39,6 +39,9 @@ public class BlockCookingOven extends BlockContainer {
         setUnlocalizedName("cookingbook:cookingoven");
         setTextureName("cookingbook:cooking_oven_side");
         setCreativeTab(CreativeTabs.tabDecorations);
+        setStepSound(soundTypeMetal);
+        setHardness(5f);
+        setResistance(10f);
     }
 
     @Override
