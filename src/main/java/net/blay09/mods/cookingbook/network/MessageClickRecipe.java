@@ -20,14 +20,14 @@ public class MessageClickRecipe implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         slotIndex = buf.readByte();
-        scrollOffset = buf.readByte();
+        scrollOffset = buf.readShort();
         shiftClick = buf.readBoolean();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeByte(slotIndex);
-        buf.writeByte(scrollOffset);
+        buf.writeShort(scrollOffset);
         buf.writeBoolean(shiftClick);
     }
 
