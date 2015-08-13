@@ -153,7 +153,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                 for (int j : slotsSide) {
                     if (getStackInSlot(j) != null) {
                         ItemStack fuelItem = getStackInSlot(j);
-                        currentItemBurnTime = furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuelItem);
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) TileEntityFurnace.getItemBurnTime(fuelItem) / 3f);
                         if (furnaceBurnTime != 0) {
                             fuelItem.stackSize--;
                             if (fuelItem.stackSize == 0) {
