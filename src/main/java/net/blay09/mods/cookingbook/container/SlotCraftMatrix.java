@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,11 @@ public class SlotCraftMatrix extends Slot {
                             ItemStack itemStack = sourceInventories[i].getStackInSlot(j);
                             if(itemStack != null) {
                                 if(itemStack.getHasSubtypes() ? itemStack.isItemEqual(visibleStack) : itemStack.getItem() == visibleStack.getItem()) {
-                                    visibleStackList.add(visibleStack);
+                                    ItemStack displayStack = visibleStack.copy();
+                                    if(displayStack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+                                        displayStack.setMetadata(0);
+                                    }
+                                    visibleStackList.add(displayStack);
                                 }
                             }
                         }
