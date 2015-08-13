@@ -520,6 +520,9 @@ public class ContainerRecipeBook extends Container {
 	 * @return
 	 */
 	public TileEntityCookingOven findCookingOven() {
+		if(!allowSmelting || tileWorld == null) {
+			return null;
+		}
 		for(ForgeDirection direction : ForgeDirection.values()) {
 			if(direction == ForgeDirection.UNKNOWN) {
 				continue;
