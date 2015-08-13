@@ -206,7 +206,7 @@ public class ContainerRecipeBook extends Container {
 					return;
 				}
 				int oldSlotIndex = currentSlotIndex;
-				currentSlotIndex = slot.getSlotIndex();
+				currentSlotIndex = scrollOffset + slot.getSlotIndex();
 				if(oldSlotIndex != currentSlotIndex) {
 					if(!isClientSide) {
 						currentRecipeKey = recipeBook.getStackInSlot(slot.getSlotIndex()).toString();
@@ -477,7 +477,7 @@ public class ContainerRecipeBook extends Container {
 				}
 				hasVariants = currentRecipeList != null && currentRecipeList.size() > 1;
 				isMissingOven = findCookingOven() == null;
-				NetworkHandler.instance.sendTo(new MessageRecipeInfo(currentSlotIndex, currentRecipe, isMissingTools, hasVariants, isMissingOven), (EntityPlayerMP) player);
+				NetworkHandler.instance.sendTo(new MessageRecipeInfo(scrollOffset + currentSlotIndex, currentRecipe, isMissingTools, hasVariants, isMissingOven), (EntityPlayerMP) player);
 			}
 
 			if (isRecipeListDirty) {
