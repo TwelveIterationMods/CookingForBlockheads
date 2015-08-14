@@ -80,8 +80,12 @@ public class SlotCraftMatrix extends Slot {
                 visibleStacks = visibleStackList.toArray(new ItemStack[visibleStackList.size()]);
             }
             if(visibleStacks.length == 1) {
-                putStack(visibleStacks[0]);
-                ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, visibleStacks[0]));
+                ItemStack displayStack = visibleStacks[0].copy();
+                if(displayStack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+                    displayStack.setMetadata(0);
+                }
+                putStack(displayStack);
+                ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, displayStack));
             }
             visibleItemTime = ITEM_SWITCH_TIME;
             visibleItemIndex = 0;
@@ -105,7 +109,7 @@ public class SlotCraftMatrix extends Slot {
                     visibleItemIndex = 0;
                 }
                 putStack(visibleStacks[visibleItemIndex]);
-                ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, visibleStacks[0]));
+                ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, visibleStacks[visibleItemIndex]));
                 visibleItemTime = 0;
             }
         }
