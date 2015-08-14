@@ -12,6 +12,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -43,7 +44,7 @@ public class FoodRegistry {
                     addFoodRecipe(recipe);
                 } else {
                     for (ItemStack itemStack : additionalRecipes) {
-                        if (itemStack.getHasSubtypes() ? itemStack.isItemEqual(recipe.getRecipeOutput()) : itemStack.getItem() == recipe.getRecipeOutput().getItem()) {
+                        if (areItemStacksEqualForCrafting(recipe.getRecipeOutput(), itemStack)) {
                             addFoodRecipe(recipe);
                             break;
                         }
@@ -68,12 +69,23 @@ public class FoodRegistry {
                 foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
             } else {
                 for(ItemStack itemStack : additionalRecipes) {
-                    if (itemStack.getHasSubtypes() ? itemStack.isItemEqual(resultStack) : itemStack.getItem() == resultStack.getItem()) {
+                    if (areItemStacksEqualForCrafting(resultStack, itemStack)) {
                         foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
                         break;
                     }
                 }
             }
+        }
+    }
+
+    public static boolean areItemStacksEqualForCrafting(ItemStack first, ItemStack second) {
+        if(first == null || second == null) {
+            return false;
+        }
+        if(first.getHasSubtypes()) {
+            return first.getItem() == second.getItem() && (first.getMetadata() == second.getMetadata() || (first.getMetadata() == OreDictionary.WILDCARD_VALUE || second.getMetadata() == OreDictionary.WILDCARD_VALUE));
+        } else {
+            return first.getItem() == second.getItem();
         }
     }
 

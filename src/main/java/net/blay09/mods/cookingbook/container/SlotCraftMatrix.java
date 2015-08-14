@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingbook.container;
 
 import net.blay09.mods.cookingbook.food.FoodIngredient;
+import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -66,7 +67,7 @@ public class SlotCraftMatrix extends Slot {
                         for(int j = 0; j < sourceInventories[i].getSizeInventory(); j++) {
                             ItemStack itemStack = sourceInventories[i].getStackInSlot(j);
                             if(itemStack != null) {
-                                if(itemStack.getHasSubtypes() ? itemStack.isItemEqual(visibleStack) : itemStack.getItem() == visibleStack.getItem()) {
+                                if(FoodRegistry.areItemStacksEqualForCrafting(itemStack, visibleStack)) {
                                     ItemStack displayStack = visibleStack.copy();
                                     if(displayStack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
                                         displayStack.setMetadata(0);

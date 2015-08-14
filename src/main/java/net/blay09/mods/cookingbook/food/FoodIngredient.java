@@ -18,7 +18,7 @@ public class FoodIngredient {
 
     public boolean isValidItem(ItemStack itemStack) {
         for(ItemStack oreStack : itemStacks) {
-            if(oreStack.getHasSubtypes() ? oreStack.isItemEqual(itemStack) : oreStack.getItem() == itemStack.getItem()) {
+            if(FoodRegistry.areItemStacksEqualForCrafting(oreStack, itemStack)) {
                 return true;
             }
         }
