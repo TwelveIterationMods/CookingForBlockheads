@@ -497,6 +497,8 @@ public class ContainerRecipeBook extends Container {
 	 */
 	public ContainerRecipeBook setNoFilter() {
 		this.noFilter = true;
+		findAvailableRecipes();
+		sortRecipes(currentSort);
 		return this;
 	}
 
