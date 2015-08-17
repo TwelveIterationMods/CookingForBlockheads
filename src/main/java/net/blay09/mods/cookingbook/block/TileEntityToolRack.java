@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityToolRack extends TileEntity implements IInventory {
@@ -66,7 +67,7 @@ public class TileEntityToolRack extends TileEntity implements IInventory {
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return 1;
     }
 
     @Override
@@ -85,5 +86,15 @@ public class TileEntityToolRack extends TileEntity implements IInventory {
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
         return true;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound p_145839_1_) {
+        super.readFromNBT(p_145839_1_);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound p_145841_1_) {
+        super.writeToNBT(p_145841_1_);
     }
 }

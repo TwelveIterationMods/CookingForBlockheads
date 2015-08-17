@@ -129,6 +129,9 @@ public class TileEntityFridge extends TileEntity implements IInventory {
         if(id == 1) {
             numPlayersUsing = value;
             return true;
+        } else if(id == 2) {
+            fridgeColor = value;
+            return true;
         }
         return super.receiveClientEvent(id, value);
     }
@@ -162,6 +165,7 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     public void setFridgeColor(int fridgeColor) {
         this.fridgeColor = fridgeColor;
         markDirty();
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 2, fridgeColor);
     }
 
     public int getFridgeColor() {
