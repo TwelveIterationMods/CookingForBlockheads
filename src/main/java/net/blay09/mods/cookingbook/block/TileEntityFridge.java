@@ -98,15 +98,9 @@ public class TileEntityFridge extends TileEntity implements IInventory {
         if(numPlayersUsing > 0) {
             final float doorSpeed = 0.2f;
             doorAngle = Math.min(1f, doorAngle + doorSpeed);
-            if(doorAngle == 1f) {
-                numPlayersUsing = 0;
-            }
         } else {
             final float doorSpeed = 0.1f;
             doorAngle = Math.max(0f, doorAngle - doorSpeed);
-            if(doorAngle == 0f) {
-                numPlayersUsing = 1;
-            }
         }
     }
 
