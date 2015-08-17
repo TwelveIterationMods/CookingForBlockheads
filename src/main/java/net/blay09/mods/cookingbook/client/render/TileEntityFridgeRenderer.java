@@ -5,7 +5,9 @@ import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.client.model.ModelFridge;
 import net.blay09.mods.cookingbook.client.model.ModelSmallFridge;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -76,10 +78,32 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
             f = 1.0F - f;
             f = 1.0F - f * f * f;
             modelSmall.Door.rotateAngleY = (float) ((Math.PI / 2f) * f);
-            modelSmall.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * ((TileEntityFridge) tileEntity).getDoorAngle());
+            modelSmall.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * f);
             modelSmall.renderUncolored();
             GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
             modelSmall.renderColored();
+            if(f > 0f) {
+                GL11.glRotatef(180f, 0f, 0f, -1f);
+                GL11.glScalef(0.5f, 0.5f, 0.5f);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
+                    ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
+                    if(itemStack != null) {
+                        int relSlot = i;
+                        if(i > tileEntityFridge.getSizeInventory() / 2) {
+                            relSlot -= tileEntityFridge.getSizeInventory() / 2;
+                        }
+                        float itemX = (relSlot > 8) ? Math.min(4f/5f, (relSlot-9) / 5f) : Math.min(8f/9f, (float) relSlot / 9f);
+                        float itemY = (i > tileEntityFridge.getSizeInventory() / 2) ? -0.7f : 0.01f;
+                        float itemZ = (relSlot > 8) ? -0.8f : -0.1f;
+                        if(relSlot % 2 == 0) {
+                            itemZ -= 0.1f;
+                        }
+                        tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
+                        RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, -2f + itemY, 0.5f + itemZ, 0f, 0f);
+                    }
+                }
+            }
         }
         if(!oldRescaleNormal) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);

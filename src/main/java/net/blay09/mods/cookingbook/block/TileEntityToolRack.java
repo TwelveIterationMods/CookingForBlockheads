@@ -1,14 +1,32 @@
 package net.blay09.mods.cookingbook.block;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class TileEntityToolRack extends TileEntity implements IInventory {
 
     private ItemStack[] inventory = new ItemStack[2];
+    private EntityItem[] renderItems = new EntityItem[2];
+
+    @Override
+    public void setWorldObj(World world) {
+        super.setWorldObj(world);
+
+        for(int i = 0; i < renderItems.length; i++) {
+            renderItems[i] = new EntityItem(worldObj, 0, 0, 0);
+            renderItems[i].hoverStart = 0f;
+        }
+    }
 
     @Override
     public int getSizeInventory() {
@@ -27,12 +45,14 @@ public class TileEntityToolRack extends TileEntity implements IInventory {
             if (inventory[i].stackSize <= count) {
                 itemStack = inventory[i];
                 inventory[i] = null;
+                markDirty();
                 return itemStack;
             } else {
                 itemStack = inventory[i].splitStack(count);
                 if (inventory[i].stackSize == 0) {
                     inventory[i] = null;
                 }
+                markDirty();
                 return itemStack;
             }
         }
@@ -44,6 +64,7 @@ public class TileEntityToolRack extends TileEntity implements IInventory {
         if (inventory[i] != null) {
             ItemStack itemstack = inventory[i];
             inventory[i] = null;
+            markDirty();
             return itemstack;
         } else {
             return null;
@@ -53,6 +74,7 @@ public class TileEntityToolRack extends TileEntity implements IInventory {
     @Override
     public void setInventorySlotContents(int i, ItemStack itemStack) {
         inventory[i] = itemStack;
+        renderItems[i].setEntityItemStack(itemStack);
     }
 
     @Override
@@ -89,12 +111,46 @@ public class TileEntityToolRack extends TileEntity implements IInventory {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound p_145839_1_) {
-        super.readFromNBT(p_145839_1_);
+    public void readFromNBT(NBTTagCompound tagCompound) {
+        super.readFromNBT(tagCompound);
+
+        NBTTagList tagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
+        for(int i = 0; i < tagList.tagCount(); i++) {
+            NBTTagCompound itemCompound = tagList.getCompoundTagAt(i);
+            setInventorySlotContents(itemCompound.getByte("Slot"), ItemStack.loadItemStackFromNBT(itemCompound));
+        }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound p_145841_1_) {
-        super.writeToNBT(p_145841_1_);
+    public void writeToNBT(NBTTagCompound tagCompound) {
+        super.writeToNBT(tagCompound);
+
+        NBTTagList tagList = new NBTTagList();
+        for(int i = 0; i < inventory.length; i++) {
+            if(inventory[i] != null) {
+                NBTTagCompound itemCompound = new NBTTagCompound();
+                itemCompound.setByte("Slot", (byte) i);
+                inventory[i].writeToNBT(itemCompound);
+                tagList.appendTag(itemCompound);
+            }
+        }
+        tagCompound.setTag("Items", tagList);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+        readFromNBT(pkt.func_148857_g());
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        writeToNBT(tagCompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tagCompound);
+    }
+
+    public EntityItem getRenderItem(int i) {
+        return renderItems[i];
     }
 }

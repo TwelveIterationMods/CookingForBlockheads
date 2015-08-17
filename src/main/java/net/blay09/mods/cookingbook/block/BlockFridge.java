@@ -7,11 +7,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -28,6 +31,15 @@ public class BlockFridge extends BlockContainer {
         setHardness(5f);
         setResistance(10f);
         setBlockBounds(0.0625f, 0f, 0.0625f, 0.9375f, 0.975f, 0.9375f);
+    }
+
+    @Override
+    public IIcon getIcon(int side, int metadata) {
+        return Blocks.iron_block.getIcon(side, 0);
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister iconRegister) {
     }
 
     private void findOrientation(World world, int x, int y, int z) {
@@ -147,5 +159,14 @@ public class BlockFridge extends BlockContainer {
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbourBlock) {
         super.onNeighborBlockChange(world, x, y, z, neighbourBlock);
         ((TileEntityFridge) world.getTileEntity(x, y, z)).findNeighbourFridge();
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        TileEntityFridge tileEntityFridge = (TileEntityFridge) world.getTileEntity(x, y, z);
+        if(tileEntityFridge != null) {
+            tileEntityFridge.breakBlock();
+        }
+        super.breakBlock(world, x, y, z, block, metadata);
     }
 }
