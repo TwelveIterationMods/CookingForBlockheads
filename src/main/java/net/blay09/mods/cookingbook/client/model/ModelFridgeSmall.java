@@ -41,7 +41,7 @@ public class ModelFridgeSmall extends ModelBase {
     }
 
     public void renderAll() {
-        this.chestLid.render(0.0625F);
-        this.chestBelow.render(0.0625F);
+        this.chestLid.render(0.0625f);
+        this.chestBelow.render(0.0625f);
     }
 }

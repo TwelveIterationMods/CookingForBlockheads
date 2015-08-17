@@ -6,9 +6,11 @@ tile.cookingbook:cookingtable.name=Cooking Table
 tile.cookingbook:cookingoven.name=Cooking Oven
 tile.cookingbook:fridge.name=Fridge
 tile.cookingbook:sink.name=Sink
+tile.cookingbook:toolrack.name=Tool Rack
 
 container.cookingbook:cookingoven=Cooking Oven
 container.cookingbook:fridge=Fridge
+container.cookingbook:toolrack=Tool Rack
 
 itemGroup.cookingbook=Cooking for Blockheads
 

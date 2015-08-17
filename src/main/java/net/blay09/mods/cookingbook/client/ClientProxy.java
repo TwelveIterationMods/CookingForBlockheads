@@ -8,8 +8,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import net.blay09.mods.cookingbook.CommonProxy;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
+import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
 import net.blay09.mods.cookingbook.client.render.TileEntityFridgeRenderer;
+import net.blay09.mods.cookingbook.client.render.TileEntityToolRackRenderer;
+import net.blay09.mods.cookingbook.client.render.ToolRackBlockRenderer;
 import net.minecraftforge.common.MinecraftForge;
 
 @SuppressWarnings("unused")
@@ -23,7 +26,9 @@ public class ClientProxy extends CommonProxy {
 		FMLCommonHandler.instance().bus().register(this);
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFridge.class, new TileEntityFridgeRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityToolRack.class, new TileEntityToolRackRenderer());
 		RenderingRegistry.registerBlockHandler(FridgeBlockRenderer.RENDER_ID, new FridgeBlockRenderer());
+		RenderingRegistry.registerBlockHandler(ToolRackBlockRenderer.RENDER_ID, new ToolRackBlockRenderer());
 	}
 
 	@SubscribeEvent

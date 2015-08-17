@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -77,7 +76,12 @@ public class BlockFridge extends BlockContainer {
 
     @Override
     public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
-        return super.recolourBlock(world, x, y, z, side, colour);
+        TileEntityFridge fridge = (TileEntityFridge) world.getTileEntity(x, y, z);
+        fridge.setFridgeColor(colour);
+        if(fridge.getNeighbourFridge() != null) {
+            fridge.getNeighbourFridge().setFridgeColor(colour);
+        }
+        return true;
     }
 
     @Override
