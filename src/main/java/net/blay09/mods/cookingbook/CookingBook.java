@@ -8,6 +8,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.blay09.mods.cookingbook.block.BlockCookingOven;
 import net.blay09.mods.cookingbook.block.BlockCookingTable;
+import net.blay09.mods.cookingbook.block.BlockFridge;
+import net.blay09.mods.cookingbook.block.BlockSink;
 import net.blay09.mods.cookingbook.item.ItemRecipeBook;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -24,6 +26,8 @@ public class CookingBook {
 	public static Item itemRecipeBook = new ItemRecipeBook();
 	public static Block blockCookingTable = new BlockCookingTable();
 	public static Block blockCookingOven = new BlockCookingOven();
+	public static Block blockFridge = new BlockFridge();
+	public static Block blockSink = new BlockSink();
 
 	@Mod.Instance
     public static CookingBook instance;

@@ -134,8 +134,8 @@ public class GuiRecipeBook extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		super.mouseReleased(mouseX, mouseY, state);
+	protected void mouseMovedOrUp(int mouseX, int mouseY, int state) {
+		super.mouseMovedOrUp(mouseX, mouseY, state);
 		if (state != -1 && mouseClickY != -1) {
 			mouseClickY = -1;
 			indexWhenClicked = 0;
@@ -244,12 +244,12 @@ public class GuiRecipeBook extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if(btnSortName.isMouseOver() && btnSortName.enabled) {
-			drawHoveringText(btnSortName.getTooltipLines(), mouseX, mouseY);
-		} else if(btnSortHunger.isMouseOver() && btnSortHunger.enabled) {
-			drawHoveringText(btnSortHunger.getTooltipLines(), mouseX, mouseY);
-		} else if(btnSortSaturation.isMouseOver() && btnSortSaturation.enabled) {
-			drawHoveringText(btnSortSaturation.getTooltipLines(), mouseX, mouseY);
+		if(btnSortName.func_146115_a() && btnSortName.enabled) { // isMouseOver
+			func_146283_a(btnSortName.getTooltipLines(), mouseX, mouseY); // drawHoveringText
+		} else if(btnSortHunger.func_146115_a() && btnSortHunger.enabled) {// isMouseOver
+			func_146283_a(btnSortHunger.getTooltipLines(), mouseX, mouseY);// drawHoveringText
+		} else if(btnSortSaturation.func_146115_a() && btnSortSaturation.enabled) {// isMouseOver
+			func_146283_a(btnSortSaturation.getTooltipLines(), mouseX, mouseY);// drawHoveringText
 		}
 	}
 
@@ -273,7 +273,7 @@ public class GuiRecipeBook extends GuiContainer {
 	}
 
 	private boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
-		return isPointInRegion(slotIn.xDisplayPosition, slotIn.yDisplayPosition, 16, 16, mouseX, mouseY);
+		return func_146978_c(slotIn.xDisplayPosition, slotIn.yDisplayPosition, 16, 16, mouseX, mouseY);
 	}
 
 }

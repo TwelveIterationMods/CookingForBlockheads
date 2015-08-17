@@ -26,8 +26,8 @@ public class BlockCookingTable extends Block {
     public BlockCookingTable() {
         super(Material.wood);
 
-        setUnlocalizedName("cookingbook:cookingtable");
-        setTextureName("cookingbook:cooking_table_side");
+        setBlockName("cookingbook:cookingtable");
+        setBlockTextureName("cookingbook:cooking_table_side");
         setCreativeTab(CreativeTabs.tabDecorations);
         setStepSound(soundTypeWood);
         setHardness(2.5f);
@@ -39,8 +39,8 @@ public class BlockCookingTable extends Block {
     }
 
     @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        super.registerIcons(iconRegister);
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        super.registerBlockIcons(iconRegister);
 
         iconFront = iconRegister.registerIcon("cookingbook:cooking_table_front");
         iconTop = iconRegister.registerIcon("cookingbook:cooking_table_top");

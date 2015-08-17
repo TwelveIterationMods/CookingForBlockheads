@@ -86,7 +86,7 @@ public class InventoryCraftBook extends InventoryCrafting {
                         if(itemStack.getItem().hasContainerItem(itemStack)) {
                             // Fire PlayerDestroyItem event
                             ItemStack containerItem = itemStack.getItem().getContainerItem(itemStack);
-                            if(containerItem != null && containerItem.isItemStackDamageable() && itemStack.getMetadata() > itemStack.getMaxDurability()) {
+                            if(containerItem != null && containerItem.isItemStackDamageable() && itemStack.getItemDamage() > itemStack.getMaxDamage()) {
                                 MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerItem));
                                 continue;
                             }

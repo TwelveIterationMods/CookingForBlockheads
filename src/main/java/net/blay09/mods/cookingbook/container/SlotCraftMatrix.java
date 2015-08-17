@@ -50,7 +50,7 @@ public class SlotCraftMatrix extends Slot {
     }
 
     @Override
-    public boolean canBeHovered() {
+    public boolean func_111238_b() {
         return enabled;
     }
 
@@ -69,8 +69,8 @@ public class SlotCraftMatrix extends Slot {
                             if(itemStack != null) {
                                 if(FoodRegistry.areItemStacksEqualForCrafting(itemStack, visibleStack)) {
                                     ItemStack displayStack = visibleStack.copy();
-                                    if(displayStack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
-                                        displayStack.setMetadata(0);
+                                    if(displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                                        displayStack.setItemDamage(0);
                                     }
                                     visibleStackList.add(displayStack);
                                 }
@@ -82,8 +82,8 @@ public class SlotCraftMatrix extends Slot {
             }
             if(visibleStacks.length == 1) {
                 ItemStack displayStack = visibleStacks[0].copy();
-                if(displayStack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
-                    displayStack.setMetadata(0);
+                if(displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                    displayStack.setItemDamage(0);
                 }
                 putStack(displayStack);
                 ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, displayStack));

@@ -22,7 +22,7 @@ public class ComparatorHunger implements Comparator<ItemStack> {
         }
         ItemFood f1 = (ItemFood) o1.getItem();
         ItemFood f2 = (ItemFood) o2.getItem();
-        int result = f2.getHealAmount(o2) - f1.getHealAmount(o1);
+        int result = f2.func_150905_g(o2) - f1.func_150905_g(o1);
         if(result == 0) {
             return fallback.compare(o1, o2);
         }

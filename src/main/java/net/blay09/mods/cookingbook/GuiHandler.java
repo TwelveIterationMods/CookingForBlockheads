@@ -2,9 +2,12 @@ package net.blay09.mods.cookingbook;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
+import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.client.GuiCookingOven;
+import net.blay09.mods.cookingbook.client.GuiFridge;
 import net.blay09.mods.cookingbook.client.GuiRecipeBook;
 import net.blay09.mods.cookingbook.container.ContainerCookingOven;
+import net.blay09.mods.cookingbook.container.ContainerFridge;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,6 +25,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI_ID_NOFILTERBOOK = 3;
     public static final int GUI_ID_COOKINGTABLE = 4;
     public static final int GUI_ID_COOKINGOVEN = 5;
+    public static final int GUI_ID_FRIDGE = 6;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -29,12 +33,12 @@ public class GuiHandler implements IGuiHandler {
             case GUI_ID_RECIPEBOOK:
                 return new ContainerRecipeBook(player, false, false, false).setSourceInventories(player.inventory);
             case GUI_ID_CRAFTBOOK:
-                if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 1) {
+                if(player.getHeldItem() != null && player.getHeldItem().getItemDamage() == 1) {
                     return new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, false).setSourceInventories(player.inventory);
                 }
                 break;
             case GUI_ID_NOFILTERBOOK:
-                if(player.getHeldItem() != null && player.getHeldItem().getMetadata() == 3) {
+                if(player.getHeldItem() != null && player.getHeldItem().getItemDamage() == 3) {
                     return new ContainerRecipeBook(player, false, false, false).setSourceInventories(player.inventory).setNoFilter();
                 }
                 break;
@@ -62,6 +66,11 @@ public class GuiHandler implements IGuiHandler {
                     return new ContainerCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
                 }
                 break;
+            case GUI_ID_FRIDGE:
+                if(world.getBlock(x, y, z) == CookingBook.blockFridge) {
+                    return new ContainerFridge(player.inventory, (TileEntityFridge) world.getTileEntity(x, y, z));
+                }
+                break;
         }
         return null;
     }
@@ -79,6 +88,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiRecipeBook(new ContainerRecipeBook(player, true, true, true));
             case GUI_ID_COOKINGOVEN:
                 return new GuiCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
+            case GUI_ID_FRIDGE:
+                return new GuiFridge(player.inventory, (TileEntityFridge) world.getTileEntity(x, y, z));
         }
         return null;
     }

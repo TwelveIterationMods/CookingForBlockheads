@@ -28,7 +28,8 @@ public class SlotRecipe extends Slot {
     }
 
     @Override
-    public boolean canBeHovered() {
+    public boolean func_111238_b() { // canBeHovered
         return enabled;
     }
+
 }

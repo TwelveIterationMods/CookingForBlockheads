@@ -54,7 +54,7 @@ public class FoodRegistry {
         }
 
         // Smelting Recipes of Food Items
-        for(Object obj : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
+        for(Object obj : FurnaceRecipes.smelting().getSmeltingList().entrySet()) {
             Map.Entry entry = (Map.Entry) obj;
             ItemStack sourceStack = null;
             if(entry.getKey() instanceof Item) {
@@ -83,7 +83,7 @@ public class FoodRegistry {
             return false;
         }
         if(first.getHasSubtypes()) {
-            return first.getItem() == second.getItem() && (first.getMetadata() == second.getMetadata() || (first.getMetadata() == OreDictionary.WILDCARD_VALUE || second.getMetadata() == OreDictionary.WILDCARD_VALUE));
+            return first.getItem() == second.getItem() && (first.getItemDamage() == second.getItemDamage() || (first.getItemDamage() == OreDictionary.WILDCARD_VALUE || second.getItemDamage() == OreDictionary.WILDCARD_VALUE));
         } else {
             return first.getItem() == second.getItem();
         }

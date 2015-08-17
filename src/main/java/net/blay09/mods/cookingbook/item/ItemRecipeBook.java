@@ -39,9 +39,9 @@ public class ItemRecipeBook extends Item {
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		if(stack.getMetadata() == 1) {
+		if(stack.getItemDamage() == 1) {
 			return "item.cookingbook:recipebook_tier2";
-		} else if(stack.getMetadata() == 3) {
+		} else if(stack.getItemDamage() == 3) {
 			return "item.cookingbook:recipebook_tier0";
 		}
 		return super.getUnlocalizedName(stack);
@@ -66,7 +66,7 @@ public class ItemRecipeBook extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
 		int guiId = GuiHandler.GUI_ID_RECIPEBOOK;
-		switch(itemStack.getMetadata()) {
+		switch(itemStack.getItemDamage()) {
 			case 0:
 				guiId = GuiHandler.GUI_ID_RECIPEBOOK;
 				break;
@@ -85,12 +85,12 @@ public class ItemRecipeBook extends Item {
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean isShiftDown) {
 		super.addInformation(itemStack, player, list, isShiftDown);
 
-		if(itemStack.getMetadata() == 1) {
+		if(itemStack.getItemDamage() == 1) {
 			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier2.tooltip"));
 			for (String s : I18n.format("cookingbook:recipebook_tier2.tooltipDesc").split("\\\\n")) {
 				list.add("\u00a77" + s);
 			}
-		} else if(itemStack.getMetadata() == 3) {
+		} else if(itemStack.getItemDamage() == 3) {
 			list.add("\u00a7e" + I18n.format("cookingbook:recipebook_tier0.tooltip"));
 			for (String s : I18n.format("cookingbook:recipebook_tier0.tooltipDesc").split("\\\\n")) {
 				list.add("\u00a77" + s);

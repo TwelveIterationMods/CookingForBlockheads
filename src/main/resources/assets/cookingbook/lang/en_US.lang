@@ -4,8 +4,10 @@ item.cookingbook:recipebook_tier2.name=Cooking for Blockheads II
 
 tile.cookingbook:cookingtable.name=Cooking Table
 tile.cookingbook:cookingoven.name=Cooking Oven
+tile.cookingbook:fridge.name=Fridge
 
 container.cookingbook:cookingoven=Cooking Oven
+container.cookingbook:fridge=Fridge
 
 cookingbook:recipebook_tier0.tooltip=#NoFilter Edition
 cookingbook:recipebook_tier0.tooltipDesc=Shows all food recipes.

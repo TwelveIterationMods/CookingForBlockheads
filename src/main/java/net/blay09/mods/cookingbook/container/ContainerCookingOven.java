@@ -48,8 +48,8 @@ public class ContainerCookingOven extends Container {
     }
 
     @Override
-    public void onCraftGuiOpened(ICrafting crafter) {
-        super.onCraftGuiOpened(crafter);
+    public void addCraftingToCrafters(ICrafting crafter) {
+        super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, tileEntity.furnaceBurnTime);
         crafter.sendProgressBarUpdate(this, 1, tileEntity.currentItemBurnTime);
         for(int i = 0; i < tileEntity.slotCookTime.length; i++) {
@@ -116,7 +116,7 @@ public class ContainerCookingOven extends Container {
                     return null;
                 }
             } else if (slotIndex > 16) {
-                ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(slotStack);
+                ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(slotStack);
                 if (TileEntityFurnace.isItemFuel(slotStack)) {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
                         return null;

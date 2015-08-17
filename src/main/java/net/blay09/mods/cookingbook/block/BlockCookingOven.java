@@ -36,8 +36,8 @@ public class BlockCookingOven extends BlockContainer {
     public BlockCookingOven() {
         super(Material.iron);
 
-        setUnlocalizedName("cookingbook:cookingoven");
-        setTextureName("cookingbook:cooking_oven_side");
+        setBlockName("cookingbook:cookingoven");
+        setBlockTextureName("cookingbook:cooking_oven_side");
         setCreativeTab(CreativeTabs.tabDecorations);
         setStepSound(soundTypeMetal);
         setHardness(5f);
@@ -57,16 +57,16 @@ public class BlockCookingOven extends BlockContainer {
             Block block2 = world.getBlock(x - 1, y, z);
             Block block3 = world.getBlock(x + 1, y, z);
             byte side = 3;
-            if (block.isFullBlock() && !block1.isFullBlock()) {
+            if (block.isOpaqueCube() && !block1.isOpaqueCube()) {
                 side = 3;
             }
-            if (block1.isFullBlock() && !block.isFullBlock()) {
+            if (block1.isOpaqueCube() && !block.isOpaqueCube()) {
                 side = 2;
             }
-            if (block2.isFullBlock() && !block3.isFullBlock()) {
+            if (block2.isOpaqueCube() && !block3.isOpaqueCube()) {
                 side = 5;
             }
-            if (block3.isFullBlock() && !block2.isFullBlock()) {
+            if (block3.isOpaqueCube() && !block2.isOpaqueCube()) {
                 side = 4;
             }
             world.setBlockMetadataWithNotify(x, y, z, side, 2);
@@ -74,7 +74,7 @@ public class BlockCookingOven extends BlockContainer {
     }
 
     @Override
-    public IIcon getItemIcon(int side, int meta) {
+    public IIcon func_149735_b(int side, int damage) { // getItemIcon
         return iconFront;
 //        return side == 1 ? this.iconTop : (side == 0 ? this.iconTop : (side != meta ? this.blockIcon : this.iconFront));
     }
@@ -90,8 +90,8 @@ public class BlockCookingOven extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        super.registerIcons(iconRegister);
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        super.registerBlockIcons(iconRegister);
 
         iconFront = iconRegister.registerIcon("cookingbook:cooking_oven_front");
         iconTop = iconRegister.registerIcon("cookingbook:cooking_oven_top");
@@ -147,7 +147,7 @@ public class BlockCookingOven extends BlockContainer {
                         }
 
                         itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getMetadata()));
+                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -161,7 +161,7 @@ public class BlockCookingOven extends BlockContainer {
                     }
                 }
             }
-            world.updateNeighborsAboutBlockChange(x, y, z, blockBroken);
+            world.func_147453_f(x, y, z, blockBroken); // updateNeighboursOfBlockChange
         }
         super.breakBlock(world, x, y, z, blockBroken, meta);
     }

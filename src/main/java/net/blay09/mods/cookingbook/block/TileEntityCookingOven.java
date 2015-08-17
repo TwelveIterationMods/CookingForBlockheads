@@ -26,7 +26,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     public int[] slotCookTime = new int[9];
 
     @Override
-    public int[] getSlotsForFace(int side) {
+    public int[] getAccessibleSlotsFromSide(int side) {
         switch (ForgeDirection.getOrientation(side)) {
             case UP:
                 return slotsTop;
@@ -100,7 +100,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     @Override
-    public boolean isCustomInventoryName() {
+    public boolean hasCustomInventoryName() {
         return false;
     }
 
@@ -115,11 +115,13 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     @Override
-    public void openChest() {
+    public void openInventory() {
+
     }
 
     @Override
-    public void closeChest() {
+    public void closeInventory() {
+
     }
 
     @Override
@@ -182,7 +184,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                     if (slotCookTime[i - SLOT_CENTER_OFFSET] != -1) {
                         slotCookTime[i - SLOT_CENTER_OFFSET]++;
                         if (slotCookTime[i - SLOT_CENTER_OFFSET] >= COOK_TIME) {
-                            ItemStack resultStack = FurnaceRecipes.instance().getSmeltingResult(getStackInSlot(i));
+                            ItemStack resultStack = FurnaceRecipes.smelting().getSmeltingResult(getStackInSlot(i));
                             if (resultStack != null) {
                                 setInventorySlotContents(i, resultStack.copy());
                                 slotCookTime[i - SLOT_CENTER_OFFSET] = -1;

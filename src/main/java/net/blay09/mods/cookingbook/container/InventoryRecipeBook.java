@@ -41,6 +41,11 @@ public class InventoryRecipeBook implements IInventory {
     }
 
     @Override
+    public boolean hasCustomInventoryName() {
+        return false;
+    }
+
+    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
@@ -51,6 +56,16 @@ public class InventoryRecipeBook implements IInventory {
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
+    }
+
+    @Override
+    public void openInventory() {
+
+    }
+
+    @Override
+    public void closeInventory() {
+
     }
 
     @Override
@@ -66,17 +81,6 @@ public class InventoryRecipeBook implements IInventory {
             outputItem[i] = null;
         }
     }
-
-    @Override
-    public boolean isCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public void openChest() {}
-
-    @Override
-    public void closeChest() {}
 
     public List<FoodRecipe> getFoodList(int slotIndex) {
         return (List<FoodRecipe>) recipes[slotIndex];

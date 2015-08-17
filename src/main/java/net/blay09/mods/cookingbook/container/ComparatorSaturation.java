@@ -22,7 +22,7 @@ public class ComparatorSaturation implements Comparator<ItemStack> {
         }
         ItemFood f1 = (ItemFood) o1.getItem();
         ItemFood f2 = (ItemFood) o2.getItem();
-        int result = (int) (f2.getSaturationModifier(o2) * 100 - f1.getSaturationModifier(o1) * 100);
+        int result = (int) (f2.func_150906_h(o2) * 100 - f1.func_150906_h(o1) * 100);
         if(result == 0) {
             return fallback.compare(o1, o2);
         }

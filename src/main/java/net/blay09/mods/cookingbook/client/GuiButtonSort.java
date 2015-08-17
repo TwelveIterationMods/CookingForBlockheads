@@ -34,14 +34,14 @@ public class GuiButtonSort extends GuiButton {
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+        this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
 
         int texX = texCoordX;
         int texY = texCoordY;
         if(!enabled) {
             texX = texCoordDisabledX;
             texY = texCoordDisabledY;
-        } else if(hovered) {
+        } else if(field_146123_n) {
             texX = texCoordHoverX;
             texY = texCoordHoverY;
         }

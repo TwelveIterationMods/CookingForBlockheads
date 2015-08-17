@@ -52,18 +52,8 @@ public class InventoryRecipeBookMatrix implements IInventory {
     }
 
     @Override
-    public boolean isCustomInventoryName() {
+    public boolean hasCustomInventoryName() {
         return false;
-    }
-
-    @Override
-    public void openChest() {
-
-    }
-
-    @Override
-    public void closeChest() {
-
     }
 
     @Override
@@ -77,6 +67,16 @@ public class InventoryRecipeBookMatrix implements IInventory {
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
+    }
+
+    @Override
+    public void openInventory() {
+
+    }
+
+    @Override
+    public void closeInventory() {
+
     }
 
     @Override

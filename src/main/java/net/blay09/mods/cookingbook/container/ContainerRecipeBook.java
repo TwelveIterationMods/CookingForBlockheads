@@ -233,7 +233,7 @@ public class ContainerRecipeBook extends Container {
 						if (FoodRegistry.areItemStacksEqualForCrafting(itemStack, ingredientStack)) {
 							int count = isShiftDown ? Math.min(itemStack.stackSize, ingredientStack.getMaxStackSize()) : 1;
 							TileEntityCookingOven tileEntity = findCookingOven();
-							int[] ovenInputSlots = tileEntity.getSlotsForFace(ForgeDirection.UP.ordinal());
+							int[] ovenInputSlots = tileEntity.getAccessibleSlotsFromSide(ForgeDirection.UP.ordinal());
 							int ovenFirstSlot = -1;
 							for (int ovenSlot : ovenInputSlots) {
 								ItemStack ovenStack = tileEntity.getStackInSlot(ovenSlot);

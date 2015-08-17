@@ -14,7 +14,7 @@ public class SlotOvenInput extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(stack);
+        ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(stack);
         return smeltingResult != null && smeltingResult.getItem() instanceof ItemFood;
     }
 
