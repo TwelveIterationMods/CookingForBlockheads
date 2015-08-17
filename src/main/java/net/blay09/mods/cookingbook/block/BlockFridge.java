@@ -27,6 +27,7 @@ public class BlockFridge extends BlockContainer {
         setStepSound(soundTypeMetal);
         setHardness(5f);
         setResistance(10f);
+        setBlockBounds(0.0625f, 0f, 0.0625f, 0.9375f, 0.975f, 0.9375f);
     }
 
     private void findOrientation(World world, int x, int y, int z) {

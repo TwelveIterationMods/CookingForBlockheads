@@ -18,6 +18,9 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     private ItemStack[] inventory = new ItemStack[27];
     private TileEntityFridge neighbourFridge;
     private int fridgeColor;
+    private float prevDoorAngle;
+    private float doorAngle;
+    private int numPlayersUsing;
 
     public void findNeighbourFridge() {
         if(worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingBook.blockFridge) {
@@ -88,6 +91,26 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     }
 
     @Override
+    public void updateEntity() {
+        super.updateEntity();
+
+        prevDoorAngle = doorAngle;
+        if(numPlayersUsing > 0) {
+            final float doorSpeed = 0.2f;
+            doorAngle = Math.min(1f, doorAngle + doorSpeed);
+            if(doorAngle == 1f) {
+                numPlayersUsing = 0;
+            }
+        } else {
+            final float doorSpeed = 0.1f;
+            doorAngle = Math.max(0f, doorAngle - doorSpeed);
+            if(doorAngle == 0f) {
+                numPlayersUsing = 1;
+            }
+        }
+    }
+
+    @Override
     public String getInventoryName() {
         return "container.cookingbook:fridge";
     }
@@ -108,11 +131,24 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     }
 
     @Override
+    public boolean receiveClientEvent(int id, int value) {
+        if(id == 1) {
+            numPlayersUsing = value;
+            return true;
+        }
+        return super.receiveClientEvent(id, value);
+    }
+
+    @Override
     public void openInventory() {
+        numPlayersUsing++;
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
     }
 
     @Override
     public void closeInventory() {
+        numPlayersUsing--;
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
     }
 
     @Override
@@ -182,5 +218,13 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     public TileEntityFridge getNeighbourFridge() {
         return neighbourFridge;
+    }
+
+    public float getDoorAngle() {
+        return doorAngle;
+    }
+
+    public float getPrevDoorAngle() {
+        return prevDoorAngle;
     }
 }

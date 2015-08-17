@@ -27,7 +27,7 @@ public class TileEntityToolRackRenderer extends TileEntitySpecialRenderer {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
         GL11.glColor4f(1f, 1f, 1f, 1f);
-        GL11.glTranslatef((float) x, (float) y - 0.3f, (float) z);
+        GL11.glTranslatef((float) x, (float) y - 0.4f, (float) z);
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         float angle;
         switch(ForgeDirection.getOrientation(metadata)) {

@@ -36,6 +36,14 @@ public class ContainerFridge extends Container {
         for(int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 89 + playerInventoryStart));
         }
+
+        tileEntity.openInventory();
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer player) {
+        super.onContainerClosed(player);
+        tileEntity.closeInventory();
     }
 
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
