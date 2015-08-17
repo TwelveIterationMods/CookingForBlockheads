@@ -24,7 +24,7 @@ public class BlockFridge extends BlockContainer {
         super(Material.iron);
 
         setBlockName("cookingbook:fridge");
-        setCreativeTab(CreativeTabs.tabDecorations);
+        setCreativeTab(CookingBook.creativeTab);
         setStepSound(soundTypeMetal);
         setHardness(5f);
         setResistance(10f);

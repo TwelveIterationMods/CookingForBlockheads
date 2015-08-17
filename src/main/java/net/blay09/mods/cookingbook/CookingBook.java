@@ -12,6 +12,7 @@ import net.blay09.mods.cookingbook.block.BlockFridge;
 import net.blay09.mods.cookingbook.block.BlockSink;
 import net.blay09.mods.cookingbook.item.ItemRecipeBook;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 
@@ -23,6 +24,14 @@ public class CookingBook {
 	public static boolean enableCraftingBook;
 	public static boolean enableCookingTable;
 	public static boolean enableCookingOven;
+
+	public static CreativeTabs creativeTab = new CreativeTabs("cookingbook") {
+		@Override
+		public Item getTabIconItem() {
+			return itemRecipeBook;
+		}
+	};
+
 	public static Item itemRecipeBook = new ItemRecipeBook();
 	public static Block blockCookingTable = new BlockCookingTable();
 	public static Block blockCookingOven = new BlockCookingOven();

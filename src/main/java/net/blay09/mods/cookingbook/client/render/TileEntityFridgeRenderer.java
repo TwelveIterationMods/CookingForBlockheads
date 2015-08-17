@@ -39,11 +39,14 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
         }
 
         GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        boolean oldRescaleNormal = GL11.glIsEnabled(GL12.GL_RESCALE_NORMAL);
+        if(oldRescaleNormal) {
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        }
         GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
         GL11.glTranslatef((float) x, (float) y - 1f, (float) z);
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
-        float angle = 0;
+        float angle;
         switch(ForgeDirection.getOrientation(metadata)) {
             case NORTH:
                 angle = -90;
@@ -57,6 +60,8 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
             case WEST:
                 angle = 0;
                 break;
+            default:
+                angle = 180;
         }
         GL11.glRotatef(angle, 0f, 1f, 0f);
         if(isLargeFridge) {
@@ -67,7 +72,9 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
             bindTexture(textureSmall);
             modelSmall.renderAll();
         }
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        if(!oldRescaleNormal) {
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        }
         GL11.glPopMatrix();
         GL11.glColor4f(1f, 1f, 1f, 1f);
     }

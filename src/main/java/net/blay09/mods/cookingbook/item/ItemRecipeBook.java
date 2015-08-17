@@ -25,7 +25,7 @@ public class ItemRecipeBook extends Item {
 		setMaxStackSize(1);
 		setUnlocalizedName("cookingbook:recipebook_tier1");
 		setTextureName("cookingbook:recipebook_tier1");
-		setCreativeTab(CreativeTabs.tabTools);
+		setCreativeTab(CookingBook.creativeTab);
 		setHasSubtypes(true);
 	}
 

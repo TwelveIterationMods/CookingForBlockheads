@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingbook.block;
 
+import net.blay09.mods.cookingbook.CookingBook;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -15,7 +15,7 @@ public class BlockSink extends Block {
         super(Material.iron);
 
         setBlockName("cookingbook:sink");
-        setCreativeTab(CreativeTabs.tabDecorations);
+        setCreativeTab(CookingBook.creativeTab);
         setStepSound(soundTypeMetal);
         setHardness(5f);
         setResistance(10f);
