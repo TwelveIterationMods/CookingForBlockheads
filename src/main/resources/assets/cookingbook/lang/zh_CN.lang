@@ -16,7 +16,7 @@ cookingbook:recipebook_tier1.tooltipDesc=显示你背包食材能够烹饪的食
 cookingbook:recipebook_tier2.tooltip=合成书
 cookingbook:recipebook_tier2.tooltipDesc=能够使用背包食材合成食物.
 
-cookingbook:cookingtable.tooltip=Desc=能使用相邻容器食材合成食物.
+cookingbook:cookingtable.tooltipDesc=能使用相邻容器食材合成食物.
 cookingbook:cookingoven.tooltipDesc=能放置在烹饪桌旁使烹饪桌能烤制食物.
 
 cookingbook:sort_by_name.tooltip=按名称排列
