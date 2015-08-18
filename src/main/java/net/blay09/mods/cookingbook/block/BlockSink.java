@@ -52,9 +52,9 @@ public class BlockSink extends Block {
             ItemStack resultStack = SinkRecipes.getSinkOutput(player.getHeldItem());
             if(resultStack != null) {
                 if(player.getHeldItem().stackSize <= 1) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, resultStack);
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, resultStack.copy());
                 } else {
-                    if(player.inventory.addItemStackToInventory(resultStack)) {
+                    if(player.inventory.addItemStackToInventory(resultStack.copy())) {
                         player.getHeldItem().stackSize--;
                     }
                 }
