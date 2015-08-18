@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.block;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemFood;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCookingOven extends TileEntity implements ISidedInventory {
@@ -20,10 +22,21 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     private static final int SLOT_CENTER_OFFSET = 7;
     private static final int COOK_TIME = 200;
 
-    private ItemStack[] inventory = new ItemStack[16];
+    private EntityItem[] renderItem = new EntityItem[4];
+    private ItemStack[] inventory = new ItemStack[20];
     public int furnaceBurnTime;
     public int currentItemBurnTime;
     public int[] slotCookTime = new int[9];
+
+    @Override
+    public void setWorldObj(World world) {
+        super.setWorldObj(world);
+
+        for(int i = 0; i < renderItem.length; i++) {
+            renderItem[i] = new EntityItem(world, 0, 0, 0);
+            renderItem[i].hoverStart = 0f;
+        }
+    }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
@@ -69,7 +82,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
     @Override
     public ItemStack decrStackSize(int i, int count) {
-        if (i >= SLOT_CENTER_OFFSET) {
+        if (i >= SLOT_CENTER_OFFSET && i < SLOT_CENTER_OFFSET + 9) {
             slotCookTime[i - SLOT_CENTER_OFFSET] = 0;
         }
         if (inventory[i] != null) {
@@ -92,6 +105,9 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     @Override
     public void setInventorySlotContents(int i, ItemStack itemStack) {
         inventory[i] = itemStack;
+        if(i >= 16 && i < 20) {
+            renderItem[i - 16].setEntityItemStack(itemStack);
+        }
     }
 
     @Override
@@ -330,5 +346,9 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
     public float getCookProgress(int i) {
         return (float) slotCookTime[i] / (float) COOK_TIME;
+    }
+
+    public EntityItem getRenderItem(int i) {
+        return renderItem[i];
     }
 }

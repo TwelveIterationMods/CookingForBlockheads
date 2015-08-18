@@ -26,14 +26,21 @@ public class ContainerCookingOven extends Container {
         for(int i = 0; i < 3; i++) {
             addSlotToContainer(new SlotOvenInput(tileEntity, i, 62 + i * 18, 19));
         }
+
         addSlotToContainer(new SlotOvenFuel(tileEntity, 3, 39, 59));
+
         for(int i = 0; i < 3; i++) {
             addSlotToContainer(new SlotOvenResult(tileEntity, i + 4, 120, 41 + i * 18));
         }
+
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 addSlotToContainer(new SlotOven(tileEntity, 7 + j + i * 3, 62 + j * 18, 41 + i * 18));
             }
+        }
+
+        for(int i = 0; i < 4; i++) {
+            addSlotToContainer(new SlotOvenTool(tileEntity, 16 + i, -14, 19 + i * 18));
         }
 
         for(int i = 0; i < 3; i++) {
@@ -106,16 +113,16 @@ public class ContainerCookingOven extends Container {
             ItemStack slotStack = slot.getStack();
             itemStack = slotStack.copy();
 
-            if (slotIndex >= 7 && slotIndex <= 16) {
-                if (!mergeItemStack(slotStack, 17, 52, true)) {
+            if (slotIndex >= 7 && slotIndex <= 20) {
+                if (!mergeItemStack(slotStack, 21, 56, true)) {
                     return null;
                 }
                 slot.onSlotChange(slotStack, itemStack);
             } else if(slotIndex >= 4 && slotIndex <= 6) {
-                if (!this.mergeItemStack(slotStack, 17, 52, false)) {
+                if (!this.mergeItemStack(slotStack, 21, 56, false)) {
                     return null;
                 }
-            } else if (slotIndex > 16) {
+            } else if (slotIndex > 20) {
                 ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(slotStack);
                 if (TileEntityFurnace.isItemFuel(slotStack)) {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
@@ -125,14 +132,14 @@ public class ContainerCookingOven extends Container {
                     if (!this.mergeItemStack(slotStack, 0, 3, false)) {
                         return null;
                     }
-                } else if (slotIndex >= 17 && slotIndex < 45) {
-                    if (!this.mergeItemStack(slotStack, 45, 52, false)) {
+                } else if (slotIndex >= 21 && slotIndex < 49) {
+                    if (!this.mergeItemStack(slotStack, 49, 56, false)) {
                         return null;
                     }
-                } else if (slotIndex >= 45 && slotIndex < 52 && !this.mergeItemStack(slotStack, 17, 45, false)) {
+                } else if (slotIndex >= 49 && slotIndex < 56 && !this.mergeItemStack(slotStack, 21, 49, false)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(slotStack, 17, 45, false)) {
+            } else if (!this.mergeItemStack(slotStack, 21, 49, false)) {
                 return null;
             }
 

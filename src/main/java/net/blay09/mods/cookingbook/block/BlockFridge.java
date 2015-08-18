@@ -78,13 +78,13 @@ public class BlockFridge extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityFridge();
+    public int getRenderType() {
+        return FridgeBlockRenderer.RENDER_ID;
     }
 
     @Override
-    public int getRenderType() {
-        return FridgeBlockRenderer.RENDER_ID;
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        return new TileEntityFridge();
     }
 
     @Override

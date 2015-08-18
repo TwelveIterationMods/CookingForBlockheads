@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.addon.VanillaAddon;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
+import net.blay09.mods.cookingbook.block.TileEntitySink;
 import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.item.ItemBlockCookingOven;
@@ -32,6 +33,7 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileEntityCookingOven.class, "cookingbook:cookingoven");
 		GameRegistry.registerTileEntity(TileEntityFridge.class, "cookingbook:fridge");
 		GameRegistry.registerTileEntity(TileEntityToolRack.class, "cookingbook:toolrack");
+		GameRegistry.registerTileEntity(TileEntitySink.class, "cookingbook:sink");
 
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 3), Items.book, Items.painting);
 		FurnaceRecipes.smelting().func_151396_a(Items.book, new ItemStack(CookingBook.itemRecipeBook), 0f);

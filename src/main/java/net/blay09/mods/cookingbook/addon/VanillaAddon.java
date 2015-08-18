@@ -7,7 +7,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
-import org.omg.IOP.TaggedComponent;
 
 public class VanillaAddon {
 
@@ -20,7 +19,6 @@ public class VanillaAddon {
                 return result;
             }
         };
-        CookingAPI.addSinkHandler(new ItemStack(Items.potionitem, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
         CookingAPI.addSinkHandler(new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
         CookingAPI.addSinkHandler(new ItemStack(Blocks.carpet, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
         SinkHandler armorHandler = new SinkHandler() {
@@ -38,6 +36,20 @@ public class VanillaAddon {
         CookingAPI.addSinkHandler(new ItemStack(Items.leather_chestplate, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
         CookingAPI.addSinkHandler(new ItemStack(Items.leather_helmet, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
         CookingAPI.addSinkHandler(new ItemStack(Items.leather_leggings, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
+
+        CookingAPI.addSinkHandler(new ItemStack(Items.milk_bucket), new SinkHandler() {
+            @Override
+            public ItemStack getSinkOutput(ItemStack itemStack) {
+                return new ItemStack(Items.bucket, 1);
+            }
+        });
+
+        CookingAPI.addSinkHandler(new ItemStack(Items.potionitem, 1, OreDictionary.WILDCARD_VALUE), new SinkHandler() {
+            @Override
+            public ItemStack getSinkOutput(ItemStack itemStack) {
+                return new ItemStack(Items.glass_bottle, 1);
+            }
+        });
     }
 
 }

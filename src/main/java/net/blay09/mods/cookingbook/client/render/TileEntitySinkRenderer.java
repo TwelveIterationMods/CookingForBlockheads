@@ -1,25 +1,21 @@
 package net.blay09.mods.cookingbook.client.render;
 
-import net.blay09.mods.cookingbook.block.TileEntityToolRack;
-import net.blay09.mods.cookingbook.client.model.ModelToolRack;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.blay09.mods.cookingbook.client.model.ModelSink;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileEntityToolRackRenderer extends TileEntitySpecialRenderer {
+public class TileEntitySinkRenderer extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation texture = new ResourceLocation("cookingbook", "textures/entity/ModelToolRack-texture.png");
+    private static final ResourceLocation texture = new ResourceLocation("cookingbook", "textures/entity/ModelSink.png");
 
-    private ModelToolRack model = new ModelToolRack();
+    private ModelSink model = new ModelSink();
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float delta) {
-        TileEntityToolRack tileEntityToolRack = (TileEntityToolRack) tileEntity;
         int metadata = 0;
         if(tileEntity.hasWorldObj()) {
             metadata = tileEntity.getBlockMetadata();
@@ -30,7 +26,7 @@ public class TileEntityToolRackRenderer extends TileEntitySpecialRenderer {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
         GL11.glColor4f(1f, 1f, 1f, 1f);
-        GL11.glTranslatef((float) x, (float) y - 0.5f, (float) z);
+        GL11.glTranslatef((float) x, (float) y + 1f, (float) z);
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         float angle;
         switch(ForgeDirection.getOrientation(metadata)) {
@@ -50,14 +46,9 @@ public class TileEntityToolRackRenderer extends TileEntitySpecialRenderer {
                 angle = 180;
         }
         GL11.glRotatef(angle, 0f, 1f, 0f);
+        GL11.glRotatef(180f, 0f, 0f, 1f);
         bindTexture(texture);
         model.renderAll();
-        if(tileEntityToolRack.getStackInSlot(0) != null) {
-            RenderManager.instance.renderEntityWithPosYaw(tileEntityToolRack.getRenderItem(0), 0.25d, 0.3d, 0.4d, 0f, 0f);
-        }
-        if(tileEntityToolRack.getStackInSlot(1) != null) {
-            RenderManager.instance.renderEntityWithPosYaw(tileEntityToolRack.getRenderItem(1), -0.25d, 0.3d, 0.4d, 0f, 0f);
-        }
         if(!oldRescaleNormal) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         }

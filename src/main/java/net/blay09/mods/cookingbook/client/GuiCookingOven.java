@@ -32,6 +32,7 @@ public class GuiCookingOven extends GuiContainer {
         mc.getTextureManager().bindTexture(texture);
 
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        drawTexturedModalRect(guiLeft - 22, guiTop + 10, 176, 30, 25, 87);
 
         if(tileEntity.isBurning()) {
             int burnTime = (int) (12 * tileEntity.getBurnTimeProgress());
