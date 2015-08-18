@@ -58,6 +58,10 @@ artifacts {
     archives jarDev
 }
 
+configurations {
+    deployerJars
+}
+
 dependencies {
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
