@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL12;
 public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation textureSmall = new ResourceLocation("cookingbook", "textures/entity/ModelSmallFridge.png");
-    private static final ResourceLocation textureBig = new ResourceLocation("cookingbook", "textures/entity/ModelFridge-texture.png");
+    private static final ResourceLocation textureBig = new ResourceLocation("cookingbook", "textures/entity/ModelFridge.png");
 
     private ModelFridge modelBig = new ModelFridge();
     private ModelSmallFridge modelSmall = new ModelSmallFridge();
@@ -46,7 +46,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
         if(oldRescaleNormal) {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
-        GL11.glTranslatef((float) x, (float) y + (isLargeFridge ? -1f : 1f), (float) z);
+        GL11.glTranslatef((float) x, (float) y + 1f, (float) z);
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         float angle;
         switch(ForgeDirection.getOrientation(metadata)) {
@@ -65,24 +65,61 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
             default:
                 angle = -90;
         }
+        GL11.glColor4f(1f, 1f, 1f, 1f);
         GL11.glRotatef(angle, 0f, 1f, 0f);
+        GL11.glRotatef(180f, 0f, 0f, 1f);
+        float doorAngle = tileEntityFridge.getPrevDoorAngle() + (tileEntityFridge.getDoorAngle() - tileEntityFridge.getPrevDoorAngle()) * delta;
+        doorAngle = 1.0f - doorAngle;
+        doorAngle = 1.0f - doorAngle * doorAngle * doorAngle;
         if(isLargeFridge) {
-            GL11.glTranslatef(0, 1f, 0);
+            TileEntityFridge neighbourFridge = tileEntityFridge.getNeighbourFridge();
+            if(neighbourFridge != null) {
+                float neighbourDoorAngle = neighbourFridge.getPrevDoorAngle() + (neighbourFridge.getDoorAngle() - neighbourFridge.getPrevDoorAngle()) * delta;
+                if(neighbourDoorAngle > doorAngle) {
+                    doorAngle = neighbourDoorAngle;
+                }
+            }
+            modelBig.Door.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+            modelBig.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
             bindTexture(textureBig);
-            modelBig.renderAll();
+            modelBig.renderUncolored();
+            GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
+            modelBig.renderColored();
+            if(doorAngle > 0f) {
+                GL11.glRotatef(180f, 0f, 0f, -1f);
+                GL11.glScalef(0.5f, 0.5f, 0.5f);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
+                    ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
+                    if(itemStack != null) {
+                        int shelfCapacity = tileEntityFridge.getSizeInventory() / 3;
+                        int relSlot = i % shelfCapacity;
+                        float itemX = Math.min(8f / 9f, (float) (relSlot % 9) / 9f);
+                        float itemY;
+                        if(i >= shelfCapacity * 2) {
+                            itemY = -0.75f;
+                        } else if(i >= shelfCapacity) {
+                            itemY = 0.125f;
+                        } else {
+                            itemY = -1.625f;
+                        }
+                        float itemZ = (relSlot < 9) ? 0f : -0.5f;
+                        if(relSlot % 2 == 0) {
+                            itemZ -= 0.1f;
+                        }
+                        tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
+                        RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, itemY, 0.5f + itemZ, 0f, 0f);
+                    }
+                }
+            }
         } else {
-            GL11.glRotatef(180f, 0f, 0f, 1f);
+            modelSmall.Door.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+            modelSmall.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
             bindTexture(textureSmall);
-            GL11.glColor4f(1f, 1f, 1f, 1f);
-            float f = tileEntityFridge.getPrevDoorAngle() + (tileEntityFridge.getDoorAngle() - tileEntityFridge.getPrevDoorAngle()) * delta;
-            f = 1.0F - f;
-            f = 1.0F - f * f * f;
-            modelSmall.Door.rotateAngleY = (float) ((Math.PI / 2f) * f);
-            modelSmall.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * f);
             modelSmall.renderUncolored();
             GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
             modelSmall.renderColored();
-            if(f > 0f) {
+            if(doorAngle > 0f) {
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
                 GL11.glColor4f(1f, 1f, 1f, 1f);

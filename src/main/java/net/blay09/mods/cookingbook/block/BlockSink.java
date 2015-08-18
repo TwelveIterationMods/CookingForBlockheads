@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.SinkRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,6 +48,18 @@ public class BlockSink extends Block {
                 }
             }
             return true;
+        } else {
+            ItemStack resultStack = SinkRecipes.getSinkOutput(player.getHeldItem());
+            if(resultStack != null) {
+                if(player.getHeldItem().stackSize <= 1) {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, resultStack);
+                } else {
+                    if(player.inventory.addItemStackToInventory(resultStack)) {
+                        player.getHeldItem().stackSize--;
+                    }
+                }
+                return true;
+            }
         }
         return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
     }

@@ -48,7 +48,7 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     @Override
     public int getSizeInventory() {
-        return inventory.length + (neighbourFridge != null ? neighbourFridge.getSizeInventory() : 0);
+        return inventory.length + (neighbourFridge != null ? neighbourFridge.inventory.length : 0);
     }
 
     @Override

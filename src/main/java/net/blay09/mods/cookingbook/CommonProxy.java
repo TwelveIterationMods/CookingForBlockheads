@@ -5,6 +5,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.blay09.mods.cookingbook.addon.VanillaAddon;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.block.TileEntityToolRack;
@@ -50,5 +51,7 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 		FoodRegistry.init();
+
+		new VanillaAddon();
 	}
 }

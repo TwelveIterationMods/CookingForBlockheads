@@ -6,6 +6,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.blay09.mods.cookingbook.api.CookingAPI;
 import net.blay09.mods.cookingbook.block.*;
 import net.blay09.mods.cookingbook.item.ItemRecipeBook;
 import net.minecraft.block.Block;
@@ -44,6 +45,8 @@ public class CookingBook {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		CookingAPI.setupAPI(new InternalMethods());
+
 		proxy.preInit(event);
 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
