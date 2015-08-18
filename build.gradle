@@ -59,6 +59,7 @@ artifacts {
 }
 
 dependencies {
+    deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 
 idea {
