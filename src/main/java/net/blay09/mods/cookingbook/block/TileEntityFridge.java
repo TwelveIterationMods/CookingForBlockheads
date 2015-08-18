@@ -34,6 +34,7 @@ public class TileEntityFridge extends TileEntity implements IInventory {
         super.setWorldObj(world);
 
         renderItem = new EntityItem(world, 0, 0, 0);
+        renderItem.hoverStart = 0f;
     }
 
     public void findNeighbourFridge() {
@@ -161,8 +162,8 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     @Override
     public void closeInventory() {
-        numPlayersUsing--;
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
+//        numPlayersUsing--;
+//        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
     }
 
     @Override
@@ -176,7 +177,7 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1);
+        return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
     }
 
     public void setFridgeColor(int fridgeColor) {

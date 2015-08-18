@@ -10,8 +10,8 @@ public class CookingAPI {
         CookingAPI.internalMethods = internalMethods;
     }
 
-    public static void addSinkRecipe(ItemStack itemStackIn, ItemStack itemStackOut) {
-        internalMethods.addSinkRecipe(itemStackIn, itemStackOut);
+    public static void addSinkHandler(ItemStack itemStack, SinkHandler sinkHandler) {
+        internalMethods.addSinkHandler(itemStack, sinkHandler);
     }
 
 }

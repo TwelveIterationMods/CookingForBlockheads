@@ -178,18 +178,22 @@ public class ModelFridge extends ModelBase {
         modelRenderer.rotateAngleZ = z;
     }
 
+    public void renderInterior() {
+        float f5 = 0.0625f;
+        this.FreezerMiddle.render(f5);
+        this.FreezerTop.render(f5);
+        this.MiddleShelf.render(f5);
+        this.TopShelf.render(f5);
+    }
+
     public void renderUncolored() {
         float f5 = 0.0625f;
         this.BottemHinge.render(f5);
         this.LeftSeal.render(f5);
         this.TopHinge.render(f5);
-        this.MiddleShelf.render(f5);
-        this.TopShelf.render(f5);
         this.BottemSeal.render(f5);
         this.RightSeal.render(f5);
-        this.FreezerMiddle.render(f5);
         this.TopSeal.render(f5);
-        this.FreezerTop.render(f5);
         this.DoorHandle.render(f5);
     }
 

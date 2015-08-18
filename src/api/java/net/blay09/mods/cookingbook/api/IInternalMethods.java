@@ -4,6 +4,6 @@ import net.minecraft.item.ItemStack;
 
 public interface IInternalMethods {
 
-    void addSinkRecipe(ItemStack itemStackIn, ItemStack itemStackOut);
+    void addSinkHandler(ItemStack itemStack, SinkHandler sinkHandler);
 
 }

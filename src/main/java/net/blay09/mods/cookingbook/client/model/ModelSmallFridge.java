@@ -124,9 +124,13 @@ public class ModelSmallFridge extends ModelBase {
         modelRenderer.rotateAngleZ = z;
     }
 
-    public void renderUncolored() {
+    public void renderInterior() {
         float f5 = 0.0625f;
         this.Shelf.render(f5);
+    }
+
+    public void renderUncolored() {
+        float f5 = 0.0625f;
         this.PlugThingy.render(f5);
         this.LeftSeal.render(f5);
         this.RightSeal.render(f5);

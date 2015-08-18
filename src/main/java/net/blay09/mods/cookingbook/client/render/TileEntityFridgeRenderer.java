@@ -86,9 +86,10 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
             GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
             modelBig.renderColored();
             if(doorAngle > 0f) {
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                modelBig.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                GL11.glColor4f(1f, 1f, 1f, 1f);
                 for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
                     ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
                     if(itemStack != null) {
@@ -108,7 +109,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                             itemZ -= 0.1f;
                         }
                         tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
-                        RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, itemY, 0.5f + itemZ, 0f, 0f);
+                        RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, itemY, 0.5f + itemZ, 0f, 5f);
                     }
                 }
             }
@@ -120,9 +121,10 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
             GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
             modelSmall.renderColored();
             if(doorAngle > 0f) {
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                modelSmall.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                GL11.glColor4f(1f, 1f, 1f, 1f);
                 for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
                     ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
                     if(itemStack != null) {

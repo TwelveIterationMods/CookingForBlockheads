@@ -1,11 +1,12 @@
 package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
-import net.blay09.mods.cookingbook.SinkRecipes;
+import net.blay09.mods.cookingbook.SinkHandlers;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,13 +50,17 @@ public class BlockSink extends Block {
             }
             return true;
         } else {
-            ItemStack resultStack = SinkRecipes.getSinkOutput(player.getHeldItem());
+            ItemStack resultStack = SinkHandlers.getSinkOutput(player.getHeldItem());
             if(resultStack != null) {
-                if(player.getHeldItem().stackSize <= 1) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, resultStack.copy());
+                ItemStack oldItem = player.getHeldItem();
+                NBTTagCompound tagCompound = oldItem.getTagCompound();
+                ItemStack newItem = resultStack.copy();
+                newItem.setTagCompound(tagCompound);
+                if(oldItem.stackSize <= 1) {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItem);
                 } else {
-                    if(player.inventory.addItemStackToInventory(resultStack.copy())) {
-                        player.getHeldItem().stackSize--;
+                    if(player.inventory.addItemStackToInventory(newItem)) {
+                        oldItem.stackSize--;
                     }
                 }
                 return true;
