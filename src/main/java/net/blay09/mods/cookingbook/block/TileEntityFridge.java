@@ -162,8 +162,8 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     @Override
     public void closeInventory() {
-//        numPlayersUsing--;
-//        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
+        numPlayersUsing--;
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
     }
 
     @Override

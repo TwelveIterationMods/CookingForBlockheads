@@ -16,7 +16,7 @@ public class ContainerFridge extends Container {
         this.tileEntity = tileEntity;
 
         int numRows = 3;
-        if(tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord) == CookingBook.blockFridge || tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord) == CookingBook.blockFridge) {
+        if (tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord) == CookingBook.blockFridge || tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord) == CookingBook.blockFridge) {
             numRows = 6;
         }
         int playerInventoryStart = numRows * 18;
@@ -27,13 +27,13 @@ public class ContainerFridge extends Container {
             }
         }
 
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 9; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 31 + i * 18 + playerInventoryStart));
             }
         }
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 89 + playerInventoryStart));
         }
 
@@ -47,37 +47,32 @@ public class ContainerFridge extends Container {
     }
 
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+        ItemStack itemStack = null;
+        Slot slot = (Slot) inventorySlots.get(slotIndex);
 
-        if (slot != null && slot.getHasStack())
-        {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
+        int numRows = 3;
+        if (tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord) == CookingBook.blockFridge || tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord) == CookingBook.blockFridge) {
+            numRows = 6;
+        }
 
-            if (slotIndex < 6 * 9)
-            {
-                if (!this.mergeItemStack(itemstack1, 6 * 9, this.inventorySlots.size(), true))
-                {
+        if (slot != null && slot.getHasStack()) {
+            ItemStack slotStack = slot.getStack();
+            itemStack = slotStack.copy();
+            if (slotIndex < numRows * 9) {
+                if (!this.mergeItemStack(slotStack, numRows * 9, inventorySlots.size(), true)) {
                     return null;
                 }
-            }
-            else if (!this.mergeItemStack(itemstack1, 0, 6 * 9, false))
-            {
+            } else if (!this.mergeItemStack(slotStack, 0, numRows * 9, false)) {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0)
-            {
-                slot.putStack((ItemStack)null);
-            }
-            else
-            {
+            if (slotStack.stackSize == 0) {
+                slot.putStack(null);
+            } else {
                 slot.onSlotChanged();
             }
         }
-
-        return itemstack;
+        return itemStack;
     }
 
     @Override
