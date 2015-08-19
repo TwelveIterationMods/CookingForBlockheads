@@ -4,8 +4,15 @@ item.cookingbook:recipebook_tier2.name=傻瓜烹饪手册II
 
 tile.cookingbook:cookingtable.name=烹饪桌
 tile.cookingbook:cookingoven.name=烤箱
+tile.cookingbook:fridge.name=冰箱
+tile.cookingbook:sink.name=水槽
+tile.cookingbook:toolrack.name=厨具架
 
 container.cookingbook:cookingoven=烤箱
+container.cookingbook:fridge=冰箱
+container.cookingbook:toolrack=厨具架
+
+itemGroup.cookingbook=Cooking for Blockheads
 
 cookingbook:recipebook_tier0.tooltip=#无过滤版
 cookingbook:recipebook_tier0.tooltipDesc=显示所有的食谱.
