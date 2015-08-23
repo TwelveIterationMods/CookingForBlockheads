@@ -109,21 +109,21 @@ public class FoodRegistry {
         return foodItems.values();
     }
 
-    public static boolean isAvailableFor(FoodIngredient[] craftMatrix, IInventory[] inventories) {
+    public static boolean isAvailableFor(List<FoodIngredient> craftMatrix, IInventory[] inventories) {
         int[][] usedStackSize = new int[inventories.length][];
         for(int i = 0; i < usedStackSize.length; i++) {
             usedStackSize[i] = new int[inventories[i].getSizeInventory()];
         }
-        boolean[] itemFound = new boolean[craftMatrix.length];
-        for(int i = 0; i < craftMatrix.length; i++) {
-            if(craftMatrix[i] == null || craftMatrix[i].isToolItem()) {
+        boolean[] itemFound = new boolean[craftMatrix.size()];
+        for(int i = 0; i < craftMatrix.size(); i++) {
+            if(craftMatrix.get(i) == null || craftMatrix.get(i).isToolItem()) {
                 itemFound[i] = true;
                 continue;
             }
             for(int j = 0; j < inventories.length; j++) {
                 for (int k = 0; k < inventories[j].getSizeInventory(); k++) {
                     ItemStack itemStack = inventories[j].getStackInSlot(k);
-                    if (itemStack != null && craftMatrix[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
+                    if (itemStack != null && craftMatrix.get(i).isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
                         usedStackSize[j][k]++;
                         itemFound[i] = true;
                         break;
