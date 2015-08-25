@@ -114,20 +114,20 @@ public class ContainerRecipeBook extends Container {
 						previewSlot.updateVisibleStacks();
 					}
 				}
-				craftMatrixSlots[4].setIngredient(recipe.getCraftMatrix()[0]);
+				craftMatrixSlots[4].setIngredient(recipe.getCraftMatrix().get(0));
 				craftMatrixSlots[4].setEnabled(true);
 				if(!isClientSide) {
 					craftMatrixSlots[4].updateVisibleStacks();
 				}
 			} else {
 				int offset = 0;
-				if (recipe.getCraftMatrix().length <= 3) {
+				if (recipe.getCraftMatrix().size() <= 3) {
 					offset += 3;
 				}
 				for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
 					int recipeIdx = i - offset;
-					if (recipeIdx >= 0 && recipeIdx < recipe.getCraftMatrix().length) {
-						craftMatrixSlots[i].setIngredient(recipe.getCraftMatrix()[recipeIdx]);
+					if (recipeIdx >= 0 && recipeIdx < recipe.getCraftMatrix().size()) {
+						craftMatrixSlots[i].setIngredient(recipe.getCraftMatrix().get(recipeIdx));
 					} else {
 						craftMatrixSlots[i].setIngredient(null);
 					}
@@ -229,7 +229,7 @@ public class ContainerRecipeBook extends Container {
 			for(int j = 0; j < sourceInventories[i].getSizeInventory(); j++) {
 				ItemStack itemStack = sourceInventories[i].getStackInSlot(j);
 				if(itemStack != null) {
-					for (ItemStack ingredientStack : recipe.getCraftMatrix()[0].getItemStacks()) {
+					for (ItemStack ingredientStack : recipe.getCraftMatrix().get(0).getItemStacks()) {
 						if (FoodRegistry.areItemStacksEqualForCrafting(itemStack, ingredientStack)) {
 							int count = isShiftDown ? Math.min(itemStack.stackSize, ingredientStack.getMaxStackSize()) : 1;
 							TileEntityCookingOven tileEntity = findCookingOven();
