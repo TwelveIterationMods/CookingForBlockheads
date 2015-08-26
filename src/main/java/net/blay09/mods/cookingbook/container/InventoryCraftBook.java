@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import java.util.List;
+
 public class InventoryCraftBook extends InventoryCrafting {
 
     private final int[] sourceInventories = new int[9];
@@ -31,7 +33,7 @@ public class InventoryCraftBook extends InventoryCrafting {
     }
 
     public IRecipe prepareRecipe(EntityPlayer player, FoodRecipe recipe) {
-        FoodIngredient[] ingredients = recipe.getCraftMatrix();
+        List<FoodIngredient> ingredients = recipe.getCraftMatrix();
         int[][] usedStackSize = new int[inventories.length][];
         for(int i = 0; i < usedStackSize.length; i++) {
             usedStackSize[i] = new int[inventories[i].getSizeInventory()];
@@ -41,12 +43,12 @@ public class InventoryCraftBook extends InventoryCrafting {
             sourceInventories[i] = -1;
             sourceInventorySlots[i] = -1;
         }
-        for(int i = 0; i < ingredients.length; i++) {
-            if(ingredients[i] != null) {
+        for(int i = 0; i < ingredients.size(); i++) {
+            if(ingredients.get(i) != null) {
                 for(int j = 0; j < inventories.length; j++) {
                     for (int k = 0; k < inventories[j].getSizeInventory(); k++) {
                         ItemStack itemStack = inventories[j].getStackInSlot(k);
-                        if (itemStack != null && ingredients[i].isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
+                        if (itemStack != null && ingredients.get(i).isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
                             usedStackSize[j][k]++;
                             setInventorySlotContents(i, itemStack);
                             sourceInventories[i] = j;

@@ -226,9 +226,12 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                     for (int j : slotsBottom) {
                         ItemStack slotStack = getStackInSlot(j);
                         if (slotStack != null && slotStack.getItem() == transferStack.getItem()) {
-                            firstResultSlot = j;
                             resultSpaceLeft = slotStack.getMaxStackSize() - slotStack.stackSize;
-                            break;
+
+                            if (resultSpaceLeft > 0) {
+                                firstResultSlot = j;
+                                break;
+                            }
                         }
                     }
                     if (firstResultSlot == -1) {
