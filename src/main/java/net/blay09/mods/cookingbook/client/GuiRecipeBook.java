@@ -1,5 +1,7 @@
 package net.blay09.mods.cookingbook.client;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.container.*;
 import net.blay09.mods.cookingbook.network.MessageSort;
@@ -16,8 +18,10 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import yalter.mousetweaks.api.IMTModGuiContainer;
 
-public class GuiRecipeBook extends GuiContainer {
+@Optional.Interface(modid = "MouseTweaks", iface = "yalter.mousetweaks.api.IMTModGuiContainer", striprefs = true)
+public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 	private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
 	private static final int SCROLLBAR_Y = 8;
@@ -276,4 +280,54 @@ public class GuiRecipeBook extends GuiContainer {
 		return func_146978_c(slotIn.xDisplayPosition, slotIn.yDisplayPosition, 16, 16, mouseX, mouseY);
 	}
 
+	@Override
+	public int getAPIVersion() {
+		return 1;
+	}
+
+	@Override
+	public String getModName() {
+		return "Cooking for Blockheads";
+	}
+
+	@Override
+	public boolean isMouseTweaksDisabled() {
+		return true;
+	}
+
+	@Override
+	public boolean isWheelTweakDisabled() {
+		return true;
+	}
+
+	@Override
+	public boolean isCraftingOutputSlot(Object o, Object o1) {
+		return false;
+	}
+
+	@Override
+	public Object getModContainer() {
+		return inventorySlots;
+	}
+
+	@Override
+	public int getModSlotCount(Object o) {
+		return inventorySlots.inventorySlots.size();
+	}
+
+	@Override
+	public Object getModSlot(Object o, int i) {
+		return inventorySlots.getSlot(i);
+	}
+
+	@Override
+	public Object getModSelectedSlot(Object o, int i) {
+		return null;
+	}
+
+	@Override
+	public void clickModSlot(Object o, Object o1, int i, boolean b) {}
+
+	@Override
+	public void disableRMBDragIfRequired(Object o, Object o1, boolean b) {}
 }

@@ -63,23 +63,32 @@ artifacts {
 
 configurations {
     deployerJars
+    provided
 }
+
+sourceSets.main.compileClasspath += [configurations.provided]
 
 repositories {
     ivy {
         name "MineTweaker"
         artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
     }
+    ivy {
+        name "MouseTweaks"
+        artifactPattern "http://addons-origin.cursecdn.com/files/2209/265/[module]-[revision](-[classifier]).[ext]"
+    }
 }
 
 dependencies {
     compile name: "MineTweaker3", version: "1.7.10-3.0.9C", classifier: "Dev", ext: "jar"
+    provided name: "MouseTweaks", version: "2.4.4-mc1.7.10", ext: "jar"
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 
 idea {
     module {
         inheritOutputDirs = true;
+        scopes.PROVIDED.plus += [configurations.provided]
     }
 }
 
