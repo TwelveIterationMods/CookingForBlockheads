@@ -1,11 +1,14 @@
 package net.blay09.mods.cookingbook.addon;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.api.CookingAPI;
+import net.blay09.mods.cookingbook.api.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.SinkHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class VanillaAddon {
@@ -50,6 +53,13 @@ public class VanillaAddon {
                 return new ItemStack(Items.glass_bottle, 1);
             }
         });
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
+    @SubscribeEvent
+    public void onFoodRegistryInit(FoodRegistryInitEvent event) {
+        event.registerNonFoodRecipe(new ItemStack(Items.cake));
+        event.registerNonFoodRecipe(new ItemStack(Items.sugar));
+    }
 }

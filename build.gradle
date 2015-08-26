@@ -23,6 +23,9 @@ buildscript {
 apply plugin: 'forge'
 apply plugin: 'maven'
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 version = "1.0." + BUILD_NUMBER
 group= "net.blay09.mods"
 archivesBaseName = "cookingbook"
@@ -62,7 +65,15 @@ configurations {
     deployerJars
 }
 
+repositories {
+    ivy {
+        name "MineTweaker"
+        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
+    }
+}
+
 dependencies {
+    compile name: "MineTweaker3", version: "1.7.10-3.0.9C", classifier: "Dev", ext: "jar"
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 

@@ -5,6 +5,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.blay09.mods.cookingbook.addon.HarvestCraftAddon;
+import net.blay09.mods.cookingbook.addon.MineTweakerAddon;
 import net.blay09.mods.cookingbook.addon.VanillaAddon;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
@@ -52,8 +54,10 @@ public class CommonProxy {
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
-		FoodRegistry.init();
-
 		new VanillaAddon();
+		//event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingbook.addon.MineTweakerAddon");
+		event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
+
+		FoodRegistry.init();
 	}
 }

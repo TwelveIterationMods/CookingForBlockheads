@@ -1,13 +1,13 @@
 package net.blay09.mods.cookingbook;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.*;
 import net.blay09.mods.cookingbook.api.CookingAPI;
 import net.blay09.mods.cookingbook.block.*;
+import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.item.ItemRecipeBook;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -64,6 +64,13 @@ public class CookingBook {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
+	}
+
+	@EventHandler
+	public void serverStarted(FMLServerStartedEvent event) {
+		if(Loader.isModLoaded("MineTweaker3")) {
+			FoodRegistry.init();
+		}
 	}
 
 }

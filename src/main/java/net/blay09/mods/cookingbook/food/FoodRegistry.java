@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingbook.food;
 
 import com.google.common.collect.ArrayListMultimap;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.blay09.mods.cookingbook.api.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
 import net.blay09.mods.cookingbook.container.InventoryCraftBook;
 import net.blay09.mods.cookingbook.food.recipe.*;
@@ -12,6 +14,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -23,14 +26,17 @@ import java.util.Map;
 
 public class FoodRegistry {
 
-    private static final List<IRecipe> recipeList = new ArrayList<IRecipe>();
+    private static final List<IRecipe> recipeList = new ArrayList<>();
     private static final ArrayListMultimap<Item, FoodRecipe> foodItems = ArrayListMultimap.create();
 
     public static void init() {
-        List<ItemStack> additionalRecipes = new ArrayList<ItemStack>();
-        additionalRecipes.add(new ItemStack(Items.cake));
-        additionalRecipes.add(new ItemStack(Items.sugar));
-        PamsHarvestcraft.addAdditionalRecipes(additionalRecipes);
+        recipeList.clear();
+        foodItems.clear();
+
+        FoodRegistryInitEvent init = new FoodRegistryInitEvent();
+        MinecraftForge.EVENT_BUS.post(init);
+
+        Collection<ItemStack> nonFoodRecipes = init.getNonFoodRecipes();
 
         // Crafting Recipes of Food Items
         for(Object obj : CraftingManager.getInstance().getRecipeList()) {
@@ -43,7 +49,7 @@ public class FoodRegistry {
                     }
                     addFoodRecipe(recipe);
                 } else {
-                    for (ItemStack itemStack : additionalRecipes) {
+                    for (ItemStack itemStack : nonFoodRecipes) {
                         if (areItemStacksEqualForCrafting(recipe.getRecipeOutput(), itemStack)) {
                             addFoodRecipe(recipe);
                             break;
@@ -68,7 +74,7 @@ public class FoodRegistry {
             if(resultStack.getItem() instanceof ItemFood) {
                 foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
             } else {
-                for(ItemStack itemStack : additionalRecipes) {
+                for(ItemStack itemStack : nonFoodRecipes) {
                     if (areItemStacksEqualForCrafting(resultStack, itemStack)) {
                         foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
                         break;
