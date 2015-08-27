@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingbook.client;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.container.*;
@@ -218,7 +217,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
 		if(hoverSlot != null && hoverSlot instanceof SlotRecipe && event.itemStack == hoverSlot.getStack()) {
-			if(container.gotRecipeInfo() && container.canClickCraft(hoverSlot.getSlotIndex())) {
+			if(container.gotRecipeInfo() && container.canClickCraft((currentOffset * 3) + hoverSlot.getSlotIndex())) {
 				if (container.isMissingTools()) {
 					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_tools"));
 				} else {
@@ -228,7 +227,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 						event.toolTip.add("\u00a7a" + I18n.format("cookingbook:click_to_craft_one"));
 					}
 				}
-			} else if(container.gotRecipeInfo() && container.canClickSmelt(hoverSlot.getSlotIndex())) {
+			} else if(container.gotRecipeInfo() && container.canClickSmelt((currentOffset * 3) + hoverSlot.getSlotIndex())) {
 				if(container.isMissingOven()) {
 					event.toolTip.add("\u00a7c" + I18n.format("cookingbook:missing_oven"));
 				} else {

@@ -198,15 +198,15 @@ public class ContainerRecipeBook extends Container {
 		if(slotIdx > 0 && slotIdx < inventorySlots.size() && inventorySlots.get(slotIdx) instanceof SlotRecipe) {
 			SlotRecipe slot = (SlotRecipe) inventorySlots.get(slotIdx);
 			if (slot.getStack() != null) {
-				if(!isClientSide && canClickCraft(slot.getSlotIndex())) {
+				if(!isClientSide && canClickCraft((scrollOffset * 3) + slot.getSlotIndex())) {
 					tryCraft(player, currentRecipe, shiftClick);
 					return;
-				} else if(!isClientSide && !isMissingOven && canClickSmelt(slot.getSlotIndex())) {
+				} else if(!isClientSide && !isMissingOven && canClickSmelt((scrollOffset * 3) + slot.getSlotIndex())) {
 					trySmelt(player, currentRecipe, shiftClick);
 					return;
 				}
 				int oldSlotIndex = currentSlotIndex;
-				currentSlotIndex = scrollOffset + slot.getSlotIndex();
+				currentSlotIndex = (scrollOffset * 3) + slot.getSlotIndex();
 				if(oldSlotIndex != currentSlotIndex) {
 					if(!isClientSide) {
 						currentRecipeKey = recipeBook.getStackInSlot(slot.getSlotIndex()).toString();
@@ -477,7 +477,7 @@ public class ContainerRecipeBook extends Container {
 				}
 				hasVariants = currentRecipeList != null && currentRecipeList.size() > 1;
 				isMissingOven = findCookingOven() == null;
-				NetworkHandler.instance.sendTo(new MessageRecipeInfo(scrollOffset + currentSlotIndex, currentRecipe, isMissingTools, hasVariants, isMissingOven), (EntityPlayerMP) player);
+				NetworkHandler.instance.sendTo(new MessageRecipeInfo(currentSlotIndex, currentRecipe, isMissingTools, hasVariants, isMissingOven), (EntityPlayerMP) player);
 			}
 
 			if (isRecipeListDirty) {
