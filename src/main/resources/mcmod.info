@@ -7,8 +7,8 @@
   "mcversion": "${mcversion}",
   "url": "http://blay09.net",
   "updateUrl": "http://minecraft.curseforge.com/mc-mods/231484-cooking-for-blockheads",
-  "authorList": ["BlayTheNinth"],
-  "credits": "BlayTheNinth",
+  "authorList": ["BlayTheNinth", "ZeroTheShinigami"],
+  "credits": "BlayTheNinth (Code) and ZeroTheShinigami (Models)",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
