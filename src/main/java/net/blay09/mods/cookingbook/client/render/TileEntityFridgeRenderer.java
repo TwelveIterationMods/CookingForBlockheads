@@ -72,9 +72,9 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
         doorAngle = 1.0f - doorAngle;
         doorAngle = 1.0f - doorAngle * doorAngle * doorAngle;
         if(isLargeFridge) {
-            TileEntityFridge neighbourFridge = tileEntityFridge.getNeighbourFridge();
-            if(neighbourFridge != null) {
-                float neighbourDoorAngle = neighbourFridge.getPrevDoorAngle() + (neighbourFridge.getDoorAngle() - neighbourFridge.getPrevDoorAngle()) * delta;
+            TileEntityFridge upperFridge = tileEntityFridge.getNeighbourFridge();
+            if(upperFridge != null) {
+                float neighbourDoorAngle = upperFridge.getPrevDoorAngle() + (upperFridge.getDoorAngle() - upperFridge.getPrevDoorAngle()) * delta;
                 if(neighbourDoorAngle > doorAngle) {
                     doorAngle = neighbourDoorAngle;
                 }
@@ -90,22 +90,23 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 modelBig.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
-                    ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
-                    if(itemStack != null) {
-                        int shelfCapacity = tileEntityFridge.getSizeInventory() / 3;
+                int largeFridgeSize = tileEntityFridge.getSizeInventory() + (upperFridge != null ? upperFridge.getSizeInventory() : 0);
+                for (int i = 0; i < largeFridgeSize; i++) {
+                    ItemStack itemStack = (i >= tileEntityFridge.getSizeInventory() && upperFridge != null) ? upperFridge.getStackInSlot(i - tileEntityFridge.getSizeInventory()) : tileEntityFridge.getStackInSlot(i);
+                    if (itemStack != null) {
+                        int shelfCapacity = largeFridgeSize / 3;
                         int relSlot = i % shelfCapacity;
                         float itemX = Math.min(8f / 9f, (float) (relSlot % 9) / 9f);
                         float itemY;
-                        if(i >= shelfCapacity * 2) {
+                        if (i >= shelfCapacity * 2) {
                             itemY = -0.75f;
-                        } else if(i >= shelfCapacity) {
+                        } else if (i >= shelfCapacity) {
                             itemY = 0.125f;
                         } else {
                             itemY = -1.625f;
                         }
                         float itemZ = (relSlot < 9) ? 0f : -0.5f;
-                        if(relSlot % 2 == 0) {
+                        if (relSlot % 2 == 0) {
                             itemZ -= 0.1f;
                         }
                         tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);

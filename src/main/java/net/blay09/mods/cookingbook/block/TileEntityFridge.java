@@ -22,7 +22,6 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     private static final Random random = new Random();
 
     private ItemStack[] inventory = new ItemStack[27];
-    private TileEntityFridge neighbourFridge;
     private EntityItem renderItem;
     private int fridgeColor;
     private float prevDoorAngle;
@@ -37,52 +36,33 @@ public class TileEntityFridge extends TileEntity implements IInventory {
         renderItem.hoverStart = 0f;
     }
 
-    public void findNeighbourFridge() {
-        if(worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingBook.blockFridge) {
-            neighbourFridge = (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-        } else if(worldObj.getBlock(xCoord, yCoord - 1, zCoord) == CookingBook.blockFridge) {
-            neighbourFridge = (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
-        } else {
-            neighbourFridge = null;
-        }
-    }
-
     @Override
     public int getSizeInventory() {
-        return inventory.length + (neighbourFridge != null ? neighbourFridge.inventory.length : 0);
+        return inventory.length;
     }
 
     @Override
     public ItemStack getStackInSlot(int i) {
-        if(i < inventory.length) {
-            return inventory[i];
-        } else if(neighbourFridge != null) {
-            return neighbourFridge.getStackInSlot(i - inventory.length);
-        }
-        return null;
+        return inventory[i];
     }
 
     @Override
     public ItemStack decrStackSize(int i, int count) {
-        if(i < inventory.length) {
-            if(inventory[i] != null) {
-                ItemStack itemStack;
-                if (inventory[i].stackSize <= count) {
-                    itemStack = inventory[i];
+        if(inventory[i] != null) {
+            ItemStack itemStack;
+            if (inventory[i].stackSize <= count) {
+                itemStack = inventory[i];
+                inventory[i] = null;
+                markDirty();
+                return itemStack;
+            } else {
+                itemStack = inventory[i].splitStack(count);
+                if (inventory[i].stackSize == 0) {
                     inventory[i] = null;
-                    markDirty();
-                    return itemStack;
-                } else {
-                    itemStack = inventory[i].splitStack(count);
-                    if (inventory[i].stackSize == 0) {
-                        inventory[i] = null;
-                    }
-                    markDirty();
-                    return itemStack;
                 }
+                markDirty();
+                return itemStack;
             }
-        } else if(neighbourFridge != null) {
-            return neighbourFridge.decrStackSize(i - inventory.length, count);
         }
         return null;
     }
@@ -101,11 +81,7 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     @Override
     public void setInventorySlotContents(int i, ItemStack itemStack) {
-        if(i < inventory.length) {
-            inventory[i] = itemStack;
-        } else if(neighbourFridge != null) {
-            neighbourFridge.setInventorySlotContents(i - inventory.length, itemStack);
-        }
+        inventory[i] = itemStack;
     }
 
     @Override
@@ -171,10 +147,6 @@ public class TileEntityFridge extends TileEntity implements IInventory {
         return true;
     }
 
-    public boolean isLargeFridge() {
-        return neighbourFridge != null;
-    }
-
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
@@ -234,7 +206,12 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     }
 
     public TileEntityFridge getNeighbourFridge() {
-        return neighbourFridge;
+        if(worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingBook.blockFridge) {
+            return (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+        } else if(worldObj.getBlock(xCoord, yCoord - 1, zCoord) == CookingBook.blockFridge) {
+            return (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        }
+        return null;
     }
 
     public float getDoorAngle() {
@@ -276,4 +253,5 @@ public class TileEntityFridge extends TileEntity implements IInventory {
     public EntityItem getRenderItem() {
         return renderItem;
     }
+
 }

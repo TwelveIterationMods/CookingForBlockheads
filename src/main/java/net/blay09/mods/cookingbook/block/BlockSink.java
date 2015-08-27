@@ -2,6 +2,7 @@ package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.SinkHandlers;
+import net.blay09.mods.cookingbook.api.IKitchenWaterProvider;
 import net.blay09.mods.cookingbook.client.render.SinkBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -21,7 +22,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Random;
 
-public class BlockSink extends BlockContainer {
+public class BlockSink extends BlockContainer implements IKitchenWaterProvider {
 
     private static final Random random = new Random();
 
@@ -177,5 +178,10 @@ public class BlockSink extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntitySink();
+    }
+
+    @Override
+    public boolean consumeWater(World world, int x, int y, int z) {
+        return true;
     }
 }

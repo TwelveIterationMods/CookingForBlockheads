@@ -9,6 +9,7 @@ import net.blay09.mods.cookingbook.client.GuiRecipeBook;
 import net.blay09.mods.cookingbook.container.ContainerCookingOven;
 import net.blay09.mods.cookingbook.container.ContainerFridge;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
+import net.blay09.mods.cookingbook.container.InventoryLargeFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -31,34 +32,20 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
             case GUI_ID_RECIPEBOOK:
-                return new ContainerRecipeBook(player, false, false, false).setSourceInventories(player.inventory);
+                return new ContainerRecipeBook(player, false, false, false);
             case GUI_ID_CRAFTBOOK:
                 if(player.getHeldItem() != null && player.getHeldItem().getItemDamage() == 1) {
-                    return new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, false).setSourceInventories(player.inventory);
+                    return new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, false);
                 }
                 break;
             case GUI_ID_NOFILTERBOOK:
                 if(player.getHeldItem() != null && player.getHeldItem().getItemDamage() == 3) {
-                    return new ContainerRecipeBook(player, false, false, false).setSourceInventories(player.inventory).setNoFilter();
+                    return new ContainerRecipeBook(player, false, false, false).setNoFilter();
                 }
                 break;
             case GUI_ID_COOKINGTABLE:
                 if(world.getBlock(x, y, z) == CookingBook.blockCookingTable) {
-                    List<IInventory> inventories = new ArrayList<IInventory>();
-                    boolean hasOven = false;
-                    for(ForgeDirection direction : ForgeDirection.values()) {
-                        if(direction == ForgeDirection.UNKNOWN) {
-                            continue;
-                        }
-                        TileEntity tileEntity = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
-                        if(tileEntity instanceof IInventory) {
-                            inventories.add((IInventory) tileEntity);
-                        }
-                        if(tileEntity != null && tileEntity.getClass() == TileEntityCookingOven.class) {
-                            hasOven = true;
-                        }
-                    }
-                    return new ContainerRecipeBook(player, true, hasOven, false).setSourceInventories(inventories.toArray(new IInventory[inventories.size()])).setTilePosition(world, x, y, z);
+                    return new ContainerRecipeBook(player, true, true, false).setKitchenMultiBlock(new KitchenMultiBlock(world, x, y, z));
                 }
                 break;
             case GUI_ID_COOKINGOVEN:
@@ -68,7 +55,7 @@ public class GuiHandler implements IGuiHandler {
                 break;
             case GUI_ID_FRIDGE:
                 if(world.getBlock(x, y, z) == CookingBook.blockFridge) {
-                    return new ContainerFridge(player.inventory, (TileEntityFridge) world.getTileEntity(x, y, z));
+                    return new ContainerFridge(player.inventory, getInventoryForFridge((TileEntityFridge) world.getTileEntity(x, y, z)));
                 }
                 break;
         }
@@ -89,9 +76,24 @@ public class GuiHandler implements IGuiHandler {
             case GUI_ID_COOKINGOVEN:
                 return new GuiCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
             case GUI_ID_FRIDGE:
-                return new GuiFridge(player.inventory, (TileEntityFridge) world.getTileEntity(x, y, z));
+                return new GuiFridge(player.inventory, getInventoryForFridge((TileEntityFridge) world.getTileEntity(x, y, z)));
         }
         return null;
+    }
+
+    private IInventory getInventoryForFridge(TileEntityFridge tileEntity) {
+        TileEntityFridge bottomFridge;
+        TileEntityFridge upperFridge;
+        if(tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord) == CookingBook.blockFridge) {
+            bottomFridge = tileEntity;
+            upperFridge = (TileEntityFridge) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord);
+        } else if(tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord) == CookingBook.blockFridge) {
+            bottomFridge = (TileEntityFridge) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord);
+            upperFridge = tileEntity;
+        } else {
+            return tileEntity;
+        }
+        return new InventoryLargeFridge(bottomFridge, upperFridge);
     }
 
 }

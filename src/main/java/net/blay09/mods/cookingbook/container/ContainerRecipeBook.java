@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.container;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.blay09.mods.cookingbook.KitchenMultiBlock;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
@@ -65,6 +66,7 @@ public class ContainerRecipeBook extends Container {
 	private int tileX;
 	private int tileY;
 	private int tileZ;
+	private KitchenMultiBlock kitchenMultiBlock;
 
 	public ContainerRecipeBook(EntityPlayer player, boolean allowCrafting, boolean allowSmelting, boolean isClientSide) {
 		this.player = player;
@@ -379,22 +381,6 @@ public class ContainerRecipeBook extends Container {
 
 	/**
 	 * SERVER ONLY
-	 * @param sourceInventories
-	 * @return
-	 */
-	public ContainerRecipeBook setSourceInventories(IInventory... sourceInventories) {
-		this.sourceInventories = sourceInventories;
-		findAvailableRecipes();
-		sortRecipes(currentSort);
-		craftBook.setInventories(sourceInventories);
-		for(int i = 0; i < craftMatrixSlots.length; i++) {
-			craftMatrixSlots[i].setSourceInventories(sourceInventories);
-		}
-		return this;
-	}
-
-	/**
-	 * SERVER ONLY
 	 */
 	public void findAvailableRecipes() {
 		availableRecipes.clear();
@@ -504,16 +490,10 @@ public class ContainerRecipeBook extends Container {
 
 	/**
 	 * SERVER ONLY
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
+	 * @param kitchenMultiBlock
 	 */
-	public ContainerRecipeBook setTilePosition(World world, int x, int y, int z) {
-		this.tileWorld = world;
-		this.tileX = x;
-		this.tileY = y;
-		this.tileZ = z;
+	public ContainerRecipeBook setKitchenMultiBlock(KitchenMultiBlock kitchenMultiBlock) {
+		this.kitchenMultiBlock = kitchenMultiBlock;
 		return this;
 	}
 

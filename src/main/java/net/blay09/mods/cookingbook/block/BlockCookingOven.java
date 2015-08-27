@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.GuiHandler;
+import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
 import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
 import net.blay09.mods.cookingbook.client.render.OvenBlockRenderer;
 import net.minecraft.block.Block;
@@ -27,7 +28,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockCookingOven extends BlockContainer {
+public class BlockCookingOven extends BlockContainer implements IKitchenStorageProvider {
 
     private final Random random = new Random();
 
@@ -198,4 +199,13 @@ public class BlockCookingOven extends BlockContainer {
         return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
     }
 
+    @Override
+    public IInventory getInventory(World world, int x, int y, int z) {
+        return (IInventory) world.getTileEntity(x, y, z);
+    }
+
+    @Override
+    public int[] getAccessibleSlots() {
+        return new int[] {4, 5, 6, 16, 17, 18, 19};
+    }
 }

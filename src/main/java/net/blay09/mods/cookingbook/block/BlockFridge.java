@@ -2,6 +2,7 @@ package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.GuiHandler;
+import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
 import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -12,15 +13,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockFridge extends BlockContainer {
+public class BlockFridge extends BlockContainer implements IKitchenStorageProvider {
 
     public BlockFridge() {
         super(Material.iron);
@@ -129,7 +130,6 @@ public class BlockFridge extends BlockContainer {
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
-        ((TileEntityFridge) world.getTileEntity(x, y, z)).findNeighbourFridge();
         findOrientation(world, x, y, z);
     }
     @Override
@@ -150,23 +150,22 @@ public class BlockFridge extends BlockContainer {
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-        super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
-        ((TileEntityFridge) world.getTileEntity(x, y, z)).findNeighbourFridge();
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbourBlock) {
-        super.onNeighborBlockChange(world, x, y, z, neighbourBlock);
-        ((TileEntityFridge) world.getTileEntity(x, y, z)).findNeighbourFridge();
-    }
-
-    @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
         TileEntityFridge tileEntityFridge = (TileEntityFridge) world.getTileEntity(x, y, z);
         if(tileEntityFridge != null) {
             tileEntityFridge.breakBlock();
         }
         super.breakBlock(world, x, y, z, block, metadata);
+    }
+
+
+    @Override
+    public IInventory getInventory(World world, int x, int y, int z) {
+        return (IInventory) world.getTileEntity(x, y, z);
+    }
+
+    @Override
+    public int[] getAccessibleSlots() {
+        return null;
     }
 }
