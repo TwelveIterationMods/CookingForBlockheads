@@ -43,7 +43,7 @@ public class CommonProxy {
 		// Cooking for Blockheads II
 		GameRegistry.addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
 		// Fridge
-		GameRegistry.addShapelessRecipe(new ItemStack(CookingBook.blockFridge), Blocks.chest, Blocks.iron_door);
+		GameRegistry.addShapelessRecipe(new ItemStack(CookingBook.blockFridge), Blocks.chest, Items.iron_door);
 		// Sink
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockSink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
 		// Cooking Table

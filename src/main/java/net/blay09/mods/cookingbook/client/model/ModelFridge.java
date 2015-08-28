@@ -183,8 +183,12 @@ public class ModelFridge extends ModelBase {
         float f5 = 0.0625f;
         this.FreezerMiddle.render(f5);
         this.FreezerTop.render(f5);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1f, 1f, 1f, 0.5f);
         this.MiddleShelf.render(f5);
         this.TopShelf.render(f5);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     public void renderUncolored() {

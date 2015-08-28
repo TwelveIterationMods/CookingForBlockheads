@@ -127,30 +127,32 @@ public class BlockToolRack extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        int metadata = world.getBlockMetadata(x, y, z);
-        float hit = (metadata == 2 || metadata == 3) ? hitX : hitZ;
-        int hitSlot = hit > 0.5f ? 0 : 1;
-        TileEntityToolRack tileEntityToolRack = (TileEntityToolRack) world.getTileEntity(x, y, z);
-        if (tileEntityToolRack != null) {
-            if (player.getHeldItem() != null) {
-                ItemStack oldToolItem = tileEntityToolRack.getStackInSlot(hitSlot);
-                ItemStack toolItem = player.getHeldItem().splitStack(1);
-                if (oldToolItem != null) {
-                    if (!player.inventory.addItemStackToInventory(oldToolItem)) {
-                        player.dropPlayerItemWithRandomChoice(oldToolItem, false);
+        if(hitY > 0.5f) {
+            int metadata = world.getBlockMetadata(x, y, z);
+            float hit = (metadata == 2 || metadata == 3) ? hitX : hitZ;
+            int hitSlot = hit > 0.5f ? 0 : 1;
+            TileEntityToolRack tileEntityToolRack = (TileEntityToolRack) world.getTileEntity(x, y, z);
+            if (tileEntityToolRack != null) {
+                if (player.getHeldItem() != null) {
+                    ItemStack oldToolItem = tileEntityToolRack.getStackInSlot(hitSlot);
+                    ItemStack toolItem = player.getHeldItem().splitStack(1);
+                    if (oldToolItem != null) {
+                        if (!player.inventory.addItemStackToInventory(oldToolItem)) {
+                            player.dropPlayerItemWithRandomChoice(oldToolItem, false);
+                        }
+                        tileEntityToolRack.setInventorySlotContents(hitSlot, toolItem);
+                    } else {
+                        tileEntityToolRack.setInventorySlotContents(hitSlot, toolItem);
                     }
-                    tileEntityToolRack.setInventorySlotContents(hitSlot, toolItem);
                 } else {
-                    tileEntityToolRack.setInventorySlotContents(hitSlot, toolItem);
+                    ItemStack itemStack = tileEntityToolRack.getStackInSlot(hitSlot);
+                    if (itemStack != null) {
+                        tileEntityToolRack.setInventorySlotContents(hitSlot, null);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
+                    }
                 }
-            } else {
-                ItemStack itemStack = tileEntityToolRack.getStackInSlot(hitSlot);
-                if (itemStack != null) {
-                    tileEntityToolRack.setInventorySlotContents(hitSlot, null);
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
-                }
+                return true;
             }
-            return true;
         }
         return true;
     }

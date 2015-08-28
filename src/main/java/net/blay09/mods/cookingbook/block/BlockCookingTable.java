@@ -2,6 +2,7 @@ package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.GuiHandler;
+import net.blay09.mods.cookingbook.client.render.CookingTableBlockRenderer;
 import net.blay09.mods.cookingbook.client.render.SinkBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -88,7 +89,7 @@ public class BlockCookingTable extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return SinkBlockRenderer.RENDER_ID;
+        return CookingTableBlockRenderer.RENDER_ID;
     }
 
     @Override
