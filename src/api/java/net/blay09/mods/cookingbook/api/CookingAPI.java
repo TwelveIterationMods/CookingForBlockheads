@@ -14,4 +14,12 @@ public class CookingAPI {
         internalMethods.addSinkHandler(itemStack, sinkHandler);
     }
 
+    public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {
+        internalMethods.addOvenFuel(fuelItem, fuelTime);
+    }
+
+    public static void addOvenRecipe(ItemStack sourceItem, ItemStack resultItem) {
+        internalMethods.addOvenRecipe(sourceItem, resultItem);
+    }
+
 }

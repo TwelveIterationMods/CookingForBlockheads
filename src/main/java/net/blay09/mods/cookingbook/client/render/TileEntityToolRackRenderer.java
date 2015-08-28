@@ -47,7 +47,7 @@ public class TileEntityToolRackRenderer extends TileEntitySpecialRenderer {
                 angle = 90;
                 break;
             default:
-                angle = 180;
+                angle = -90;
         }
         GL11.glRotatef(angle, 0f, 1f, 0f);
         bindTexture(texture);

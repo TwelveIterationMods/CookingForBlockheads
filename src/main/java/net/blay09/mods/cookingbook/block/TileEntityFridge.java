@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,7 +18,7 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
 
-public class TileEntityFridge extends TileEntity implements IInventory {
+public class TileEntityFridge extends TileEntity implements IInventory, IKitchenStorageProvider {
 
     private static final Random random = new Random();
 
@@ -252,6 +253,11 @@ public class TileEntityFridge extends TileEntity implements IInventory {
 
     public EntityItem getRenderItem() {
         return renderItem;
+    }
+
+    @Override
+    public IInventory getInventory() {
+        return this;
     }
 
 }

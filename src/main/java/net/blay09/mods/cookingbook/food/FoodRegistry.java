@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.food;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.api.FoodRegistryInitEvent;
+import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
 import net.blay09.mods.cookingbook.container.InventoryCraftBook;
 import net.blay09.mods.cookingbook.food.recipe.*;
@@ -115,24 +116,32 @@ public class FoodRegistry {
         return foodItems.values();
     }
 
-    public static boolean isAvailableFor(List<FoodIngredient> craftMatrix, IInventory[] inventories) {
-        int[][] usedStackSize = new int[inventories.length][];
+    public static boolean isAvailableFor(List<FoodIngredient> craftMatrix, List<IInventory> inventories, List<IKitchenItemProvider> itemProviders) {
+        int[][] usedStackSize = new int[inventories.size()][];
         for(int i = 0; i < usedStackSize.length; i++) {
-            usedStackSize[i] = new int[inventories[i].getSizeInventory()];
+            usedStackSize[i] = new int[inventories.get(i).getSizeInventory()];
         }
         boolean[] itemFound = new boolean[craftMatrix.size()];
-        for(int i = 0; i < craftMatrix.size(); i++) {
+        matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
             if(craftMatrix.get(i) == null || craftMatrix.get(i).isToolItem()) {
                 itemFound[i] = true;
                 continue;
             }
-            for(int j = 0; j < inventories.length; j++) {
-                for (int k = 0; k < inventories[j].getSizeInventory(); k++) {
-                    ItemStack itemStack = inventories[j].getStackInSlot(k);
+            for(IKitchenItemProvider itemProvider : itemProviders) {
+                for(ItemStack providedStack : itemProvider.getProvidedItemStacks()) {
+                    if(craftMatrix.get(i).isValidItem(providedStack)) {
+                        itemFound[i] = true;
+                        break matrixLoop;
+                    }
+                }
+            }
+            for(int j = 0; j < inventories.size(); j++) {
+                for (int k = 0; k < inventories.get(j).getSizeInventory(); k++) {
+                    ItemStack itemStack = inventories.get(j).getStackInSlot(k);
                     if (itemStack != null && craftMatrix.get(i).isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
                         usedStackSize[j][k]++;
                         itemFound[i] = true;
-                        break;
+                        break matrixLoop;
                     }
                 }
             }

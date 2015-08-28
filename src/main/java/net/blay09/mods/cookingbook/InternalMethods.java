@@ -11,4 +11,14 @@ public class InternalMethods implements IInternalMethods {
         SinkHandlers.addSinkHandler(itemStack, sinkHandler);
     }
 
+    @Override
+    public void addOvenFuel(ItemStack fuelItem, int fuelTime) {
+        OvenFuels.addOvenFuel(fuelItem, fuelTime);
+    }
+
+    @Override
+    public void addOvenRecipe(ItemStack sourceItem, ItemStack resultItem) {
+        OvenRecipes.addSmeltingItem(sourceItem, resultItem);
+    }
+
 }

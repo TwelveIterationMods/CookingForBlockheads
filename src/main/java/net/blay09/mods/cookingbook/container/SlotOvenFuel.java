@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.container;
 
+import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemFood;
@@ -15,7 +16,7 @@ public class SlotOvenFuel extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack itemStack) {
-        return TileEntityFurnace.isItemFuel(itemStack);
+        return TileEntityCookingOven.isItemFuel(itemStack);
     }
 
 }

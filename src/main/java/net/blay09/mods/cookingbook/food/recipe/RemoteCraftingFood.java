@@ -28,7 +28,7 @@ public class RemoteCraftingFood extends FoodRecipe {
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
 
         byte ingredientCount = buf.readByte();
-        List<FoodIngredient> craftMatrix = new ArrayList<FoodIngredient>(ingredientCount);
+        List<FoodIngredient> craftMatrix = new ArrayList<>(ingredientCount);
         for(int k = 0; k < ingredientCount; k++) {
             byte stackCount = buf.readByte();
             ItemStack[] itemStacks = new ItemStack[stackCount];

@@ -4,6 +4,7 @@ import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.client.model.ModelOven;
 import net.blay09.mods.cookingbook.client.model.ModelToolRack;
+import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -48,38 +49,43 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
                 angle = 90;
                 break;
             default:
-                angle = 180;
+                angle = -90;
         }
         GL11.glRotatef(angle, 0f, 1f, 0f);
         GL11.glRotatef(180f, 0f, 0f, 1f);
         bindTexture(texture);
-        model.renderAll();
+        model.renderAll(tileEntityOven.isBurning());
         GL11.glRotatef(180f, 0f, 0f, -1f);
+        final float scale = 0.7f;
         if(tileEntityOven.getStackInSlot(16) != null) {
             GL11.glPushMatrix();
-            GL11.glTranslatef(-0.25f, -0.5f, 0.1f);
+            GL11.glTranslatef(-0.2f, -0.55f, 0.1f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
+            GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(0), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }
         if(tileEntityOven.getStackInSlot(17) != null) {
             GL11.glPushMatrix();
-            GL11.glTranslatef(0.25f, -0.5f, 0.1f);
+            GL11.glTranslatef(0.2f, -0.55f, 0.1f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
+            GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(1), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }
         if(tileEntityOven.getStackInSlot(18) != null) {
             GL11.glPushMatrix();
-            GL11.glTranslatef(0.25f, -0.5f, -0.4f);
+            GL11.glTranslatef(0.2f, -0.55f, -0.35f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
+            GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(2), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }
         if(tileEntityOven.getStackInSlot(19) != null) {
             GL11.glPushMatrix();
-            GL11.glTranslatef(-0.25f, -0.5f, -0.4f);
+            GL11.glTranslatef(-0.2f, -0.55f, -0.35f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
+            GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(3), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }

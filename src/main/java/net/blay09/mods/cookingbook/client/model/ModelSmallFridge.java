@@ -126,7 +126,10 @@ public class ModelSmallFridge extends ModelBase {
 
     public void renderInterior() {
         float f5 = 0.0625f;
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         this.Shelf.render(f5);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     public void renderUncolored() {

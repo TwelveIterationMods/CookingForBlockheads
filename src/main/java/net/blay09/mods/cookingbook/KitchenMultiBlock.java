@@ -2,9 +2,11 @@ package net.blay09.mods.cookingbook;
 
 import net.blay09.mods.cookingbook.api.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
-import net.blay09.mods.cookingbook.api.IKitchenWaterProvider;
+import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.api.IMultiblockKitchen;
-import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class KitchenMultiBlock {
 
     private class BlockPosition {
+
         public final int x;
         public final int y;
         public final int z;
@@ -51,7 +54,7 @@ public class KitchenMultiBlock {
 
     private final Map<BlockPosition, IMultiblockKitchen> kitchenParts = new HashMap<>();
     private final List<IKitchenStorageProvider> storageProviderList = new ArrayList<>();
-    private final List<IKitchenWaterProvider> waterProviderList = new ArrayList<>();
+    private final List<IKitchenItemProvider> itemProviderList = new ArrayList<>();
     private final List<IKitchenSmeltingProvider> smeltingProviderList = new ArrayList<>();
 
     public KitchenMultiBlock(World world, int x, int y, int z) {
@@ -63,7 +66,7 @@ public class KitchenMultiBlock {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
             TileEntity tileEntity = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
             if(tileEntity instanceof IMultiblockKitchen) {
-                BlockPosition position = new BlockPosition(x, y, z);
+                BlockPosition position = new BlockPosition(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
                 if(!kitchenParts.containsKey(position)) {
                     kitchenParts.put(position, (IMultiblockKitchen) tileEntity);
                     if(tileEntity instanceof IKitchenStorageProvider) {
@@ -72,12 +75,45 @@ public class KitchenMultiBlock {
                     if(tileEntity instanceof IKitchenSmeltingProvider) {
                         smeltingProviderList.add((IKitchenSmeltingProvider) tileEntity);
                     }
-                    if(tileEntity instanceof IKitchenWaterProvider) {
-                        waterProviderList.add((IKitchenWaterProvider) tileEntity);
+                    if(tileEntity instanceof IKitchenItemProvider) {
+                        itemProviderList.add((IKitchenItemProvider) tileEntity);
                     }
                     findNeighbourKitchenBlocks(world, position.x, position.y, position.z);
                 }
             }
         }
+    }
+
+    private final List<IInventory> sourceInventories = new ArrayList<>();
+    public List<IInventory> getSourceInventories(InventoryPlayer playerInventory) {
+        sourceInventories.clear();
+        sourceInventories.add(playerInventory);
+        for(IKitchenStorageProvider provider : storageProviderList) {
+            sourceInventories.add(provider.getInventory());
+        }
+        return sourceInventories;
+    }
+
+    public ItemStack smeltItem(ItemStack itemStack, int count) {
+        ItemStack restStack = itemStack.copy().splitStack(count);
+        for(IKitchenSmeltingProvider provider : smeltingProviderList) {
+            restStack = provider.smeltItem(restStack);
+            if(restStack == null) {
+                break;
+            }
+        }
+        itemStack.stackSize -= (count - (restStack != null ? restStack.stackSize : 0));
+        if(itemStack.stackSize <= 0) {
+            return null;
+        }
+        return itemStack;
+    }
+
+    public boolean hasSmeltingProvider() {
+        return smeltingProviderList.size() > 0;
+    }
+
+    public List<IKitchenItemProvider> getItemProviders() {
+        return itemProviderList;
     }
 }

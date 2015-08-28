@@ -11,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerCookingOven extends Container {
@@ -114,17 +115,17 @@ public class ContainerCookingOven extends Container {
             itemStack = slotStack.copy();
 
             if (slotIndex >= 7 && slotIndex <= 20) {
-                if (!mergeItemStack(slotStack, 21, 56, true)) {
+                if (!mergeItemStack(slotStack, 20, 56, true)) {
                     return null;
                 }
                 slot.onSlotChange(slotStack, itemStack);
             } else if(slotIndex >= 4 && slotIndex <= 6) {
-                if (!this.mergeItemStack(slotStack, 21, 56, false)) {
+                if (!this.mergeItemStack(slotStack, 20, 56, false)) {
                     return null;
                 }
             } else if (slotIndex > 20) {
-                ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(slotStack);
-                if (TileEntityFurnace.isItemFuel(slotStack)) {
+                ItemStack smeltingResult = TileEntityCookingOven.getSmeltingResult(slotStack);
+                if (TileEntityCookingOven.isItemFuel(slotStack)) {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
                         return null;
                     }
@@ -136,10 +137,10 @@ public class ContainerCookingOven extends Container {
                     if (!this.mergeItemStack(slotStack, 49, 56, false)) {
                         return null;
                     }
-                } else if (slotIndex >= 49 && slotIndex < 56 && !this.mergeItemStack(slotStack, 21, 49, false)) {
+                } else if (slotIndex >= 49 && slotIndex < 56 && !this.mergeItemStack(slotStack, 20, 49, false)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(slotStack, 21, 49, false)) {
+            } else if (!this.mergeItemStack(slotStack, 20, 49, false)) {
                 return null;
             }
 

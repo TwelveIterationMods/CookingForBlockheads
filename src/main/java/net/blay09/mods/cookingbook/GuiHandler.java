@@ -35,7 +35,7 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerRecipeBook(player, false, false, false);
             case GUI_ID_CRAFTBOOK:
                 if(player.getHeldItem() != null && player.getHeldItem().getItemDamage() == 1) {
-                    return new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, false);
+                    return new ContainerRecipeBook(player, true, false, false);
                 }
                 break;
             case GUI_ID_NOFILTERBOOK:
@@ -68,7 +68,7 @@ public class GuiHandler implements IGuiHandler {
             case GUI_ID_RECIPEBOOK:
                 return new GuiRecipeBook(new ContainerRecipeBook(player, false, false, true));
             case GUI_ID_CRAFTBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, CookingBook.enableCraftingBook, false, true));
+                return new GuiRecipeBook(new ContainerRecipeBook(player, true, false, true));
             case GUI_ID_NOFILTERBOOK:
                 return new GuiRecipeBook(new ContainerRecipeBook(player, true, false, true));
             case GUI_ID_COOKINGTABLE:

@@ -11,7 +11,7 @@ public class ShapedCraftingFood extends FoodRecipe {
 
     public ShapedCraftingFood(ShapedRecipes recipe) {
         this.outputItem = recipe.getRecipeOutput();
-        craftMatrix = new ArrayList<FoodIngredient>();
+        craftMatrix = new ArrayList<>();
 
         for(int i = 0; i < recipe.recipeItems.length; i++) {
             if(recipe.recipeItems[i] != null) {

@@ -12,12 +12,13 @@ public class ShapelessOreCraftingFood extends FoodRecipe {
 
     public ShapelessOreCraftingFood(ShapelessOreRecipe recipe) {
         this.outputItem = recipe.getRecipeOutput();
-        this.craftMatrix = new ArrayList<FoodIngredient>();
+        this.craftMatrix = new ArrayList<>();
         for(int i = 0; i < recipe.getInput().size(); i++) {
             Object input = recipe.getInput().get(i);
 
-            if (input == null)
+            if (input == null) {
                 continue;
+            }
 
             if(input instanceof ItemStack) {
                 boolean isToolItem = PamsHarvestcraft.isToolItem((ItemStack) input);

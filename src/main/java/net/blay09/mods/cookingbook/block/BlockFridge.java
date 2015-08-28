@@ -2,7 +2,6 @@ package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.GuiHandler;
-import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
 import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -21,7 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockFridge extends BlockContainer implements IKitchenStorageProvider {
+public class BlockFridge extends BlockContainer {
 
     public BlockFridge() {
         super(Material.iron);
@@ -158,14 +157,4 @@ public class BlockFridge extends BlockContainer implements IKitchenStorageProvid
         super.breakBlock(world, x, y, z, block, metadata);
     }
 
-
-    @Override
-    public IInventory getInventory(World world, int x, int y, int z) {
-        return (IInventory) world.getTileEntity(x, y, z);
-    }
-
-    @Override
-    public int[] getAccessibleSlots() {
-        return null;
-    }
 }

@@ -25,7 +25,7 @@ import java.util.Random;
 
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
-public class BlockToolRack extends BlockContainer implements IKitchenStorageProvider {
+public class BlockToolRack extends BlockContainer {
 
     private static final Random random = new Random();
 
@@ -191,13 +191,4 @@ public class BlockToolRack extends BlockContainer implements IKitchenStorageProv
         }
     }
 
-    @Override
-    public IInventory getInventory(World world, int x, int y, int z) {
-        return (IInventory) world.getTileEntity(x, y, z);
-    }
-
-    @Override
-    public int[] getAccessibleSlots() {
-        return null;
-    }
 }

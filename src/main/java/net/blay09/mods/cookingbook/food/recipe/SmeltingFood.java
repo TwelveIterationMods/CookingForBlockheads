@@ -10,7 +10,7 @@ public class SmeltingFood extends FoodRecipe {
 
     public SmeltingFood(ItemStack outputItem, ItemStack sourceStack) {
         this.outputItem = outputItem;
-        this.craftMatrix = new ArrayList<FoodIngredient>();
+        this.craftMatrix = new ArrayList<>();
         this.craftMatrix.add(new FoodIngredient(sourceStack, false));
     }
 

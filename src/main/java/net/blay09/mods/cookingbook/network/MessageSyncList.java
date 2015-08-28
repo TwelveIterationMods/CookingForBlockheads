@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MessageSyncList implements IMessage {
 
-    public final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
+    public final List<ItemStack> sortedRecipes = new ArrayList<>();
     public final ArrayListMultimap<String, FoodRecipe> availableRecipes = ArrayListMultimap.create();
 
     public MessageSyncList() {}

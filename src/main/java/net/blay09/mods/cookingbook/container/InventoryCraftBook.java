@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.container;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.food.FoodIngredient;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
@@ -26,7 +27,8 @@ public class InventoryCraftBook extends InventoryCrafting {
     private final int[] sourceInventorySlots = new int[9];
     private IRecipe currentRecipe;
 
-    private IInventory[] inventories;
+    private List<IInventory> inventories;
+    private List<IKitchenItemProvider> itemProviders;
 
     public InventoryCraftBook(Container container) {
         super(container, 3, 3);
@@ -34,30 +36,40 @@ public class InventoryCraftBook extends InventoryCrafting {
 
     public IRecipe prepareRecipe(EntityPlayer player, FoodRecipe recipe) {
         List<FoodIngredient> ingredients = recipe.getCraftMatrix();
-        int[][] usedStackSize = new int[inventories.length][];
+        int[][] usedStackSize = new int[inventories.size()][];
         for(int i = 0; i < usedStackSize.length; i++) {
-            usedStackSize[i] = new int[inventories[i].getSizeInventory()];
+            usedStackSize[i] = new int[inventories.get(i).getSizeInventory()];
         }
         for(int i = 0; i < getSizeInventory(); i++) {
             setInventorySlotContents(i, null);
             sourceInventories[i] = -1;
             sourceInventorySlots[i] = -1;
         }
-        for(int i = 0; i < ingredients.size(); i++) {
+        ingredientLoop:for(int i = 0; i < ingredients.size(); i++) {
             if(ingredients.get(i) != null) {
-                for(int j = 0; j < inventories.length; j++) {
-                    for (int k = 0; k < inventories[j].getSizeInventory(); k++) {
-                        ItemStack itemStack = inventories[j].getStackInSlot(k);
+                for(IKitchenItemProvider itemProvider : itemProviders) {
+                    for(ItemStack providedStack : itemProvider.getProvidedItemStacks()) {
+                        if(ingredients.get(i).isValidItem(providedStack)) {
+                            setInventorySlotContents(i, providedStack.copy());
+                            continue ingredientLoop;
+                        }
+                    }
+                }
+                for(int j = 0; j < inventories.size(); j++) {
+                    for (int k = 0; k < inventories.get(j).getSizeInventory(); k++) {
+                        ItemStack itemStack = inventories.get(j).getStackInSlot(k);
                         if (itemStack != null && ingredients.get(i).isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
                             usedStackSize[j][k]++;
                             setInventorySlotContents(i, itemStack);
                             sourceInventories[i] = j;
                             sourceInventorySlots[i] = k;
-                            break;
+                            continue ingredientLoop;
                         }
                     }
                 }
             }
+            currentRecipe = null;
+            return currentRecipe;
         }
         currentRecipe = FoodRegistry.findMatchingRecipe(this, player.worldObj);
         return currentRecipe;
@@ -85,7 +97,7 @@ public class InventoryCraftBook extends InventoryCrafting {
                     ItemStack itemStack = getStackInSlot(i);
                     if(itemStack != null) {
                         decrStackSize(i, 1);
-                        if(itemStack.getItem().hasContainerItem(itemStack)) {
+                        if(itemStack.getItem().hasContainerItem(itemStack) && sourceInventories[i] != -1) {
                             // Fire PlayerDestroyItem event
                             ItemStack containerItem = itemStack.getItem().getContainerItem(itemStack);
                             if(containerItem != null && containerItem.isItemStackDamageable() && itemStack.getItemDamage() > itemStack.getMaxDamage()) {
@@ -103,7 +115,7 @@ public class InventoryCraftBook extends InventoryCrafting {
                         }
 
                         if (sourceInventories[i] != -1 && sourceInventorySlots[i] != -1 && getStackInSlot(i) == null) {
-                            inventories[sourceInventories[i]].setInventorySlotContents(sourceInventorySlots[i], null);
+                            inventories.get(sourceInventories[i]).setInventorySlotContents(sourceInventorySlots[i], null);
                         }
                     }
                 }
@@ -140,7 +152,15 @@ public class InventoryCraftBook extends InventoryCrafting {
      * SERVER ONLY
      * @param inventories
      */
-    public void setInventories(IInventory[] inventories) {
+    public void setInventories(List<IInventory> inventories) {
         this.inventories = inventories;
+    }
+
+    /**
+     * SERVER ONLY
+     * @param itemProviders
+     */
+    public void setItemProviders(List<IKitchenItemProvider> itemProviders) {
+        this.itemProviders = itemProviders;
     }
 }

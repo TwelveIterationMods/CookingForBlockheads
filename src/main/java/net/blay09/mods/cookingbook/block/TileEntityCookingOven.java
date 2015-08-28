@@ -1,19 +1,117 @@
 package net.blay09.mods.cookingbook.block;
 
+import net.blay09.mods.cookingbook.OvenFuels;
+import net.blay09.mods.cookingbook.OvenRecipes;
+import net.blay09.mods.cookingbook.api.IKitchenSmeltingProvider;
+import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityCookingOven extends TileEntity implements ISidedInventory {
+public class TileEntityCookingOven extends TileEntity implements ISidedInventory, IKitchenSmeltingProvider, IKitchenStorageProvider {
+
+    public static class OvenInventory implements IInventory {
+        private final IInventory inventory;
+
+        public OvenInventory(IInventory inventory) {
+            this.inventory = inventory;
+        }
+
+        @Override
+        public int getSizeInventory() {
+            return 7;
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int i) {
+            if(i >= 3) {
+                return inventory.getStackInSlot(16 + i - 3);
+            }
+            return inventory.getStackInSlot(i + 4);
+        }
+
+        @Override
+        public ItemStack decrStackSize(int i, int amount) {
+            if(i >= 3) {
+                return inventory.decrStackSize(16 + i - 3, amount);
+            }
+            return inventory.decrStackSize(i + 4, amount);
+        }
+
+        @Override
+        public ItemStack getStackInSlotOnClosing(int i) {
+            if(i >= 3) {
+                return inventory.getStackInSlotOnClosing(16 + i - 3);
+            }
+            return inventory.getStackInSlotOnClosing(i + 4);
+        }
+
+        @Override
+        public void setInventorySlotContents(int i, ItemStack itemStack) {
+            if(i >= 3) {
+                inventory.setInventorySlotContents(16 + i - 3, itemStack);
+            } else {
+                inventory.setInventorySlotContents(i + 4, itemStack);
+            }
+        }
+
+        @Override
+        public String getInventoryName() {
+            return inventory.getInventoryName();
+        }
+
+        @Override
+        public boolean hasCustomInventoryName() {
+            return inventory.hasCustomInventoryName();
+        }
+
+        @Override
+        public int getInventoryStackLimit() {
+            return inventory.getInventoryStackLimit();
+        }
+
+        @Override
+        public void markDirty() {
+            inventory.markDirty();
+        }
+
+        @Override
+        public boolean isUseableByPlayer(EntityPlayer player) {
+            return inventory.isUseableByPlayer(player);
+        }
+
+        @Override
+        public void openInventory() {
+            inventory.openInventory();
+        }
+
+        @Override
+        public void closeInventory() {
+            inventory.closeInventory();
+        }
+
+        @Override
+        public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+            if(i >= 3) {
+                return inventory.isItemValidForSlot(16 + i - 3, itemStack);
+            } else {
+                return inventory.isItemValidForSlot(i + 4, itemStack);
+            }
+        }
+    }
 
     private static final int[] slotsTop = new int[]{0, 1, 2};
     private static final int[] slotsSide = new int[]{3};
@@ -24,6 +122,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
     private EntityItem[] renderItem = new EntityItem[4];
     private ItemStack[] inventory = new ItemStack[20];
+    private OvenInventory ovenInventory = new OvenInventory(this);
     public int furnaceBurnTime;
     public int currentItemBurnTime;
     public int[] slotCookTime = new int[9];
@@ -35,6 +134,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         for(int i = 0; i < renderItem.length; i++) {
             renderItem[i] = new EntityItem(world, 0, 0, 0);
             renderItem[i].hoverStart = 0f;
+            renderItem[i].setEntityItemStack(inventory[16 + i]);
         }
     }
 
@@ -90,12 +190,14 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
             if (inventory[i].stackSize <= count) {
                 itemstack = inventory[i];
                 inventory[i] = null;
+                markDirty();
                 return itemstack;
             } else {
                 itemstack = inventory[i].splitStack(count);
                 if (inventory[i].stackSize == 0) {
                     inventory[i] = null;
                 }
+                markDirty();
                 return itemstack;
             }
         }
@@ -108,6 +210,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         if(i >= 16 && i < 20) {
             renderItem[i - 16].setEntityItemStack(itemStack);
         }
+        markDirty();
     }
 
     @Override
@@ -150,7 +253,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
             case 3:
             case 4:
             case 5:
-                return TileEntityFurnace.isItemFuel(itemStack);
+                return isItemFuel(itemStack);
         }
         return false;
     }
@@ -171,7 +274,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                 for (int j : slotsSide) {
                     if (getStackInSlot(j) != null) {
                         ItemStack fuelItem = getStackInSlot(j);
-                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) TileEntityFurnace.getItemBurnTime(fuelItem) / 3f);
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) / 3f);
                         if (furnaceBurnTime != 0) {
                             fuelItem.stackSize--;
                             if (fuelItem.stackSize == 0) {
@@ -200,7 +303,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                     if (slotCookTime[i - SLOT_CENTER_OFFSET] != -1) {
                         slotCookTime[i - SLOT_CENTER_OFFSET]++;
                         if (slotCookTime[i - SLOT_CENTER_OFFSET] >= COOK_TIME) {
-                            ItemStack resultStack = FurnaceRecipes.smelting().getSmeltingResult(getStackInSlot(i));
+                            ItemStack resultStack = getSmeltingResult(getStackInSlot(i));
                             if (resultStack != null) {
                                 setInventorySlotContents(i, resultStack.copy());
                                 slotCookTime[i - SLOT_CENTER_OFFSET] = -1;
@@ -285,6 +388,26 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         }
     }
 
+    public static ItemStack getSmeltingResult(ItemStack itemStack) {
+        ItemStack result = OvenRecipes.getSmeltingResult(itemStack);
+        if(result != null) {
+            return result;
+        }
+        return FurnaceRecipes.smelting().getSmeltingResult(itemStack);
+    }
+
+    public static boolean isItemFuel(ItemStack itemStack) {
+        return getItemBurnTime(itemStack) > 0;
+    }
+
+    public static int getItemBurnTime(ItemStack fuelItem) {
+        int fuelTime = OvenFuels.getFuelTime(fuelItem);
+        if(fuelTime != 0) {
+            return fuelTime;
+        }
+        return TileEntityFurnace.getItemBurnTime(fuelItem);
+    }
+
     private boolean canCook() {
         // Check for space or active smelting in center slots
         for (int k : slotsCenter) {
@@ -314,6 +437,9 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
             byte slotId = itemCompound.getByte("Slot");
             if (slotId >= 0 && slotId < inventory.length) {
                 inventory[slotId] = ItemStack.loadItemStackFromNBT(itemCompound);
+                if(slotId >= 16 && slotId < 20 && renderItem[slotId - 16] != null) {
+                    renderItem[slotId - 16].setEntityItemStack(inventory[slotId]);
+                }
             }
         }
         furnaceBurnTime = compound.getShort("BurnTime");
@@ -339,6 +465,20 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         compound.setIntArray("CookTimes", slotCookTime);
     }
 
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        writeToNBT(tagCompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tagCompound);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+
+        readFromNBT(pkt.func_148857_g());
+    }
+
     public boolean isBurning() {
         return furnaceBurnTime > 0;
     }
@@ -353,5 +493,38 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
     public EntityItem getRenderItem(int i) {
         return renderItem[i];
+    }
+
+    @Override
+    public IInventory getInventory() {
+        return ovenInventory;
+    }
+
+    @Override
+    public ItemStack smeltItem(ItemStack itemStack) {
+        int[] inputSlots = getAccessibleSlotsFromSide(ForgeDirection.UP.ordinal());
+        int firstEmptySlot = -1;
+        for(int slot : inputSlots) {
+            ItemStack slotStack = getStackInSlot(slot);
+            if(slotStack != null) {
+                if(slotStack.isItemEqual(slotStack)) {
+                    int spaceLeft = Math.min(itemStack.stackSize, slotStack.getMaxStackSize() - slotStack.stackSize);
+                    if(spaceLeft > 0) {
+                        slotStack.stackSize += spaceLeft;
+                        itemStack.stackSize -= spaceLeft;
+                    }
+                }
+                if(itemStack.stackSize <= 0) {
+                    return null;
+                }
+            } else if(firstEmptySlot == -1) {
+                firstEmptySlot = slot;
+            }
+        }
+        if(firstEmptySlot != -1) {
+            setInventorySlotContents(firstEmptySlot, itemStack);
+            return null;
+        }
+        return itemStack;
     }
 }

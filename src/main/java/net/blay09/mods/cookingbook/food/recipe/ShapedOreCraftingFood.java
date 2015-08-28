@@ -12,11 +12,12 @@ public class ShapedOreCraftingFood extends FoodRecipe {
 
     public ShapedOreCraftingFood(ShapedOreRecipe recipe) {
         this.outputItem = recipe.getRecipeOutput();
-        this.craftMatrix = new ArrayList<FoodIngredient>();
+        this.craftMatrix = new ArrayList<>();
         for(int i = 0; i < recipe.getInput().length; i++) {
             Object input = recipe.getInput()[i];
-            if (input == null)
+            if (input == null) {
                 continue;
+            }
 
             if(input instanceof ItemStack) {
                 craftMatrix.add(new FoodIngredient((ItemStack) input, false));

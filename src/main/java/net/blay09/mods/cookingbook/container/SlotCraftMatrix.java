@@ -21,7 +21,7 @@ public class SlotCraftMatrix extends Slot {
     private FoodIngredient ingredient;
     private boolean enabled = true;
 
-    private IInventory[] sourceInventories;
+    private List<IInventory> sourceInventories;
     private ItemStack[] visibleStacks;
     private int visibleItemTime;
     private int visibleItemIndex;
@@ -63,9 +63,9 @@ public class SlotCraftMatrix extends Slot {
             if(ingredient.getItemStacks().length > 1 && !ingredient.isToolItem()) {
                 List<ItemStack> visibleStackList = new ArrayList<ItemStack>();
                 for(ItemStack visibleStack : visibleStacks) {
-                    for(int i = 0; i < sourceInventories.length; i++) {
-                        for(int j = 0; j < sourceInventories[i].getSizeInventory(); j++) {
-                            ItemStack itemStack = sourceInventories[i].getStackInSlot(j);
+                    for(int i = 0; i < sourceInventories.size(); i++) {
+                        for(int j = 0; j < sourceInventories.get(i).getSizeInventory(); j++) {
+                            ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
                             if(itemStack != null) {
                                 if(FoodRegistry.areItemStacksEqualForCrafting(itemStack, visibleStack)) {
                                     ItemStack displayStack = visibleStack.copy();
@@ -120,7 +120,7 @@ public class SlotCraftMatrix extends Slot {
      * SERVER ONLY
      * @param sourceInventories
      */
-    public void setSourceInventories(IInventory[] sourceInventories) {
+    public void setSourceInventories(List<IInventory> sourceInventories) {
         this.sourceInventories = sourceInventories;
     }
 }

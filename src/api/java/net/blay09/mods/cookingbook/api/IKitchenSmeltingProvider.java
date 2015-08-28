@@ -4,6 +4,6 @@ import net.minecraft.item.ItemStack;
 
 public interface IKitchenSmeltingProvider extends IMultiblockKitchen {
 
-    boolean smeltItem(ItemStack itemStack);
+    ItemStack smeltItem(ItemStack itemStack);
 
 }

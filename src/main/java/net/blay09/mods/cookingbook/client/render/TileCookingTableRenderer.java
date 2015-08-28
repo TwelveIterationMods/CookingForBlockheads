@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.client.render;
 
+import net.blay09.mods.cookingbook.client.model.ModelCookingTable;
 import net.blay09.mods.cookingbook.client.model.ModelSink;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -8,11 +9,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileEntitySinkRenderer extends TileEntitySpecialRenderer {
+public class TileCookingTableRenderer extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation texture = new ResourceLocation("cookingbook", "textures/entity/ModelSink.png");
+    private static final ResourceLocation texture = new ResourceLocation("cookingbook", "textures/entity/ModelCookingTable.png");
 
-    private ModelSink model = new ModelSink();
+    private ModelCookingTable model = new ModelCookingTable();
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float delta) {

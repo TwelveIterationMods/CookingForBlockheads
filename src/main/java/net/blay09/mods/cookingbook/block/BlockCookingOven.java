@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockCookingOven extends BlockContainer implements IKitchenStorageProvider {
+public class BlockCookingOven extends BlockContainer {
 
     private final Random random = new Random();
 
@@ -40,6 +40,7 @@ public class BlockCookingOven extends BlockContainer implements IKitchenStorageP
         setStepSound(soundTypeMetal);
         setHardness(5f);
         setResistance(10f);
+        setBlockBounds(0.0625f, 0f, 0.0625f, 0.9375f, 0.975f, 0.9375f);
     }
 
     @Override
@@ -199,13 +200,4 @@ public class BlockCookingOven extends BlockContainer implements IKitchenStorageP
         return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
     }
 
-    @Override
-    public IInventory getInventory(World world, int x, int y, int z) {
-        return (IInventory) world.getTileEntity(x, y, z);
-    }
-
-    @Override
-    public int[] getAccessibleSlots() {
-        return new int[] {4, 5, 6, 16, 17, 18, 19};
-    }
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.KitchenMultiBlock;
-import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
+import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.food.FoodRecipe;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.network.MessageClickRecipe;
@@ -18,9 +18,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,16 +57,14 @@ public class ContainerRecipeBook extends Container {
 	private String currentRecipeKey;
 	private List<FoodRecipe> currentRecipeList;
 	private int currentRecipeIdx;
-	private IInventory[] sourceInventories;
 	private boolean noFilter;
-	private World tileWorld;
-	private int tileX;
-	private int tileY;
-	private int tileZ;
+	private final List<IKitchenItemProvider> emptyProviderList = new ArrayList<>();
+	private final List<IInventory> playerInventoryList = new ArrayList<>();
 	private KitchenMultiBlock kitchenMultiBlock;
 
 	public ContainerRecipeBook(EntityPlayer player, boolean allowCrafting, boolean allowSmelting, boolean isClientSide) {
 		this.player = player;
+		this.playerInventoryList.add(player.inventory);
 		this.allowCrafting = allowCrafting;
 		this.allowSmelting = allowSmelting;
 		this.isClientSide = isClientSide;
@@ -78,6 +73,7 @@ public class ContainerRecipeBook extends Container {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				craftMatrixSlots[j + i * 3] = new SlotCraftMatrix(player, craftMatrix, j + i * 3, 24 + j * 18, 20 + i * 18);
+				craftMatrixSlots[j + i * 3].setSourceInventories(playerInventoryList);
 				addSlotToContainer(craftMatrixSlots[j + i * 3]);
 			}
 		}
@@ -103,6 +99,10 @@ public class ContainerRecipeBook extends Container {
 		updateRecipeList();
 
 		craftBook = new InventoryCraftBook(this);
+		craftBook.setItemProviders(emptyProviderList);
+		craftBook.setInventories(playerInventoryList);
+
+		findAvailableRecipes();
 	}
 
 	public void setCraftMatrix(FoodRecipe recipe) {
@@ -227,40 +227,17 @@ public class ContainerRecipeBook extends Container {
 		if(!recipe.isSmeltingRecipe()) {
 			return;
 		}
-		for(int i = 0; i < sourceInventories.length; i++) {
-			for(int j = 0; j < sourceInventories[i].getSizeInventory(); j++) {
-				ItemStack itemStack = sourceInventories[i].getStackInSlot(j);
+		List<IInventory> sourceInventories = kitchenMultiBlock.getSourceInventories(player.inventory);
+		for(int i = 0; i < sourceInventories.size(); i++) {
+			for(int j = 0; j < sourceInventories.get(i).getSizeInventory(); j++) {
+				ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
 				if(itemStack != null) {
 					for (ItemStack ingredientStack : recipe.getCraftMatrix().get(0).getItemStacks()) {
 						if (FoodRegistry.areItemStacksEqualForCrafting(itemStack, ingredientStack)) {
 							int count = isShiftDown ? Math.min(itemStack.stackSize, ingredientStack.getMaxStackSize()) : 1;
-							TileEntityCookingOven tileEntity = findCookingOven();
-							int[] ovenInputSlots = tileEntity.getAccessibleSlotsFromSide(ForgeDirection.UP.ordinal());
-							int ovenFirstSlot = -1;
-							for (int ovenSlot : ovenInputSlots) {
-								ItemStack ovenStack = tileEntity.getStackInSlot(ovenSlot);
-								if (ovenStack != null && itemStack.isItemEqual(ovenStack)) {
-									ovenFirstSlot = ovenSlot;
-									break;
-								}
-							}
-							if (ovenFirstSlot == -1) {
-								for (int ovenSlot : ovenInputSlots) {
-									if (tileEntity.getStackInSlot(ovenSlot) == null) {
-										ovenFirstSlot = ovenSlot;
-										break;
-									}
-								}
-							}
-							if (ovenFirstSlot != -1 && (tileEntity != sourceInventories[i] || (j >= 4 && j <= 6))) {
-								tileEntity.setInventorySlotContents(ovenFirstSlot, itemStack.splitStack(count));
-								tileEntity.markDirty();
-								if (itemStack.stackSize == 0) {
-									sourceInventories[i].setInventorySlotContents(j, null);
-								}
-								return;
-							}
-							break;
+							ItemStack restStack = kitchenMultiBlock.smeltItem(itemStack, count);
+							sourceInventories.get(i).setInventorySlotContents(j, restStack);
+							return;
 						}
 					}
 				}
@@ -288,7 +265,9 @@ public class ContainerRecipeBook extends Container {
 			}
 		} else {
 			ItemStack craftingResult;
-			while((craftingResult = craftBook.craft(player, recipe)) != null) {
+			int crafted = 0;
+			while((craftingResult = craftBook.craft(player, recipe)) != null && crafted < 64) {
+				crafted += craftingResult.stackSize;
 				if(!player.inventory.addItemStackToInventory(craftingResult)) {
 					if (player.inventory.getItemStack() == null) {
 						player.inventory.setItemStack(craftingResult);
@@ -388,7 +367,7 @@ public class ContainerRecipeBook extends Container {
 		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
-				if(noFilter || FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), sourceInventories)) {
+				if(noFilter || FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), kitchenMultiBlock != null ? kitchenMultiBlock.getSourceInventories(player.inventory) : playerInventoryList, kitchenMultiBlock != null ? kitchenMultiBlock.getItemProviders() : emptyProviderList)) {
 					String foodStackString = foodStack.toString();
 					if(!availableRecipes.containsKey(foodStackString)) {
 						sortedRecipes.add(foodStack);
@@ -462,7 +441,7 @@ public class ContainerRecipeBook extends Container {
 					isMissingTools = false;
 				}
 				hasVariants = currentRecipeList != null && currentRecipeList.size() > 1;
-				isMissingOven = findCookingOven() == null;
+				isMissingOven = kitchenMultiBlock == null || !kitchenMultiBlock.hasSmeltingProvider();
 				NetworkHandler.instance.sendTo(new MessageRecipeInfo(currentSlotIndex, currentRecipe, isMissingTools, hasVariants, isMissingOven), (EntityPlayerMP) player);
 			}
 
@@ -494,27 +473,14 @@ public class ContainerRecipeBook extends Container {
 	 */
 	public ContainerRecipeBook setKitchenMultiBlock(KitchenMultiBlock kitchenMultiBlock) {
 		this.kitchenMultiBlock = kitchenMultiBlock;
+		findAvailableRecipes();
+		List<IInventory> sourceInventories = kitchenMultiBlock.getSourceInventories(player.inventory);
+		for(int i = 0; i < craftMatrixSlots.length; i++) {
+			craftMatrixSlots[i].setSourceInventories(sourceInventories);
+		}
+		craftBook.setInventories(sourceInventories);
+		craftBook.setItemProviders(kitchenMultiBlock.getItemProviders());
 		return this;
-	}
-
-	/**
-	 * SERVER ONLY
-	 * @return
-	 */
-	public TileEntityCookingOven findCookingOven() {
-		if(!allowSmelting || tileWorld == null) {
-			return null;
-		}
-		for(ForgeDirection direction : ForgeDirection.values()) {
-			if(direction == ForgeDirection.UNKNOWN) {
-				continue;
-			}
-			TileEntity tileEntity = tileWorld.getTileEntity(tileX + direction.offsetX, tileY + direction.offsetY, tileZ + direction.offsetZ);
-			if(tileEntity != null && tileEntity.getClass() == TileEntityCookingOven.class) {
-				return (TileEntityCookingOven) tileEntity;
-			}
-		}
-		return null;
 	}
 
 	@SideOnly(Side.CLIENT)

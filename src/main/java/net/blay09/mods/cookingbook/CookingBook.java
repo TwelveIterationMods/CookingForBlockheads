@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.api.CookingAPI;
 import net.blay09.mods.cookingbook.block.*;
 import net.blay09.mods.cookingbook.food.FoodRegistry;
@@ -18,10 +19,6 @@ import net.minecraftforge.common.config.Configuration;
 public class CookingBook {
 
     public static final String MOD_ID = "cookingbook";
-
-	public static boolean enableCraftingBook;
-	public static boolean enableCookingTable;
-	public static boolean enableCookingOven;
 
 	public static CreativeTabs creativeTab = new CreativeTabs("cookingbook") {
 		@Override
@@ -50,9 +47,6 @@ public class CookingBook {
 		proxy.preInit(event);
 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		enableCraftingBook = config.getBoolean("enableCraftingBook", Configuration.CATEGORY_GENERAL, true, "If set to false, the Tier II recipe book (the crafting book) will not be craftable or usable.");
-		enableCookingTable = config.getBoolean("enableCookingTable", Configuration.CATEGORY_GENERAL, true, "If set to false, the cooking table will not be craftable.");
-		enableCookingOven = config.getBoolean("enableCookingOven", Configuration.CATEGORY_GENERAL, true, "If set to false, the cooking oven will not be craftable.");
 		config.save();
 	}
 
