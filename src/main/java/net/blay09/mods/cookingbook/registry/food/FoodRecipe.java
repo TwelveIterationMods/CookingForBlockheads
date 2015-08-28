@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingbook.food;
+package net.blay09.mods.cookingbook.registry.food;
 
 import net.minecraft.item.ItemStack;
 

@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingbook;
 
-import net.blay09.mods.cookingbook.api.IKitchenSmeltingProvider;
-import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
-import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
-import net.blay09.mods.cookingbook.api.IMultiblockKitchen;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IMultiblockKitchen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

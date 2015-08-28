@@ -1,12 +1,10 @@
 package net.blay09.mods.cookingbook.container;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
-import net.blay09.mods.cookingbook.food.FoodRegistry;
-import net.blay09.mods.cookingbook.food.FoodIngredient;
-import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
+import net.blay09.mods.cookingbook.registry.food.FoodIngredient;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -71,7 +69,7 @@ public class InventoryCraftBook extends InventoryCrafting {
             currentRecipe = null;
             return currentRecipe;
         }
-        currentRecipe = FoodRegistry.findMatchingRecipe(this, player.worldObj);
+        currentRecipe = CookingRegistry.findMatchingFoodRecipe(this, player.worldObj);
         return currentRecipe;
     }
 
@@ -130,7 +128,7 @@ public class InventoryCraftBook extends InventoryCrafting {
         if(mouseItem == null) {
             return true;
         }
-        IRecipe craftingRecipe = FoodRegistry.findMatchingRecipe(this, player.worldObj);
+        IRecipe craftingRecipe = CookingRegistry.findMatchingFoodRecipe(this, player.worldObj);
         if(craftingRecipe == null) {
             return false;
         }

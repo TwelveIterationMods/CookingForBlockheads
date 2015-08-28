@@ -5,19 +5,15 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.blay09.mods.cookingbook.addon.HarvestCraftAddon;
-import net.blay09.mods.cookingbook.addon.MineTweakerAddon;
 import net.blay09.mods.cookingbook.addon.VanillaAddon;
 import net.blay09.mods.cookingbook.block.*;
-import net.blay09.mods.cookingbook.food.FoodRegistry;
 import net.blay09.mods.cookingbook.item.ItemBlockCookingOven;
 import net.blay09.mods.cookingbook.item.ItemBlockCookingTable;
 import net.blay09.mods.cookingbook.network.NetworkHandler;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CommonProxy {
@@ -62,6 +58,6 @@ public class CommonProxy {
 		//event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingbook.addon.MineTweakerAddon");
 		event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
 
-		FoodRegistry.init();
+		CookingRegistry.initFoodRegistry();
 	}
 }

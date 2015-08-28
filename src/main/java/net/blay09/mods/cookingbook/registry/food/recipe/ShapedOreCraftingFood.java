@@ -1,7 +1,7 @@
-package net.blay09.mods.cookingbook.food.recipe;
+package net.blay09.mods.cookingbook.registry.food.recipe;
 
-import net.blay09.mods.cookingbook.food.FoodIngredient;
-import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.registry.food.FoodIngredient;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 

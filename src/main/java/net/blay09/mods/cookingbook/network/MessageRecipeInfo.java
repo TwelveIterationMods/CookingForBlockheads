@@ -2,8 +2,8 @@ package net.blay09.mods.cookingbook.network;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingbook.food.FoodRecipe;
-import net.blay09.mods.cookingbook.food.recipe.RemoteCraftingFood;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
+import net.blay09.mods.cookingbook.registry.food.recipe.RemoteCraftingFood;
 
 public class MessageRecipeInfo implements IMessage {
 

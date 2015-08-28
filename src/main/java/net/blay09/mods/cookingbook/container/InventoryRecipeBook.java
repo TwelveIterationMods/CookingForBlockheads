@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.container;
 
-import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingbook.api;
+package net.blay09.mods.cookingbook.api.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.item.ItemStack;

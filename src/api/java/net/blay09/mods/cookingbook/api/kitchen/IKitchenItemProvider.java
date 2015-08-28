@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingbook.api;
+package net.blay09.mods.cookingbook.api.kitchen;
 
 import net.minecraft.item.ItemStack;
 

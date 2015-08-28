@@ -1,14 +1,15 @@
-package net.blay09.mods.cookingbook.food;
+package net.blay09.mods.cookingbook.registry;
 
 import com.google.common.collect.ArrayListMultimap;
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.blay09.mods.cookingbook.api.FoodRegistryInitEvent;
-import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
-import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
+import net.blay09.mods.cookingbook.addon.HarvestCraftAddon;
+import net.blay09.mods.cookingbook.api.SinkHandler;
+import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.container.InventoryCraftBook;
-import net.blay09.mods.cookingbook.food.recipe.*;
+import net.blay09.mods.cookingbook.registry.food.FoodIngredient;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
+import net.blay09.mods.cookingbook.registry.food.recipe.*;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -20,17 +21,18 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class FoodRegistry {
+public class CookingRegistry {
 
     private static final List<IRecipe> recipeList = new ArrayList<>();
     private static final ArrayListMultimap<Item, FoodRecipe> foodItems = ArrayListMultimap.create();
+    private static final List<ItemStack> tools = new ArrayList<>();
+    private static final Map<ItemStack, Integer> ovenFuelItems = new HashMap<>();
+    private static final Map<ItemStack, ItemStack> ovenRecipes = new HashMap<>();
+    private static final Map<ItemStack, SinkHandler> sinkHandlers = new HashMap<>();
 
-    public static void init() {
+    public static void initFoodRegistry() {
         recipeList.clear();
         foodItems.clear();
 
@@ -45,13 +47,13 @@ public class FoodRegistry {
             ItemStack output = recipe.getRecipeOutput();
             if(output != null) {
                 if (output.getItem() instanceof ItemFood) {
-                    if (PamsHarvestcraft.isWeirdBrokenRecipe(recipe)) {
+                    if (HarvestCraftAddon.isWeirdBrokenRecipe(recipe)) {
                         continue;
                     }
                     addFoodRecipe(recipe);
                 } else {
                     for (ItemStack itemStack : nonFoodRecipes) {
-                        if (areItemStacksEqualForCrafting(recipe.getRecipeOutput(), itemStack)) {
+                        if (areItemStacksEqualWithWildcard(recipe.getRecipeOutput(), itemStack)) {
                             addFoodRecipe(recipe);
                             break;
                         }
@@ -76,23 +78,12 @@ public class FoodRegistry {
                 foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
             } else {
                 for(ItemStack itemStack : nonFoodRecipes) {
-                    if (areItemStacksEqualForCrafting(resultStack, itemStack)) {
+                    if (areItemStacksEqualWithWildcard(resultStack, itemStack)) {
                         foodItems.put(resultStack.getItem(), new SmeltingFood(resultStack, sourceStack));
                         break;
                     }
                 }
             }
-        }
-    }
-
-    public static boolean areItemStacksEqualForCrafting(ItemStack first, ItemStack second) {
-        if(first == null || second == null) {
-            return false;
-        }
-        if(first.getHasSubtypes()) {
-            return first.getItem() == second.getItem() && (first.getItemDamage() == second.getItemDamage() || (first.getItemDamage() == OreDictionary.WILDCARD_VALUE || second.getItemDamage() == OreDictionary.WILDCARD_VALUE));
-        } else {
-            return first.getItem() == second.getItem();
         }
     }
 
@@ -112,11 +103,7 @@ public class FoodRegistry {
         }
     }
 
-    public static Collection<FoodRecipe> getFoodRecipes() {
-        return foodItems.values();
-    }
-
-    public static boolean isAvailableFor(List<FoodIngredient> craftMatrix, List<IInventory> inventories, List<IKitchenItemProvider> itemProviders) {
+    public static boolean areIngredientsAvailableFor(List<FoodIngredient> craftMatrix, List<IInventory> inventories, List<IKitchenItemProvider> itemProviders) {
         int[][] usedStackSize = new int[inventories.size()][];
         for(int i = 0; i < usedStackSize.length; i++) {
             usedStackSize[i] = new int[inventories.get(i).getSizeInventory()];
@@ -154,7 +141,7 @@ public class FoodRegistry {
         return true;
     }
 
-    public static IRecipe findMatchingRecipe(InventoryCraftBook craftBook, World worldObj) {
+    public static IRecipe findMatchingFoodRecipe(InventoryCraftBook craftBook, World worldObj) {
         for(IRecipe recipe : recipeList) {
             if(recipe.matches(craftBook, worldObj)) {
                 return recipe;
@@ -162,4 +149,71 @@ public class FoodRegistry {
         }
         return null;
     }
+
+    public static Collection<FoodRecipe> getFoodRecipes() {
+        return foodItems.values();
+    }
+
+    public static void addToolItem(ItemStack toolItem) {
+        tools.add(toolItem);
+    }
+
+    public static boolean isToolItem(ItemStack itemStack) {
+        if(itemStack == null) {
+            return false;
+        }
+        for(ItemStack toolItem : tools) {
+            if(areItemStacksEqualWithWildcard(toolItem, itemStack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void addOvenFuel(ItemStack itemStack, int fuelTime) {
+        ovenFuelItems.put(itemStack, fuelTime);
+    }
+
+    public static int getOvenFuelTime(ItemStack itemStack) {
+        for(Map.Entry<ItemStack, Integer> entry : ovenFuelItems.entrySet()) {
+            if(areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+                return entry.getValue();
+            }
+        }
+        return 0;
+    }
+
+    public static void addSmeltingItem(ItemStack source, ItemStack result) {
+        ovenRecipes.put(source, result);
+    }
+
+    public static ItemStack getSmeltingResult(ItemStack itemStack) {
+        for(Map.Entry<ItemStack, ItemStack> entry : ovenRecipes.entrySet()) {
+            if(areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    public static void addSinkHandler(ItemStack itemStack, SinkHandler sinkHandler) {
+        sinkHandlers.put(itemStack, sinkHandler);
+    }
+
+    public static ItemStack getSinkOutput(ItemStack itemStack) {
+        for(Map.Entry<ItemStack, SinkHandler> entry : sinkHandlers.entrySet()) {
+            if(areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+                return entry.getValue().getSinkOutput(itemStack);
+            }
+        }
+        return null;
+    }
+
+    public static boolean areItemStacksEqualWithWildcard(ItemStack first, ItemStack second) {
+        if(first == null || second == null) {
+            return false;
+        }
+        return first.getItem() == second.getItem() && (first.getItemDamage() == second.getItemDamage() || first.getItemDamage() == OreDictionary.WILDCARD_VALUE || second.getItemDamage() == OreDictionary.WILDCARD_VALUE);
+    }
+
 }

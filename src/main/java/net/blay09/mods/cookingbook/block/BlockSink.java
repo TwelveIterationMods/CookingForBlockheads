@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
-import net.blay09.mods.cookingbook.SinkHandlers;
 import net.blay09.mods.cookingbook.client.render.SinkBlockRenderer;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,8 +22,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import java.util.Random;
 
 public class BlockSink extends BlockContainer {
-
-    private static final Random random = new Random();
 
     public BlockSink() {
         super(Material.iron);
@@ -119,7 +117,7 @@ public class BlockSink extends BlockContainer {
             spawnParticles(world, x, y, z);
             return true;
         } else {
-            ItemStack resultStack = SinkHandlers.getSinkOutput(player.getHeldItem());
+            ItemStack resultStack = CookingRegistry.getSinkOutput(player.getHeldItem());
             if(resultStack != null) {
                 ItemStack oldItem = player.getHeldItem();
                 NBTTagCompound tagCompound = oldItem.getTagCompound();

@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.block;
 
-import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

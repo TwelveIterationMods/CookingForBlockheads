@@ -1,5 +1,6 @@
-package net.blay09.mods.cookingbook.food;
+package net.blay09.mods.cookingbook.registry.food;
 
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.item.ItemStack;
 
 public class FoodIngredient {
@@ -18,7 +19,7 @@ public class FoodIngredient {
 
     public boolean isValidItem(ItemStack itemStack) {
         for(ItemStack oreStack : itemStacks) {
-            if(FoodRegistry.areItemStacksEqualForCrafting(oreStack, itemStack)) {
+            if(CookingRegistry.areItemStacksEqualWithWildcard(oreStack, itemStack)) {
                 return true;
             }
         }

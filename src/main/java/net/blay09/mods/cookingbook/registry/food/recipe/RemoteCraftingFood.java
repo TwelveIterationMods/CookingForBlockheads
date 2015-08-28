@@ -1,9 +1,9 @@
-package net.blay09.mods.cookingbook.food.recipe;
+package net.blay09.mods.cookingbook.registry.food.recipe;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingbook.food.FoodRecipe;
-import net.blay09.mods.cookingbook.food.FoodIngredient;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
+import net.blay09.mods.cookingbook.registry.food.FoodIngredient;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;

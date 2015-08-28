@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

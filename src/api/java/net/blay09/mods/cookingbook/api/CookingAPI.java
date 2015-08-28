@@ -22,4 +22,8 @@ public class CookingAPI {
         internalMethods.addOvenRecipe(sourceItem, resultItem);
     }
 
+    public static void addToolItem(ItemStack toolItem) {
+        internalMethods.addToolItem(toolItem);
+    }
+
 }

@@ -1,9 +1,8 @@
 package net.blay09.mods.cookingbook.block;
 
-import net.blay09.mods.cookingbook.OvenFuels;
-import net.blay09.mods.cookingbook.OvenRecipes;
-import net.blay09.mods.cookingbook.api.IKitchenSmeltingProvider;
-import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -389,7 +388,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
-        ItemStack result = OvenRecipes.getSmeltingResult(itemStack);
+        ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if(result != null) {
             return result;
         }
@@ -401,7 +400,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     public static int getItemBurnTime(ItemStack fuelItem) {
-        int fuelTime = OvenFuels.getFuelTime(fuelItem);
+        int fuelTime = CookingRegistry.getOvenFuelTime(fuelItem);
         if(fuelTime != 0) {
             return fuelTime;
         }

@@ -4,14 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.GuiHandler;
-import net.blay09.mods.cookingbook.api.IKitchenStorageProvider;
-import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
 import net.blay09.mods.cookingbook.client.render.OvenBlockRenderer;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -132,6 +129,36 @@ public class BlockCookingOven extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+        if(side == ForgeDirection.UP.ordinal()) {
+            if(CookingRegistry.isToolItem(player.getHeldItem())) {
+                int metadata = world.getBlockMetadata(x, y, z);
+                float hitX = subX;
+                float hitZ = subZ;
+                switch(metadata) {
+                    case 2: hitX = 1f - subX; hitZ = 1f - subZ; break;
+                    case 3: hitX = subX; hitZ = subZ; break;
+                    case 4: hitZ = 1f - subX; hitX = subZ; break;
+                    case 5: hitZ = subX; hitX = 1f - subZ; break;
+                }
+                int slotId = -1;
+                if(hitX < 0.5f && hitZ < 0.5f) {
+                    slotId = 1;
+                } else if(hitX >= 0.5f && hitZ < 0.5f) {
+                    slotId = 0;
+                } else if(hitX < 0.5f && hitZ >= 0.5f) {
+                    slotId = 2;
+                } else if(hitX >= 0.5f && hitZ >= 0.5f) {
+                    slotId = 3;
+                }
+                slotId += 16;
+                TileEntityCookingOven tileEntityOven = (TileEntityCookingOven) world.getTileEntity(x, y, z);
+                ItemStack toolItem = player.getHeldItem().splitStack(1);
+                if (tileEntityOven.getStackInSlot(slotId) == null) {
+                    tileEntityOven.setInventorySlotContents(slotId, toolItem);
+                }
+                return true;
+            }
+        }
         if(!world.isRemote) {
             player.openGui(CookingBook.instance, GuiHandler.GUI_ID_COOKINGOVEN, world, x, y, z);
         }

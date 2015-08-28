@@ -2,7 +2,7 @@ package net.blay09.mods.cookingbook.addon;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.api.CookingAPI;
-import net.blay09.mods.cookingbook.api.FoodRegistryInitEvent;
+import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.SinkHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

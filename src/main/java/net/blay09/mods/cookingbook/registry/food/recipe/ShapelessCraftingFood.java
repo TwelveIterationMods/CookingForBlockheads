@@ -1,8 +1,8 @@
-package net.blay09.mods.cookingbook.food.recipe;
+package net.blay09.mods.cookingbook.registry.food.recipe;
 
-import net.blay09.mods.cookingbook.compatibility.PamsHarvestcraft;
-import net.blay09.mods.cookingbook.food.FoodIngredient;
-import net.blay09.mods.cookingbook.food.FoodRecipe;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
+import net.blay09.mods.cookingbook.registry.food.FoodIngredient;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapelessRecipes;
 
@@ -15,7 +15,7 @@ public class ShapelessCraftingFood extends FoodRecipe {
         this.craftMatrix = new ArrayList<>();
         for(int i = 0; i < recipe.recipeItems.size(); i++) {
             if (recipe.recipeItems.get(i) != null) {
-                boolean isToolItem = PamsHarvestcraft.isToolItem((ItemStack) recipe.recipeItems.get(i));
+                boolean isToolItem = CookingRegistry.isToolItem((ItemStack) recipe.recipeItems.get(i));
                 craftMatrix.add(new FoodIngredient(((ItemStack) recipe.recipeItems.get(i)).copy(), isToolItem));
             }
         }

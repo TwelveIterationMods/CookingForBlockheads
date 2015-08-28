@@ -4,9 +4,9 @@ import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.KitchenMultiBlock;
-import net.blay09.mods.cookingbook.api.IKitchenItemProvider;
-import net.blay09.mods.cookingbook.food.FoodRecipe;
-import net.blay09.mods.cookingbook.food.FoodRegistry;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
+import net.blay09.mods.cookingbook.registry.CookingRegistry;
+import net.blay09.mods.cookingbook.registry.food.FoodRecipe;
 import net.blay09.mods.cookingbook.network.MessageClickRecipe;
 import net.blay09.mods.cookingbook.network.MessageRecipeInfo;
 import net.blay09.mods.cookingbook.network.MessageSyncList;
@@ -233,7 +233,7 @@ public class ContainerRecipeBook extends Container {
 				ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
 				if(itemStack != null) {
 					for (ItemStack ingredientStack : recipe.getCraftMatrix().get(0).getItemStacks()) {
-						if (FoodRegistry.areItemStacksEqualForCrafting(itemStack, ingredientStack)) {
+						if (CookingRegistry.areItemStacksEqualWithWildcard(itemStack, ingredientStack)) {
 							int count = isShiftDown ? Math.min(itemStack.stackSize, ingredientStack.getMaxStackSize()) : 1;
 							ItemStack restStack = kitchenMultiBlock.smeltItem(itemStack, count);
 							sourceInventories.get(i).setInventorySlotContents(j, restStack);
@@ -364,10 +364,10 @@ public class ContainerRecipeBook extends Container {
 	public void findAvailableRecipes() {
 		availableRecipes.clear();
 		sortedRecipes.clear();
-		for(FoodRecipe foodRecipe : FoodRegistry.getFoodRecipes()) {
+		for(FoodRecipe foodRecipe : CookingRegistry.getFoodRecipes()) {
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
-				if(noFilter || FoodRegistry.isAvailableFor(foodRecipe.getCraftMatrix(), kitchenMultiBlock != null ? kitchenMultiBlock.getSourceInventories(player.inventory) : playerInventoryList, kitchenMultiBlock != null ? kitchenMultiBlock.getItemProviders() : emptyProviderList)) {
+				if(noFilter || CookingRegistry.areIngredientsAvailableFor(foodRecipe.getCraftMatrix(), kitchenMultiBlock != null ? kitchenMultiBlock.getSourceInventories(player.inventory) : playerInventoryList, kitchenMultiBlock != null ? kitchenMultiBlock.getItemProviders() : emptyProviderList)) {
 					String foodStackString = foodStack.toString();
 					if(!availableRecipes.containsKey(foodStackString)) {
 						sortedRecipes.add(foodStack);
