@@ -83,6 +83,7 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     @Override
     public void setInventorySlotContents(int i, ItemStack itemStack) {
         inventory[i] = itemStack;
+        markDirty();
     }
 
     @Override
@@ -167,6 +168,7 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
 
+        inventory = new ItemStack[getSizeInventory()];
         NBTTagList tagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         for(int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound itemCompound = tagList.getCompoundTagAt(i);

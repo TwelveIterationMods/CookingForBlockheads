@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -116,9 +117,17 @@ public class TileEntityToolRack extends TileEntity implements IInventory, IKitch
     }
 
     @Override
+    public void markDirty() {
+        super.markDirty();
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
 
+        inventory = new ItemStack[getSizeInventory()];
         NBTTagList tagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         for(int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound itemCompound = tagList.getCompoundTagAt(i);
