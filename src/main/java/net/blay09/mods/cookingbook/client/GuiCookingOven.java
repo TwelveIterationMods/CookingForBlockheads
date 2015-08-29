@@ -37,16 +37,16 @@ public class GuiCookingOven extends GuiContainer {
 
         if(tileEntity.isBurning()) {
             int burnTime = (int) (12 * tileEntity.getBurnTimeProgress());
-            drawTexturedModalRect(guiLeft + 40, guiTop + 43 + 12 - burnTime, 176, 12 - burnTime, 14, burnTime + 1);
+            drawTexturedModalRect(guiLeft + 22 + 40, guiTop + 43 + 12 - burnTime, 176, 12 - burnTime, 14, burnTime + 1);
         }
-        drawTexturedModalRect(guiLeft + 62, guiTop + 41, 176, 14, (int) (16 * tileEntity.getCookProgress(0)), 16);
-        drawTexturedModalRect(guiLeft + 80, guiTop + 41, 176, 14, (int) (16 * tileEntity.getCookProgress(1)), 16);
-        drawTexturedModalRect(guiLeft + 98, guiTop + 41, 176, 14, (int) (16 * tileEntity.getCookProgress(2)), 16);
-        drawTexturedModalRect(guiLeft + 62, guiTop + 59, 176, 14, (int) (16 * tileEntity.getCookProgress(3)), 16);
-        drawTexturedModalRect(guiLeft + 80, guiTop + 59, 176, 14, (int) (16 * tileEntity.getCookProgress(4)), 16);
-        drawTexturedModalRect(guiLeft + 98, guiTop + 59, 176, 14, (int) (16 * tileEntity.getCookProgress(5)), 16);
-        drawTexturedModalRect(guiLeft + 62, guiTop + 77, 176, 14, (int) (16 * tileEntity.getCookProgress(6)), 16);
-        drawTexturedModalRect(guiLeft + 80, guiTop + 77, 176, 14, (int) (16 * tileEntity.getCookProgress(7)), 16);
-        drawTexturedModalRect(guiLeft + 98, guiTop + 77, 176, 14, (int) (16 * tileEntity.getCookProgress(8)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 62, guiTop + 41, 176, 14, (int) (16 * tileEntity.getCookProgress(0)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 80, guiTop + 41, 176, 14, (int) (16 * tileEntity.getCookProgress(1)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 98, guiTop + 41, 176, 14, (int) (16 * tileEntity.getCookProgress(2)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 62, guiTop + 59, 176, 14, (int) (16 * tileEntity.getCookProgress(3)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 80, guiTop + 59, 176, 14, (int) (16 * tileEntity.getCookProgress(4)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 98, guiTop + 59, 176, 14, (int) (16 * tileEntity.getCookProgress(5)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 62, guiTop + 77, 176, 14, (int) (16 * tileEntity.getCookProgress(6)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 80, guiTop + 77, 176, 14, (int) (16 * tileEntity.getCookProgress(7)), 16);
+        drawTexturedModalRect(guiLeft + 22 + 98, guiTop + 77, 176, 14, (int) (16 * tileEntity.getCookProgress(8)), 16);
     }
 }

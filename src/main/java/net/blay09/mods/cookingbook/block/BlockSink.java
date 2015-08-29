@@ -132,6 +132,8 @@ public class BlockSink extends BlockContainer {
                 }
                 spawnParticles(world, x, y, z);
                 return true;
+            } else {
+                spawnParticles(world, x, y, z);
             }
         }
         return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);

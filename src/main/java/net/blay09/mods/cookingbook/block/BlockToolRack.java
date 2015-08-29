@@ -68,16 +68,16 @@ public class BlockToolRack extends BlockContainer {
         int metadata = blockAccess.getBlockMetadata(x, y, z);
         switch (metadata) {
             case 2:
-                setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+                setBlockBounds(0f, 0.25f, 1f - f, 1f, 1f, 1f);
                 break;
             case 3:
-                setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+                setBlockBounds(0f, 0.25f, 0f, 1f, 1f, f);
                 break;
             case 4:
-                setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                setBlockBounds(1f - f, 0.25f, 0f, 1f, 1f, 1f);
                 break;
             case 5:
-                setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+                setBlockBounds(0f, 0.25f, 0f, f, 1f, 1f);
                 break;
         }
     }
@@ -125,7 +125,7 @@ public class BlockToolRack extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if(hitY > 0.5f) {
+        if(hitY > 0.25f) {
             int metadata = world.getBlockMetadata(x, y, z);
             float hit = (metadata == 2 || metadata == 3) ? hitX : hitZ;
             int hitSlot = hit > 0.5f ? 0 : 1;

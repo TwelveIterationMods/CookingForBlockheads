@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class TileEntityCookingOven extends TileEntity implements ISidedInventory, IKitchenSmeltingProvider, IKitchenStorageProvider {
 
@@ -120,16 +121,22 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     private static final int COOK_TIME = 200;
 
     private EntityItem[] renderItem = new EntityItem[4];
+    private EntityItem interiorRenderItem;
     private ItemStack[] inventory = new ItemStack[20];
     private OvenInventory ovenInventory = new OvenInventory(this);
     public int furnaceBurnTime;
     public int currentItemBurnTime;
     public int[] slotCookTime = new int[9];
+    private float prevDoorAngle;
+    private float doorAngle;
+    private int numPlayersUsing;
 
     @Override
     public void setWorldObj(World world) {
         super.setWorldObj(world);
 
+        interiorRenderItem = new EntityItem(world, 0, 0, 0);
+        interiorRenderItem.hoverStart = 0f;
         for(int i = 0; i < renderItem.length; i++) {
             renderItem[i] = new EntityItem(world, 0, 0, 0);
             renderItem[i].hoverStart = 0f;
@@ -210,6 +217,9 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         if(i >= 16 && i < 20) {
             renderItem[i - 16].setEntityItemStack(itemStack);
         }
+        if(itemStack == null && i >= SLOT_CENTER_OFFSET && i < SLOT_CENTER_OFFSET + 9) {
+            slotCookTime[i - SLOT_CENTER_OFFSET] = 0;
+        }
         markDirty();
     }
 
@@ -234,16 +244,6 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
         switch (i) {
             case 0:
@@ -259,6 +259,27 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     @Override
+    public boolean receiveClientEvent(int id, int value) {
+        if(id == 1) {
+            numPlayersUsing = value;
+            return true;
+        }
+        return super.receiveClientEvent(id, value);
+    }
+
+    @Override
+    public void openInventory() {
+        numPlayersUsing++;
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
+    }
+
+    @Override
+    public void closeInventory() {
+        numPlayersUsing--;
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, numPlayersUsing);
+    }
+
+    @Override
     public void updateEntity() {
         super.updateEntity();
 
@@ -266,6 +287,15 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
         if (furnaceBurnTime > 0) {
             furnaceBurnTime--;
+        }
+
+        prevDoorAngle = doorAngle;
+        if(numPlayersUsing > 0) {
+            final float doorSpeed = 0.2f;
+            doorAngle = Math.min(1f, doorAngle + doorSpeed);
+        } else {
+            final float doorSpeed = 0.1f;
+            doorAngle = Math.max(0f, doorAngle - doorSpeed);
         }
 
         if (!worldObj.isRemote) {
@@ -469,7 +499,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         compound.setTag("Items", tagList);
         compound.setShort("BurnTime", (short) furnaceBurnTime);
         compound.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
-        compound.setIntArray("CookTimes", slotCookTime);
+        compound.setIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
     }
 
     @Override
@@ -533,5 +563,17 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
             return null;
         }
         return itemStack;
+    }
+
+    public float getPrevDoorAngle() {
+        return prevDoorAngle;
+    }
+
+    public float getDoorAngle() {
+        return doorAngle;
+    }
+
+    public EntityItem getInteriorRenderItem() {
+        return interiorRenderItem;
     }
 }

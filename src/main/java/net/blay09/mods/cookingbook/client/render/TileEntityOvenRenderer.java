@@ -7,6 +7,7 @@ import net.blay09.mods.cookingbook.client.model.ModelToolRack;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -54,8 +55,30 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
         GL11.glRotatef(angle, 0f, 1f, 0f);
         GL11.glRotatef(180f, 0f, 0f, 1f);
         bindTexture(texture);
-        model.renderAll(tileEntityOven.isBurning());
+        float doorAngle = tileEntityOven.getPrevDoorAngle() + (tileEntityOven.getDoorAngle() - tileEntityOven.getPrevDoorAngle()) * delta;
+        doorAngle = 1.0f - doorAngle;
+        doorAngle = 1.0f - doorAngle * doorAngle * doorAngle;
+        model.OvenDoor.rotateAngleX = (float) ((Math.PI / 2.5f) * doorAngle);
+        model.OvenDoorBurning.rotateAngleX = (float) ((Math.PI / 2.5f) * doorAngle);
+        model.renderAll(doorAngle <= 0.25f && tileEntityOven.isBurning());
         GL11.glRotatef(180f, 0f, 0f, -1f);
+        if(doorAngle > 0f) {
+            for (int i = 0; i < 9; i++) {
+                ItemStack itemStack = tileEntityOven.getStackInSlot(i + 7);
+                if (itemStack != null) {
+                    int relSlot = i % 3;
+                    float itemX = relSlot * 0.5f;
+                    float itemZ =  - (i / 3) * 0.4f;
+                    GL11.glPushMatrix();
+                    GL11.glScalef(0.5f, 0.5f, 0.5f);
+                    GL11.glTranslatef(itemX - 0.5f, -2.25f, 0.05f + itemZ);
+                    GL11.glRotatef(90f, 1f, 0f, 0f);
+                    tileEntityOven.getInteriorRenderItem().setEntityItemStack(itemStack);
+                    RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getInteriorRenderItem(), 0, 0, 0, 0f, 0f);
+                    GL11.glPopMatrix();
+                }
+            }
+        }
         final float scale = 0.7f;
         if(tileEntityOven.getStackInSlot(16) != null) {
             GL11.glPushMatrix();
