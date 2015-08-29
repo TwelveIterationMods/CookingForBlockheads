@@ -10,7 +10,6 @@ tile.cookingbook:toolrack.name=Tool Rack
 
 container.cookingbook:cookingoven=Cooking Oven
 container.cookingbook:fridge=Fridge
-container.cookingbook:toolrack=Tool Rack
 
 itemGroup.cookingbook=Cooking for Blockheads
 
@@ -23,8 +22,12 @@ cookingbook:recipebook_tier1.tooltipDesc=Shows food you can make with the\nthing
 cookingbook:recipebook_tier2.tooltip=Crafting Book
 cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou have in your inventory.
 
-cookingbook:cookingtable.tooltipDesc=Can craft food using the things from\nadjacent inventories.
-cookingbook:cookingoven.tooltipDesc=Can be placed next to a cooking table\nto enable smelting abilities.
+cookingbook:multiblockKitchen=Multiblock Kitchen
+cookingbook:cookingtable.tooltipDesc=Enables crafting abilities.
+cookingbook:cookingoven.tooltipDesc=Enables smelting abilities.
+cookingbook:sink.tooltipDesc=Provides water to recipes.
+cookingbook:fridge.tooltipDesc=Provides contained ingredients to recipes.
+cookingbook:toolrack.tooltipDesc=Provides contained tools to recipes.
 
 cookingbook:sort_by_name.tooltip=Sort by Name
 cookingbook:sort_by_hunger.tooltip=Sort by Hunger Restored

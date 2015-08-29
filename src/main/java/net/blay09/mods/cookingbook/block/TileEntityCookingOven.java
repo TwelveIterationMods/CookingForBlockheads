@@ -174,6 +174,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         if (inventory[i] != null) {
             ItemStack itemstack = inventory[i];
             inventory[i] = null;
+            markDirty();
             return itemstack;
         }
         return null;
@@ -424,6 +425,13 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
             }
         }
         return false;
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override

@@ -21,6 +21,7 @@ public class ItemBlockCookingTable extends ItemBlock {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean flag) {
         super.addInformation(itemStack, player, list, flag);
 
+        list.add("\u00a7e" + I18n.format("cookingbook:multiblockKitchen"));
         for (String s : I18n.format("cookingbook:cookingtable.tooltipDesc").split("\\\\n")) {
             list.add("\u00a77" + s);
         }

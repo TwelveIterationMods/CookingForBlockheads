@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockCookingOven extends ItemBlock {
+public class ItemBlockSink extends ItemBlock {
 
-    public ItemBlockCookingOven(Block block) {
+    public ItemBlockSink(Block block) {
         super(block);
     }
 
@@ -22,7 +22,7 @@ public class ItemBlockCookingOven extends ItemBlock {
         super.addInformation(itemStack, player, list, flag);
 
         list.add("\u00a7e" + I18n.format("cookingbook:multiblockKitchen"));
-        for (String s : I18n.format("cookingbook:cookingoven.tooltipDesc").split("\\\\n")) {
+        for (String s : I18n.format("cookingbook:sink.tooltipDesc").split("\\\\n")) {
             list.add("\u00a77" + s);
         }
     }
