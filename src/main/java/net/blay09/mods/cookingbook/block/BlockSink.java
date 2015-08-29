@@ -24,11 +24,11 @@ import java.util.Random;
 public class BlockSink extends BlockContainer {
 
     public BlockSink() {
-        super(Material.iron);
+        super(Material.wood);
 
         setBlockName("cookingbook:sink");
         setCreativeTab(CookingBook.creativeTab);
-        setStepSound(soundTypeMetal);
+        setStepSound(soundTypeWood);
         setHardness(5f);
         setResistance(10f);
         setBlockBounds(0.0625f, 0f, 0.0625f, 0.9375f, 0.975f, 0.9375f);

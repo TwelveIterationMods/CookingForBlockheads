@@ -6,6 +6,7 @@ import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.SinkHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,12 +28,10 @@ public class VanillaAddon {
         SinkHandler armorHandler = new SinkHandler() {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
-                ItemStack result = itemStack.copy();
-                NBTTagCompound tagCompound = result.getTagCompound();
-                if(tagCompound != null) {
-                    tagCompound.getCompoundTag("display").removeTag("color");
+                if(itemStack.getItem() instanceof ItemArmor) {
+                    ((ItemArmor) itemStack.getItem()).removeColor(itemStack);
                 }
-                return result;
+                return itemStack;
             }
         };
         CookingAPI.addSinkHandler(new ItemStack(Items.leather_boots, 1, OreDictionary.WILDCARD_VALUE), armorHandler);

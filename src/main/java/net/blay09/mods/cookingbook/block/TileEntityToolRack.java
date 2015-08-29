@@ -120,7 +120,9 @@ public class TileEntityToolRack extends TileEntity implements IInventory, IKitch
     public void markDirty() {
         super.markDirty();
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        if(hasWorldObj()) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
     }
 
     @Override

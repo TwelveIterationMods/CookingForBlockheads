@@ -56,8 +56,6 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 	private Slot hoverSlot;
 
-	private String lastSearchText = "";
-
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
 		this.container = container;
@@ -89,6 +87,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 		buttonList.add(btnSortSaturation);
 
 		searchBar = new GuiTextField(fontRendererObj, guiLeft + xSize - 85, guiTop - 10, 70, 10);
+		searchBar.setVisible(false);
 
 		if(!registered) {
 			MinecraftForge.EVENT_BUS.register(this);
@@ -175,17 +174,6 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 	}
 
 	@Override
-	public void updateScreen() {
-		super.updateScreen();
-
-		if(!lastSearchText.equals(searchBar.getText())) {
-
-		}
-
-		lastSearchText = searchBar.getText();
-	}
-
-	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		if(container.isRecipeListDirty()) {
 			setCurrentOffset(currentOffset);
@@ -241,7 +229,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 			}
 		}
 
-		searchBar.drawTextBox();
+//		searchBar.drawTextBox();
 
 		hoverSlot = getSlotAtPosition(mouseX, mouseY);
 	}

@@ -28,7 +28,7 @@ public class BlockToolRack extends BlockContainer {
     private static final Random random = new Random();
 
     public BlockToolRack() {
-        super(Material.iron);
+        super(Material.wood);
 
         setBlockName("cookingbook:toolrack");
         setCreativeTab(CookingBook.creativeTab);
@@ -127,7 +127,13 @@ public class BlockToolRack extends BlockContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if(hitY > 0.25f) {
             int metadata = world.getBlockMetadata(x, y, z);
-            float hit = (metadata == 2 || metadata == 3) ? hitX : hitZ;
+            float hit = hitX;
+            switch(metadata) {
+                case 2: hit = hitX; break;
+                case 3: hit = 1f - hitX; break;
+                case 4: hit = 1f - hitZ; break;
+                case 5: hit = hitZ; break;
+            }
             int hitSlot = hit > 0.5f ? 0 : 1;
             TileEntityToolRack tileEntityToolRack = (TileEntityToolRack) world.getTileEntity(x, y, z);
             if (tileEntityToolRack != null) {

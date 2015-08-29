@@ -217,6 +217,15 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
         return null;
     }
 
+    @Override
+    public void markDirty() {
+        super.markDirty();
+
+        if(hasWorldObj()) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+    }
+
     public float getDoorAngle() {
         return doorAngle;
     }

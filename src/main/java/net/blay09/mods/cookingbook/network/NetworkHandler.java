@@ -16,6 +16,7 @@ public class NetworkHandler {
         instance.registerMessage(HandlerClickRecipe.class, MessageClickRecipe.class, 3, Side.SERVER);
         instance.registerMessage(HandlerRecipeInfo.class, MessageRecipeInfo.class, 4, Side.CLIENT);
         instance.registerMessage(HandlerSearch.class, MessageSearch.class, 5, Side.SERVER);
+        instance.registerMessage(HandlerTileEntity.class, MessageTileEntity.class, 6, Side.CLIENT);
     }
 
 }

@@ -18,7 +18,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
-import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,6 +76,7 @@ public class ContainerRecipeBook extends Container {
 			for(int j = 0; j < 3; j++) {
 				craftMatrixSlots[j + i * 3] = new SlotCraftMatrix(player, craftMatrix, j + i * 3, 24 + j * 18, 20 + i * 18);
 				craftMatrixSlots[j + i * 3].setSourceInventories(playerInventoryList);
+				craftMatrixSlots[j + i * 3].setItemProviders(emptyProviderList);
 				addSlotToContainer(craftMatrixSlots[j + i * 3]);
 			}
 		}
@@ -380,6 +380,7 @@ public class ContainerRecipeBook extends Container {
 	 */
 	public void findAvailableRecipes() {
 		availableRecipes.clear();
+		sortedRecipes.clear();
 		for(FoodRecipe foodRecipe : CookingRegistry.getFoodRecipes()) {
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
