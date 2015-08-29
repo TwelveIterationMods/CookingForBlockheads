@@ -22,6 +22,7 @@ public class SlotCraftMatrix extends Slot {
     private boolean enabled = true;
 
     private List<IInventory> sourceInventories;
+    private boolean isNoFilter;
     private ItemStack[] visibleStacks;
     private int visibleItemTime;
     private int visibleItemIndex;
@@ -60,25 +61,27 @@ public class SlotCraftMatrix extends Slot {
     public void updateVisibleStacks() {
         if(ingredient != null) {
             visibleStacks = ingredient.getItemStacks();
-            if(ingredient.getItemStacks().length > 1 && !ingredient.isToolItem()) {
-                List<ItemStack> visibleStackList = new ArrayList<ItemStack>();
-                for(ItemStack visibleStack : visibleStacks) {
-                    for(int i = 0; i < sourceInventories.size(); i++) {
-                        for(int j = 0; j < sourceInventories.get(i).getSizeInventory(); j++) {
-                            ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
-                            if(itemStack != null) {
-                                if(CookingRegistry.areItemStacksEqualWithWildcard(itemStack, visibleStack)) {
-                                    ItemStack displayStack = visibleStack.copy();
-                                    if(displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                                        displayStack.setItemDamage(0);
+            if(!isNoFilter) {
+                if (ingredient.getItemStacks().length > 1 && !ingredient.isToolItem()) {
+                    List<ItemStack> visibleStackList = new ArrayList<ItemStack>();
+                    for (ItemStack visibleStack : visibleStacks) {
+                        for (int i = 0; i < sourceInventories.size(); i++) {
+                            for (int j = 0; j < sourceInventories.get(i).getSizeInventory(); j++) {
+                                ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
+                                if (itemStack != null) {
+                                    if (CookingRegistry.areItemStacksEqualWithWildcard(itemStack, visibleStack)) {
+                                        ItemStack displayStack = visibleStack.copy();
+                                        if (displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                                            displayStack.setItemDamage(0);
+                                        }
+                                        visibleStackList.add(displayStack);
                                     }
-                                    visibleStackList.add(displayStack);
                                 }
                             }
                         }
                     }
+                    visibleStacks = visibleStackList.toArray(new ItemStack[visibleStackList.size()]);
                 }
-                visibleStacks = visibleStackList.toArray(new ItemStack[visibleStackList.size()]);
             }
             if(visibleStacks.length == 1) {
                 ItemStack displayStack = visibleStacks[0].copy();
@@ -122,5 +125,13 @@ public class SlotCraftMatrix extends Slot {
      */
     public void setSourceInventories(List<IInventory> sourceInventories) {
         this.sourceInventories = sourceInventories;
+    }
+
+    /**
+     * SERVER ONLY
+     * @param isNoFilter
+     */
+    public void setNoFilter(boolean isNoFilter) {
+        this.isNoFilter = isNoFilter;
     }
 }

@@ -70,7 +70,7 @@ public class GuiHandler implements IGuiHandler {
             case GUI_ID_CRAFTBOOK:
                 return new GuiRecipeBook(new ContainerRecipeBook(player, true, false, true));
             case GUI_ID_NOFILTERBOOK:
-                return new GuiRecipeBook(new ContainerRecipeBook(player, true, false, true));
+                return new GuiRecipeBook(new ContainerRecipeBook(player, false, false, true));
             case GUI_ID_COOKINGTABLE:
                 return new GuiRecipeBook(new ContainerRecipeBook(player, true, true, true));
             case GUI_ID_COOKINGOVEN:
