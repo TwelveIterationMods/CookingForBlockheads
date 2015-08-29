@@ -26,6 +26,7 @@ public class TileEntityToolRack extends TileEntity implements IInventory, IKitch
         for(int i = 0; i < renderItems.length; i++) {
             renderItems[i] = new EntityItem(worldObj, 0, 0, 0);
             renderItems[i].hoverStart = 0f;
+            renderItems[i].setEntityItemStack(inventory[i]);
         }
     }
 
@@ -75,7 +76,10 @@ public class TileEntityToolRack extends TileEntity implements IInventory, IKitch
     @Override
     public void setInventorySlotContents(int i, ItemStack itemStack) {
         inventory[i] = itemStack;
-        renderItems[i].setEntityItemStack(itemStack);
+        if(renderItems[i] != null) {
+            renderItems[i].setEntityItemStack(itemStack);
+        }
+        markDirty();
     }
 
     @Override
