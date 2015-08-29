@@ -25,33 +25,33 @@ public class ContainerCookingOven extends Container {
         this.tileEntity = tileEntity;
 
         for(int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotOvenInput(tileEntity, i, 62 + i * 18, 19));
+            addSlotToContainer(new SlotOvenInput(tileEntity, i, 84 + i * 18, 19));
         }
 
-        addSlotToContainer(new SlotOvenFuel(tileEntity, 3, 39, 59));
+        addSlotToContainer(new SlotOvenFuel(tileEntity, 3, 61, 59));
 
         for(int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotOvenResult(tileEntity, i + 4, 120, 41 + i * 18));
+            addSlotToContainer(new SlotOvenResult(tileEntity, i + 4, 142, 41 + i * 18));
         }
 
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                addSlotToContainer(new SlotOven(tileEntity, 7 + j + i * 3, 62 + j * 18, 41 + i * 18));
+                addSlotToContainer(new SlotOven(tileEntity, 7 + j + i * 3, 84 + j * 18, 41 + i * 18));
             }
         }
 
         for(int i = 0; i < 4; i++) {
-            addSlotToContainer(new SlotOvenTool(tileEntity, 16 + i, -14, 19 + i * 18));
+            addSlotToContainer(new SlotOvenTool(tileEntity, 16 + i, 8, 19 + i * 18));
         }
 
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 111 + i * 18));
+                addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 30 + j * 18, 111 + i * 18));
             }
         }
 
         for(int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 169));
+            addSlotToContainer(new Slot(inventoryPlayer, i, 30 + i * 18, 169));
         }
     }
 

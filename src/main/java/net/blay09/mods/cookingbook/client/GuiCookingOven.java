@@ -16,6 +16,7 @@ public class GuiCookingOven extends GuiContainer {
     public GuiCookingOven(InventoryPlayer playerInventory, TileEntityCookingOven tileEntity) {
         super(new ContainerCookingOven(playerInventory, tileEntity));
         this.tileEntity = tileEntity;
+        this.xSize += 22;
         this.ySize = 192;
     }
 
@@ -31,8 +32,8 @@ public class GuiCookingOven extends GuiContainer {
         GL11.glColor4f(1f, 1f, 1f, 1f);
         mc.getTextureManager().bindTexture(texture);
 
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-        drawTexturedModalRect(guiLeft - 22, guiTop + 10, 176, 30, 25, 87);
+        drawTexturedModalRect(guiLeft + 22, guiTop, 0, 0, xSize - 22, ySize);
+        drawTexturedModalRect(guiLeft, guiTop + 10, 176, 30, 25, 87);
 
         if(tileEntity.isBurning()) {
             int burnTime = (int) (12 * tileEntity.getBurnTimeProgress());
