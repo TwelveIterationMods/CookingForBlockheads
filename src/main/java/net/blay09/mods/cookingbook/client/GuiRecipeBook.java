@@ -7,6 +7,7 @@ import net.blay09.mods.cookingbook.network.MessageSort;
 import net.blay09.mods.cookingbook.network.MessageSwitchRecipe;
 import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
@@ -19,7 +20,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import yalter.mousetweaks.api.IMTModGuiContainer;
 
-@Optional.Interface(modid = "MouseTweaks", iface = "yalter.mousetweaks.api.IMTModGuiContainer", striprefs = true)
+@Optional.Interface(modid = "MouseTweaks", iface = "yalter.mousetweaks.api.IMTModGuiContainer")
 public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 	private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
@@ -44,6 +45,8 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 	private GuiButton btnNextRecipe;
 	private GuiButton btnPrevRecipe;
 
+	private GuiTextField searchBar;
+
 	private GuiButtonSort btnSortName;
 	private GuiButtonSort btnSortHunger;
 	private GuiButtonSort btnSortSaturation;
@@ -52,6 +55,8 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 	private final String[] noSelection;
 
 	private Slot hoverSlot;
+
+	private String lastSearchText = "";
 
 	public GuiRecipeBook(ContainerRecipeBook container) {
 		super(container);
@@ -82,6 +87,8 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "cookingbook:sort_by_saturation.tooltip");
 		buttonList.add(btnSortSaturation);
+
+		searchBar = new GuiTextField(fontRendererObj, guiLeft + xSize - 85, guiTop - 10, 70, 10);
 
 		if(!registered) {
 			MinecraftForge.EVENT_BUS.register(this);
@@ -147,12 +154,35 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 	}
 
 	@Override
+	protected void keyTyped(char c, int keyCode) {
+		if(!searchBar.textboxKeyTyped(c, keyCode)) {
+			super.keyTyped(c, keyCode);
+		}
+	}
+
+	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
 		super.mouseClicked(mouseX, mouseY, button);
+		if(button == 1 && mouseX >= searchBar.xPosition && mouseX < searchBar.xPosition + searchBar.width && mouseY >= searchBar.yPosition && mouseY < searchBar.yPosition + searchBar.height) {
+			searchBar.setText("");
+		} else {
+			searchBar.mouseClicked(mouseX, mouseY, button);
+		}
 		if (mouseX >= scrollBarXPos && mouseX <= scrollBarXPos + SCROLLBAR_WIDTH && mouseY >= scrollBarYPos && mouseY <= scrollBarYPos + scrollBarScaledHeight) {
 			mouseClickY = mouseY;
 			indexWhenClicked = currentOffset;
 		}
+	}
+
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+
+		if(!lastSearchText.equals(searchBar.getText())) {
+
+		}
+
+		lastSearchText = searchBar.getText();
 	}
 
 	@Override
@@ -210,6 +240,8 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 				curY += fontRendererObj.FONT_HEIGHT + 5;
 			}
 		}
+
+		searchBar.drawTextBox();
 
 		hoverSlot = getSlotAtPosition(mouseX, mouseY);
 	}

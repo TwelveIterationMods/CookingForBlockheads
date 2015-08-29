@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.container;
 
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.blay09.mods.cookingbook.registry.food.FoodIngredient;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ public class SlotCraftMatrix extends Slot {
     private boolean enabled = true;
 
     private List<IInventory> sourceInventories;
+    private List<IKitchenItemProvider> itemProviders;
     private boolean isNoFilter;
     private ItemStack[] visibleStacks;
     private int visibleItemTime;
@@ -61,35 +63,48 @@ public class SlotCraftMatrix extends Slot {
     public void updateVisibleStacks() {
         if(ingredient != null) {
             visibleStacks = ingredient.getItemStacks();
-            if(!isNoFilter) {
-                if (ingredient.getItemStacks().length > 1 && !ingredient.isToolItem()) {
-                    List<ItemStack> visibleStackList = new ArrayList<ItemStack>();
-                    for (ItemStack visibleStack : visibleStacks) {
-                        for (int i = 0; i < sourceInventories.size(); i++) {
-                            for (int j = 0; j < sourceInventories.get(i).getSizeInventory(); j++) {
-                                ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
-                                if (itemStack != null) {
-                                    if (CookingRegistry.areItemStacksEqualWithWildcard(itemStack, visibleStack)) {
-                                        ItemStack displayStack = visibleStack.copy();
-                                        if (displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                                            displayStack.setItemDamage(0);
-                                        }
-                                        visibleStackList.add(displayStack);
-                                    }
+            if (!isNoFilter && ingredient.getItemStacks().length > 1 && !ingredient.isToolItem()) {
+                List<ItemStack> visibleStackList = new ArrayList<>();
+                stackLoop:for (ItemStack visibleStack : visibleStacks) {
+                    for (int i = 0; i < sourceInventories.size(); i++) {
+                        for (int j = 0; j < sourceInventories.get(i).getSizeInventory(); j++) {
+                            ItemStack itemStack = sourceInventories.get(i).getStackInSlot(j);
+                            if (CookingRegistry.areItemStacksEqualWithWildcard(itemStack, visibleStack)) {
+                                ItemStack displayStack = visibleStack.copy();
+                                if (displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                                    displayStack.setItemDamage(0);
                                 }
+                                visibleStackList.add(displayStack);
+                                continue stackLoop;
                             }
                         }
                     }
-                    visibleStacks = visibleStackList.toArray(new ItemStack[visibleStackList.size()]);
+                    for(IKitchenItemProvider provider : itemProviders) {
+                        for(ItemStack itemStack : provider.getProvidedItemStacks()) {
+                            if(CookingRegistry.areItemStacksEqualWithWildcard(itemStack, visibleStack)) {
+                                ItemStack displayStack = visibleStack.copy();
+                                if (displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                                    displayStack.setItemDamage(0);
+                                }
+                                visibleStackList.add(displayStack);
+                                continue stackLoop;
+                            }
+                        }
+                    }
+                }
+                visibleStacks = visibleStackList.toArray(new ItemStack[visibleStackList.size()]);
+            } else {
+                for(int i = 0; i < visibleStacks.length; i++) {
+                    ItemStack displayStack = visibleStacks[i].copy();
+                    if(displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                        displayStack.setItemDamage(0);
+                    }
+                    visibleStacks[i] = displayStack;
                 }
             }
             if(visibleStacks.length == 1) {
-                ItemStack displayStack = visibleStacks[0].copy();
-                if(displayStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                    displayStack.setItemDamage(0);
-                }
-                putStack(displayStack);
-                ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, displayStack));
+                putStack(visibleStacks[0]);
+                ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, slotNumber, visibleStacks[0]));
             }
             visibleItemTime = ITEM_SWITCH_TIME;
             visibleItemIndex = 0;
@@ -125,6 +140,14 @@ public class SlotCraftMatrix extends Slot {
      */
     public void setSourceInventories(List<IInventory> sourceInventories) {
         this.sourceInventories = sourceInventories;
+    }
+
+    /**
+     * SERVER ONLY
+     * @param itemProviders
+     */
+    public void setItemProviders(List<IKitchenItemProvider> itemProviders) {
+        this.itemProviders = itemProviders;
     }
 
     /**

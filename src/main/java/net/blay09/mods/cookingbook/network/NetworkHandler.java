@@ -15,6 +15,7 @@ public class NetworkHandler {
         instance.registerMessage(HandlerSyncList.class, MessageSyncList.class, 2, Side.CLIENT);
         instance.registerMessage(HandlerClickRecipe.class, MessageClickRecipe.class, 3, Side.SERVER);
         instance.registerMessage(HandlerRecipeInfo.class, MessageRecipeInfo.class, 4, Side.CLIENT);
+        instance.registerMessage(HandlerSearch.class, MessageSearch.class, 5, Side.SERVER);
     }
 
 }

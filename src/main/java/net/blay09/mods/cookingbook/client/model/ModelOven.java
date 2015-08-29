@@ -39,8 +39,8 @@ public class ModelOven extends ModelBase {
         this.OvenRight.setRotationPoint(6.0F, 10.0F, -7.0F);
         this.OvenRight.addBox(0.0F, 0.0F, 0.0F, 1, 14, 14, 0.0F);
         this.OvenGrid = new ModelRenderer(this, 0, 114);
-        this.OvenGrid.setRotationPoint(-6.0F, 19.0F, -6.0F);
-        this.OvenGrid.addBox(0.0F, 0.0F, 0.0F, 12, 1, 12, 0.0F);
+        this.OvenGrid.setRotationPoint(-6.5F, 19.0F, -6.0F);
+        this.OvenGrid.addBox(0.0F, 0.0F, 0.0F, 13, 1, 12, 0.0F);
         this.OvenDoorHandleKnobLeft = new ModelRenderer(this, 26, 84);
         this.OvenDoorHandleKnobLeft.setRotationPoint(2.0F, -11.0F, -2.0F);
         this.OvenDoorHandleKnobLeft.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);

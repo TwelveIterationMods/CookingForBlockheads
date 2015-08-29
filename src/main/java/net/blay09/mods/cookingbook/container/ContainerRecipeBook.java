@@ -18,6 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,9 @@ public class ContainerRecipeBook extends Container {
 	private final SlotCraftMatrix[] craftMatrixSlots = new SlotCraftMatrix[9];
 
 	private final ArrayListMultimap<String, FoodRecipe> availableRecipes = ArrayListMultimap.create();
-	private final List<ItemStack> sortedRecipes = new ArrayList<ItemStack>();
+	private final List<ItemStack> sortedRecipes = new ArrayList<>();
+
+	private String searchTerm = "";
 
 	private final InventoryCraftBook craftBook;
 	private Comparator<ItemStack> currentSort = new ComparatorName();
@@ -126,6 +129,9 @@ public class ContainerRecipeBook extends Container {
 				if (recipe.getCraftMatrix().size() <= 3) {
 					offset += 3;
 				}
+				if(recipe.getCraftMatrix().size() == 1) {
+					offset++;
+				}
 				for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
 					int recipeIdx = i - offset;
 					if (recipeIdx >= 0 && recipeIdx < recipe.getCraftMatrix().size()) {
@@ -154,6 +160,10 @@ public class ContainerRecipeBook extends Container {
 	public void setScrollOffset(int scrollOffset) {
 		this.scrollOffset = scrollOffset;
 		updateRecipeList();
+	}
+
+	public void search(String term) {
+		this.searchTerm = term;
 	}
 
 	public void updateRecipeList() {
@@ -357,7 +367,7 @@ public class ContainerRecipeBook extends Container {
 		this.sortedRecipes.addAll(sortedRecipes);
 		this.availableRecipes.clear();
 		this.availableRecipes.putAll(availableRecipes);
-		updateRecipeList();
+		search(searchTerm);
 		markDirty(true);
 	}
 
@@ -370,7 +380,6 @@ public class ContainerRecipeBook extends Container {
 	 */
 	public void findAvailableRecipes() {
 		availableRecipes.clear();
-		sortedRecipes.clear();
 		for(FoodRecipe foodRecipe : CookingRegistry.getFoodRecipes()) {
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
@@ -487,6 +496,7 @@ public class ContainerRecipeBook extends Container {
 		List<IInventory> sourceInventories = kitchenMultiBlock.getSourceInventories(player.inventory);
 		for(int i = 0; i < craftMatrixSlots.length; i++) {
 			craftMatrixSlots[i].setSourceInventories(sourceInventories);
+			craftMatrixSlots[i].setItemProviders(kitchenMultiBlock.getItemProviders());
 		}
 		craftBook.setInventories(sourceInventories);
 		craftBook.setItemProviders(kitchenMultiBlock.getItemProviders());
@@ -507,4 +517,5 @@ public class ContainerRecipeBook extends Container {
 	public boolean isMissingOven() {
 		return isMissingOven;
 	}
+
 }
