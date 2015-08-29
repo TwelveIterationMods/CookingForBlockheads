@@ -372,9 +372,6 @@ public class ContainerRecipeBook extends Container {
 		availableRecipes.clear();
 		sortedRecipes.clear();
 		for(FoodRecipe foodRecipe : CookingRegistry.getFoodRecipes()) {
-			if(!foodRecipe.getOutputItem().getUnlocalizedName().equals("item.zombiejerkyItem")) {
-				continue;
-			}
 			ItemStack foodStack = foodRecipe.getOutputItem();
 			if(foodStack != null) {
 				if(noFilter || CookingRegistry.areIngredientsAvailableFor(foodRecipe.getCraftMatrix(), kitchenMultiBlock != null ? kitchenMultiBlock.getSourceInventories(player.inventory) : playerInventoryList, kitchenMultiBlock != null ? kitchenMultiBlock.getItemProviders() : emptyProviderList)) {
@@ -472,6 +469,9 @@ public class ContainerRecipeBook extends Container {
 	 */
 	public ContainerRecipeBook setNoFilter() {
 		this.noFilter = true;
+		for(SlotCraftMatrix slotCraftMatrix : craftMatrixSlots) {
+			slotCraftMatrix.setNoFilter(true);
+		}
 		findAvailableRecipes();
 		sortRecipes(currentSort);
 		return this;
