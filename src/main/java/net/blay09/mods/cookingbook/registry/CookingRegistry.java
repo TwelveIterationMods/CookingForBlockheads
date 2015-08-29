@@ -118,7 +118,7 @@ public class CookingRegistry {
                 for(ItemStack providedStack : itemProvider.getProvidedItemStacks()) {
                     if(craftMatrix.get(i).isValidItem(providedStack)) {
                         itemFound[i] = true;
-                        break matrixLoop;
+                        continue matrixLoop;
                     }
                 }
             }
@@ -128,7 +128,7 @@ public class CookingRegistry {
                     if (itemStack != null && craftMatrix.get(i).isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
                         usedStackSize[j][k]++;
                         itemFound[i] = true;
-                        break matrixLoop;
+                        continue matrixLoop;
                     }
                 }
             }
