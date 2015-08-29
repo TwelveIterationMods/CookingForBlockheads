@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingbook.container;
 
 import com.google.common.collect.ArrayListMultimap;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.KitchenMultiBlock;
@@ -13,6 +15,8 @@ import net.blay09.mods.cookingbook.network.MessageSyncList;
 import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -237,6 +241,13 @@ public class ContainerRecipeBook extends Container {
 							int count = isShiftDown ? Math.min(itemStack.stackSize, ingredientStack.getMaxStackSize()) : 1;
 							ItemStack restStack = kitchenMultiBlock.smeltItem(itemStack, count);
 							sourceInventories.get(i).setInventorySlotContents(j, restStack);
+							if(i == 0) { // Player Inventory
+								if(j < 9) {
+									((EntityPlayerMP) player).sendSlotContents(this, 48 + j, restStack);
+								} else {
+									((EntityPlayerMP) player).sendSlotContents(this, 21 + j - 9, restStack);
+								}
+							}
 							return;
 						}
 					}
