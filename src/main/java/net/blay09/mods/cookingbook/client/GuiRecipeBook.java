@@ -117,10 +117,13 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 			container.nextRecipe();
 			NetworkHandler.instance.sendToServer(new MessageSwitchRecipe(1));
 		} else if(button == btnSortName) {
+			container.sortingChanged();
 			NetworkHandler.instance.sendToServer(new MessageSort(0));
 		} else if(button == btnSortHunger) {
+			container.sortingChanged();
 			NetworkHandler.instance.sendToServer(new MessageSort(1));
 		} else if(button == btnSortSaturation) {
+			container.sortingChanged();
 			NetworkHandler.instance.sendToServer(new MessageSort(2));
 		}
 	}

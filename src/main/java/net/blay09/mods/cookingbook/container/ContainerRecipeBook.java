@@ -404,6 +404,7 @@ public class ContainerRecipeBook extends Container {
 		currentSort = comparator;
 		Collections.sort(sortedRecipes, comparator);
 		updateRecipeList();
+		sortingChanged();
 		isRecipeListDirty = true;
 	}
 
@@ -519,4 +520,8 @@ public class ContainerRecipeBook extends Container {
 		return isMissingOven;
 	}
 
+	public void sortingChanged() {
+		currentSlotIndex = -1;
+		syncSlotIndex = -1;
+	}
 }
