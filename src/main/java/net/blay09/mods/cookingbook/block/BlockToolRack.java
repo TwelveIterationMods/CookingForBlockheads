@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.client.render.ToolRackBlockRenderer;
+import net.blay09.mods.cookingbook.item.ItemBlockCookingOven;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -125,6 +127,9 @@ public class BlockToolRack extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if(player.getHeldItem().getItem() instanceof ItemBlock) {
+            return true;
+        }
         if(hitY > 0.25f) {
             int metadata = world.getBlockMetadata(x, y, z);
             float hit = hitX;
@@ -138,6 +143,7 @@ public class BlockToolRack extends BlockContainer {
             TileEntityToolRack tileEntityToolRack = (TileEntityToolRack) world.getTileEntity(x, y, z);
             if (tileEntityToolRack != null) {
                 if (player.getHeldItem() != null) {
+
                     ItemStack oldToolItem = tileEntityToolRack.getStackInSlot(hitSlot);
                     ItemStack toolItem = player.getHeldItem().splitStack(1);
                     if (oldToolItem != null) {
