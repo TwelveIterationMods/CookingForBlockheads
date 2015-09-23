@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.container;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import invtweaks.api.container.IgnoreContainer;
 import net.blay09.mods.cookingbook.KitchenMultiBlock;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@IgnoreContainer
 public class ContainerRecipeBook extends Container {
 
 	private final EntityPlayer player;

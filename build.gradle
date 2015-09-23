@@ -74,6 +74,10 @@ repositories {
         artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
     }
     ivy {
+        name = "InventoryTweaks"
+        artifactPattern "http://build.technicpack.net/job/Inventory-Tweaks/[revision]/artifact/build/libs/[module]-[classifier]-1.58-[revision].[ext]"
+    }
+    ivy {
         name "MouseTweaks"
         artifactPattern "http://addons-origin.cursecdn.com/files/2209/265/[module]-[revision](-[classifier]).[ext]"
     }
@@ -81,8 +85,8 @@ repositories {
 
 dependencies {
     compile name: "MineTweaker3", version: "1.7.10-3.0.9C", classifier: "Dev", ext: "jar"
+    compile name: "InventoryTweaks", version: "147", classifier: "deobf", ext: "jar"
     provided name: "MouseTweaks", version: "2.4.4-mc1.7.10", ext: "jar"
-    deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
 }
 
 idea {
@@ -116,8 +120,6 @@ uploadArchives {
     dependsOn 'reobf'
     repositories {
         mavenDeployer {
-            configuration = configurations.deployerJars
-
             repository(url: MAVEN_REPO) {
                 authentication(userName: MAVEN_USERNAME, password: MAVEN_PASSWORD)
             }
