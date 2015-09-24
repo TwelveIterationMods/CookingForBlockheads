@@ -39,6 +39,8 @@ public class CookingBook {
 	@SidedProxy(clientSide = "net.blay09.mods.cookingbook.client.ClientProxy", serverSide = "net.blay09.mods.cookingbook.CommonProxy")
     public static CommonProxy proxy;
 
+	public static boolean sinkRequiresWater;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		CookingAPI.setupAPI(new InternalMethods());
@@ -46,6 +48,7 @@ public class CookingBook {
 		proxy.preInit(event);
 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		sinkRequiresWater = config.getBoolean("sinkRequiresWater", "general", false, "Set this to true if you'd like the sink to require water to be piped in.");
 		config.save();
 	}
 

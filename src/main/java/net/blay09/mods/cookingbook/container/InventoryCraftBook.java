@@ -17,12 +17,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryCraftBook extends InventoryCrafting {
 
     private final int[] sourceInventories = new int[9];
     private final int[] sourceInventorySlots = new int[9];
+    private final List<IKitchenItemProvider> sourceProviders = new ArrayList<>();
     private IRecipe currentRecipe;
 
     private List<IInventory> inventories;
@@ -45,11 +47,17 @@ public class InventoryCraftBook extends InventoryCrafting {
         }
         ingredientLoop:for(int i = 0; i < ingredients.size(); i++) {
             if(ingredients.get(i) != null) {
+                sourceProviders.clear();
                 for(IKitchenItemProvider itemProvider : itemProviders) {
+                    itemProvider.clearCraftingBuffer();
                     for(ItemStack providedStack : itemProvider.getProvidedItemStacks()) {
                         if(ingredients.get(i).isValidItem(providedStack)) {
-                            setInventorySlotContents(i, providedStack.copy());
-                            continue ingredientLoop;
+                            ItemStack itemStack = providedStack.copy();
+                            if(itemProvider.addToCraftingBuffer(itemStack)) {
+                                sourceProviders.add(itemProvider);
+                                setInventorySlotContents(i, itemStack);
+                                continue ingredientLoop;
+                            }
                         }
                     }
                 }
@@ -67,7 +75,7 @@ public class InventoryCraftBook extends InventoryCrafting {
                 }
             }
             currentRecipe = null;
-            return currentRecipe;
+            return null;
         }
         currentRecipe = CookingRegistry.findMatchingFoodRecipe(this, player.worldObj);
         return currentRecipe;
@@ -116,6 +124,9 @@ public class InventoryCraftBook extends InventoryCrafting {
                             inventories.get(sourceInventories[i]).setInventorySlotContents(sourceInventorySlots[i], null);
                         }
                     }
+                }
+                for(IKitchenItemProvider itemProvider : sourceProviders) {
+                    itemProvider.craftingComplete();
                 }
             }
             return craftingResult;
