@@ -1,10 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
-import net.blay09.mods.cookingbook.network.MessageTileEntity;
-import net.blay09.mods.cookingbook.network.NetworkHandler;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

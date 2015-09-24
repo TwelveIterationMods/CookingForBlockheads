@@ -2,6 +2,7 @@ package net.blay09.mods.cookingbook;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
+import net.blay09.mods.cookingbook.block.TileEntityCookingTable;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.client.GuiCookingOven;
 import net.blay09.mods.cookingbook.client.GuiFridge;
@@ -45,7 +46,12 @@ public class GuiHandler implements IGuiHandler {
                 break;
             case GUI_ID_COOKINGTABLE:
                 if(world.getBlock(x, y, z) == CookingBook.blockCookingTable) {
-                    return new ContainerRecipeBook(player, true, true, false).setKitchenMultiBlock(new KitchenMultiBlock(world, x, y, z));
+                    TileEntityCookingTable tileEntity = (TileEntityCookingTable) world.getTileEntity(x, y, z);
+                    if(tileEntity.hasNoFilterBook()) {
+                        return new ContainerRecipeBook(player, true, true, false).setNoFilter().setKitchenMultiBlock(new KitchenMultiBlock(world, x, y, z));
+                    } else {
+                        return new ContainerRecipeBook(player, true, true, false).setKitchenMultiBlock(new KitchenMultiBlock(world, x, y, z));
+                    }
                 }
                 break;
             case GUI_ID_COOKINGOVEN:

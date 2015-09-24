@@ -1,7 +1,8 @@
 package net.blay09.mods.cookingbook.client.render;
 
+import net.blay09.mods.cookingbook.block.TileEntityCookingTable;
 import net.blay09.mods.cookingbook.client.model.ModelCookingTable;
-import net.blay09.mods.cookingbook.client.model.ModelSink;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -9,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileCookingTableRenderer extends TileEntitySpecialRenderer {
+public class TileEntityCookingTableRenderer extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation texture = new ResourceLocation("cookingbook", "textures/entity/ModelCookingTable.png");
 
@@ -55,6 +56,16 @@ public class TileCookingTableRenderer extends TileEntitySpecialRenderer {
         }
         GL11.glPopMatrix();
         GL11.glColor4f(1f, 1f, 1f, 1f);
+        TileEntityCookingTable tileEntityTable = (TileEntityCookingTable) tileEntity;
+        if(tileEntityTable.hasNoFilterBook()) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef((float) x + 0.5f, (float) y + 0.9f, (float) z + 0.5f);
+            GL11.glRotatef(angle, 0f, 1f, 0f);
+            GL11.glTranslatef(0f, 0f, -0.2f);
+            GL11.glRotatef(90f, 1f, 0f, 0f);
+            RenderManager.instance.renderEntityWithPosYaw(tileEntityTable.getRenderItem(), 0, 0, 0, 0f, 0f);
+            GL11.glPopMatrix();
+        }
     }
 
 }

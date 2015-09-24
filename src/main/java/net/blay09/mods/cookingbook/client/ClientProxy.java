@@ -29,7 +29,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityToolRack.class, new TileEntityToolRackRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCookingOven.class, new TileEntityOvenRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySink.class, new TileEntitySinkRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCookingTable.class, new TileCookingTableRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCookingTable.class, new TileEntityCookingTableRenderer());
 		RenderingRegistry.registerBlockHandler(FridgeBlockRenderer.RENDER_ID, new FridgeBlockRenderer());
 		RenderingRegistry.registerBlockHandler(ToolRackBlockRenderer.RENDER_ID, new ToolRackBlockRenderer());
 		RenderingRegistry.registerBlockHandler(OvenBlockRenderer.RENDER_ID, new OvenBlockRenderer());
