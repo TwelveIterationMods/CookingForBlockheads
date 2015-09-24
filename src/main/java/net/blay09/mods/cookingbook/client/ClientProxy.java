@@ -9,10 +9,14 @@ import cpw.mods.fml.common.gameevent.InputEvent;
 import net.blay09.mods.cookingbook.CommonProxy;
 import net.blay09.mods.cookingbook.block.*;
 import net.blay09.mods.cookingbook.client.render.*;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
+
+	public static final IIcon[] ovenToolIcons = new IIcon[4];
 
 	@Override
 	public void init(FMLInitializationEvent event) {
@@ -36,4 +40,13 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	public void keyInput(InputEvent.KeyInputEvent event) {}
 
+	@SubscribeEvent
+	public void registerIcons(TextureStitchEvent.Pre event) {
+		if(event.map.getTextureType() == 1) {
+			ovenToolIcons[0] = event.map.registerIcon("cookingbook:bakeware");
+			ovenToolIcons[1] = event.map.registerIcon("cookingbook:pot");
+			ovenToolIcons[2] = event.map.registerIcon("cookingbook:saucepan");
+			ovenToolIcons[3] = event.map.registerIcon("cookingbook:skillet");
+		}
+	}
 }

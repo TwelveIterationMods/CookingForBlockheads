@@ -48,7 +48,7 @@ public class ContainerCookingOven extends Container {
         }
 
         for(int i = 0; i < 4; i++) {
-            addSlotToContainer(new SlotOvenTool(tileEntity, 16 + i, 8, 19 + i * 18));
+            addSlotToContainer(new SlotOvenTool(tileEntity, 16 + i, 8, 19 + i * 18, i));
         }
 
         for(int i = 0; i < 3; i++) {
