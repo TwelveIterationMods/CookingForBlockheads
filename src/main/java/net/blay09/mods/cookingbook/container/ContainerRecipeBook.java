@@ -199,6 +199,9 @@ public class ContainerRecipeBook extends Container {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
+		if(mode == 6) {
+			mode = 0;
+		}
 		if((mode == 0 || mode == 1)) {
 			if(isClientSide) {
 				clickRecipe(slotIdx, mode == 1);
@@ -269,6 +272,7 @@ public class ContainerRecipeBook extends Container {
 		if(recipe.isSmeltingRecipe()) {
 			return;
 		}
+		craftBook.prepareRecipe(player, recipe);
 		if(!isShiftDown) {
 			if(craftBook.canMouseItemHold(player, recipe)) {
 				ItemStack craftingResult = craftBook.craft(player, recipe);
@@ -407,10 +411,12 @@ public class ContainerRecipeBook extends Container {
 	 * @param comparator
 	 */
 	public void sortRecipes(Comparator<ItemStack> comparator) {
+		if(currentSort != comparator) {
+			sortingChanged();
+		}
 		currentSort = comparator;
 		Collections.sort(sortedRecipes, comparator);
 		updateRecipeList();
-		sortingChanged();
 		isRecipeListDirty = true;
 	}
 
