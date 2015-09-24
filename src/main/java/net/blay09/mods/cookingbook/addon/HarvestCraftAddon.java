@@ -2,18 +2,61 @@ package net.blay09.mods.cookingbook.addon;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.blay09.mods.cookingbook.KitchenMultiBlock;
 import net.blay09.mods.cookingbook.api.CookingAPI;
 import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
+import net.blay09.mods.cookingbook.api.kitchen.IMultiblockKitchen;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HarvestCraftAddon {
+
+    private static class OvenWrapper implements IKitchenSmeltingProvider {
+
+        private final ISidedInventory inventory;
+
+        public OvenWrapper(TileEntity tileEntity) {
+            this.inventory = (ISidedInventory) tileEntity;
+        }
+
+        @Override
+        public ItemStack smeltItem(ItemStack itemStack) {
+            int[] inputSlots = inventory.getAccessibleSlotsFromSide(ForgeDirection.UP.ordinal());
+            int firstEmptySlot = -1;
+            for(int slot : inputSlots) {
+                ItemStack slotStack = inventory.getStackInSlot(slot);
+                if(slotStack != null) {
+                    if(slotStack.isItemEqual(slotStack)) {
+                        int spaceLeft = Math.min(itemStack.stackSize, slotStack.getMaxStackSize() - slotStack.stackSize);
+                        if(spaceLeft > 0) {
+                            slotStack.stackSize += spaceLeft;
+                            itemStack.stackSize -= spaceLeft;
+                        }
+                    }
+                    if(itemStack.stackSize <= 0) {
+                        return null;
+                    }
+                } else if(firstEmptySlot == -1) {
+                    firstEmptySlot = slot;
+                }
+            }
+            if(firstEmptySlot != -1) {
+                inventory.setInventorySlotContents(firstEmptySlot, itemStack);
+                return null;
+            }
+            return itemStack;
+        }
+    }
 
     private static final String[] ADDITIONAL_RECIPES = new String[] {
             "flourItem",
@@ -57,6 +100,8 @@ public class HarvestCraftAddon {
     };
 
     public HarvestCraftAddon() {
+        KitchenMultiBlock.wrapperClasses.put("com.pam.harvestcraft.TileEntityOven", OvenWrapper.class);
+
         CookingAPI.addOvenFuel(GameRegistry.findItemStack("harvestcraft", "oliveoilItem", 1), 1600);
 
         for(int i = 0; i < OVEN_RECIPES.length; i += 2) {

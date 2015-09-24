@@ -56,6 +56,7 @@ public class CommonProxy {
 		new VanillaAddon();
 		//event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingbook.addon.MineTweakerAddon");
 		event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
+		event.buildSoftDependProxy("enviromine", "net.blay09.mods.cookingbook.addon.EnviroMineAddon");
 
 		CookingRegistry.initFoodRegistry();
 	}
