@@ -68,7 +68,7 @@ public class KitchenMultiBlock {
     }
 
     private void findNeighbourKitchenBlocks(World world, int x, int y, int z) {
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 0; i <= 5; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
             TileEntity tileEntity = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
             IMultiblockKitchen kitchenPart;
