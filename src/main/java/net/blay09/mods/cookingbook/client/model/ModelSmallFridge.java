@@ -12,9 +12,13 @@ import org.lwjgl.opengl.GL11;
 public class ModelSmallFridge extends ModelBase {
     public ModelRenderer Shelf;
     public ModelRenderer Door;
+    public ModelRenderer DoorFlipped;
     public ModelRenderer DoorHandle;
+    public ModelRenderer DoorHandleFlipped;
     public ModelRenderer TopHinge;
+    public ModelRenderer TopHingeFlipped;
     public ModelRenderer BottemHinge;
+    public ModelRenderer BottemHingeFlipped;
     public ModelRenderer RightSeal;
     public ModelRenderer LeftSeal;
     public ModelRenderer TopSeal;
@@ -29,6 +33,7 @@ public class ModelSmallFridge extends ModelBase {
     public ModelRenderer BackRightFoot;
     public ModelRenderer FrontLeftFoot;
     public ModelRenderer FrontRightFoot;
+    private boolean isFlipped;
 
     public ModelSmallFridge() {
         this.textureWidth = 126;
@@ -48,6 +53,9 @@ public class ModelSmallFridge extends ModelBase {
         this.DoorHandle = new ModelRenderer(this, 0, 0);
         this.DoorHandle.setRotationPoint(-6.3F, 9.5F, -5.3F);
         this.DoorHandle.addBox(11.1F, 5.8F, -2.0F, 1, 2, 1, 0.0F);
+        this.DoorHandleFlipped = new ModelRenderer(this, 0, 0);
+        this.DoorHandleFlipped.setRotationPoint(6.3F, 9.5F, -5.3F);
+        this.DoorHandleFlipped.addBox(-12.1F, 5.8F, -2.0F, 1, 2, 1, 0.0F);
         this.LeftWall = new ModelRenderer(this, 0, 12);
         this.LeftWall.setRotationPoint(6.0F, 8.700000000000001F, -7.0F);
         this.LeftWall.addBox(-1.0F, 0.0F, 2.0F, 2, 15, 12, 0.0F);
@@ -63,9 +71,15 @@ public class ModelSmallFridge extends ModelBase {
         this.TopHinge = new ModelRenderer(this, 4, 0);
         this.TopHinge.setRotationPoint(-6.8F, 8.9F, -6.0F);
         this.TopHinge.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
+        this.TopHingeFlipped = new ModelRenderer(this, 4, 0);
+        this.TopHingeFlipped.setRotationPoint(6.8F, 8.9F, -6.0F);
+        this.TopHingeFlipped.addBox(-1.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
         this.Door = new ModelRenderer(this, 42, 0);
         this.Door.setRotationPoint(-6.3F, 9.5F, -5.3F);
         this.Door.addBox(-0.7F, -0.8F, -1.5F, 14, 15, 1, 0.0F);
+        this.DoorFlipped = new ModelRenderer(this, 42, 0);
+        this.DoorFlipped.setRotationPoint(6.3F, 9.5F, -5.3F);
+        this.DoorFlipped.addBox(-13.3F, -0.8F, -1.5F, 14, 15, 1, -0.0F);
         this.Shelf = new ModelRenderer(this, 0, 0);
         this.Shelf.setRotationPoint(-6.0F, 15.8F, -4.0F);
         this.Shelf.addBox(1.0F, 0.0F, -1.0F, 10, 1, 11, 0.0F);
@@ -78,6 +92,9 @@ public class ModelSmallFridge extends ModelBase {
         this.BottemHinge = new ModelRenderer(this, 31, 0);
         this.BottemHinge.setRotationPoint(-6.8F, 22.499999999999996F, -6.0F);
         this.BottemHinge.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
+        this.BottemHingeFlipped = new ModelRenderer(this, 31, 0);
+        this.BottemHingeFlipped.setRotationPoint(6.8F, 22.5F, -6.0F);
+        this.BottemHingeFlipped.addBox(-1.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
         this.BackLeftFoot = new ModelRenderer(this, 4, 5);
         this.BackLeftFoot.setRotationPoint(-6.0F, 23.0F, -4.0F);
         this.BackLeftFoot.addBox(0.0F, 0.0F, 0.0F, 1, 1, 1, 0.0F);
@@ -101,11 +118,12 @@ public class ModelSmallFridge extends ModelBase {
         this.PlugThingy.render(f5);
         this.Top.render(f5);
         this.LeftWall.render(f5);
+
+        this.RightSeal.render(f5);
+        this.BackRightFoot.render(f5);
         this.TopHinge.render(f5);
         this.BottemHinge.render(f5);
-        this.RightSeal.render(f5);
         this.DoorHandle.render(f5);
-        this.BackRightFoot.render(f5);
         this.Door.render(f5);
         this.FrontRightFoot.render(f5);
         this.BottemSeal.render(f5);
@@ -139,9 +157,15 @@ public class ModelSmallFridge extends ModelBase {
         this.RightSeal.render(f5);
         this.BottemSeal.render(f5);
         this.TopSeal.render(f5);
-        this.TopHinge.render(f5);
-        this.BottemHinge.render(f5);
-        this.DoorHandle.render(f5);
+        if(isFlipped) {
+            this.TopHingeFlipped.render(f5);
+            this.BottemHingeFlipped.render(f5);
+            this.DoorHandleFlipped.render(f5);
+        } else {
+            this.TopHinge.render(f5);
+            this.BottemHinge.render(f5);
+            this.DoorHandle.render(f5);
+        }
         this.BackRightFoot.render(f5);
         this.FrontRightFoot.render(f5);
         this.BackLeftFoot.render(f5);
@@ -154,7 +178,15 @@ public class ModelSmallFridge extends ModelBase {
         this.Bottom.render(f5);
         this.Top.render(f5);
         this.LeftWall.render(f5);
-        this.Door.render(f5);
+        if(isFlipped) {
+            this.DoorFlipped.render(f5);
+        } else {
+            this.Door.render(f5);
+        }
         this.Backwall.render(f5);
+    }
+
+    public void setFlipped(boolean doorFlipped) {
+        this.isFlipped = doorFlipped;
     }
 }

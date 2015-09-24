@@ -28,6 +28,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
         int metadata = 0;
         boolean isLargeFridge = false;
         TileEntityFridge tileEntityFridge = (TileEntityFridge) tileEntity;
+        boolean isDoorFlipped = tileEntityFridge.isFlipped();
         int dye = tileEntityFridge.getFridgeColor();
         if(tileEntity.hasWorldObj()) {
             metadata = tileEntity.getBlockMetadata();
@@ -79,8 +80,14 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                     doorAngle = neighbourDoorAngle;
                 }
             }
-            modelBig.Door.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
-            modelBig.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+            modelBig.setFlipped(isDoorFlipped);
+            if(isDoorFlipped) {
+                modelBig.DoorFlipped.rotateAngleY = -(float) ((Math.PI / 2f) * doorAngle);
+                modelBig.DoorHandleFlipped.rotateAngleY = -(float) ((Math.PI / 2f) * doorAngle);
+            } else {
+                modelBig.Door.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+                modelBig.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+            }
             bindTexture(textureBig);
             modelBig.renderUncolored();
             GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);
@@ -115,8 +122,14 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 }
             }
         } else {
-            modelSmall.Door.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
-            modelSmall.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+            modelSmall.setFlipped(isDoorFlipped);
+            if(isDoorFlipped) {
+                modelSmall.DoorFlipped.rotateAngleY = -(float) ((Math.PI / 2f) * doorAngle);
+                modelSmall.DoorHandleFlipped.rotateAngleY = -(float) ((Math.PI / 2f) * doorAngle);
+            } else {
+                modelSmall.Door.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+                modelSmall.DoorHandle.rotateAngleY = (float) ((Math.PI / 2f) * doorAngle);
+            }
             bindTexture(textureSmall);
             modelSmall.renderUncolored();
             GL11.glColor4f(fridgeColorTable[dye][0], fridgeColorTable[dye][1], fridgeColorTable[dye][2], 1f);

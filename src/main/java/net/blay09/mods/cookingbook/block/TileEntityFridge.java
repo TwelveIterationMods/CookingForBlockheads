@@ -25,6 +25,7 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     private ItemStack[] inventory = new ItemStack[27];
     private EntityItem renderItem;
     private int fridgeColor;
+    private boolean isFlipped;
     private float prevDoorAngle;
     private float doorAngle;
     private int numPlayersUsing;
@@ -175,6 +176,7 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
             inventory[itemCompound.getByte("Slot")] = ItemStack.loadItemStackFromNBT(itemCompound);
         }
         fridgeColor = tagCompound.getByte("FridgeColor");
+        isFlipped = tagCompound.getBoolean("IsFlipped");
     }
 
     @Override
@@ -192,6 +194,7 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
         }
         tagCompound.setTag("Items", tagList);
         tagCompound.setByte("FridgeColor", (byte) fridgeColor);
+        tagCompound.setBoolean("IsFlipped", isFlipped);
     }
 
     @Override
@@ -271,4 +274,11 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
         return this;
     }
 
+    public boolean isFlipped() {
+        return isFlipped;
+    }
+
+    public void setFlipped(boolean isFlipped) {
+        this.isFlipped = isFlipped;
+    }
 }

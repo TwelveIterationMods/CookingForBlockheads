@@ -12,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -138,19 +137,23 @@ public class BlockFridge extends BlockContainer {
     }
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack itemStack) {
-        int l = MathHelper.floor_double((double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        if (l == 0) {
+        double blockRotation = (double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D;
+        boolean flipped = Math.abs(blockRotation - (int) blockRotation) < 0.5;
+        int orientation = MathHelper.floor_double(blockRotation) & 3;
+        if (orientation == 0) {
             world.setBlockMetadataWithNotify(x, y, z, 2, 2);
         }
-        if (l == 1) {
+        if (orientation == 1) {
             world.setBlockMetadataWithNotify(x, y, z, 5, 2);
         }
-        if (l == 2) {
+        if (orientation == 2) {
             world.setBlockMetadataWithNotify(x, y, z, 3, 2);
         }
-        if (l == 3) {
+        if (orientation == 3) {
             world.setBlockMetadataWithNotify(x, y, z, 4, 2);
         }
+        TileEntityFridge tileEntity = (TileEntityFridge) world.getTileEntity(x, y, z);
+        tileEntity.setFlipped(flipped);
     }
 
     @Override
