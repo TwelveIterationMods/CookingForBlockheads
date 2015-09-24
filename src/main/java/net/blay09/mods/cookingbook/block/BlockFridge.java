@@ -117,10 +117,15 @@ public class BlockFridge extends BlockContainer {
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        if(world.getBlock(x, y - 1, z) == CookingBook.blockFridge && world.getBlock(x, y - 2, z) == CookingBook.blockFridge) {
+        boolean below = world.getBlock(x, y - 1, z) == CookingBook.blockFridge;
+        boolean above = world.getBlock(x, y + 1, z) == CookingBook.blockFridge;
+        if(below && above) {
             return false;
         }
-        if(world.getBlock(x, y + 1, z) == CookingBook.blockFridge && world.getBlock(x, y + 2, z) == CookingBook.blockFridge) {
+        if(below && world.getBlock(x, y - 2, z) == CookingBook.blockFridge) {
+            return false;
+        }
+        if(above && world.getBlock(x, y + 2, z) == CookingBook.blockFridge) {
             return false;
         }
         return super.canPlaceBlockAt(world, x, y, z);
