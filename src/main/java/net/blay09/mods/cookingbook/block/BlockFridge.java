@@ -3,6 +3,7 @@ package net.blay09.mods.cookingbook.block;
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.GuiHandler;
 import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
+import net.blay09.mods.cookingbook.item.ItemBlockFridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockContainer;
@@ -109,6 +110,9 @@ public class BlockFridge extends BlockContainer {
             return true;
         }
         if(!world.isRemote) {
+            if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlockFridge) {
+                return false;
+            }
             player.openGui(CookingBook.instance, GuiHandler.GUI_ID_FRIDGE, world, x, y, z);
         }
         return true;
