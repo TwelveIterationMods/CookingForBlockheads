@@ -5,8 +5,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.KitchenMultiBlock;
 import net.blay09.mods.cookingbook.api.CookingAPI;
 import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
+import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
-import net.blay09.mods.cookingbook.api.kitchen.IMultiblockKitchen;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,43 @@ public class HarvestCraftAddon {
         }
     }
 
+    private static abstract class ToolWrapper implements IKitchenItemProvider {
+
+        protected final List<ItemStack> itemStacks = new ArrayList<>();
+
+        public ToolWrapper(Block block) {}
+
+        @Override
+        public List<ItemStack> getProvidedItemStacks() {
+            return itemStacks;
+        }
+
+        @Override
+        public boolean addToCraftingBuffer(ItemStack itemStack) {
+            return true;
+        }
+
+        @Override
+        public void clearCraftingBuffer() {}
+
+        @Override
+        public void craftingComplete() {}
+    }
+
+    public static class CuttingBoardWrapper extends ToolWrapper {
+        public CuttingBoardWrapper(Block block) {
+            super(block);
+            itemStacks.add(GameRegistry.findItemStack("harvestcraft", "cuttingboardItem", 1));
+        }
+    }
+
+    public static class PotWrapper extends ToolWrapper {
+        public PotWrapper(Block block) {
+            super(block);
+            itemStacks.add(GameRegistry.findItemStack("harvestcraft", "potItem", 1));
+        }
+    }
+
     private static final String[] ADDITIONAL_RECIPES = new String[] {
             "flourItem",
             "doughItem",
@@ -100,7 +138,9 @@ public class HarvestCraftAddon {
     };
 
     public HarvestCraftAddon() {
-        KitchenMultiBlock.wrapperClasses.put("com.pam.harvestcraft.TileEntityOven", OvenWrapper.class);
+        KitchenMultiBlock.tileEntityWrappers.put("com.pam.harvestcraft.TileEntityOven", OvenWrapper.class);
+        KitchenMultiBlock.blockWrappers.put("harvestcraft:pot", PotWrapper.class);
+        KitchenMultiBlock.blockWrappers.put("harvestcraft:cuttingboard", CuttingBoardWrapper.class);
 
         CookingAPI.addOvenFuel(GameRegistry.findItemStack("harvestcraft", "oliveoilItem", 1), 1600);
 

@@ -1,10 +1,11 @@
 package net.blay09.mods.cookingbook;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IMultiblockKitchen;
-import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,8 @@ import java.util.Map;
 
 public class KitchenMultiBlock {
 
-    public static final Map<String, Class<? extends IMultiblockKitchen>> wrapperClasses = new HashMap<>();
+    public static final Map<String, Class<? extends IMultiblockKitchen>> tileEntityWrappers = new HashMap<>();
+    public static final Map<String, Class<? extends IMultiblockKitchen>> blockWrappers = new HashMap<>();
 
     private class BlockPosition {
 
@@ -69,11 +71,13 @@ public class KitchenMultiBlock {
         for(int i = 1; i <= 5; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
             TileEntity tileEntity = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-            IMultiblockKitchen kitchenPart = null;
+            IMultiblockKitchen kitchenPart;
             if(tileEntity instanceof IMultiblockKitchen) {
                 kitchenPart = (IMultiblockKitchen) tileEntity;
             } else if(tileEntity != null) {
                 kitchenPart = getWrapper(tileEntity);
+            } else {
+                kitchenPart = getWrapper(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ));
             }
             if(kitchenPart != null) {
                 BlockPosition position = new BlockPosition(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
@@ -127,8 +131,23 @@ public class KitchenMultiBlock {
         return itemProviderList;
     }
 
+    public static IMultiblockKitchen getWrapper(Block block) {
+        GameRegistry.UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(block);
+        if(identifier != null) {
+            Class<? extends IMultiblockKitchen> clazz = blockWrappers.get(identifier.modId + ":" + identifier.name);
+            if(clazz != null) {
+                try {
+                    return clazz.getConstructor(Block.class).newInstance(block);
+                } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     public static IMultiblockKitchen getWrapper(TileEntity tileEntity) {
-        Class<? extends IMultiblockKitchen> clazz = wrapperClasses.get(tileEntity.getClass().getName());
+        Class<? extends IMultiblockKitchen> clazz = tileEntityWrappers.get(tileEntity.getClass().getName());
         if(clazz != null) {
             try {
                 return clazz.getConstructor(TileEntity.class).newInstance(tileEntity);
