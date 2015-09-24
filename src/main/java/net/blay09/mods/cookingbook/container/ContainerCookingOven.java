@@ -185,12 +185,12 @@ public class ContainerCookingOven extends Container {
     @SuppressWarnings("unchecked")
     public Map<ContainerSection, List<Slot>> getContainerSections() {
         Map<ContainerSection, List<Slot>> map = Maps.newHashMap();
-        map.put(ContainerSection.FURNACE_IN, inventorySlots.subList(0, 2));
-        map.put(ContainerSection.FURNACE_FUEL, inventorySlots.subList(3, 3));
-        map.put(ContainerSection.FURNACE_OUT, inventorySlots.subList(4, 6));
-        map.put(ContainerSection.INVENTORY, inventorySlots.subList(20, 56));
-        map.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(20, 47));
-        map.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(47, 56));
+        map.put(ContainerSection.FURNACE_IN, inventorySlots.subList(0, 3));
+        map.put(ContainerSection.FURNACE_FUEL, inventorySlots.subList(3, 4));
+        map.put(ContainerSection.FURNACE_OUT, inventorySlots.subList(4, 7));
+        map.put(ContainerSection.INVENTORY, inventorySlots.subList(20, 57));
+        map.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(20, 48));
+        map.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(47, 57));
         return map;
     }
 }
