@@ -285,7 +285,7 @@ public class ContainerRecipeBook extends Container {
 		} else {
 			ItemStack craftingResult;
 			int crafted = 0;
-			while((craftingResult = craftBook.craft(player, recipe)) != null && crafted < 64) {
+			while(crafted < 64 && (craftingResult = craftBook.craft(player, recipe)) != null) {
 				crafted += craftingResult.stackSize;
 				if(!player.inventory.addItemStackToInventory(craftingResult)) {
 					if (player.inventory.getItemStack() == null) {
@@ -296,6 +296,8 @@ public class ContainerRecipeBook extends Container {
 					break;
 				}
 			}
+			player.inventory.markDirty();
+			player.inventoryContainer.detectAndSendChanges();
 		}
 	}
 
