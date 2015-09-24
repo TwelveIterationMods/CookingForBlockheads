@@ -22,7 +22,7 @@ import java.util.List;
 
 public class HarvestCraftAddon {
 
-    private static class OvenWrapper implements IKitchenSmeltingProvider {
+    public static class OvenWrapper implements IKitchenSmeltingProvider {
 
         private final ISidedInventory inventory;
 
@@ -59,7 +59,7 @@ public class HarvestCraftAddon {
         }
     }
 
-    private static abstract class ToolWrapper implements IKitchenItemProvider {
+    public static abstract class ToolWrapper implements IKitchenItemProvider {
 
         protected final List<ItemStack> itemStacks = new ArrayList<>();
 

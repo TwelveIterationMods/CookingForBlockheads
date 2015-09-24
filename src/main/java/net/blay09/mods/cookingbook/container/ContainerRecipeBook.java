@@ -287,6 +287,7 @@ public class ContainerRecipeBook extends Container {
 					}
 				}
 				player.inventory.markDirty();
+				player.inventoryContainer.detectAndSendChanges();
 			}
 		} else {
 			ItemStack craftingResult;
@@ -507,6 +508,7 @@ public class ContainerRecipeBook extends Container {
 	public ContainerRecipeBook setKitchenMultiBlock(KitchenMultiBlock kitchenMultiBlock) {
 		this.kitchenMultiBlock = kitchenMultiBlock;
 		findAvailableRecipes();
+		sortRecipes(currentSort);
 		List<IInventory> sourceInventories = kitchenMultiBlock.getSourceInventories(player.inventory);
 		for(int i = 0; i < craftMatrixSlots.length; i++) {
 			craftMatrixSlots[i].setSourceInventories(sourceInventories);

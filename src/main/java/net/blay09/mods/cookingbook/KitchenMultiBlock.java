@@ -68,28 +68,28 @@ public class KitchenMultiBlock {
     }
 
     private void findNeighbourKitchenBlocks(World world, int x, int y, int z) {
-        for(int i = 0; i <= 5; i++) {
+        for (int i = 0; i <= 5; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
-            TileEntity tileEntity = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-            IMultiblockKitchen kitchenPart;
-            if(tileEntity instanceof IMultiblockKitchen) {
-                kitchenPart = (IMultiblockKitchen) tileEntity;
-            } else if(tileEntity != null) {
-                kitchenPart = getWrapper(tileEntity);
-            } else {
-                kitchenPart = getWrapper(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ));
-            }
-            if(kitchenPart != null) {
-                BlockPosition position = new BlockPosition(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-                if(!kitchenParts.containsKey(position)) {
+            BlockPosition position = new BlockPosition(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+            if (!kitchenParts.containsKey(position)) {
+                TileEntity tileEntity = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+                IMultiblockKitchen kitchenPart;
+                if (tileEntity instanceof IMultiblockKitchen) {
+                    kitchenPart = (IMultiblockKitchen) tileEntity;
+                } else if (tileEntity != null) {
+                    kitchenPart = getWrapper(tileEntity);
+                } else {
+                    kitchenPart = getWrapper(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ));
+                }
+                if (kitchenPart != null) {
                     kitchenParts.put(position, kitchenPart);
-                    if(kitchenPart instanceof IKitchenStorageProvider) {
+                    if (kitchenPart instanceof IKitchenStorageProvider) {
                         storageProviderList.add((IKitchenStorageProvider) kitchenPart);
                     }
-                    if(kitchenPart instanceof IKitchenSmeltingProvider) {
+                    if (kitchenPart instanceof IKitchenSmeltingProvider) {
                         smeltingProviderList.add((IKitchenSmeltingProvider) kitchenPart);
                     }
-                    if(kitchenPart instanceof IKitchenItemProvider) {
+                    if (kitchenPart instanceof IKitchenItemProvider) {
                         itemProviderList.add((IKitchenItemProvider) kitchenPart);
                     }
                     findNeighbourKitchenBlocks(world, position.x, position.y, position.z);
@@ -99,10 +99,11 @@ public class KitchenMultiBlock {
     }
 
     private final List<IInventory> sourceInventories = new ArrayList<>();
+
     public List<IInventory> getSourceInventories(InventoryPlayer playerInventory) {
         sourceInventories.clear();
         sourceInventories.add(playerInventory);
-        for(IKitchenStorageProvider provider : storageProviderList) {
+        for (IKitchenStorageProvider provider : storageProviderList) {
             sourceInventories.add(provider.getInventory());
         }
         return sourceInventories;
@@ -110,14 +111,14 @@ public class KitchenMultiBlock {
 
     public ItemStack smeltItem(ItemStack itemStack, int count) {
         ItemStack restStack = itemStack.copy().splitStack(count);
-        for(IKitchenSmeltingProvider provider : smeltingProviderList) {
+        for (IKitchenSmeltingProvider provider : smeltingProviderList) {
             restStack = provider.smeltItem(restStack);
-            if(restStack == null) {
+            if (restStack == null) {
                 break;
             }
         }
         itemStack.stackSize -= (count - (restStack != null ? restStack.stackSize : 0));
-        if(itemStack.stackSize <= 0) {
+        if (itemStack.stackSize <= 0) {
             return null;
         }
         return itemStack;
@@ -133,9 +134,9 @@ public class KitchenMultiBlock {
 
     public static IMultiblockKitchen getWrapper(Block block) {
         GameRegistry.UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(block);
-        if(identifier != null) {
+        if (identifier != null) {
             Class<? extends IMultiblockKitchen> clazz = blockWrappers.get(identifier.modId + ":" + identifier.name);
-            if(clazz != null) {
+            if (clazz != null) {
                 try {
                     return clazz.getConstructor(Block.class).newInstance(block);
                 } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
@@ -148,7 +149,7 @@ public class KitchenMultiBlock {
 
     public static IMultiblockKitchen getWrapper(TileEntity tileEntity) {
         Class<? extends IMultiblockKitchen> clazz = tileEntityWrappers.get(tileEntity.getClass().getName());
-        if(clazz != null) {
+        if (clazz != null) {
             try {
                 return clazz.getConstructor(TileEntity.class).newInstance(tileEntity);
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
