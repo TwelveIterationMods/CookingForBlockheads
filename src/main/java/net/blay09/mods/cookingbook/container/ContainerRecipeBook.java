@@ -256,6 +256,7 @@ public class ContainerRecipeBook extends Container {
 									((EntityPlayerMP) player).sendSlotContents(this, 21 + j - 9, restStack);
 								}
 							}
+							player.inventory.markDirty();
 							return;
 						}
 					}
@@ -281,6 +282,7 @@ public class ContainerRecipeBook extends Container {
 						((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(-1, 0, craftingResult));
 					}
 				}
+				player.inventory.markDirty();
 			}
 		} else {
 			ItemStack craftingResult;
