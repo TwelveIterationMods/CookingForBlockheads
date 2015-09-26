@@ -93,8 +93,8 @@ public class BlockSink extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (FluidContainerRegistry.isEmptyContainer(player.getHeldItem())) {
-            int amount = FluidContainerRegistry.getContainerCapacity(player.getHeldItem());
             FluidStack fluidStack = null;
+            int amount = FluidContainerRegistry.getContainerCapacity(FluidRegistry.getFluidStack("water", FluidContainerRegistry.BUCKET_VOLUME), player.getHeldItem());
             if(CookingBook.sinkRequiresWater) {
                 TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
                 if(sink.getWaterAmount() > amount) {
@@ -103,7 +103,7 @@ public class BlockSink extends BlockContainer {
             } else {
                 fluidStack = FluidRegistry.getFluidStack("water", amount);
             }
-            if(fluidStack != null) {
+            if(fluidStack != null && fluidStack.amount >= amount) {
                 ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(fluidStack, player.getHeldItem());
                 if (filledContainer != null) {
                     if (player.getHeldItem().stackSize <= 1) {
@@ -155,7 +155,7 @@ public class BlockSink extends BlockContainer {
                 spawnParticles(world, x, y, z);
             }
         }
-        return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
+        return false;
     }
 
     public void spawnParticles(World world, int x, int y, int z) {
