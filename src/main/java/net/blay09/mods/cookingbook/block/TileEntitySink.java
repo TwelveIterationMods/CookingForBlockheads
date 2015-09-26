@@ -6,6 +6,9 @@ import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -51,11 +54,20 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
         if(!CookingBook.sinkRequiresWater) {
             return true;
         }
-        if(waterTank.getFluidAmount() < 1000) {
+        if(waterTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
             return false;
         }
-        craftingBuffer += 1000;
+        craftingBuffer += FluidContainerRegistry.BUCKET_VOLUME;
         return true;
+    }
+
+    @Override
+    public boolean receiveClientEvent(int id, int value) {
+        if(id == 1) {
+            waterTank.setFluid(new FluidStack(FluidRegistry.WATER, value));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -65,7 +77,21 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
 
     @Override
     public void craftingComplete() {
-        waterTank.drain(craftingBuffer, true);
+        drain(ForgeDirection.UNKNOWN, craftingBuffer, true);
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        writeToNBT(tagCompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tagCompound);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+
+        readFromNBT(pkt.func_148857_g());
     }
 
     @Override
@@ -86,17 +112,21 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return waterTank.fill(resource, doFill);
+        int result = waterTank.fill(resource, doFill);
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, CookingBook.blockSink, 1, waterTank.getFluidAmount());
+        return result;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        return waterTank.drain(resource.amount, doDrain);
+        return drain(from, resource.amount, doDrain);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return waterTank.drain(maxDrain, doDrain);
+        FluidStack result = waterTank.drain(maxDrain, doDrain);
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, CookingBook.blockSink, 1, waterTank.getFluidAmount());
+        return result;
     }
 
     @Override

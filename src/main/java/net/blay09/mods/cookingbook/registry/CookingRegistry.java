@@ -115,10 +115,13 @@ public class CookingRegistry {
                 continue;
             }
             for(IKitchenItemProvider itemProvider : itemProviders) {
+                itemProvider.clearCraftingBuffer();
                 for(ItemStack providedStack : itemProvider.getProvidedItemStacks()) {
                     if(craftMatrix.get(i).isValidItem(providedStack)) {
-                        itemFound[i] = true;
-                        continue matrixLoop;
+                        if(itemProvider.addToCraftingBuffer(providedStack)) {
+                            itemFound[i] = true;
+                            continue matrixLoop;
+                        }
                     }
                 }
             }

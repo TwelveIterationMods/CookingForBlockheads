@@ -94,14 +94,14 @@ public class BlockSink extends BlockContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (FluidContainerRegistry.isEmptyContainer(player.getHeldItem())) {
             FluidStack fluidStack = null;
-            int amount = FluidContainerRegistry.getContainerCapacity(FluidRegistry.getFluidStack("water", FluidContainerRegistry.BUCKET_VOLUME), player.getHeldItem());
+            int amount = FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), player.getHeldItem());
             if(CookingBook.sinkRequiresWater) {
                 TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
-                if(sink.getWaterAmount() > amount) {
+                if(sink.getWaterAmount() >= amount) {
                     fluidStack = sink.drain(ForgeDirection.UNKNOWN, amount, true);
                 }
             } else {
-                fluidStack = FluidRegistry.getFluidStack("water", amount);
+                fluidStack = new FluidStack(FluidRegistry.WATER, amount);
             }
             if(fluidStack != null && fluidStack.amount >= amount) {
                 ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(fluidStack, player.getHeldItem());
@@ -152,6 +152,12 @@ public class BlockSink extends BlockContainer {
                 spawnParticles(world, x, y, z);
                 return true;
             } else {
+                if(CookingBook.sinkRequiresWater) {
+                    TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
+                    if(sink.getWaterAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
+                        return false;
+                    }
+                }
                 spawnParticles(world, x, y, z);
             }
         }
