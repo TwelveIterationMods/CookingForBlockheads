@@ -7,12 +7,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntitySink extends TileEntity implements IKitchenItemProvider {
+public class TileEntitySink extends TileEntity implements IKitchenItemProvider, IFluidHandler {
 
     private static class WaterTank extends FluidTank {
         public WaterTank(int capacity) {
@@ -77,5 +78,35 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider {
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         waterTank.readFromNBT(tagCompound);
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        return waterTank.fill(resource, doFill);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return waterTank.drain(resource.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return waterTank.drain(maxDrain, doDrain);
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return fluid == FluidRegistry.WATER;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return fluid == FluidRegistry.WATER;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { waterTank.getInfo() };
     }
 }
