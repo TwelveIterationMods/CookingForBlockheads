@@ -16,8 +16,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Random;
 
@@ -91,19 +93,36 @@ public class BlockSink extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (FluidContainerRegistry.isEmptyContainer(player.getHeldItem())) {
-            ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(FluidRegistry.getFluidStack("water", 1000), player.getHeldItem());
-            if(filledContainer != null) {
-                if(player.getHeldItem().stackSize <= 1) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
-                } else {
-                    if(player.inventory.addItemStackToInventory(filledContainer)) {
-                        player.getHeldItem().stackSize--;
+            int amount = FluidContainerRegistry.getContainerCapacity(player.getHeldItem());
+            FluidStack fluidStack = null;
+            if(CookingBook.sinkRequiresWater) {
+                TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
+                if(sink.getWaterAmount() > amount) {
+                    fluidStack = sink.drain(ForgeDirection.UNKNOWN, amount, true);
+                }
+            } else {
+                fluidStack = FluidRegistry.getFluidStack("water", amount);
+            }
+            if(fluidStack != null) {
+                ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(fluidStack, player.getHeldItem());
+                if (filledContainer != null) {
+                    if (player.getHeldItem().stackSize <= 1) {
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                    } else {
+                        if (player.inventory.addItemStackToInventory(filledContainer)) {
+                            player.getHeldItem().stackSize--;
+                        }
                     }
                 }
+                spawnParticles(world, x, y, z);
             }
-            spawnParticles(world, x, y, z);
             return true;
         } else if(FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
+            FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(player.getHeldItem());
+            if(CookingBook.sinkRequiresWater) {
+                TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
+                sink.fill(ForgeDirection.UNKNOWN, fluidStack, true);
+            }
             ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(player.getHeldItem());
             if(emptyContainer != null) {
                 if(player.getHeldItem().stackSize <= 1) {

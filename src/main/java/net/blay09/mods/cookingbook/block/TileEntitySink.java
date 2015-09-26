@@ -16,10 +16,10 @@ import java.util.List;
 public class TileEntitySink extends TileEntity implements IKitchenItemProvider, IFluidHandler {
 
     private static class WaterTank extends FluidTank {
+
         public WaterTank(int capacity) {
             super(capacity);
         }
-
         @Override
         public int fill(FluidStack resource, boolean doFill) {
             if(resource.getFluid() != FluidRegistry.WATER) {
@@ -27,12 +27,12 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
             }
             return super.fill(resource, doFill);
         }
-    }
 
+    }
     private final List<ItemStack> itemStacks = new ArrayList<>();
+
     private final FluidTank waterTank = new WaterTank(16000);
     private int craftingBuffer;
-
     public TileEntitySink() {
         itemStacks.add(new ItemStack(Items.water_bucket));
         ItemStack pamsWater = GameRegistry.findItemStack("harvestcraft", "freshwaterItem", 1);
@@ -80,6 +80,10 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
         waterTank.readFromNBT(tagCompound);
     }
 
+    public int getWaterAmount() {
+        return waterTank.getFluidAmount();
+    }
+
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return waterTank.fill(resource, doFill);
@@ -97,12 +101,12 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == FluidRegistry.WATER;
+        return CookingBook.sinkRequiresWater && fluid == FluidRegistry.WATER;
     }
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return fluid == FluidRegistry.WATER;
+        return CookingBook.sinkRequiresWater && fluid == FluidRegistry.WATER;
     }
 
     @Override
