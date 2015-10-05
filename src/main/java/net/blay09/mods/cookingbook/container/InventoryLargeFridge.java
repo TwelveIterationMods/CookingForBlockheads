@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.container;
 
+import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -98,4 +99,7 @@ public class InventoryLargeFridge implements IInventory {
         return lowerFridge.isItemValidForSlot(i, itemStack) && upperFridge.isItemValidForSlot(i, itemStack);
     }
 
+    public boolean containsInventory(IInventory inventory) {
+        return lowerFridge == inventory || upperFridge == inventory;
+    }
 }

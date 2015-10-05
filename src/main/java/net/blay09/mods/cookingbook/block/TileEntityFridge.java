@@ -2,6 +2,8 @@ package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.container.ContainerFridge;
+import net.blay09.mods.cookingbook.container.InventoryLargeFridge;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.List;
 import java.util.Random;
 
 public class TileEntityFridge extends TileEntity implements IInventory, IKitchenStorageProvider {
@@ -29,6 +32,7 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     private float prevDoorAngle;
     private float doorAngle;
     private int numPlayersUsing;
+    private int tickCounter;
 
     @Override
     public void setWorldObj(World world) {
@@ -91,6 +95,8 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     public void updateEntity() {
         super.updateEntity();
 
+        fixBrokenContainerClosedCall();
+
         prevDoorAngle = doorAngle;
         if(numPlayersUsing > 0) {
             final float doorSpeed = 0.2f;
@@ -98,6 +104,24 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
         } else {
             final float doorSpeed = 0.1f;
             doorAngle = Math.max(0f, doorAngle - doorSpeed);
+        }
+    }
+
+    private void fixBrokenContainerClosedCall() {
+        // Because Mojang people thought it would be more sane to check chest watchers every few ticks instead of fixing the actual issue.
+        tickCounter++;
+        if (!worldObj.isRemote && numPlayersUsing != 0 && (tickCounter + xCoord + yCoord + zCoord) % 200 == 0) {
+            numPlayersUsing = 0;
+            float range = 5.0F;
+            List list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox((float) xCoord - range, (float) yCoord - range, (float) zCoord - range, (float) xCoord + 1 + range, (float) yCoord + 1 + range, (float) zCoord + 1 + range));
+            for(EntityPlayer entityPlayer : (List<EntityPlayer>) list) {
+                if (entityPlayer.openContainer instanceof ContainerFridge) {
+                    IInventory inventory = ((ContainerFridge) entityPlayer.openContainer).getFridgeInventory();
+                    if(inventory == this || (inventory instanceof InventoryLargeFridge && ((InventoryLargeFridge) inventory).containsInventory(this))) {
+                        numPlayersUsing++;
+                    }
+                }
+            }
         }
     }
 
@@ -281,4 +305,6 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     public void setFlipped(boolean isFlipped) {
         this.isFlipped = isFlipped;
     }
+
+
 }

@@ -76,4 +76,8 @@ public class ContainerFridge extends Container {
     public boolean isLargeFridge() {
         return numRows > 3;
     }
+
+    public IInventory getFridgeInventory() {
+        return fridgeInventory;
+    }
 }

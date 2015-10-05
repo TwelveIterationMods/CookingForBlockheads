@@ -193,4 +193,8 @@ public class ContainerCookingOven extends Container {
         map.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(47, 57));
         return map;
     }
+
+    public TileEntityCookingOven getTileEntity() {
+        return tileEntity;
+    }
 }

@@ -2,6 +2,9 @@ package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
+import net.blay09.mods.cookingbook.container.ContainerCookingOven;
+import net.blay09.mods.cookingbook.container.ContainerFridge;
+import net.blay09.mods.cookingbook.container.InventoryLargeFridge;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +20,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
 
 public class TileEntityCookingOven extends TileEntity implements ISidedInventory, IKitchenSmeltingProvider, IKitchenStorageProvider {
 
@@ -130,6 +136,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     private float prevDoorAngle;
     private float doorAngle;
     private int numPlayersUsing;
+    private int tickCounter;
 
     @Override
     public void setWorldObj(World world) {
@@ -283,6 +290,8 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     public void updateEntity() {
         super.updateEntity();
 
+        fixBrokenContainerClosedCall();
+
         boolean hasChanged = false;
 
         if (furnaceBurnTime > 0) {
@@ -415,6 +424,23 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
         if (hasChanged) {
             markDirty();
+        }
+    }
+
+    private void fixBrokenContainerClosedCall() {
+        // Because Mojang people thought it would be more sane to check chest watchers every few ticks instead of fixing the actual issue.
+        tickCounter++;
+        if (!worldObj.isRemote && numPlayersUsing != 0 && (tickCounter + xCoord + yCoord + zCoord) % 200 == 0) {
+            numPlayersUsing = 0;
+            float range = 5.0F;
+            List list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox((float) xCoord - range, (float) yCoord - range, (float) zCoord - range, (float) xCoord + 1 + range, (float) yCoord + 1 + range, (float) zCoord + 1 + range));
+            for(EntityPlayer entityPlayer : (List<EntityPlayer>) list) {
+                if (entityPlayer.openContainer instanceof ContainerCookingOven) {
+                    if(((ContainerCookingOven) entityPlayer.openContainer).getTileEntity() == this) {
+                        numPlayersUsing++;
+                    }
+                }
+            }
         }
     }
 
