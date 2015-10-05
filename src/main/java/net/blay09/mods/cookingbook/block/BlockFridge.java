@@ -91,8 +91,8 @@ public class BlockFridge extends BlockContainer {
     public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
         TileEntityFridge fridge = (TileEntityFridge) world.getTileEntity(x, y, z);
         fridge.setFridgeColor(colour);
-        if(fridge.getNeighbourFridge() != null) {
-            fridge.getNeighbourFridge().setFridgeColor(colour);
+        if(fridge.findNeighbourFridge() != null) {
+            fridge.findNeighbourFridge().setFridgeColor(colour);
         }
         return true;
     }
@@ -103,8 +103,8 @@ public class BlockFridge extends BlockContainer {
             int dye = BlockColored.func_150032_b(player.getHeldItem().getItemDamage());
             TileEntityFridge fridge = (TileEntityFridge) world.getTileEntity(x, y, z);
             fridge.setFridgeColor(dye);
-            if(fridge.getNeighbourFridge() != null) {
-                fridge.getNeighbourFridge().setFridgeColor(dye);
+            if(fridge.findNeighbourFridge() != null) {
+                fridge.findNeighbourFridge().setFridgeColor(dye);
             }
             player.getHeldItem().stackSize--;
             return true;
@@ -169,4 +169,11 @@ public class BlockFridge extends BlockContainer {
         super.breakBlock(world, x, y, z, block, metadata);
     }
 
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
+        if(block == CookingBook.blockFridge) {
+            ((TileEntityFridge) world.getTileEntity(x, y, z)).updateMultiblock();
+        }
+    }
 }

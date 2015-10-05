@@ -88,18 +88,8 @@ public class GuiHandler implements IGuiHandler {
     }
 
     private IInventory getInventoryForFridge(TileEntityFridge tileEntity) {
-        TileEntityFridge bottomFridge;
-        TileEntityFridge upperFridge;
-        if(tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord) == CookingBook.blockFridge) {
-            bottomFridge = tileEntity;
-            upperFridge = (TileEntityFridge) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord);
-        } else if(tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord) == CookingBook.blockFridge) {
-            bottomFridge = (TileEntityFridge) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord);
-            upperFridge = tileEntity;
-        } else {
-            return tileEntity;
-        }
-        return new InventoryLargeFridge(bottomFridge, upperFridge);
+        tileEntity.updateMultiblock();
+        return tileEntity.getInventory();
     }
 
 }

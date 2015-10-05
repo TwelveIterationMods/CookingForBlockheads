@@ -73,7 +73,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
         doorAngle = 1.0f - doorAngle;
         doorAngle = 1.0f - doorAngle * doorAngle * doorAngle;
         if(isLargeFridge) {
-            TileEntityFridge upperFridge = tileEntityFridge.getNeighbourFridge();
+            TileEntityFridge upperFridge = tileEntityFridge.findNeighbourFridge();
             if(upperFridge != null) {
                 float neighbourDoorAngle = upperFridge.getPrevDoorAngle() + (upperFridge.getDoorAngle() - upperFridge.getPrevDoorAngle()) * delta;
                 if(neighbourDoorAngle > doorAngle) {

@@ -25,6 +25,7 @@ public class ItemBlockFridge extends ItemBlock {
         for (String s : I18n.format("cookingbook:fridge.tooltipDesc").split("\\\\n")) {
             list.add("\u00a77" + s);
         }
+        list.add("\u00a7b" + I18n.format("cookingbook:dyeable"));
     }
 
 }

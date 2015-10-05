@@ -23,6 +23,7 @@ cookingbook:recipebook_tier2.tooltip=Crafting Book
 cookingbook:recipebook_tier2.tooltipDesc=Can craft food using the things\nyou have in your inventory.
 
 cookingbook:multiblockKitchen=Multiblock Kitchen
+cookingbook:dyeable=Dyeable
 cookingbook:cookingtable.tooltipDesc=Enables crafting abilities.
 cookingbook:cookingoven.tooltipDesc=Enables smelting abilities.
 cookingbook:sink.tooltipDesc=Provides water to recipes.
