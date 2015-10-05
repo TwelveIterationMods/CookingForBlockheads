@@ -84,7 +84,7 @@ repositories {
 }
 
 dependencies {
-    compile name: "MineTweaker3", version: "1.7.10-3.0.9C", classifier: "Dev", ext: "jar"
+    compile name: "MineTweaker3", version: "1.7.10-3.0.10B", classifier: "Dev", ext: "jar"
     provided name: "InventoryTweaks", version: "147", classifier: "deobf", ext: "jar"
     provided name: "MouseTweaks", version: "2.4.4-mc1.7.10", ext: "jar"
 }

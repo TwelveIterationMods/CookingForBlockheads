@@ -1,8 +1,12 @@
 package net.blay09.mods.cookingbook;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.addon.VanillaAddon;
@@ -13,9 +17,13 @@ import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CommonProxy {
+
+	private boolean mineTweakerHasPostReload;
+
 	public void preInit(FMLPreInitializationEvent event) {}
 
 	public void init(FMLInitializationEvent event) {
@@ -55,10 +63,25 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 		new VanillaAddon();
-		//event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingbook.addon.MineTweakerAddon");
+
+		try {
+			Class mtClass = Class.forName("minetweaker.MineTweakerImplementationAPI");
+			mtClass.getMethod("onPostReload", Class.forName("minetweaker.util.IEventHandler"));
+			event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingbook.addon.MineTweakerAddon");
+			mineTweakerHasPostReload = true;
+		} catch (ClassNotFoundException | NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+
 		event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
 		event.buildSoftDependProxy("enviromine", "net.blay09.mods.cookingbook.addon.EnviroMineAddon");
 
 		CookingRegistry.initFoodRegistry();
+	}
+
+	public void serverStarted(FMLServerStartedEvent event) {
+		if(!mineTweakerHasPostReload && Loader.isModLoaded("MineTweaker3")) {
+			CookingRegistry.initFoodRegistry();
+		}
 	}
 }

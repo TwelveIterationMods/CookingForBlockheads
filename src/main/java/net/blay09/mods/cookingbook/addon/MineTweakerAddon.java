@@ -9,7 +9,7 @@ import net.blay09.mods.cookingbook.registry.CookingRegistry;
 public class MineTweakerAddon implements IEventHandler<MineTweakerImplementationAPI.ReloadEvent> {
 
     public MineTweakerAddon() {
-        MineTweakerImplementationAPI.onReloadEvent(this);
+        MineTweakerImplementationAPI.onPostReload(this);
     }
 
     @Override
