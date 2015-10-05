@@ -120,8 +120,8 @@ public class BlockCookingOven extends BlockContainer {
                 }
                 slotId += 16;
                 TileEntityCookingOven tileEntityOven = (TileEntityCookingOven) world.getTileEntity(x, y, z);
-                ItemStack toolItem = player.getHeldItem().splitStack(1);
                 if (tileEntityOven.getStackInSlot(slotId) == null) {
+                    ItemStack toolItem = player.getHeldItem().splitStack(1);
                     tileEntityOven.setInventorySlotContents(slotId, toolItem);
                 }
                 return true;
