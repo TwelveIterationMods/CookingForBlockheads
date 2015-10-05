@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import net.blay09.mods.cookingbook.addon.VanillaAddon;
 import net.blay09.mods.cookingbook.block.*;
 import net.blay09.mods.cookingbook.item.*;
@@ -82,7 +83,9 @@ public class CommonProxy {
 			new VanillaAddon();
 		}
 
-		event.buildSoftDependProxy("NotEnoughItems", "net.blay09.mods.cookingbook.addon.NotEnoughItemsAddon");
+		if(event.getSide() == Side.CLIENT) {
+			event.buildSoftDependProxy("NotEnoughItems", "net.blay09.mods.cookingbook.addon.NotEnoughItemsAddon");
+		}
 
 		try {
 			Class mtClass = Class.forName("minetweaker.MineTweakerImplementationAPI");

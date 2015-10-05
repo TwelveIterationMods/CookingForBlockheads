@@ -2,6 +2,8 @@ package net.blay09.mods.cookingbook.client;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.blay09.mods.cookingbook.container.*;
 import net.blay09.mods.cookingbook.network.MessageSort;
 import net.blay09.mods.cookingbook.network.MessageSwitchRecipe;
