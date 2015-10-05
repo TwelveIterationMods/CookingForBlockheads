@@ -69,6 +69,10 @@ configurations {
 sourceSets.main.compileClasspath += [configurations.provided]
 
 repositories {
+    maven {
+        name = "NEI"
+        url = "http://chickenbones.net/maven/"
+    }
     ivy {
         name "MineTweaker"
         artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
@@ -87,6 +91,7 @@ dependencies {
     compile name: "MineTweaker3", version: "1.7.10-3.0.10B", classifier: "Dev", ext: "jar"
     provided name: "InventoryTweaks", version: "147", classifier: "deobf", ext: "jar"
     provided name: "MouseTweaks", version: "2.4.4-mc1.7.10", ext: "jar"
+    provided "codechicken:NotEnoughItems:1.7.10-1.0.5.118:dev"
 }
 
 idea {

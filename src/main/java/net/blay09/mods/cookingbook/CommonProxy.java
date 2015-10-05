@@ -82,6 +82,8 @@ public class CommonProxy {
 			new VanillaAddon();
 		}
 
+		event.buildSoftDependProxy("NotEnoughItems", "net.blay09.mods.cookingbook.addon.NotEnoughItemsAddon");
+
 		try {
 			Class mtClass = Class.forName("minetweaker.MineTweakerImplementationAPI");
 			mtClass.getMethod("onPostReload", Class.forName("minetweaker.util.IEventHandler"));
