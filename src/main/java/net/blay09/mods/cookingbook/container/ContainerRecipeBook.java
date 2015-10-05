@@ -199,7 +199,6 @@ public class ContainerRecipeBook extends Container {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack slotClick(int slotIdx, int button, int mode, EntityPlayer player) {
-		System.out.println(button + ", " + mode);
 		if(mode == 6) {
 			mode = 0;
 		}

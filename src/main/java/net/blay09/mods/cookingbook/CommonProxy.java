@@ -89,9 +89,7 @@ public class CommonProxy {
 			mtClass.getMethod("onPostReload", Class.forName("minetweaker.util.IEventHandler"));
 			event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingbook.addon.MineTweakerAddon");
 			mineTweakerHasPostReload = true;
-		} catch (ClassNotFoundException | NoSuchMethodException e) {
-			e.printStackTrace();
-		}
+		} catch (ClassNotFoundException | NoSuchMethodException ignored) {}
 
 		if(CookingConfig.moduleHarvestCraft) {
 			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
