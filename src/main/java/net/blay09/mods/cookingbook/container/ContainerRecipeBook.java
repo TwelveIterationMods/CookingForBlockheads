@@ -430,7 +430,8 @@ public class ContainerRecipeBook extends Container {
 			if (currentRecipeIdx < 0) {
 				currentRecipeIdx = currentRecipeList.size() - 1;
 			}
-			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+			currentRecipe = currentRecipeList.get(currentRecipeIdx);
+			setCraftMatrix(currentRecipe);
 			isSelectionDirty = true;
 		}
 	}
@@ -444,7 +445,8 @@ public class ContainerRecipeBook extends Container {
 			if (currentRecipeIdx >= currentRecipeList.size()) {
 				currentRecipeIdx = 0;
 			}
-			setCraftMatrix(currentRecipeList.get(currentRecipeIdx));
+			currentRecipe = currentRecipeList.get(currentRecipeIdx);
+			setCraftMatrix(currentRecipe);
 			isSelectionDirty = true;
 		}
 	}
