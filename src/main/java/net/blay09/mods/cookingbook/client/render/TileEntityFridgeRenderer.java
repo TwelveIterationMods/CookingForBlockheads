@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingbook.client.render;
 
 import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.client.model.ModelFridge;
 import net.blay09.mods.cookingbook.client.model.ModelSmallFridge;
@@ -97,27 +98,29 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 modelBig.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                int largeFridgeSize = tileEntityFridge.getSizeInventory() + (upperFridge != null ? upperFridge.getSizeInventory() : 0);
-                for (int i = 0; i < largeFridgeSize; i++) {
-                    ItemStack itemStack = (i >= tileEntityFridge.getSizeInventory() && upperFridge != null) ? upperFridge.getStackInSlot(i - tileEntityFridge.getSizeInventory()) : tileEntityFridge.getStackInSlot(i);
-                    if (itemStack != null) {
-                        int shelfCapacity = largeFridgeSize / 3;
-                        int relSlot = i % shelfCapacity;
-                        float itemX = Math.min(8f / 9f, (float) (relSlot % 9) / 9f);
-                        float itemY;
-                        if (i >= shelfCapacity * 2) {
-                            itemY = -0.75f;
-                        } else if (i >= shelfCapacity) {
-                            itemY = 0.125f;
-                        } else {
-                            itemY = -1.625f;
+                if(!CookingConfig.disableItemRender) {
+                    int largeFridgeSize = tileEntityFridge.getSizeInventory() + (upperFridge != null ? upperFridge.getSizeInventory() : 0);
+                    for (int i = 0; i < largeFridgeSize; i++) {
+                        ItemStack itemStack = (i >= tileEntityFridge.getSizeInventory() && upperFridge != null) ? upperFridge.getStackInSlot(i - tileEntityFridge.getSizeInventory()) : tileEntityFridge.getStackInSlot(i);
+                        if (itemStack != null) {
+                            int shelfCapacity = largeFridgeSize / 3;
+                            int relSlot = i % shelfCapacity;
+                            float itemX = Math.min(8f / 9f, (float) (relSlot % 9) / 9f);
+                            float itemY;
+                            if (i >= shelfCapacity * 2) {
+                                itemY = -0.75f;
+                            } else if (i >= shelfCapacity) {
+                                itemY = 0.125f;
+                            } else {
+                                itemY = -1.625f;
+                            }
+                            float itemZ = (relSlot < 9) ? 0f : -0.5f;
+                            if (relSlot % 2 == 0) {
+                                itemZ -= 0.1f;
+                            }
+                            tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
+                            RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, itemY, 0.5f + itemZ, 0f, 5f);
                         }
-                        float itemZ = (relSlot < 9) ? 0f : -0.5f;
-                        if (relSlot % 2 == 0) {
-                            itemZ -= 0.1f;
-                        }
-                        tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
-                        RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, itemY, 0.5f + itemZ, 0f, 5f);
                     }
                 }
             }
@@ -139,21 +142,23 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 modelSmall.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
-                    ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
-                    if(itemStack != null) {
-                        int relSlot = i;
-                        if(i > tileEntityFridge.getSizeInventory() / 2) {
-                            relSlot -= tileEntityFridge.getSizeInventory() / 2;
+                if(!CookingConfig.disableItemRender) {
+                    for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
+                        ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
+                        if (itemStack != null) {
+                            int relSlot = i;
+                            if (i > tileEntityFridge.getSizeInventory() / 2) {
+                                relSlot -= tileEntityFridge.getSizeInventory() / 2;
+                            }
+                            float itemX = (relSlot > 8) ? Math.min(4f / 5f, (relSlot - 9) / 5f) : Math.min(8f / 9f, (float) relSlot / 9f);
+                            float itemY = (i > tileEntityFridge.getSizeInventory() / 2) ? -0.7f : 0.01f;
+                            float itemZ = (relSlot > 8) ? -0.8f : -0.1f;
+                            if (relSlot % 2 == 0) {
+                                itemZ -= 0.1f;
+                            }
+                            tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
+                            RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, -2f + itemY, 0.5f + itemZ, 0f, 0f);
                         }
-                        float itemX = (relSlot > 8) ? Math.min(4f/5f, (relSlot-9) / 5f) : Math.min(8f/9f, (float) relSlot / 9f);
-                        float itemY = (i > tileEntityFridge.getSizeInventory() / 2) ? -0.7f : 0.01f;
-                        float itemZ = (relSlot > 8) ? -0.8f : -0.1f;
-                        if(relSlot % 2 == 0) {
-                            itemZ -= 0.1f;
-                        }
-                        tileEntityFridge.getRenderItem().setEntityItemStack(itemStack);
-                        RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, -2f + itemY, 0.5f + itemZ, 0f, 0f);
                     }
                 }
             }

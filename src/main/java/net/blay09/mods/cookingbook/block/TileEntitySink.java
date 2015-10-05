@@ -2,6 +2,7 @@ package net.blay09.mods.cookingbook.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -51,7 +52,7 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
 
     @Override
     public boolean addToCraftingBuffer(ItemStack itemStack) {
-        if(!CookingBook.sinkRequiresWater) {
+        if(!CookingConfig.sinkRequiresWater) {
             return true;
         }
         if(waterTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
@@ -131,12 +132,12 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return CookingBook.sinkRequiresWater && fluid == FluidRegistry.WATER;
+        return CookingConfig.sinkRequiresWater && fluid == FluidRegistry.WATER;
     }
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return CookingBook.sinkRequiresWater && fluid == FluidRegistry.WATER;
+        return CookingConfig.sinkRequiresWater && fluid == FluidRegistry.WATER;
     }
 
     @Override

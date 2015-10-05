@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingbook.client.render;
 
+import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.client.model.ModelOven;
@@ -63,19 +64,21 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
         model.renderAll(doorAngle <= 0.25f && tileEntityOven.isBurning());
         GL11.glRotatef(180f, 0f, 0f, -1f);
         if(doorAngle > 0f) {
-            for (int i = 0; i < 9; i++) {
-                ItemStack itemStack = tileEntityOven.getStackInSlot(i + 7);
-                if (itemStack != null) {
-                    int relSlot = i % 3;
-                    float itemX = relSlot * 0.5f;
-                    float itemZ =  - (i / 3) * 0.4f;
-                    GL11.glPushMatrix();
-                    GL11.glScalef(0.5f, 0.5f, 0.5f);
-                    GL11.glTranslatef(itemX - 0.5f, -2.25f, 0.05f + itemZ);
-                    GL11.glRotatef(90f, 1f, 0f, 0f);
-                    tileEntityOven.getInteriorRenderItem().setEntityItemStack(itemStack);
-                    RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getInteriorRenderItem(), 0, 0, 0, 0f, 0f);
-                    GL11.glPopMatrix();
+            if(!CookingConfig.disableItemRender) {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack itemStack = tileEntityOven.getStackInSlot(i + 7);
+                    if (itemStack != null) {
+                        int relSlot = i % 3;
+                        float itemX = relSlot * 0.5f;
+                        float itemZ = -(i / 3) * 0.4f;
+                        GL11.glPushMatrix();
+                        GL11.glScalef(0.5f, 0.5f, 0.5f);
+                        GL11.glTranslatef(itemX - 0.5f, -2.25f, 0.05f + itemZ);
+                        GL11.glRotatef(90f, 1f, 0f, 0f);
+                        tileEntityOven.getInteriorRenderItem().setEntityItemStack(itemStack);
+                        RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getInteriorRenderItem(), 0, 0, 0, 0f, 0f);
+                        GL11.glPopMatrix();
+                    }
                 }
             }
         }

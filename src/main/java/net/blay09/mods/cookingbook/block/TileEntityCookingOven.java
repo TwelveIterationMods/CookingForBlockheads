@@ -1,10 +1,9 @@
 package net.blay09.mods.cookingbook.block;
 
+import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
 import net.blay09.mods.cookingbook.container.ContainerCookingOven;
-import net.blay09.mods.cookingbook.container.ContainerFridge;
-import net.blay09.mods.cookingbook.container.InventoryLargeFridge;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -165,12 +164,12 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
     @Override
     public boolean canInsertItem(int i, ItemStack itemStack, int side) {
-        return isItemValidForSlot(i, itemStack);
+        return !CookingConfig.disallowOvenAutomation && isItemValidForSlot(i, itemStack);
     }
 
     @Override
     public boolean canExtractItem(int i, ItemStack itemStack, int side) {
-        return true;
+        return !CookingConfig.disallowOvenAutomation;
     }
 
     @Override
@@ -313,7 +312,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                 for (int j : slotsSide) {
                     if (getStackInSlot(j) != null) {
                         ItemStack fuelItem = getStackInSlot(j);
-                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) / 3f);
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * CookingConfig.ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
                             fuelItem.stackSize--;
                             if (fuelItem.stackSize == 0) {
@@ -341,7 +340,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
                 if (getStackInSlot(i) != null) {
                     if (slotCookTime[i - SLOT_CENTER_OFFSET] != -1) {
                         slotCookTime[i - SLOT_CENTER_OFFSET]++;
-                        if (slotCookTime[i - SLOT_CENTER_OFFSET] >= COOK_TIME) {
+                        if (slotCookTime[i - SLOT_CENTER_OFFSET] >= COOK_TIME * CookingConfig.ovenCookTimeMultiplier) {
                             ItemStack resultStack = getSmeltingResult(getStackInSlot(i));
                             if (resultStack != null) {
                                 setInventorySlotContents(i, resultStack.copy());
@@ -432,7 +431,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
         tickCounter++;
         if (!worldObj.isRemote && numPlayersUsing != 0 && (tickCounter + xCoord + yCoord + zCoord) % 200 == 0) {
             numPlayersUsing = 0;
-            float range = 5.0F;
+            float range = 5.0f;
             List list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox((float) xCoord - range, (float) yCoord - range, (float) zCoord - range, (float) xCoord + 1 + range, (float) yCoord + 1 + range, (float) zCoord + 1 + range));
             for(EntityPlayer entityPlayer : (List<EntityPlayer>) list) {
                 if (entityPlayer.openContainer instanceof ContainerCookingOven) {
@@ -458,7 +457,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
 
     public static int getItemBurnTime(ItemStack fuelItem) {
         int fuelTime = CookingRegistry.getOvenFuelTime(fuelItem);
-        if(fuelTime != 0) {
+        if(fuelTime != 0 || CookingConfig.ovenRequiresCookingOil) {
             return fuelTime;
         }
         return TileEntityFurnace.getItemBurnTime(fuelItem);
@@ -553,7 +552,7 @@ public class TileEntityCookingOven extends TileEntity implements ISidedInventory
     }
 
     public float getCookProgress(int i) {
-        return (float) slotCookTime[i] / (float) COOK_TIME;
+        return (float) slotCookTime[i] / ((float) COOK_TIME * CookingConfig.ovenCookTimeMultiplier);
     }
 
     public EntityItem getRenderItem(int i) {

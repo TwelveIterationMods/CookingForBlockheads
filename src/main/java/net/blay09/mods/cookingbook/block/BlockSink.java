@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
 import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.client.render.SinkBlockRenderer;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.block.Block;
@@ -95,7 +96,7 @@ public class BlockSink extends BlockContainer {
         if (FluidContainerRegistry.isEmptyContainer(player.getHeldItem())) {
             FluidStack fluidStack = null;
             int amount = FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), player.getHeldItem());
-            if(CookingBook.sinkRequiresWater) {
+            if(CookingConfig.sinkRequiresWater) {
                 TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
                 if(sink.getWaterAmount() >= amount) {
                     fluidStack = sink.drain(ForgeDirection.UNKNOWN, amount, true);
@@ -119,7 +120,7 @@ public class BlockSink extends BlockContainer {
             return true;
         } else if(FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
             FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(player.getHeldItem());
-            if(CookingBook.sinkRequiresWater) {
+            if(CookingConfig.sinkRequiresWater) {
                 TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
                 sink.fill(ForgeDirection.UNKNOWN, fluidStack, true);
             }
@@ -152,7 +153,7 @@ public class BlockSink extends BlockContainer {
                 spawnParticles(world, x, y, z);
                 return true;
             } else {
-                if(CookingBook.sinkRequiresWater) {
+                if(CookingConfig.sinkRequiresWater) {
                     TileEntitySink sink = (TileEntitySink) world.getTileEntity(x, y, z);
                     if(sink.getWaterAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
                         return false;

@@ -10,7 +10,6 @@ import net.blay09.mods.cookingbook.item.ItemRecipeBook;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.config.Configuration;
 
 @Mod(modid = CookingBook.MOD_ID)
 public class CookingBook {
@@ -37,17 +36,13 @@ public class CookingBook {
 	@SidedProxy(clientSide = "net.blay09.mods.cookingbook.client.ClientProxy", serverSide = "net.blay09.mods.cookingbook.CommonProxy")
     public static CommonProxy proxy;
 
-	public static boolean sinkRequiresWater;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		CookingConfig.load(event.getSuggestedConfigurationFile());
 		CookingAPI.setupAPI(new InternalMethods());
 
 		proxy.preInit(event);
-
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		sinkRequiresWater = config.getBoolean("sinkRequiresWater", "general", false, "Set this to true if you'd like the sink to require water to be piped in.");
-		config.save();
 	}
 
     @EventHandler

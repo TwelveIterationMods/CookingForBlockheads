@@ -1,8 +1,6 @@
 package net.blay09.mods.cookingbook;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -17,7 +15,6 @@ import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CommonProxy {
@@ -40,20 +37,39 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileEntityCookingTable.class, "cookingbook:cookingtable");
 
 		// #NoFilter Edition
-		GameRegistry.addShapelessRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 3), Items.book, Items.painting);
+		if(CookingConfig.enableNoFilter) {
+			GameRegistry.addShapelessRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 3), Items.book, Items.painting);
+		}
+
 		// Cooking for Blockheads I
 		GameRegistry.addSmelting(Items.book, new ItemStack(CookingBook.itemRecipeBook), 0f);
-		GameRegistry.addSmelting(new ItemStack(CookingBook.itemRecipeBook, 1, 3), new ItemStack(CookingBook.itemRecipeBook), 0f);
+		if (CookingConfig.enableNoFilter) {
+			GameRegistry.addSmelting(new ItemStack(CookingBook.itemRecipeBook, 1, 3), new ItemStack(CookingBook.itemRecipeBook), 0f);
+		}
+
 		// Cooking for Blockheads II
-		GameRegistry.addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
+		if(CookingConfig.enableCraftingBook) {
+			GameRegistry.addRecipe(new ItemStack(CookingBook.itemRecipeBook, 1, 1), " C ", "DBD", " C ", 'C', Blocks.crafting_table, 'D', Items.diamond, 'B', CookingBook.itemRecipeBook);
+		}
+
 		// Fridge
 		GameRegistry.addShapelessRecipe(new ItemStack(CookingBook.blockFridge), Blocks.chest, Items.iron_door);
+
 		// Sink
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockSink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
+		if(CookingConfig.enableSink) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockSink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
+		}
+
 		// Cooking Table
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockCookingTable), "CCC", "WBW", "WWW", 'B', new ItemStack(CookingBook.itemRecipeBook, 1, 1), 'W', "logWood", 'C', new ItemStack(Blocks.stained_hardened_clay, 1, 15)));
+		if(CookingConfig.enableCraftingBook) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockCookingTable), "CCC", "WBW", "WWW", 'B', new ItemStack(CookingBook.itemRecipeBook, 1, 1), 'W', "logWood", 'C', new ItemStack(Blocks.stained_hardened_clay, 1, 15)));
+		}
+
 		// Cooking Oven
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockCookingOven), "GGG", "IFI", "III", 'G', new ItemStack(Blocks.stained_glass, 1, 15), 'I', "ingotIron", 'F', Blocks.furnace));
+		if(CookingConfig.enableOven) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockCookingOven), "GGG", "IFI", "III", 'G', new ItemStack(Blocks.stained_glass, 1, 15), 'I', "ingotIron", 'F', Blocks.furnace));
+		}
+
 		// Tool Rack
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingBook.blockToolRack), "PPP", "I I", 'P', Blocks.wooden_pressure_plate, 'I', "ingotIron"));
 
@@ -62,7 +78,9 @@ public class CommonProxy {
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
-		new VanillaAddon();
+		if(CookingConfig.moduleVanilla) {
+			new VanillaAddon();
+		}
 
 		try {
 			Class mtClass = Class.forName("minetweaker.MineTweakerImplementationAPI");
@@ -73,8 +91,12 @@ public class CommonProxy {
 			e.printStackTrace();
 		}
 
-		event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
-		event.buildSoftDependProxy("enviromine", "net.blay09.mods.cookingbook.addon.EnviroMineAddon");
+		if(CookingConfig.moduleHarvestCraft) {
+			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingbook.addon.HarvestCraftAddon");
+		}
+		if(CookingConfig.moduleEnviroMine) {
+			event.buildSoftDependProxy("enviromine", "net.blay09.mods.cookingbook.addon.EnviroMineAddon");
+		}
 
 		CookingRegistry.initFoodRegistry();
 	}
