@@ -38,7 +38,7 @@ public class CookingConfig {
 
         config.setCategoryComment("items", "Setting any of these options to false will disable their crafting recipe.");
         enableNoFilter = config.getBoolean("#NoFilter Edition", "items", true, "");
-        enableNoFilter = config.getBoolean("Crafting Book", "items", true, "Disabling this will also disable the Cooking Table recipe.");
+        enableCraftingBook = config.getBoolean("Crafting Book", "items", true, "Disabling this will also disable the Cooking Table recipe.");
 
         config.setCategoryComment("modules", "Setting any of these options to false will disable their specific mod support.");
         moduleVanilla = config.getBoolean("Vanilla Minecraft", "modules", true, "Sink Support, Ingredient Recipes");
