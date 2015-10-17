@@ -27,10 +27,10 @@ public class RemoteCraftingFood extends FoodRecipe {
     public static RemoteCraftingFood read(ByteBuf buf) {
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
 
-        byte ingredientCount = buf.readByte();
+        int ingredientCount = buf.readShort();
         List<FoodIngredient> craftMatrix = new ArrayList<>(ingredientCount);
         for(int k = 0; k < ingredientCount; k++) {
-            byte stackCount = buf.readByte();
+            int stackCount = buf.readShort();
             ItemStack[] itemStacks = new ItemStack[stackCount];
             for(int l = 0; l < stackCount; l++) {
                 itemStacks[l] = ByteBufUtils.readItemStack(buf);
@@ -44,9 +44,9 @@ public class RemoteCraftingFood extends FoodRecipe {
 
     public static void write(ByteBuf buf, FoodRecipe recipe) {
         ByteBufUtils.writeItemStack(buf, recipe.getOutputItem());
-        buf.writeByte(recipe.getCraftMatrix().size());
+        buf.writeShort(recipe.getCraftMatrix().size());
         for(FoodIngredient ingredient : recipe.getCraftMatrix()) {
-            buf.writeByte(ingredient.getItemStacks().length);
+            buf.writeShort(ingredient.getItemStacks().length);
             for(ItemStack ingredientStack : ingredient.getItemStacks()) {
                 ByteBufUtils.writeItemStack(buf, ingredientStack);
             }
