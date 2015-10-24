@@ -5,6 +5,7 @@ import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
 import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.client.model.ModelOven;
 import net.blay09.mods.cookingbook.client.model.ModelToolRack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -64,7 +65,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
         model.renderAll(doorAngle <= 0.25f && tileEntityOven.isBurning());
         GL11.glRotatef(180f, 0f, 0f, -1f);
         if(doorAngle > 0f) {
-            if(!CookingConfig.disableItemRender) {
+            if(!CookingConfig.disableItemRender || !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                 for (int i = 0; i < 9; i++) {
                     ItemStack itemStack = tileEntityOven.getStackInSlot(i + 7);
                     if (itemStack != null) {
@@ -83,7 +84,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
             }
         }
         final float scale = 0.7f;
-        if(tileEntityOven.getStackInSlot(16) != null) {
+        if (tileEntityOven.getStackInSlot(16) != null) {
             GL11.glPushMatrix();
             GL11.glTranslatef(-0.2f, -0.55f, 0.1f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
@@ -91,7 +92,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(0), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }
-        if(tileEntityOven.getStackInSlot(17) != null) {
+        if (tileEntityOven.getStackInSlot(17) != null) {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.2f, -0.55f, 0.1f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
@@ -99,7 +100,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(1), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }
-        if(tileEntityOven.getStackInSlot(18) != null) {
+        if (tileEntityOven.getStackInSlot(18) != null) {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.2f, -0.55f, -0.35f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
@@ -107,7 +108,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(2), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
         }
-        if(tileEntityOven.getStackInSlot(19) != null) {
+        if (tileEntityOven.getStackInSlot(19) != null) {
             GL11.glPushMatrix();
             GL11.glTranslatef(-0.2f, -0.55f, -0.35f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
