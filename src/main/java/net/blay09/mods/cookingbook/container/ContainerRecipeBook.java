@@ -171,13 +171,21 @@ public class ContainerRecipeBook extends Container {
 	public void updateRecipeList() {
 		boolean noRecipes = getAvailableRecipeCount() == 0;
 		for(int i = 0; i < recipeBook.getSizeInventory(); i++) {
+			ItemStack lastItemStack = recipeBook.getStackInSlot(i);
 			int recipeIdx = i + scrollOffset * 3;
 			if(recipeIdx < sortedRecipes.size()) {
 				recipeBook.setFoodItem(i, availableRecipes.get(sortedRecipes.get(recipeIdx).toString()));
 			} else {
 				recipeBook.setFoodItem(i, null);
 			}
-			recipeBookSlots[i].putStack(recipeBook.getStackInSlot(i));
+			ItemStack itemStack = recipeBook.getStackInSlot(i);
+			if(recipeIdx == currentSlotIndex && !ItemStack.areItemStacksEqual(lastItemStack, itemStack)) {
+				currentSlotIndex = -1;
+				currentRecipe = null;
+				currentRecipeList = null;
+				setCraftMatrix(null);
+			}
+			recipeBookSlots[i].putStack(itemStack);
 			recipeBookSlots[i].setEnabled(!noRecipes);
 		}
 		if(noRecipes) {
