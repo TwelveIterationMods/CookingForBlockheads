@@ -65,7 +65,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
         model.renderAll(doorAngle <= 0.25f && tileEntityOven.isBurning());
         GL11.glRotatef(180f, 0f, 0f, -1f);
         if(doorAngle > 0f) {
-            if(!CookingConfig.disableItemRender && !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+            if(!CookingConfig.disableItemRender && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                 for (int i = 0; i < 9; i++) {
                     ItemStack itemStack = tileEntityOven.getStackInSlot(i + 7);
                     if (itemStack != null) {
