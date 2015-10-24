@@ -49,6 +49,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 	private GuiTextField searchBar;
 
+	private GuiButtonSort[] sortButtons;
 	private GuiButtonSort btnSortName;
 	private GuiButtonSort btnSortHunger;
 	private GuiButtonSort btnSortSaturation;
@@ -87,6 +88,8 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "cookingbook:sort_by_saturation.tooltip");
 		buttonList.add(btnSortSaturation);
+
+		sortButtons = new GuiButtonSort[] {btnSortName, btnSortHunger, btnSortSaturation};
 
 		searchBar = new GuiTextField(fontRendererObj, guiLeft + xSize - 85, guiTop - 10, 70, 10);
 		searchBar.setVisible(false);
@@ -354,4 +357,8 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 
 	@Override
 	public void disableRMBDragIfRequired(Object o, Object o1, boolean b) {}
+
+	public GuiButtonSort[] getSortButtons() {
+		return sortButtons;
+	}
 }

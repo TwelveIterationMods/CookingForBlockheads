@@ -46,9 +46,9 @@ public class SlotCraftMatrix extends Slot {
 
     public void setIngredient(FoodIngredient ingredient) {
         this.ingredient = ingredient;
-        if(ingredient == null) {
-            putStack(null);
-        }
+//        if(ingredient == null) {
+//            putStack(null);
+//        }
     }
 
     public void setEnabled(boolean enabled) {
