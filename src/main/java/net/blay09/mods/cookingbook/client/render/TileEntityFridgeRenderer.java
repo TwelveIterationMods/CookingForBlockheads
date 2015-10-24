@@ -99,7 +99,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 modelBig.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                if(!CookingConfig.disableItemRender || !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                if(!CookingConfig.disableItemRender && !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                     int largeFridgeSize = tileEntityFridge.getSizeInventory() + (upperFridge != null ? upperFridge.getSizeInventory() : 0);
                     for (int i = 0; i < largeFridgeSize; i++) {
                         ItemStack itemStack = (i >= tileEntityFridge.getSizeInventory() && upperFridge != null) ? upperFridge.getStackInSlot(i - tileEntityFridge.getSizeInventory()) : tileEntityFridge.getStackInSlot(i);
@@ -143,7 +143,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 modelSmall.renderInterior();
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
-                if(!CookingConfig.disableItemRender || !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                if(!CookingConfig.disableItemRender && !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                     for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
                         ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
                         if (itemStack != null) {
