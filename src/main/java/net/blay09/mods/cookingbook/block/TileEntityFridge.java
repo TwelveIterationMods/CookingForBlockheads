@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.block;
 
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenStorageProvider;
 import net.blay09.mods.cookingbook.container.ContainerFridge;
 import net.blay09.mods.cookingbook.container.InventoryFridge;
@@ -180,9 +180,9 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     }
 
     public TileEntityFridge findNeighbourFridge() {
-        if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingBook.blockFridge) {
+        if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingForBlockheads.blockFridge) {
             return (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-        } else if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) == CookingBook.blockFridge) {
+        } else if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) == CookingForBlockheads.blockFridge) {
             return (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
         }
         return null;
@@ -299,10 +299,10 @@ public class TileEntityFridge extends TileEntity implements IInventory, IKitchen
     public void updateMultiblock() {
         TileEntityFridge bottomFridge;
         TileEntityFridge upperFridge;
-        if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingBook.blockFridge) {
+        if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) == CookingForBlockheads.blockFridge) {
             bottomFridge = this;
             upperFridge = (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-        } else if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) == CookingBook.blockFridge) {
+        } else if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) == CookingForBlockheads.blockFridge) {
             bottomFridge = (TileEntityFridge) worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
             upperFridge = this;
         } else {

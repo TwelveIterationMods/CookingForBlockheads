@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.block;
 
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.client.render.SinkBlockRenderer;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
@@ -22,15 +22,13 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Random;
-
 public class BlockSink extends BlockContainer {
 
     public BlockSink() {
         super(Material.wood);
 
         setBlockName("cookingbook:sink");
-        setCreativeTab(CookingBook.creativeTab);
+        setCreativeTab(CookingForBlockheads.creativeTab);
         setStepSound(soundTypeWood);
         setHardness(5f);
         setResistance(10f);

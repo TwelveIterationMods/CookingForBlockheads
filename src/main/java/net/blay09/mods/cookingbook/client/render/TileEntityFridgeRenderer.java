@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.client.render;
 
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.client.model.ModelFridge;
@@ -35,11 +35,11 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
         if(tileEntity.hasWorldObj()) {
             metadata = tileEntity.getBlockMetadata();
             Block above = tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord);
-            if(above == CookingBook.blockFridge) {
+            if(above == CookingForBlockheads.blockFridge) {
                 isLargeFridge = true;
             }
             Block below = tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord);
-            if(below == CookingBook.blockFridge) {
+            if(below == CookingForBlockheads.blockFridge) {
                 return;
             }
         }

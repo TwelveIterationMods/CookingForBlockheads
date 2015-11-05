@@ -2,17 +2,20 @@ package net.blay09.mods.cookingbook.addon;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.blay09.mods.cookingbook.api.CookingAPI;
+import net.blay09.mods.cookingbook.api.FoodStatsProvider;
 import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.SinkHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class VanillaAddon {
+public class VanillaAddon implements FoodStatsProvider {
 
     public VanillaAddon() {
         SinkHandler simpleHandler = new SinkHandler() {
@@ -54,11 +57,25 @@ public class VanillaAddon {
         });
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        CookingAPI.setFoodStatsProvider(this);
     }
 
     @SubscribeEvent
     public void onFoodRegistryInit(FoodRegistryInitEvent event) {
         event.registerNonFoodRecipe(new ItemStack(Items.cake));
         event.registerNonFoodRecipe(new ItemStack(Items.sugar));
+    }
+
+    @Override
+    public float getSaturation(ItemStack itemStack, EntityPlayer entityPlayer) {
+        ItemFood item = (ItemFood) itemStack.getItem();
+        return item.func_150906_h(itemStack);
+    }
+
+    @Override
+    public int getFoodLevel(ItemStack itemStack, EntityPlayer entityPlayer) {
+        ItemFood item = (ItemFood) itemStack.getItem();
+        return item.func_150905_g(itemStack);
     }
 }

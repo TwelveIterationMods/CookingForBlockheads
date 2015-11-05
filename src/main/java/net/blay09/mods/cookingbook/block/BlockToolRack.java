@@ -2,9 +2,8 @@ package net.blay09.mods.cookingbook.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.client.render.ToolRackBlockRenderer;
-import net.blay09.mods.cookingbook.item.ItemBlockCookingOven;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -33,7 +32,7 @@ public class BlockToolRack extends BlockContainer {
         super(Material.wood);
 
         setBlockName("cookingbook:toolrack");
-        setCreativeTab(CookingBook.creativeTab);
+        setCreativeTab(CookingForBlockheads.creativeTab);
         setStepSound(soundTypeWood);
         setHardness(2.5f);
     }

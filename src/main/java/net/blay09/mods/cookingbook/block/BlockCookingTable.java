@@ -1,9 +1,8 @@
 package net.blay09.mods.cookingbook.block;
 
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.GuiHandler;
 import net.blay09.mods.cookingbook.client.render.CookingTableBlockRenderer;
-import net.blay09.mods.cookingbook.client.render.SinkBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -24,7 +23,7 @@ public class BlockCookingTable extends BlockContainer {
 
         setBlockName("cookingbook:cookingtable");
         setBlockTextureName("cookingbook:cooking_table_side");
-        setCreativeTab(CookingBook.creativeTab);
+        setCreativeTab(CookingForBlockheads.creativeTab);
         setStepSound(soundTypeWood);
         setHardness(2.5f);
         setBlockBounds(0.0625f, 0f, 0.0625f, 0.9375f, 0.975f, 0.9375f);
@@ -106,7 +105,7 @@ public class BlockCookingTable extends BlockContainer {
         ItemStack heldItem = player.getHeldItem();
         if(heldItem != null) {
             TileEntityCookingTable tileEntity = (TileEntityCookingTable) world.getTileEntity(x, y, z);
-            if(!tileEntity.hasNoFilterBook() && heldItem.getItem() == CookingBook.itemRecipeBook && heldItem.getItemDamage() == 3) {
+            if(!tileEntity.hasNoFilterBook() && heldItem.getItem() == CookingForBlockheads.itemRecipeBook && heldItem.getItemDamage() == 3) {
                 tileEntity.setNoFilterBook(heldItem.splitStack(1));
                 return true;
             }
@@ -122,7 +121,7 @@ public class BlockCookingTable extends BlockContainer {
             }
         }
         if(!world.isRemote) {
-            player.openGui(CookingBook.instance, GuiHandler.GUI_ID_COOKINGTABLE, world, x, y, z);
+            player.openGui(CookingForBlockheads.instance, GuiHandler.GUI_ID_COOKINGTABLE, world, x, y, z);
         }
         return true;
     }

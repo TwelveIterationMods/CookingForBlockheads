@@ -2,7 +2,7 @@ package net.blay09.mods.cookingbook.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.GuiHandler;
 import net.blay09.mods.cookingbook.client.render.OvenBlockRenderer;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
@@ -34,7 +34,7 @@ public class BlockCookingOven extends BlockContainer {
         super(Material.iron);
 
         setBlockName("cookingbook:cookingoven");
-        setCreativeTab(CookingBook.creativeTab);
+        setCreativeTab(CookingForBlockheads.creativeTab);
         setStepSound(soundTypeMetal);
         setHardness(5f);
         setResistance(10f);
@@ -128,7 +128,7 @@ public class BlockCookingOven extends BlockContainer {
             }
         }
         if(!world.isRemote) {
-            player.openGui(CookingBook.instance, GuiHandler.GUI_ID_COOKINGOVEN, world, x, y, z);
+            player.openGui(CookingForBlockheads.instance, GuiHandler.GUI_ID_COOKINGOVEN, world, x, y, z);
         }
         return true;
     }

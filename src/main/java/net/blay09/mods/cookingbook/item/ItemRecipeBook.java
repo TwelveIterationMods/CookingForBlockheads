@@ -1,17 +1,14 @@
 package net.blay09.mods.cookingbook.item;
 
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.GuiHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -25,7 +22,7 @@ public class ItemRecipeBook extends Item {
 		setMaxStackSize(1);
 		setUnlocalizedName("cookingbook:recipebook_tier1");
 		setTextureName("cookingbook:recipebook_tier1");
-		setCreativeTab(CookingBook.creativeTab);
+		setCreativeTab(CookingForBlockheads.creativeTab);
 		setHasSubtypes(true);
 	}
 
@@ -77,7 +74,7 @@ public class ItemRecipeBook extends Item {
 				guiId = GuiHandler.GUI_ID_NOFILTERBOOK;
 				break;
 		}
-		player.openGui(CookingBook.instance, guiId, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		player.openGui(CookingForBlockheads.instance, guiId, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		return itemStack;
 	}
 

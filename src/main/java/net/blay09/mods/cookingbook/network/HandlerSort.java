@@ -20,10 +20,10 @@ public class HandlerSort implements IMessageHandler<MessageSort, IMessage> {
                     ((ContainerRecipeBook) container).sortRecipes(new ComparatorName());
                     break;
                 case 1:
-                    ((ContainerRecipeBook) container).sortRecipes(new ComparatorHunger());
+                    ((ContainerRecipeBook) container).sortRecipes(new ComparatorHunger(ctx.getServerHandler().playerEntity));
                     break;
                 case 2:
-                    ((ContainerRecipeBook) container).sortRecipes(new ComparatorSaturation());
+                    ((ContainerRecipeBook) container).sortRecipes(new ComparatorSaturation(ctx.getServerHandler().playerEntity));
                     break;
             }
         }

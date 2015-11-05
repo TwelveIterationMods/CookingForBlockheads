@@ -2,7 +2,6 @@ package net.blay09.mods.cookingbook;
 
 import net.blay09.mods.cookingbook.api.IInternalMethods;
 import net.blay09.mods.cookingbook.api.SinkHandler;
-import net.blay09.mods.cookingbook.client.render.CookingTableBlockRenderer;
 import net.blay09.mods.cookingbook.registry.CookingRegistry;
 import net.minecraft.item.ItemStack;
 

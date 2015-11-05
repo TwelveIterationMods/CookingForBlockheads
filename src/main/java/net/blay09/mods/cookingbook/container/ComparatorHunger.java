@@ -1,5 +1,7 @@
 package net.blay09.mods.cookingbook.container;
 
+import net.blay09.mods.cookingbook.api.CookingAPI;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 
@@ -8,6 +10,11 @@ import java.util.Comparator;
 public class ComparatorHunger implements Comparator<ItemStack> {
 
     private final ComparatorName fallback = new ComparatorName();
+    private final EntityPlayer entityPlayer;
+
+    public ComparatorHunger(EntityPlayer entityPlayer) {
+        this.entityPlayer = entityPlayer;
+    }
 
     @Override
     public int compare(ItemStack o1, ItemStack o2) {
@@ -20,9 +27,7 @@ public class ComparatorHunger implements Comparator<ItemStack> {
         } else if(!isSecondFood) {
             return -1;
         }
-        ItemFood f1 = (ItemFood) o1.getItem();
-        ItemFood f2 = (ItemFood) o2.getItem();
-        int result = f2.func_150905_g(o2) - f1.func_150905_g(o1);
+        int result = CookingAPI.getFoodStatsProvider().getFoodLevel(o2, entityPlayer) - CookingAPI.getFoodStatsProvider().getFoodLevel(o1, entityPlayer);
         if(result == 0) {
             return fallback.compare(o1, o2);
         }

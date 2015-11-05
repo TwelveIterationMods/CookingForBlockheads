@@ -21,6 +21,7 @@ public class CookingConfig {
     public static boolean moduleVanilla;
     public static boolean moduleHarvestCraft;
     public static boolean moduleEnviroMine;
+    public static boolean moduleAppleCore;
 
     public static boolean disableItemRender;
 
@@ -44,6 +45,7 @@ public class CookingConfig {
         moduleVanilla = config.getBoolean("Vanilla Minecraft", "modules", true, "Sink Support, Ingredient Recipes");
         moduleHarvestCraft = config.getBoolean("Pam's HarvestCraft", "modules", true, "Multiblock Kitchen Support, Tool Support, Oven Recipes, Oven Fuel, Ingredient Recipes");
         moduleEnviroMine = config.getBoolean("EnviroMine", "modules", true, "Multiblock Kitchen Support (Freezer)");
+        moduleAppleCore = config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values");
 
         disableItemRender = config.getBoolean("disableItemRender", "client", false, "If you hate cool things, set this to true to disable the item rendering inside of fridges and ovens. Note that the inside only renders when the door is open anyways, so you won't gain much from this.");
 

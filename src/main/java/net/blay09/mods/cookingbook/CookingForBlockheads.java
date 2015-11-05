@@ -11,8 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-@Mod(modid = CookingBook.MOD_ID)
-public class CookingBook {
+@Mod(modid = CookingForBlockheads.MOD_ID)
+public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingbook";
 
@@ -31,7 +31,7 @@ public class CookingBook {
 	public static Block blockToolRack = new BlockToolRack();
 
 	@Mod.Instance
-    public static CookingBook instance;
+    public static CookingForBlockheads instance;
 
 	@SidedProxy(clientSide = "net.blay09.mods.cookingbook.client.ClientProxy", serverSide = "net.blay09.mods.cookingbook.CommonProxy")
     public static CommonProxy proxy;

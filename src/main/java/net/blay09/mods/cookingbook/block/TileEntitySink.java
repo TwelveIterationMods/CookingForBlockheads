@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingbook.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.minecraft.init.Items;
@@ -114,7 +114,7 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int result = waterTank.fill(resource, doFill);
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, CookingBook.blockSink, 1, waterTank.getFluidAmount());
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, CookingForBlockheads.blockSink, 1, waterTank.getFluidAmount());
         return result;
     }
 
@@ -126,7 +126,7 @@ public class TileEntitySink extends TileEntity implements IKitchenItemProvider, 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         FluidStack result = waterTank.drain(maxDrain, doDrain);
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, CookingBook.blockSink, 1, waterTank.getFluidAmount());
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, CookingForBlockheads.blockSink, 1, waterTank.getFluidAmount());
         return result;
     }
 

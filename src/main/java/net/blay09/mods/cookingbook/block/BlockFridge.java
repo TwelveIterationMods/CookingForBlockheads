@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingbook.block;
 
-import net.blay09.mods.cookingbook.CookingBook;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.GuiHandler;
 import net.blay09.mods.cookingbook.client.render.FridgeBlockRenderer;
 import net.blay09.mods.cookingbook.item.ItemBlockFridge;
@@ -26,7 +26,7 @@ public class BlockFridge extends BlockContainer {
         super(Material.iron);
 
         setBlockName("cookingbook:fridge");
-        setCreativeTab(CookingBook.creativeTab);
+        setCreativeTab(CookingForBlockheads.creativeTab);
         setStepSound(soundTypeMetal);
         setHardness(5f);
         setResistance(10f);
@@ -113,22 +113,22 @@ public class BlockFridge extends BlockContainer {
             if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlockFridge) {
                 return false;
             }
-            player.openGui(CookingBook.instance, GuiHandler.GUI_ID_FRIDGE, world, x, y, z);
+            player.openGui(CookingForBlockheads.instance, GuiHandler.GUI_ID_FRIDGE, world, x, y, z);
         }
         return true;
     }
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        boolean below = world.getBlock(x, y - 1, z) == CookingBook.blockFridge;
-        boolean above = world.getBlock(x, y + 1, z) == CookingBook.blockFridge;
+        boolean below = world.getBlock(x, y - 1, z) == CookingForBlockheads.blockFridge;
+        boolean above = world.getBlock(x, y + 1, z) == CookingForBlockheads.blockFridge;
         if(below && above) {
             return false;
         }
-        if(below && world.getBlock(x, y - 2, z) == CookingBook.blockFridge) {
+        if(below && world.getBlock(x, y - 2, z) == CookingForBlockheads.blockFridge) {
             return false;
         }
-        if(above && world.getBlock(x, y + 2, z) == CookingBook.blockFridge) {
+        if(above && world.getBlock(x, y + 2, z) == CookingForBlockheads.blockFridge) {
             return false;
         }
         return super.canPlaceBlockAt(world, x, y, z);
@@ -172,7 +172,7 @@ public class BlockFridge extends BlockContainer {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         super.onNeighborBlockChange(world, x, y, z, block);
-        if(block == CookingBook.blockFridge) {
+        if(block == CookingForBlockheads.blockFridge) {
             ((TileEntityFridge) world.getTileEntity(x, y, z)).updateMultiblock();
         }
     }

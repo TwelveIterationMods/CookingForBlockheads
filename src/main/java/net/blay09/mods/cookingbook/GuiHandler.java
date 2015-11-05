@@ -10,15 +10,9 @@ import net.blay09.mods.cookingbook.client.GuiRecipeBook;
 import net.blay09.mods.cookingbook.container.ContainerCookingOven;
 import net.blay09.mods.cookingbook.container.ContainerFridge;
 import net.blay09.mods.cookingbook.container.ContainerRecipeBook;
-import net.blay09.mods.cookingbook.container.InventoryLargeFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -45,7 +39,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case GUI_ID_COOKINGTABLE:
-                if(world.getBlock(x, y, z) == CookingBook.blockCookingTable) {
+                if(world.getBlock(x, y, z) == CookingForBlockheads.blockCookingTable) {
                     TileEntityCookingTable tileEntity = (TileEntityCookingTable) world.getTileEntity(x, y, z);
                     if(tileEntity.hasNoFilterBook()) {
                         return new ContainerRecipeBook(player, true, true, false).setNoFilter().setKitchenMultiBlock(new KitchenMultiBlock(world, x, y, z));
@@ -55,12 +49,12 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case GUI_ID_COOKINGOVEN:
-                if(world.getBlock(x, y, z) == CookingBook.blockCookingOven) {
+                if(world.getBlock(x, y, z) == CookingForBlockheads.blockCookingOven) {
                     return new ContainerCookingOven(player.inventory, (TileEntityCookingOven) world.getTileEntity(x, y, z));
                 }
                 break;
             case GUI_ID_FRIDGE:
-                if(world.getBlock(x, y, z) == CookingBook.blockFridge) {
+                if(world.getBlock(x, y, z) == CookingForBlockheads.blockFridge) {
                     return new ContainerFridge(player.inventory, getInventoryForFridge((TileEntityFridge) world.getTileEntity(x, y, z)));
                 }
                 break;
