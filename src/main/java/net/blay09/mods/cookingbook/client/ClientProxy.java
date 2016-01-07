@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import net.blay09.mods.cookingbook.CommonProxy;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.block.*;
 import net.blay09.mods.cookingbook.client.render.*;
 import net.minecraft.util.IIcon;
@@ -30,11 +31,13 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCookingOven.class, new TileEntityOvenRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySink.class, new TileEntitySinkRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCookingTable.class, new TileEntityCookingTableRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityToaster.class, new TileEntityToasterRenderer());
 		RenderingRegistry.registerBlockHandler(FridgeBlockRenderer.RENDER_ID, new FridgeBlockRenderer());
 		RenderingRegistry.registerBlockHandler(ToolRackBlockRenderer.RENDER_ID, new ToolRackBlockRenderer());
 		RenderingRegistry.registerBlockHandler(OvenBlockRenderer.RENDER_ID, new OvenBlockRenderer());
 		RenderingRegistry.registerBlockHandler(SinkBlockRenderer.RENDER_ID, new SinkBlockRenderer());
 		RenderingRegistry.registerBlockHandler(CookingTableBlockRenderer.RENDER_ID, new CookingTableBlockRenderer());
+		RenderingRegistry.registerBlockHandler(ToasterBlockRenderer.RENDER_ID, new ToasterBlockRenderer());
 	}
 
 	@SubscribeEvent
@@ -43,10 +46,10 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 		if(event.map.getTextureType() == 1) {
-			ovenToolIcons[0] = event.map.registerIcon("cookingbook:bakeware");
-			ovenToolIcons[1] = event.map.registerIcon("cookingbook:pot");
-			ovenToolIcons[2] = event.map.registerIcon("cookingbook:saucepan");
-			ovenToolIcons[3] = event.map.registerIcon("cookingbook:skillet");
+			ovenToolIcons[0] = event.map.registerIcon(CookingForBlockheads.MOD_ID + ":bakeware");
+			ovenToolIcons[1] = event.map.registerIcon(CookingForBlockheads.MOD_ID + ":pot");
+			ovenToolIcons[2] = event.map.registerIcon(CookingForBlockheads.MOD_ID + ":saucepan");
+			ovenToolIcons[3] = event.map.registerIcon(CookingForBlockheads.MOD_ID + ":skillet");
 		}
 	}
 }

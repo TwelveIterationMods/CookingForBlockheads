@@ -1,8 +1,10 @@
 package net.blay09.mods.cookingbook.addon;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.api.CookingAPI;
 import net.blay09.mods.cookingbook.api.FoodStatsProvider;
+import net.blay09.mods.cookingbook.api.ToastHandler;
 import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.SinkHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,6 +55,13 @@ public class VanillaAddon implements FoodStatsProvider {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
                 return new ItemStack(Items.glass_bottle, 1);
+            }
+        });
+
+        CookingAPI.addToastHandler(new ItemStack(Items.bread), new ToastHandler() {
+            @Override
+            public ItemStack getToasterOutput(ItemStack itemStack) {
+                return new ItemStack(CookingForBlockheads.itemToast);
             }
         });
 

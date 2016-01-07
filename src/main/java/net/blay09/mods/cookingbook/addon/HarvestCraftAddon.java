@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.blay09.mods.cookingbook.KitchenMultiBlock;
 import net.blay09.mods.cookingbook.api.CookingAPI;
+import net.blay09.mods.cookingbook.api.ToastHandler;
 import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenSmeltingProvider;
@@ -137,6 +138,8 @@ public class HarvestCraftAddon {
             "juicerItem"
     };
 
+    private static final String TOAST_ITEM = "toastItem";
+
     public HarvestCraftAddon() {
         KitchenMultiBlock.tileEntityWrappers.put("com.pam.harvestcraft.TileEntityOven", OvenWrapper.class);
         KitchenMultiBlock.blockWrappers.put("harvestcraft:pot", PotWrapper.class);
@@ -158,6 +161,13 @@ public class HarvestCraftAddon {
                 CookingAPI.addToolItem(toolItem);
             }
         }
+
+        CookingAPI.addToastHandler(new ItemStack(Items.bread), new ToastHandler() {
+            @Override
+            public ItemStack getToasterOutput(ItemStack itemStack) {
+                return GameRegistry.findItemStack("harvestcraft", TOAST_ITEM, 1);
+            }
+        });
 
         MinecraftForge.EVENT_BUS.register(this);
     }

@@ -25,16 +25,19 @@ public class CommonProxy {
 
 	public void init(FMLInitializationEvent event) {
 		GameRegistry.registerItem(CookingForBlockheads.itemRecipeBook, "recipebook");
+		GameRegistry.registerItem(CookingForBlockheads.itemToast, "toast");
 		GameRegistry.registerBlock(CookingForBlockheads.blockCookingTable, ItemBlockCookingTable.class, "cookingtable");
 		GameRegistry.registerBlock(CookingForBlockheads.blockCookingOven, ItemBlockCookingOven.class, "cookingoven");
 		GameRegistry.registerBlock(CookingForBlockheads.blockFridge, ItemBlockFridge.class, "fridge");
 		GameRegistry.registerBlock(CookingForBlockheads.blockSink, ItemBlockSink.class, "sink");
 		GameRegistry.registerBlock(CookingForBlockheads.blockToolRack, ItemBlockToolRack.class, "toolrack");
-		GameRegistry.registerTileEntity(TileEntityCookingOven.class, "cookingbook:cookingoven");
-		GameRegistry.registerTileEntity(TileEntityFridge.class, "cookingbook:fridge");
-		GameRegistry.registerTileEntity(TileEntityToolRack.class, "cookingbook:toolrack");
-		GameRegistry.registerTileEntity(TileEntitySink.class, "cookingbook:sink");
-		GameRegistry.registerTileEntity(TileEntityCookingTable.class, "cookingbook:cookingtable");
+		GameRegistry.registerBlock(CookingForBlockheads.blockToaster, ItemBlockToaster.class, "toaster");
+		GameRegistry.registerTileEntity(TileEntityCookingOven.class, CookingForBlockheads.MOD_ID + ":cookingoven");
+		GameRegistry.registerTileEntity(TileEntityFridge.class, CookingForBlockheads.MOD_ID + ":fridge");
+		GameRegistry.registerTileEntity(TileEntityToolRack.class, CookingForBlockheads.MOD_ID + ":toolrack");
+		GameRegistry.registerTileEntity(TileEntitySink.class, CookingForBlockheads.MOD_ID + ":sink");
+		GameRegistry.registerTileEntity(TileEntityCookingTable.class, CookingForBlockheads.MOD_ID + ":cookingtable");
+		GameRegistry.registerTileEntity(TileEntityToaster.class, CookingForBlockheads.MOD_ID + ":toaster");
 
 		// #NoFilter Edition
 		if(CookingConfig.enableNoFilter) {
@@ -58,6 +61,12 @@ public class CommonProxy {
 		// Sink
 		if(CookingConfig.enableSink) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingForBlockheads.blockSink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
+		}
+
+		// Toaster
+		if(CookingConfig.enableToaster) {
+			// TODO Toaster Recipe
+			//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingForBlockheads.blockSink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
 		}
 
 		// Cooking Table

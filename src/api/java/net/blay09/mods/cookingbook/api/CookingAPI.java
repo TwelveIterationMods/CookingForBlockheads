@@ -23,6 +23,10 @@ public class CookingAPI {
         internalMethods.addSinkHandler(itemStack, sinkHandler);
     }
 
+    public static void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
+        internalMethods.addToastHandler(itemStack, toastHandler);
+    }
+
     public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {
         internalMethods.addOvenFuel(fuelItem, fuelTime);
     }
@@ -34,5 +38,4 @@ public class CookingAPI {
     public static void addToolItem(ItemStack toolItem) {
         internalMethods.addToolItem(toolItem);
     }
-
 }

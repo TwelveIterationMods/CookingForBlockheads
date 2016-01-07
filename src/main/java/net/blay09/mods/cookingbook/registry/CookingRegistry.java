@@ -1,8 +1,11 @@
 package net.blay09.mods.cookingbook.registry;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.blay09.mods.cookingbook.addon.HarvestCraftAddon;
 import net.blay09.mods.cookingbook.api.SinkHandler;
+import net.blay09.mods.cookingbook.api.ToastHandler;
 import net.blay09.mods.cookingbook.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingbook.api.kitchen.IKitchenItemProvider;
 import net.blay09.mods.cookingbook.container.InventoryCraftBook;
@@ -25,12 +28,13 @@ import java.util.*;
 
 public class CookingRegistry {
 
-    private static final List<IRecipe> recipeList = new ArrayList<>();
+    private static final List<IRecipe> recipeList = Lists.newArrayList();
     private static final ArrayListMultimap<Item, FoodRecipe> foodItems = ArrayListMultimap.create();
-    private static final List<ItemStack> tools = new ArrayList<>();
-    private static final Map<ItemStack, Integer> ovenFuelItems = new HashMap<>();
-    private static final Map<ItemStack, ItemStack> ovenRecipes = new HashMap<>();
-    private static final Map<ItemStack, SinkHandler> sinkHandlers = new HashMap<>();
+    private static final List<ItemStack> tools = Lists.newArrayList();
+    private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
+    private static final Map<ItemStack, ItemStack> ovenRecipes = Maps.newHashMap();
+    private static final Map<ItemStack, SinkHandler> sinkHandlers = Maps.newHashMap();
+    private static final Map<ItemStack, ToastHandler> toastHandlers = Maps.newHashMap();
 
     public static void initFoodRegistry() {
         recipeList.clear();
@@ -199,6 +203,10 @@ public class CookingRegistry {
         return null;
     }
 
+    public static void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
+        toastHandlers.put(itemStack, toastHandler);
+    }
+
     public static void addSinkHandler(ItemStack itemStack, SinkHandler sinkHandler) {
         sinkHandlers.put(itemStack, sinkHandler);
     }
@@ -207,6 +215,15 @@ public class CookingRegistry {
         for(Map.Entry<ItemStack, SinkHandler> entry : sinkHandlers.entrySet()) {
             if(areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
                 return entry.getValue().getSinkOutput(itemStack);
+            }
+        }
+        return null;
+    }
+
+    public static ItemStack getToastOutput(ItemStack itemStack) {
+        for(Map.Entry<ItemStack, ToastHandler> entry : toastHandlers.entrySet()) {
+            if(areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+                return entry.getValue().getToasterOutput(itemStack);
             }
         }
         return null;

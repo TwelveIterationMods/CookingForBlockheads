@@ -14,6 +14,7 @@ public class CookingConfig {
 
     public static boolean enableSink;
     public static boolean enableOven;
+    public static boolean enableToaster;
 
     public static boolean enableCraftingBook;
     public static boolean enableNoFilter;
@@ -22,6 +23,7 @@ public class CookingConfig {
     public static boolean moduleHarvestCraft;
     public static boolean moduleEnviroMine;
     public static boolean moduleAppleCore;
+    public static boolean usePamsToast;
 
     public static boolean disableItemRender;
 
@@ -36,6 +38,7 @@ public class CookingConfig {
         config.setCategoryComment("blocks", "Setting any of these options to false will disable their crafting recipe.");
         enableSink = config.getBoolean("Sink", "blocks", true, "");
         enableOven = config.getBoolean("Cooking Oven", "blocks", true, "");
+        enableToaster = config.getBoolean("Toaster", "blocks", true, "");
 
         config.setCategoryComment("items", "Setting any of these options to false will disable their crafting recipe.");
         enableNoFilter = config.getBoolean("#NoFilter Edition", "items", true, "");
@@ -46,6 +49,7 @@ public class CookingConfig {
         moduleHarvestCraft = config.getBoolean("Pam's HarvestCraft", "modules", true, "Multiblock Kitchen Support, Tool Support, Oven Recipes, Oven Fuel, Ingredient Recipes");
         moduleEnviroMine = config.getBoolean("EnviroMine", "modules", true, "Multiblock Kitchen Support (Freezer)");
         moduleAppleCore = config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values");
+        usePamsToast = config.getBoolean("Use Pam's Toast", "modules", true, "Should bread be toasted into Pam's toast (if available) instead of the Cooking for Blockheads one?");
 
         disableItemRender = config.getBoolean("disableItemRender", "client", false, "If you hate cool things, set this to true to disable the item rendering inside of fridges and ovens. Note that the inside only renders when the door is open anyways, so you won't gain much from this.");
 
