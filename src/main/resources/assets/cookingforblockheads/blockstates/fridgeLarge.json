@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "type": {
+      "large": {
+        "model": "cookingforblockheads:fridgeLargeStatic"
+      }
+    },
+    "facing": {
+      "west": {
+        "y": -90
+      },
+      "east": {
+        "y": 90
+      },
+      "north": {
+      },
+      "south": {
+        "y": 180
+      }
+    },
+    "flipped": {
+      "true": {
+        "submodel": {
+          "hinge": {
+            "model": "cookingforblockheads:fridgeLargeHingeRight"
+          }
+        }
+      },
+      "false": {
+        "submodel": {
+          "hinge": {
+            "model": "cookingforblockheads:fridgeLargeHingeLeft"
+          }
+        }
+      }
+    }
+  }
+}

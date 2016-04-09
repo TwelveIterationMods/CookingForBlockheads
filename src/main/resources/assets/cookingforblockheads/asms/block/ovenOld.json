@@ -1,0 +1,18 @@
+{
+  "parameters": {
+
+  },
+  "clips": {
+    "default": "cookingforblockheads:block/cookingOven@default",
+    "moving": "cookingforblockheads:block/cookingOven@moving"
+  },
+  "states": [
+    "default",
+    "moving"
+  ],
+  "transitions": {
+    "default": "moving",
+    "moving": "default"
+  },
+  "start_state": "moving"
+}

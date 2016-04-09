@@ -1,0 +1,51 @@
+item.cookingforblockheads:recipeBookTier0.name=Culinária para Quadradões
+item.cookingforblockheads:recipeBookTier1.name=Culinária para Quadradões I
+item.cookingforblockheads:recipeBookTier2.name=Culinária para Quadradões II
+#item.cookingforblockheads:toast.name=Toast
+
+tooltip.cookingforblockheads:recipeBookTier0=Edição #NoFilter
+tooltip.cookingforblockheads:recipeBookTier0.description=Mostra todas as receitas de comida.
+tooltip.cookingforblockheads:recipeBookTier1=Livro de Receitas
+tooltip.cookingforblockheads:recipeBookTier1.description=Mostra as comidas que você pode fazer com\n o que você tem no inventário.
+tooltip.cookingforblockheads:recipeBookTier2=Livro de Crafting
+tooltip.cookingforblockheads:recipeBookTier2.description=Pode fazer comida com as coisas\n com o que você tem no inventário.
+
+###
+
+tile.cookingforblockheads:cookingTable.name=Mesa de Cozinha
+tile.cookingforblockheads:oven.name=Forno de Cozinha
+tile.cookingforblockheads:fridge.name=Geladeira
+tile.cookingforblockheads:sink.name=Pia
+tile.cookingforblockheads:toolRack.name=Raque de Utensílios
+
+tooltip.cookingforblockheads:multiblockKitchen=Cozinha Multibloco
+tooltip.cookingforblockheads:dyeable=Colorível
+tooltip.cookingforblockheads:cookingTable.description=Ativa habilidades de crafring.
+tooltip.cookingforblockheads:oven.description=Ativa habilidades de cozimento.
+tooltip.cookingforblockheads:sink.description=Provém água para receitas.
+tooltip.cookingforblockheads:fridge.description=Provém ingredientes dentro dela para receitas.
+tooltip.cookingforblockheads:toolRack.description=Provém utensílios dentro dele para receitas.
+
+###
+
+gui.cookingforblockheads:noIngredients=Not\nenough\ningredientes
+gui.cookingforblockheads:noSelection=Selecione um\nitem na direita\npara ver sua receita.
+
+tooltip.cookingforblockheads:clickToSeeRecipe=Clique para ver a receita
+tooltip.cookingforblockheads:clickToCraftOne=Clique novamente para fazer
+tooltip.cookingforblockheads:clickToSmeltOne=Clique novamente para cozinhar
+tooltip.cookingforblockheads:clickToCraftStack=Shift-Clique para fazer uma stack
+tooltip.cookingforblockheads:clickToSmeltStack=Shift-Clique para cozinhar uma stack
+tooltip.cookingforblockheads:missingTools=Falta as ferramentas necessárias
+#tooltip.cookingforblockheads:missingIngredients=Missing ingredients to craft
+tooltip.cookingforblockheads:missingOven=Falta um forno para cozinhar
+tooltip.cookingforblockheads:sortByName=Organizar por Nome
+tooltip.cookingforblockheads:sortByHunger=Organizar por Fome Recuperada
+tooltip.cookingforblockheads:sortBySaturation=Organizar por Saturação
+
+###
+
+container.cookingforblockheads:oven=Forno de Cozinha
+container.cookingforblockheads:fridge=Geladeira
+
+itemGroup.cookingforblockheads=Cooking for Blockheads

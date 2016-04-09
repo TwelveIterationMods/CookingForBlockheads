@@ -1,14 +1,14 @@
 [
 {
-  "modid": "cookingbook",
+  "modid": "cookingforblockheads",
   "name": "Cooking for Blockheads",
-  "description": "Adds a cooking book that only shows recipes you can make with what you currently have in your inventory.",
+  "description": "Example placeholder mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "http://blay09.net",
-  "updateUrl": "http://minecraft.curseforge.com/mc-mods/231484-cooking-for-blockheads",
-  "authorList": ["BlayTheNinth", "ZeroTheShinigami"],
-  "credits": "BlayTheNinth (Code) and ZeroTheShinigami (Models)",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["BlayTheNinth"],
+  "credits": "BlayTheNinth",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

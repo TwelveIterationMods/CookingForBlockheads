@@ -1,42 +1,74 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
+
 def BUILD_NUMBER = System.getenv("BUILD_NUMBER") ?: "0"
 def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
 def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
 def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
-}
-
-apply plugin: 'forge'
-apply plugin: 'maven'
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
 version = "1.0." + BUILD_NUMBER
-group= "net.blay09.mods"
-archivesBaseName = "cookingbook"
+group = "net.blay09.mods"
+archivesBaseName = "CookingForBlockheads"
 
 minecraft {
-    version = "1.7.10-10.13.3.1408-1.7.10"
-    runDir = "eclipse"
+    version = "1.9-12.16.0.1854-1.9"
+    runDir = "run"
+    
+    mappings = "snapshot_20160312"
+}
+
+repositories {
+
+}
+
+dependencies {
+    
+}
+
+processResources{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
 }
 
 jar {
     from sourceSets.api.output
+    appendix "mc" + minecraft.version
+
+    //manifest {
+    //    attributes('FMLAT': 'modid_at.cfg')
+    //}
+}
+
+sourceJar {
+    appendix "mc" + minecraft.version
+}
+
+task jarJavadoc(type: Jar, dependsOn: 'javadoc') {
+    from "build/docs/javadoc"
+    classifier "javadoc"
+
     appendix "mc" + minecraft.version
 }
 
@@ -54,80 +86,19 @@ task jarDev(type: Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     classifier "dev"
     appendix "mc" + minecraft.version
+
+    //manifest {
+    //    attributes('FMLAT': 'modid_at.cfg')
+    //}
 }
 
 artifacts {
     archives jarAPI
     archives jarDev
-}
-
-configurations {
-    deployerJars
-    provided
-}
-
-sourceSets.main.compileClasspath += [configurations.provided]
-
-repositories {
-    maven {
-        name = "NEI"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
-        name = "AppleCore"
-        url = "http://www.ryanliptak.com/maven/"
-    }
-    ivy {
-        name "MineTweaker"
-        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
-    }
-    ivy {
-        name = "InventoryTweaks"
-        artifactPattern "http://build.technicpack.net/job/Inventory-Tweaks/[revision]/artifact/build/libs/[module]-[classifier]-1.58-[revision].[ext]"
-    }
-    ivy {
-        name "MouseTweaks"
-        artifactPattern "http://addons-origin.cursecdn.com/files/2209/265/[module]-[revision](-[classifier]).[ext]"
-    }
-}
-
-dependencies {
-    compile "applecore:AppleCore:1.7.10-1.2.1+107.59407:api"
-    provided "codechicken:NotEnoughItems:1.7.10-1.0.5.118:dev"
-    compile name: "MineTweaker3", version: "1.7.10-3.0.10B", classifier: "Dev", ext: "jar"
-    provided name: "InventoryTweaks", version: "147", classifier: "deobf", ext: "jar"
-    provided name: "MouseTweaks", version: "2.4.4-mc1.7.10", ext: "jar"
-}
-
-idea {
-    module {
-        inheritOutputDirs = true;
-        scopes.PROVIDED.plus += [configurations.provided]
-    }
-}
-
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+    archives jarJavadoc
 }
 
 uploadArchives {
-    dependsOn 'reobf'
     repositories {
         mavenDeployer {
             repository(url: MAVEN_REPO) {

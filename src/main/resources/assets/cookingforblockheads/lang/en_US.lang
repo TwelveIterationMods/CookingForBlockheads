@@ -1,0 +1,51 @@
+item.cookingforblockheads:recipeBookTier0.name=Cooking for Blockheads
+item.cookingforblockheads:recipeBookTier1.name=Cooking for Blockheads I
+item.cookingforblockheads:recipeBookTier2.name=Cooking for Blockheads II
+item.cookingforblockheads:toast.name=Toast
+
+tooltip.cookingforblockheads:recipeBookTier0=#NoFilter Edition
+tooltip.cookingforblockheads:recipeBookTier0.description=Shows all food recipes.
+tooltip.cookingforblockheads:recipeBookTier1=Recipe Book
+tooltip.cookingforblockheads:recipeBookTier1.description=Shows food you can make with the\nthings you have in your inventory.
+tooltip.cookingforblockheads:recipeBookTier2=Crafting Book
+tooltip.cookingforblockheads:recipeBookTier2.description=Can craft food using the things\nyou have in your inventory.
+
+###
+
+tile.cookingforblockheads:cookingTable.name=Cooking Table
+tile.cookingforblockheads:oven.name=Oven
+tile.cookingforblockheads:fridge.name=Fridge
+tile.cookingforblockheads:sink.name=Sink
+tile.cookingforblockheads:toolRack.name=Tool Rack
+
+tooltip.cookingforblockheads:multiblockKitchen=Multiblock Kitchen
+tooltip.cookingforblockheads:dyeable=Dyeable
+tooltip.cookingforblockheads:cookingTable.description=Enables crafting abilities.
+tooltip.cookingforblockheads:oven.description=Enables smelting abilities.
+tooltip.cookingforblockheads:sink.description=Provides water to recipes.
+tooltip.cookingforblockheads:fridge.description=Provides ingredients to recipes.
+tooltip.cookingforblockheads:toolRack.description=Provides tools to recipes.
+
+###
+
+gui.cookingforblockheads:noIngredients=Not\nenough\ningredients
+gui.cookingforblockheads:noSelection=Select an item\non the right to\nsee its recipe.
+
+tooltip.cookingforblockheads:clickToSeeRecipe=Click to see recipe
+tooltip.cookingforblockheads:clickToCraftOne=Click again to craft
+tooltip.cookingforblockheads:clickToSmeltOne=Click again to cook
+tooltip.cookingforblockheads:clickToCraftStack=Shift-Click to craft a stack
+tooltip.cookingforblockheads:clickToSmeltStack=Shift-Click to cook a stack
+tooltip.cookingforblockheads:missingTools=Missing tools to craft
+tooltip.cookingforblockheads:missingIngredients=Missing ingredients to craft
+tooltip.cookingforblockheads:missingOven=Missing oven to cook
+tooltip.cookingforblockheads:sortByName=Sort by Name
+tooltip.cookingforblockheads:sortByHunger=Sort by Hunger Restored
+tooltip.cookingforblockheads:sortBySaturation=Sort by Saturation
+
+###
+
+container.cookingforblockheads:oven=Cooking Oven
+container.cookingforblockheads:fridge=Fridge
+
+itemGroup.cookingforblockheads=Cooking for Blockheads

@@ -1,0 +1,29 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "type": {
+      "invisible": {
+        "model": "cookingforblockheads:fridgeInvisible"
+      }
+    },
+    "facing": {
+      "west": {
+      },
+      "east": {
+      },
+      "north": {
+      },
+      "south": {
+      }
+    },
+    "flipped": {
+      "true": {
+      },
+      "false": {
+      }
+    }
+  }
+}

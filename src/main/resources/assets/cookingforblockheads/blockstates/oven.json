@@ -1,0 +1,37 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cookingforblockheads:ovenStatic",
+    "custom": {
+      "flip-v": true
+    },
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "normal": [{}],
+    "door": [{
+      "model": "cookingforblockheads:ovenDoor"
+    }],
+    "inventory": [{
+      "model": "cookingforblockheads:ovenStatic",
+      "submodel": {
+        "door": {
+          "model": "cookingforblockheads:ovenDoor"
+        }
+      }
+    }],
+    "facing": {
+      "west": {
+        "y": -90
+      },
+      "east": {
+        "y": 90
+      },
+      "north": {
+      },
+      "south": {
+        "y": 180
+      }
+    }
+  }
+}
