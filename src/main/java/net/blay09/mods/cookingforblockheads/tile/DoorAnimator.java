@@ -81,7 +81,15 @@ public class DoorAnimator {
 	}
 
 	public void toggleForcedOpen() {
-		isForcedOpen = !isForcedOpen;
+		setForcedOpen(!isForcedOpen);
+	}
+
+	public boolean isForcedOpen() {
+		return isForcedOpen;
+	}
+
+	public void setForcedOpen(boolean isForcedOpen) {
+		this.isForcedOpen = isForcedOpen;
 		tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), 2, isForcedOpen ? 1 : 0);
 	}
 
@@ -120,5 +128,13 @@ public class DoorAnimator {
 		renderAngle = 1f - renderAngle * renderAngle * renderAngle;
 //		renderAngle = 1f;
 		return (float) ((Math.PI / openRadius) * renderAngle);
+	}
+
+	public int getNumPlayersUsing() {
+		return numPlayersUsing;
+	}
+
+	public void setNumPlayersUsing(int numPlayersUsing) {
+		this.numPlayersUsing = numPlayersUsing;
 	}
 }

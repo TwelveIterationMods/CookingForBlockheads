@@ -21,6 +21,7 @@ public class TileCookingTable extends TileEntity {
 
     public void setNoFilterBook(ItemStack noFilterBook) {
         this.noFilterBook = noFilterBook;
+        markDirty();
     }
 
     @Override

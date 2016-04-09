@@ -185,7 +185,7 @@ public class CookingRegistry {
     public static Collection<FoodRecipeWithStatus> findAvailableRecipes(InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
         List<FoodRecipeWithStatus> result = Lists.newArrayList();
         for(FoodRecipe recipe : getFoodRecipes()) {
-            RecipeStatus recipeStatus = isRecipeAvailable(recipe, inventory, multiBlock);
+            RecipeStatus recipeStatus = getRecipeStatus(recipe, inventory, multiBlock);
             if(recipeStatus != RecipeStatus.MISSING_INGREDIENTS) {
                 result.add(new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getCraftMatrix(), recipe.getType(), recipeStatus));
             }
@@ -193,7 +193,7 @@ public class CookingRegistry {
         return result;
     }
 
-    private static RecipeStatus isRecipeAvailable(FoodRecipe recipe, InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
+    public static RecipeStatus getRecipeStatus(FoodRecipe recipe, InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
         List<? extends IItemHandler> inventories = multiBlock != null ? multiBlock.getSourceInventories(inventory) : Collections.singletonList(new InvWrapper(inventory));
         int[][] usedStackSize = new int[inventories.size()][];
         for(int i = 0; i < usedStackSize.length; i++) {

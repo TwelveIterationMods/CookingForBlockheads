@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -27,10 +28,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private final ItemStackHandler itemHandler = new ItemStackHandler(20) {
         @Override
         protected void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
             if(slot >= 7 && slot < 16) {
                 slotCookTime[slot - 7] = 0;
             }
+            isDirty = true;
+            markDirty();
         }
     };
     private final RangedWrapper itemHandlerInput = new RangedWrapper(itemHandler, 0, 3);
@@ -43,6 +45,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public int[] slotCookTime = new int[9];
     public int furnaceBurnTime;
     public int currentItemBurnTime;
+    private boolean isDirty;
 
     @Override
     public boolean receiveClientEvent(int id, int type) {
@@ -52,6 +55,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     @Override
     public void update() {
         doorAnimator.update();
+
+        if(isDirty) {
+            VanillaPacketHandler.sendTileEntityUpdate(this);
+            isDirty = false;
+        }
 
         boolean hasChanged = false;
 
@@ -189,6 +197,8 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public Packet getDescriptionPacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeToNBT(tagCompound);
+        tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+        tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
         return new SPacketUpdateTileEntity(pos, 0, tagCompound);
     }
 
@@ -196,6 +206,8 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         readFromNBT(pkt.getNbtCompound());
+        doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
+        doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }
 
     public boolean isBurning() {

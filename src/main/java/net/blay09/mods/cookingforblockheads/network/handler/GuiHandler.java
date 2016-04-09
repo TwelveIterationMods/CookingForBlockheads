@@ -9,16 +9,14 @@ import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiOven;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiFridge;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
-import net.blay09.mods.cookingforblockheads.container.ContainerCookingOven;
+import net.blay09.mods.cookingforblockheads.container.ContainerOven;
 import net.blay09.mods.cookingforblockheads.container.ContainerFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -56,8 +54,8 @@ public class GuiHandler implements IGuiHandler {
                     }
                     break;
                 case COOKING_OVEN:
-                    if(world.getBlockState(pos).getBlock() == ModBlocks.cookingOven) {
-                        return new ContainerCookingOven(player, (TileOven) world.getTileEntity(pos));
+                    if(world.getBlockState(pos).getBlock() == ModBlocks.oven) {
+                        return new ContainerOven(player, (TileOven) world.getTileEntity(pos));
                     }
                     break;
                 case FRIDGE:

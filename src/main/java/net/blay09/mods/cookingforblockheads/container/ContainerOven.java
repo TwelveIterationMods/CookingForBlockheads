@@ -10,14 +10,14 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCookingOven extends Container implements IContainerWithDoor {
+public class ContainerOven extends Container implements IContainerWithDoor {
 
     private final TileOven tileEntity;
     private final int[] lastCookTime = new int[9];
     private int lastBurnTime;
     private int lastItemBurnTime;
 
-    public ContainerCookingOven(EntityPlayer player, TileOven tileEntity) {
+    public ContainerOven(EntityPlayer player, TileOven tileEntity) {
         this.tileEntity = tileEntity;
 
         for(int i = 0; i < 3; i++) {

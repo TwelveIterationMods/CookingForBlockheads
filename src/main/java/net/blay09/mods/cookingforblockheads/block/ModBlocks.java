@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ModBlocks {
 
 	public static BlockCookingTable cookingTable;
-	public static BlockOven cookingOven;
+	public static BlockOven oven;
 	public static BlockFridge fridge;
 	public static BlockSink sink;
 	public static BlockToolRack toolRack;
@@ -22,9 +22,9 @@ public class ModBlocks {
 		registerBlock(cookingTable);
 		GameRegistry.registerTileEntity(TileCookingTable.class, cookingTable.getRegistryName().toString());
 
-		cookingOven = new BlockOven();
-		registerBlock(cookingOven);
-		GameRegistry.registerTileEntity(TileOven.class, cookingOven.getRegistryName().toString());
+		oven = new BlockOven();
+		registerBlock(oven);
+		GameRegistry.registerTileEntity(TileOven.class, oven.getRegistryName().toString());
 //
 		fridge = new BlockFridge();
 		registerBlock(fridge);
@@ -48,7 +48,7 @@ public class ModBlocks {
 		cookingTable.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
 		sink.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
 		toolRack.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
-		cookingOven.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
+		oven.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
 		fridge.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
 	}
 

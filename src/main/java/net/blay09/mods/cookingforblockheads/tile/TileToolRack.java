@@ -15,7 +15,12 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileToolRack extends TileEntity implements IKitchenItemProvider {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2);
+    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {

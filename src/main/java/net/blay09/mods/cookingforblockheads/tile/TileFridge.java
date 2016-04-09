@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,10 +21,17 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 public class TileFridge extends TileEntity implements ITickable, IKitchenItemProvider {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(27);
+    private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            isDirty = true;
+            markDirty();
+        }
+    };
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private EnumDyeColor fridgeColor = EnumDyeColor.WHITE;
+    private boolean isDirty;
 
     public TileFridge() {
         doorAnimator.setOpenRadius(2);
@@ -39,6 +47,11 @@ public class TileFridge extends TileEntity implements ITickable, IKitchenItemPro
     @Override
     public void update() {
         doorAnimator.update();
+
+        if(isDirty) {
+            VanillaPacketHandler.sendTileEntityUpdate(this);
+            isDirty = false;
+        }
     }
 
     @Override
@@ -64,12 +77,16 @@ public class TileFridge extends TileEntity implements ITickable, IKitchenItemPro
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         readFromNBT(pkt.getNbtCompound());
+        doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
+        doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeToNBT(tagCompound);
+        tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+        tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
         return new SPacketUpdateTileEntity(pos, 0, tagCompound);
     }
 

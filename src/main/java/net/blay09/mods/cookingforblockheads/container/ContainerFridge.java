@@ -47,6 +47,7 @@ public class ContainerFridge extends Container implements IContainerWithDoor {
         tileFridge.getBaseFridge().getDoorAnimator().closeContainer(player);
     }
 
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
         ItemStack itemStack = null;
         Slot slot = inventorySlots.get(slotIndex);

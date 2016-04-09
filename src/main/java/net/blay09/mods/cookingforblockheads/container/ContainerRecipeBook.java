@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.container;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
@@ -12,7 +11,6 @@ import net.blay09.mods.cookingforblockheads.network.message.MessageCraftRecipe;
 import net.blay09.mods.cookingforblockheads.network.message.MessageRecipeList;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +19,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.*;
 
@@ -118,6 +115,32 @@ public class ContainerRecipeBook extends Container {
 		return true;
 	}
 
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+		ItemStack itemStack = null;
+		Slot slot = inventorySlots.get(slotIndex);
+		if (slot != null && slot.getHasStack()) {
+			ItemStack slotStack = slot.getStack();
+			itemStack = slotStack.copy();
+			if (slotIndex >= 48 && slotIndex < 57) {
+				if (!mergeItemStack(slotStack, 21, 48, true)) {
+					return null;
+				}
+			} else if (slotIndex >= 21 && slotIndex < 48) {
+				if(!mergeItemStack(slotStack, 48, 57, false)) {
+					return null;
+				}
+			}
+
+			if (slotStack.stackSize == 0) {
+				slot.putStack(null);
+			} else {
+				slot.onSlotChanged();
+			}
+		}
+		return itemStack;
+	}
+
 	public ContainerRecipeBook setNoFilter() {
 		this.noFilter = true;
 		return this;
@@ -137,7 +160,7 @@ public class ContainerRecipeBook extends Container {
 		recipeMap.clear();
 		if(noFilter) {
 			for(FoodRecipe recipe : CookingRegistry.getFoodRecipes()) {
-				recipeMap.put(recipe.getId(), new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getCraftMatrix(), recipe.getType(), RecipeStatus.AVAILABLE));
+				recipeMap.put(recipe.getId(), new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getCraftMatrix(), recipe.getType(), CookingRegistry.getRecipeStatus(recipe, player.inventory, multiBlock)));
 			}
 		} else {
 			for(FoodRecipeWithStatus recipe : CookingRegistry.findAvailableRecipes(player.inventory, multiBlock)) {

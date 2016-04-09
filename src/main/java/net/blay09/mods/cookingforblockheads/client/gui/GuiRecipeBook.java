@@ -87,7 +87,7 @@ public class GuiRecipeBook extends GuiContainer {
 		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "tooltip." + CookingForBlockheads.MOD_ID + ":sortBySaturation");
 		buttonList.add(btnSortSaturation);
 
-		searchBar = new GuiTextField(5, fontRendererObj, guiLeft + xSize - 78, guiTop - 10, 70, 10);
+		searchBar = new GuiTextField(5, fontRendererObj, guiLeft + xSize - 78, guiTop - 5, 70, 10);
 //		searchBar.setFocused(true);
 
 		if(!isEventHandler) {
@@ -170,7 +170,7 @@ public class GuiRecipeBook extends GuiContainer {
 
 		GlStateManager.color(1f, 1f, 1f, 1f);
 		mc.getTextureManager().bindTexture(guiTexture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		drawTexturedModalRect(guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
 
 		if (mouseClickY != -1) {
 			float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1, (int) Math.ceil(container.getRecipeCount() / 3f) - VISIBLE_ROWS);
@@ -199,9 +199,9 @@ public class GuiRecipeBook extends GuiContainer {
 				curY += fontRendererObj.FONT_HEIGHT + 5;
 			}
 		} else if(container.getSelection().getType() == RecipeType.SMELTING) {
-			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 174, 54, 54);
+			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
 		} else {
-			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 174, 54, 54);
+			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
 		}
 
 		GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
