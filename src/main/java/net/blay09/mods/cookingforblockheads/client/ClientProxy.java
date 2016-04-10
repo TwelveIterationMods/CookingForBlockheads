@@ -15,6 +15,7 @@ import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -78,5 +79,10 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters) {
 		return ModelLoaderRegistry.loadASM(location, parameters);
+	}
+
+	@Override
+	public void addScheduledTask(Runnable runnable) {
+		Minecraft.getMinecraft().addScheduledTask(runnable);
 	}
 }

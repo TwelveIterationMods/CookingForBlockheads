@@ -36,6 +36,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         int color = fridgeColor.getMapColor().colorValue;
         GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, 1f);
         GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
+        GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
         GlStateManager.rotate(180f, 0f, 0f, 1f);
         boolean isFlipped = state.getValue(BlockFridge.FLIPPED);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
@@ -65,6 +66,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+            GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
             float topY = fridgeType == BlockFridge.FridgeType.LARGE ? 3.25f : 0.35f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();

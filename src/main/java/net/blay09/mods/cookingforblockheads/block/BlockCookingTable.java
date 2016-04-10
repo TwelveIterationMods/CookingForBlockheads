@@ -53,7 +53,7 @@ public class BlockCookingTable extends BlockKitchen {
         if(!world.isRemote) {
             player.openGui(CookingForBlockheads.instance, GuiHandler.COOKING_TABLE, world, pos.getX(), pos.getY(), pos.getZ());
         }
-        return false;
+        return true;
     }
 
     @Override

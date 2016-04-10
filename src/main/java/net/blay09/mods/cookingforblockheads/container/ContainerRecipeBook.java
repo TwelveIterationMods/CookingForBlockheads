@@ -34,7 +34,7 @@ public class ContainerRecipeBook extends Container {
 	private boolean noFilter;
 	private boolean allowCrafting;
 	private KitchenMultiBlock multiBlock;
-	private boolean isDirty;
+	private boolean isDirty = true;
 
 	private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
 	private String currentSearch;
@@ -103,9 +103,10 @@ public class ContainerRecipeBook extends Container {
 				slot.updateSlot();
 			}
 		} else {
-			if (player.inventory.inventoryChanged) {
+			if (isDirty || player.inventory.inventoryChanged) {
 				findAndSendRecipes();
 				player.inventory.inventoryChanged = false;
+				isDirty = false;
 			}
 		}
 	}
@@ -187,11 +188,11 @@ public class ContainerRecipeBook extends Container {
 							break;
 						}
 					}
-					findAndSendRecipes();
+					isDirty = true;
 				} else if(recipe.getType() == RecipeType.SMELTING) {
 					if(multiBlock != null && multiBlock.hasSmeltingProvider()) {
 						multiBlock.trySmelt(player, recipe, stack);
-						findAndSendRecipes();
+						isDirty = true;
 					}
 				}
 			}
@@ -210,7 +211,7 @@ public class ContainerRecipeBook extends Container {
 		search(currentSearch);
 		Collections.sort(sortedRecipes, currentSorting);
 		updateRecipeSlots();
-		isDirty = true;
+		setDirty(true);
 	}
 
 	public void updateRecipeSlots() {

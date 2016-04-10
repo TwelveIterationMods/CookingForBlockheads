@@ -43,6 +43,7 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
+        GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
         GlStateManager.rotate(180f, 0f, 0f, 1f);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         bindTexture(doorAngle < 0.3f && tileEntity.isBurning() ? textureOvenDoorActive : textureOvenDoor);
@@ -57,6 +58,7 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         if(doorAngle > 0f) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(x + 0.5, y + 0.35, z + 0.5);
+            GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
             float offsetX = 0.825f;
             float offsetZ = 0.8f;

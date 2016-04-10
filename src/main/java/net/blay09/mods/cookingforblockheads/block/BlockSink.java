@@ -100,13 +100,13 @@ public class BlockSink extends BlockKitchen {
                 if(CookingConfig.sinkRequiresWater) {
                     TileSink sink = (TileSink) world.getTileEntity(pos);
                     if(sink.getWaterAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
-                        return false;
+                        return true;
                     }
                 }
                 spawnParticles(world, pos, state);
             }
         }
-        return false;
+        return true;
     }
 
     private void spawnParticles(World world, BlockPos pos, IBlockState state) {

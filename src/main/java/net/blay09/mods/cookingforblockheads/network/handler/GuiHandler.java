@@ -34,11 +34,11 @@ public class GuiHandler implements IGuiHandler {
             ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
             switch(heldItem.getItemDamage()) {
                 case 0:
-                    return new ContainerRecipeBook(player).setNoFilter().findAndSendRecipes();
+                    return new ContainerRecipeBook(player).setNoFilter();
                 case 1:
-                    return new ContainerRecipeBook(player).findAndSendRecipes();
+                    return new ContainerRecipeBook(player);
                 case 2:
-                    return new ContainerRecipeBook(player).allowCrafting().findAndSendRecipes();
+                    return new ContainerRecipeBook(player).allowCrafting();
             }
         } else {
             BlockPos pos = new BlockPos(x, y, z);
@@ -47,9 +47,9 @@ public class GuiHandler implements IGuiHandler {
                     if(world.getBlockState(pos).getBlock() == ModBlocks.cookingTable) {
                         TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
                         if(tileEntity.hasNoFilterBook()) {
-                            return new ContainerRecipeBook(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos)).findAndSendRecipes();
+                            return new ContainerRecipeBook(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
                         } else {
-                            return new ContainerRecipeBook(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos)).findAndSendRecipes();
+                            return new ContainerRecipeBook(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
                         }
                     }
                     break;
