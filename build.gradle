@@ -30,11 +30,14 @@ minecraft {
 }
 
 repositories {
-
+    maven {
+        name = "RX14"
+        url = "http://mvn.rx14.co.uk/repo/"
+    }
 }
 
 dependencies {
-    
+    provided group: "inventorytweaks", name: "InventoryTweaks", version: "1.59-dev-3"
 }
 
 processResources{

@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.container;
 
+import invtweaks.api.container.ChestContainer;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-//@ChestContainer
+@ChestContainer
 public class ContainerFridge extends Container implements IContainerWithDoor {
 
     private TileFridge tileFridge;
@@ -81,7 +82,7 @@ public class ContainerFridge extends Container implements IContainerWithDoor {
         return tileFridge == tileEntity || tileFridge.getBaseFridge() == tileEntity;
     }
 
-    //    @ChestContainer.IsLargeCallback
+    @ChestContainer.IsLargeCallback
     public boolean isLargeFridge() {
         return numRows > 3;
     }

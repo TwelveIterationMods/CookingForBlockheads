@@ -47,7 +47,6 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         GlStateManager.rotate(180f, 0f, 0f, 1f);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         bindTexture(doorAngle < 0.3f && tileEntity.isBurning() ? textureOvenDoorActive : textureOvenDoor);
-        ModelOvenDoor modelOvenDoor = new ModelOvenDoor();
         modelOvenDoor.DoorMain.rotateAngleX = doorAngle;
         modelOvenDoor.DoorHandle.rotateAngleX = doorAngle;
         modelOvenDoor.DoorBopLeft.rotateAngleX = doorAngle;

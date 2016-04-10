@@ -1,5 +1,8 @@
 package net.blay09.mods.cookingforblockheads.container;
 
+import com.google.common.collect.Maps;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.container.slot.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +12,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.Optional;
+
+import java.util.List;
+import java.util.Map;
 
 public class ContainerOven extends Container implements IContainerWithDoor {
 
@@ -171,17 +178,17 @@ public class ContainerOven extends Container implements IContainerWithDoor {
         return this.tileEntity == tileEntity;
     }
 
-    //    @ContainerSectionCallback
-//    @Optional.Method(modid = "inventorytweaks")
-//    @SuppressWarnings("unchecked")
-//    public Map<ContainerSection, List<Slot>> getContainerSections() {
-//        Map<ContainerSection, List<Slot>> map = Maps.newHashMap();
-//        map.put(ContainerSection.FURNACE_IN, inventorySlots.subList(0, 3));
-//        map.put(ContainerSection.FURNACE_FUEL, inventorySlots.subList(3, 4));
-//        map.put(ContainerSection.FURNACE_OUT, inventorySlots.subList(4, 7));
-//        map.put(ContainerSection.INVENTORY, inventorySlots.subList(20, 57));
-//        map.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(20, 48));
-//        map.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(47, 57));
-//        return map;
-//    }
+    @ContainerSectionCallback
+    @Optional.Method(modid = "inventorytweaks")
+    @SuppressWarnings("unchecked")
+    public Map<ContainerSection, List<Slot>> getContainerSections() {
+        Map<ContainerSection, List<Slot>> map = Maps.newHashMap();
+        map.put(ContainerSection.FURNACE_IN, inventorySlots.subList(0, 3));
+        map.put(ContainerSection.FURNACE_FUEL, inventorySlots.subList(3, 4));
+        map.put(ContainerSection.FURNACE_OUT, inventorySlots.subList(4, 7));
+        map.put(ContainerSection.INVENTORY, inventorySlots.subList(20, 57));
+        map.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(20, 48));
+        map.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(47, 57));
+        return map;
+    }
 }

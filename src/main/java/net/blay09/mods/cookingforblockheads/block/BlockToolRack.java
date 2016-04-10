@@ -67,6 +67,9 @@ public class BlockToolRack extends BlockKitchen {
 
 	@Override
 	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
+			facing = EnumFacing.NORTH;
+		}
 		return getDefaultState().withProperty(FACING, facing);
 	}
 
