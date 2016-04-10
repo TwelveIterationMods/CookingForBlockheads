@@ -2,25 +2,32 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileToolRack extends TileEntity implements IKitchenItemProvider {
+public class TileToolRack extends TileEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             markDirty();
+            IBlockState blockState = worldObj.getBlockState(pos);
+            worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), blockState, blockState, 1|2);
         }
     };
+
+    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
@@ -47,7 +54,6 @@ public class TileToolRack extends TileEntity implements IKitchenItemProvider {
         return new SPacketUpdateTileEntity(pos, 0, tagCompound);
     }
 
-    @Override
     public ItemStackHandler getItemHandler() {
         return itemHandler;
     }
@@ -66,8 +72,9 @@ public class TileToolRack extends TileEntity implements IKitchenItemProvider {
             return (T) itemHandler;
         }
         if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
-            return (T) this;
+            return (T) itemProvider;
         }
         return super.getCapability(capability, facing);
     }
+
 }

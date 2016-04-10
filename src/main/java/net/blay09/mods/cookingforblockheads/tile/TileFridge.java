@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +20,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
-public class TileFridge extends TileEntity implements ITickable, IKitchenItemProvider {
+public class TileFridge extends TileEntity implements ITickable {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
         @Override
@@ -28,6 +29,7 @@ public class TileFridge extends TileEntity implements ITickable, IKitchenItemPro
             markDirty();
         }
     };
+    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private EnumDyeColor fridgeColor = EnumDyeColor.WHITE;
@@ -106,7 +108,6 @@ public class TileFridge extends TileEntity implements ITickable, IKitchenItemPro
         return this;
     }
 
-    @Override
     public IItemHandler getItemHandler() {
         return itemHandler;
     }
@@ -125,7 +126,7 @@ public class TileFridge extends TileEntity implements ITickable, IKitchenItemPro
             return (T) getCombinedItemHandler();
         }
         if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
-            return (T) this;
+            return (T) itemProvider;
         }
         return super.getCapability(capability, facing);
     }

@@ -40,6 +40,7 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -170,8 +171,10 @@ public class BlockFridge extends BlockKitchen {
 			if(player.isSneaking()) {
 				tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
 				return true;
-			} else if(heldItem != null) {
-				// TODO insert item
+			} else if(heldItem != null && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
+				heldItem = ItemHandlerHelper.insertItemStacked(tileFridge.getCombinedItemHandler(), heldItem, false);
+				player.setHeldItem(hand, heldItem);
+				return true;
 			}
 		}
 		if (!world.isRemote) {

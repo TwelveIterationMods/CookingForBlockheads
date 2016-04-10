@@ -2,10 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
 import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import java.util.List;
@@ -55,12 +51,12 @@ public class KitchenMultiBlock {
         }
     }
 
-    private final List<IItemHandler> tmpSourceInventories = Lists.newArrayList();
-    public List<IItemHandler> getSourceInventories(InventoryPlayer playerInventory) {
+    private final List<IKitchenItemProvider> tmpSourceInventories = Lists.newArrayList();
+    public List<IKitchenItemProvider> getSourceInventories(InventoryPlayer playerInventory) {
         tmpSourceInventories.clear();
-        tmpSourceInventories.add(new InvWrapper(playerInventory));
+        tmpSourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
         for (IKitchenItemProvider provider : itemProviderList) {
-            tmpSourceInventories.add(provider.getItemHandler());
+            tmpSourceInventories.add(provider);
         }
         return tmpSourceInventories;
     }
@@ -81,29 +77,32 @@ public class KitchenMultiBlock {
     }
 
     public void trySmelt(EntityPlayer player, FoodRecipeWithStatus recipe, boolean stack) {
-        for(IItemHandler itemHandler : getSourceInventories(player.inventory)) {
-            for(int i = 0; i < itemHandler.getSlots(); i++) {
-                ItemStack itemStack = itemHandler.getStackInSlot(i);
+        for(IKitchenItemProvider itemProvider : getSourceInventories(player.inventory)) {
+            itemProvider.resetSimulation();
+            for(int i = 0; i < itemProvider.getSlots(); i++) {
+                ItemStack itemStack = itemProvider.getStackInSlot(i);
                 if(itemStack != null) {
                     for(ItemStack sourceStack : recipe.getCraftMatrix().get(0).getItemStacks()) {
                         if(ItemUtils.areItemStacksEqualWithWildcard(itemStack, sourceStack)) {
                             int smeltCount = Math.min(itemStack.stackSize, stack ? sourceStack.getMaxStackSize() : 1);
-                            ItemStack restStack = itemHandler.extractItem(i, smeltCount, false);
+                            ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false);
                             if(restStack != null) {
                                 restStack = smeltItem(restStack, smeltCount);
                                 if(restStack != null) {
-                                    restStack = itemHandler.insertItem(i, restStack, false);
+                                    restStack = itemProvider.returnItemStack(restStack);
                                     if(!player.inventory.addItemStackToInventory(restStack)) {
                                         player.dropPlayerItemWithRandomChoice(restStack, false);
                                     }
                                 }
+                                player.openContainer.detectAndSendChanges();
+                                return;
                             }
                         }
                     }
                 }
             }
         }
-        player.openContainer.detectAndSendChanges();
+
     }
 
     public boolean hasSmeltingProvider() {

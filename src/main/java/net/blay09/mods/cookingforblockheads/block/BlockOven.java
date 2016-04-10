@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 import java.util.Random;
@@ -48,7 +49,7 @@ public class BlockOven extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(side == EnumFacing.UP) {
             if(CookingRegistry.isToolItem(heldItem)) {
                 EnumFacing facing = state.getValue(FACING);
@@ -80,15 +81,17 @@ public class BlockOven extends BlockKitchen {
         }
         if(side == state.getValue(FACING)) {
             TileOven tileOven = (TileOven) world.getTileEntity(pos);
-            if(entityPlayer.isSneaking()) {
+            if(player.isSneaking()) {
                 tileOven.getDoorAnimator().toggleForcedOpen();
                 return true;
-            } else if(heldItem != null) {
-                // TODO insert item
+            } else if(heldItem != null && tileOven.getDoorAnimator().isForcedOpen()) {
+                heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
+                player.setHeldItem(hand, heldItem);
+                return true;
             }
         }
         if(!world.isRemote) {
-            entityPlayer.openGui(CookingForBlockheads.instance, GuiHandler.COOKING_OVEN, world, pos.getX(), pos.getY(), pos.getZ());
+            player.openGui(CookingForBlockheads.instance, GuiHandler.COOKING_OVEN, world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }

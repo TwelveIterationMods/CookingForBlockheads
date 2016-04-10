@@ -52,16 +52,9 @@ public class BlockToolRack extends BlockKitchen {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-		EnumFacing facing = state.getValue(FACING);
-		return BOUNDING_BOXES[facing.getIndex() - 2];
-	}
-
-
-	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
-		EnumFacing facing = state.getValue(FACING);
-		return BOUNDING_BOXES[facing.getIndex() - 2];
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+		// TODO this is actually getCollisionBoundingBox, MCP derped
+		return NULL_AABB;
 	}
 
 	@Override

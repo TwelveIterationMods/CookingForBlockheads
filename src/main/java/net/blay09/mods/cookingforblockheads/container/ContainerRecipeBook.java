@@ -191,6 +191,7 @@ public class ContainerRecipeBook extends Container {
 				} else if(recipe.getType() == RecipeType.SMELTING) {
 					if(multiBlock != null && multiBlock.hasSmeltingProvider()) {
 						multiBlock.trySmelt(player, recipe, stack);
+						findAndSendRecipes();
 					}
 				}
 			}

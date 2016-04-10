@@ -16,12 +16,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider, IKitchenItemProvider {
+public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider {
 
     private static final int COOK_TIME = 200;
 
@@ -40,6 +41,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private final RangedWrapper itemHandlerOutput = new RangedWrapper(itemHandler, 4, 7);
     private final RangedWrapper itemHandlerProcessing = new RangedWrapper(itemHandler, 7, 16);
     private final RangedWrapper itemHandlerTools = new RangedWrapper(itemHandler, 16, 20);
+    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandlerOutput);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     public int[] slotCookTime = new int[9];
@@ -268,7 +270,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             }
         }
         if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
-            return (T) new KitchenItemProvider(itemHandlerOutput);
+            return (T) itemProvider;
         }
         if(capability == CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY) {
             return (T) this;
@@ -276,4 +278,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return super.getCapability(capability, facing);
     }
 
+    public IItemHandler getInputHandler() {
+        return itemHandlerInput;
+    }
 }

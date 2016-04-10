@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
@@ -30,13 +32,11 @@ public class InventoryCraftBook extends InventoryCrafting {
 	public ItemStack tryCraft(FoodRecipeWithStatus recipe, EntityPlayer player, KitchenMultiBlock multiBlock) {
 		int[] sourceInventories = new int[9];
 		int[] sourceInventorySlots = new int[9];
-		List<? extends IItemHandler> inventories = multiBlock != null ? multiBlock.getSourceInventories(player.inventory) : Collections.singletonList(new InvWrapper(player.inventory));
+		List<? extends IKitchenItemProvider> inventories = multiBlock != null ? multiBlock.getSourceInventories(player.inventory) : Collections.singletonList(new KitchenItemProvider(new InvWrapper(player.inventory)));
+		for(IKitchenItemProvider itemProvider : inventories) {
+			itemProvider.resetSimulation();
+		}
 		List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
-		int[][] usedStackSize = new int[inventories.size()][];
-        for(int i = 0; i < usedStackSize.length; i++) {
-            usedStackSize[i] = new int[inventories.get(i).getSlots()];
-        }
-
 		for(int i = 0; i < getSizeInventory(); i++) {
             setInventorySlotContents(i, null);
             sourceInventories[i] = -1;
@@ -47,15 +47,17 @@ public class InventoryCraftBook extends InventoryCrafting {
 			FoodIngredient ingredient = craftMatrix.get(i);
             if(ingredient != null) {
                 for(int j = 0; j < inventories.size(); j++) {
-					IItemHandler itemHandler = inventories.get(j);
-                    for (int k = 0; k < itemHandler.getSlots(); k++) {
-                        ItemStack itemStack = itemHandler.getStackInSlot(k);
-                        if (itemStack != null && ingredient.isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
-                            usedStackSize[j][k]++;
-                            setInventorySlotContents(i, itemStack);
-                            sourceInventories[i] = j;
-                            sourceInventorySlots[i] = k;
-                            continue matrixLoop;
+					IKitchenItemProvider itemProvider = inventories.get(j);
+                    for (int k = 0; k < itemProvider.getSlots(); k++) {
+                        ItemStack itemStack = itemProvider.getStackInSlot(k);
+                        if (itemStack != null && ingredient.isValidItem(itemStack)) {
+							itemStack = itemProvider.useItemStack(k, 1, true);
+							if(itemStack != null) {
+								setInventorySlotContents(i, itemStack);
+								sourceInventories[i] = j;
+								sourceInventorySlots[i] = k;
+								continue matrixLoop;
+							}
                         }
                     }
                 }
@@ -79,12 +81,13 @@ public class InventoryCraftBook extends InventoryCrafting {
 				if(itemStack != null) {
 					if(sourceInventories[i] != -1) {
 						ItemStack containerItem = ForgeHooks.getContainerItem(itemStack);
-						IItemHandler sourceInventory = inventories.get(sourceInventories[i]);
+						IKitchenItemProvider sourceProvider = inventories.get(sourceInventories[i]);
 						if(sourceInventorySlots[i] != -1) {
-							sourceInventory.extractItem(sourceInventorySlots[i], 1, false);
+							sourceProvider.resetSimulation();
+							sourceProvider.useItemStack(sourceInventorySlots[i], 1, false);
 						}
 						if(containerItem != null) {
-							ItemStack restStack = ItemHandlerHelper.insertItemStacked(sourceInventory, containerItem, false);
+							ItemStack restStack = sourceProvider.returnItemStack(containerItem);
 							if(restStack != null && restStack.stackSize > 0) {
 								ItemHandlerHelper.giveItemToPlayer(player, restStack);
 							}

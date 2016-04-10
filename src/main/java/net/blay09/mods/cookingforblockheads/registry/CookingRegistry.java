@@ -7,6 +7,8 @@ import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.addon.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
 import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
@@ -194,10 +196,9 @@ public class CookingRegistry {
     }
 
     public static RecipeStatus getRecipeStatus(FoodRecipe recipe, InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
-        List<? extends IItemHandler> inventories = multiBlock != null ? multiBlock.getSourceInventories(inventory) : Collections.singletonList(new InvWrapper(inventory));
-        int[][] usedStackSize = new int[inventories.size()][];
-        for(int i = 0; i < usedStackSize.length; i++) {
-            usedStackSize[i] = new int[inventories.get(i).getSlots()];
+        List<? extends IKitchenItemProvider> inventories = multiBlock != null ? multiBlock.getSourceInventories(inventory) : Collections.singletonList(new KitchenItemProvider(new InvWrapper(inventory)));
+        for(IKitchenItemProvider itemProvider : inventories) {
+            itemProvider.resetSimulation();
         }
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
         boolean[] itemFound = new boolean[craftMatrix.size()];
@@ -207,12 +208,10 @@ public class CookingRegistry {
                 itemFound[i] = true;
                 continue;
             }
-            for(int j = 0; j < inventories.size(); j++) {
-                IItemHandler itemHandler = inventories.get(j);
-                for(int k = 0; k < itemHandler.getSlots(); k++) {
-                    ItemStack itemStack = itemHandler.getStackInSlot(k);
-                    if(itemStack != null && ingredient.isValidItem(itemStack) && itemStack.stackSize - usedStackSize[j][k] > 0) {
-                        usedStackSize[j][k]++;
+            for (IKitchenItemProvider itemProvider : inventories) {
+                for (int j = 0; j < itemProvider.getSlots(); j++) {
+                    ItemStack itemStack = itemProvider.getStackInSlot(j);
+                    if (itemStack != null && ingredient.isValidItem(itemStack) && itemProvider.useItemStack(j, 1, true) != null) {
                         itemFound[i] = true;
                         continue matrixLoop;
                     }
