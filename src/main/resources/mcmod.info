@@ -2,7 +2,7 @@
 {
   "modid": "cookingforblockheads",
   "name": "Cooking for Blockheads",
-  "description": "Example placeholder mod.",
+  "description": "Adds a cooking book and multiblock kitchens that only shows recipes you can make with what you currently have in your inventory.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
