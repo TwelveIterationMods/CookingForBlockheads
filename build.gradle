@@ -29,6 +29,16 @@ minecraft {
     mappings = "snapshot_20160312"
 }
 
+configurations {
+    provided
+}
+
+idea {
+    module {
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
+}
+
 repositories {
     maven {
         name = "RX14"
