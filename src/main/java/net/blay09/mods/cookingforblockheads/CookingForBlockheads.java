@@ -50,7 +50,7 @@ public class CookingForBlockheads {
 
 		ModBlocks.load();
 		ModItems.load();
-//		ModRecipes.load(config);
+		ModRecipes.load(config);
 
 		proxy.preInit(event);
 

@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ModRecipes {
 
-	public static void init(Configuration config) {
+	public static void load(Configuration config) {
 		boolean noFilterEdition = config.getBoolean("NoFilter Edition", "items", true, "");
 		boolean craftingEdition = config.getBoolean("Cooking for Blockheads II", "items", true, "");
 
