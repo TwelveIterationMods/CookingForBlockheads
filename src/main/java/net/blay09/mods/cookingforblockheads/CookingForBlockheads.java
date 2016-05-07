@@ -74,7 +74,7 @@ public class CookingForBlockheads {
 		}
 
 		if(config.getBoolean("Pam's HarvestCraft", "modules", true, "Multiblock Kitchen Support, Tool Support, Oven Recipes, Oven Fuel, Ingredient Recipes")) {
-//			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingforblockheads.addon.HarvestCraftAddon");
+			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingforblockheads.addon.HarvestCraftAddon");
 		}
 
 		if(config.getBoolean("EnviroMine", "modules", true, "Multiblock Kitchen Support (Freezer)")) {
