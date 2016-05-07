@@ -5,16 +5,12 @@ import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,12 +19,8 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
@@ -53,8 +45,8 @@ public class BlockFridge extends BlockKitchen {
 		super(Material.iron);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "fridge");
-		setUnlocalizedName(getRegistryName().toString());
-		setStepSound(SoundType.METAL);
+		setUnlocalizedName(getRegistryName());
+		setStepSound(soundTypeMetal);
 		setHardness(5f);
 		setResistance(10f);
 	}
@@ -65,8 +57,8 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, TYPE, FLIPPED);
+	protected BlockState createBlockState() {
+		return new BlockState(this, FACING, TYPE, FLIPPED);
 	}
 
 	@Override
@@ -127,8 +119,8 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return (layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT);
+	public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+		return (layer == EnumWorldBlockLayer.CUTOUT || layer == EnumWorldBlockLayer.TRANSLUCENT);
 	}
 
 	@Override
@@ -147,7 +139,8 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack heldItem = player.getHeldItem();
 		if (heldItem != null && heldItem.getItem() == Items.dye) {
 			if (recolorBlock(world, pos, side, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
 				heldItem.stackSize--;
@@ -161,7 +154,7 @@ public class BlockFridge extends BlockKitchen {
 				return true;
 			} else if(heldItem != null && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
 				heldItem = ItemHandlerHelper.insertItemStacked(tileFridge.getCombinedItemHandler(), heldItem, false);
-				player.setHeldItem(hand, heldItem);
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
 				return true;
 			}
 		}
@@ -204,26 +197,18 @@ public class BlockFridge extends BlockKitchen {
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 		for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
-			tooltip.add(TextFormatting.GRAY + s);
+			tooltip.add(EnumChatFormatting.GRAY + s);
 		}
-		tooltip.add(TextFormatting.AQUA + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":dyeable"));
+		tooltip.add(EnumChatFormatting.AQUA + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":dyeable"));
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	@SideOnly(Side.CLIENT)
-	public void registerModels(ItemModelMesher mesher) {
-		super.registerModels(mesher);
-
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
-			@Override
-			public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
-				TileEntity tileEntity = world.getTileEntity(pos);
-				if (tileEntity instanceof TileFridge) {
-					return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
-				}
-				return 0xFFFFFFFF;
-			}
-		}, this);
+	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileFridge) {
+			return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
+		}
+		return 0xFFFFFFFF;
 	}
+
 }

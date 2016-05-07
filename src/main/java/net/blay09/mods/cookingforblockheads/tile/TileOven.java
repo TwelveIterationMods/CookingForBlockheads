@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.balyware.RangedWrapper;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
@@ -19,7 +20,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider {
@@ -201,11 +201,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         writeToNBT(tagCompound);
         tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+        return new S35PacketUpdateTileEntity(pos, 0, tagCompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         readFromNBT(pkt.getNbtCompound());
         doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));

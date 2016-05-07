@@ -23,18 +23,47 @@ group = "net.blay09.mods"
 archivesBaseName = "CookingForBlockheads"
 
 minecraft {
-    version = "1.9-12.16.0.1854-1.9"
+    version = "1.8.9-11.15.1.1855"
     runDir = "run"
     
-    mappings = "snapshot_20160312"
+    mappings = "stable_20"
 }
 
 repositories {
+    maven {
+        name = "AppleCore"
+        url = "http://www.ryanliptak.com/maven/"
+    }
+    maven {
+        name = "RX14"
+        url = "http://mvn.rx14.co.uk/repo/"
+    }
+    ivy {
+        name "MineTweaker"
+        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
+    }
+    ivy {
+        name = "InventoryTweaks"
+        artifactPattern "http://addons-origin.cursecdn.com/files/2287/489/[module]-[revision].jar"
+    }
+}
 
+configurations {
+    provided
+}
+
+sourceSets.main.compileClasspath += [configurations.provided]
+
+idea {
+    module {
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
 }
 
 dependencies {
-    
+    deobfCompile "applecore:AppleCore:1.8.9-1.3.0+166.beb36:api"
+    provided name: "MineTweaker3", version: "1.8-3.0.10B", classifier: "Dev", ext: "jar"
+    provided group: "inventorytweaks", name: "InventoryTweaks", version: "1.59-dev-3"
 }
 
 processResources{
@@ -55,10 +84,6 @@ processResources{
 jar {
     from sourceSets.api.output
     appendix "mc" + minecraft.version
-
-    //manifest {
-    //    attributes('FMLAT': 'modid_at.cfg')
-    //}
 }
 
 sourceJar {
@@ -86,10 +111,6 @@ task jarDev(type: Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     classifier "dev"
     appendix "mc" + minecraft.version
-
-    //manifest {
-    //    attributes('FMLAT': 'modid_at.cfg')
-    //}
 }
 
 artifacts {

@@ -1,1 +1,1 @@
-{"textures":{"particle":"cookingforblockheads:blocks/fridge_side"},"elements":[]}
+{"parent": "builtin/entity", "textures":{"particle":"cookingforblockheads:blocks/fridge_side"}}

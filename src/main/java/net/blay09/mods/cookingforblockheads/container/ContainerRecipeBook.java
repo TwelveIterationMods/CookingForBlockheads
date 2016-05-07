@@ -15,7 +15,6 @@ import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -73,7 +72,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	@Override
-	public ItemStack func_184996_a(int slotNumber, int dragType, ClickType clickType, EntityPlayer player) { // slotClick
+	public ItemStack slotClick(int slotNumber, int dragType, int clickType, EntityPlayer player) {
 		if(slotNumber >= 0 && slotNumber < inventorySlots.size()) {
 			Slot slot = inventorySlots.get(slotNumber);
 			if (slot instanceof FakeSlotRecipe && player.worldObj.isRemote) {
@@ -82,7 +81,7 @@ public class ContainerRecipeBook extends Container {
 					int recipeId = slotRecipe.getRecipe().getId();
 					if (recipeId == selectedRecipeId) {
 						if(allowCrafting) {
-							NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipeId, clickType == ClickType.QUICK_MOVE));
+							NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipeId, clickType == 1));
 						}
 					} else {
 						selectedRecipeId = recipeId;
@@ -91,7 +90,7 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
-		return super.func_184996_a(slotNumber, dragType, clickType, player);
+		return super.slotClick(slotNumber, dragType, clickType, player);
 	}
 
 	@Override

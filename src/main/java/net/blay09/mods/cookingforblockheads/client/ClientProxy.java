@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import com.google.common.collect.ImmutableMap;
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
@@ -16,16 +15,13 @@ import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.animation.ITimeValue;
-import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -70,15 +66,10 @@ public class ClientProxy extends CommonProxy {
 
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
-		ovenToolIcons[0] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotBakeware"));
-		ovenToolIcons[1] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotPot"));
-		ovenToolIcons[2] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotSaucepan"));
-		ovenToolIcons[3] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotSkillet"));
-	}
-
-	@Override
-	public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters) {
-		return ModelLoaderRegistry.loadASM(location, parameters);
+		ovenToolIcons[0] = event.map.registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotBakeware"));
+		ovenToolIcons[1] = event.map.registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotPot"));
+		ovenToolIcons[2] = event.map.registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotSaucepan"));
+		ovenToolIcons[3] = event.map.registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotSkillet"));
 	}
 
 	@Override

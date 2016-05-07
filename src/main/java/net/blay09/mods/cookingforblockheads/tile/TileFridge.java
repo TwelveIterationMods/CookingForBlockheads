@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
@@ -10,7 +9,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -76,7 +75,7 @@ public class TileFridge extends TileEntity implements ITickable {
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         readFromNBT(pkt.getNbtCompound());
         doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
@@ -89,7 +88,7 @@ public class TileFridge extends TileEntity implements ITickable {
         writeToNBT(tagCompound);
         tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+        return new S35PacketUpdateTileEntity(pos, 0, tagCompound);
     }
 
     public TileFridge findNeighbourFridge() {

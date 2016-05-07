@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.client.model.ModelOvenDoor;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -47,7 +48,6 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         GlStateManager.rotate(180f, 0f, 0f, 1f);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         bindTexture(doorAngle < 0.3f && tileEntity.isBurning() ? textureOvenDoorActive : textureOvenDoor);
-        ModelOvenDoor modelOvenDoor = new ModelOvenDoor();
         modelOvenDoor.DoorMain.rotateAngleX = doorAngle;
         modelOvenDoor.DoorHandle.rotateAngleX = doorAngle;
         modelOvenDoor.DoorBopLeft.rotateAngleX = doorAngle;

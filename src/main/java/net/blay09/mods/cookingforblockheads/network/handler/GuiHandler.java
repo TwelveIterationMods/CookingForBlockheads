@@ -13,8 +13,7 @@ import net.blay09.mods.cookingforblockheads.container.ContainerOven;
 import net.blay09.mods.cookingforblockheads.container.ContainerFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
@@ -27,11 +26,8 @@ public class GuiHandler implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if(id == ITEM_RECIPE_BOOK) { // x: EnumHand
-            if(x < 0 || x >= EnumHand.values().length) {
-                return null;
-            }
-            ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
+        if(id == ITEM_RECIPE_BOOK) {
+            ItemStack heldItem = player.getHeldItem();
             switch(heldItem.getItemDamage()) {
                 case 0:
                     return new ContainerRecipeBook(player).setNoFilter();
@@ -70,8 +66,8 @@ public class GuiHandler implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if(id == ITEM_RECIPE_BOOK) { // x: EnumHand
-            ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
+        if(id == ITEM_RECIPE_BOOK) {
+            ItemStack heldItem = player.getHeldItem();
             switch(heldItem.getItemDamage()) {
                 case 0:
                     return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());

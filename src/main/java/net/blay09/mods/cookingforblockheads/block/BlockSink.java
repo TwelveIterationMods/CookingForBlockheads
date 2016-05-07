@@ -4,7 +4,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileSink;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -12,11 +11,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,14 +28,15 @@ public class BlockSink extends BlockKitchen {
         super(Material.wood);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "sink");
-        setUnlocalizedName(getRegistryName().toString());
-        setStepSound(SoundType.WOOD);
+        setUnlocalizedName(getRegistryName());
+        setStepSound(soundTypeWood);
         setHardness(5f);
         setResistance(10f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem();
         if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
             FluidStack fluidStack = null;
             int amount = FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), heldItem);
@@ -136,7 +135,7 @@ public class BlockSink extends BlockKitchen {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
+            tooltip.add(EnumChatFormatting.GRAY + s);
         }
     }
 

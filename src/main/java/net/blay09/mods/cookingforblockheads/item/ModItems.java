@@ -12,10 +12,10 @@ public class ModItems {
 
 	public static void load() {
 		recipeBook = new ItemRecipeBook();
-		GameRegistry.register(recipeBook);
+		GameRegistry.registerItem(recipeBook);
 
 		toast = new ItemToast();
-		GameRegistry.register(toast);
+		GameRegistry.registerItem(toast);
 	}
 
 	@SideOnly(Side.CLIENT)

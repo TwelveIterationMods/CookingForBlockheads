@@ -1,9 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.tile.*;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,32 +13,27 @@ public class ModBlocks {
 	public static BlockFridge fridge;
 	public static BlockSink sink;
 	public static BlockToolRack toolRack;
-	public static Block toaster;
 
 	public static void load() {
 		cookingTable = new BlockCookingTable();
-		registerBlock(cookingTable);
-		GameRegistry.registerTileEntity(TileCookingTable.class, cookingTable.getRegistryName().toString());
+		GameRegistry.registerBlock(cookingTable);
+		GameRegistry.registerTileEntity(TileCookingTable.class, cookingTable.getRegistryName());
 
 		oven = new BlockOven();
-		registerBlock(oven);
-		GameRegistry.registerTileEntity(TileOven.class, oven.getRegistryName().toString());
+		GameRegistry.registerBlock(oven);
+		GameRegistry.registerTileEntity(TileOven.class, oven.getRegistryName());
 //
 		fridge = new BlockFridge();
-		registerBlock(fridge);
-		GameRegistry.registerTileEntity(TileFridge.class, fridge.getRegistryName().toString());
+		GameRegistry.registerBlock(fridge);
+		GameRegistry.registerTileEntity(TileFridge.class, fridge.getRegistryName());
 //
 		sink = new BlockSink();
-		registerBlock(sink);
-		GameRegistry.registerTileEntity(TileSink.class, sink.getRegistryName().toString());
+		GameRegistry.registerBlock(sink);
+		GameRegistry.registerTileEntity(TileSink.class, sink.getRegistryName());
 //
 		toolRack = new BlockToolRack();
-		registerBlock(toolRack);
-		GameRegistry.registerTileEntity(TileToolRack.class, toolRack.getRegistryName().toString());
-
-//		toaster = new BlockToaster();
-//		GameRegistry.register(toaster);
-//		GameRegistry.registerTileEntity(TileToaster.class, toaster.getRegistryName().toString());
+		GameRegistry.registerBlock(toolRack);
+		GameRegistry.registerTileEntity(TileToolRack.class, toolRack.getRegistryName());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -52,8 +45,4 @@ public class ModBlocks {
 		fridge.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
 	}
 
-	public static void registerBlock(Block block) {
-		GameRegistry.register(block);
-		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName())); // ...really, Forge? Really?
-	}
 }

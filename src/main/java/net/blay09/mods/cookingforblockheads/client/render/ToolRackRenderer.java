@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 
@@ -17,8 +17,9 @@ public class ToolRackRenderer extends TileEntitySpecialRenderer<TileToolRack> {
 		if (leftStack != null || rightStack != null) {
 			GlStateManager.pushMatrix();
 			GlStateManager.color(1f, 1f, 1f, 1f);
-			GlStateManager.translate(x + 0.5, y + 0.6, z + 0.9);
+			GlStateManager.translate(x + 0.5, y + 0.6, z + 0.5);
 			GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+			GlStateManager.translate(0, 0, 0.4);
 			GlStateManager.scale(0.5f, 0.5f, 0.5f);
 			if(leftStack != null) {
 				RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);

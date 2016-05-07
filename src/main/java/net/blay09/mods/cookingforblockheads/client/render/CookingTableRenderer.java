@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 

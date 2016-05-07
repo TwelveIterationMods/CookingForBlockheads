@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileCookingTable extends TileEntity {
@@ -46,11 +46,11 @@ public class TileCookingTable extends TileEntity {
     public Packet getDescriptionPacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeToNBT(tagCompound);
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+        return new S35PacketUpdateTileEntity(pos, 0, tagCompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         readFromNBT(pkt.getNbtCompound());
     }

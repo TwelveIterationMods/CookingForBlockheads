@@ -6,12 +6,13 @@ import net.blay09.mods.cookingforblockheads.container.ContainerOven;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -68,7 +69,7 @@ public class GuiOven extends GuiContainer {
 
 	public void renderItemWithTint(ItemStack itemStack, int x, int y, int color) {
 		RenderItem itemRenderer = mc.getRenderItem();
-		IBakedModel model = itemRenderer.getItemModelWithOverrides(itemStack, null, null);
+		IBakedModel model = itemRenderer.getItemModelMesher().getItemModel(itemStack);
 		GlStateManager.pushMatrix();
 		mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 		mc.getTextureManager().getTexture(TextureMap.locationBlocksTexture).setBlurMipmap(false, false);
@@ -76,7 +77,7 @@ public class GuiOven extends GuiContainer {
 		GlStateManager.enableAlpha();
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
 		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color(1f, 1f, 1f, 1f);
 
 		GlStateManager.translate(x, y, 300f + zLevel);
@@ -88,15 +89,15 @@ public class GuiOven extends GuiContainer {
 			GlStateManager.disableLighting();
 		}
 
-		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GUI, false);
+		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GUI);
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		WorldRenderer vertexBuffer = tessellator.getWorldRenderer();
 		vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 		for (EnumFacing facing : EnumFacing.values()) {
-			renderQuads(vertexBuffer, model.getQuads(null, facing, 0L), color, itemStack);
+			renderQuads(vertexBuffer, model.getFaceQuads(facing), color, itemStack);
 		}
-		renderQuads(vertexBuffer, model.getQuads(null, null, 0), color, itemStack);
+		renderQuads(vertexBuffer, model.getGeneralQuads(), color, itemStack);
 		tessellator.draw();
 
 		GlStateManager.disableAlpha();
@@ -107,14 +108,14 @@ public class GuiOven extends GuiContainer {
 		mc.getTextureManager().getTexture(TextureMap.locationBlocksTexture).restoreLastBlurMipmap();
 	}
 
-	private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color, ItemStack stack) {
+	private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color, ItemStack stack) {
 		boolean useItemTint = color == -1 && stack != null;
 		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {
 			BakedQuad quad = quads.get(i);
 			int k = color;
 			if (useItemTint && quad.hasTintIndex()) {
-				k = mc.getItemColors().getColorFromItemstack(stack, quad.getTintIndex());
+				k = stack.getItem().getColorFromItemStack(stack, quad.getTintIndex());
 				if (EntityRenderer.anaglyphEnable) {
 					k = TextureUtil.anaglyphColor(k);
 				}
