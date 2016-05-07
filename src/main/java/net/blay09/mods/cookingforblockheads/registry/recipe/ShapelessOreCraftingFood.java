@@ -25,7 +25,7 @@ public class ShapelessOreCraftingFood extends FoodRecipe {
             if(input instanceof ItemStack) {
                 boolean isToolItem = CookingRegistry.isToolItem((ItemStack) input);
                 craftMatrix.add(new FoodIngredient(((ItemStack) input), isToolItem));
-            } else if(input instanceof ArrayList) {
+            } else if(input instanceof List) {
                 List<ItemStack> stackList = (List<ItemStack>) input;
                 boolean toolFound = false;
                 for (ItemStack itemStack : stackList) {
