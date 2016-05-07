@@ -218,12 +218,17 @@ public class CookingRegistry {
                 }
             }
         }
+        boolean missingTools = false;
         for(int i = 0; i < itemFound.length; i++) {
             if(!itemFound[i]) {
-                return craftMatrix.get(i).isToolItem() ? RecipeStatus.MISSING_TOOLS : RecipeStatus.MISSING_INGREDIENTS;
+                if(craftMatrix.get(i).isToolItem()) {
+                    missingTools = true;
+                    continue;
+                }
+                return RecipeStatus.MISSING_INGREDIENTS;
             }
         }
-        return RecipeStatus.AVAILABLE;
+        return missingTools ? RecipeStatus.MISSING_TOOLS : RecipeStatus.AVAILABLE;
     }
 
     public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world) {
