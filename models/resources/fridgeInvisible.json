@@ -1,1 +1,30 @@
-{"textures":{"particle":"cookingforblockheads:blocks/fridge_side"},"elements":[]}
+{
+  "textures": {
+    "particle": "cookingforblockheads:blocks/fridge_side"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        0,
+        1,
+        0
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "texture": "#particle"
+        }
+      }
+    }
+  ]
+}
