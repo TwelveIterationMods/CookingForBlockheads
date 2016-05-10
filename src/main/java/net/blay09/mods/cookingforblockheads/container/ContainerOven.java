@@ -122,7 +122,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
             ItemStack slotStack = slot.getStack();
             itemStack = slotStack.copy();
 
-            if (slotIndex >= 7 && slotIndex <= 20) {
+            if (slotIndex >= 7 && slotIndex < 20) {
                 if (!mergeItemStack(slotStack, 20, 56, true)) {
                     return null;
                 }
@@ -131,7 +131,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
                 if (!this.mergeItemStack(slotStack, 20, 56, false)) {
                     return null;
                 }
-            } else if (slotIndex > 20) {
+            } else if (slotIndex >= 20) {
                 ItemStack smeltingResult = TileOven.getSmeltingResult(slotStack);
                 if (TileOven.isItemFuel(slotStack)) {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
@@ -141,14 +141,14 @@ public class ContainerOven extends Container implements IContainerWithDoor {
                     if (!this.mergeItemStack(slotStack, 0, 3, false)) {
                         return null;
                     }
-                } else if (slotIndex >= 21 && slotIndex < 49) {
-                    if (!this.mergeItemStack(slotStack, 49, 56, false)) {
+                } else if (slotIndex >= 20 && slotIndex < 47) {
+                    if (!this.mergeItemStack(slotStack, 47, 56, false)) {
                         return null;
                     }
-                } else if (slotIndex >= 49 && slotIndex < 56 && !this.mergeItemStack(slotStack, 20, 49, false)) {
+                } else if (slotIndex >= 47 && slotIndex < 56 && !this.mergeItemStack(slotStack, 20, 47, false)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(slotStack, 20, 49, false)) {
+            } else if (!this.mergeItemStack(slotStack, 20, 47, false)) {
                 return null;
             }
 
