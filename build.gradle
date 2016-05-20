@@ -18,7 +18,7 @@ def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
 def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
 def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
 
-version = "2.0." + BUILD_NUMBER
+version = "3.0." + BUILD_NUMBER
 group = "net.blay09.mods"
 archivesBaseName = "CookingForBlockheads"
 
