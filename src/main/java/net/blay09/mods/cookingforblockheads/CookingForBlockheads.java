@@ -17,7 +17,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(modid = CookingForBlockheads.MOD_ID)
+@Mod(modid = CookingForBlockheads.MOD_ID,
+		updateJSON = "http://balyware.com/new/forge_update.php?modid=" + CookingForBlockheads.MOD_ID)
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";
