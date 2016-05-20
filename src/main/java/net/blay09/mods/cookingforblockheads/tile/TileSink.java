@@ -9,16 +9,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.List;
 
@@ -44,8 +41,8 @@ public class TileSink extends TileEntity implements IFluidHandler {
 
         public SinkItemProvider(FluidTank fluidTank) {
             this.fluidTank = fluidTank;
-            itemStacks.add(new ItemStack(Items.water_bucket));
-            Item pamsWaterItem = Item.itemRegistry.getObject(new ResourceLocation("harvestcraft", "freshwaterItem")); // TODO apify
+            itemStacks.add(new ItemStack(Items.WATER_BUCKET));
+            Item pamsWaterItem = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "freshwaterItem")); // TODO apify
             if(pamsWaterItem != null) {
                 itemStacks.add(new ItemStack(pamsWaterItem));
             }
@@ -95,10 +92,13 @@ public class TileSink extends TileEntity implements IFluidHandler {
     private final SinkItemProvider itemProvider = new SinkItemProvider(waterTank);
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        writeToNBT(tagCompound);
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
     @Override
@@ -108,9 +108,10 @@ public class TileSink extends TileEntity implements IFluidHandler {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         waterTank.writeToNBT(tagCompound);
+        return tagCompound;
     }
 
     @Override

@@ -5,6 +5,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SlotOvenTool extends SlotItemHandler {
 
     private final int iconIndex;
@@ -20,6 +23,7 @@ public class SlotOvenTool extends SlotItemHandler {
     }
 
     @Override
+    @Nonnull
     public TextureAtlasSprite getBackgroundSprite() {
         return ClientProxy.ovenToolIcons[iconIndex];
     }

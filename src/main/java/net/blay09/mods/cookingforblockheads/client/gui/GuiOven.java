@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class GuiOven extends GuiContainer {
@@ -70,8 +71,8 @@ public class GuiOven extends GuiContainer {
 		RenderItem itemRenderer = mc.getRenderItem();
 		IBakedModel model = itemRenderer.getItemModelWithOverrides(itemStack, null, null);
 		GlStateManager.pushMatrix();
-		mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-		mc.getTextureManager().getTexture(TextureMap.locationBlocksTexture).setBlurMipmap(false, false);
+		mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableAlpha();
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
@@ -103,11 +104,11 @@ public class GuiOven extends GuiContainer {
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.disableLighting();
 		GlStateManager.popMatrix();
-		mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-		mc.getTextureManager().getTexture(TextureMap.locationBlocksTexture).restoreLastBlurMipmap();
+		mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 	}
 
-	private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color, ItemStack stack) {
+	private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color, @Nullable ItemStack stack) {
 		boolean useItemTint = color == -1 && stack != null;
 		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {

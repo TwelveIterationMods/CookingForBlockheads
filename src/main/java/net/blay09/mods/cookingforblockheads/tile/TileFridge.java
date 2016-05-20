@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
@@ -9,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -19,6 +17,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+
+import javax.annotation.Nullable;
 
 public class TileFridge extends TileEntity implements ITickable {
 
@@ -69,10 +69,11 @@ public class TileFridge extends TileEntity implements ITickable {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
         tagCompound.setByte("FridgeColor", (byte) fridgeColor.getDyeDamage());
+        return tagCompound;
     }
 
     @Override
@@ -84,14 +85,20 @@ public class TileFridge extends TileEntity implements ITickable {
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public NBTTagCompound getUpdateTag() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeToNBT(tagCompound);
         tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+        return tagCompound;
     }
 
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    }
+
+    @Nullable
     public TileFridge findNeighbourFridge() {
         if (worldObj.getBlockState(pos.up()).getBlock() == ModBlocks.fridge) {
             return (TileFridge) worldObj.getTileEntity(pos.up());
@@ -103,7 +110,10 @@ public class TileFridge extends TileEntity implements ITickable {
 
     public TileFridge getBaseFridge() {
         if (worldObj.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
-            return (TileFridge) worldObj.getTileEntity(pos.down());
+            TileFridge baseFridge = (TileFridge) worldObj.getTileEntity(pos.down());
+            if(baseFridge != null) {
+                return baseFridge;
+            }
         }
         return this;
     }

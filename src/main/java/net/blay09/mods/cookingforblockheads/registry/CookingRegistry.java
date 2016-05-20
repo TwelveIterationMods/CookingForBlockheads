@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -124,6 +123,9 @@ public class CookingRegistry {
     }
 
     public static boolean isToolItem(ItemStack itemStack) {
+        if(itemStack == null) {
+            return false;
+        }
         for(ItemStack toolItem : tools) {
             if(ItemUtils.areItemStacksEqualWithWildcard(toolItem, itemStack)) {
                 return true;
@@ -176,6 +178,9 @@ public class CookingRegistry {
     }
 
     public static ItemStack getSinkOutput(ItemStack itemStack) {
+        if(itemStack == null) {
+            return null;
+        }
         for(Map.Entry<ItemStack, SinkHandler> entry : sinkHandlers.entrySet()) {
             if(ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
                 return entry.getValue().getSinkOutput(itemStack);

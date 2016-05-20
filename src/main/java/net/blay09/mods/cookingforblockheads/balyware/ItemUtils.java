@@ -28,8 +28,9 @@ public class ItemUtils {
 					entityItem.motionY = world.rand.nextGaussian() * motion + 0.2f;
 					entityItem.motionZ = world.rand.nextGaussian() * motion;
 
-					if (itemStack.hasTagCompound()) {
-						entityItem.getEntityItem().setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
+					NBTTagCompound tagCompound = itemStack.getTagCompound();
+					if (tagCompound != null) {
+						entityItem.getEntityItem().setTagCompound((NBTTagCompound) tagCompound.copy());
 					}
 					world.spawnEntityInWorld(entityItem);
 				}

@@ -63,42 +63,43 @@ public class HarvestCraftAddon {
     private static final String TOAST_ITEM = "toastItem";
 
     public HarvestCraftAddon() {
-        Item oliveOil = Item.itemRegistry.getObject(new ResourceLocation(MOD_ID, "oliveoilItem"));
+        Item oliveOil = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, "oliveoilItem"));
         if(oliveOil != null) {
             CookingForBlockheadsAPI.addOvenFuel(new ItemStack(oliveOil), 1600);
         }
 
         for(int i = 0; i < OVEN_RECIPES.length; i += 2) {
-            Item sourceItem = Item.itemRegistry.getObject(new ResourceLocation(MOD_ID, OVEN_RECIPES[i]));
-            Item resultItem = Item.itemRegistry.getObject(new ResourceLocation(MOD_ID, OVEN_RECIPES[i + 1]));
+            Item sourceItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, OVEN_RECIPES[i]));
+            Item resultItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, OVEN_RECIPES[i + 1]));
             if(sourceItem != null && resultItem != null) {
                 CookingForBlockheadsAPI.addOvenRecipe(new ItemStack(sourceItem), new ItemStack(resultItem));
             }
         }
 
         for(String toolName : TOOLS) {
-            Item toolItem = Item.itemRegistry.getObject(new ResourceLocation(MOD_ID, toolName));
+            Item toolItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, toolName));
             if(toolItem != null) {
                 CookingForBlockheadsAPI.addToolItem(new ItemStack(toolItem));
             }
         }
 
-        CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.bread), new ToastHandler() {
-            @Override
-            public ItemStack getToasterOutput(ItemStack itemStack) {
-                return new ItemStack(Item.itemRegistry.getObject(new ResourceLocation(MOD_ID, TOAST_ITEM)));
-            }
-        });
+        final Item toastItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, TOAST_ITEM));
+        if(toastItem != null) {
+            CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastHandler() {
+                @Override
+                public ItemStack getToasterOutput(ItemStack itemStack) {
+                    return new ItemStack(toastItem);
+                }
+            });
+        }
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
     public void onFoodRegistryInit(FoodRegistryInitEvent event) {
-        event.registerNonFoodRecipe(new ItemStack(Items.cake));
-        event.registerNonFoodRecipe(new ItemStack(Items.sugar));
         for(String s : ADDITIONAL_RECIPES) {
-            Item item = Item.itemRegistry.getObject(new ResourceLocation(MOD_ID, s));
+            Item item = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, s));
             if(item != null) {
                 event.registerNonFoodRecipe(new ItemStack(item));
             }
@@ -128,7 +129,7 @@ public class HarvestCraftAddon {
                     secondItem = (ItemStack) list.get(0);
                 }
             }
-            if (firstItem != null && secondItem != null && ItemStack.areItemStacksEqual(firstItem, secondItem) && oreRecipe.getRecipeOutput().isItemEqual(firstItem)) {
+            if (firstItem != null && secondItem != null && ItemStack.areItemStacksEqual(firstItem, secondItem) && oreRecipe.getRecipeOutput() != null && oreRecipe.getRecipeOutput().isItemEqual(firstItem)) {
                 return true;
             }
         }

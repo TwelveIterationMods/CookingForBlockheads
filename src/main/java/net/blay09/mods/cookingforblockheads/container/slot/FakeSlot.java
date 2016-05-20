@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class FakeSlot extends Slot {
 
 	private ItemStack displayStack;
@@ -32,6 +34,7 @@ public class FakeSlot extends Slot {
 	}
 
 	@Override
+	@Nullable
 	public ItemStack decrStackSize(int amount) {
 		return null;
 	}

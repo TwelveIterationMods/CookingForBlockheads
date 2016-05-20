@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.crafting.ShapedRecipes;
 
-import java.util.ArrayList;
-
 public class ShapedCraftingFood extends FoodRecipe {
 
     public ShapedCraftingFood(int id, ShapedRecipes recipe) {

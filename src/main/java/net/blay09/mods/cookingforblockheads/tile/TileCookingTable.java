@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
@@ -25,13 +24,14 @@ public class TileCookingTable extends TileEntity {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         NBTTagCompound itemCompound = new NBTTagCompound();
         if(noFilterBook != null) {
             noFilterBook.writeToNBT(itemCompound);
         }
         tagCompound.setTag("NoFilterBook", itemCompound);
+        return tagCompound;
     }
 
     @Override
@@ -43,10 +43,13 @@ public class TileCookingTable extends TileEntity {
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        writeToNBT(tagCompound);
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
     @Override

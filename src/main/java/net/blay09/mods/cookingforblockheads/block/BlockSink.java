@@ -22,28 +22,29 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockSink extends BlockKitchen {
 
     public BlockSink() {
-        super(Material.wood);
+        super(Material.WOOD);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "sink");
         setUnlocalizedName(getRegistryName().toString());
-        setStepSound(SoundType.WOOD);
+        setSoundType(SoundType.WOOD);
         setHardness(5f);
         setResistance(10f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
             FluidStack fluidStack = null;
             int amount = FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), heldItem);
             if(CookingConfig.sinkRequiresWater) {
                 TileSink sink = (TileSink) world.getTileEntity(pos);
-                if(sink.getWaterAmount() >= amount) {
+                if(sink != null && sink.getWaterAmount() >= amount) {
                     fluidStack = sink.drain(null, amount, true);
                 }
             } else {
@@ -67,7 +68,9 @@ public class BlockSink extends BlockKitchen {
             FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(heldItem);
             if(CookingConfig.sinkRequiresWater) {
                 TileSink sink = (TileSink) world.getTileEntity(pos);
-                sink.fill(null, fluidStack, true);
+                if(sink != null) {
+                    sink.fill(null, fluidStack, true);
+                }
             }
             ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
             if(emptyContainer != null) {
@@ -86,7 +89,9 @@ public class BlockSink extends BlockKitchen {
             if(resultStack != null) {
                 NBTTagCompound tagCompound = heldItem.getTagCompound();
                 ItemStack newItem = resultStack.copy();
-                newItem.setTagCompound(tagCompound);
+                if(tagCompound != null) {
+                    newItem.setTagCompound(tagCompound);
+                }
                 if(heldItem.stackSize <= 1) {
                     player.inventory.setInventorySlotContents(player.inventory.currentItem, newItem);
                 } else {
@@ -99,7 +104,7 @@ public class BlockSink extends BlockKitchen {
             } else {
                 if(CookingConfig.sinkRequiresWater) {
                     TileSink sink = (TileSink) world.getTileEntity(pos);
-                    if(sink.getWaterAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
+                    if(sink != null && sink.getWaterAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
                         return true;
                     }
                 }

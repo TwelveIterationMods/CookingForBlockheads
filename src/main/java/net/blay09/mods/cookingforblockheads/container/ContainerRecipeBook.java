@@ -20,6 +20,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class ContainerRecipeBook extends Container {
@@ -73,7 +74,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	@Override
-	public ItemStack func_184996_a(int slotNumber, int dragType, ClickType clickType, EntityPlayer player) { // slotClick
+	public ItemStack slotClick(int slotNumber, int dragType, ClickType clickType, EntityPlayer player) {
 		if(slotNumber >= 0 && slotNumber < inventorySlots.size()) {
 			Slot slot = inventorySlots.get(slotNumber);
 			if (slot instanceof FakeSlotRecipe && player.worldObj.isRemote) {
@@ -91,7 +92,7 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
-		return super.func_184996_a(slotNumber, dragType, clickType, player);
+		return super.slotClick(slotNumber, dragType, clickType, player);
 	}
 
 	@Override
@@ -122,6 +123,7 @@ public class ContainerRecipeBook extends Container {
 		Slot slot = inventorySlots.get(slotIndex);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
+			//noinspection ConstantConditions
 			itemStack = slotStack.copy();
 			if (slotIndex >= 48 && slotIndex < 57) {
 				if (!mergeItemStack(slotStack, 21, 48, true)) {
@@ -182,7 +184,7 @@ public class ContainerRecipeBook extends Container {
 						ItemStack itemStack = craftBook.tryCraft(recipe, player, multiBlock);
 						if (itemStack != null) {
 							if (!player.inventory.addItemStackToInventory(itemStack)) {
-								player.dropPlayerItemWithRandomChoice(itemStack, false);
+								player.dropItem(itemStack, false);
 							}
 						} else {
 							break;
@@ -274,7 +276,7 @@ public class ContainerRecipeBook extends Container {
 		updateRecipeSlots();
 	}
 
-	public void search(String term) {
+	public void search(@Nullable String term) {
 		this.currentSearch = term;
 		sortedRecipes.clear();
 		if(term == null || term.trim().isEmpty()) {
@@ -290,10 +292,7 @@ public class ContainerRecipeBook extends Container {
 		updateRecipeSlots();
 	}
 
-	public boolean hasSelection() {
-		return selectedRecipeId != -1 && recipeMap.containsKey(selectedRecipeId);
-	}
-
+	@Nullable
 	public FoodRecipeWithStatus getSelection() {
 		return selectedRecipeId != -1 ? recipeMap.get(selectedRecipeId) : null;
 	}

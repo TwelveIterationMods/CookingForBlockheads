@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import com.google.common.collect.Lists;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class GuiButtonSort extends GuiButton {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation("cookingforblockheads", "textures/gui/gui.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
 
     private final int texCoordX;
     private final int texCoordY;

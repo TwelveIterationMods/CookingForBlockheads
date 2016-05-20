@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockFridge extends BlockKitchen {
@@ -50,11 +51,11 @@ public class BlockFridge extends BlockKitchen {
 	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
 
 	public BlockFridge() {
-		super(Material.iron);
+		super(Material.IRON);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "fridge");
 		setUnlocalizedName(getRegistryName().toString());
-		setStepSound(SoundType.METAL);
+		setSoundType(SoundType.METAL);
 		setHardness(5f);
 		setResistance(10f);
 	}
@@ -139,16 +140,18 @@ public class BlockFridge extends BlockKitchen {
 	@Override
 	public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
 		TileFridge fridge = (TileFridge) world.getTileEntity(pos);
-		fridge.setFridgeColor(color);
-		if (fridge.findNeighbourFridge() != null) {
-			fridge.findNeighbourFridge().setFridgeColor(color);
+		if(fridge != null) {
+			fridge.setFridgeColor(color);
+			if (fridge.findNeighbourFridge() != null) {
+				fridge.findNeighbourFridge().setFridgeColor(color);
+			}
 		}
 		return true;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem != null && heldItem.getItem() == Items.dye) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (heldItem != null && heldItem.getItem() == Items.DYE) {
 			if (recolorBlock(world, pos, side, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
 				heldItem.stackSize--;
 			}
@@ -156,13 +159,15 @@ public class BlockFridge extends BlockKitchen {
 		}
 		if(side == state.getValue(FACING)) {
 			TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
-			if(player.isSneaking()) {
-				tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
-				return true;
-			} else if(heldItem != null && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
-				heldItem = ItemHandlerHelper.insertItemStacked(tileFridge.getCombinedItemHandler(), heldItem, false);
-				player.setHeldItem(hand, heldItem);
-				return true;
+			if(tileFridge != null) {
+				if (player.isSneaking()) {
+					tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
+					return true;
+				} else if (heldItem != null && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
+					heldItem = ItemHandlerHelper.insertItemStacked(tileFridge.getCombinedItemHandler(), heldItem, false);
+					player.setHeldItem(hand, heldItem);
+					return true;
+				}
 			}
 		}
 		if (!world.isRemote) {
@@ -217,7 +222,8 @@ public class BlockFridge extends BlockKitchen {
 
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
 			@Override
-			public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
+			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
+				//noinspection ConstantConditions /// why would world and pos even ever be null?
 				TileEntity tileEntity = world.getTileEntity(pos);
 				if (tileEntity instanceof TileFridge) {
 					return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;

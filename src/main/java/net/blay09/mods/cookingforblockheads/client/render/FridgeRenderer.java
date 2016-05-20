@@ -5,7 +5,6 @@ import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.client.model.ModelFridgeDoor;
 import net.blay09.mods.cookingforblockheads.client.model.ModelFridgeLargeDoor;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

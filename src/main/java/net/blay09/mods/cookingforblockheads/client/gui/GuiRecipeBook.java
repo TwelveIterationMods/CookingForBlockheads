@@ -13,10 +13,10 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -61,8 +61,8 @@ public class GuiRecipeBook extends GuiContainer {
 		super(container);
 		this.container = container;
 
-		noIngredients = I18n.translateToLocal("gui." + CookingForBlockheads.MOD_ID + ":noIngredients").split("\\\\n");
-		noSelection = I18n.translateToLocal("gui." + CookingForBlockheads.MOD_ID + ":noSelection").split("\\\\n");
+		noIngredients = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":noIngredients").split("\\\\n");
+		noSelection = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":noSelection").split("\\\\n");
 	}
 
 	@Override
@@ -192,13 +192,14 @@ public class GuiRecipeBook extends GuiContainer {
 		btnSortHunger.enabled = hasRecipes;
 		btnSortSaturation.enabled = hasRecipes;
 
-		if(!container.hasSelection()) {
+		FoodRecipeWithStatus selection = container.getSelection();
+		if(selection == null) {
 			int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRendererObj.FONT_HEIGHT;
 			for(String s : noSelection) {
 				fontRendererObj.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
 				curY += fontRendererObj.FONT_HEIGHT + 5;
 			}
-		} else if(container.getSelection().getType() == RecipeType.SMELTING) {
+		} else if(selection.getType() == RecipeType.SMELTING) {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
 		} else {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
@@ -264,29 +265,29 @@ public class GuiRecipeBook extends GuiContainer {
 			if(container.isSelectedSlot(slotRecipe) && container.isAllowCrafting()) {
 				if(slotRecipe.getRecipe().getType() == RecipeType.SMELTING) {
 					if(!container.hasOven()) {
-						event.getToolTip().add(TextFormatting.RED + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":missingOven"));
+						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingOven"));
 					} else {
 						if (isShiftKeyDown()) {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltStack"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltStack"));
 						} else {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltOne"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltOne"));
 						}
 					}
 				} else {
 					if (slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_TOOLS) {
-						event.getToolTip().add(TextFormatting.RED + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":missingTools"));
+						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingTools"));
 					} else if(slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_INGREDIENTS) {
-						event.getToolTip().add(TextFormatting.RED + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":missingIngredients"));
+						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingIngredients"));
 					} else {
 						if (isShiftKeyDown()) {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":clickToCraftStack"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToCraftStack"));
 						} else {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":clickToCraftOne"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToCraftOne"));
 						}
 					}
 				}
 			} else {
-				event.getToolTip().add(TextFormatting.YELLOW + I18n.translateToLocalFormatted("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSeeRecipe"));
+				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSeeRecipe"));
 			}
 		}
 	}

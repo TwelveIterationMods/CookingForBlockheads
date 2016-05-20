@@ -8,6 +8,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import javax.annotation.Nullable;
+
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {}
@@ -18,6 +20,7 @@ public class CommonProxy {
 		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(runnable);
 	}
 
+	@Nullable
 	public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters) {
 		return null;
 	}

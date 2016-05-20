@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.crafting.ShapelessRecipes;
 
-import java.util.ArrayList;
-
 public class ShapelessCraftingFood extends FoodRecipe {
 
     public ShapelessCraftingFood(int id, ShapelessRecipes recipe) {

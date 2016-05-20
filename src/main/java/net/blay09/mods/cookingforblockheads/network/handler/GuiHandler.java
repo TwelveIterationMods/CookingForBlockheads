@@ -32,13 +32,15 @@ public class GuiHandler implements IGuiHandler {
                 return null;
             }
             ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
-            switch(heldItem.getItemDamage()) {
-                case 0:
-                    return new ContainerRecipeBook(player).setNoFilter();
-                case 1:
-                    return new ContainerRecipeBook(player);
-                case 2:
-                    return new ContainerRecipeBook(player).allowCrafting();
+            if(heldItem != null) {
+                switch (heldItem.getItemDamage()) {
+                    case 0:
+                        return new ContainerRecipeBook(player).setNoFilter();
+                    case 1:
+                        return new ContainerRecipeBook(player);
+                    case 2:
+                        return new ContainerRecipeBook(player).allowCrafting();
+                }
             }
         } else {
             BlockPos pos = new BlockPos(x, y, z);
@@ -46,10 +48,12 @@ public class GuiHandler implements IGuiHandler {
                 case COOKING_TABLE:
                     if(world.getBlockState(pos).getBlock() == ModBlocks.cookingTable) {
                         TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-                        if(tileEntity.hasNoFilterBook()) {
-                            return new ContainerRecipeBook(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
-                        } else {
-                            return new ContainerRecipeBook(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                        if(tileEntity != null) {
+                            if (tileEntity.hasNoFilterBook()) {
+                                return new ContainerRecipeBook(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                            } else {
+                                return new ContainerRecipeBook(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                            }
                         }
                     }
                     break;
@@ -72,13 +76,15 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         if(id == ITEM_RECIPE_BOOK) { // x: EnumHand
             ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
-            switch(heldItem.getItemDamage()) {
-                case 0:
-                    return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());
-                case 1:
-                    return new GuiRecipeBook(new ContainerRecipeBook(player));
-                case 2:
-                    return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
+            if(heldItem != null) {
+                switch (heldItem.getItemDamage()) {
+                    case 0:
+                        return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());
+                    case 1:
+                        return new GuiRecipeBook(new ContainerRecipeBook(player));
+                    case 2:
+                        return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
+                }
             }
         } else {
             BlockPos pos = new BlockPos(x, y, z);

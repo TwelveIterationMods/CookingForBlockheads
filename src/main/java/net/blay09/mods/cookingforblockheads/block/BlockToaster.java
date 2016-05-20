@@ -18,6 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockToaster extends BlockContainer {
@@ -25,11 +26,11 @@ public class BlockToaster extends BlockContainer {
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.275, 0, 0.275, 0.725, 0.4, 0.725);
 
     public BlockToaster() {
-        super(Material.iron);
+        super(Material.IRON);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "toaster");
         setUnlocalizedName(getRegistryName().toString());
-        setStepSound(SoundType.WOOD);
+        setSoundType(SoundType.WOOD);
         setHardness(5f);
         setResistance(10f);
     }
@@ -40,7 +41,7 @@ public class BlockToaster extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 //        TileToaster tileEntity = (TileToaster) world.getTileEntity(pos);
 //        if(heldItem == null) {
 //            if(!tileEntity.isActive()) {

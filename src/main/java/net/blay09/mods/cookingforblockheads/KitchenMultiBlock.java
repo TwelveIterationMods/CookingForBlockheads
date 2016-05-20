@@ -36,14 +36,14 @@ public class KitchenMultiBlock {
                 TileEntity tileEntity = world.getTileEntity(position);
                 if(tileEntity != null) {
                     IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY, null);
-                    if (itemProvider != null) {
+                    if (itemProvider != null) { // Forge needs to update their patches to include @Nullable annotations
                         itemProviderList.add(itemProvider);
                     }
                     IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY, null);
-                    if (smeltingProvider != null) {
+                    if (smeltingProvider != null) { // Forge needs to update their patches to include @Nullable annotations
                         smeltingProviderList.add(smeltingProvider);
                     }
-                    if(itemProvider != null || smeltingProvider != null) {
+                    if(itemProvider != null || smeltingProvider != null) { // Forge needs to update their patches to include @Nullable annotations
                         findNeighbourKitchenBlocks(world, position);
                     }
                 }
@@ -91,7 +91,7 @@ public class KitchenMultiBlock {
                                 if(restStack != null) {
                                     restStack = itemProvider.returnItemStack(restStack);
                                     if(!player.inventory.addItemStackToInventory(restStack)) {
-                                        player.dropPlayerItemWithRandomChoice(restStack, false);
+                                        player.dropItem(restStack, false);
                                     }
                                 }
                                 player.openContainer.detectAndSendChanges();

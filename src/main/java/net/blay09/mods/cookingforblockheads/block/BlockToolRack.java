@@ -20,6 +20,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockToolRack extends BlockKitchen {
@@ -32,11 +33,11 @@ public class BlockToolRack extends BlockKitchen {
 	};
 
     public BlockToolRack() {
-        super(Material.wood);
+        super(Material.WOOD);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "toolRack");
 		setUnlocalizedName(getRegistryName().toString());
-        setStepSound(SoundType.WOOD);
+        setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
 
@@ -51,9 +52,9 @@ public class BlockToolRack extends BlockKitchen {
 		return BOUNDING_BOXES[facing.getIndex() - 2];
 	}
 
+	@Nullable
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-		// TODO this is actually getCollisionBoundingBox, MCP derped
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -77,7 +78,7 @@ public class BlockToolRack extends BlockKitchen {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(heldItem != null && heldItem.getItem() instanceof ItemBlock) {
             return true;
         }
@@ -99,7 +100,7 @@ public class BlockToolRack extends BlockKitchen {
                     ItemStack toolItem = heldItem.splitStack(1);
                     if (oldToolItem != null) {
                         if (!player.inventory.addItemStackToInventory(oldToolItem)) {
-                            player.dropPlayerItemWithRandomChoice(oldToolItem, false);
+                            player.dropItem(oldToolItem, false);
                         }
                         tileToolRack.getItemHandler().setStackInSlot(hitSlot, toolItem);
                     } else {

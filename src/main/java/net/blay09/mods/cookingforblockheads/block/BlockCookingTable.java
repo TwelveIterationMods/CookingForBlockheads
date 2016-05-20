@@ -18,36 +18,41 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockCookingTable extends BlockKitchen {
 
     public BlockCookingTable() {
-        super(Material.wood);
+        super(Material.WOOD);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "cookingTable");
         setUnlocalizedName(getRegistryName().toString());
-        setStepSound(SoundType.WOOD);
+        setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(heldItem != null) {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-            if(!tileEntity.hasNoFilterBook() && heldItem.getItem() == ModItems.recipeBook && heldItem.getItemDamage() == 0) {
-                tileEntity.setNoFilterBook(heldItem.splitStack(1));
-                return true;
+            if(tileEntity != null) {
+                if (!tileEntity.hasNoFilterBook() && heldItem.getItem() == ModItems.recipeBook && heldItem.getItemDamage() == 0) {
+                    tileEntity.setNoFilterBook(heldItem.splitStack(1));
+                    return true;
+                }
             }
         } else if(player.isSneaking()) {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-            ItemStack noFilterBook = tileEntity.getNoFilterBook();
-            if(noFilterBook != null) {
-                if(!player.inventory.addItemStackToInventory(noFilterBook)) {
-                    player.dropPlayerItemWithRandomChoice(noFilterBook, false);
+            if(tileEntity != null) {
+                ItemStack noFilterBook = tileEntity.getNoFilterBook();
+                if (noFilterBook != null) {
+                    if (!player.inventory.addItemStackToInventory(noFilterBook)) {
+                        player.dropItem(noFilterBook, false);
+                    }
+                    tileEntity.setNoFilterBook(null);
+                    return true;
                 }
-                tileEntity.setNoFilterBook(null);
-                return true;
             }
         }
         if(!world.isRemote) {

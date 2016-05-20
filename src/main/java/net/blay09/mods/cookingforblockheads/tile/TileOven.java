@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -21,6 +20,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.apache.commons.lang3.ArrayUtils;
+
+import javax.annotation.Nullable;
 
 public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider {
 
@@ -41,7 +42,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private final RangedWrapper itemHandlerOutput = new RangedWrapper(itemHandler, 4, 7);
     private final RangedWrapper itemHandlerProcessing = new RangedWrapper(itemHandler, 7, 16);
     private final RangedWrapper itemHandlerTools = new RangedWrapper(itemHandler, 16, 20);
-    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandlerOutput);
+    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandlerTools);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     public int[] slotCookTime = new int[9];
@@ -147,6 +148,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         }
     }
 
+    @Nullable
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if(result != null) {
@@ -187,21 +189,27 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
         tagCompound.setShort("BurnTime", (short) furnaceBurnTime);
         tagCompound.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         tagCompound.setIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
+        return tagCompound;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public NBTTagCompound getUpdateTag() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeToNBT(tagCompound);
         tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return new SPacketUpdateTileEntity(pos, 0, tagCompound);
+        return tagCompound;
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
     @Override
@@ -255,7 +263,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if(facing == null) {
                 return (T) itemHandler;
@@ -275,6 +283,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         if(capability == CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY) {
             return (T) this;
         }
+        //noinspection ConstantConditions /// Forge needs to update to use Nullable in their patches
         return super.getCapability(capability, facing);
     }
 

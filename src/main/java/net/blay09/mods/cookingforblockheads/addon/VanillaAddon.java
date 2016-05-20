@@ -27,8 +27,8 @@ public class VanillaAddon implements FoodStatsProvider {
                 return result;
             }
         };
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.carpet, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.CARPET, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
         SinkHandler armorHandler = new SinkHandler() {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
@@ -38,26 +38,26 @@ public class VanillaAddon implements FoodStatsProvider {
                 return itemStack;
             }
         };
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.leather_boots, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.leather_chestplate, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.leather_helmet, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.leather_leggings, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
 
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.milk_bucket), new SinkHandler() {
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.MILK_BUCKET), new SinkHandler() {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
-                return new ItemStack(Items.bucket, 1);
+                return new ItemStack(Items.BUCKET, 1);
             }
         });
 
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.potionitem, 1, OreDictionary.WILDCARD_VALUE), new SinkHandler() {
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.POTIONITEM, 1, OreDictionary.WILDCARD_VALUE), new SinkHandler() {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
-                return new ItemStack(Items.glass_bottle, 1);
+                return new ItemStack(Items.GLASS_BOTTLE, 1);
             }
         });
 
-        CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.bread), new ToastHandler() {
+        CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastHandler() {
             @Override
             public ItemStack getToasterOutput(ItemStack itemStack) {
                 return new ItemStack(ModItems.toast);
@@ -70,9 +70,10 @@ public class VanillaAddon implements FoodStatsProvider {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onFoodRegistryInit(FoodRegistryInitEvent event) {
-        event.registerNonFoodRecipe(new ItemStack(Items.cake));
-        event.registerNonFoodRecipe(new ItemStack(Items.sugar));
+        event.registerNonFoodRecipe(new ItemStack(Items.CAKE));
+        event.registerNonFoodRecipe(new ItemStack(Items.SUGAR));
     }
 
     @Override

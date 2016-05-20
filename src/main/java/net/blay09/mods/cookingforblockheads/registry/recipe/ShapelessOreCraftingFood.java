@@ -5,7 +5,6 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShapelessOreCraftingFood extends FoodRecipe {

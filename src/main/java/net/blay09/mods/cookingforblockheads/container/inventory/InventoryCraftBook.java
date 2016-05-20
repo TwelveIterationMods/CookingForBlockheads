@@ -6,7 +6,6 @@ import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
-import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -16,7 +15,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -71,10 +69,10 @@ public class InventoryCraftBook extends InventoryCrafting {
 		if(result != null) {
 			FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
 			result.onCrafting(player.worldObj, player, 1);
-			if(result.getItem() == Items.bread) {
-				player.addStat(AchievementList.makeBread, 1);
-			} else if(result.getItem() == Items.cake) {
-				player.addStat(AchievementList.bakeCake, 1);
+			if(result.getItem() == Items.BREAD) {
+				player.addStat(AchievementList.MAKE_BREAD, 1);
+			} else if(result.getItem() == Items.CAKE) {
+				player.addStat(AchievementList.BAKE_CAKE, 1);
 			}
 			for(int i = 0; i < getSizeInventory(); i++) {
 				ItemStack itemStack = getStackInSlot(i);

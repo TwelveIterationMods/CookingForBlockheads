@@ -7,7 +7,7 @@ import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.container.slot.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -61,8 +61,8 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     }
 
     @Override
-    public void onCraftGuiOpened(ICrafting listener) {
-        super.onCraftGuiOpened(listener);
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
         listener.sendProgressBarUpdate(this, 0, tileEntity.furnaceBurnTime);
         listener.sendProgressBarUpdate(this, 1, tileEntity.currentItemBurnTime);
         for(int i = 0; i < tileEntity.slotCookTime.length; i++) {
@@ -80,18 +80,18 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for(ICrafting listeners : crafters) {
+        for(IContainerListener listener : listeners) {
             if (this.lastBurnTime != tileEntity.furnaceBurnTime) {
-                listeners.sendProgressBarUpdate(this, 0, tileEntity.furnaceBurnTime);
+                listener.sendProgressBarUpdate(this, 0, tileEntity.furnaceBurnTime);
             }
 
             if (this.lastItemBurnTime != tileEntity.currentItemBurnTime) {
-                listeners.sendProgressBarUpdate(this, 1, tileEntity.currentItemBurnTime);
+                listener.sendProgressBarUpdate(this, 1, tileEntity.currentItemBurnTime);
             }
 
             for (int i = 0; i < tileEntity.slotCookTime.length; i++) {
                 if (lastCookTime[i] != tileEntity.slotCookTime[i]) {
-                    listeners.sendProgressBarUpdate(this, 2 + i, tileEntity.slotCookTime[i]);
+                    listener.sendProgressBarUpdate(this, 2 + i, tileEntity.slotCookTime[i]);
                 }
             }
 
@@ -120,6 +120,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
         if (slot != null && slot.getHasStack()) {
             ItemStack slotStack = slot.getStack();
+            //noinspection ConstantConditions
             itemStack = slotStack.copy();
 
             if (slotIndex >= 7 && slotIndex < 20) {
@@ -180,7 +181,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
     @ContainerSectionCallback
     @Optional.Method(modid = "inventorytweaks")
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked unused")
     public Map<ContainerSection, List<Slot>> getContainerSections() {
         Map<ContainerSection, List<Slot>> map = Maps.newHashMap();
         map.put(ContainerSection.FURNACE_IN, inventorySlots.subList(0, 3));

@@ -7,8 +7,6 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,26 +17,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockOven extends BlockKitchen {
+public class  BlockOven extends BlockKitchen {
 
     private static final Random random = new Random();
 
     public BlockOven() {
-        super(Material.iron);
+        super(Material.IRON);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "oven");
         setUnlocalizedName(getRegistryName().toString());
-        setStepSound(SoundType.METAL);
+        setSoundType(SoundType.METAL);
         setHardness(5f);
         setResistance(10f);
     }
@@ -49,7 +44,7 @@ public class BlockOven extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(side == EnumFacing.UP) {
             if(CookingRegistry.isToolItem(heldItem)) {
                 EnumFacing facing = state.getValue(FACING);
@@ -71,7 +66,7 @@ public class BlockOven extends BlockKitchen {
                 }
                 if(index != -1) {
                     TileOven tileOven = (TileOven) world.getTileEntity(pos);
-                    if (tileOven.getToolItem(index) == null) {
+                    if (tileOven != null && tileOven.getToolItem(index) == null) {
                         ItemStack toolItem = heldItem.splitStack(1);
                         tileOven.setToolItem(index, toolItem);
                     }
@@ -81,13 +76,15 @@ public class BlockOven extends BlockKitchen {
         }
         if(side == state.getValue(FACING)) {
             TileOven tileOven = (TileOven) world.getTileEntity(pos);
-            if(player.isSneaking()) {
-                tileOven.getDoorAnimator().toggleForcedOpen();
-                return true;
-            } else if(heldItem != null && tileOven.getDoorAnimator().isForcedOpen()) {
-                heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
-                player.setHeldItem(hand, heldItem);
-                return true;
+            if(tileOven != null) {
+                if (player.isSneaking()) {
+                    tileOven.getDoorAnimator().toggleForcedOpen();
+                    return true;
+                } else if (heldItem != null && tileOven.getDoorAnimator().isForcedOpen()) {
+                    heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
+                    player.setHeldItem(hand, heldItem);
+                    return true;
+                }
             }
         }
         if(!world.isRemote) {
@@ -114,7 +111,7 @@ public class BlockOven extends BlockKitchen {
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
         TileOven tileEntity = (TileOven) world.getTileEntity(pos);
-        if (tileEntity.isBurning()) {
+        if (tileEntity != null && tileEntity.isBurning()) {
             EnumFacing facing = state.getValue(FACING);
             float x = (float) pos.getX() + 0.5f;
             float y = (float) pos.getY() + 0f + random.nextFloat() * 6f / 16f;
