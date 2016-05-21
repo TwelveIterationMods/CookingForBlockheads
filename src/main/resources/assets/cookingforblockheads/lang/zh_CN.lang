@@ -1,7 +1,7 @@
 item.cookingforblockheads:recipeBookTier0.name=傻瓜烹饪手册
 item.cookingforblockheads:recipeBookTier1.name=傻瓜烹饪手册I
 item.cookingforblockheads:recipeBookTier2.name=傻瓜烹饪手册II
-#item.cookingforblockheads:toast.name=吐司
+item.cookingforblockheads:toast.name=吐司
 
 tooltip.cookingforblockheads:recipeBookTier0=#无过滤版
 tooltip.cookingforblockheads:recipeBookTier0.description=显示所有的食谱.
