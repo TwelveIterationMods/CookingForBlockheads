@@ -32,6 +32,7 @@ public class ModRecipes {
 		// Cooking for Blockheads II
 		if(craftingEdition) {
 			GameRegistry.addRecipe(new ItemStack(ModItems.recipeBook, 1, 2), " D ", "CBC", " D ", 'C', Blocks.CRAFTING_TABLE, 'D', Items.DIAMOND, 'B', new ItemStack(ModItems.recipeBook, 1, 1));
+			GameRegistry.addRecipe(new ItemStack(ModItems.recipeBook, 1, 2), " C ", "DBD", " C ", 'C', Blocks.CRAFTING_TABLE, 'D', Items.DIAMOND, 'B', new ItemStack(ModItems.recipeBook, 1, 1));
 		}
 
 		// Fridge
