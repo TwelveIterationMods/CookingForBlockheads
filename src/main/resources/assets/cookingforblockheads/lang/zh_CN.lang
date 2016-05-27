@@ -1,7 +1,7 @@
 item.cookingforblockheads:recipeBookTier0.name=傻瓜烹饪手册
 item.cookingforblockheads:recipeBookTier1.name=傻瓜烹饪手册I
 item.cookingforblockheads:recipeBookTier2.name=傻瓜烹饪手册II
-#item.cookingforblockheads:toast.name=Toast
+item.cookingforblockheads:toast.name=吐司
 
 tooltip.cookingforblockheads:recipeBookTier0=#无过滤版
 tooltip.cookingforblockheads:recipeBookTier0.description=显示所有的食谱.
@@ -37,7 +37,7 @@ tooltip.cookingforblockheads:clickToSmeltOne=点击烹饪食物
 tooltip.cookingforblockheads:clickToCraftStack=Shift点击烹饪一组
 tooltip.cookingforblockheads:clickToSmeltStack=Shift点击烹饪一组
 tooltip.cookingforblockheads:missingTools=缺少厨具
-#tooltip.cookingforblockheads:missingIngredients=Missing ingredients to craft
+tooltip.cookingforblockheads:missingIngredients=缺少食材
 tooltip.cookingforblockheads:missingOven=缺少烤箱
 tooltip.cookingforblockheads:sortByName=按名称排列
 tooltip.cookingforblockheads:sortByHunger=按饥饿值排列
