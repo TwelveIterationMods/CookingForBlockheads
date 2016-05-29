@@ -12,7 +12,10 @@ import net.minecraft.tileentity.TileEntity;
 public class RenderUtils {
 
 	public static float getFacingAngle(TileEntity tileEntity) {
-		IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+		return getFacingAngle(tileEntity.getWorld().getBlockState(tileEntity.getPos()));
+	}
+
+	public static float getFacingAngle(IBlockState state) {
 		float angle;
 		switch (state.getValue(BlockKitchen.FACING)) {
 			case NORTH:

@@ -6,6 +6,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
+import javax.annotation.Nullable;
+
 public class TileCookingTable extends TileEntity {
 
     private ItemStack noFilterBook;
@@ -14,6 +16,7 @@ public class TileCookingTable extends TileEntity {
         return noFilterBook != null;
     }
 
+    @Nullable
     public ItemStack getNoFilterBook() {
         return noFilterBook;
     }

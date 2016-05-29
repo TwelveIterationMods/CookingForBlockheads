@@ -245,6 +245,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return doorAnimator;
     }
 
+    @Nullable
     public ItemStack getToolItem(int i) {
         return itemHandlerTools.getStackInSlot(i);
     }
@@ -283,7 +284,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         if(capability == CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY) {
             return (T) this;
         }
-        //noinspection ConstantConditions /// Forge needs to update to use Nullable in their patches
+//        noinspection ConstantConditions /// Forge needs to update to use Nullable in their patches
         return super.getCapability(capability, facing);
     }
 

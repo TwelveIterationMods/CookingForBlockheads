@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
@@ -11,6 +13,10 @@ public class CookingTableRenderer extends TileEntitySpecialRenderer<TileCookingT
 
     @Override
     public void renderTileEntityAt(TileCookingTable tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+        IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        if(state.getBlock() != ModBlocks.cookingTable) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
+            return;
+        }
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
         ItemStack itemStack = tileEntity.getNoFilterBook();
         if (itemStack != null) {

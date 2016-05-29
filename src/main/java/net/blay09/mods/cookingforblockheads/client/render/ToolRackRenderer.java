@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
@@ -11,6 +13,10 @@ public class ToolRackRenderer extends TileEntitySpecialRenderer<TileToolRack> {
 
 	@Override
 	public void renderTileEntityAt(TileToolRack tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+		IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+		if(state.getBlock() != ModBlocks.toolRack) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
+			return;
+		}
 		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 		ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
 		ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
@@ -18,7 +24,7 @@ public class ToolRackRenderer extends TileEntitySpecialRenderer<TileToolRack> {
 			GlStateManager.pushMatrix();
 			GlStateManager.color(1f, 1f, 1f, 1f);
 			GlStateManager.translate(x + 0.5, y + 0.6, z + 0.5);
-			GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+			GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
 			GlStateManager.translate(0, 0, 0.4);
 			GlStateManager.scale(0.5f, 0.5f, 0.5f);
 			if(leftStack != null) {
