@@ -1,12 +1,13 @@
 package net.blay09.mods.cookingbook.client.render;
 
-import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.CookingConfig;
+import net.blay09.mods.cookingbook.CookingForBlockheads;
 import net.blay09.mods.cookingbook.block.TileEntityFridge;
 import net.blay09.mods.cookingbook.client.model.ModelFridge;
 import net.blay09.mods.cookingbook.client.model.ModelSmallFridge;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -101,6 +102,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
                 if(!CookingConfig.disableItemRender && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
                     int largeFridgeSize = tileEntityFridge.getSizeInventory() + (upperFridge != null ? upperFridge.getSizeInventory() : 0);
+                    RenderItem.renderInFrame = true;
                     for (int i = 0; i < largeFridgeSize; i++) {
                         ItemStack itemStack = (i >= tileEntityFridge.getSizeInventory() && upperFridge != null) ? upperFridge.getStackInSlot(i - tileEntityFridge.getSizeInventory()) : tileEntityFridge.getStackInSlot(i);
                         if (itemStack != null) {
@@ -123,6 +125,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                             RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, itemY, 0.5f + itemZ, 0f, 5f);
                         }
                     }
+                    RenderItem.renderInFrame = false;
                 }
             }
         } else {
@@ -144,6 +147,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                 GL11.glRotatef(180f, 0f, 0f, -1f);
                 GL11.glScalef(0.5f, 0.5f, 0.5f);
                 if(!CookingConfig.disableItemRender && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                    RenderItem.renderInFrame = true;
                     for (int i = 0; i < tileEntityFridge.getSizeInventory(); i++) {
                         ItemStack itemStack = tileEntityFridge.getStackInSlot(i);
                         if (itemStack != null) {
@@ -161,6 +165,7 @@ public class TileEntityFridgeRenderer extends TileEntitySpecialRenderer {
                             RenderManager.instance.renderEntityWithPosYaw(tileEntityFridge.getRenderItem(), 0.45f - itemX, -2f + itemY, 0.5f + itemZ, 0f, 0f);
                         }
                     }
+                    RenderItem.renderInFrame = false;
                 }
             }
         }
