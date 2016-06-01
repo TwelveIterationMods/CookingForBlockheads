@@ -2,11 +2,9 @@ package net.blay09.mods.cookingbook.client.render;
 
 import net.blay09.mods.cookingbook.CookingConfig;
 import net.blay09.mods.cookingbook.block.TileEntityCookingOven;
-import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.client.model.ModelOven;
-import net.blay09.mods.cookingbook.client.model.ModelToolRack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -66,6 +64,7 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
         GL11.glRotatef(180f, 0f, 0f, -1f);
         if(doorAngle > 0f) {
             if(!CookingConfig.disableItemRender && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                RenderItem.renderInFrame = true;
                 for (int i = 0; i < 9; i++) {
                     ItemStack itemStack = tileEntityOven.getStackInSlot(i + 7);
                     if (itemStack != null) {
@@ -81,40 +80,49 @@ public class TileEntityOvenRenderer extends TileEntitySpecialRenderer {
                         GL11.glPopMatrix();
                     }
                 }
+                RenderItem.renderInFrame = false;
             }
         }
         final float scale = 0.7f;
         if (tileEntityOven.getStackInSlot(16) != null) {
+            RenderItem.renderInFrame = true;
             GL11.glPushMatrix();
             GL11.glTranslatef(-0.2f, -0.55f, 0.1f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
             GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(0), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
+            RenderItem.renderInFrame = false;
         }
         if (tileEntityOven.getStackInSlot(17) != null) {
+            RenderItem.renderInFrame = true;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.2f, -0.55f, 0.1f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
             GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(1), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
+            RenderItem.renderInFrame = false;
         }
         if (tileEntityOven.getStackInSlot(18) != null) {
+            RenderItem.renderInFrame = true;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.2f, -0.55f, -0.35f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
             GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(2), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
+            RenderItem.renderInFrame = false;
         }
         if (tileEntityOven.getStackInSlot(19) != null) {
+            RenderItem.renderInFrame = true;
             GL11.glPushMatrix();
             GL11.glTranslatef(-0.2f, -0.55f, -0.35f);
             GL11.glRotatef(45f, 1f, 0f, 0f);
             GL11.glScalef(scale, scale, scale);
             RenderManager.instance.renderEntityWithPosYaw(tileEntityOven.getRenderItem(3), 0, 0, 0, 0f, 0f);
             GL11.glPopMatrix();
+            RenderItem.renderInFrame = false;
         }
         if(!oldRescaleNormal) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);

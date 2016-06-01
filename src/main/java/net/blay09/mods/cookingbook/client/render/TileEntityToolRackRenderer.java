@@ -2,9 +2,9 @@ package net.blay09.mods.cookingbook.client.render;
 
 import net.blay09.mods.cookingbook.block.TileEntityToolRack;
 import net.blay09.mods.cookingbook.client.model.ModelToolRack;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,10 +53,14 @@ public class TileEntityToolRackRenderer extends TileEntitySpecialRenderer {
         bindTexture(texture);
         model.renderAll();
         if(tileEntityToolRack.getStackInSlot(0) != null) {
+            RenderItem.renderInFrame = true;
             RenderManager.instance.renderEntityWithPosYaw(tileEntityToolRack.getRenderItem(0), 0.25d, 0.3d, 0.4d, 0f, 0f);
+            RenderItem.renderInFrame = false;
         }
         if(tileEntityToolRack.getStackInSlot(1) != null) {
+            RenderItem.renderInFrame = true;
             RenderManager.instance.renderEntityWithPosYaw(tileEntityToolRack.getRenderItem(1), -0.25d, 0.3d, 0.4d, 0f, 0f);
+            RenderItem.renderInFrame = false;
         }
         if(!oldRescaleNormal) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
