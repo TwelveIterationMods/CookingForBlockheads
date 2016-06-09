@@ -11,6 +11,7 @@ import net.blay09.mods.cookingforblockheads.network.message.MessageCraftRecipe;
 import net.blay09.mods.cookingforblockheads.network.message.MessageRecipeList;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
@@ -177,7 +178,7 @@ public class ContainerRecipeBook extends Container {
 	public void tryCraft(int id, boolean stack) {
 		if(allowCrafting) {
 			FoodRecipeWithStatus recipe = recipeMap.get(id);
-			if(recipe != null) {
+			if(recipe != null && recipe.getStatus() == RecipeStatus.AVAILABLE) {
 				if(recipe.getType() == RecipeType.CRAFTING) {
 					int craftCount = stack ? recipe.getOutputItem().getMaxStackSize() : 1;
 					for (int i = 0; i < craftCount; i++) {
