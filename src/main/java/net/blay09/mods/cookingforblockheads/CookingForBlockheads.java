@@ -82,10 +82,6 @@ public class CookingForBlockheads {
 			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.addon.MoreFoodsAddon");
 		}
 
-		if(config.getBoolean("EnviroMine", "modules", true, "Multiblock Kitchen Support (Freezer)")) {
-//			event.buildSoftDependProxy("enviromine", "net.blay09.mods.cookingforblockheads.addon.EnviroMineAddon");
-		}
-
 		if(config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values")) {
 			event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.addon.AppleCoreAddon");
 		}

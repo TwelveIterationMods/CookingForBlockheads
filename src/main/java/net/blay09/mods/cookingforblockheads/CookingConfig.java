@@ -2,8 +2,6 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.minecraftforge.common.config.Configuration;
 
-import java.io.File;
-
 public class CookingConfig {
 
     public static boolean sinkRequiresWater;
@@ -11,7 +9,6 @@ public class CookingConfig {
     public static boolean disallowOvenAutomation;
     public static float ovenFuelTimeMultiplier;
     public static float ovenCookTimeMultiplier;
-    public static boolean preferPamsToast;
 
     public static void load(Configuration config) {
         sinkRequiresWater = config.getBoolean("Sink Requires Water", "general", false, "Set this to true if you'd like the sink to require water to be piped in, instead of providing infinite of it.");
@@ -20,7 +17,6 @@ public class CookingConfig {
         ovenCookTimeMultiplier = config.getFloat("Oven Cook Time Multiplier", "general", 1f, 0.25f, 9f, "The cooking time multiplier for the cooking oven. Higher values means it will take longer.");
 
         ovenRequiresCookingOil = config.getBoolean("Oven Requires Cooking Oil", "compat", false, "Set this to true if you'd like the oven to only accept cooking oil as fuel (requires Pam's Harvestcraft)");
-        preferPamsToast = config.getBoolean("Prefer Pam's Toast", "compat", true, "Should bread be toasted into Pam's toast instead of the Cooking for Blockheads one? (requires Pam's Harvestcraft)");
 
         config.setCategoryComment("blocks", "Setting any of these options to false will disable their crafting recipe.");
         config.setCategoryComment("items", "Setting any of these options to false will disable their crafting recipe.");

@@ -60,9 +60,9 @@ public class  BlockOven extends BlockKitchen {
                 } else if(hitX >= 0.5f && hitZ < 0.5f) {
                     index = 0;
                 } else if(hitX < 0.5f && hitZ >= 0.5f) {
-                    index = 2;
-                } else if(hitX >= 0.5f && hitZ >= 0.5f) {
                     index = 3;
+                } else if(hitX >= 0.5f && hitZ >= 0.5f) {
+                    index = 2;
                 }
                 if(index != -1) {
                     TileOven tileOven = (TileOven) world.getTileEntity(pos);
