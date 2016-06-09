@@ -15,6 +15,8 @@ public class ShapedCraftingFood extends FoodRecipe {
             if(recipe.recipeItems[i] != null) {
                 boolean isToolItem = CookingRegistry.isToolItem(recipe.recipeItems[i]);
                 craftMatrix.add(new FoodIngredient(recipe.recipeItems[i].copy(), isToolItem));
+            } else {
+                craftMatrix.add(null);
             }
         }
     }

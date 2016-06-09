@@ -54,12 +54,16 @@ public class FoodRecipeWithStatus {
         craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
         for (int i = 0; i < ingredientCount; i++) {
             int stackCount = buf.readShort();
-            ItemStack[] itemStacks = new ItemStack[stackCount];
-            for (int j = 0; j < stackCount; j++) {
-                itemStacks[j] = ByteBufUtils.readItemStack(buf);
+            if(stackCount > 0) {
+                ItemStack[] itemStacks = new ItemStack[stackCount];
+                for (int j = 0; j < stackCount; j++) {
+                    itemStacks[j] = ByteBufUtils.readItemStack(buf);
+                }
+                boolean isToolItem = buf.readBoolean();
+                craftMatrix.add(new FoodIngredient(itemStacks, isToolItem));
+            } else {
+                craftMatrix.add(null);
             }
-            boolean isToolItem = buf.readBoolean();
-            craftMatrix.add(new FoodIngredient(itemStacks, isToolItem));
         }
         RecipeType type = RecipeType.fromId(buf.readByte());
         RecipeStatus status = RecipeStatus.fromId(buf.readByte());
@@ -71,11 +75,15 @@ public class FoodRecipeWithStatus {
         ByteBufUtils.writeItemStack(buf, outputItem);
         buf.writeByte(craftMatrix.size());
         for(FoodIngredient ingredient : craftMatrix) {
-            buf.writeShort(ingredient.getItemStacks().length);
-            for(ItemStack ingredientStack : ingredient.getItemStacks()) {
-                ByteBufUtils.writeItemStack(buf, ingredientStack);
+            if(ingredient != null) {
+                buf.writeShort(ingredient.getItemStacks().length);
+                for (ItemStack ingredientStack : ingredient.getItemStacks()) {
+                    ByteBufUtils.writeItemStack(buf, ingredientStack);
+                }
+                buf.writeBoolean(ingredient.isToolItem());
+            } else {
+                buf.writeShort(0);
             }
-            buf.writeBoolean(ingredient.isToolItem());
         }
         buf.writeByte(type.ordinal());
         buf.writeByte(status.ordinal());
