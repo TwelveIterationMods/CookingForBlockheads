@@ -78,12 +78,16 @@ public class CookingForBlockheads {
 			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingforblockheads.addon.HarvestCraftAddon");
 		}
 
+		if(config.getBoolean("More Foods", "modules", true, "Ingredient Recipes")) {
+			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.addon.MoreFoodsAddon");
+		}
+
 		if(config.getBoolean("EnviroMine", "modules", true, "Multiblock Kitchen Support (Freezer)")) {
 //			event.buildSoftDependProxy("enviromine", "net.blay09.mods.cookingforblockheads.addon.EnviroMineAddon");
 		}
 
 		if(config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values")) {
-//			event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.addon.AppleCoreAddon");
+			event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.addon.AppleCoreAddon");
 		}
 
 //		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.addon.MineTweakerAddon");

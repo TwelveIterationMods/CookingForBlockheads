@@ -23,9 +23,10 @@ group = "net.blay09.mods"
 archivesBaseName = "CookingForBlockheads"
 
 minecraft {
-    version = "1.9.4-12.17.0.1909-1.9.4"
+    version = "1.9.4-12.17.0.1954"
     runDir = "run"
-    
+
+    useDepAts = true
     mappings = "snapshot_20160518"
 }
 
@@ -44,10 +45,18 @@ repositories {
         name = "RX14"
         url = "http://mvn.rx14.co.uk/repo/"
     }
+    maven {
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        url "http://www.ryanliptak.com/maven/"
+    }
 }
 
 dependencies {
     provided group: "inventorytweaks", name: "InventoryTweaks", version: "1.59-dev-3"
+    deobfCompile "mezz.jei:jei_1.9.4:3.6.2.211"
+    deobfCompile "applecore:AppleCore:1.9.4-1.3.2:api"
 }
 
 processResources{

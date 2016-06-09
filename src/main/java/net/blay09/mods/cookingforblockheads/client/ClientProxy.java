@@ -20,12 +20,14 @@ import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -66,6 +68,14 @@ public class ClientProxy extends CommonProxy {
 
 		ModBlocks.initModels();
 		ModItems.initModels();
+	}
+
+	@SubscribeEvent
+	public void onTest(ServerChatEvent event) {
+		if(event.getMessage().contains("testibus") && event.getPlayer().getHeldItemMainhand() != null) {
+			event.getPlayer().addChatMessage(new TextComponentString(event.getPlayer().getHeldItemMainhand().getItem().getRegistryName().toString()));
+			event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent

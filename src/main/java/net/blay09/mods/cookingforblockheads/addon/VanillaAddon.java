@@ -57,13 +57,6 @@ public class VanillaAddon implements FoodStatsProvider {
             }
         });
 
-        CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastHandler() {
-            @Override
-            public ItemStack getToasterOutput(ItemStack itemStack) {
-                return new ItemStack(ModItems.toast);
-            }
-        });
-
         MinecraftForge.EVENT_BUS.register(this);
 
         CookingForBlockheadsAPI.setFoodStatsProvider(this);
