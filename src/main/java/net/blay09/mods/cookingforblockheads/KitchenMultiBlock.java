@@ -54,10 +54,10 @@ public class KitchenMultiBlock {
     private final List<IKitchenItemProvider> tmpSourceInventories = Lists.newArrayList();
     public List<IKitchenItemProvider> getSourceInventories(InventoryPlayer playerInventory) {
         tmpSourceInventories.clear();
-        tmpSourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
         for (IKitchenItemProvider provider : itemProviderList) {
             tmpSourceInventories.add(provider);
         }
+        tmpSourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
         return tmpSourceInventories;
     }
 
