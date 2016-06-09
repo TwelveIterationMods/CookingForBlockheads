@@ -55,7 +55,7 @@ public class TileSink extends TileEntity implements IFluidHandler {
 
         @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate) {
-            if(fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
+            if(!CookingConfig.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
                 if(simulate) {
                     waterUsed += amount * 1000;
                 } else {
