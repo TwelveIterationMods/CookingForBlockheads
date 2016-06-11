@@ -9,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -58,6 +59,8 @@ public class CookingForBlockheads {
 		if(config.hasChanged()) {
 			config.save();
 		}
+
+		MinecraftForge.EVENT_BUS.register(new CowInAJarHandler());
 	}
 
     @Mod.EventHandler
