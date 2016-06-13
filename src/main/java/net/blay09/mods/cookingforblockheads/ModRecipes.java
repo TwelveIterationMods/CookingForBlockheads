@@ -50,6 +50,11 @@ public class ModRecipes {
 			//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingForBlockheads.sink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
 		}
 
+		// Milk Jar
+		if(config.getBoolean("Milk Jar", "blocks", true, "")) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.milkJar), "GPG", "GMG", "GGG", 'G', "blockGlass", 'P', "plankWood", 'M', Items.MILK_BUCKET));
+		}
+
 		// Cooking Table
 		if(config.getBoolean("Cooking Table", "blocks", true, "")) {
 			if(craftingEdition) {

@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.network;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.handler.*;
 import net.blay09.mods.cookingforblockheads.network.message.MessageCraftRecipe;
+import net.blay09.mods.cookingforblockheads.network.message.MessageCreateCowJar;
 import net.blay09.mods.cookingforblockheads.network.message.MessageRecipeList;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -15,6 +16,7 @@ public class NetworkHandler {
     public static void init() {
         instance.registerMessage(HandlerRecipeList.class, MessageRecipeList.class, 0, Side.CLIENT);
         instance.registerMessage(HandlerCraftRecipe.class, MessageCraftRecipe.class, 1, Side.SERVER);
+        instance.registerMessage(HandlerCreateCowJar.class, MessageCreateCowJar.class, 2, Side.CLIENT);
     }
 
 }

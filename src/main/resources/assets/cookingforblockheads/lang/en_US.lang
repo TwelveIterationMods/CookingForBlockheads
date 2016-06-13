@@ -17,6 +17,8 @@ tile.cookingforblockheads:oven.name=Oven
 tile.cookingforblockheads:fridge.name=Fridge
 tile.cookingforblockheads:sink.name=Sink
 tile.cookingforblockheads:toolRack.name=Tool Rack
+tile.cookingforblockheads:milkJar.name=Milk Jar
+tile.cookingforblockheads:cowJar.name=Cow in a Jar
 
 tooltip.cookingforblockheads:multiblockKitchen=Multiblock Kitchen
 tooltip.cookingforblockheads:dyeable=Dyeable
@@ -25,6 +27,8 @@ tooltip.cookingforblockheads:oven.description=Enables smelting abilities.
 tooltip.cookingforblockheads:sink.description=Provides water to recipes.
 tooltip.cookingforblockheads:fridge.description=Provides ingredients to recipes.
 tooltip.cookingforblockheads:toolRack.description=Provides tools to recipes.
+tooltip.cookingforblockheads:milkJar.description=Provides milk to recipes.
+tooltip.cookingforblockheads:cowJar.description=Slowly produces milk for recipes.
 
 ###
 
@@ -49,3 +53,7 @@ container.cookingforblockheads:oven=Cooking Oven
 container.cookingforblockheads:fridge=Fridge
 
 itemGroup.cookingforblockheads=Cooking for Blockheads
+
+###
+
+waila.cookingforblockheads:milkStored=Milk Stored: %d/%d

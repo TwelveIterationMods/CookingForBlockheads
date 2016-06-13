@@ -14,6 +14,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -52,7 +53,6 @@ public class CookingForBlockheads {
 
 		ModBlocks.load();
 		ModItems.load();
-		ModRecipes.load(config);
 
 		proxy.preInit(event);
 
@@ -60,13 +60,17 @@ public class CookingForBlockheads {
 			config.save();
 		}
 
-		MinecraftForge.EVENT_BUS.register(new CowInAJarHandler());
+		if(CookingConfig.cowJarEnabled) {
+			MinecraftForge.EVENT_BUS.register(new CowJarHandler());
+		}
 	}
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
 		NetworkHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(CookingForBlockheads.instance, new GuiHandler());
+
+		FMLInterModComms.sendMessage("Waila", "register", "net.blay09.mods.cookingforblockheads.compat.WailaProvider.register");
 
 		proxy.init(event);
 	}
@@ -90,6 +94,8 @@ public class CookingForBlockheads {
 		}
 
 //		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.addon.MineTweakerAddon");
+
+		ModRecipes.load(config);
 
 		CookingRegistry.initFoodRegistry();
 	}

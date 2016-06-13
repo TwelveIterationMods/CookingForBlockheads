@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,7 +16,9 @@ public class ModBlocks {
 	public static BlockFridge fridge;
 	public static BlockSink sink;
 	public static BlockToolRack toolRack;
-	public static Block toaster;
+	public static BlockToaster toaster;
+	public static BlockMilkJar milkJar;
+	public static BlockCowJar cowJar;
 
 	public static void load() {
 		cookingTable = new BlockCookingTable();
@@ -38,18 +41,30 @@ public class ModBlocks {
 		registerBlock(toolRack);
 		GameRegistry.registerTileEntity(TileToolRack.class, toolRack.getRegistryName().toString());
 
-//		toaster = new BlockToaster();
-//		GameRegistry.register(toaster);
-//		GameRegistry.registerTileEntity(TileToaster.class, toaster.getRegistryName().toString());
+		toaster = new BlockToaster();
+		registerBlock(toaster);
+		GameRegistry.registerTileEntity(TileToaster.class, toaster.getRegistryName().toString());
+
+		milkJar = new BlockMilkJar();
+		registerBlock(milkJar);
+		GameRegistry.registerTileEntity(TileMilkJar.class, milkJar.getRegistryName().toString());
+
+		cowJar = new BlockCowJar();
+		registerBlock(cowJar);
+		GameRegistry.registerTileEntity(TileCowJar.class, cowJar.getRegistryName().toString());
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void initModels() {
-		cookingTable.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
-		sink.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
-		toolRack.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
-		oven.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
-		fridge.registerModels(Minecraft.getMinecraft().getRenderItem().getItemModelMesher());
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		cookingTable.registerModels(mesher);
+		sink.registerModels(mesher);
+		toolRack.registerModels(mesher);
+		oven.registerModels(mesher);
+		fridge.registerModels(mesher);
+		toolRack.registerModels(mesher);
+		milkJar.registerModels(mesher);
+		cowJar.registerModels(mesher);
 	}
 
 	public static void registerBlock(Block block) {

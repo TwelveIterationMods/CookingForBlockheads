@@ -1,0 +1,42 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cookingforblockheads:milkJarStatic",
+    "custom": {
+      "flip-v": true
+    },
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {
+        "transform": {
+          "gui": {
+            "rotation": [
+              {"x": 30},
+              {"y": 225}
+            ],
+            "scale": 1.25,
+            "translation": [ 0, 0.25, 0]
+          }
+        }
+      }
+    ],
+    "facing": {
+      "west": {
+        "y": -90
+      },
+      "east": {
+        "y": 90
+      },
+      "north": {
+      },
+      "south": {
+        "y": 180
+      }
+    }
+  }
+}
