@@ -61,11 +61,6 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state) {
-		return super.getMapColor(state);
-	}
-
-	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, TYPE, FLIPPED);
 	}
@@ -223,10 +218,11 @@ public class BlockFridge extends BlockKitchen {
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
 			@Override
 			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
-				//noinspection ConstantConditions /// why would world and pos even ever be null?
-				TileEntity tileEntity = world.getTileEntity(pos);
-				if (tileEntity instanceof TileFridge) {
-					return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
+				if(world != null && pos != null) {
+					TileEntity tileEntity = world.getTileEntity(pos);
+					if (tileEntity instanceof TileFridge) {
+						return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
+					}
 				}
 				return 0xFFFFFFFF;
 			}
