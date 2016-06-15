@@ -20,6 +20,8 @@ public class TileMilkJar extends TileEntity {
 
 	protected static final int MILK_CAPACITY = 8000;
 
+	// TODO EXPLOIT: Water bucket should only be provided when a bucket is available and use up that bucket. Smelting Recipes (and possibly other recipes) may otherwise create buckets out of nowhere.
+	// TODO EXPLOIT: This is confirmed to happen for More Foods Bucket of Cheese
 	private static class MilkJarItemProvider implements IKitchenItemProvider {
 		private final List<ItemStack> itemStacks = Lists.newArrayList();
 		private final TileMilkJar tileMilkJar;

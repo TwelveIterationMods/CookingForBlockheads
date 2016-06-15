@@ -9,6 +9,35 @@
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{}]
+    "inventory": [{}],
+    "facing": {
+      "west": {
+        "transform": {
+          "translation": [0, -0.25, 0],
+          "scale": 0.5,
+          "rotation": {"y": -90}
+        }
+      },
+      "east": {
+        "transform": {
+          "translation": [0, -0.25, 0],
+          "scale": 0.5,
+          "rotation": {"y": 90}
+        }
+      },
+      "north": {
+        "transform": {
+          "translation": [0, -0.25, 0],
+          "scale": 0.5
+        }
+      },
+      "south": {
+        "transform": {
+          "translation": [0, -0.25, 0],
+          "scale": 0.5,
+          "rotation": {"y": 180}
+        }
+      }
+    }
   }
 }

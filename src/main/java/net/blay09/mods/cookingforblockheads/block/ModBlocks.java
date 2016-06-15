@@ -28,15 +28,15 @@ public class ModBlocks {
 		oven = new BlockOven();
 		registerBlock(oven);
 		GameRegistry.registerTileEntity(TileOven.class, oven.getRegistryName().toString());
-//
+
 		fridge = new BlockFridge();
 		registerBlock(fridge);
 		GameRegistry.registerTileEntity(TileFridge.class, fridge.getRegistryName().toString());
-//
+
 		sink = new BlockSink();
 		registerBlock(sink);
 		GameRegistry.registerTileEntity(TileSink.class, sink.getRegistryName().toString());
-//
+
 		toolRack = new BlockToolRack();
 		registerBlock(toolRack);
 		GameRegistry.registerTileEntity(TileToolRack.class, toolRack.getRegistryName().toString());
@@ -65,6 +65,7 @@ public class ModBlocks {
 		toolRack.registerModels(mesher);
 		milkJar.registerModels(mesher);
 		cowJar.registerModels(mesher);
+		toaster.registerModels(mesher);
 	}
 
 	public static void registerBlock(Block block) {

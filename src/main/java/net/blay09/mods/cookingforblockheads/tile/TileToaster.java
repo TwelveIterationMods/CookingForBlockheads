@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -9,13 +10,21 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class TileToaster extends TileEntity implements ITickable {
 
-    private static final int TOAST_TICKS = 60;
+    private static final int TOAST_TICKS = 1200;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2);
+    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            markDirty();
+            VanillaPacketHandler.sendTileEntityUpdate(TileToaster.this);
+        }
+    };
 
     private boolean active;
     private int toastTicks;
@@ -24,12 +33,16 @@ public class TileToaster extends TileEntity implements ITickable {
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
+        active = tagCompound.getBoolean("Active");
+        toastTicks = tagCompound.getInteger("ToastTicks");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
+        tagCompound.setBoolean("Active", active);
+        tagCompound.setInteger("ToastTicks", toastTicks);
         return tagCompound;
     }
 
@@ -53,7 +66,7 @@ public class TileToaster extends TileEntity implements ITickable {
     public void update() {
         if(active) {
             toastTicks--;
-            if(toastTicks <= 0) {
+            if(toastTicks <= 0 && !worldObj.isRemote) {
                 for(int i = 0; i < itemHandler.getSlots(); i++) {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
                     if(inputStack != null) {
@@ -61,15 +74,12 @@ public class TileToaster extends TileEntity implements ITickable {
                         if (outputStack == null) {
                             outputStack = inputStack;
                         }
-                        if (!worldObj.isRemote) {
-                            EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
-                            entityItem.motionX = 0f;
-                            entityItem.motionY = 0.1f;
-                            entityItem.motionZ = 0f;
-                            if (worldObj.spawnEntityInWorld(entityItem)) {
-                                itemHandler.setStackInSlot(i, null);
-                            }
-                        }
+                        EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
+                        entityItem.motionX = 0f;
+                        entityItem.motionY = 0.1f;
+                        entityItem.motionZ = 0f;
+                        worldObj.spawnEntityInWorld(entityItem);
+                        itemHandler.setStackInSlot(i, null);
                     }
                 }
                 setActive(false);
@@ -84,9 +94,18 @@ public class TileToaster extends TileEntity implements ITickable {
         } else {
             toastTicks = 0;
         }
+        VanillaPacketHandler.sendTileEntityUpdate(this);
     }
 
-    public IItemHandler getItemHandler() {
+    public boolean isActive() {
+        return active;
+    }
+
+    public IItemHandlerModifiable getItemHandler() {
         return itemHandler;
+    }
+
+    public float getToastProgress() {
+        return 1f - toastTicks / (float) TOAST_TICKS;
     }
 }

@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.passive.EntityCow;
@@ -16,6 +18,10 @@ public class CowJarRenderer extends MilkJarRenderer {
 	@Override
 	public void renderTileEntityAt(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
 		super.renderTileEntityAt(tileEntity, x, y, z, partialTicks, destroyStage);
+		IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+		if(state.getBlock() != ModBlocks.cowJar) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
+			return;
+		}
 		if(entity == null && tileEntity.hasWorldObj()) {
 			entity = new EntityCow(tileEntity.getWorld());
 			entity.setScaleForAge(false);
@@ -24,6 +30,7 @@ public class CowJarRenderer extends MilkJarRenderer {
 		if(entity != null) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+			GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
 			GlStateManager.rotate(180f, 0f, 0f, 1f);
 			GlStateManager.scale(0.02, 0.02, 0.02);
 			model.render(entity, 0f, 0f, 0f, 0f, 0f, 1f);

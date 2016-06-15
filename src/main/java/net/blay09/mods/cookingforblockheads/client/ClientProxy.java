@@ -10,6 +10,7 @@ import net.blay09.mods.cookingforblockheads.client.render.CowJarRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.FridgeRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.MilkJarRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.OvenRenderer;
+import net.blay09.mods.cookingforblockheads.client.render.ToasterRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.ToolRackRenderer;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
@@ -17,6 +18,7 @@ import net.blay09.mods.cookingforblockheads.tile.TileCowJar;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -24,13 +26,10 @@ import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -72,7 +71,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileFridge.class, new FridgeRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMilkJar.class, new MilkJarRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
-
+		ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
 
 	}
 
@@ -86,6 +85,8 @@ public class ClientProxy extends CommonProxy {
 
 	@SubscribeEvent
 	public void onTest(ServerChatEvent event) {
+		// TODO remove before release
+		// you're totally gonna forget anyways though
 		if(event.getMessage().contains("testibus") && event.getPlayer().getHeldItemMainhand() != null) {
 			event.getPlayer().addChatMessage(new TextComponentString(event.getPlayer().getHeldItemMainhand().getItem().getRegistryName().toString()));
 			event.setCanceled(true);

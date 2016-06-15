@@ -34,6 +34,7 @@ public class TileSink extends TileEntity implements IFluidHandler {
         }
     }
 
+    // TODO EXPLOIT: Water bucket should only be provided when a bucket is available and use up that bucket. Smelting Recipes (and possibly other recipes) may otherwise create buckets out of nowhere.
     private static class SinkItemProvider implements IKitchenItemProvider {
         private final List<ItemStack> itemStacks = Lists.newArrayList();
         private final FluidTank fluidTank;

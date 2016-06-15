@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
@@ -8,20 +9,23 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockToaster extends BlockContainer {
+public class BlockToaster extends BlockKitchen {
 
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.275, 0, 0.275, 0.725, 0.4, 0.725);
 
@@ -30,9 +34,8 @@ public class BlockToaster extends BlockContainer {
 
         setRegistryName(CookingForBlockheads.MOD_ID, "toaster");
         setUnlocalizedName(getRegistryName().toString());
-        setSoundType(SoundType.WOOD);
-        setHardness(5f);
-        setResistance(10f);
+        setSoundType(SoundType.METAL);
+        setHardness(2.5f);
     }
 
     @Override
@@ -41,25 +44,33 @@ public class BlockToaster extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-//        TileToaster tileEntity = (TileToaster) world.getTileEntity(pos);
-//        if(heldItem == null) {
-//            if(!tileEntity.isActive()) {
-//                tileEntity.setActive(!tileEntity.isActive());
-//            }
-//        } else {
-//            ItemStack output = CookingRegistry.getToastOutput(heldItem);
-//            if(output != null) {
-//                for(int i = 0; i < tileEntity.getSizeInventory(); i++) {
-//                    if(tileEntity.getStackInSlot(i) == null) {
-//                        tileEntity.setInventorySlotContents(i, heldItem.splitStack(1));
-//                        return false;
-//                    }
-//                }
-//                return false;
-//            }
-//        }
-        return false;
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if(tileEntity instanceof TileToaster) {
+            TileToaster tileToaster = (TileToaster) tileEntity;
+            if (heldItem == null || tileToaster.getItemHandler().getStackInSlot(0) != null && tileToaster.getItemHandler().getStackInSlot(1) != null) {
+                if (!tileToaster.isActive()) {
+                    tileToaster.setActive(!tileToaster.isActive());
+                }
+            } else {
+                ItemStack output = CookingRegistry.getToastOutput(heldItem);
+                if (output != null) {
+                    for (int i = 0; i < tileToaster.getItemHandler().getSlots(); i++) {
+                        if (tileToaster.getItemHandler().getStackInSlot(i) == null) {
+                            tileToaster.getItemHandler().setStackInSlot(i, heldItem.splitStack(1));
+                            return true;
+                        }
+                    }
+                    return true;
+                } else if(!world.isRemote) {
+                    // TODO Some hardcoded hints. APIfy later.
+                    if(heldItem.getItem() == Items.BREAD && Loader.isModLoaded("morefood")) {
+                        player.addChatComponentMessage(new TextComponentTranslation("hint.cookingforblockheads:moreFoods.cutBreadFirst"));
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override

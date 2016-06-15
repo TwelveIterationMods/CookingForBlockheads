@@ -1,7 +1,6 @@
 item.cookingforblockheads:recipeBookTier0.name=Cooking for Blockheads
 item.cookingforblockheads:recipeBookTier1.name=Cooking for Blockheads I
 item.cookingforblockheads:recipeBookTier2.name=Cooking for Blockheads II
-item.cookingforblockheads:toast.name=Toast
 
 tooltip.cookingforblockheads:recipeBookTier0=#NoFilter Edition
 tooltip.cookingforblockheads:recipeBookTier0.description=Shows all food recipes.
@@ -19,6 +18,7 @@ tile.cookingforblockheads:sink.name=Sink
 tile.cookingforblockheads:toolRack.name=Tool Rack
 tile.cookingforblockheads:milkJar.name=Milk Jar
 tile.cookingforblockheads:cowJar.name=Cow in a Jar
+tile.cookingforblockheads:toaster.name=Toaster
 
 tooltip.cookingforblockheads:multiblockKitchen=Multiblock Kitchen
 tooltip.cookingforblockheads:dyeable=Dyeable
@@ -29,6 +29,7 @@ tooltip.cookingforblockheads:fridge.description=Provides ingredients to recipes.
 tooltip.cookingforblockheads:toolRack.description=Provides tools to recipes.
 tooltip.cookingforblockheads:milkJar.description=Provides milk to recipes.
 tooltip.cookingforblockheads:cowJar.description=Slowly produces milk for recipes.
+tooltip.cookingforblockheads:toaster.description=Magically turns bread into toast.
 
 ###
 
@@ -57,3 +58,6 @@ itemGroup.cookingforblockheads=Cooking for Blockheads
 ###
 
 waila.cookingforblockheads:milkStored=Milk Stored: %d/%d
+waila.cookingforblockheads:toastProgress=Toasting... (%s)
+
+hint.cookingforblockheads:moreFoods.cutBreadFirst=Use a Knife to cut the bread first.
