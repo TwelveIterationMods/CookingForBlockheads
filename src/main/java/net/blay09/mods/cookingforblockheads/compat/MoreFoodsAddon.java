@@ -10,9 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class MoreFoodsAddon {
-
-	private static final String MOD_ID = "morefood";
+public class MoreFoodsAddon extends SimpleAddon {
 
 	private static final String[] ADDITIONAL_RECIPES = new String[] {
 			"item_salt",
@@ -79,35 +77,23 @@ public class MoreFoodsAddon {
 	public static final String TOAST_ITEM = "item_toast";
 
 	public MoreFoodsAddon() {
-		for(String toolName : TOOLS) {
-			Item toolItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, toolName));
-			if(toolItem != null) {
-				CookingForBlockheadsAPI.addToolItem(new ItemStack(toolItem));
-			}
-		}
+		super("morefood");
 
-		final Item breadItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, BREAD_ITEM));
-		final Item toastItem = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, TOAST_ITEM));
+		addTool(TOOLS);
+		addNonFoodRecipe(ADDITIONAL_RECIPES);
+
+		final ItemStack breadItem = getModItemStack(BREAD_ITEM);
+		final ItemStack toastItem = getModItemStack(TOAST_ITEM);
 		if(breadItem != null && toastItem != null) {
-			CookingForBlockheadsAPI.addToastHandler(new ItemStack(breadItem), new ToastHandler() {
+			CookingForBlockheadsAPI.addToastHandler(breadItem, new ToastHandler() {
 				@Override
 				public ItemStack getToasterOutput(ItemStack itemStack) {
-					return new ItemStack(toastItem);
+					return toastItem;
 				}
 			});
 		}
 
 		MinecraftForge.EVENT_BUS.register(this);
-	}
-
-	@SubscribeEvent
-	public void onFoodRegistryInit(FoodRegistryInitEvent event) {
-		for(String s : ADDITIONAL_RECIPES) {
-			Item item = Item.REGISTRY.getObject(new ResourceLocation(MOD_ID, s));
-			if(item != null) {
-				event.registerNonFoodRecipe(new ItemStack(item));
-			}
-		}
 	}
 
 }

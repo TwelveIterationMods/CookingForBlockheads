@@ -73,6 +73,8 @@ public class TileToaster extends TileEntity implements ITickable {
                         ItemStack outputStack = CookingRegistry.getToastOutput(inputStack);
                         if (outputStack == null) {
                             outputStack = inputStack;
+                        } else {
+                            outputStack = outputStack.copy();
                         }
                         EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
                         entityItem.motionX = 0f;

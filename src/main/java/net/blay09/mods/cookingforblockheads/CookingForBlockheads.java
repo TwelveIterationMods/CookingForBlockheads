@@ -89,11 +89,15 @@ public class CookingForBlockheads {
 			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.compat.MoreFoodsAddon");
 		}
 
+		if(config.getBoolean("Food Expansion", "modules", true, "Ingredient Recipes")) {
+			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
+		}
+
 		if(config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values")) {
 			event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
 		}
 
-//		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.addon.MineTweakerAddon");
+		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.compat.MineTweakerAddon");
 
 		ModRecipes.load(config);
 
