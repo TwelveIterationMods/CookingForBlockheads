@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.addon.HarvestCraftAddon;
+import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;

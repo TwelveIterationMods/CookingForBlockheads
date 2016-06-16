@@ -50,6 +50,7 @@ public class GuiRecipeBook extends GuiContainer {
 
 	private GuiTextField searchBar;
 
+	private final GuiButtonSort[] sortButtons = new GuiButtonSort[3];
 	private GuiButtonSort btnSortName;
 	private GuiButtonSort btnSortHunger;
 	private GuiButtonSort btnSortSaturation;
@@ -80,12 +81,15 @@ public class GuiRecipeBook extends GuiContainer {
 
 		btnSortName = new GuiButtonSort(2, width / 2 + 87, height / 2 - 80, 196, "tooltip." + CookingForBlockheads.MOD_ID + ":sortByName");
 		buttonList.add(btnSortName);
+		sortButtons[0] = btnSortName;
 
 		btnSortHunger = new GuiButtonSort(3, width / 2 + 87, height / 2 - 60, 216, "tooltip." + CookingForBlockheads.MOD_ID + ":sortByHunger");
 		buttonList.add(btnSortHunger);
+		sortButtons[1] = btnSortHunger;
 
 		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "tooltip." + CookingForBlockheads.MOD_ID + ":sortBySaturation");
 		buttonList.add(btnSortSaturation);
+		sortButtons[2] = btnSortSaturation;
 
 		searchBar = new GuiTextField(5, fontRendererObj, guiLeft + xSize - 78, guiTop - 5, 70, 10);
 //		searchBar.setFocused(true);
@@ -292,4 +296,7 @@ public class GuiRecipeBook extends GuiContainer {
 		}
 	}
 
+	public GuiButton[] getSortingButtons() {
+		return sortButtons;
+	}
 }

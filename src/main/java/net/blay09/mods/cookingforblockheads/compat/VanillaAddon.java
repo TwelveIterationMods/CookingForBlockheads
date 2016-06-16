@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.addon;
+package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.item.ModItems;

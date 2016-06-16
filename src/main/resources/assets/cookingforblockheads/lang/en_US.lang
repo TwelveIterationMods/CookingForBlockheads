@@ -61,3 +61,5 @@ waila.cookingforblockheads:milkStored=Milk Stored: %d/%d
 waila.cookingforblockheads:toastProgress=Toasting... (%s)
 
 hint.cookingforblockheads:moreFoods.cutBreadFirst=Use a Knife to cut the bread first.
+
+jei.cookingforblockheads:cowJar=Cow in a Jar
