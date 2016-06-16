@@ -20,9 +20,4 @@ public class CommonProxy {
 		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(runnable);
 	}
 
-	@Nullable
-	public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters) {
-		return null;
-	}
-
 }

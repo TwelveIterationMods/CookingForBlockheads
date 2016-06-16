@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import com.google.common.collect.ImmutableMap;
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
@@ -10,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.client.render.CowJarRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.FridgeRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.MilkJarRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.OvenRenderer;
+import net.blay09.mods.cookingforblockheads.client.render.SpiceRackRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.ToasterRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.ToolRackRenderer;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -18,6 +18,7 @@ import net.blay09.mods.cookingforblockheads.tile.TileCowJar;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
@@ -34,8 +35,6 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.animation.ITimeValue;
-import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -72,7 +71,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMilkJar.class, new MilkJarRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
-
+		ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
 	}
 
 	@Override
@@ -109,11 +108,6 @@ public class ClientProxy extends CommonProxy {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters) {
-		return ModelLoaderRegistry.loadASM(location, parameters);
 	}
 
 	@Override

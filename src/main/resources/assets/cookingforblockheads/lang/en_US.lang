@@ -19,6 +19,7 @@ tile.cookingforblockheads:toolRack.name=Tool Rack
 tile.cookingforblockheads:milkJar.name=Milk Jar
 tile.cookingforblockheads:cowJar.name=Cow in a Jar
 tile.cookingforblockheads:toaster.name=Toaster
+tile.cookingforblockheads:spiceRack.name=Spice Rack
 
 tooltip.cookingforblockheads:multiblockKitchen=Multiblock Kitchen
 tooltip.cookingforblockheads:dyeable=Dyeable
@@ -30,6 +31,7 @@ tooltip.cookingforblockheads:toolRack.description=Provides tools to recipes.
 tooltip.cookingforblockheads:milkJar.description=Provides milk to recipes.
 tooltip.cookingforblockheads:cowJar.description=Slowly produces milk for recipes.
 tooltip.cookingforblockheads:toaster.description=Magically turns bread into toast.
+tooltip.cookingforblockheads:spiceRack.description=Stores spices and ingredients.
 
 ###
 
@@ -52,6 +54,7 @@ tooltip.cookingforblockheads:sortBySaturation=Sort by Saturation
 
 container.cookingforblockheads:oven=Cooking Oven
 container.cookingforblockheads:fridge=Fridge
+container.cookingforblockheads:spiceRack=Spice Rack
 
 itemGroup.cookingforblockheads=Cooking for Blockheads
 

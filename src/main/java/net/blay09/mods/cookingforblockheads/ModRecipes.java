@@ -9,6 +9,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class ModRecipes {
 
@@ -47,7 +48,12 @@ public class ModRecipes {
 
 		// Toaster
 		if(config.getBoolean("Toaster", "blocks", true, "")) {
-			//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CookingForBlockheads.sink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.water_bucket));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.toaster), "I I", "C C", "III", 'I', "ingotIron", 'C', Items.COAL));
+		}
+
+		// Spice Rack
+		if(config.getBoolean("Spice Rack", "blocks", true, "")) {
+			GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModBlocks.spiceRack), "slabWood"));
 		}
 
 		// Milk Jar

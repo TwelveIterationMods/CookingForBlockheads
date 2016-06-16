@@ -2,7 +2,9 @@ package net.blay09.mods.cookingforblockheads.network.handler;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.client.gui.GuiSpiceRack;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
+import net.blay09.mods.cookingforblockheads.container.ContainerSpiceRack;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
@@ -11,6 +13,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.GuiFridge;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
 import net.blay09.mods.cookingforblockheads.container.ContainerOven;
 import net.blay09.mods.cookingforblockheads.container.ContainerFridge;
+import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -24,6 +27,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int COOKING_TABLE = 2;
     public static final int COOKING_OVEN = 3;
     public static final int FRIDGE = 4;
+    public static final int SPICE_RACK = 5;
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -67,6 +71,11 @@ public class GuiHandler implements IGuiHandler {
                         return new ContainerFridge(player, (TileFridge) world.getTileEntity(pos));
                     }
                     break;
+                case SPICE_RACK:
+                    if(world.getBlockState(pos).getBlock() == ModBlocks.spiceRack) {
+                        return new ContainerSpiceRack(player, (TileSpiceRack) world.getTileEntity(pos));
+                    }
+                    break;
             }
         }
         return null;
@@ -95,6 +104,8 @@ public class GuiHandler implements IGuiHandler {
                     return new GuiOven(player, (TileOven) world.getTileEntity(pos));
                 case FRIDGE:
                     return new GuiFridge(player, (TileFridge) world.getTileEntity(pos));
+                case SPICE_RACK:
+                    return new GuiSpiceRack(player, (TileSpiceRack) world.getTileEntity(pos));
             }
         }
         return null;
