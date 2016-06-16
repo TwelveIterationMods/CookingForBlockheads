@@ -48,7 +48,7 @@ public class ModRecipes {
 
 		// Toaster
 		if(config.getBoolean("Toaster", "blocks", true, "")) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.toaster), "I I", "C C", "III", 'I', "ingotIron", 'C', Items.COAL));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.toaster), "  B", "IDI", "IBI", 'I', "ingotIron", 'B', Blocks.STONE_BUTTON, 'D', Blocks.IRON_TRAPDOOR));
 		}
 
 		// Spice Rack
