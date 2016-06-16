@@ -1,0 +1,18 @@
+javadocJar {
+    from "build/docs/javadoc"
+    classifier "javadoc"
+
+    appendix "mc" + minecraft.version
+}
+
+apiJar {
+    from sourceSets.api.output
+
+    classifier "api"
+    appendix "mc" + minecraft.version
+}
+
+artifacts {
+    archives apiJar
+    archives javadocJar
+}
