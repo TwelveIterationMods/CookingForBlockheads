@@ -1,5 +1,8 @@
 package net.blay09.mods.cookingforblockheads;
 
+import com.google.common.collect.Lists;
+import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -9,21 +12,30 @@ import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 @Mod(modid = CookingForBlockheads.MOD_ID,
 		updateJSON = "http://balyware.com/new/forge_update.php?modid=" + CookingForBlockheads.MOD_ID)
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";
+	private static final Logger logger = LogManager.getLogger();
 
 	public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
 		@Override
@@ -43,6 +55,8 @@ public class CookingForBlockheads {
 	@SidedProxy(clientSide = "net.blay09.mods.cookingforblockheads.client.ClientProxy", serverSide = "net.blay09.mods.cookingforblockheads.CommonProxy")
     public static CommonProxy proxy;
 
+	private final List<ItemStack> nonFoodRecipes = Lists.newArrayList();
+
 	private Configuration config;
 
 	@Mod.EventHandler
@@ -60,6 +74,8 @@ public class CookingForBlockheads {
 			config.save();
 		}
 
+		MinecraftForge.EVENT_BUS.register(this);
+
 		if(CookingConfig.cowJarEnabled) {
 			MinecraftForge.EVENT_BUS.register(new CowJarHandler());
 		}
@@ -73,6 +89,74 @@ public class CookingForBlockheads {
 		FMLInterModComms.sendMessage("Waila", "register", "net.blay09.mods.cookingforblockheads.compat.WailaProvider.register");
 
 		proxy.init(event);
+	}
+
+	@Mod.EventHandler
+	public void imc(FMLInterModComms.IMCEvent event) {
+		for(FMLInterModComms.IMCMessage message : event.getMessages()) {
+			switch(message.key) {
+				case "RegisterTool":
+					if(message.getMessageType() == ItemStack.class) {
+						CookingForBlockheadsAPI.addToolItem(message.getItemStackValue());
+					} else {
+						logger.error("IMC API Error: RegisterTool expected message of type ItemStack");
+					}
+					break;
+				case "RegisterToast":
+					if(message.getMessageType() == NBTTagCompound.class) {
+						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
+						final ItemStack outputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Output"));
+						//noinspection ConstantConditions /// Missing @Nullable
+						if(inputItem != null && outputItem != null) {
+							CookingForBlockheadsAPI.addToastHandler(inputItem, new ToastHandler() {
+								@Override
+								public ItemStack getToasterOutput(ItemStack itemStack) {
+									return outputItem;
+								}
+							});
+						} else {
+							logger.error("IMC API Error: RegisterToast expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
+						}
+					} else {
+						logger.error("IMC API Error: RegisterTool expected message of type NBT");
+					}
+					break;
+				case "RegisterOvenFuel":
+					if(message.getMessageType() == NBTTagCompound.class) {
+						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
+						//noinspection ConstantConditions /// Missing @Nullable
+						if(inputItem != null && message.getNBTValue().hasKey("FuelValue", Constants.NBT.TAG_ANY_NUMERIC)) {
+							CookingForBlockheadsAPI.addOvenFuel(inputItem, message.getNBTValue().getInteger("FuelValue"));
+						} else {
+							logger.error("IMC API Error: RegisterOvenFuel expected message of type NBT with structure {Input : ItemStack, FuelValue : numeric}");
+						}
+					} else {
+						logger.error("IMC API Error: RegisterOvenFuel expected message of type NBT");
+					}
+					break;
+				case "RegisterOvenRecipe":
+					if(message.getMessageType() == NBTTagCompound.class) {
+						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
+						ItemStack outputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Output"));
+						//noinspection ConstantConditions /// Missing @Nullable
+						if(inputItem != null && outputItem != null) {
+							CookingForBlockheadsAPI.addOvenRecipe(inputItem, outputItem);
+						} else {
+							logger.error("IMC API Error: RegisterOvenRecipe expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
+						}
+					} else {
+						logger.error("IMC API Error: RegisterOvenRecipe expected message of type NBT");
+					}
+					break;
+				case "RegisterNonFoodRecipe":
+					if(message.getMessageType() == ItemStack.class) {
+						nonFoodRecipes.add(message.getItemStackValue());
+					} else {
+						logger.error("IMC API Error: RegisterNonFoodRecipe expected message of type ItemStack");
+					}
+					break;
+			}
+		}
 	}
 
 	@Mod.EventHandler
@@ -90,7 +174,7 @@ public class CookingForBlockheads {
 		}
 
 		if(config.getBoolean("Extra Food", "modules", true, "Tool Support, Ingredient Recipes, Toast")) {
-			event.buildSoftDependProxy("extrafood", "net.blay09.mods.cookingforblockheads.compat.ExtraFoodAddon");
+			event.buildSoftDependProxy("ExtraFood", "net.blay09.mods.cookingforblockheads.compat.ExtraFoodAddon");
 		}
 
 		if(config.getBoolean("Food Expansion", "modules", true, "Ingredient Recipes")) {
@@ -106,6 +190,13 @@ public class CookingForBlockheads {
 		ModRecipes.load(config);
 
 		CookingRegistry.initFoodRegistry();
+	}
+
+	@SubscribeEvent
+	public void onFoodRegistryInit(FoodRegistryInitEvent event) {
+		for(ItemStack itemStack : nonFoodRecipes) {
+			event.registerNonFoodRecipe(itemStack);
+		}
 	}
 
 }
