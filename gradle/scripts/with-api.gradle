@@ -1,11 +1,11 @@
-javadocJar {
+task javadocJar(type: Jar, dependsOn: 'javadoc') {
     from "build/docs/javadoc"
     classifier "javadoc"
 
     appendix "mc" + minecraft.version
 }
 
-apiJar {
+task apiJar(type: Jar) {
     from sourceSets.api.output
 
     classifier "api"
