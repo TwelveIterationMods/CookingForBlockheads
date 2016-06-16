@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.render.CookingTableRenderer;
+import net.blay09.mods.cookingforblockheads.client.render.CounterRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.CowJarRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.FridgeRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.MilkJarRenderer;
@@ -14,6 +15,7 @@ import net.blay09.mods.cookingforblockheads.client.render.ToasterRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.ToolRackRenderer;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
+import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.blay09.mods.cookingforblockheads.tile.TileCowJar;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
@@ -72,6 +74,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
 	}
 
 	@Override

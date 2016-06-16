@@ -2,10 +2,13 @@ package net.blay09.mods.cookingforblockheads.network.handler;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.client.gui.GuiCounter;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiSpiceRack;
+import net.blay09.mods.cookingforblockheads.container.ContainerCounter;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
 import net.blay09.mods.cookingforblockheads.container.ContainerSpiceRack;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
+import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiOven;
@@ -28,6 +31,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int COOKING_OVEN = 3;
     public static final int FRIDGE = 4;
     public static final int SPICE_RACK = 5;
+    public static final int COUNTER = 6;
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -76,6 +80,11 @@ public class GuiHandler implements IGuiHandler {
                         return new ContainerSpiceRack(player, (TileSpiceRack) world.getTileEntity(pos));
                     }
                     break;
+                case COUNTER:
+                    if(world.getBlockState(pos).getBlock() == ModBlocks.counter) {
+                        return new ContainerCounter(player, (TileCounter) world.getTileEntity(pos));
+                    }
+                    break;
             }
         }
         return null;
@@ -106,6 +115,8 @@ public class GuiHandler implements IGuiHandler {
                     return new GuiFridge(player, (TileFridge) world.getTileEntity(pos));
                 case SPICE_RACK:
                     return new GuiSpiceRack(player, (TileSpiceRack) world.getTileEntity(pos));
+                case COUNTER:
+                    return new GuiCounter(player, (TileCounter) world.getTileEntity(pos));
             }
         }
         return null;

@@ -1,0 +1,53 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": {
+      "flip-v": true
+    },
+    "model": "cookingforblockheads:counterStatic",
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+      "model": "cookingforblockheads:counterStatic",
+      "submodel": {
+        "door": {
+          "model": "cookingforblockheads:counterDoor"
+        },
+        "hinge": {
+          "model": "cookingforblockheads:counterHingeLeft"
+        }
+      }
+    }],
+    "facing": {
+      "west": {
+        "y": -90
+      },
+      "east": {
+        "y": 90
+      },
+      "north": {
+      },
+      "south": {
+        "y": 180
+      }
+    },
+    "flipped": {
+      "true": {
+        "submodel": {
+          "hinge": {
+            "model": "cookingforblockheads:counterHingeRight"
+          }
+        }
+      },
+      "false": {
+        "submodel": {
+          "hinge": {
+            "model": "cookingforblockheads:counterHingeLeft"
+          }
+        }
+      }
+    }
+  }
+}
