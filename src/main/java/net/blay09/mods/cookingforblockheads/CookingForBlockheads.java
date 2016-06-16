@@ -81,16 +81,20 @@ public class CookingForBlockheads {
 			new VanillaAddon();
 		}
 
-		if(config.getBoolean("Pam's HarvestCraft", "modules", true, "Multiblock Kitchen Support, Tool Support, Oven Recipes, Oven Fuel, Ingredient Recipes")) {
+		if(config.getBoolean("Pam's HarvestCraft", "modules", true, "Tool Support, Oven Recipes, Oven Fuel, Ingredient Recipes, Toast")) {
 			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 		}
 
-		if(config.getBoolean("More Foods", "modules", true, "Ingredient Recipes")) {
+		if(config.getBoolean("More Foods", "modules", true, "Tool Support, Ingredient Recipes, Toast")) {
 			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.compat.MoreFoodsAddon");
 		}
 
+		if(config.getBoolean("Extra Food", "modules", true, "Tool Support, Ingredient Recipes, Toast")) {
+			event.buildSoftDependProxy("extrafood", "net.blay09.mods.cookingforblockheads.compat.ExtraFoodAddon");
+		}
+
 		if(config.getBoolean("Food Expansion", "modules", true, "Ingredient Recipes")) {
-			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
+			event.buildSoftDependProxy("fe", "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
 		}
 
 		if(config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values")) {
