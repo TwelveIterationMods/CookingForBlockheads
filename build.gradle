@@ -18,6 +18,9 @@ def MAVEN_REPO = System.getenv("MAVEN_REPO") ?: ""
 def MAVEN_USERNAME = System.getenv("MAVEN_USERNAME") ?: ""
 def MAVEN_PASSWORD = System.getenv("MAVEN_PASSWORD") ?: ""
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 version = "3.0." + BUILD_NUMBER
 group = "net.blay09.mods"
 archivesBaseName = "CookingForBlockheads"
@@ -41,15 +44,18 @@ idea {
 }
 
 repositories {
+//    maven {
+//        name = "RX14"
+//        url = "http://mvn.rx14.co.uk/repo/"
+//    }
+//    maven {
+//        url "http://dvs1.progwml6.com/files/maven"
+//    }
+//    maven {
+//        url "http://www.ryanliptak.com/maven/"
+//    }
     maven {
-        name = "RX14"
-        url = "http://mvn.rx14.co.uk/repo/"
-    }
-    maven {
-        url "http://dvs1.progwml6.com/files/maven"
-    }
-    maven {
-        url "http://www.ryanliptak.com/maven/"
+        url "http://blay09.net:8081/artifactory/repo/"
     }
 }
 
