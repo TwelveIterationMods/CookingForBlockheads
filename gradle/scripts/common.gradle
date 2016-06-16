@@ -27,9 +27,9 @@ jar {
     }
 
     from sourceSets.api.output
-    appendix "mc" + minecraft.version
+    appendix "mc" + minecraft_version
 }
 
 sourceJar {
-    appendix "mc" + minecraft.version
+    appendix "mc" + minecraft_version
 }

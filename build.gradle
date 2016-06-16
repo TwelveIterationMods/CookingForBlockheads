@@ -28,7 +28,7 @@ group = "net.blay09.mods"
 archivesBaseName = mod_name
 
 minecraft {
-    version = forge_version
+    version = minecraft_version + "-" + forge_version
     runDir = "run"
     useDepAts = true
     mappings = mappings_version
