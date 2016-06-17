@@ -15,23 +15,23 @@ public class ModelCounterDoor extends ModelBase {
 		textureHeight = 16;
 
 		DoorMain = new ModelRenderer(this, 4, 0);
-		DoorMain.addBox(0f, 0f, 0f, 14, 15, 1);
-		DoorMain.setRotationPoint(-7f, 9f, -7f);
+		DoorMain.addBox(0f, 0f, 0f, 12, 14, 1);
+		DoorMain.setRotationPoint(-6f, 10f, -6f);
 		DoorMain.setTextureSize(64, 16);
 
 		DoorMainFlipped = new ModelRenderer(this, 4, 0);
-		DoorMainFlipped.addBox(-14f, 0f, 0f, 14, 15, 1);
-		DoorMainFlipped.setRotationPoint(7f, 9f, -7f);
+		DoorMainFlipped.addBox(-12f, 0f, 0f, 12, 14, 1);
+		DoorMainFlipped.setRotationPoint(6f, 10f, -6f);
 		DoorMainFlipped.setTextureSize(64, 16);
 
 		DoorHandle = new ModelRenderer(this, 0, 0);
-		DoorHandle.addBox(12f, 6f, -1f, 1, 2, 1);
-		DoorHandle.setRotationPoint(-7f, 9f, -7f);
+		DoorHandle.addBox(9f, 7f, -1f, 1, 2, 1);
+		DoorHandle.setRotationPoint(-6f, 8f, -6f);
 		DoorHandle.setTextureSize(64, 16);
 
 		DoorHandleFlipped = new ModelRenderer(this, 0, 0);
-		DoorHandleFlipped.addBox(-13f, 6f, -1f, 1, 2, 1);
-		DoorHandleFlipped.setRotationPoint(7f, 9f, -7f);
+		DoorHandleFlipped.addBox(-10f, 7f, -1f, 1, 2, 1);
+		DoorHandleFlipped.setRotationPoint(6f, 8f, -6f);
 		DoorHandleFlipped.setTextureSize(64, 16);
 	}
 

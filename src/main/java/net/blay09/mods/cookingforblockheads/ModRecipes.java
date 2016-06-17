@@ -70,6 +70,11 @@ public class ModRecipes {
 			}
 		}
 
+		// Kitchen Counter
+		if(config.getBoolean("Kitchen Counter", "blocks", true, "")) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.cookingTable), "B", "C", 'B', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15), 'C', Blocks.CHEST));
+		}
+
 		// Cooking Oven
 		if(config.getBoolean("Cooking Oven", "blocks", true, "")) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.oven), "GGG", "IFI", "III", 'G', new ItemStack(Blocks.STAINED_GLASS, 1, 15), 'I', "ingotIron", 'F', Blocks.FURNACE));

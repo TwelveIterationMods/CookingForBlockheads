@@ -13,6 +13,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+// TODO capabilities
+// TODO disallow activating toaster with no content
 public class TileToaster extends TileEntity implements ITickable {
 
     private static final int TOAST_TICKS = 1200;

@@ -25,6 +25,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
         if(state.getBlock() != ModBlocks.counter) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
+        ModelCounterDoor modelCounterDoor = new ModelCounterDoor();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
         GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
@@ -48,7 +49,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
             GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
-            float topY = 0.35f;
+            float topY = 0.25f;
             IItemHandler itemHandler = tileEntity.getItemHandler();
             for(int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);

@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+// TODO capabilities
 public class TileSpiceRack extends TileEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
