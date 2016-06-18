@@ -8,16 +8,24 @@ import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -45,6 +53,12 @@ public class  BlockOven extends BlockKitchen {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (heldItem != null && heldItem.getItem() == Items.DYE) {
+            if (recolorBlock(world, pos, side, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
+                heldItem.stackSize--;
+            }
+            return true;
+        }
         if(side == EnumFacing.UP) {
             if(CookingRegistry.isToolItem(heldItem)) {
                 EnumFacing facing = state.getValue(FACING);
@@ -148,4 +162,33 @@ public class  BlockOven extends BlockKitchen {
             tooltip.add(TextFormatting.GRAY + s);
         }
     }
+
+//    @Override
+//    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+//        TileEntity tileEntity = world.getTileEntity(pos);
+//        if(tileEntity instanceof TileOven) {
+//            ((TileOven) tileEntity).setOvenColor(color);
+//        }
+//        return true;
+//    }
+
+//    @Override
+//    @SuppressWarnings("unchecked")
+//    @SideOnly(Side.CLIENT)
+//    public void registerModels(ItemModelMesher mesher) {
+//        super.registerModels(mesher);
+
+//        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
+//            @Override
+//            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
+//                if(world != null && pos != null) {
+//                    TileEntity tileEntity = world.getTileEntity(pos);
+//                    if (tileEntity instanceof TileOven) {
+//                        return ((TileOven) tileEntity).getOvenColor().getMapColor().colorValue;
+//                    }
+//                }
+//                return 0xFFFFFFFF;
+//            }
+//        }, this);
+//    }
 }

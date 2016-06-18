@@ -38,6 +38,10 @@ public class ModelOvenDoor extends ModelBase {
 	public void render() {
 		float scale = 0.0625f;
 		DoorMain.render(scale);
+	}
+
+	public void renderNoTint() {
+		float scale = 0.0625f;
 		DoorBopLeft.render(scale);
 		DoorBopRight.render(scale);
 		DoorHandle.render(scale);

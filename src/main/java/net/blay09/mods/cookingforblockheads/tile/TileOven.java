@@ -4,6 +4,9 @@ import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -61,6 +64,15 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public int furnaceBurnTime;
     public int currentItemBurnTime;
     private boolean isDirty;
+
+    private EnumDyeColor ovenColor = EnumDyeColor.WHITE;;
+
+    public void setOvenColor(EnumDyeColor color) {
+        this.ovenColor = color;
+        IBlockState state = worldObj.getBlockState(pos);
+        worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), state, state, 1|2);
+        markDirty();
+    }
 
     @Override
     public boolean receiveClientEvent(int id, int type) {
@@ -205,6 +217,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         furnaceBurnTime = tagCompound.getShort("BurnTime");
         currentItemBurnTime = tagCompound.getShort("CurrentItemBurnTime");
         slotCookTime = tagCompound.getIntArray("CookTimes");
+        ovenColor = EnumDyeColor.byDyeDamage(tagCompound.getByte("OvenColor"));
     }
 
     @Override
@@ -214,6 +227,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         tagCompound.setShort("BurnTime", (short) furnaceBurnTime);
         tagCompound.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         tagCompound.setIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
+        tagCompound.setByte("OvenColor", (byte) ovenColor.getDyeDamage());
         return tagCompound;
     }
 
@@ -309,5 +323,9 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public IItemHandler getInputHandler() {
         return itemHandlerInput;
+    }
+
+    public EnumDyeColor getOvenColor() {
+        return ovenColor;
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -48,6 +49,9 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
+//        EnumDyeColor fridgeColor = tileEntity.getOvenColor();
+//        int color = fridgeColor.getMapColor().colorValue;
+//        GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, 1f);
         GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
         GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
         GlStateManager.rotate(180f, 0f, 0f, 1f);
@@ -58,6 +62,8 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         modelOvenDoor.DoorBopLeft.rotateAngleX = doorAngle;
         modelOvenDoor.DoorBopRight.rotateAngleX = doorAngle;
         modelOvenDoor.render();
+//        GlStateManager.color(1f, 1f, 1f, 1f);
+        modelOvenDoor.renderNoTint();
         GlStateManager.popMatrix();
 
         if(doorAngle > 0f) {

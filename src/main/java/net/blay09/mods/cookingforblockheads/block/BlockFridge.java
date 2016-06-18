@@ -6,7 +6,6 @@ import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
@@ -133,18 +132,6 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-		TileFridge fridge = (TileFridge) world.getTileEntity(pos);
-		if(fridge != null) {
-			fridge.setFridgeColor(color);
-			if (fridge.findNeighbourFridge() != null) {
-				fridge.findNeighbourFridge().setFridgeColor(color);
-			}
-		}
-		return true;
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (heldItem != null && heldItem.getItem() == Items.DYE) {
 			if (recolorBlock(world, pos, side, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
@@ -207,6 +194,20 @@ public class BlockFridge extends BlockKitchen {
 			tooltip.add(TextFormatting.GRAY + s);
 		}
 		tooltip.add(TextFormatting.AQUA + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":dyeable"));
+	}
+
+	@Override
+	public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if(tileEntity instanceof TileFridge) {
+			TileFridge tileFridge = (TileFridge) tileEntity;
+			tileFridge.setFridgeColor(color);
+			TileFridge neighbourFridge = tileFridge.findNeighbourFridge();
+			if (neighbourFridge != null) {
+				neighbourFridge.setFridgeColor(color);
+			}
+		}
+		return true;
 	}
 
 	@Override
