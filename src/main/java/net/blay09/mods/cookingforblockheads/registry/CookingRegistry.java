@@ -92,11 +92,8 @@ public class CookingRegistry {
             if(resultStack.getItem() instanceof ItemFood) {
                 foodItems.put(resultStack.getItem(), new SmeltingFood(id.incrementAndGet(), resultStack, sourceStack));
             } else {
-                for(ItemStack itemStack : nonFoodRecipes) {
-                    if (ItemUtils.areItemStacksEqualWithWildcard(resultStack, itemStack)) {
-                        foodItems.put(resultStack.getItem(), new SmeltingFood(id.incrementAndGet(), resultStack, sourceStack));
-                        break;
-                    }
+                if(isNonFoodRecipe(resultStack)) {
+                    foodItems.put(resultStack.getItem(), new SmeltingFood(id.incrementAndGet(), resultStack, sourceStack));
                 }
             }
         }

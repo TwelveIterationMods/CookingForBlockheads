@@ -6,7 +6,7 @@ import net.minecraft.util.ITickable;
 
 public class TileCowJar extends TileMilkJar implements ITickable {
 
-	private static final int UPDATE_INTERVAL = 1000;
+	private static final int UPDATE_INTERVAL = 20;
 
 	protected boolean isDirty;
 	protected int ticksSinceUpdate;

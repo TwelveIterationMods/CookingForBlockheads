@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -82,10 +83,12 @@ public class TileMilkJar extends TileEntity {
 
 	public void fill(int amount) {
 		milkAmount = Math.min(MILK_CAPACITY, milkAmount + amount);
+		VanillaPacketHandler.sendTileEntityUpdate(this);
 	}
 
 	public void drain(int amount) {
 		milkAmount = Math.max(0, milkAmount - amount);
+		VanillaPacketHandler.sendTileEntityUpdate(this);
 	}
 
 	@Override

@@ -138,7 +138,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
                         return null;
                     }
-                } else if (smeltingResult != null && smeltingResult.getItem() instanceof ItemFood) {
+                } else if (smeltingResult != null) {
                     if (!this.mergeItemStack(slotStack, 0, 3, false)) {
                         return null;
                     }
