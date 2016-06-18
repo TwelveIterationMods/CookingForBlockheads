@@ -85,15 +85,13 @@ public class ClientProxy extends CommonProxy {
 		ModItems.initModels();
 	}
 
-	@SubscribeEvent
-	public void onTest(ServerChatEvent event) {
-		// TODO remove before release
-		// you're totally gonna forget anyways though
-		if(event.getMessage().contains("testibus") && event.getPlayer().getHeldItemMainhand() != null) {
-			event.getPlayer().addChatMessage(new TextComponentString(event.getPlayer().getHeldItemMainhand().getItem().getRegistryName().toString()));
-			event.setCanceled(true);
-		}
-	}
+//	@SubscribeEvent
+//	public void onTest(ServerChatEvent event) {
+//		if(event.getMessage().contains("testibus") && event.getPlayer().getHeldItemMainhand() != null) {
+//			event.getPlayer().addChatMessage(new TextComponentString(event.getPlayer().getHeldItemMainhand().getItem().getRegistryName().toString()));
+//			event.setCanceled(true);
+//		}
+//	}
 
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
