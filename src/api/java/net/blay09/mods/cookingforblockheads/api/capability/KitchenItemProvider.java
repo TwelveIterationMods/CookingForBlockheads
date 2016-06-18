@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import java.util.List;
+
 public class KitchenItemProvider implements IKitchenItemProvider {
 
 	private IItemHandler itemHandler;
@@ -30,7 +32,7 @@ public class KitchenItemProvider implements IKitchenItemProvider {
 	}
 
 	@Override
-	public ItemStack useItemStack(int slot, int amount, boolean simulate) {
+	public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
 		ItemStack itemStack = itemHandler.getStackInSlot(slot);
 		if(itemStack.stackSize - usedStackSize[slot] >= amount) {
 			ItemStack result = itemHandler.extractItem(slot, amount, simulate);

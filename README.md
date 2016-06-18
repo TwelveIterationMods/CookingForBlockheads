@@ -11,7 +11,10 @@ They may contain unfinished and broken features and no support is provided for t
 The below is a list of IMC message keys handled by Cooking for Blockheads.
 
 * **RegisterTool** (ItemStack)
+* **RegisterWaterItem** (ItemStack)
+* **RegisterMilkItem** (ItemStack)
 * **RegisterToast** (TagCompound : {Input : ItemStack, Output : ItemStack})
+* **RegisterToastError** (TagCompound : {Input : ItemStack, Message : String})
 * **RegisterOvenFuel** (TagCompound : {Input : ItemStack, FuelValue : Numeric})
 * **RegisterOvenRecipe** (TagCompound : {Input : ItemStack, Output : ItemStack})
 * **RegisterNonFoodRecipe** (ItemStack)

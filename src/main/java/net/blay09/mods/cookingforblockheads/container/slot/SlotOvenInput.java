@@ -14,8 +14,7 @@ public class SlotOvenInput extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        ItemStack smeltingResult = TileOven.getSmeltingResult(stack);
-        return smeltingResult != null && smeltingResult.getItem() instanceof ItemFood;
+        return TileOven.getSmeltingResult(stack) != null;
     }
 
 }

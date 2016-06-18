@@ -12,7 +12,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-// TODO capabilities
 public class TileSpiceRack extends TileEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
@@ -62,7 +61,7 @@ public class TileSpiceRack extends TileEntity {
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY
+                || capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
     }
 
@@ -72,7 +71,7 @@ public class TileSpiceRack extends TileEntity {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) itemHandler;
         }
-        if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
+        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
         return super.getCapability(capability, facing);

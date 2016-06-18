@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -28,6 +30,16 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private static final int COOK_TIME = 200;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(20) {
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if(slot < 3) { // Input Slots
+                if(getSmeltingResult(stack) == null) {
+                    return stack;
+                }
+            }
+            return super.insertItem(slot, stack, simulate);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             if(slot >= 7 && slot < 16) {
@@ -42,7 +54,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private final RangedWrapper itemHandlerOutput = new RangedWrapper(itemHandler, 4, 7);
     private final RangedWrapper itemHandlerProcessing = new RangedWrapper(itemHandler, 7, 16);
     private final RangedWrapper itemHandlerTools = new RangedWrapper(itemHandler, 16, 20);
-    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandlerTools);
+    private final KitchenItemProvider itemProvider = new KitchenItemProvider(new CombinedInvWrapper(itemHandlerTools, itemHandlerOutput));
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     public int[] slotCookTime = new int[9];
@@ -154,7 +166,14 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         if(result != null) {
             return result;
         }
-        return FurnaceRecipes.instance().getSmeltingResult(itemStack);
+        result = FurnaceRecipes.instance().getSmeltingResult(itemStack);
+        if(result != null && result.getItem() instanceof ItemFood) {
+            return result;
+        }
+        if(result != null && CookingRegistry.isNonFoodRecipe(result)) {
+            return result;
+        }
+        return null;
     }
 
     public static boolean isItemFuel(ItemStack itemStack) {
@@ -257,8 +276,8 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || capability == CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY
-                || capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY
+                || capability == CapabilityKitchenSmeltingProvider.CAPABILITY
+                || capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
     }
 
@@ -278,10 +297,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                     return (T) itemHandlerFuel;
             }
         }
-        if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
+        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
-        if(capability == CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY) {
+        if(capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
             return (T) this;
         }
 //        noinspection ConstantConditions /// Forge needs to update to use Nullable in their patches

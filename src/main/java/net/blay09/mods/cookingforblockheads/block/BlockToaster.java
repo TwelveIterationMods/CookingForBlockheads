@@ -1,26 +1,25 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -49,23 +48,23 @@ public class BlockToaster extends BlockKitchen {
         if(tileEntity instanceof TileToaster) {
             TileToaster tileToaster = (TileToaster) tileEntity;
             if (heldItem == null || tileToaster.getItemHandler().getStackInSlot(0) != null && tileToaster.getItemHandler().getStackInSlot(1) != null) {
-                if (!tileToaster.isActive()) {
+                if (!tileToaster.isActive() && (tileToaster.getItemHandler().getStackInSlot(0) != null || tileToaster.getItemHandler().getStackInSlot(1) != null)) {
                     tileToaster.setActive(!tileToaster.isActive());
                 }
             } else {
-                ItemStack output = CookingRegistry.getToastOutput(heldItem);
-                if (output != null) {
-                    for (int i = 0; i < tileToaster.getItemHandler().getSlots(); i++) {
-                        if (tileToaster.getItemHandler().getStackInSlot(i) == null) {
-                            tileToaster.getItemHandler().setStackInSlot(i, heldItem.splitStack(1));
-                            return true;
+                ToastHandler toastHandler = CookingRegistry.getToastHandler(heldItem);
+                if(toastHandler != null) {
+                    ItemStack output = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(heldItem) : null;
+                    if (output != null) {
+                        for (int i = 0; i < tileToaster.getItemHandler().getSlots(); i++) {
+                            if (tileToaster.getItemHandler().getStackInSlot(i) == null) {
+                                tileToaster.getItemHandler().setStackInSlot(i, heldItem.splitStack(1));
+                                return true;
+                            }
                         }
-                    }
-                    return true;
-                } else if(!world.isRemote) {
-                    // TODO Some hardcoded hints. APIfy later.
-                    if(heldItem.getItem() == Items.BREAD && Loader.isModLoaded("morefood")) {
-                        player.addChatComponentMessage(new TextComponentTranslation("hint.cookingforblockheads:moreFoods.cutBreadFirst"));
+                        return true;
+                    } else if (!world.isRemote && toastHandler instanceof ToastErrorHandler) {
+                        player.addChatComponentMessage(((ToastErrorHandler) toastHandler).getToasterHint(player, heldItem));
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.item.EntityItem;
@@ -9,12 +11,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-// TODO capabilities
-// TODO disallow activating toaster with no content
 public class TileToaster extends TileEntity implements ITickable {
 
     private static final int TOAST_TICKS = 1200;
@@ -72,7 +71,8 @@ public class TileToaster extends TileEntity implements ITickable {
                 for(int i = 0; i < itemHandler.getSlots(); i++) {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
                     if(inputStack != null) {
-                        ItemStack outputStack = CookingRegistry.getToastOutput(inputStack);
+                        ToastHandler toastHandler = CookingRegistry.getToastHandler(inputStack);
+                        ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : null;
                         if (outputStack == null) {
                             outputStack = inputStack;
                         } else {

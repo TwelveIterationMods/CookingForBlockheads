@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -56,6 +56,9 @@ public class HarvestCraftAddon extends SimpleAddon {
     private static final String OLIVE_OIL_ITEM = "oliveoilItem";
     private static final String TOAST_ITEM = "toastItem";
 
+    private static final String FRESH_WATER_ITEM = "freshwaterItem";
+    private static final String FRESH_MILK_ITEM = "freshmilkItem";
+
     public HarvestCraftAddon() {
         super("harvestcraft");
 
@@ -74,7 +77,7 @@ public class HarvestCraftAddon extends SimpleAddon {
 
         final ItemStack toastItem = getModItemStack(TOAST_ITEM);
         if(toastItem != null) {
-            CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastHandler() {
+            CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastOutputHandler() {
                 @Override
                 public ItemStack getToasterOutput(ItemStack itemStack) {
                     return toastItem;
@@ -84,6 +87,9 @@ public class HarvestCraftAddon extends SimpleAddon {
 
         addNonFoodRecipe(ADDITIONAL_RECIPES);
         addTool(TOOLS);
+
+        CookingForBlockheadsAPI.addWaterItem(getModItemStack(FRESH_WATER_ITEM));
+        CookingForBlockheadsAPI.addMilkItem(getModItemStack(FRESH_MILK_ITEM));
     }
 
     public static boolean isWeirdBrokenRecipe(IRecipe recipe) {

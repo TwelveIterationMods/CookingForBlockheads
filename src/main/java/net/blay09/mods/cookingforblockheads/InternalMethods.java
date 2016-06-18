@@ -19,6 +19,16 @@ public class InternalMethods implements IInternalMethods {
     }
 
     @Override
+    public void addWaterItem(ItemStack waterItem) {
+        CookingRegistry.addWaterItem(waterItem);
+    }
+
+    @Override
+    public void addMilkItem(ItemStack milkItem) {
+        CookingRegistry.addMilkItem(milkItem);
+    }
+
+    @Override
     public void addOvenFuel(ItemStack fuelItem, int fuelTime) {
         CookingRegistry.addOvenFuel(fuelItem, fuelTime);
     }

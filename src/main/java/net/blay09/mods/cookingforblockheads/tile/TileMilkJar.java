@@ -3,25 +3,23 @@ package net.blay09.mods.cookingforblockheads.tile;
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TileMilkJar extends TileEntity {
 
 	protected static final int MILK_CAPACITY = 8000;
 
-	// TODO EXPLOIT: Water bucket should only be provided when a bucket is available and use up that bucket. Smelting Recipes (and possibly other recipes) may otherwise create buckets out of nowhere.
-	// TODO EXPLOIT: This is confirmed to happen for More Foods Bucket of Cheese
 	private static class MilkJarItemProvider implements IKitchenItemProvider {
 		private final List<ItemStack> itemStacks = Lists.newArrayList();
 		private final TileMilkJar tileMilkJar;
@@ -30,10 +28,7 @@ public class TileMilkJar extends TileEntity {
 		public MilkJarItemProvider(TileMilkJar tileMilkJar) {
 			this.tileMilkJar = tileMilkJar;
 			itemStacks.add(new ItemStack(Items.MILK_BUCKET));
-			Item pamsMilkItem = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "freshmilkItem")); // TODO apify
-			if(pamsMilkItem != null) {
-				itemStacks.add(new ItemStack(pamsMilkItem));
-			}
+			itemStacks.addAll(CookingRegistry.getMilkItems());
 		}
 
 		@Override
@@ -42,8 +37,13 @@ public class TileMilkJar extends TileEntity {
 		}
 
 		@Override
-		public ItemStack useItemStack(int slot, int amount, boolean simulate) {
+		public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
 			if(tileMilkJar.getMilkAmount() - milkUsed > amount * 1000) {
+				if(getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
+					if(!CookingRegistry.consumeItemStack(new ItemStack(Items.BUCKET), inventories, simulate)) {
+						return null;
+					}
+				}
 				if(simulate) {
 					milkUsed += amount * 1000;
 				} else {
@@ -71,6 +71,7 @@ public class TileMilkJar extends TileEntity {
 		}
 
 		@Override
+		@Nonnull
 		public ItemStack getStackInSlot(int slot) {
 			return itemStacks.get(slot);
 		}
@@ -120,14 +121,14 @@ public class TileMilkJar extends TileEntity {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY
+		return capability == CapabilityKitchenItemProvider.CAPABILITY
 				|| super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
+		if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
 			return (T) itemProvider;
 		}
 		return super.getCapability(capability, facing);

@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
@@ -16,9 +15,7 @@ import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
-import java.util.Collections;
 import java.util.List;
 
 public class InventoryCraftBook extends InventoryCrafting {
@@ -30,7 +27,7 @@ public class InventoryCraftBook extends InventoryCrafting {
 	public ItemStack tryCraft(FoodRecipeWithStatus recipe, EntityPlayer player, KitchenMultiBlock multiBlock) {
 		int[] sourceInventories = new int[9];
 		int[] sourceInventorySlots = new int[9];
-		List<? extends IKitchenItemProvider> inventories = multiBlock != null ? multiBlock.getSourceInventories(player.inventory) : Collections.singletonList(new KitchenItemProvider(new InvWrapper(player.inventory)));
+		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		for(IKitchenItemProvider itemProvider : inventories) {
 			itemProvider.resetSimulation();
 		}
@@ -49,11 +46,14 @@ public class InventoryCraftBook extends InventoryCrafting {
                     for (int k = 0; k < itemProvider.getSlots(); k++) {
                         ItemStack itemStack = itemProvider.getStackInSlot(k);
                         if (itemStack != null && ingredient.isValidItem(itemStack)) {
-							itemStack = itemProvider.useItemStack(k, 1, true);
+							itemStack = itemProvider.useItemStack(k, 1, true, inventories);
 							if(itemStack != null) {
-								setInventorySlotContents(i, itemStack);
-								sourceInventories[i] = j;
-								sourceInventorySlots[i] = k;
+								int origX = i % recipe.getRecipeWidth();
+								int origY = i / recipe.getRecipeWidth();
+								int targetIdx = origY * 3 + origX;
+								setInventorySlotContents(targetIdx, itemStack);
+								sourceInventories[targetIdx] = j;
+								sourceInventorySlots[targetIdx] = k;
 								continue matrixLoop;
 							}
                         }
@@ -82,7 +82,7 @@ public class InventoryCraftBook extends InventoryCrafting {
 						IKitchenItemProvider sourceProvider = inventories.get(sourceInventories[i]);
 						if(sourceInventorySlots[i] != -1) {
 							sourceProvider.resetSimulation();
-							sourceProvider.useItemStack(sourceInventorySlots[i], 1, false);
+							sourceProvider.useItemStack(sourceInventorySlots[i], 1, false, inventories);
 						}
 						if(containerItem != null) {
 							ItemStack restStack = sourceProvider.returnItemStack(containerItem);

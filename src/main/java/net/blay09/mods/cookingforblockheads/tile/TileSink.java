@@ -4,19 +4,19 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TileSink extends TileEntity implements IFluidHandler {
@@ -34,7 +34,6 @@ public class TileSink extends TileEntity implements IFluidHandler {
         }
     }
 
-    // TODO EXPLOIT: Water bucket should only be provided when a bucket is available and use up that bucket. Smelting Recipes (and possibly other recipes) may otherwise create buckets out of nowhere.
     private static class SinkItemProvider implements IKitchenItemProvider {
         private final List<ItemStack> itemStacks = Lists.newArrayList();
         private final FluidTank fluidTank;
@@ -43,10 +42,7 @@ public class TileSink extends TileEntity implements IFluidHandler {
         public SinkItemProvider(FluidTank fluidTank) {
             this.fluidTank = fluidTank;
             itemStacks.add(new ItemStack(Items.WATER_BUCKET));
-            Item pamsWaterItem = Item.REGISTRY.getObject(new ResourceLocation("harvestcraft", "freshwaterItem")); // TODO apify
-            if(pamsWaterItem != null) {
-                itemStacks.add(new ItemStack(pamsWaterItem));
-            }
+            itemStacks.addAll(CookingRegistry.getWaterItems());
         }
 
         @Override
@@ -55,8 +51,13 @@ public class TileSink extends TileEntity implements IFluidHandler {
         }
 
         @Override
-        public ItemStack useItemStack(int slot, int amount, boolean simulate) {
+        public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
             if(!CookingConfig.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
+                if(getStackInSlot(slot).getItem() == Items.WATER_BUCKET) {
+                    if(!CookingRegistry.consumeItemStack(new ItemStack(Items.BUCKET), inventories, simulate)) {
+                        return null;
+                    }
+                }
                 if(simulate) {
                     waterUsed += amount * 1000;
                 } else {
@@ -84,6 +85,7 @@ public class TileSink extends TileEntity implements IFluidHandler {
         }
 
         @Override
+        @Nonnull
         public ItemStack getStackInSlot(int slot) {
             return itemStacks.get(slot);
         }
@@ -157,14 +159,14 @@ public class TileSink extends TileEntity implements IFluidHandler {
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY
+        return capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
+        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
         return super.getCapability(capability, facing);

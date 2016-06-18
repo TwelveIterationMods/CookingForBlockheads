@@ -10,6 +10,7 @@ public abstract class FoodRecipe {
     private final int id;
     protected List<FoodIngredient> craftMatrix;
     protected ItemStack outputItem;
+    protected int recipeWidth = 3;
 
     public FoodRecipe(int id) {
         this.id = id;
@@ -29,5 +30,9 @@ public abstract class FoodRecipe {
 
     public int getId() {
         return id;
+    }
+
+    public int getRecipeWidth() {
+        return recipeWidth;
     }
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 public class CapabilityKitchenSmeltingProvider {
 
 	@CapabilityInject(IKitchenSmeltingProvider.class)
-	public static Capability<IKitchenSmeltingProvider> KITCHEN_SMELTING_PROVIDER_CAPABILITY;
+	public static Capability<IKitchenSmeltingProvider> CAPABILITY;
 
 	public static void register() {
 		CapabilityManager.INSTANCE.register(IKitchenSmeltingProvider.class, new Capability.IStorage<IKitchenSmeltingProvider>() {

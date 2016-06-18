@@ -1,10 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
-import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -12,11 +8,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -73,8 +67,6 @@ public class BlockMilkJar extends BlockKitchen {
                     }
                 }
                 return true;
-            } else {
-                // TODO apified fluid milk support
             }
         }
         return false;

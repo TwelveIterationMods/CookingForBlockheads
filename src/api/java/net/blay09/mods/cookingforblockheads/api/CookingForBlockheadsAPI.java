@@ -42,4 +42,12 @@ public class CookingForBlockheadsAPI {
     public static void addToolItem(ItemStack toolItem) {
         internalMethods.addToolItem(toolItem);
     }
+
+    public static void addWaterItem(ItemStack waterItem) {
+        internalMethods.addWaterItem(waterItem);
+    }
+
+    public static void addMilkItem(ItemStack milkItem) {
+        internalMethods.addMilkItem(milkItem);
+    }
 }

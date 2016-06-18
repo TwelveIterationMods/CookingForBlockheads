@@ -41,6 +41,10 @@ public class CookingRegistry {
     private static final Map<ItemStack, ItemStack> ovenRecipes = Maps.newHashMap();
     private static final Map<ItemStack, SinkHandler> sinkHandlers = Maps.newHashMap();
     private static final Map<ItemStack, ToastHandler> toastHandlers = Maps.newHashMap();
+    private static final List<ItemStack> waterItems = Lists.newArrayList();
+    private static final List<ItemStack> milkItems = Lists.newArrayList();
+
+    private static Collection<ItemStack> nonFoodRecipes;
 
     public static void initFoodRegistry() {
         recipeList.clear();
@@ -50,7 +54,7 @@ public class CookingRegistry {
         FoodRegistryInitEvent init = new FoodRegistryInitEvent();
         MinecraftForge.EVENT_BUS.post(init);
 
-        Collection<ItemStack> nonFoodRecipes = init.getNonFoodRecipes();
+        nonFoodRecipes = init.getNonFoodRecipes();
 
         // Crafting Recipes of Food Items
         for(Object obj : CraftingManager.getInstance().getRecipeList()) {
@@ -96,6 +100,15 @@ public class CookingRegistry {
                 }
             }
         }
+    }
+
+    public static boolean isNonFoodRecipe(ItemStack itemStack) {
+        for(ItemStack nonFoodStack : nonFoodRecipes) {
+            if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, nonFoodStack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void addFoodRecipe(IRecipe recipe) {
@@ -164,10 +177,10 @@ public class CookingRegistry {
         toastHandlers.put(itemStack, toastHandler);
     }
 
-    public static ItemStack getToastOutput(ItemStack itemStack) {
+    public static ToastHandler getToastHandler(ItemStack itemStack) {
         for(Map.Entry<ItemStack, ToastHandler> entry : toastHandlers.entrySet()) {
             if(ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
-                return entry.getValue().getToasterOutput(itemStack);
+                return entry.getValue();
             }
         }
         return null;
@@ -191,37 +204,56 @@ public class CookingRegistry {
 
     public static Collection<FoodRecipeWithStatus> findAvailableRecipes(InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
         List<FoodRecipeWithStatus> result = Lists.newArrayList();
+        List<IKitchenItemProvider> inventories = getItemProviders(multiBlock, inventory);
         for(FoodRecipe recipe : getFoodRecipes()) {
-            RecipeStatus recipeStatus = getRecipeStatus(recipe, inventory, multiBlock);
+            RecipeStatus recipeStatus = getRecipeStatus(recipe, inventories);
             if(recipeStatus != RecipeStatus.MISSING_INGREDIENTS) {
-                result.add(new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getCraftMatrix(), recipe.getType(), recipeStatus));
+                result.add(new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getRecipeWidth(), recipe.getCraftMatrix(), recipe.getType(), recipeStatus));
             }
         }
         return result;
     }
 
-    public static RecipeStatus getRecipeStatus(FoodRecipe recipe, InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
-        List<? extends IKitchenItemProvider> inventories = multiBlock != null ? multiBlock.getSourceInventories(inventory) : Collections.singletonList(new KitchenItemProvider(new InvWrapper(inventory)));
-        for(IKitchenItemProvider itemProvider : inventories) {
+    public static boolean consumeItemStack(ItemStack itemStack, List<IKitchenItemProvider> inventories, boolean simulate) {
+        if(itemStack == null) {
+            return true;
+        }
+        for (int i = 0; i < inventories.size(); i++) {
+            IKitchenItemProvider itemProvider = inventories.get(i);
+            for (int j = 0; j < itemProvider.getSlots(); j++) {
+                ItemStack providedStack = itemProvider.getStackInSlot(j);
+                if (providedStack != null && ItemUtils.areItemStacksEqualWithWildcard(itemStack, providedStack) && itemProvider.useItemStack(j, 1, simulate, inventories) != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isItemAvailable(FoodIngredient ingredient, List<IKitchenItemProvider> inventories) {
+        if(ingredient == null) {
+            return true;
+        }
+        for (int i = 0; i < inventories.size(); i++) {
+            IKitchenItemProvider itemProvider = inventories.get(i);
+            for (int j = 0; j < itemProvider.getSlots(); j++) {
+                ItemStack itemStack = itemProvider.getStackInSlot(j);
+                if (itemStack != null && ingredient.isValidItem(itemStack) && itemProvider.useItemStack(j, 1, true, inventories) != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static RecipeStatus getRecipeStatus(FoodRecipe recipe, List<IKitchenItemProvider> inventories) {
+        for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
         }
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
         boolean[] itemFound = new boolean[craftMatrix.size()];
-        matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
-            FoodIngredient ingredient = craftMatrix.get(i);
-            if(ingredient == null) {
-                itemFound[i] = true;
-                continue;
-            }
-            for (IKitchenItemProvider itemProvider : inventories) {
-                for (int j = 0; j < itemProvider.getSlots(); j++) {
-                    ItemStack itemStack = itemProvider.getStackInSlot(j);
-                    if (itemStack != null && ingredient.isValidItem(itemStack) && itemProvider.useItemStack(j, 1, true) != null) {
-                        itemFound[i] = true;
-                        continue matrixLoop;
-                    }
-                }
-            }
+        for(int i = 0; i < craftMatrix.size(); i++) {
+            itemFound[i] = isItemAvailable(craftMatrix.get(i), inventories);
         }
         boolean missingTools = false;
         for(int i = 0; i < itemFound.length; i++) {
@@ -236,6 +268,10 @@ public class CookingRegistry {
         return missingTools ? RecipeStatus.MISSING_TOOLS : RecipeStatus.AVAILABLE;
     }
 
+    public static List<IKitchenItemProvider> getItemProviders(KitchenMultiBlock multiBlock, InventoryPlayer inventory) {
+        return multiBlock != null ? multiBlock.getSourceInventories(inventory) : Lists.<IKitchenItemProvider>newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
+    }
+
     public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world) {
         for(IRecipe recipe : recipeList) {
             if(recipe.matches(craftMatrix, world)) {
@@ -244,4 +280,21 @@ public class CookingRegistry {
         }
         return null;
     }
+
+    public static void addWaterItem(ItemStack waterItem) {
+        waterItems.add(waterItem);
+    }
+
+    public static void addMilkItem(ItemStack milkItem) {
+        waterItems.add(milkItem);
+    }
+
+    public static List<ItemStack> getWaterItems() {
+        return waterItems;
+    }
+
+    public static List<ItemStack> getMilkItems() {
+        return milkItems;
+    }
+
 }

@@ -125,7 +125,7 @@ public class TileFridge extends TileEntity implements ITickable {
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY
+                || capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
     }
 
@@ -135,7 +135,7 @@ public class TileFridge extends TileEntity implements ITickable {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) getCombinedItemHandler();
         }
-        if(capability == CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY) {
+        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
         return super.getCapability(capability, facing);

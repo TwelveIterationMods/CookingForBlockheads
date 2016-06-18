@@ -35,15 +35,15 @@ public class KitchenMultiBlock {
                 checkedPos.add(position);
                 TileEntity tileEntity = world.getTileEntity(position);
                 if(tileEntity != null) {
-                    IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.KITCHEN_ITEM_PROVIDER_CAPABILITY, null);
+                    IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
                     if (itemProvider != null) { // Forge needs to update their patches to include @Nullable annotations
                         itemProviderList.add(itemProvider);
                     }
-                    IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.KITCHEN_SMELTING_PROVIDER_CAPABILITY, null);
+                    IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
                     if (smeltingProvider != null) { // Forge needs to update their patches to include @Nullable annotations
                         smeltingProviderList.add(smeltingProvider);
                     }
-                    if(itemProvider != null || smeltingProvider != null) { // Forge needs to update their patches to include @Nullable annotations
+                    if(itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) { // Forge needs to update their patches to include @Nullable annotations
                         findNeighbourKitchenBlocks(world, position);
                     }
                 }
@@ -51,14 +51,13 @@ public class KitchenMultiBlock {
         }
     }
 
-    private final List<IKitchenItemProvider> tmpSourceInventories = Lists.newArrayList();
     public List<IKitchenItemProvider> getSourceInventories(InventoryPlayer playerInventory) {
-        tmpSourceInventories.clear();
+        List<IKitchenItemProvider> sourceInventories = Lists.newArrayList();
         for (IKitchenItemProvider provider : itemProviderList) {
-            tmpSourceInventories.add(provider);
+            sourceInventories.add(provider);
         }
-        tmpSourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
-        return tmpSourceInventories;
+        sourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
+        return sourceInventories;
     }
 
     public ItemStack smeltItem(ItemStack itemStack, int count) {
@@ -77,7 +76,8 @@ public class KitchenMultiBlock {
     }
 
     public void trySmelt(EntityPlayer player, FoodRecipeWithStatus recipe, boolean stack) {
-        for(IKitchenItemProvider itemProvider : getSourceInventories(player.inventory)) {
+        List<IKitchenItemProvider> inventories = getSourceInventories(player.inventory);
+        for(IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
             for(int i = 0; i < itemProvider.getSlots(); i++) {
                 ItemStack itemStack = itemProvider.getStackInSlot(i);
@@ -85,7 +85,7 @@ public class KitchenMultiBlock {
                     for(ItemStack sourceStack : recipe.getCraftMatrix().get(0).getItemStacks()) {
                         if(ItemUtils.areItemStacksEqualWithWildcard(itemStack, sourceStack)) {
                             int smeltCount = Math.min(itemStack.stackSize, stack ? sourceStack.getMaxStackSize() : 1);
-                            ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false);
+                            ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories);
                             if(restStack != null) {
                                 restStack = smeltItem(restStack, smeltCount);
                                 if(restStack != null) {

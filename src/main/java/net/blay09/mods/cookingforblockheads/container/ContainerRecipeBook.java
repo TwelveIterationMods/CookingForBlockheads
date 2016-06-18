@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.container;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
@@ -163,8 +164,9 @@ public class ContainerRecipeBook extends Container {
 	public ContainerRecipeBook findAndSendRecipes() {
 		recipeMap.clear();
 		if(noFilter) {
+			List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 			for(FoodRecipe recipe : CookingRegistry.getFoodRecipes()) {
-				recipeMap.put(recipe.getId(), new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getCraftMatrix(), recipe.getType(), CookingRegistry.getRecipeStatus(recipe, player.inventory, multiBlock)));
+				recipeMap.put(recipe.getId(), new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getRecipeWidth(), recipe.getCraftMatrix(), recipe.getType(), CookingRegistry.getRecipeStatus(recipe, inventories)));
 			}
 		} else {
 			for(FoodRecipeWithStatus recipe : CookingRegistry.findAvailableRecipes(player.inventory, multiBlock)) {

@@ -1,10 +1,13 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 
@@ -61,4 +64,16 @@ public class TileCookingTable extends TileEntity {
         readFromNBT(pkt.getNbtCompound());
     }
 
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return capability == CapabilityKitchenConnector.CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if(capability == CapabilityKitchenConnector.CAPABILITY) {
+            return capability.getDefaultInstance();
+        }
+        return super.getCapability(capability, facing);
+    }
 }

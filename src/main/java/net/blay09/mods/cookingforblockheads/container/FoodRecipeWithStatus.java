@@ -13,14 +13,16 @@ import java.util.List;
 public class FoodRecipeWithStatus {
 
     private final int id;
+    private final int recipeWidth;
     private final List<FoodIngredient> craftMatrix;
     private final ItemStack outputItem;
     private final RecipeType type;
     private final RecipeStatus status;
 
-    public FoodRecipeWithStatus(int id, ItemStack outputItem, List<FoodIngredient> craftMatrix, RecipeType type, RecipeStatus status) {
+    public FoodRecipeWithStatus(int id, ItemStack outputItem, int recipeWidth, List<FoodIngredient> craftMatrix, RecipeType type, RecipeStatus status) {
         this.id = id;
         this.outputItem = outputItem;
+        this.recipeWidth = recipeWidth;
         this.craftMatrix = craftMatrix;
         this.type = type;
         this.status = status;
@@ -28,6 +30,10 @@ public class FoodRecipeWithStatus {
 
     public int getId() {
         return id;
+    }
+
+    public int getRecipeWidth() {
+        return recipeWidth;
     }
 
     public List<FoodIngredient> getCraftMatrix() {
@@ -49,6 +55,7 @@ public class FoodRecipeWithStatus {
     public static FoodRecipeWithStatus read(ByteBuf buf) {
         int id = buf.readInt();
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
+        int recipeWidth = buf.readByte();
         List<FoodIngredient> craftMatrix;
         int ingredientCount = buf.readByte();
         craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
@@ -67,12 +74,13 @@ public class FoodRecipeWithStatus {
         }
         RecipeType type = RecipeType.fromId(buf.readByte());
         RecipeStatus status = RecipeStatus.fromId(buf.readByte());
-        return new FoodRecipeWithStatus(id, outputItem, craftMatrix, type, status);
+        return new FoodRecipeWithStatus(id, outputItem, recipeWidth, craftMatrix, type, status);
     }
 
     public void write(ByteBuf buf) {
         buf.writeInt(id);
         ByteBufUtils.writeItemStack(buf, outputItem);
+        buf.writeByte(recipeWidth);
         buf.writeByte(craftMatrix.size());
         for(FoodIngredient ingredient : craftMatrix) {
             if(ingredient != null) {

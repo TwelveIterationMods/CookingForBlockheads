@@ -1,14 +1,14 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
-import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
+import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class MoreFoodsAddon extends SimpleAddon {
 
@@ -85,13 +85,20 @@ public class MoreFoodsAddon extends SimpleAddon {
 		final ItemStack breadItem = getModItemStack(BREAD_ITEM);
 		final ItemStack toastItem = getModItemStack(TOAST_ITEM);
 		if(breadItem != null && toastItem != null) {
-			CookingForBlockheadsAPI.addToastHandler(breadItem, new ToastHandler() {
+			CookingForBlockheadsAPI.addToastHandler(breadItem, new ToastOutputHandler() {
 				@Override
 				public ItemStack getToasterOutput(ItemStack itemStack) {
 					return toastItem;
 				}
 			});
 		}
+
+		CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastErrorHandler() {
+			@Override
+			public ITextComponent getToasterHint(EntityPlayer player, ItemStack itemStack) {
+				return new TextComponentTranslation("hint.cookingforblockheads:moreFoods.cutBreadFirst");
+			}
+		});
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}

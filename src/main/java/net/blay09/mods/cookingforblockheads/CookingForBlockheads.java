@@ -1,7 +1,9 @@
 package net.blay09.mods.cookingforblockheads;
 
 import com.google.common.collect.Lists;
+import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
@@ -11,9 +13,12 @@ import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.Constants;
@@ -102,13 +107,27 @@ public class CookingForBlockheads {
 						logger.error("IMC API Error: RegisterTool expected message of type ItemStack");
 					}
 					break;
+				case "RegisterWaterItem":
+					if(message.getMessageType() == ItemStack.class) {
+						CookingForBlockheadsAPI.addWaterItem(message.getItemStackValue());
+					} else {
+						logger.error("IMC API Error: RegisterWaterItem expected message of type ItemStack");
+					}
+					break;
+				case "RegisterMilkItem":
+					if(message.getMessageType() == ItemStack.class) {
+						CookingForBlockheadsAPI.addMilkItem(message.getItemStackValue());
+					} else {
+						logger.error("IMC API Error: RegisterMilkItem expected message of type ItemStack");
+					}
+					break;
 				case "RegisterToast":
 					if(message.getMessageType() == NBTTagCompound.class) {
 						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
 						final ItemStack outputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Output"));
 						//noinspection ConstantConditions /// Missing @Nullable
 						if(inputItem != null && outputItem != null) {
-							CookingForBlockheadsAPI.addToastHandler(inputItem, new ToastHandler() {
+							CookingForBlockheadsAPI.addToastHandler(inputItem, new ToastOutputHandler() {
 								@Override
 								public ItemStack getToasterOutput(ItemStack itemStack) {
 									return outputItem;
@@ -118,7 +137,26 @@ public class CookingForBlockheads {
 							logger.error("IMC API Error: RegisterToast expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
 						}
 					} else {
-						logger.error("IMC API Error: RegisterTool expected message of type NBT");
+						logger.error("IMC API Error: RegisterToast expected message of type NBT");
+					}
+					break;
+				case "RegisterToastError":
+					if(message.getMessageType() == NBTTagCompound.class) {
+						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
+						final String langKey = message.getNBTValue().getString("Message");
+						//noinspection ConstantConditions /// Missing @Nullable
+						if(inputItem != null && !langKey.isEmpty()) {
+							CookingForBlockheadsAPI.addToastHandler(inputItem, new ToastErrorHandler() {
+								@Override
+								public ITextComponent getToasterHint(EntityPlayer player, ItemStack itemStack) {
+									return new TextComponentTranslation(langKey);
+								}
+							});
+						} else {
+							logger.error("IMC API Error: RegisterToastError expected message of type NBT with structure {Input : ItemStack, Message : String}");
+						}
+					} else {
+						logger.error("IMC API Error: RegisterToastError expected message of type NBT");
 					}
 					break;
 				case "RegisterOvenFuel":

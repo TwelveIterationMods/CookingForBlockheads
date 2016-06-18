@@ -9,8 +9,8 @@ public class ShapedCraftingFood extends FoodRecipe {
     public ShapedCraftingFood(int id, ShapedRecipes recipe) {
         super(id);
         this.outputItem = recipe.getRecipeOutput();
+        this.recipeWidth = recipe.recipeWidth;
         craftMatrix = Lists.newArrayList();
-
         for(int i = 0; i < recipe.recipeItems.length; i++) {
             if(recipe.recipeItems[i] != null) {
                 boolean isToolItem = CookingRegistry.isToolItem(recipe.recipeItems[i]);

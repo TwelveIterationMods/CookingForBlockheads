@@ -16,10 +16,8 @@ public class ShapedOreCraftingFood extends FoodRecipe {
         for(int i = 0; i < recipe.getInput().length; i++) {
             Object input = recipe.getInput()[i];
             if (input == null) {
-                continue;
-            }
-
-            if(input instanceof ItemStack) {
+                craftMatrix.add(null);
+            } else if(input instanceof ItemStack) {
                 craftMatrix.add(new FoodIngredient((ItemStack) input, false));
             } else if(input instanceof List) {
                 craftMatrix.add(new FoodIngredient(((List<ItemStack>) input).toArray(new ItemStack[((List<ItemStack>) input).size()]), false));
