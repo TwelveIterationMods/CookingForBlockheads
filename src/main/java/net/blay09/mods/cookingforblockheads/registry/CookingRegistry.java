@@ -283,7 +283,7 @@ public class CookingRegistry {
     }
 
     public static void addMilkItem(ItemStack milkItem) {
-        waterItems.add(milkItem);
+        milkItems.add(milkItem);
     }
 
     public static List<ItemStack> getWaterItems() {

@@ -57,6 +57,8 @@ public class VanillaAddon implements FoodStatsProvider {
             }
         });
 
+        CookingForBlockheadsAPI.addToolItem(new ItemStack(Items.BUCKET));
+
         MinecraftForge.EVENT_BUS.register(this);
 
         CookingForBlockheadsAPI.setFoodStatsProvider(this);

@@ -34,7 +34,7 @@ public class KitchenItemProvider implements IKitchenItemProvider {
 	@Override
 	public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
 		ItemStack itemStack = itemHandler.getStackInSlot(slot);
-		if(itemStack.stackSize - usedStackSize[slot] >= amount) {
+		if(itemStack.stackSize - (simulate ? usedStackSize[slot] : 0) >= amount) {
 			ItemStack result = itemHandler.extractItem(slot, amount, simulate);
 			if(simulate && result != null) {
 				usedStackSize[slot] += result.stackSize;
