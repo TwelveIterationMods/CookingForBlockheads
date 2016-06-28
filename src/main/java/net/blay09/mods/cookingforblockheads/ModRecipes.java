@@ -72,7 +72,7 @@ public class ModRecipes {
 
 		// Kitchen Counter
 		if(config.getBoolean("Kitchen Counter", "blocks", true, "")) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.cookingTable), "B", "C", 'B', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15), 'C', Blocks.CHEST));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.counter), "B", "C", 'B', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15), 'C', Blocks.CHEST));
 		}
 
 		// Cooking Oven
