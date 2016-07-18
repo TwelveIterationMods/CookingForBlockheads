@@ -1,7 +1,6 @@
 item.cookingforblockheads:recipeBookTier0.name=傻瓜烹饪手册
 item.cookingforblockheads:recipeBookTier1.name=傻瓜烹饪手册I
 item.cookingforblockheads:recipeBookTier2.name=傻瓜烹饪手册II
-item.cookingforblockheads:toast.name=吐司
 
 tooltip.cookingforblockheads:recipeBookTier0=#无过滤版
 tooltip.cookingforblockheads:recipeBookTier0.description=显示所有的食谱.
@@ -17,6 +16,11 @@ tile.cookingforblockheads:oven.name=烤箱
 tile.cookingforblockheads:fridge.name=冰箱
 tile.cookingforblockheads:sink.name=水槽
 tile.cookingforblockheads:toolRack.name=厨具架
+tile.cookingforblockheads:milkJar.name=牛奶罐
+tile.cookingforblockheads:cowJar.name=罐中奶牛
+tile.cookingforblockheads:toaster.name=吐司机
+tile.cookingforblockheads:spiceRack.name=调料架
+tile.cookingforblockheads:counter.name=厨柜
 
 tooltip.cookingforblockheads:multiblockKitchen=多方块厨房
 tooltip.cookingforblockheads:dyeable=可染色
@@ -25,6 +29,11 @@ tooltip.cookingforblockheads:oven.description=开启食物烤制功能.
 tooltip.cookingforblockheads:sink.description=提供烹饪用水.
 tooltip.cookingforblockheads:fridge.description=提供烹饪材料.
 tooltip.cookingforblockheads:toolRack.description=提供烹饪工具.
+tooltip.cookingforblockheads:milkJar.description=提供烹饪所需的牛奶.
+tooltip.cookingforblockheads:cowJar.description=缓慢产出牛奶.
+tooltip.cookingforblockheads:toaster.description=不可思议地将面包变成吐司.
+tooltip.cookingforblockheads:spiceRack.description=储存调料和原料.
+tooltip.cookingforblockheads:counter.description=储存烹饪所需原料.
 
 ###
 
@@ -47,5 +56,16 @@ tooltip.cookingforblockheads:sortBySaturation=按饱和度排列
 
 container.cookingforblockheads:oven=烤箱
 container.cookingforblockheads:fridge=冰箱
+container.cookingforblockheads:spiceRack=调料架
+container.cookingforblockheads:counter=厨柜
 
-itemGroup.cookingforblockheads=Cooking for Blockheads
+itemGroup.cookingforblockheads=傻瓜式烹饪
+
+###
+
+waila.cookingforblockheads:milkStored=储存牛奶: %d/%d
+waila.cookingforblockheads:toastProgress=烘烤中... (%s)
+
+hint.cookingforblockheads:moreFoods.cutBreadFirst=先用小刀切开面包.
+
+jei.cookingforblockheads:cowJar=罐中奶牛
