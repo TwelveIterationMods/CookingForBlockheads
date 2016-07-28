@@ -173,7 +173,7 @@ public class ContainerRecipeBook extends Container {
 				recipeMap.put(recipe.getId(), recipe);
 			}
 		}
-		NetworkHandler.instance.sendTo(new MessageRecipeList(recipeMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
+		NetworkHandler.instance.sendTo(new MessageRecipeList(Lists.newArrayList(recipeMap.values()), multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
 		return this;
 	}
 
