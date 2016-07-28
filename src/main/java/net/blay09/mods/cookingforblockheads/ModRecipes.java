@@ -19,7 +19,8 @@ public class ModRecipes {
 
 		// #NoFilter Edition
 		if(noFilterEdition) {
-			GameRegistry.addShapelessRecipe(new ItemStack(ModItems.recipeBook, 1, 0), new ItemStack(ModItems.recipeBook, 1, 1));
+			// TODO disabled recipe for now until packet overflow is fixed
+			//GameRegistry.addShapelessRecipe(new ItemStack(ModItems.recipeBook, 1, 0), new ItemStack(ModItems.recipeBook, 1, 1));
 		}
 
 		// Cooking for Blockheads I

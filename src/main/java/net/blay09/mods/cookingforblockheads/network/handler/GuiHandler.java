@@ -43,7 +43,8 @@ public class GuiHandler implements IGuiHandler {
             if(heldItem != null) {
                 switch (heldItem.getItemDamage()) {
                     case 0:
-                        return new ContainerRecipeBook(player).setNoFilter();
+                        // TODO treat no filter as normal book until packet overflow is fixed
+                        return new ContainerRecipeBook(player);//.setNoFilter();
                     case 1:
                         return new ContainerRecipeBook(player);
                     case 2:
@@ -97,7 +98,8 @@ public class GuiHandler implements IGuiHandler {
             if(heldItem != null) {
                 switch (heldItem.getItemDamage()) {
                     case 0:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());
+                        // TODO treat no filter as normal book until packet overflow is fixed
+                        return new GuiRecipeBook(new ContainerRecipeBook(player);//.setNoFilter());
                     case 1:
                         return new GuiRecipeBook(new ContainerRecipeBook(player));
                     case 2:
