@@ -23,6 +23,7 @@ public class VanillaAddon implements FoodStatsProvider {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
                 ItemStack result = itemStack.copy();
+                result.stackSize = 1;
                 result.setItemDamage(0);
                 return result;
             }

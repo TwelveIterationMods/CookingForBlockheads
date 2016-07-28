@@ -36,7 +36,7 @@ public class BlockMilkJar extends BlockKitchen {
         setRegistryName(CookingForBlockheads.MOD_ID, registryName);
         setUnlocalizedName(getRegistryName().toString());
         setSoundType(SoundType.GLASS);
-        setHardness(2.5f);
+        setHardness(0.6f);
     }
 
     @Override
