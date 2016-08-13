@@ -15,14 +15,17 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import vazkii.quark.base.handler.IDropoffManager;
 
 import javax.annotation.Nullable;
 
-public class TileFridge extends TileEntity implements ITickable {
+@Optional.Interface(modid = "Quark", iface = "vazkii.quark.base.handler.IDropoffManager", striprefs = true)
+public class TileFridge extends TileEntity implements ITickable, IDropoffManager {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
         @Override
@@ -168,5 +171,11 @@ public class TileFridge extends TileEntity implements ITickable {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    @Override
+    @Optional.Method(modid = "Quark")
+    public boolean acceptsDropoff() {
+        return true;
     }
 }
