@@ -26,9 +26,7 @@ public class ModRecipes {
 		// Cooking for Blockheads I
 		if(config.getBoolean("Cooking for Blockheads I", "items", true, "")) {
 			GameRegistry.addSmelting(Items.BOOK, new ItemStack(ModItems.recipeBook, 1, 1), 0f);
-			if (noFilterEdition) {
-				GameRegistry.addShapelessRecipe(new ItemStack(ModItems.recipeBook, 1, 1), new ItemStack(ModItems.recipeBook, 1, 0));
-			}
+			GameRegistry.addSmelting(new ItemStack(ModItems.recipeBook, 1, 0), new ItemStack(ModItems.recipeBook, 1, 1), 0f);
 		}
 
 		// Cooking for Blockheads II
