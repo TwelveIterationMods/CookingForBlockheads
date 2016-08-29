@@ -2,19 +2,19 @@ package net.blay09.mods.cookingforblockheads.network.message;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.Collection;
 
-public class MessageRecipeList implements IMessage {
+public class MessageItemList implements IMessage {
 
     private Collection<FoodRecipeWithStatus> recipeList;
     private boolean hasOven;
 
-    public MessageRecipeList() {}
+    public MessageItemList() {}
 
-    public MessageRecipeList(Collection<FoodRecipeWithStatus> recipeList, boolean hasOven) {
+    public MessageItemList(Collection<FoodRecipeWithStatus> recipeList, boolean hasOven) {
         this.recipeList = recipeList;
         this.hasOven = hasOven;
     }

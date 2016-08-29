@@ -1,60 +1,29 @@
-package net.blay09.mods.cookingforblockheads.container;
+package net.blay09.mods.cookingforblockheads.registry;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
-import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.List;
 
-public class FoodRecipeWithStatus {
-
-    private final int id;
+public class FoodRecipeWithIngredients {
+    private final ItemStack outputItem;
+    private final RecipeType recipeType;
     private final int recipeWidth;
     private final List<FoodIngredient> craftMatrix;
-    private final ItemStack outputItem;
-    private final RecipeType type;
-    private final RecipeStatus status;
 
-    public FoodRecipeWithStatus(int id, ItemStack outputItem, int recipeWidth, List<FoodIngredient> craftMatrix, RecipeType type, RecipeStatus status) {
-        this.id = id;
+    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, int recipeWidth, List<FoodIngredient> craftMatrix) {
         this.outputItem = outputItem;
+        this.recipeType = recipeType;
         this.recipeWidth = recipeWidth;
         this.craftMatrix = craftMatrix;
-        this.type = type;
-        this.status = status;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getRecipeWidth() {
-        return recipeWidth;
-    }
-
-    public List<FoodIngredient> getCraftMatrix() {
-        return craftMatrix;
-    }
-
-    public ItemStack getOutputItem() {
-        return outputItem;
-    }
-
-    public RecipeType getType() {
-        return type;
-    }
-
-    public RecipeStatus getStatus() {
-        return status;
-    }
-
-    public static FoodRecipeWithStatus read(ByteBuf buf) {
-        int id = buf.readInt();
+    public static FoodRecipeWithIngredients read(ByteBuf buf) {
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
+        RecipeStatus status = RecipeStatus.fromId(buf.readByte());
         int recipeWidth = buf.readByte();
         List<FoodIngredient> craftMatrix;
         int ingredientCount = buf.readByte();
@@ -72,13 +41,11 @@ public class FoodRecipeWithStatus {
                 craftMatrix.add(null);
             }
         }
-        RecipeType type = RecipeType.fromId(buf.readByte());
-        RecipeStatus status = RecipeStatus.fromId(buf.readByte());
-        return new FoodRecipeWithStatus(id, outputItem, recipeWidth, craftMatrix, type, status);
+        RecipeType recipeType = RecipeType.fromId(buf.readByte());
+        return new FoodRecipeWithIngredients(outputItem, recipeType, recipeWidth, craftMatrix);
     }
 
     public void write(ByteBuf buf) {
-        buf.writeInt(id);
         ByteBufUtils.writeItemStack(buf, outputItem);
         buf.writeByte(recipeWidth);
         buf.writeByte(craftMatrix.size());
@@ -93,7 +60,23 @@ public class FoodRecipeWithStatus {
                 buf.writeShort(0);
             }
         }
-        buf.writeByte(type.ordinal());
-        buf.writeByte(status.ordinal());
+        buf.writeByte(recipeType.ordinal());
     }
+
+    public RecipeType getRecipeType() {
+        return recipeType;
+    }
+
+    public int getRecipeWidth() {
+        return recipeWidth;
+    }
+
+    public List<FoodIngredient> getCraftMatrix() {
+        return craftMatrix;
+    }
+
+    public ItemStack getOutputItem() {
+        return outputItem;
+    }
+
 }

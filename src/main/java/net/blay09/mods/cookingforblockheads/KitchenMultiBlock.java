@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
-import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -75,28 +74,29 @@ public class KitchenMultiBlock {
         return itemStack;
     }
 
-    public void trySmelt(EntityPlayer player, FoodRecipeWithStatus recipe, boolean stack) {
+    public void trySmelt(ItemStack outputItem, ItemStack inputItem, EntityPlayer player, boolean stack) {
+        if(inputItem == null) {
+            return;
+        }
         List<IKitchenItemProvider> inventories = getSourceInventories(player.inventory);
         for(IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
             for(int i = 0; i < itemProvider.getSlots(); i++) {
                 ItemStack itemStack = itemProvider.getStackInSlot(i);
                 if(itemStack != null) {
-                    for(ItemStack sourceStack : recipe.getCraftMatrix().get(0).getItemStacks()) {
-                        if(ItemUtils.areItemStacksEqualWithWildcard(itemStack, sourceStack)) {
-                            int smeltCount = Math.min(itemStack.stackSize, stack ? sourceStack.getMaxStackSize() : 1);
-                            ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories);
+                    if(ItemUtils.areItemStacksEqualWithWildcard(itemStack, inputItem)) {
+                        int smeltCount = Math.min(itemStack.stackSize, stack ? inputItem.getMaxStackSize() : 1);
+                        ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories);
+                        if(restStack != null) {
+                            restStack = smeltItem(restStack, smeltCount);
                             if(restStack != null) {
-                                restStack = smeltItem(restStack, smeltCount);
-                                if(restStack != null) {
-                                    restStack = itemProvider.returnItemStack(restStack);
-                                    if(!player.inventory.addItemStackToInventory(restStack)) {
-                                        player.dropItem(restStack, false);
-                                    }
+                                restStack = itemProvider.returnItemStack(restStack);
+                                if(!player.inventory.addItemStackToInventory(restStack)) {
+                                    player.dropItem(restStack, false);
                                 }
-                                player.openContainer.detectAndSendChanges();
-                                return;
                             }
+                            player.openContainer.detectAndSendChanges();
+                            return;
                         }
                     }
                 }

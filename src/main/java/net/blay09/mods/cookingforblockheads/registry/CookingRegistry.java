@@ -11,7 +11,6 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
-import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
@@ -205,7 +204,7 @@ public class CookingRegistry {
         for(FoodRecipe recipe : getFoodRecipes()) {
             RecipeStatus recipeStatus = getRecipeStatus(recipe, inventories);
             if(recipeStatus != RecipeStatus.MISSING_INGREDIENTS) {
-                result.add(new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getRecipeWidth(), recipe.getCraftMatrix(), recipe.getType(), recipeStatus));
+                result.add(new FoodRecipeWithStatus(recipe.getOutputItem(), recipeStatus));
             }
         }
         return result;

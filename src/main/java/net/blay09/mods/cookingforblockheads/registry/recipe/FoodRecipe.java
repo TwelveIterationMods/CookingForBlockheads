@@ -2,19 +2,15 @@ package net.blay09.mods.cookingforblockheads.registry.recipe;
 
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
 public abstract class FoodRecipe {
 
-    private final int id;
     protected List<FoodIngredient> craftMatrix;
     protected ItemStack outputItem;
     protected int recipeWidth = 3;
-
-    public FoodRecipe(int id) {
-        this.id = id;
-    }
 
     public List<FoodIngredient> getCraftMatrix() {
         return craftMatrix;
@@ -28,11 +24,11 @@ public abstract class FoodRecipe {
         return RecipeType.CRAFTING;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public int getRecipeWidth() {
         return recipeWidth;
+    }
+
+    public ResourceLocation getRegistryName() {
+        return outputItem.getItem().getRegistryName();
     }
 }

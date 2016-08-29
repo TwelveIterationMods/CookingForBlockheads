@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.container.comparator;
 
-import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
 
 import java.util.Comparator;
 

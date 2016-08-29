@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.container;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
@@ -9,10 +8,12 @@ import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBo
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
 import net.blay09.mods.cookingforblockheads.network.message.MessageCraftRecipe;
-import net.blay09.mods.cookingforblockheads.network.message.MessageRecipeList;
+import net.blay09.mods.cookingforblockheads.network.message.MessageItemList;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
+import net.blay09.mods.cookingforblockheads.network.message.MessageRequestRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +22,8 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -28,10 +31,12 @@ import java.util.*;
 public class ContainerRecipeBook extends Container {
 
 	private final EntityPlayer player;
-	private final Map<Integer, FoodRecipeWithStatus> recipeMap = Maps.newHashMap();
-	private final List<FoodRecipeWithStatus> sortedRecipes = Lists.newArrayList();
+
+	private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
+
 	private final List<FakeSlotRecipe> recipeSlots = Lists.newArrayList();
 	private final List<FakeSlotCraftMatrix> matrixSlots = Lists.newArrayList();
+
 	private final InventoryCraftBook craftBook = new InventoryCraftBook(this);
 
 	private boolean noFilter;
@@ -39,11 +44,32 @@ public class ContainerRecipeBook extends Container {
 	private KitchenMultiBlock multiBlock;
 	private boolean isDirty = true;
 
+	@SideOnly(Side.CLIENT)
 	private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
+
+	@SideOnly(Side.CLIENT)
 	private String currentSearch;
-	private int selectedRecipeId = -1;
-	private int scrollOffset;
+
+	@SideOnly(Side.CLIENT)
+	private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
+
+	@SideOnly(Side.CLIENT)
+	private boolean isDirtyClient;
+
+	@SideOnly(Side.CLIENT)
 	private boolean hasOven;
+
+	@SideOnly(Side.CLIENT)
+	private int scrollOffset;
+
+	@SideOnly(Side.CLIENT)
+	private FakeSlotRecipe selectedRecipe;
+
+	@SideOnly(Side.CLIENT)
+	private List<FoodRecipeWithIngredients> selectedRecipeList;
+
+	@SideOnly(Side.CLIENT)
+	private int selectedRecipeIndex;
 
 	public ContainerRecipeBook(EntityPlayer player) {
 		this.player = player;
@@ -82,14 +108,13 @@ public class ContainerRecipeBook extends Container {
 			if (slot instanceof FakeSlotRecipe && player.worldObj.isRemote) {
 				FakeSlotRecipe slotRecipe = (FakeSlotRecipe) slot;
 				if (slotRecipe.getRecipe() != null) {
-					int recipeId = slotRecipe.getRecipe().getId();
-					if (recipeId == selectedRecipeId) {
+					if (slotRecipe == selectedRecipe) {
 						if(allowCrafting) {
-							NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipeId, clickType == ClickType.QUICK_MOVE));
+							NetworkHandler.instance.sendToServer(new MessageCraftRecipe(null, null, clickType == ClickType.QUICK_MOVE)); // TODO FIX ME
 						}
 					} else {
-						selectedRecipeId = recipeId;
-						updateMatrixSlots();
+						selectedRecipe = slotRecipe;
+						NetworkHandler.instance.sendToServer(new MessageRequestRecipes(selectedRecipe.getRecipe().getOutputItem()));
 					}
 				}
 			}
@@ -117,7 +142,7 @@ public class ContainerRecipeBook extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
-	}
+	} // TODO range check?
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
@@ -162,69 +187,95 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public ContainerRecipeBook findAndSendRecipes() {
-		recipeMap.clear();
+		itemList.clear();
 		if(noFilter) {
 			List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 			for(FoodRecipe recipe : CookingRegistry.getFoodRecipes()) {
-				recipeMap.put(recipe.getId(), new FoodRecipeWithStatus(recipe.getId(), recipe.getOutputItem(), recipe.getRecipeWidth(), recipe.getCraftMatrix(), recipe.getType(), CookingRegistry.getRecipeStatus(recipe, inventories)));
+				itemList.add(new FoodRecipeWithStatus(recipe.getOutputItem(), CookingRegistry.getRecipeStatus(recipe, inventories)));
 			}
 		} else {
 			for(FoodRecipeWithStatus recipe : CookingRegistry.findAvailableRecipes(player.inventory, multiBlock)) {
-				recipeMap.put(recipe.getId(), recipe);
+				itemList.add(recipe);
 			}
 		}
-		NetworkHandler.instance.sendTo(new MessageRecipeList(Lists.newArrayList(recipeMap.values()), multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
+		NetworkHandler.instance.sendTo(new MessageItemList(itemList, multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
 		return this;
 	}
 
-	public void tryCraft(int id, boolean stack) {
+	public void tryCraft(@Nullable ItemStack outputItem, RecipeType recipeType, List<ItemStack> craftMatrix, boolean stack) {
+		if(outputItem == null || craftMatrix.size() == 0) {
+			return;
+		}
 		if(allowCrafting) {
-			FoodRecipeWithStatus recipe = recipeMap.get(id);
-			if(recipe != null && recipe.getStatus() == RecipeStatus.AVAILABLE) {
-				if(recipe.getType() == RecipeType.CRAFTING) {
-					int craftCount = stack ? recipe.getOutputItem().getMaxStackSize() : 1;
-					for (int i = 0; i < craftCount; i++) {
-						ItemStack itemStack = craftBook.tryCraft(recipe, player, multiBlock);
-						if (itemStack != null) {
-							if (!player.inventory.addItemStackToInventory(itemStack)) {
-								player.dropItem(itemStack, false);
-							}
-						} else {
-							break;
+			if(recipeType == RecipeType.CRAFTING) {
+				int craftCount = stack ? outputItem.getMaxStackSize() : 1;
+				for (int i = 0; i < craftCount; i++) {
+					ItemStack itemStack = craftBook.tryCraft(outputItem, craftMatrix, player, multiBlock);
+					if (itemStack != null) {
+						if (!player.inventory.addItemStackToInventory(itemStack)) {
+							player.dropItem(itemStack, false);
 						}
-					}
-					isDirty = true;
-					detectAndSendChanges();
-				} else if(recipe.getType() == RecipeType.SMELTING) {
-					if(multiBlock != null && multiBlock.hasSmeltingProvider()) {
-						multiBlock.trySmelt(player, recipe, stack);
-						isDirty = true;
+					} else {
+						break;
 					}
 				}
+				isDirty = true;
+				detectAndSendChanges();
+			} else if(recipeType == RecipeType.SMELTING) {
+				if(multiBlock != null && multiBlock.hasSmeltingProvider()) {
+					multiBlock.trySmelt(outputItem, craftMatrix.get(0), player, stack);
+					isDirty = true;
+				}
+				// TODO detectAndSendChanges()?
 			}
 		}
 	}
 
-	public void setRecipeList(Collection<FoodRecipeWithStatus> recipeList) {
-		recipeMap.clear();
-		for(FoodRecipeWithStatus recipe : recipeList) {
-			recipeMap.put(recipe.getId(), recipe);
-		}
-		if(selectedRecipeId != -1 && !recipeMap.containsKey(selectedRecipeId)) {
-			selectedRecipeId = -1;
-			updateMatrixSlots();
-		}
+	public boolean isAllowCrafting() {
+		return allowCrafting;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void setItemList(Collection<FoodRecipeWithStatus> recipeList) {
+		this.itemList.clear();
+		this.itemList.addAll(recipeList);
+
+		// Re-apply the search to populate filteredItems
 		search(currentSearch);
-		Collections.sort(sortedRecipes, currentSorting);
+
+		// Re-apply the sorting
+		Collections.sort(filteredItems, currentSorting);
+
+		// Make sure the recipe stays on the same slot, even if others moved
+		if(selectedRecipe != null) {
+			Iterator<FoodRecipeWithStatus> it = filteredItems.iterator();
+			FoodRecipeWithStatus found = null;
+			while(it.hasNext()) {
+				FoodRecipeWithStatus recipe = it.next();
+				if(recipe.getOutputItem() == selectedRecipe.getRecipe().getOutputItem()) {
+					found = recipe;
+					it.remove();
+				}
+			}
+			int index = scrollOffset + selectedRecipe.getSlotIndex();
+			while(index > filteredItems.size()) {
+				filteredItems.add(null);
+			}
+			filteredItems.add(index, found);
+		}
+
+		// Updates the items inside the recipe slots
 		updateRecipeSlots();
+
 		setDirty(true);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void updateRecipeSlots() {
 		int i = scrollOffset * 3;
 		for(FakeSlotRecipe slot : recipeSlots) {
-			if(i < sortedRecipes.size()) {
-				slot.setFoodRecipe(sortedRecipes.get(i));
+			if(i < filteredItems.size()) {
+				slot.setFoodRecipe(filteredItems.get(i));
 				i++;
 			} else {
 				slot.setFoodRecipe(null);
@@ -232,19 +283,20 @@ public class ContainerRecipeBook extends Container {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void updateMatrixSlots() {
-		FoodRecipeWithStatus recipe = selectedRecipeId != -1  ? recipeMap.get(selectedRecipeId) : null;
-		if(recipe != null && recipe.getType() == RecipeType.SMELTING) {
+		FoodRecipeWithIngredients recipe = selectedRecipeList.get(selectedRecipeIndex);
+		if(recipe.getRecipeType() == RecipeType.SMELTING) {
 			for (int i = 0; i < matrixSlots.size(); i++) {
 				matrixSlots.get(i).setIngredient(i == 4 ? recipe.getCraftMatrix().get(0) : null);
 			}
 		} else {
 			int i = 0;
-			if(recipe != null && recipe.getCraftMatrix().size() == 1) {
+			if(recipe.getCraftMatrix().size() == 1) {
 				for (int j = 0; j < matrixSlots.size(); j++) {
 					matrixSlots.get(j).setIngredient(j == 4 ? recipe.getCraftMatrix().get(0) : null);
 				}
-			} else if(recipe != null && recipe.getCraftMatrix().size() == 3) {
+			} else if(recipe.getCraftMatrix().size() == 3) {
 				for (int j = 0; j < matrixSlots.size(); j++) {
 					if(j >= 3 && j <= 5) {
 						matrixSlots.get(j).setIngredient(recipe.getCraftMatrix().get(j - 3));
@@ -254,7 +306,7 @@ public class ContainerRecipeBook extends Container {
 				}
 			} else {
 				for (FakeSlotCraftMatrix slot : matrixSlots) {
-					if (recipe != null && i < recipe.getCraftMatrix().size()) {
+					if (i < recipe.getCraftMatrix().size()) {
 						slot.setIngredient(recipe.getCraftMatrix().get(i));
 						i++;
 					} else {
@@ -265,64 +317,76 @@ public class ContainerRecipeBook extends Container {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
 		this.currentSorting = comparator;
-		Collections.sort(sortedRecipes, comparator);
+		Collections.sort(filteredItems, comparator);
 		updateRecipeSlots();
 	}
 
+	@SideOnly(Side.CLIENT)
 	public int getRecipeCount() {
-		return sortedRecipes.size();
+		return filteredItems.size();
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void setScrollOffset(int scrollOffset) {
 		this.scrollOffset = scrollOffset;
 		updateRecipeSlots();
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void search(@Nullable String term) {
 		this.currentSearch = term;
-		sortedRecipes.clear();
+		filteredItems.clear();
 		if(term == null || term.trim().isEmpty()) {
-			sortedRecipes.addAll(recipeMap.values());
+			filteredItems.addAll(itemList);
 		} else {
-			for(FoodRecipeWithStatus recipe : recipeMap.values()) {
+			for(FoodRecipeWithStatus recipe : itemList) {
 				if(recipe.getOutputItem().getDisplayName().toLowerCase().contains(term.toLowerCase())) {
-					sortedRecipes.add(recipe);
+					filteredItems.add(recipe);
 				}
 			}
 		}
-		Collections.sort(sortedRecipes, currentSorting);
+		Collections.sort(filteredItems, currentSorting);
 		updateRecipeSlots();
 	}
 
 	@Nullable
+	@SideOnly(Side.CLIENT)
 	public FoodRecipeWithStatus getSelection() {
-		return selectedRecipeId != -1 ? recipeMap.get(selectedRecipeId) : null;
+		return selectedRecipe != null ? selectedRecipe.getRecipe() : null;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public boolean isSelectedSlot(FakeSlotRecipe slot) {
-		return slot.getRecipe().getId() == selectedRecipeId;
+		return slot == selectedRecipe;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public boolean isDirty() {
-		return isDirty;
+		return isDirtyClient;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void setDirty(boolean dirty) {
-		isDirty = dirty;
+		isDirtyClient = dirty;
 	}
 
-	public boolean isAllowCrafting() {
-		return allowCrafting;
-	}
-
+	@SideOnly(Side.CLIENT)
 	public void setHasOven(boolean hasOven) {
 		this.hasOven = hasOven;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public boolean hasOven() {
 		return hasOven;
 	}
 
+	@SideOnly(Side.CLIENT)
+	public void setRecipeList(ItemStack outputItem, List<FoodRecipeWithIngredients> recipeList) {
+		selectedRecipeList = recipeList;
+		selectedRecipeIndex = 0;
+		updateMatrixSlots();
+	}
 }

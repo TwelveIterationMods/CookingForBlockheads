@@ -2,9 +2,7 @@ package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.container.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -24,14 +22,14 @@ public class InventoryCraftBook extends InventoryCrafting {
 		super(container, 3, 3);
 	}
 
-	public ItemStack tryCraft(FoodRecipeWithStatus recipe, EntityPlayer player, KitchenMultiBlock multiBlock) {
+	public ItemStack tryCraft(ItemStack outputItem, List<ItemStack> craftMatrix, EntityPlayer player, KitchenMultiBlock multiBlock) {
+		// TODO FIX ME
 		int[] sourceInventories = new int[9];
 		int[] sourceInventorySlots = new int[9];
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		for(IKitchenItemProvider itemProvider : inventories) {
 			itemProvider.resetSimulation();
 		}
-		List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
 		for(int i = 0; i < getSizeInventory(); i++) {
             setInventorySlotContents(i, null);
             sourceInventories[i] = -1;
@@ -39,7 +37,7 @@ public class InventoryCraftBook extends InventoryCrafting {
         }
 
 		matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
-			FoodIngredient ingredient = craftMatrix.get(i);
+			ItemStack ingredient = craftMatrix.get(i);
             if(ingredient != null) {
                 for(int j = 0; j < inventories.size(); j++) {
 					IKitchenItemProvider itemProvider = inventories.get(j);

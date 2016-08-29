@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorHunge
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorSaturation;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.minecraft.client.Minecraft;
