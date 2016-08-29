@@ -83,6 +83,11 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 
 	public void scrollDisplayList(int i) {
 		isLocked = true;
-		visibleItemIndex = Math.max(0, Math.min(visibleStacks.size() - 1, visibleItemIndex + i));
+		visibleItemIndex += i;
+		if(visibleItemIndex >= visibleStacks.size()) {
+			visibleItemIndex = 0;
+		} else if (visibleItemIndex < 0) {
+			visibleItemIndex = visibleStacks.size() - 1;
+		}
 	}
 }

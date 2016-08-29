@@ -48,6 +48,8 @@ public class ContainerRecipeBook extends Container {
 	private KitchenMultiBlock multiBlock;
 	private boolean isDirty = true;
 
+	private ItemStack lastOutputItem;
+
 	@SideOnly(Side.CLIENT)
 	private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
 
@@ -137,6 +139,9 @@ public class ContainerRecipeBook extends Container {
 		if(!player.worldObj.isRemote) {
 			if (isDirty || player.inventory.inventoryChanged) {
 				findAndSendItemList();
+				if(lastOutputItem != null) {
+					findAndSendRecipes(lastOutputItem);
+				}
 				player.inventory.inventoryChanged = false;
 				isDirty = false;
 			}
@@ -217,6 +222,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void findAndSendRecipes(ItemStack outputItem) {
+		lastOutputItem = outputItem;
 		selectedRecipeList = Lists.newArrayList();
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		for(FoodRecipe recipe : CookingRegistry.getFoodRecipes(outputItem)) {
@@ -293,12 +299,12 @@ public class ContainerRecipeBook extends Container {
 		Collections.sort(filteredItems, currentSorting);
 
 		// Make sure the recipe stays on the same slot, even if others moved
-		if(selectedRecipe != null) {
+		if(selectedRecipe != null && selectedRecipe.getRecipe() != null) {
 			Iterator<FoodRecipeWithStatus> it = filteredItems.iterator();
 			FoodRecipeWithStatus found = null;
 			while(it.hasNext()) {
 				FoodRecipeWithStatus recipe = it.next();
-				if(recipe.getOutputItem() == selectedRecipe.getRecipe().getOutputItem()) {
+				if(recipe.getOutputItem().getItem() == selectedRecipe.getRecipe().getOutputItem().getItem()) {
 					found = recipe;
 					it.remove();
 				}
@@ -308,6 +314,7 @@ public class ContainerRecipeBook extends Container {
 				filteredItems.add(null);
 			}
 			filteredItems.add(index, found);
+			System.out.println("yo");
 		}
 
 		// Updates the items inside the recipe slots
@@ -331,6 +338,12 @@ public class ContainerRecipeBook extends Container {
 
 	@SideOnly(Side.CLIENT)
 	public void populateMatrixSlots() {
+		if(selectedRecipeList == null) {
+			for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
+				matrixSlot.setIngredient(null);
+			}
+			return;
+		}
 		FoodRecipeWithIngredients recipe = selectedRecipeList.get(selectedRecipeIndex);
 		if(recipe.getRecipeType() == RecipeType.SMELTING) {
 			for (int i = 0; i < matrixSlots.size(); i++) {
@@ -366,12 +379,19 @@ public class ContainerRecipeBook extends Container {
 	@SideOnly(Side.CLIENT)
 	public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
 		this.currentSorting = comparator;
+		// When re-sorting, make sure to remove all null slots that were added to preserve layout
+		Iterator<FoodRecipeWithStatus> it = filteredItems.iterator();
+		while(it.hasNext()) {
+			if(it.next() == null) {
+				it.remove();
+			}
+		}
 		Collections.sort(filteredItems, comparator);
 		populateRecipeSlots();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public int getRecipeCount() {
+	public int getItemListCount() {
 		return filteredItems.size();
 	}
 
@@ -395,7 +415,6 @@ public class ContainerRecipeBook extends Container {
 			}
 		}
 		Collections.sort(filteredItems, currentSorting);
-		populateRecipeSlots();
 	}
 
 	@Nullable
@@ -431,10 +450,12 @@ public class ContainerRecipeBook extends Container {
 
 	@SideOnly(Side.CLIENT)
 	public void setRecipeList(ItemStack outputItem, List<FoodRecipeWithIngredients> recipeList) {
-		// TODO check output item I guess
-		selectedRecipeList = recipeList;
-		selectedRecipeIndex = 0;
+		selectedRecipeList = recipeList.size() > 0 ? recipeList : null;
+		if(lastOutputItem == null || lastOutputItem.getItem() != outputItem.getItem() || selectedRecipeList == null || selectedRecipeIndex >= selectedRecipeList.size()) {
+			selectedRecipeIndex = 0;
+		}
 		populateMatrixSlots();
+		lastOutputItem = outputItem;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -455,5 +476,19 @@ public class ContainerRecipeBook extends Container {
 		for(FakeSlotCraftMatrix slot : matrixSlots) {
 			slot.updateSlot(partialTicks);
 		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public int getSelectionIndex() {
+		return selectedRecipeIndex;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public int getRecipeCount() {
+		return selectedRecipeList != null ? selectedRecipeList.size() : 0;
+	}
+
+	public List<FakeSlotCraftMatrix> getCraftingMatrixSlots() {
+		return matrixSlots;
 	}
 }

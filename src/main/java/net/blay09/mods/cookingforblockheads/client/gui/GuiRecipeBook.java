@@ -17,7 +17,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
-import net.minecraft.util.MouseHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -133,7 +132,7 @@ public class GuiRecipeBook extends GuiContainer {
 		int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 		if(container.getSelection() != null && mouseX >= guiLeft + 7 && mouseY >= guiTop + 17 && mouseX < guiLeft + 92 && mouseY < guiTop + 95) {
 			Slot slot = getSlotUnderMouse();
-			if(slot instanceof FakeSlotCraftMatrix) {
+			if(slot instanceof FakeSlotCraftMatrix && ((FakeSlotCraftMatrix) slot).getVisibleStacks().size() > 1) {
 				((FakeSlotCraftMatrix) slot).scrollDisplayList(delta > 0 ? -1 : 1);
 			}
 		} else {
@@ -157,6 +156,7 @@ public class GuiRecipeBook extends GuiContainer {
 		if(button == 1 && mouseX >= searchBar.xPosition && mouseX < searchBar.xPosition + searchBar.width && mouseY >= searchBar.yPosition && mouseY < searchBar.yPosition + searchBar.height) {
 			searchBar.setText("");
 			container.search(null);
+			container.populateRecipeSlots();
 			recalculateScrollBar();
 		} else {
 			searchBar.mouseClicked(mouseX, mouseY, button);
@@ -171,6 +171,7 @@ public class GuiRecipeBook extends GuiContainer {
 	protected void keyTyped(char c, int keyCode) throws IOException {
 		if(searchBar.textboxKeyTyped(c, keyCode)) {
 			container.search(searchBar.getText());
+			container.populateRecipeSlots();
 			recalculateScrollBar();
 		} else {
 			super.keyTyped(c, keyCode);
@@ -189,7 +190,7 @@ public class GuiRecipeBook extends GuiContainer {
 		drawTexturedModalRect(guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
 
 		if (mouseClickY != -1) {
-			float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1, (int) Math.ceil(container.getRecipeCount() / 3f) - VISIBLE_ROWS);
+			float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1, (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS);
 			if (pixelsPerFilter != 0) {
 				int numberOfFiltersMoved = (int) ((mouseY - mouseClickY) / pixelsPerFilter);
 				if (numberOfFiltersMoved != lastNumberOfMoves) {
@@ -199,11 +200,12 @@ public class GuiRecipeBook extends GuiContainer {
 			}
 		}
 
-		boolean hasVariants = container.hasVariants();
-		btnPrevRecipe.visible = hasVariants;
-		btnNextRecipe.visible = hasVariants;
+		btnPrevRecipe.visible = container.hasVariants();
+		btnPrevRecipe.enabled = container.getSelectionIndex() > 0;
+		btnNextRecipe.visible = container.hasVariants();
+		btnNextRecipe.enabled = container.getSelectionIndex() < container.getRecipeCount() - 1;
 
-		boolean hasRecipes = container.getRecipeCount() > 0;
+		boolean hasRecipes = container.getItemListCount() > 0;
 		btnSortName.enabled = hasRecipes;
 		btnSortHunger.enabled = hasRecipes;
 		btnSortSaturation.enabled = hasRecipes;
@@ -223,12 +225,19 @@ public class GuiRecipeBook extends GuiContainer {
 
 		GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 
-		if(container.getRecipeCount() == 0) {
+		if(container.getItemListCount() == 0) {
 			GuiContainer.drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
 			int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRendererObj.FONT_HEIGHT;
 			for(String s : noIngredients) {
 				fontRendererObj.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
 				curY += fontRendererObj.FONT_HEIGHT + 5;
+			}
+		}
+
+		GlStateManager.color(1f, 1f, 1f, 1f);
+		for(FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
+			if(slot.isLocked() && slot.getVisibleStacks().size() > 1) {
+				drawTexturedModalRect(guiLeft + slot.xDisplayPosition, guiTop + slot.yDisplayPosition, 176, 60, 16, 16);
 			}
 		}
 
@@ -261,13 +270,13 @@ public class GuiRecipeBook extends GuiContainer {
 
 	public void recalculateScrollBar() {
 		int scrollBarTotalHeight = SCROLLBAR_HEIGHT - 1;
-		this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.ceil(container.getRecipeCount() / 3f)))));
+		this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.ceil(container.getItemListCount() / 3f)))));
 		this.scrollBarXPos = guiLeft + xSize - SCROLLBAR_WIDTH - 9;
-		this.scrollBarYPos = guiTop + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1, (int) Math.ceil((container.getRecipeCount() / 3f)) - VISIBLE_ROWS));
+		this.scrollBarYPos = guiTop + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1, (int) Math.ceil((container.getItemListCount() / 3f)) - VISIBLE_ROWS));
 	}
 
 	public void setCurrentOffset(int currentOffset) {
-		this.currentOffset = Math.max(0, Math.min(currentOffset, (int) Math.ceil(container.getRecipeCount() / 3f) - VISIBLE_ROWS));
+		this.currentOffset = Math.max(0, Math.min(currentOffset, (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS));
 
 		container.setScrollOffset(this.currentOffset);
 
