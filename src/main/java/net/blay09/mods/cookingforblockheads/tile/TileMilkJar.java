@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -42,7 +43,7 @@ public class TileMilkJar extends TileEntity {
 
 		@Override
 		public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
-			if(tileMilkJar.getMilkAmount() - milkUsed > amount * 1000) {
+			if(tileMilkJar.getMilkAmount() - milkUsed >= amount * 1000) {
 				if(getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
 					if(!CookingRegistry.consumeItemStack(new ItemStack(Items.BUCKET), inventories, simulate)) {
 						return null;
@@ -108,13 +109,19 @@ public class TileMilkJar extends TileEntity {
 	}
 
 	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		readFromNBT(pkt.getNbtCompound());
+	}
+
+	@Override
 	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(pos, 0, new NBTTagCompound());
+		return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
 	}
 
 	public float getMilkAmount() {

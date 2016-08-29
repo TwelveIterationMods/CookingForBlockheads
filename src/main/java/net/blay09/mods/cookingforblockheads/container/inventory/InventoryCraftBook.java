@@ -19,6 +19,30 @@ import java.util.List;
 
 public class InventoryCraftBook extends InventoryCrafting {
 
+	private static class SourceItem {
+		private IKitchenItemProvider sourceProvider;
+		private int sourceSlot;
+		private ItemStack sourceStack;
+
+		public SourceItem(IKitchenItemProvider sourceProvider, int sourceSlot, ItemStack sourceStack) {
+			this.sourceProvider = sourceProvider;
+			this.sourceSlot = sourceSlot;
+			this.sourceStack = sourceStack;
+		}
+
+		public IKitchenItemProvider getSourceProvider() {
+			return sourceProvider;
+		}
+
+		public int getSourceSlot() {
+			return sourceSlot;
+		}
+
+		public ItemStack getSourceStack() {
+			return sourceStack;
+		}
+	}
+
 	public InventoryCraftBook(Container container) {
 		super(container, 3, 3);
 	}
@@ -62,13 +86,7 @@ public class InventoryCraftBook extends InventoryCrafting {
 		}
 		ItemStack result = craftRecipe.getCraftingResult(this);
 		if(result != null) {
-			FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
-			result.onCrafting(player.worldObj, player, 1);
-			if(result.getItem() == Items.BREAD) {
-				player.addStat(AchievementList.MAKE_BREAD, 1);
-			} else if(result.getItem() == Items.CAKE) {
-				player.addStat(AchievementList.BAKE_CAKE, 1);
-			}
+			fireEventsAndHandleAchievements(player, result);
 			for(int i = 0; i < getSizeInventory(); i++) {
 				ItemStack itemStack = getStackInSlot(i);
 				if(itemStack != null) {
@@ -91,5 +109,16 @@ public class InventoryCraftBook extends InventoryCrafting {
 		}
 		return result;
 	}
+
+	private void fireEventsAndHandleAchievements(EntityPlayer player, ItemStack result) {
+		FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
+		result.onCrafting(player.worldObj, player, 1);
+		if(result.getItem() == Items.BREAD) {
+			player.addStat(AchievementList.MAKE_BREAD, 1);
+		} else if(result.getItem() == Items.CAKE) {
+			player.addStat(AchievementList.BAKE_CAKE, 1);
+		}
+	}
+
 
 }

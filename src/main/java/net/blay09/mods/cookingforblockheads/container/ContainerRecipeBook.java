@@ -307,7 +307,6 @@ public class ContainerRecipeBook extends Container {
 
 	@SideOnly(Side.CLIENT)
 	public void setItemList(Collection<FoodRecipeWithStatus> recipeList) {
-		System.out.println("spam test");
 		this.itemList.clear();
 		this.itemList.addAll(recipeList);
 
