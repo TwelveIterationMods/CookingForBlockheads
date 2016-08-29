@@ -203,7 +203,7 @@ public class CookingRegistry {
         return null;
     }
 
-    public static ItemStack findItemStack(ItemStack checkStack, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+    public static ItemStack findAnyItemStack(ItemStack checkStack, List<IKitchenItemProvider> inventories, boolean requireBucket) {
         if(checkStack == null) {
             return null;
         }
@@ -219,7 +219,7 @@ public class CookingRegistry {
         return null;
     }
 
-    public static ItemStack findItemStack(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+    public static ItemStack findAnyItemStack(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket) {
         if(ingredient == null) {
             return null;
         }
@@ -259,7 +259,7 @@ public class CookingRegistry {
         boolean missingTools = false;
         for(int i = 0; i < craftMatrix.size(); i++) {
             FoodIngredient ingredient = craftMatrix.get(i);
-            itemFound[i] = findItemStack(ingredient, inventories, requireBucket);
+            itemFound[i] = findAnyItemStack(ingredient, inventories, requireBucket);
             if(itemFound[i] == null && ingredient != null) {
                 if(ingredient.isToolItem()) {
                     missingTools = true;
