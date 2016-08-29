@@ -6,8 +6,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 
 public class ShapelessCraftingFood extends FoodRecipe {
 
-    public ShapelessCraftingFood(int id, ShapelessRecipes recipe) {
-        super(id);
+    public ShapelessCraftingFood(ShapelessRecipes recipe) {
         this.outputItem = recipe.getRecipeOutput();
         this.craftMatrix = Lists.newArrayList();
         for(int i = 0; i < recipe.recipeItems.size(); i++) {

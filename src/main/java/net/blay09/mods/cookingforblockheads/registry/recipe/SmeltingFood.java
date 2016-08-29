@@ -6,8 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class SmeltingFood extends FoodRecipe {
 
-    public SmeltingFood(int id, ItemStack outputItem, ItemStack sourceStack) {
-        super(id);
+    public SmeltingFood(ItemStack outputItem, ItemStack sourceStack) {
         this.outputItem = outputItem;
         this.craftMatrix = Lists.newArrayList();
         this.craftMatrix.add(new FoodIngredient(sourceStack, false));

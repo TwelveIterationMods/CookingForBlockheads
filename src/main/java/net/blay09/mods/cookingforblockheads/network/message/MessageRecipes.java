@@ -17,7 +17,8 @@ public class MessageRecipes implements IMessage {
     public MessageRecipes() {
     }
 
-    public MessageRecipes(List<FoodRecipeWithIngredients> recipeList) {
+    public MessageRecipes(ItemStack outputItem, List<FoodRecipeWithIngredients> recipeList) {
+        this.outputItem = outputItem;
         this.recipeList = recipeList;
     }
 

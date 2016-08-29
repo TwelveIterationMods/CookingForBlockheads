@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -9,30 +8,29 @@ import java.util.List;
 
 public class FakeSlotCraftMatrix extends FakeSlot {
 
-	private static final int ITEM_SWITCH_TIME = 20;
+	private static final float ITEM_SWITCH_TIME = 40f;
 
 	private final List<ItemStack> visibleStacks = Lists.newArrayList();
 
-	private FoodIngredient ingredient;
-
-	private int visibleItemTime;
+	private float visibleItemTime;
 	private int visibleItemIndex;
+	private boolean isLocked;
 
 	public FakeSlotCraftMatrix(int slotId, int x, int y) {
 		super(slotId, x, y);
 	}
 
-	public void setIngredient(FoodIngredient ingredient) {
-		this.ingredient = ingredient;
+	public void setIngredient(List<ItemStack> ingredients) {
 		visibleStacks.clear();
-		if(ingredient != null) {
-			for(ItemStack itemStack : ingredient.getItemStacks()) {
+		if(ingredients != null) {
+			for(ItemStack itemStack : ingredients) {
 				if(itemStack != null) {
 					if (itemStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
 						List<ItemStack> subItems = Lists.newArrayList();
 						itemStack.getItem().getSubItems(itemStack.getItem(), itemStack.getItem().getCreativeTab(), subItems);
 						visibleStacks.addAll(subItems);
 					} else {
+						itemStack.stackSize = 1;
 						visibleStacks.add(itemStack);
 					}
 				}
@@ -42,28 +40,43 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 		visibleItemIndex = 0;
 	}
 
-	public void updateSlot() {
-		visibleItemTime++;
-		if(visibleItemTime >= ITEM_SWITCH_TIME) {
-			visibleItemIndex++;
-			if(visibleItemIndex >= visibleStacks.size()) {
-				visibleItemIndex = 0;
+	public void updateSlot(float partialTicks) {
+		if(!isLocked) {
+			visibleItemTime += partialTicks;
+			if (visibleItemTime >= ITEM_SWITCH_TIME) {
+				visibleItemIndex++;
+				if (visibleItemIndex >= visibleStacks.size()) {
+					visibleItemIndex = 0;
+				}
+				visibleItemTime = 0;
 			}
 		}
 	}
 
 	@Override
 	public ItemStack getStack() {
-		return ingredient != null ? visibleStacks.get(visibleItemIndex) : null;
+		return visibleStacks.size() > 0 ? visibleStacks.get(visibleItemIndex) : null;
 	}
 
 	@Override
 	public boolean getHasStack() {
-		return ingredient != null;
+		return visibleStacks.size() > 0;
 	}
 
 	@Override
 	public boolean canBeHovered() {
-		return ingredient != null;
+		return visibleStacks.size() > 0;
+	}
+
+	public List<ItemStack> getVisibleStacks() {
+		return visibleStacks;
+	}
+
+	public boolean isLocked() {
+		return isLocked;
+	}
+
+	public void setLocked(boolean locked) {
+		isLocked = locked;
 	}
 }

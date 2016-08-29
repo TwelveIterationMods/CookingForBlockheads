@@ -51,6 +51,9 @@ tooltip.cookingforblockheads:missingOven=Missing oven to cook
 tooltip.cookingforblockheads:sortByName=Sort by Name
 tooltip.cookingforblockheads:sortByHunger=Sort by Hunger Restored
 tooltip.cookingforblockheads:sortBySaturation=Sort by Saturation
+tooltip.cookingforblockheads:clickToLock=Click to lock item
+tooltip.cookingforblockheads:clickToUnlock=Click to unlock item
+tooltip.cookingforblockheads:scrollToSwitch=Scroll to select item
 
 ###
 

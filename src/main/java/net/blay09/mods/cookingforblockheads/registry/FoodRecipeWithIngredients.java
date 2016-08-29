@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.registry;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
@@ -12,9 +11,9 @@ public class FoodRecipeWithIngredients {
     private final ItemStack outputItem;
     private final RecipeType recipeType;
     private final int recipeWidth;
-    private final List<FoodIngredient> craftMatrix;
+    private final List<List<ItemStack>> craftMatrix;
 
-    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, int recipeWidth, List<FoodIngredient> craftMatrix) {
+    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, int recipeWidth, List<List<ItemStack>> craftMatrix) {
         this.outputItem = outputItem;
         this.recipeType = recipeType;
         this.recipeWidth = recipeWidth;
@@ -23,20 +22,17 @@ public class FoodRecipeWithIngredients {
 
     public static FoodRecipeWithIngredients read(ByteBuf buf) {
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
-        RecipeStatus status = RecipeStatus.fromId(buf.readByte());
         int recipeWidth = buf.readByte();
-        List<FoodIngredient> craftMatrix;
         int ingredientCount = buf.readByte();
-        craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
+        List<List<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
         for (int i = 0; i < ingredientCount; i++) {
-            int stackCount = buf.readShort();
+            int stackCount = buf.readByte();
             if(stackCount > 0) {
-                ItemStack[] itemStacks = new ItemStack[stackCount];
-                for (int j = 0; j < stackCount; j++) {
-                    itemStacks[j] = ByteBufUtils.readItemStack(buf);
+                List<ItemStack> stackList = Lists.newArrayListWithCapacity(stackCount);
+                for(int j = 0; j < stackCount; j++) {
+                    stackList.add(ByteBufUtils.readItemStack(buf));
                 }
-                boolean isToolItem = buf.readBoolean();
-                craftMatrix.add(new FoodIngredient(itemStacks, isToolItem));
+                craftMatrix.add(stackList);
             } else {
                 craftMatrix.add(null);
             }
@@ -49,15 +45,10 @@ public class FoodRecipeWithIngredients {
         ByteBufUtils.writeItemStack(buf, outputItem);
         buf.writeByte(recipeWidth);
         buf.writeByte(craftMatrix.size());
-        for(FoodIngredient ingredient : craftMatrix) {
-            if(ingredient != null) {
-                buf.writeShort(ingredient.getItemStacks().length);
-                for (ItemStack ingredientStack : ingredient.getItemStacks()) {
-                    ByteBufUtils.writeItemStack(buf, ingredientStack);
-                }
-                buf.writeBoolean(ingredient.isToolItem());
-            } else {
-                buf.writeShort(0);
+        for(List<ItemStack> stackList : craftMatrix) {
+            buf.writeByte(stackList.size());
+            for(ItemStack stack : stackList) {
+                ByteBufUtils.writeItemStack(buf, stack);
             }
         }
         buf.writeByte(recipeType.ordinal());
@@ -71,7 +62,7 @@ public class FoodRecipeWithIngredients {
         return recipeWidth;
     }
 
-    public List<FoodIngredient> getCraftMatrix() {
+    public List<List<ItemStack>> getCraftMatrix() {
         return craftMatrix;
     }
 

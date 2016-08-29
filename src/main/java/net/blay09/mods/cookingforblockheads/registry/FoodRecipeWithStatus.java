@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+@Deprecated // TODO pretty sure we can just get rid of this and use a Map<RLoc, RS>
 public class FoodRecipeWithStatus {
     private final ItemStack outputItem;
     private final RecipeStatus status;

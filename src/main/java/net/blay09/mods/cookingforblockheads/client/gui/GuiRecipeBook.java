@@ -5,8 +5,9 @@ import net.blay09.mods.cookingforblockheads.container.*;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorHunger;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorSaturation;
+import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.minecraft.client.Minecraft;
@@ -108,9 +109,9 @@ public class GuiRecipeBook extends GuiContainer {
 		super.actionPerformed(button);
 
 		if(button == btnPrevRecipe) {
-//			container.prevRecipe();
+			container.nextSubRecipe(-1);
 		} else if(button == btnNextRecipe) {
-//			container.nextRecipe();
+			container.nextSubRecipe(1);
 		} else if(button == btnSortName) {
 			container.setSortComparator(new ComparatorName());
 		} else if(button == btnSortHunger) {
@@ -188,23 +189,23 @@ public class GuiRecipeBook extends GuiContainer {
 			}
 		}
 
-//		boolean hasVariants = container.hasVariants();
-//		btnPrevRecipe.visible = hasVariants;
-//		btnNextRecipe.visible = hasVariants;
+		boolean hasVariants = container.hasVariants();
+		btnPrevRecipe.visible = hasVariants;
+		btnNextRecipe.visible = hasVariants;
 
 		boolean hasRecipes = container.getRecipeCount() > 0;
 		btnSortName.enabled = hasRecipes;
 		btnSortHunger.enabled = hasRecipes;
 		btnSortSaturation.enabled = hasRecipes;
 
-		FoodRecipeWithStatus selection = container.getSelection();
+		FoodRecipeWithIngredients selection = container.getSelection();
 		if(selection == null) {
 			int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRendererObj.FONT_HEIGHT;
 			for(String s : noSelection) {
 				fontRendererObj.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
 				curY += fontRendererObj.FONT_HEIGHT + 5;
 			}
-		} else if(selection.getType() == RecipeType.SMELTING) {
+		} else if(selection.getRecipeType() == RecipeType.SMELTING) {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
 		} else {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
@@ -227,6 +228,8 @@ public class GuiRecipeBook extends GuiContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		container.updateSlots(partialTicks);
 
 		if(btnSortName.isMouseOver() && btnSortName.enabled) {
 			drawHoveringText(btnSortName.getTooltipLines(), mouseX, mouseY);
@@ -268,7 +271,8 @@ public class GuiRecipeBook extends GuiContainer {
 		if(hoverSlot instanceof FakeSlotRecipe && event.getItemStack() == hoverSlot.getStack()) {
 			FakeSlotRecipe slotRecipe = (FakeSlotRecipe) hoverSlot;
 			if(container.isSelectedSlot(slotRecipe) && container.isAllowCrafting()) {
-				if(slotRecipe.getRecipe().getType() == RecipeType.SMELTING) {
+				FoodRecipeWithIngredients subRecipe = container.getSelection();
+				if(subRecipe != null && subRecipe.getRecipeType() == RecipeType.SMELTING) {
 					if(!container.hasOven()) {
 						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingOven"));
 					} else {
@@ -293,6 +297,15 @@ public class GuiRecipeBook extends GuiContainer {
 				}
 			} else {
 				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSeeRecipe"));
+			}
+		} else if(hoverSlot instanceof FakeSlotCraftMatrix && event.getItemStack() == hoverSlot.getStack()) {
+			if(((FakeSlotCraftMatrix) hoverSlot).getVisibleStacks().size() > 1) {
+				if(((FakeSlotCraftMatrix) hoverSlot).isLocked()) {
+					event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToUnlock"));
+				} else {
+					event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToLock"));
+				}
+				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":scrollToSwitch"));
 			}
 		}
 	}

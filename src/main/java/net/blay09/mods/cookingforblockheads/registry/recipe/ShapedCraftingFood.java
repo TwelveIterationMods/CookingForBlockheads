@@ -6,8 +6,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 
 public class ShapedCraftingFood extends FoodRecipe {
 
-    public ShapedCraftingFood(int id, ShapedRecipes recipe) {
-        super(id);
+    public ShapedCraftingFood(ShapedRecipes recipe) {
         this.outputItem = recipe.getRecipeOutput();
         this.recipeWidth = recipe.recipeWidth;
         craftMatrix = Lists.newArrayList();

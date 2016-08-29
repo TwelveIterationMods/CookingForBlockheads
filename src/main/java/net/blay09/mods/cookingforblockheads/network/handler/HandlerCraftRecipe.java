@@ -17,7 +17,7 @@ public class HandlerCraftRecipe implements IMessageHandler<MessageCraftRecipe, I
 			public void run() {
 				Container container = ctx.getServerHandler().playerEntity.openContainer;
 				if(container instanceof ContainerRecipeBook) {
-					((ContainerRecipeBook) container).tryCraft(message.getRecipeType(), message.getCraftMatrix(), message.isStack());
+					((ContainerRecipeBook) container).tryCraft(message.getOutputItem(), message.getRecipeType(), message.getCraftMatrix(), message.isStack());
 				}
 			}
 		});

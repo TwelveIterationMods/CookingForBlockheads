@@ -36,7 +36,8 @@ public class InventoryCraftBook extends InventoryCrafting {
             sourceInventorySlots[i] = -1;
         }
 
-		matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
+		// TODO no really, fix me
+		/*matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
 			ItemStack ingredient = craftMatrix.get(i);
             if(ingredient != null) {
                 for(int j = 0; j < inventories.size(); j++) {
@@ -58,7 +59,7 @@ public class InventoryCraftBook extends InventoryCrafting {
                     }
                 }
             }
-        }
+        }*/
 		IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.worldObj);
 		if(craftRecipe == null) {
 			return null;

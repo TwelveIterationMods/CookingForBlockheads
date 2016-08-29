@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.registry;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
@@ -21,20 +22,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CookingRegistry {
 
-    private static final AtomicInteger id = new AtomicInteger();
     private static final List<IRecipe> recipeList = Lists.newArrayList();
-    private static final ArrayListMultimap<Item, FoodRecipe> foodItems = ArrayListMultimap.create();
+    private static final ArrayListMultimap<ResourceLocation, FoodRecipe> foodItems = ArrayListMultimap.create();
     private static final List<ItemStack> tools = Lists.newArrayList();
     private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
     private static final Map<ItemStack, ItemStack> ovenRecipes = Maps.newHashMap();
@@ -48,7 +49,6 @@ public class CookingRegistry {
     public static void initFoodRegistry() {
         recipeList.clear();
         foodItems.clear();
-        id.set(0);
 
         FoodRegistryInitEvent init = new FoodRegistryInitEvent();
         MinecraftForge.EVENT_BUS.post(init);
@@ -89,10 +89,10 @@ public class CookingRegistry {
             }
             ItemStack resultStack = (ItemStack) entry.getValue();
             if(resultStack.getItem() instanceof ItemFood) {
-                foodItems.put(resultStack.getItem(), new SmeltingFood(id.incrementAndGet(), resultStack, sourceStack));
+                foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
             } else {
                 if(isNonFoodRecipe(resultStack)) {
-                    foodItems.put(resultStack.getItem(), new SmeltingFood(id.incrementAndGet(), resultStack, sourceStack));
+                    foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
                 }
             }
         }
@@ -112,19 +112,23 @@ public class CookingRegistry {
         if(output != null) {
             recipeList.add(recipe);
             if (recipe instanceof ShapedRecipes) {
-                foodItems.put(output.getItem(), new ShapedCraftingFood(id.incrementAndGet(), (ShapedRecipes) recipe));
+                foodItems.put(output.getItem().getRegistryName(), new ShapedCraftingFood((ShapedRecipes) recipe));
             } else if (recipe instanceof ShapelessRecipes) {
-                foodItems.put(output.getItem(), new ShapelessCraftingFood(id.incrementAndGet(), (ShapelessRecipes) recipe));
+                foodItems.put(output.getItem().getRegistryName(), new ShapelessCraftingFood((ShapelessRecipes) recipe));
             } else if (recipe instanceof ShapelessOreRecipe) {
-                foodItems.put(output.getItem(), new ShapelessOreCraftingFood(id.incrementAndGet(), (ShapelessOreRecipe) recipe));
+                foodItems.put(output.getItem().getRegistryName(), new ShapelessOreCraftingFood((ShapelessOreRecipe) recipe));
             } else if (recipe instanceof ShapedOreRecipe) {
-                foodItems.put(output.getItem(), new ShapedOreCraftingFood(id.incrementAndGet(), (ShapedOreRecipe) recipe));
+                foodItems.put(output.getItem().getRegistryName(), new ShapedOreCraftingFood((ShapedOreRecipe) recipe));
             }
         }
     }
 
-    public static Collection<FoodRecipe> getFoodRecipes() {
-        return foodItems.values();
+    public static Multimap<ResourceLocation, FoodRecipe> getFoodRecipes() {
+        return foodItems;
+    }
+
+    public static Collection<FoodRecipe> getFoodRecipes(ItemStack outputItem) {
+        return foodItems.get(outputItem.getItem().getRegistryName());
     }
 
     public static void addToolItem(ItemStack toolItem) {
@@ -198,16 +202,36 @@ public class CookingRegistry {
         return null;
     }
 
-    public static Collection<FoodRecipeWithStatus> findAvailableRecipes(InventoryPlayer inventory, KitchenMultiBlock multiBlock) {
-        List<FoodRecipeWithStatus> result = Lists.newArrayList();
-        List<IKitchenItemProvider> inventories = getItemProviders(multiBlock, inventory);
-        for(FoodRecipe recipe : getFoodRecipes()) {
-            RecipeStatus recipeStatus = getRecipeStatus(recipe, inventories);
-            if(recipeStatus != RecipeStatus.MISSING_INGREDIENTS) {
-                result.add(new FoodRecipeWithStatus(recipe.getOutputItem(), recipeStatus));
+    public static ItemStack findItemStack(ItemStack checkStack, List<IKitchenItemProvider> inventories) {
+        if(checkStack == null) {
+            return null;
+        }
+        for (int i = 0; i < inventories.size(); i++) {
+            IKitchenItemProvider itemProvider = inventories.get(i);
+            for (int j = 0; j < itemProvider.getSlots(); j++) {
+                ItemStack itemStack = itemProvider.getStackInSlot(j);
+                if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, checkStack) && itemProvider.useItemStack(j, 1, true, inventories) != null) {
+                    return itemStack;
+                }
             }
         }
-        return result;
+        return null;
+    }
+
+    public static ItemStack findItemStack(FoodIngredient ingredient, List<IKitchenItemProvider> inventories) {
+        if(ingredient == null) {
+            return null;
+        }
+        for (int i = 0; i < inventories.size(); i++) {
+            IKitchenItemProvider itemProvider = inventories.get(i);
+            for (int j = 0; j < itemProvider.getSlots(); j++) {
+                ItemStack itemStack = itemProvider.getStackInSlot(j);
+                if (itemStack != null && ingredient.isValidItem(itemStack) && itemProvider.useItemStack(j, 1, true, inventories) != null) {
+                    return itemStack;
+                }
+            }
+        }
+        return null;
     }
 
     public static boolean consumeItemStack(ItemStack itemStack, List<IKitchenItemProvider> inventories, boolean simulate) {
@@ -226,35 +250,18 @@ public class CookingRegistry {
         return false;
     }
 
-    public static boolean isItemAvailable(FoodIngredient ingredient, List<IKitchenItemProvider> inventories) {
-        if(ingredient == null) {
-            return true;
-        }
-        for (int i = 0; i < inventories.size(); i++) {
-            IKitchenItemProvider itemProvider = inventories.get(i);
-            for (int j = 0; j < itemProvider.getSlots(); j++) {
-                ItemStack itemStack = itemProvider.getStackInSlot(j);
-                if (itemStack != null && ingredient.isValidItem(itemStack) && itemProvider.useItemStack(j, 1, true, inventories) != null) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public static RecipeStatus getRecipeStatus(FoodRecipe recipe, List<IKitchenItemProvider> inventories) {
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
         }
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
-        boolean[] itemFound = new boolean[craftMatrix.size()];
-        for(int i = 0; i < craftMatrix.size(); i++) {
-            itemFound[i] = isItemAvailable(craftMatrix.get(i), inventories);
-        }
+        ItemStack[] itemFound = new ItemStack[craftMatrix.size()];
         boolean missingTools = false;
-        for(int i = 0; i < itemFound.length; i++) {
-            if(!itemFound[i]) {
-                if(craftMatrix.get(i).isToolItem()) {
+        for(int i = 0; i < craftMatrix.size(); i++) {
+            FoodIngredient ingredient = craftMatrix.get(i);
+            itemFound[i] = findItemStack(ingredient, inventories);
+            if(itemFound[i] == null && ingredient != null) { // TODO test if this breaks things - was there a reason I did it in a second loop?
+                if(ingredient.isToolItem()) {
                     missingTools = true;
                     continue;
                 }

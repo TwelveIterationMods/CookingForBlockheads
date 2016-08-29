@@ -9,8 +9,7 @@ import java.util.List;
 public class ShapedOreCraftingFood extends FoodRecipe {
 
     @SuppressWarnings("unchecked")
-    public ShapedOreCraftingFood(int id, ShapedOreRecipe recipe) {
-        super(id);
+    public ShapedOreCraftingFood(ShapedOreRecipe recipe) {
         this.outputItem = recipe.getRecipeOutput();
         this.craftMatrix = Lists.newArrayList();
         for(int i = 0; i < recipe.getInput().length; i++) {

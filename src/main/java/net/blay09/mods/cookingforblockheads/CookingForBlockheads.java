@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 @Mod(modid = CookingForBlockheads.MOD_ID,
-		acceptedMinecraftVersions = "[1.10]",
+		acceptedMinecraftVersions = "[1.9.4]",
 		updateJSON = "http://balyware.com/new/forge_update.php?modid=" + CookingForBlockheads.MOD_ID)
 public class CookingForBlockheads {
 
