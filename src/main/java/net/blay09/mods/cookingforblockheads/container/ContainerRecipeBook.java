@@ -50,17 +50,13 @@ public class ContainerRecipeBook extends Container {
 
 	private ItemStack lastOutputItem;
 
-	@SideOnly(Side.CLIENT)
+	// These are client-only too, but I don't want a separate client-only constructor and it crashes if initialized here while SideOnly(Side.CLIENT)
 	private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
-
-	@SideOnly(Side.CLIENT)
 	private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
+	private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
 
 	@SideOnly(Side.CLIENT)
 	private String currentSearch;
-
-	@SideOnly(Side.CLIENT)
-	private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
 
 	@SideOnly(Side.CLIENT)
 	private boolean isDirtyClient;
@@ -239,7 +235,7 @@ public class ContainerRecipeBook extends Container {
 
 	public void findAndSendRecipes(ItemStack outputItem) {
 		lastOutputItem = outputItem;
-		selectedRecipeList = Lists.newArrayList();
+		List<FoodRecipeWithIngredients> resultList = Lists.newArrayList();
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		outerLoop:for (FoodRecipe recipe : CookingRegistry.getFoodRecipes(outputItem)) {
 			for (IKitchenItemProvider itemProvider : inventories) {
@@ -267,9 +263,9 @@ public class ContainerRecipeBook extends Container {
 				}
 				craftMatrix.add(stackList);
 			}
-			selectedRecipeList.add(new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), recipe.getRecipeWidth(), craftMatrix));
+			resultList.add(new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), recipe.getRecipeWidth(), craftMatrix));
 		}
-		NetworkHandler.instance.sendTo(new MessageRecipes(outputItem, selectedRecipeList), (EntityPlayerMP) player);
+		NetworkHandler.instance.sendTo(new MessageRecipes(outputItem, resultList), (EntityPlayerMP) player);
 	}
 
 	public void tryCraft(@Nullable ItemStack outputItem, RecipeType recipeType, List<ItemStack> craftMatrix, boolean stack) {
