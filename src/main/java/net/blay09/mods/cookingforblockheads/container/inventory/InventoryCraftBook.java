@@ -48,18 +48,17 @@ public class InventoryCraftBook extends InventoryCrafting {
 	}
 
 	public ItemStack tryCraft(ItemStack outputItem, List<ItemStack> craftMatrix, EntityPlayer player, KitchenMultiBlock multiBlock) {
-		int[] sourceInventories = new int[9];
-		int[] sourceInventorySlots = new int[9];
+		boolean requireContainer = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
+
+		// Reset the simulation before we start
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		for(IKitchenItemProvider itemProvider : inventories) {
 			itemProvider.resetSimulation();
 		}
-		for(int i = 0; i < getSizeInventory(); i++) {
-            setInventorySlotContents(i, null);
-            sourceInventories[i] = -1;
-            sourceInventorySlots[i] = -1;
-        }
 
+		SourceItem[] sourceItems = new SourceItem[9];
+
+		// Find matching items from source inventories
 		matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
 			ItemStack ingredient = craftMatrix.get(i);
             if(ingredient != null) {
@@ -68,11 +67,9 @@ public class InventoryCraftBook extends InventoryCrafting {
                     for (int k = 0; k < itemProvider.getSlots(); k++) {
                         ItemStack itemStack = itemProvider.getStackInSlot(k);
                         if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, ingredient)) {
-							itemStack = itemProvider.useItemStack(k, 1, true, inventories);
+							itemStack = itemProvider.useItemStack(k, 1, true, inventories, requireContainer);
 							if(itemStack != null) {
-								setInventorySlotContents(i, itemStack);
-								sourceInventories[i] = j;
-								sourceInventorySlots[i] = k;
+								sourceItems[i] = new SourceItem(inventories.get(j), k, itemStack);
 								continue matrixLoop;
 							}
                         }
@@ -80,26 +77,40 @@ public class InventoryCraftBook extends InventoryCrafting {
                 }
             }
         }
+
+		// Populate the crafting grid
+		for(int i = 0; i < sourceItems.length; i++) {
+			setInventorySlotContents(i, sourceItems[i] != null ? sourceItems[i].getSourceStack() : null);
+		}
+
+		// Find the matching recipe and make sure it matches what the client expects
 		IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.worldObj);
-		if(craftRecipe == null) {
+		if(craftRecipe == null || craftRecipe.getRecipeOutput() == null || craftRecipe.getRecipeOutput().getItem() != outputItem.getItem()) {
 			return null;
 		}
+
+		// Get the final result and remove ingredients
 		ItemStack result = craftRecipe.getCraftingResult(this);
 		if(result != null) {
 			fireEventsAndHandleAchievements(player, result);
 			for(int i = 0; i < getSizeInventory(); i++) {
 				ItemStack itemStack = getStackInSlot(i);
 				if(itemStack != null) {
-					if(sourceInventories[i] != -1) {
-						ItemStack containerItem = ForgeHooks.getContainerItem(itemStack);
-						IKitchenItemProvider sourceProvider = inventories.get(sourceInventories[i]);
-						if(sourceInventorySlots[i] != -1) {
+					if(sourceItems[i] != null) {
+						// Eat the ingredients
+						IKitchenItemProvider sourceProvider = sourceItems[i].getSourceProvider();
+						if(sourceItems[i].getSourceSlot() != -1) {
 							sourceProvider.resetSimulation();
-							sourceProvider.useItemStack(sourceInventorySlots[i], 1, false, inventories);
+							sourceProvider.useItemStack(sourceItems[i].getSourceSlot(), 1, false, inventories, requireContainer);
 						}
+
+						// Return container items (like empty buckets)
+						ItemStack containerItem = ForgeHooks.getContainerItem(itemStack);
 						if(containerItem != null) {
+							System.out.println("Got a container item, returning it to source provider");
 							ItemStack restStack = sourceProvider.returnItemStack(containerItem);
 							if(restStack != null && restStack.stackSize > 0) {
+								System.out.println("apparently the source provider didn't want it back so I'll just drop it in your inventory");
 								ItemHandlerHelper.giveItemToPlayer(player, restStack);
 							}
 						}

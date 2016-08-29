@@ -9,7 +9,7 @@ import java.util.List;
 public interface IKitchenItemProvider {
 	void resetSimulation();
 	@Nullable
-	ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories);
+	ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket);
 	@Nullable
 	ItemStack returnItemStack(ItemStack itemStack);
 	int getSlots();

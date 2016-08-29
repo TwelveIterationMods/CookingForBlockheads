@@ -42,10 +42,10 @@ public class TileMilkJar extends TileEntity {
 		}
 
 		@Override
-		public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
+		public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
 			if(tileMilkJar.getMilkAmount() - milkUsed >= amount * 1000) {
-				if(getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
-					if(!CookingRegistry.consumeItemStack(new ItemStack(Items.BUCKET), inventories, simulate)) {
+				if(requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
+					if(!CookingRegistry.consumeBucket(inventories, simulate)) {
 						return null;
 					}
 				}

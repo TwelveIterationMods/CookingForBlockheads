@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -80,6 +81,7 @@ public class KitchenMultiBlock {
 		if (inputItem == null) {
 			return;
 		}
+		boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
 		List<IKitchenItemProvider> inventories = getSourceInventories(player.inventory);
 		for (IKitchenItemProvider itemProvider : inventories) {
 			itemProvider.resetSimulation();
@@ -87,7 +89,7 @@ public class KitchenMultiBlock {
 				ItemStack itemStack = itemProvider.getStackInSlot(i);
 				if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, inputItem)) {
 					int smeltCount = Math.min(itemStack.stackSize, stack ? inputItem.getMaxStackSize() : 1);
-					ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories);
+					ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories, requireBucket);
 					if (restStack != null) {
 						restStack = smeltItem(restStack, smeltCount);
 						if (restStack != null) {

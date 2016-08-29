@@ -54,10 +54,10 @@ public class TileSink extends TileEntity implements IFluidHandler {
         }
 
         @Override
-        public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories) {
+        public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
             if(!CookingConfig.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
-                if(getStackInSlot(slot).getItem() == Items.WATER_BUCKET) {
-                    if(!CookingRegistry.consumeItemStack(new ItemStack(Items.BUCKET), inventories, simulate)) {
+                if(requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
+                    if(!CookingRegistry.consumeBucket(inventories, simulate)) {
                         return null;
                     }
                 }

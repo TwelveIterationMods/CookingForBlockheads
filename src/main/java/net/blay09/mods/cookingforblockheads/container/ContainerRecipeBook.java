@@ -250,11 +250,12 @@ public class ContainerRecipeBook extends Container {
 				}
 				List<FoodIngredient> ingredients = recipe.getCraftMatrix();
 				List<List<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredients.size());
+				boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(recipe.getOutputItem());
 				for (FoodIngredient ingredient : ingredients) {
 					List<ItemStack> stackList = Lists.newArrayList();
 					if(ingredient != null) {
 						for (ItemStack checkStack : ingredient.getItemStacks()) {
-							ItemStack foundStack = CookingRegistry.findItemStack(checkStack, inventories);
+							ItemStack foundStack = CookingRegistry.findItemStack(checkStack, inventories, requireBucket);
 							if (foundStack == null) {
 								if (noFilter || ingredient.isToolItem()) {
 									foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : null;
@@ -367,28 +368,14 @@ public class ContainerRecipeBook extends Container {
 				matrixSlots.get(i).setIngredient(i == 4 ? recipe.getCraftMatrix().get(0) : null);
 			}
 		} else {
-			int i = 0;
-			if(recipe.getCraftMatrix().size() == 1) {
-				for (int j = 0; j < matrixSlots.size(); j++) {
-					matrixSlots.get(j).setIngredient(j == 4 ? recipe.getCraftMatrix().get(0) : null);
-				}
-			} else if(recipe.getCraftMatrix().size() == 3) {
-				for (int j = 0; j < matrixSlots.size(); j++) {
-					if(j >= 3 && j <= 5) {
-						matrixSlots.get(j).setIngredient(recipe.getCraftMatrix().get(j - 3));
-					} else {
-						matrixSlots.get(j).setIngredient(null);
-					}
-				}
-			} else {
-				for (FakeSlotCraftMatrix slot : matrixSlots) {
-					if (i < recipe.getCraftMatrix().size()) {
-						slot.setIngredient(recipe.getCraftMatrix().get(i));
-						i++;
-					} else {
-						slot.setIngredient(null);
-					}
-				}
+			for(int i = 0; i < matrixSlots.size(); i++) {
+				matrixSlots.get(i).setIngredient(null);
+			}
+			for(int i = 0; i < recipe.getCraftMatrix().size(); i++) {
+				int origX = i % recipe.getRecipeWidth();
+				int origY = i / recipe.getRecipeWidth();
+				int targetIdx = origY * 3 + origX;
+				matrixSlots.get(targetIdx).setIngredient(recipe.getCraftMatrix().get(i));
 			}
 		}
 	}
