@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -23,7 +24,6 @@ public class InventoryCraftBook extends InventoryCrafting {
 	}
 
 	public ItemStack tryCraft(ItemStack outputItem, List<ItemStack> craftMatrix, EntityPlayer player, KitchenMultiBlock multiBlock) {
-		// TODO FIX ME
 		int[] sourceInventories = new int[9];
 		int[] sourceInventorySlots = new int[9];
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
@@ -36,30 +36,26 @@ public class InventoryCraftBook extends InventoryCrafting {
             sourceInventorySlots[i] = -1;
         }
 
-		// TODO no really, fix me
-		/*matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
+		matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
 			ItemStack ingredient = craftMatrix.get(i);
             if(ingredient != null) {
                 for(int j = 0; j < inventories.size(); j++) {
 					IKitchenItemProvider itemProvider = inventories.get(j);
                     for (int k = 0; k < itemProvider.getSlots(); k++) {
                         ItemStack itemStack = itemProvider.getStackInSlot(k);
-                        if (itemStack != null && ingredient.isValidItem(itemStack)) {
+                        if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, ingredient)) {
 							itemStack = itemProvider.useItemStack(k, 1, true, inventories);
 							if(itemStack != null) {
-								int origX = i % recipe.getRecipeWidth();
-								int origY = i / recipe.getRecipeWidth();
-								int targetIdx = origY * 3 + origX;
-								setInventorySlotContents(targetIdx, itemStack);
-								sourceInventories[targetIdx] = j;
-								sourceInventorySlots[targetIdx] = k;
+								setInventorySlotContents(i, itemStack);
+								sourceInventories[i] = j;
+								sourceInventorySlots[i] = k;
 								continue matrixLoop;
 							}
                         }
                     }
                 }
             }
-        }*/
+        }
 		IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.worldObj);
 		if(craftRecipe == null) {
 			return null;

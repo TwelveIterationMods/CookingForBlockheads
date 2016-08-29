@@ -260,7 +260,7 @@ public class CookingRegistry {
         for(int i = 0; i < craftMatrix.size(); i++) {
             FoodIngredient ingredient = craftMatrix.get(i);
             itemFound[i] = findItemStack(ingredient, inventories);
-            if(itemFound[i] == null && ingredient != null) { // TODO test if this breaks things - was there a reason I did it in a second loop?
+            if(itemFound[i] == null && ingredient != null) {
                 if(ingredient.isToolItem()) {
                     missingTools = true;
                     continue;

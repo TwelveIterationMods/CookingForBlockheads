@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
+import net.blay09.mods.cookingforblockheads.network.message.MessageCraftRecipe;
 import net.blay09.mods.cookingforblockheads.network.message.MessageItemList;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageRecipes;
@@ -23,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -36,8 +38,6 @@ public class ContainerRecipeBook extends Container {
 
 	private final EntityPlayer player;
 
-	private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
-
 	private final List<FakeSlotRecipe> recipeSlots = Lists.newArrayList();
 	private final List<FakeSlotCraftMatrix> matrixSlots = Lists.newArrayList();
 
@@ -49,6 +49,9 @@ public class ContainerRecipeBook extends Container {
 	private boolean isDirty = true;
 
 	private ItemStack lastOutputItem;
+
+	@SideOnly(Side.CLIENT)
+	private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
 
 	@SideOnly(Side.CLIENT)
 	private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
@@ -116,8 +119,19 @@ public class ContainerRecipeBook extends Container {
 					FakeSlotRecipe slotRecipe = (FakeSlotRecipe) slot;
 					if (slotRecipe.getRecipe() != null) {
 						if (slotRecipe == selectedRecipe) {
-							if (allowCrafting) {
-								//NetworkHandler.instance.sendToServer(new MessageCraftRecipe(null, null, null, clickType == ClickType.QUICK_MOVE)); // TODO FIX ME
+							if (allowCrafting && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP)) {
+								FoodRecipeWithIngredients recipe = getSelection();
+								if(recipe != null) {
+									List<ItemStack> craftMatrix = Lists.newArrayList();
+									if(recipe.getRecipeType() == RecipeType.CRAFTING) {
+										for(FakeSlotCraftMatrix matrixSlot : matrixSlots) {
+											craftMatrix.add(matrixSlot.getStack());
+										}
+									} else if(recipe.getRecipeType() == RecipeType.SMELTING){
+										craftMatrix.add(matrixSlots.get(4).getStack());
+									}
+									NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipe.getOutputItem(), recipe.getRecipeType(), craftMatrix, clickType == ClickType.QUICK_MOVE));
+								}
 							}
 						} else {
 							selectedRecipe = slotRecipe;
@@ -151,7 +165,12 @@ public class ContainerRecipeBook extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
-	} // TODO range check?
+	}
+
+	@Override
+	public void onCraftMatrixChanged(IInventory inventory) {
+		// NOP, we don't want detectAndSendChanges called here, otherwise it will spam on crafting a stack of items
+	}
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
@@ -198,7 +217,6 @@ public class ContainerRecipeBook extends Container {
 	// TODO possible optimization: cache FRWI while grabbing the FRWS already, then we don't need to simulate the same thing twice
 
 	public void findAndSendItemList() {
-		itemList.clear();
 		Map<ResourceLocation, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		keyLoop:for(ResourceLocation key : CookingRegistry.getFoodRecipes().keySet()) {
@@ -217,8 +235,7 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
-		itemList.addAll(statusMap.values());
-		NetworkHandler.instance.sendTo(new MessageItemList(itemList, multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
+		NetworkHandler.instance.sendTo(new MessageItemList(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
 	}
 
 	public void findAndSendRecipes(ItemStack outputItem) {
@@ -235,15 +252,17 @@ public class ContainerRecipeBook extends Container {
 				List<List<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredients.size());
 				for (FoodIngredient ingredient : ingredients) {
 					List<ItemStack> stackList = Lists.newArrayList();
-					for (ItemStack checkStack : ingredient.getItemStacks()) {
-						ItemStack foundStack = CookingRegistry.findItemStack(checkStack, inventories);
-						if (foundStack == null) {
-							if (noFilter || ingredient.isToolItem()) {
-								foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : null;
+					if(ingredient != null) {
+						for (ItemStack checkStack : ingredient.getItemStacks()) {
+							ItemStack foundStack = CookingRegistry.findItemStack(checkStack, inventories);
+							if (foundStack == null) {
+								if (noFilter || ingredient.isToolItem()) {
+									foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : null;
+								}
 							}
-						}
-						if (foundStack != null) {
-							stackList.add(foundStack);
+							if (foundStack != null) {
+								stackList.add(foundStack);
+							}
 						}
 					}
 					craftMatrix.add(stackList);
@@ -278,7 +297,6 @@ public class ContainerRecipeBook extends Container {
 					multiBlock.trySmelt(outputItem, craftMatrix.get(0), player, stack);
 					isDirty = true;
 				}
-				// TODO detectAndSendChanges()?
 			}
 		}
 	}
@@ -289,6 +307,7 @@ public class ContainerRecipeBook extends Container {
 
 	@SideOnly(Side.CLIENT)
 	public void setItemList(Collection<FoodRecipeWithStatus> recipeList) {
+		System.out.println("spam test");
 		this.itemList.clear();
 		this.itemList.addAll(recipeList);
 
@@ -314,7 +333,6 @@ public class ContainerRecipeBook extends Container {
 				filteredItems.add(null);
 			}
 			filteredItems.add(index, found);
-			System.out.println("yo");
 		}
 
 		// Updates the items inside the recipe slots

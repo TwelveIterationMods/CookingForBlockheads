@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
 import com.google.common.collect.Lists;
+import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -21,6 +22,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 	}
 
 	public void setIngredient(List<ItemStack> ingredients) {
+		ItemStack prevLockStack = isLocked ? getStack() : null;
 		visibleStacks.clear();
 		if(ingredients != null) {
 			for(ItemStack itemStack : ingredients) {
@@ -39,6 +41,14 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 		visibleItemTime = 0;
 		visibleItemIndex = 0;
 		isLocked = false;
+		if(prevLockStack != null) {
+			for(int i = 0; i < visibleStacks.size(); i++) {
+				if(ItemUtils.areItemStacksEqualWithWildcard(visibleStacks.get(i), prevLockStack)) {
+					visibleItemIndex = i;
+					isLocked = true;
+				}
+			}
+		}
 	}
 
 	public void updateSlot(float partialTicks) {
@@ -90,4 +100,5 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 			visibleItemIndex = visibleStacks.size() - 1;
 		}
 	}
+
 }
