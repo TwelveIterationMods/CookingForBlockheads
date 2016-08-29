@@ -38,6 +38,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 		}
 		visibleItemTime = 0;
 		visibleItemIndex = 0;
+		isLocked = false;
 	}
 
 	public void updateSlot(float partialTicks) {
@@ -78,5 +79,10 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 
 	public void setLocked(boolean locked) {
 		isLocked = locked;
+	}
+
+	public void scrollDisplayList(int i) {
+		isLocked = true;
+		visibleItemIndex = Math.max(0, Math.min(visibleStacks.size() - 1, visibleItemIndex + i));
 	}
 }

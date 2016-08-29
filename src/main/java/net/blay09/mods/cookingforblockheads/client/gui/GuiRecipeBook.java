@@ -17,6 +17,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.MouseHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -128,7 +129,16 @@ public class GuiRecipeBook extends GuiContainer {
 		if (delta == 0) {
 			return;
 		}
-		setCurrentOffset(delta > 0 ? currentOffset - 1 : currentOffset + 1);
+		int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		if(container.getSelection() != null && mouseX >= guiLeft + 7 && mouseY >= guiTop + 17 && mouseX < guiLeft + 92 && mouseY < guiTop + 95) {
+			Slot slot = getSlotUnderMouse();
+			if(slot instanceof FakeSlotCraftMatrix) {
+				((FakeSlotCraftMatrix) slot).scrollDisplayList(delta > 0 ? -1 : 1);
+			}
+		} else {
+			setCurrentOffset(delta > 0 ? currentOffset - 1 : currentOffset + 1);
+		}
 	}
 
 	@Override

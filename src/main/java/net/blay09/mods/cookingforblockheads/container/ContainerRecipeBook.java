@@ -107,7 +107,6 @@ public class ContainerRecipeBook extends Container {
 
 	@Override
 	public ItemStack slotClick(int slotNumber, int dragType, ClickType clickType, EntityPlayer player) {
-		// TODO also should probably allow scrolling on the slot
 		if(slotNumber >= 0 && slotNumber < inventorySlots.size()) {
 			Slot slot = inventorySlots.get(slotNumber);
 			if(player.worldObj.isRemote) {
@@ -222,7 +221,7 @@ public class ContainerRecipeBook extends Container {
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		for(FoodRecipe recipe : CookingRegistry.getFoodRecipes(outputItem)) {
 			RecipeStatus status = CookingRegistry.getRecipeStatus(recipe, inventories);
-			if(noFilter || status != RecipeStatus.MISSING_INGREDIENTS) {
+			if(noFilter || status != RecipeStatus.MISSING_INGREDIENTS) { // TODO this is probably unnecessary because we redo the simulation right after below...
 				for (IKitchenItemProvider itemProvider : inventories) {
 					itemProvider.resetSimulation();
 				}
@@ -233,7 +232,7 @@ public class ContainerRecipeBook extends Container {
 					for (ItemStack checkStack : ingredient.getItemStacks()) {
 						ItemStack foundStack = CookingRegistry.findItemStack(checkStack, inventories);
 						if (foundStack == null) {
-							if (ingredient.isToolItem()) {
+							if (noFilter || ingredient.isToolItem()) {
 								foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : null;
 							}
 						}
