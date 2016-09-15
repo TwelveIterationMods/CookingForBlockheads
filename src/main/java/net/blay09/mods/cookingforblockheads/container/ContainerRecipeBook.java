@@ -256,9 +256,10 @@ public class ContainerRecipeBook extends Container {
 						}
 						if (foundStack != null) {
 							stackList.add(foundStack);
-						} else {
-							continue outerLoop;
 						}
+					}
+					if(stackList.isEmpty()) {
+						continue outerLoop;
 					}
 				}
 				craftMatrix.add(stackList);
