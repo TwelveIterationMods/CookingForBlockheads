@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -94,7 +93,7 @@ public class CookingForBlockheads {
 		NetworkRegistry.INSTANCE.registerGuiHandler(CookingForBlockheads.instance, new GuiHandler());
 
 		FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
-		FMLInterModComms.sendMessage("Waila", "register", "net.blay09.mods.cookingforblockheads.compat.WailaProvider.register");
+		FMLInterModComms.sendMessage(Compat.WAILA, "register", "net.blay09.mods.cookingforblockheads.compat.WailaProvider.register");
 
 		ModRecipes.load(config);
 
@@ -209,23 +208,23 @@ public class CookingForBlockheads {
 		}
 
 		if(config.getBoolean("Pam's HarvestCraft", "modules", true, "Tool Support, Oven Recipes, Oven Fuel, Ingredient Recipes, Toast")) {
-			event.buildSoftDependProxy("harvestcraft", "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
+			event.buildSoftDependProxy(Compat.PAMS_HARVESTCRAFT, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 		}
 
 		if(config.getBoolean("More Foods", "modules", true, "Tool Support, Ingredient Recipes, Toast")) {
-			event.buildSoftDependProxy("morefood", "net.blay09.mods.cookingforblockheads.compat.MoreFoodsAddon");
+			event.buildSoftDependProxy(Compat.MORE_FOOD, "net.blay09.mods.cookingforblockheads.compat.MoreFoodsAddon");
 		}
 
 		if(config.getBoolean("Extra Food", "modules", true, "Tool Support, Ingredient Recipes, Toast")) {
-			event.buildSoftDependProxy("ExtraFood", "net.blay09.mods.cookingforblockheads.compat.ExtraFoodAddon");
+			event.buildSoftDependProxy(Compat.EXTRA_FOOD, "net.blay09.mods.cookingforblockheads.compat.ExtraFoodAddon");
 		}
 
 		if(config.getBoolean("Food Expansion", "modules", true, "Ingredient Recipes")) {
-			event.buildSoftDependProxy("fe", "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
+			event.buildSoftDependProxy(Compat.FOOD_EXPANSION, "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
 		}
 
-		event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
-		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.compat.MineTweakerAddon");
+		event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
+		event.buildSoftDependProxy(Compat.MINETWEAKER, "net.blay09.mods.cookingforblockheads.compat.MineTweakerAddon");
 
 
 		CookingRegistry.initFoodRegistry();
