@@ -6,4 +6,5 @@ dependencies {
     deobfCompile "hosted-api:Quark-beta:50"
     deobfCompile "hosted-api:CraftTweaker:1.10.2"
     deobfCompile "hosted-api:ImmersiveEngineering:0.10.48"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.10-1.2.0-40"
 }

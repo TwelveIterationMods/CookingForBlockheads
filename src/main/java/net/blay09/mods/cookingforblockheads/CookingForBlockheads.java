@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -92,6 +93,7 @@ public class CookingForBlockheads {
 		NetworkHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(CookingForBlockheads.instance, new GuiHandler());
 
+		FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
 		FMLInterModComms.sendMessage("Waila", "register", "net.blay09.mods.cookingforblockheads.compat.WailaProvider.register");
 
 		ModRecipes.load(config);
@@ -222,11 +224,9 @@ public class CookingForBlockheads {
 			event.buildSoftDependProxy("fe", "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
 		}
 
-		if(config.getBoolean("AppleCore", "modules", true, "Dynamic Food Values")) {
-			event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
-		}
-
+		event.buildSoftDependProxy("AppleCore", "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
 		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.compat.MineTweakerAddon");
+
 
 		CookingRegistry.initFoodRegistry();
 	}
