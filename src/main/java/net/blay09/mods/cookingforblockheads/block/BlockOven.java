@@ -148,16 +148,6 @@ public class  BlockOven extends BlockKitchen {
     }
 
     @Override
-    public boolean hasComparatorInputOverride(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos) {
-        return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(pos));
-    }
-
-    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
