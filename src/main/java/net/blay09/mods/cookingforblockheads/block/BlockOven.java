@@ -62,20 +62,22 @@ public class  BlockOven extends BlockKitchen {
         if(side == EnumFacing.UP) {
             if(CookingRegistry.isToolItem(heldItem)) {
                 EnumFacing facing = state.getValue(FACING);
+                float hx = hitX;
+                float hz = hitZ;
                 switch(facing) {
-                    case NORTH: hitX = 1f - hitX; hitZ = 1f - hitZ; break;
-//                    case SOUTH: hitX = hitX; hitZ = hitZ; break;
-                    case WEST: hitZ = 1f - hitX; hitX = hitZ; break;
-                    case EAST: hitZ = hitX; hitX = 1f - hitZ; break;
+                    case NORTH: hx = 1f - hitX; hz = 1f - hitZ; break;
+//                    case SOUTH: hx = hitX; hz = hitZ; break;
+                    case WEST: hz = 1f - hitX; hx = hitZ; break;
+                    case EAST: hz = hitX; hx = 1f - hitZ; break;
                 }
                 int index = -1;
-                if(hitX < 0.5f && hitZ < 0.5f) {
+                if(hx < 0.5f && hz < 0.5f) {
                     index = 1;
-                } else if(hitX >= 0.5f && hitZ < 0.5f) {
+                } else if(hx >= 0.5f && hz < 0.5f) {
                     index = 0;
-                } else if(hitX < 0.5f && hitZ >= 0.5f) {
+                } else if(hx < 0.5f && hz >= 0.5f) {
                     index = 3;
-                } else if(hitX >= 0.5f && hitZ >= 0.5f) {
+                } else if(hx >= 0.5f && hz >= 0.5f) {
                     index = 2;
                 }
                 if(index != -1) {
