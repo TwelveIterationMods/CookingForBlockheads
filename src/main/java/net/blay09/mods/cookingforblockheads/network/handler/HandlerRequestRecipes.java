@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.network.handler;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
+import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageRequestRecipes;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -12,7 +12,7 @@ public class HandlerRequestRecipes implements IMessageHandler<MessageRequestReci
 
     @Override
     public IMessage onMessage(final MessageRequestRecipes message, final MessageContext ctx) {
-		CookingForBlockheads.proxy.addScheduledTask(new Runnable() {
+		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
 			@Override
 			public void run() {
 				Container container = ctx.getServerHandler().playerEntity.openContainer;

@@ -85,14 +85,6 @@ public class ClientProxy extends CommonProxy {
 		ModItems.initModels();
 	}
 
-//	@SubscribeEvent
-//	public void onTest(ServerChatEvent event) {
-//		if(event.getMessage().contains("testibus") && event.getPlayer().getHeldItemMainhand() != null) {
-//			event.getPlayer().addChatMessage(new TextComponentString(event.getPlayer().getHeldItemMainhand().getItem().getRegistryName().toString()));
-//			event.setCanceled(true);
-//		}
-//	}
-
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 		ovenToolIcons[0] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotBakeware"));
@@ -111,8 +103,4 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 
-	@Override
-	public void addScheduledTask(Runnable runnable) {
-		Minecraft.getMinecraft().addScheduledTask(runnable);
-	}
 }

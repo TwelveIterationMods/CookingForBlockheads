@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.network.handler;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageCreateCowJar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.SoundEvents;
@@ -14,7 +14,7 @@ public class HandlerCreateCowJar implements IMessageHandler<MessageCreateCowJar,
 
 	@Override
 	public IMessage onMessage(final MessageCreateCowJar message, MessageContext ctx) {
-		CookingForBlockheads.proxy.addScheduledTask(new Runnable() {
+		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
 			@Override
 			public void run() {
 				Minecraft.getMinecraft().theWorld.playSound(message.getPos().getX(), message.getPos().getY(), message.getPos().getZ(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 1f, 1f, false);
