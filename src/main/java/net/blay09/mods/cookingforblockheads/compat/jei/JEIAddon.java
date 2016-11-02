@@ -2,8 +2,7 @@ package net.blay09.mods.cookingforblockheads.compat.jei;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import mezz.jei.api.IJeiRuntime;
-import mezz.jei.api.IModPlugin;
+import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
@@ -16,7 +15,7 @@ import java.awt.Rectangle;
 import java.util.List;
 
 @JEIPlugin
-public class JEIAddon implements IModPlugin {
+public class JEIAddon extends BlankModPlugin {
 
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
@@ -43,11 +42,6 @@ public class JEIAddon implements IModPlugin {
 				return list;
 			}
 		});
-	}
-
-	@Override
-	public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
-
 	}
 
 }

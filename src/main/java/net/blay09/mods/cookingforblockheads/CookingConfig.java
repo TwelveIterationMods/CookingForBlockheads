@@ -5,10 +5,11 @@ import net.minecraftforge.common.config.Configuration;
 public class CookingConfig {
 
     public static boolean sinkRequiresWater;
-    public static boolean ovenRequiresCookingOil;
     public static boolean disallowOvenAutomation;
     public static float ovenFuelTimeMultiplier;
     public static float ovenCookTimeMultiplier;
+
+    public static boolean ovenRequiresCookingOil;
 
     public static boolean cowJarEnabled;
     public static float cowJarMilkPerTick;

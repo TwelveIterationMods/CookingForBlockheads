@@ -1,10 +1,11 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler;
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
@@ -20,6 +21,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -30,7 +32,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 
-public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider {
+@Optional.Interface(iface = "blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler", modid = Compat.IMMERSIVE_ENGINEERING)
+public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider, ExternalHeaterHandler.IExternalHeatable {
 
     private static final int COOK_TIME = 200;
 
@@ -334,5 +337,37 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    @Override
+    public int doHeatTick(int energyAvailable, boolean redstone) {
+        int energyConsumed = 0;
+        boolean canCook = shouldConsumeFuel();
+        if(canCook || redstone) {
+            boolean burning = isBurning();
+            if(furnaceBurnTime < 200) {
+                int heatAttempt = 4;
+                int heatEnergyRatio = (int) Math.max(1, ExternalHeaterHandler.defaultFurnaceEnergyCost * CookingConfig.ovenFuelTimeMultiplier);
+                int energyToUse = Math.min(energyAvailable, heatAttempt * heatEnergyRatio);
+                int heat = energyToUse / heatEnergyRatio;
+                if(heat > 0) {
+                    furnaceBurnTime += heat;
+                    energyConsumed += heat * heatEnergyRatio;
+                    if(!burning) {
+                        isDirty = true;
+                    }
+                }
+            }
+            if(canCook && furnaceBurnTime >= 200) {
+                int energyToUse = ExternalHeaterHandler.defaultFurnaceSpeedupCost * 9; // speed up affects nine items after all
+                if(energyAvailable - energyConsumed > energyToUse) {
+                    for(int i = 0; i < slotCookTime.length; i++) {
+                        slotCookTime[i]++;
+                    }
+                    energyConsumed += energyToUse;
+                }
+            }
+        }
+        return energyConsumed;
     }
 }

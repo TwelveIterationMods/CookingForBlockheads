@@ -1,8 +1,9 @@
 dependencies {
     provided group: "inventorytweaks", name: "InventoryTweaks", version: "1.59-dev-3"
-    deobfCompile "mezz.jei:jei_1.9.4:3.6.2.211"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.0.341"
     deobfCompile "applecore:AppleCore:1.9.4-1.3.2:api"
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     deobfCompile "hosted-api:Quark-beta:50"
     deobfCompile "hosted-api:CraftTweaker:1.10.2"
+    deobfCompile "hosted-api:ImmersiveEngineering:0.10.48"
 }
