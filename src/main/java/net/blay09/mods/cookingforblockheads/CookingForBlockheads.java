@@ -94,6 +94,8 @@ public class CookingForBlockheads {
 
 		FMLInterModComms.sendMessage("Waila", "register", "net.blay09.mods.cookingforblockheads.compat.WailaProvider.register");
 
+		ModRecipes.load(config);
+
 		proxy.init(event);
 	}
 
@@ -225,8 +227,6 @@ public class CookingForBlockheads {
 		}
 
 		event.buildSoftDependProxy("MineTweaker3", "net.blay09.mods.cookingforblockheads.compat.MineTweakerAddon");
-
-		ModRecipes.load(config);
 
 		CookingRegistry.initFoodRegistry();
 	}
