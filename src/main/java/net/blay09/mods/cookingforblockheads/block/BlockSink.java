@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +22,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -39,76 +43,28 @@ public class BlockSink extends BlockKitchen {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
-            FluidStack fluidStack = null;
-            int amount = FluidContainerRegistry.getContainerCapacity(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), heldItem);
-            if(CookingConfig.sinkRequiresWater) {
-                TileSink sink = (TileSink) world.getTileEntity(pos);
-                if(sink != null && sink.getWaterAmount() >= amount) {
-                    fluidStack = sink.drain(null, amount, true);
-                }
+        ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
+        if(resultStack != null) {
+            NBTTagCompound tagCompound = heldItem.getTagCompound();
+            ItemStack newItem = resultStack.copy();
+            if(tagCompound != null) {
+                newItem.setTagCompound(tagCompound);
+            }
+            if(heldItem.stackSize <= 1) {
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, newItem);
             } else {
-                fluidStack = new FluidStack(FluidRegistry.WATER, amount);
-            }
-            if(fluidStack != null && fluidStack.amount >= amount) {
-                ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(fluidStack, heldItem);
-                if (filledContainer != null) {
-                    if (heldItem.stackSize <= 1) {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
-                    } else {
-                        if (player.inventory.addItemStackToInventory(filledContainer)) {
-                            heldItem.stackSize--;
-                        }
-                    }
-                }
-                spawnParticles(world, pos, state);
-            }
-            return true;
-        } else if(FluidContainerRegistry.isFilledContainer(heldItem)) {
-            FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(heldItem);
-            if(CookingConfig.sinkRequiresWater) {
-                TileSink sink = (TileSink) world.getTileEntity(pos);
-                if(sink != null) {
-                    sink.fill(null, fluidStack, true);
-                }
-            }
-            ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
-            if(emptyContainer != null) {
-                if(heldItem.stackSize <= 1) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, emptyContainer);
-                } else {
-                    if(player.inventory.addItemStackToInventory(emptyContainer)) {
-                        heldItem.stackSize--;
-                    }
+                if(player.inventory.addItemStackToInventory(newItem)) {
+                    heldItem.stackSize--;
                 }
             }
             spawnParticles(world, pos, state);
             return true;
         } else {
-            ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
-            if(resultStack != null) {
-                NBTTagCompound tagCompound = heldItem.getTagCompound();
-                ItemStack newItem = resultStack.copy();
-                if(tagCompound != null) {
-                    newItem.setTagCompound(tagCompound);
-                }
-                if(heldItem.stackSize <= 1) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItem);
-                } else {
-                    if(player.inventory.addItemStackToInventory(newItem)) {
-                        heldItem.stackSize--;
-                    }
-                }
-                spawnParticles(world, pos, state);
-                return true;
-            } else {
-                if(CookingConfig.sinkRequiresWater) {
-                    TileSink sink = (TileSink) world.getTileEntity(pos);
-                    if(sink != null && sink.getWaterAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
-                        return true;
-                    }
-                }
-                spawnParticles(world, pos, state);
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if(tileEntity != null) {
+                IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+                FluidUtil.interactWithFluidHandler(heldItem, fluidHandler, player);
+                return heldItem != null && !(heldItem.getItem() instanceof ItemBlock);
             }
         }
         return true;

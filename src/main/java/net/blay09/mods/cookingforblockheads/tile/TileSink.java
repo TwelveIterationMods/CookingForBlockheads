@@ -17,24 +17,44 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class TileSink extends TileEntity implements IFluidHandler {
+public class TileSink extends TileEntity {
 
     private static class WaterTank extends FluidTank {
+
         public WaterTank(int capacity) {
             super(capacity);
         }
+
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if(resource.getFluid() != FluidRegistry.WATER) {
-                return 0;
+            if(!CookingConfig.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
+                return resource.amount;
             }
             return super.fill(resource, doFill);
         }
+
+        @Override
+        public FluidStack drain(FluidStack resource, boolean doDrain) {
+            if(!CookingConfig.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
+                return resource.copy();
+            }
+            return super.drain(resource, doDrain);
+        }
+
+        @Override
+        public FluidStack drain(int maxDrain, boolean doDrain) {
+            if(!CookingConfig.sinkRequiresWater) {
+                return new FluidStack(FluidRegistry.WATER, maxDrain);
+            }
+            return super.drain(maxDrain, doDrain);
+        }
+
     }
 
     private static class SinkItemProvider implements IKitchenItemProvider {
@@ -131,38 +151,9 @@ public class TileSink extends TileEntity implements IFluidHandler {
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-        return waterTank.fill(resource, doFill);
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-        return drain(from, resource.amount, doDrain);
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-        return waterTank.drain(maxDrain, doDrain);
-    }
-
-    @Override
-    public boolean canFill(EnumFacing from, Fluid fluid) {
-        return CookingConfig.sinkRequiresWater && fluid == FluidRegistry.WATER;
-    }
-
-    @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid) {
-        return CookingConfig.sinkRequiresWater && fluid == FluidRegistry.WATER;
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from) {
-        return new FluidTankInfo[] { waterTank.getInfo() };
-    }
-
-    @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityKitchenItemProvider.CAPABILITY
+                || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
                 || super.hasCapability(capability, facing);
     }
 
@@ -171,6 +162,8 @@ public class TileSink extends TileEntity implements IFluidHandler {
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
+        } else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return (T) waterTank;
         }
         return super.getCapability(capability, facing);
     }
