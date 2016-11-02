@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
 public class InternalMethods implements IInternalMethods {
@@ -43,4 +44,8 @@ public class InternalMethods implements IInternalMethods {
         CookingRegistry.addToolItem(toolItem);
     }
 
+    @Override
+    public void addCowClass(Class<? extends EntityLivingBase> clazz) {
+        CookingForBlockheads.instance.cowJarHandler.registerCowClass(clazz);
+    }
 }

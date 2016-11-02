@@ -18,6 +18,7 @@ The below is a list of IMC message keys handled by Cooking for Blockheads.
 * **RegisterOvenFuel** (TagCompound : {Input : ItemStack, FuelValue : Numeric})
 * **RegisterOvenRecipe** (TagCompound : {Input : ItemStack, Output : ItemStack})
 * **RegisterNonFoodRecipe** (ItemStack)
+* **RegisterCowClass** (EntityCowClassName : String) - this will cause the class to be loaded if it isn't already!
 
 ##Java API
 

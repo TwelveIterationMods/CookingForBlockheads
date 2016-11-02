@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.api;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
 public class CookingForBlockheadsAPI {
@@ -49,5 +50,9 @@ public class CookingForBlockheadsAPI {
 
     public static void addMilkItem(ItemStack milkItem) {
         internalMethods.addMilkItem(milkItem);
+    }
+
+    public static void addCowClass(Class<? extends EntityLivingBase> clazz) {
+        internalMethods.addCowClass(clazz);
     }
 }

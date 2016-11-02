@@ -62,6 +62,7 @@ public class CookingForBlockheads {
     public static CommonProxy proxy;
 
 	private final List<ItemStack> nonFoodRecipes = Lists.newArrayList();
+	public final CowJarHandler cowJarHandler = new CowJarHandler();
 
 	private Configuration config;
 
@@ -83,7 +84,7 @@ public class CookingForBlockheads {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		if(CookingConfig.cowJarEnabled) {
-			MinecraftForge.EVENT_BUS.register(new CowJarHandler());
+			MinecraftForge.EVENT_BUS.register(cowJarHandler);
 		}
 	}
 
@@ -195,6 +196,19 @@ public class CookingForBlockheads {
 						nonFoodRecipes.add(message.getItemStackValue());
 					} else {
 						logger.error("IMC API Error: RegisterNonFoodRecipe expected message of type ItemStack");
+					}
+					break;
+				case "RegisterCowClass":
+					if(message.getMessageType() == String.class) {
+						try {
+							Class<?> clazz = Class.forName(message.getStringValue());
+							cowJarHandler.registerCowClass(clazz);
+						} catch (ClassNotFoundException e) {
+							logger.error("Could not register cow class " + message.getStringValue() + ": " + e.getMessage());
+							e.printStackTrace();
+						}
+					} else {
+						logger.error("IMC API Error: RegisterCowClass expected message of type String");
 					}
 					break;
 			}
