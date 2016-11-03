@@ -32,7 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 
-@Optional.Interface(iface = "blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler", modid = Compat.IMMERSIVE_ENGINEERING)
+@Optional.Interface(iface = "blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler.IExternalHeatable", modid = Compat.IMMERSIVE_ENGINEERING)
 public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider, ExternalHeaterHandler.IExternalHeatable {
 
     private static final int COOK_TIME = 200;
