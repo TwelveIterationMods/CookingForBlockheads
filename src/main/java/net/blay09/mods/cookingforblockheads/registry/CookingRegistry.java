@@ -1,28 +1,38 @@
 package net.blay09.mods.cookingforblockheads.registry;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
+import net.blay09.mods.cookingforblockheads.api.ICustomSortButton;
+import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
-import net.blay09.mods.cookingforblockheads.registry.recipe.*;
+import net.blay09.mods.cookingforblockheads.registry.recipe.ShapedCraftingFood;
+import net.blay09.mods.cookingforblockheads.registry.recipe.ShapedOreCraftingFood;
+import net.blay09.mods.cookingforblockheads.registry.recipe.ShapelessCraftingFood;
+import net.blay09.mods.cookingforblockheads.registry.recipe.ShapelessOreCraftingFood;
+import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -31,7 +41,10 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.*;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 public class CookingRegistry {
 
@@ -44,6 +57,7 @@ public class CookingRegistry {
     private static final Map<ItemStack, ToastHandler> toastHandlers = Maps.newHashMap();
     private static final List<ItemStack> waterItems = Lists.newArrayList();
     private static final List<ItemStack> milkItems = Lists.newArrayList();
+    private static final List<ICustomSortButton> customSortButtons = Lists.newArrayList();
 
     private static Collection<ItemStack> nonFoodRecipes;
 
@@ -292,6 +306,10 @@ public class CookingRegistry {
         milkItems.add(milkItem);
     }
 
+    public static void addCustomSortButton(ICustomSortButton button) {
+        customSortButtons.add(button);
+    }
+    
     public static List<ItemStack> getWaterItems() {
         return waterItems;
     }
@@ -300,6 +318,10 @@ public class CookingRegistry {
         return milkItems;
     }
 
+    public static List<ICustomSortButton> getCustomSortButtons() {
+        return customSortButtons;
+    }
+    
     public static boolean doesItemRequireBucketForCrafting(ItemStack outputItem) {
         ItemStack containerItem = ForgeHooks.getContainerItem(outputItem);
         if(containerItem != null && containerItem.getItem() == Items.BUCKET) {

@@ -1,8 +1,9 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
 import com.google.common.collect.Lists;
+
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.Collection;

@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import java.util.List;
 
+import net.blay09.mods.cookingforblockheads.api.ICustomSortButton;
 import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
@@ -59,4 +60,9 @@ public class InternalMethods implements IInternalMethods {
     public List<IKitchenItemProvider> getItemProviders(World world, BlockPos pos, InventoryPlayer player) {
         return CookingRegistry.getItemProviders(new KitchenMultiBlock(world, pos), player);
     }
+
+	@Override
+	public void addCustomSortButton(ICustomSortButton button) {
+		CookingRegistry.addCustomSortButton(button);
+	}
 }
