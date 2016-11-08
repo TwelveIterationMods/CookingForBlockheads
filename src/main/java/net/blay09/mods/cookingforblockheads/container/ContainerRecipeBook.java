@@ -2,10 +2,7 @@ package net.blay09.mods.cookingforblockheads.container;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
-import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
@@ -18,6 +15,8 @@ import net.blay09.mods.cookingforblockheads.network.message.MessageRecipes;
 import net.blay09.mods.cookingforblockheads.network.message.MessageRequestRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.registry.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
@@ -33,7 +32,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-
 import java.util.*;
 
 public class ContainerRecipeBook extends Container {

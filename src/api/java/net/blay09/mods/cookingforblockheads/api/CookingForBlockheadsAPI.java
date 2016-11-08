@@ -65,8 +65,4 @@ public class CookingForBlockheadsAPI {
     public static List<IKitchenItemProvider> getItemProviders(World world, BlockPos pos, InventoryPlayer player) {
         return internalMethods.getItemProviders(world, pos, player);
     }
-
-    public static void addCustomSortButton(ICustomSortButton button) {
-        internalMethods.addCustomSortButton(button);
-    }
 }

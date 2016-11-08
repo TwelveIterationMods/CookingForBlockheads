@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.api;
+package net.blay09.mods.cookingforblockheads.registry;
 
 public enum RecipeStatus {
 	MISSING_INGREDIENTS,

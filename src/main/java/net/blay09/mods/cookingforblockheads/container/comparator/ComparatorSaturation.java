@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container.comparator;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 
