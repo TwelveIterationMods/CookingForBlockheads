@@ -55,4 +55,8 @@ public class CookingForBlockheadsAPI {
     public static void addCowClass(Class<? extends EntityLivingBase> clazz) {
         internalMethods.addCowClass(clazz);
     }
+
+    public static void addCustomSortButton(ICustomSortButton button) {
+        internalMethods.addCustomSortButton(button);
+    }
 }

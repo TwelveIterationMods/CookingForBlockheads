@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads;
 
+import net.blay09.mods.cookingforblockheads.api.ICustomSortButton;
 import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
@@ -48,4 +49,9 @@ public class InternalMethods implements IInternalMethods {
     public void addCowClass(Class<? extends EntityLivingBase> clazz) {
         CookingForBlockheads.instance.cowJarHandler.registerCowClass(clazz);
     }
+    
+	@Override
+	public void addCustomSortButton(ICustomSortButton button) {
+		CookingRegistry.addCustomSortButton(button);
+	}
 }

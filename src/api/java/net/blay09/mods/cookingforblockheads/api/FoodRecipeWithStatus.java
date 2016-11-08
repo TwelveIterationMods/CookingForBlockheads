@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.registry;
+package net.blay09.mods.cookingforblockheads.api;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
