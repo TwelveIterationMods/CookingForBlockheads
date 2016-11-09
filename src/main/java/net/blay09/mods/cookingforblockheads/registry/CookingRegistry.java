@@ -272,7 +272,7 @@ public class CookingRegistry {
     }
 
     public static List<IKitchenItemProvider> getItemProviders(KitchenMultiBlock multiBlock, InventoryPlayer inventory) {
-        return multiBlock != null ? multiBlock.getSourceInventories(inventory) : Lists.<IKitchenItemProvider>newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
+        return multiBlock != null ? multiBlock.getItemProviders(inventory) : Lists.<IKitchenItemProvider>newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
     }
 
     public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world) {

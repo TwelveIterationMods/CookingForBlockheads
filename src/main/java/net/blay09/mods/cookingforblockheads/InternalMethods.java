@@ -1,14 +1,11 @@
 package net.blay09.mods.cookingforblockheads;
 
-import java.util.List;
-
 import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
+import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -56,7 +53,7 @@ public class InternalMethods implements IInternalMethods {
     }
     
     @Override
-    public List<IKitchenItemProvider> getItemProviders(World world, BlockPos pos, InventoryPlayer player) {
-        return CookingRegistry.getItemProviders(new KitchenMultiBlock(world, pos), player);
+    public IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
+        return new KitchenMultiBlock(world, pos);
     }
 }

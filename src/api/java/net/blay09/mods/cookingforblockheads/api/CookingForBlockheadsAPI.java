@@ -1,12 +1,8 @@
 package net.blay09.mods.cookingforblockheads.api;
 
-import java.util.List;
-
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -62,7 +58,7 @@ public class CookingForBlockheadsAPI {
         internalMethods.addCowClass(clazz);
     }
 
-    public static List<IKitchenItemProvider> getItemProviders(World world, BlockPos pos, InventoryPlayer player) {
-        return internalMethods.getItemProviders(world, pos, player);
+    public static IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
+        return internalMethods.getKitchenMultiBlock(world, pos);
     }
 }
