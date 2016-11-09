@@ -4,6 +4,8 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItem
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class CookingForBlockheadsAPI {
 
@@ -54,5 +56,9 @@ public class CookingForBlockheadsAPI {
 
     public static void addCowClass(Class<? extends EntityLivingBase> clazz) {
         internalMethods.addCowClass(clazz);
+    }
+
+    public static IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
+        return internalMethods.getKitchenMultiBlock(world, pos);
     }
 }

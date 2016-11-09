@@ -2,6 +2,8 @@ package net.blay09.mods.cookingforblockheads.api;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public interface IInternalMethods {
 
@@ -13,5 +15,6 @@ public interface IInternalMethods {
     void addWaterItem(ItemStack waterItem);
     void addMilkItem(ItemStack milkItem);
     void addCowClass(Class<? extends EntityLivingBase> clazz);
+    IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos);
 
 }
