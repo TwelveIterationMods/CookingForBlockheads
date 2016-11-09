@@ -21,15 +21,4 @@ public class FoodRecipeWithStatus {
         return status;
     }
 
-    public static FoodRecipeWithStatus read(ByteBuf buf) {
-        ItemStack outputItem = ByteBufUtils.readItemStack(buf);
-        RecipeStatus status = RecipeStatus.fromId(buf.readByte());
-        return new FoodRecipeWithStatus(outputItem, status);
-    }
-
-    public void write(ByteBuf buf) {
-        ByteBufUtils.writeItemStack(buf, outputItem);
-        buf.writeByte(status.ordinal());
-    }
-
 }

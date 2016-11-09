@@ -1,12 +1,16 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
-import com.google.common.collect.Lists;
-
 import io.netty.buffer.ByteBuf;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.Collection;
+
+import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import com.google.common.collect.Lists;
 
 public class MessageItemList implements IMessage {
 
@@ -25,7 +29,7 @@ public class MessageItemList implements IMessage {
         int recipeCount = buf.readInt();
         recipeList = Lists.newArrayListWithCapacity(recipeCount);
         for(int i = 0; i < recipeCount; i++) {
-            recipeList.add(FoodRecipeWithStatus.read(buf));
+            recipeList.add(readRecipe(buf));
         }
         hasOven = buf.readBoolean();
     }
@@ -35,7 +39,7 @@ public class MessageItemList implements IMessage {
         int recipeCount = recipeList.size();
         buf.writeInt(recipeCount);
         for (FoodRecipeWithStatus recipe : recipeList) {
-            recipe.write(buf);
+            writeRecipe(recipe, buf);
         }
         buf.writeBoolean(hasOven);
     }
@@ -46,5 +50,16 @@ public class MessageItemList implements IMessage {
 
     public boolean getHasOven() {
         return hasOven;
+    }
+    
+    private FoodRecipeWithStatus readRecipe(ByteBuf buf) {
+        ItemStack outputItem = ByteBufUtils.readItemStack(buf);
+        RecipeStatus status = RecipeStatus.fromId(buf.readByte());
+        return new FoodRecipeWithStatus(outputItem, status);
+    }
+
+    private void writeRecipe(FoodRecipeWithStatus recipe, ByteBuf buf) {
+        ByteBufUtils.writeItemStack(buf, recipe.getOutputItem());
+        buf.writeByte(recipe.getStatus().ordinal());
     }
 }

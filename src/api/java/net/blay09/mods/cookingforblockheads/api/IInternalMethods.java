@@ -13,6 +13,6 @@ public interface IInternalMethods {
     void addWaterItem(ItemStack waterItem);
     void addMilkItem(ItemStack milkItem);
     void addCowClass(Class<? extends EntityLivingBase> clazz);
-	void addCustomSortButton(ICustomSortButton button);
+	void addSortButton(ISortButton button);
 
 }

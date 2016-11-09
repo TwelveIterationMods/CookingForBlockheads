@@ -4,6 +4,9 @@ import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButtonHunger;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButtonName;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButtonSaturation;
 import net.blay09.mods.cookingforblockheads.client.render.CookingTableRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.CounterRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.CowJarRenderer;
@@ -14,6 +17,7 @@ import net.blay09.mods.cookingforblockheads.client.render.SpiceRackRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.ToasterRenderer;
 import net.blay09.mods.cookingforblockheads.client.render.ToolRackRenderer;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.blay09.mods.cookingforblockheads.tile.TileCowJar;
@@ -24,22 +28,20 @@ import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -83,6 +85,10 @@ public class ClientProxy extends CommonProxy {
 
 		ModBlocks.initModels();
 		ModItems.initModels();
+		
+        CookingRegistry.addSortButton(new SortButtonName());
+        CookingRegistry.addSortButton(new SortButtonHunger());
+        CookingRegistry.addSortButton(new SortButtonSaturation());
 	}
 
 	@SubscribeEvent

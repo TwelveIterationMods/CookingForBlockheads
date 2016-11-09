@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.cookingforblockheads.api.ICustomSortButton;
 import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
+import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -51,7 +51,7 @@ public class InternalMethods implements IInternalMethods {
     }
     
 	@Override
-	public void addCustomSortButton(ICustomSortButton button) {
-		CookingRegistry.addCustomSortButton(button);
+	public void addSortButton(ISortButton button) {
+		CookingRegistry.addSortButton(button);
 	}
 }

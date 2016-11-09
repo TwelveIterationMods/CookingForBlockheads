@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.ICustomSortButton;
+import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
@@ -57,7 +57,7 @@ public class CookingRegistry {
     private static final Map<ItemStack, ToastHandler> toastHandlers = Maps.newHashMap();
     private static final List<ItemStack> waterItems = Lists.newArrayList();
     private static final List<ItemStack> milkItems = Lists.newArrayList();
-    private static final List<ICustomSortButton> customSortButtons = Lists.newArrayList();
+    private static final List<ISortButton> customSortButtons = Lists.newArrayList();
 
     private static Collection<ItemStack> nonFoodRecipes;
 
@@ -306,7 +306,7 @@ public class CookingRegistry {
         milkItems.add(milkItem);
     }
 
-    public static void addCustomSortButton(ICustomSortButton button) {
+    public static void addSortButton(ISortButton button) {
         customSortButtons.add(button);
     }
     
@@ -318,7 +318,7 @@ public class CookingRegistry {
         return milkItems;
     }
 
-    public static List<ICustomSortButton> getCustomSortButtons() {
+    public static List<ISortButton> getSortButtons() {
         return customSortButtons;
     }
     

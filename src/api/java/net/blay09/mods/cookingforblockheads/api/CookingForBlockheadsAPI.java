@@ -56,7 +56,7 @@ public class CookingForBlockheadsAPI {
         internalMethods.addCowClass(clazz);
     }
 
-    public static void addCustomSortButton(ICustomSortButton button) {
-        internalMethods.addCustomSortButton(button);
+    public static void addSortButton(ISortButton button) {
+        internalMethods.addSortButton(button);
     }
 }

@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.api.ICustomSortButton;
+import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
-import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorHunger;
-import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
-import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorSaturation;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -58,10 +55,7 @@ public class GuiRecipeBook extends GuiContainer {
 
 	private GuiTextField searchBar;
 
-	private GuiButton[] sortButtons;
-	private GuiButtonSort btnSortName;
-	private GuiButtonSort btnSortHunger;
-	private GuiButtonSort btnSortSaturation;
+	private final List<GuiButtonSort> sortButtons = Lists.newArrayList();
 	
 	private final String[] noIngredients;
 	private final String[] noSelection;
@@ -79,8 +73,6 @@ public class GuiRecipeBook extends GuiContainer {
 		ySize = 174;
 		super.initGui();
 
-		List<GuiButton> sortButtonsList = Lists.newArrayList();
-		
 		btnPrevRecipe = new GuiButton(0, width / 2 - 79, height / 2 - 51, 13, 20, "<");
 		btnPrevRecipe.visible = false;
 		buttonList.add(btnPrevRecipe);
@@ -89,33 +81,19 @@ public class GuiRecipeBook extends GuiContainer {
 		btnNextRecipe.visible = false;
 		buttonList.add(btnNextRecipe);
 
-		btnSortName = new GuiButtonSort(2, width / 2 + 87, height / 2 - 80, 196, "tooltip." + CookingForBlockheads.MOD_ID + ":sortByName");
-		buttonList.add(btnSortName);
-		sortButtonsList.add(btnSortName);
-
-		btnSortHunger = new GuiButtonSort(3, width / 2 + 87, height / 2 - 60, 216, "tooltip." + CookingForBlockheads.MOD_ID + ":sortByHunger");
-		buttonList.add(btnSortHunger);
-		sortButtonsList.add(btnSortHunger);
-
-		btnSortSaturation = new GuiButtonSort(4, width / 2 + 87, height / 2 - 40, 236, "tooltip." + CookingForBlockheads.MOD_ID + ":sortBySaturation");
-		buttonList.add(btnSortSaturation);
-		sortButtonsList.add(btnSortSaturation);
-
-		searchBar = new GuiTextField(5, fontRendererObj, guiLeft + xSize - 78, guiTop - 5, 70, 10);
+		searchBar = new GuiTextField(2, fontRendererObj, guiLeft + xSize - 78, guiTop - 5, 70, 10);
 //		searchBar.setFocused(true);
-
-		int yOffset = -20;
-		int id = 6; 
 		
-		for (ICustomSortButton button : CookingRegistry.getCustomSortButtons()) {
-			GuiButtonSortCustom sortButton = new GuiButtonSortCustom(id++, width / 2 + 87, height / 2 + yOffset, button);
+		int yOffset = -80;
+		int id = 3; 
+		
+		for (ISortButton button : CookingRegistry.getSortButtons()) {
+			GuiButtonSort sortButton = new GuiButtonSort(id++, width / 2 + 87, height / 2 + yOffset, button);
 			buttonList.add(sortButton);
-			sortButtonsList.add(sortButton);
+			sortButtons.add(sortButton);
 			
 			yOffset += 20;
 		}
-		
-		sortButtons = sortButtonsList.toArray(new GuiButton[0]);
 		
 		if(!isEventHandler) {
 			MinecraftForge.EVENT_BUS.register(this);
@@ -133,17 +111,11 @@ public class GuiRecipeBook extends GuiContainer {
 			container.nextSubRecipe(-1);
 		} else if(button == btnNextRecipe) {
 			container.nextSubRecipe(1);
-		} else if(button == btnSortName) {
-			container.setSortComparator(new ComparatorName());
-		} else if(button == btnSortHunger) {
-			container.setSortComparator(new ComparatorHunger(Minecraft.getMinecraft().thePlayer));
-		} else if(button == btnSortSaturation) {
-			container.setSortComparator(new ComparatorSaturation(Minecraft.getMinecraft().thePlayer));
 		}
 		
 		for (GuiButton sortButton : this.sortButtons) {
-			if (sortButton instanceof GuiButtonSortCustom && button == sortButton) {
-				container.setSortComparator(((GuiButtonSortCustom)sortButton).getComparator());
+			if (sortButton instanceof GuiButtonSort && button == sortButton) {
+				container.setSortComparator(((GuiButtonSort)sortButton).getComparator(Minecraft.getMinecraft().thePlayer));
 			}
 		}
 	}
@@ -278,17 +250,9 @@ public class GuiRecipeBook extends GuiContainer {
 
 		container.updateSlots(partialTicks);
 
-		if(btnSortName.isMouseOver() && btnSortName.enabled) {
-			drawHoveringText(btnSortName.getTooltipLines(), mouseX, mouseY);
-		} else if(btnSortHunger.isMouseOver() && btnSortHunger.enabled) {
-			drawHoveringText(btnSortHunger.getTooltipLines(), mouseX, mouseY);
-		} else if(btnSortSaturation.isMouseOver() && btnSortSaturation.enabled) {
-			drawHoveringText(btnSortSaturation.getTooltipLines(), mouseX, mouseY);
-		}
-		
 		for (GuiButton sortButton : this.sortButtons) {
-			if (sortButton instanceof GuiButtonSortCustom && sortButton.isMouseOver() && sortButton.enabled) {
-				drawHoveringText(((GuiButtonSortCustom)sortButton).getTooltipLines(), mouseX, mouseY);
+			if (sortButton instanceof GuiButtonSort && sortButton.isMouseOver() && sortButton.enabled) {
+				drawHoveringText(((GuiButtonSort)sortButton).getTooltipLines(), mouseX, mouseY);
 			}
 		}
 	}
@@ -364,6 +328,6 @@ public class GuiRecipeBook extends GuiContainer {
 	}
 
 	public GuiButton[] getSortingButtons() {
-		return sortButtons;
+		return sortButtons.toArray(new GuiButton[0]);
 	}
 }
