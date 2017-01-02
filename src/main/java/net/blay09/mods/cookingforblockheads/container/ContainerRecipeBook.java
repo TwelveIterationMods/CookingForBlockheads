@@ -404,6 +404,7 @@ public class ContainerRecipeBook extends Container {
 
 	@SideOnly(Side.CLIENT)
 	public void search(@Nullable String term) {
+		this.scrollOffset = 0;
 		this.currentSearch = term;
 		filteredItems.clear();
 		if (term == null || term.trim().isEmpty()) {
