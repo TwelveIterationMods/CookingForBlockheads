@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.minecraft.item.ItemStack;
 
 public class FakeSlotRecipe extends FakeSlot {

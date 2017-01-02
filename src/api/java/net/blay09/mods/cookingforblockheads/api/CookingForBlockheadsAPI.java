@@ -61,4 +61,8 @@ public class CookingForBlockheadsAPI {
     public static IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
         return internalMethods.getKitchenMultiBlock(world, pos);
     }
+
+    public static void addSortButton(ISortButton button) {
+        internalMethods.addSortButton(button);
+    }
 }

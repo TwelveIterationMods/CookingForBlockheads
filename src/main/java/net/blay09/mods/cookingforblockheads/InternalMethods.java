@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -56,4 +57,9 @@ public class InternalMethods implements IInternalMethods {
     public IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
         return new KitchenMultiBlock(world, pos);
     }
+    
+	@Override
+	public void addSortButton(ISortButton button) {
+		CookingRegistry.addSortButton(button);
+	}
 }
