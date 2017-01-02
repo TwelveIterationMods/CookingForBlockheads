@@ -1,57 +1,50 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
-import com.google.common.collect.Lists;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import java.util.Comparator;
+import java.util.List;
+
+import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class GuiButtonSort extends GuiButton {
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
+    private final ISortButton button;
 
-    private final int texCoordX;
-    private final int texCoordY;
-    private final int texCoordHoverX;
-    private final int texCoordHoverY;
-    private final int texCoordDisabledX;
-    private final int texCoordDisabledY;
     private final List<String> tooltipLines = Lists.newArrayList();
 
-    public GuiButtonSort(int buttonId, int x, int y, int texCoordX, String tooltipName) {
+    public GuiButtonSort(int buttonId, int x, int y, ISortButton button) {
         super(buttonId, x, y, 20, 20, "");
-        this.texCoordX = texCoordX;
-        this.texCoordHoverX = texCoordX;
-        this.texCoordDisabledX = texCoordX;
-        this.texCoordY = 0;
-        this.texCoordHoverY = 20;
-        this.texCoordDisabledY = 40;
-        this.tooltipLines.add(I18n.format(tooltipName));
+        this.button = button;
+        this.tooltipLines.add(I18n.format(this.button.getTooltip()));
     }
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
 
-        int texX = texCoordX;
-        int texY = texCoordY;
+        int texY = button.getIconTextureY();
         if(!enabled) {
-            texX = texCoordDisabledX;
-            texY = texCoordDisabledY;
+            texY += 40;
         } else if(hovered) {
-            texX = texCoordHoverX;
-            texY = texCoordHoverY;
+            texY += 20;
         }
         GlStateManager.color(1f, 1f, 1f, 1f);
-        mc.getTextureManager().bindTexture(guiTexture);
-        drawTexturedModalRect(xPosition, yPosition, texX, texY, width, height);
+        mc.getTextureManager().bindTexture(this.button.getIcon());
+        drawTexturedModalRect(xPosition, yPosition, button.getIconTextureX(), texY, width, height);
     }
 
     public List<String> getTooltipLines() {
         return tooltipLines;
+    }
+    
+    public Comparator<FoodRecipeWithStatus> getComparator(EntityPlayer player) {
+        return button.getComparator(player);
     }
 }

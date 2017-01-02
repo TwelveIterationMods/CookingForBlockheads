@@ -16,5 +16,6 @@ public interface IInternalMethods {
     void addMilkItem(ItemStack milkItem);
     void addCowClass(Class<? extends EntityLivingBase> clazz);
     IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos);
+	void addSortButton(ISortButton button);
 
 }
