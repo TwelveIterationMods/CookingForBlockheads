@@ -1,17 +1,17 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
 public class FakeSlotCraftMatrix extends FakeSlot {
 
 	private static final float ITEM_SWITCH_TIME = 40f;
 
-	private final List<ItemStack> visibleStacks = Lists.newArrayList();
+	private final NonNullList<ItemStack> visibleStacks = NonNullList.create();
 
 	private float visibleItemTime;
 	private int visibleItemIndex;
@@ -21,14 +21,14 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 		super(slotId, x, y);
 	}
 
-	public void setIngredient(List<ItemStack> ingredients) {
-		ItemStack prevLockStack = isLocked ? getStack() : null;
+	public void setIngredient(@Nullable NonNullList<ItemStack> ingredients) {
+		ItemStack prevLockStack = isLocked ? getStack() : ItemStack.EMPTY;
 		visibleStacks.clear();
 		if(ingredients != null) {
 			for(ItemStack itemStack : ingredients) {
-				if(itemStack != null) {
+				if(!itemStack.isEmpty()) {
 					if (itemStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-						List<ItemStack> subItems = Lists.newArrayList();
+						NonNullList<ItemStack> subItems = NonNullList.create();
 						itemStack.getItem().getSubItems(itemStack.getItem(), itemStack.getItem().getCreativeTab(), subItems);
 						visibleStacks.addAll(subItems);
 					} else {
@@ -41,7 +41,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 		visibleItemTime = 0;
 		visibleItemIndex = 0;
 		isLocked = false;
-		if(prevLockStack != null) {
+		if(!prevLockStack.isEmpty()) {
 			for(int i = 0; i < visibleStacks.size(); i++) {
 				if(ItemUtils.areItemStacksEqualWithWildcard(visibleStacks.get(i), prevLockStack)) {
 					visibleItemIndex = i;
@@ -79,7 +79,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 		return visibleStacks.size() > 0;
 	}
 
-	public List<ItemStack> getVisibleStacks() {
+	public NonNullList<ItemStack> getVisibleStacks() {
 		return visibleStacks;
 	}
 

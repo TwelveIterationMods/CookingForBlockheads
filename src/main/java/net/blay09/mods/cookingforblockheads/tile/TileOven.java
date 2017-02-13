@@ -41,7 +41,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             if(slot < 3) { // Input Slots
-                if(getSmeltingResult(stack) == null) {
+                if(getSmeltingResult(stack).isEmpty()) {
                     return stack;
                 }
             }
@@ -70,7 +70,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public int currentItemBurnTime;
     private boolean isDirty;
 
-    private EnumDyeColor ovenColor = EnumDyeColor.WHITE;;
+    private EnumDyeColor ovenColor = EnumDyeColor.WHITE;
 
     public void setOvenColor(EnumDyeColor color) {
         this.ovenColor = color;
@@ -130,7 +130,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                         }
                         if (slotCookTime[i] >= COOK_TIME * CookingConfig.ovenCookTimeMultiplier) {
                             ItemStack resultStack = getSmeltingResult(itemStack);
-                            if (resultStack != null) {
+                            if (!resultStack.isEmpty()) {
                                 itemHandlerProcessing.setStackInSlot(i, resultStack.copy());
                                 slotCookTime[i] = -1;
                                 if (firstTransferSlot == -1) {
@@ -161,10 +161,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             if (firstEmptySlot != -1) {
                 for (int j = 0; j < itemHandlerInput.getSlots(); j++) {
                     ItemStack itemStack = itemHandlerInput.getStackInSlot(j);
-                    if (itemStack != null) {
+                    if (!itemStack.isEmpty()) {
                         itemHandlerProcessing.setStackInSlot(firstEmptySlot, itemStack.splitStack(1));
                         if (itemStack.getCount() <= 0) {
-                            itemHandlerInput.setStackInSlot(j, null);
+                            itemHandlerInput.setStackInSlot(j, ItemStack.EMPTY);
                         }
                         break;
                     }
@@ -177,7 +177,6 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         }
     }
 
-    @Nullable
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if(!result.isEmpty()) {
@@ -190,7 +189,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         if(!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
             return result;
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static boolean isItemFuel(ItemStack itemStack) {
@@ -283,7 +282,6 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return doorAnimator;
     }
 
-    @Nullable
     public ItemStack getToolItem(int i) {
         return itemHandlerTools.getStackInSlot(i);
     }

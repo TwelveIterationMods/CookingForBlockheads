@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -13,6 +12,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileSink extends TileEntity {
@@ -34,7 +35,7 @@ public class TileSink extends TileEntity {
         @Override
         public int fill(FluidStack resource, boolean doFill) {
             if(!CookingConfig.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
-                return resource.amount;
+                return 0;
             }
             return super.fill(resource, doFill);
         }
@@ -58,7 +59,7 @@ public class TileSink extends TileEntity {
     }
 
     private static class SinkItemProvider implements IKitchenItemProvider {
-        private final List<ItemStack> itemStacks = Lists.newArrayList();
+        private final NonNullList<ItemStack> itemStacks = NonNullList.create();
         private final FluidTank fluidTank;
         private int waterUsed;
 
@@ -78,7 +79,7 @@ public class TileSink extends TileEntity {
             if(!CookingConfig.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
                 if(requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
                     if(!CookingRegistry.consumeBucket(inventories, simulate)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 if(simulate) {
@@ -88,7 +89,7 @@ public class TileSink extends TileEntity {
                 }
                 return ItemHandlerHelper.copyStackWithSize(getStackInSlot(slot), amount);
             }
-            return null;
+            return ItemStack.EMPTY;
         }
 
         @Override
@@ -99,7 +100,7 @@ public class TileSink extends TileEntity {
                     break;
                 }
             }
-            return null;
+            return ItemStack.EMPTY;
         }
 
         @Override
@@ -151,7 +152,7 @@ public class TileSink extends TileEntity {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityKitchenItemProvider.CAPABILITY
                 || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
                 || super.hasCapability(capability, facing);
@@ -159,7 +160,7 @@ public class TileSink extends TileEntity {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         } else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {

@@ -282,7 +282,6 @@ public class GuiRecipeBook extends GuiContainer {
 	}
 
 	@SubscribeEvent
-	@SuppressWarnings("unused")
 	public void onItemTooltip(ItemTooltipEvent event) {
 		Slot hoverSlot = getSlotUnderMouse();
 		if(hoverSlot instanceof FakeSlotRecipe && event.getItemStack() == hoverSlot.getStack()) {
@@ -299,7 +298,7 @@ public class GuiRecipeBook extends GuiContainer {
 							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltOne"));
 						}
 					}
-				} else {
+				} else if(slotRecipe.getRecipe() != null) {
 					if (slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_TOOLS) {
 						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingTools"));
 					} else if(slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_INGREDIENTS) {

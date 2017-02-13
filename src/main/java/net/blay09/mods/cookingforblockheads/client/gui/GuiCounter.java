@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 public class GuiCounter extends GuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation("textures/gui/container/generic_54.png");
-    private int inventoryRows;
+    private final int inventoryRows;
 
     public GuiCounter(EntityPlayer player, TileCounter tileCounter) {
         super(new ContainerCounter(player, tileCounter));

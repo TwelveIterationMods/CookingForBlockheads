@@ -1,9 +1,7 @@
 package net.blay09.mods.cookingforblockheads.api.capability;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public interface IKitchenItemProvider {

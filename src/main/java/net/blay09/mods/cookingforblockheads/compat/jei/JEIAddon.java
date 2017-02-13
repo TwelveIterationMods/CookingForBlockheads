@@ -41,6 +41,12 @@ public class JEIAddon extends BlankModPlugin {
 				}
 				return list;
 			}
+
+			@Nullable
+			@Override
+			public Object getIngredientUnderMouse(GuiRecipeBook guiContainer, int mouseX, int mouseY) {
+				return null;
+			}
 		});
 	}
 

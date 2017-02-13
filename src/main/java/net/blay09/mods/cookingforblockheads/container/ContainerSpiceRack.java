@@ -12,10 +12,7 @@ import net.minecraftforge.items.SlotItemHandler;
 @ChestContainer
 public class ContainerSpiceRack extends Container {
 
-	private final TileSpiceRack tileSpiceRack;
-
 	public ContainerSpiceRack(EntityPlayer player, TileSpiceRack tileSpiceRack) {
-		this.tileSpiceRack = tileSpiceRack;
 		IItemHandler itemHandler = tileSpiceRack.getItemHandler();
 
 		for (int i = 0; i < 9; i++) {
@@ -35,22 +32,21 @@ public class ContainerSpiceRack extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-		// TODO fix me properly
-		ItemStack itemStack = null;
+		ItemStack itemStack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(slotIndex);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			itemStack = slotStack.copy();
 			if (slotIndex < 9) {
 				if (!this.mergeItemStack(slotStack, 9, inventorySlots.size(), true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!this.mergeItemStack(slotStack, 0, 9, false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			if (slotStack.isEmpty()) {
-				slot.putStack(null);
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}

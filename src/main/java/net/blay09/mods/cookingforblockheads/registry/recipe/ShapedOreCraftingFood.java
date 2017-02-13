@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.registry.recipe;
 
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.List;
@@ -17,9 +18,9 @@ public class ShapedOreCraftingFood extends FoodRecipe {
             if (input == null) {
                 craftMatrix.add(null);
             } else if(input instanceof ItemStack) {
-                craftMatrix.add(new FoodIngredient((ItemStack) input, false));
-            } else if(input instanceof List) {
-                craftMatrix.add(new FoodIngredient(((List<ItemStack>) input).toArray(new ItemStack[((List<ItemStack>) input).size()]), false));
+                craftMatrix.add(((ItemStack) input).isEmpty() ? null : new FoodIngredient((ItemStack) input, false));
+            } else if(input instanceof NonNullList) {
+                craftMatrix.add(new FoodIngredient((NonNullList<ItemStack>) input, false));
             }
         }
     }

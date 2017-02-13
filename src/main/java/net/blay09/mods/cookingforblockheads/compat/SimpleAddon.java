@@ -27,7 +27,7 @@ public class SimpleAddon {
 	public void onFoodRegistryInit(FoodRegistryInitEvent event) {
 		for(String s : additionalRecipes) {
 			ItemStack itemStack = getModItemStack(s);
-			if(itemStack != null) {
+			if(!itemStack.isEmpty()) {
 				event.registerNonFoodRecipe(itemStack);
 			}
 		}
@@ -40,7 +40,7 @@ public class SimpleAddon {
 	public void addTool(String... names) {
 		for(String name : names) {
 			ItemStack toolItem = getModItemStack(name);
-			if(toolItem != null) {
+			if(!toolItem.isEmpty()) {
 				CookingForBlockheadsAPI.addToolItem(toolItem);
 			}
 		}
@@ -48,6 +48,6 @@ public class SimpleAddon {
 
 	public ItemStack getModItemStack(String name) {
 		Item item = Item.REGISTRY.getObject(new ResourceLocation(modId, name));
-		return item != null ? new ItemStack(item) : null;
+		return item != null ? new ItemStack(item) : ItemStack.EMPTY;
 	}
 }

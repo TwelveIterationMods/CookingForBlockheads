@@ -30,19 +30,19 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
         GlStateManager.scale(0.4f, 0.4f, 0.4f);
         ItemStack itemStack = tileEntity.getToolItem(0);
-        if(itemStack != null) {
+        if(!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
         }
         itemStack = tileEntity.getToolItem(1);
-        if(itemStack != null) {
+        if(!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
         }
         itemStack = tileEntity.getToolItem(2);
-        if(itemStack != null) {
+        if(!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
         }
         itemStack = tileEntity.getToolItem(3);
-        if(itemStack != null) {
+        if(!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
         }
         GlStateManager.popMatrix();

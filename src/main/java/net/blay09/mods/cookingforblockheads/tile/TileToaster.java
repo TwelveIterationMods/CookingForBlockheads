@@ -75,8 +75,8 @@ public class TileToaster extends TileEntity implements ITickable {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
                     if(!inputStack.isEmpty()) {
                         ToastHandler toastHandler = CookingRegistry.getToastHandler(inputStack);
-                        ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : null;
-                        if (outputStack == null) {
+                        ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : ItemStack.EMPTY;
+                        if (outputStack.isEmpty()) {
                             outputStack = inputStack;
                         } else {
                             outputStack = outputStack.copy();

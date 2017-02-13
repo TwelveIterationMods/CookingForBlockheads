@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.Optional;
@@ -115,7 +114,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack itemStack = null;
+        ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack()) {
@@ -124,45 +123,45 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
             if (slotIndex >= 7 && slotIndex < 20) {
                 if (!mergeItemStack(slotStack, 20, 56, true)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(slotStack, itemStack);
             } else if(slotIndex >= 4 && slotIndex <= 6) {
                 if (!this.mergeItemStack(slotStack, 20, 56, false)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotIndex >= 20) {
                 ItemStack smeltingResult = TileOven.getSmeltingResult(slotStack);
                 if (TileOven.isItemFuel(slotStack)) {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
-                } else if (smeltingResult != null) {
+                } else if (!smeltingResult.isEmpty()) {
                     if (!this.mergeItemStack(slotStack, 0, 3, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (slotIndex >= 20 && slotIndex < 47) {
                     if (!this.mergeItemStack(slotStack, 47, 56, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (slotIndex >= 47 && slotIndex < 56 && !this.mergeItemStack(slotStack, 20, 47, false)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(slotStack, 20, 47, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (slotStack.stackSize == 0) {
-                slot.putStack(null);
+            if (slotStack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
-            if (slotStack.stackSize == itemStack.stackSize) {
-                return null;
+            if (slotStack.getCount() == itemStack.getCount()) {
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(player, slotStack);
+            slot.onTake(player, slotStack);
         }
 
         return itemStack;

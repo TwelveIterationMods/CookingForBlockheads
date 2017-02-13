@@ -73,11 +73,11 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 		ItemStack restStack = itemStack.copy().splitStack(count);
 		for (IKitchenSmeltingProvider provider : smeltingProviderList) {
 			restStack = provider.smeltItem(restStack);
-			if (restStack == null) {
+			if (restStack.isEmpty()) {
 				break;
 			}
 		}
-		itemStack.shrink(count - (restStack != null ? restStack.getCount() : 0));
+		itemStack.shrink(count - (!restStack.isEmpty() ? restStack.getCount() : 0));
 		return itemStack;
 	}
 
@@ -94,7 +94,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 				if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, inputItem)) {
 					int smeltCount = Math.min(itemStack.getCount(), stack ? inputItem.getMaxStackSize() : 1);
 					ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories, requireBucket);
-					if (restStack != null) {
+					if (!restStack.isEmpty()) {
 						restStack = smeltItem(restStack, smeltCount);
 						if (!restStack.isEmpty()) {
 							restStack = itemProvider.returnItemStack(restStack);

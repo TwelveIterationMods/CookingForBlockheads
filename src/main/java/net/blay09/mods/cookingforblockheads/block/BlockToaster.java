@@ -54,8 +54,8 @@ public class BlockToaster extends BlockKitchen {
             } else {
                 ToastHandler toastHandler = CookingRegistry.getToastHandler(heldItem);
                 if(toastHandler != null) {
-                    ItemStack output = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(heldItem) : null;
-                    if (output != null) {
+                    ItemStack output = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(heldItem) : ItemStack.EMPTY;
+                    if (!output.isEmpty()) {
                         for (int i = 0; i < tileToaster.getItemHandler().getSlots(); i++) {
                             if (tileToaster.getItemHandler().getStackInSlot(i).isEmpty()) {
                                 tileToaster.getItemHandler().setStackInSlot(i, heldItem.splitStack(1));

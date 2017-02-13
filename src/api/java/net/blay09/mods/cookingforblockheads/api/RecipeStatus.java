@@ -5,7 +5,7 @@ public enum RecipeStatus {
 	MISSING_TOOLS,
 	AVAILABLE;
 
-	private static RecipeStatus[] values = values();
+	private static final RecipeStatus[] values = values();
 
 	public static RecipeStatus fromId(int i) {
 		return values[i];

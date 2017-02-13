@@ -11,7 +11,7 @@ public class ShapedCraftingFood extends FoodRecipe {
         this.recipeWidth = recipe.recipeWidth;
         craftMatrix = Lists.newArrayList();
         for(int i = 0; i < recipe.recipeItems.length; i++) {
-            if(recipe.recipeItems[i] != null) {
+            if(!recipe.recipeItems[i].isEmpty()) {
                 boolean isToolItem = CookingRegistry.isToolItem(recipe.recipeItems[i]);
                 craftMatrix.add(new FoodIngredient(recipe.recipeItems[i].copy(), isToolItem));
             } else {

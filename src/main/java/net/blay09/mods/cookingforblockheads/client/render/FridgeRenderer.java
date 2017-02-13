@@ -29,6 +29,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         if(state.getBlock() != ModBlocks.fridge) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
+        //noinspection deprecation
         state = state.getBlock().getActualState(state, tileEntity.getWorld(), tileEntity.getPos());
         BlockFridge.FridgeType fridgeType = state.getValue(BlockFridge.TYPE);
         if(fridgeType == BlockFridge.FridgeType.INVISIBLE) {

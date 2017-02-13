@@ -16,10 +16,10 @@ import javax.annotation.Nullable;
 
 public class TileCookingTable extends TileEntity {
 
-    private ItemStack noFilterBook;
+    private ItemStack noFilterBook = ItemStack.EMPTY;
 
     public boolean hasNoFilterBook() {
-        return noFilterBook != null;
+        return !noFilterBook.isEmpty();
     }
 
     public ItemStack getNoFilterBook() {
@@ -35,7 +35,7 @@ public class TileCookingTable extends TileEntity {
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         NBTTagCompound itemCompound = new NBTTagCompound();
-        if(noFilterBook != null) {
+        if(!noFilterBook.isEmpty()) {
             noFilterBook.writeToNBT(itemCompound);
         }
         tagCompound.setTag("NoFilterBook", itemCompound);

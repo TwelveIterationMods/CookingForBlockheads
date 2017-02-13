@@ -33,6 +33,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -52,13 +53,13 @@ public class CookingRegistry {
 
     private static final List<IRecipe> recipeList = Lists.newArrayList();
     private static final ArrayListMultimap<ResourceLocation, FoodRecipe> foodItems = ArrayListMultimap.create();
-    private static final List<ItemStack> tools = Lists.newArrayList();
+    private static final NonNullList<ItemStack> tools = NonNullList.create();
     private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
     private static final Map<ItemStack, ItemStack> ovenRecipes = Maps.newHashMap();
     private static final Map<ItemStack, SinkHandler> sinkHandlers = Maps.newHashMap();
     private static final Map<ItemStack, ToastHandler> toastHandlers = Maps.newHashMap();
-    private static final List<ItemStack> waterItems = Lists.newArrayList();
-    private static final List<ItemStack> milkItems = Lists.newArrayList();
+    private static final NonNullList<ItemStack> waterItems = NonNullList.create();
+    private static final NonNullList<ItemStack> milkItems = NonNullList.create();
     private static final List<ISortButton> customSortButtons = Lists.newArrayList();
 
     private static Collection<ItemStack> nonFoodRecipes;
@@ -96,7 +97,7 @@ public class CookingRegistry {
         // Smelting Recipes of Food Items
         for(Object obj : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
             Map.Entry entry = (Map.Entry) obj;
-            ItemStack sourceStack = null;
+            ItemStack sourceStack = ItemStack.EMPTY;
             if(entry.getKey() instanceof Item) {
                 sourceStack = new ItemStack((Item) entry.getKey());
             } else if(entry.getKey() instanceof Block) {
@@ -228,7 +229,7 @@ public class CookingRegistry {
             IKitchenItemProvider itemProvider = inventories.get(i);
             for (int j = 0; j < itemProvider.getSlots(); j++) {
                 ItemStack itemStack = itemProvider.getStackInSlot(j);
-                if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, checkStack) && itemProvider.useItemStack(j, 1, true, inventories, requireBucket) != null) {
+                if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, checkStack) && !itemProvider.useItemStack(j, 1, true, inventories, requireBucket).isEmpty()) {
                     return itemStack;
                 }
             }
@@ -236,15 +237,15 @@ public class CookingRegistry {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack findAnyItemStack(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+    public static ItemStack findAnyItemStack(@Nullable FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket) {
         if(ingredient == null) {
-            return null;
+            return ItemStack.EMPTY;
         }
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
             for (int j = 0; j < itemProvider.getSlots(); j++) {
                 ItemStack itemStack = itemProvider.getStackInSlot(j);
-                if (itemStack != null && ingredient.isValidItem(itemStack) && itemProvider.useItemStack(j, 1, true, inventories, requireBucket) != null) {
+                if (!itemStack.isEmpty() && ingredient.isValidItem(itemStack) && !itemProvider.useItemStack(j, 1, true, inventories, requireBucket).isEmpty()) {
                     return itemStack;
                 }
             }
@@ -258,7 +259,7 @@ public class CookingRegistry {
             IKitchenItemProvider itemProvider = inventories.get(i);
             for (int j = 0; j < itemProvider.getSlots(); j++) {
                 ItemStack providedStack = itemProvider.getStackInSlot(j);
-                if (providedStack != null && ItemUtils.areItemStacksEqualWithWildcard(itemStack, providedStack) && itemProvider.useItemStack(j, 1, simulate, inventories, false) != null) {
+                if (!providedStack.isEmpty() && ItemUtils.areItemStacksEqualWithWildcard(itemStack, providedStack) && !itemProvider.useItemStack(j, 1, simulate, inventories, false).isEmpty()) {
                     return true;
                 }
             }
@@ -272,12 +273,12 @@ public class CookingRegistry {
             itemProvider.resetSimulation();
         }
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
-        ItemStack[] itemFound = new ItemStack[craftMatrix.size()];
+        NonNullList<ItemStack> itemFound = NonNullList.withSize(craftMatrix.size(), ItemStack.EMPTY);
         boolean missingTools = false;
         for(int i = 0; i < craftMatrix.size(); i++) {
             FoodIngredient ingredient = craftMatrix.get(i);
-            itemFound[i] = findAnyItemStack(ingredient, inventories, requireBucket);
-            if(itemFound[i] == null && ingredient != null) {
+            itemFound.set(i, findAnyItemStack(ingredient, inventories, requireBucket));
+            if(itemFound.get(i).isEmpty() && ingredient != null) {
                 if(ingredient.isToolItem()) {
                     missingTools = true;
                     continue;
@@ -288,7 +289,7 @@ public class CookingRegistry {
         return missingTools ? RecipeStatus.MISSING_TOOLS : RecipeStatus.AVAILABLE;
     }
 
-    public static List<IKitchenItemProvider> getItemProviders(KitchenMultiBlock multiBlock, InventoryPlayer inventory) {
+    public static List<IKitchenItemProvider> getItemProviders(@Nullable KitchenMultiBlock multiBlock, InventoryPlayer inventory) {
         return multiBlock != null ? multiBlock.getItemProviders(inventory) : Lists.<IKitchenItemProvider>newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
     }
 
@@ -314,11 +315,11 @@ public class CookingRegistry {
         customSortButtons.add(button);
     }
     
-    public static List<ItemStack> getWaterItems() {
+    public static NonNullList<ItemStack> getWaterItems() {
         return waterItems;
     }
 
-    public static List<ItemStack> getMilkItems() {
+    public static NonNullList<ItemStack> getMilkItems() {
         return milkItems;
     }
 

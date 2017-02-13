@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.registry;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.List;
@@ -11,9 +12,9 @@ public class FoodRecipeWithIngredients {
     private final ItemStack outputItem;
     private final RecipeType recipeType;
     private final int recipeWidth;
-    private final List<List<ItemStack>> craftMatrix;
+    private final List<NonNullList<ItemStack>> craftMatrix;
 
-    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, int recipeWidth, List<List<ItemStack>> craftMatrix) {
+    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, int recipeWidth, List<NonNullList<ItemStack>> craftMatrix) {
         this.outputItem = outputItem;
         this.recipeType = recipeType;
         this.recipeWidth = recipeWidth;
@@ -24,11 +25,11 @@ public class FoodRecipeWithIngredients {
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
         int recipeWidth = buf.readByte();
         int ingredientCount = buf.readByte();
-        List<List<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
+        List<NonNullList<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
         for (int i = 0; i < ingredientCount; i++) {
             int stackCount = buf.readByte();
             if(stackCount > 0) {
-                List<ItemStack> stackList = Lists.newArrayListWithCapacity(stackCount);
+                NonNullList<ItemStack> stackList = NonNullList.create();
                 for(int j = 0; j < stackCount; j++) {
                     stackList.add(ByteBufUtils.readItemStack(buf));
                 }
@@ -62,7 +63,7 @@ public class FoodRecipeWithIngredients {
         return recipeWidth;
     }
 
-    public List<List<ItemStack>> getCraftMatrix() {
+    public List<NonNullList<ItemStack>> getCraftMatrix() {
         return craftMatrix;
     }
 

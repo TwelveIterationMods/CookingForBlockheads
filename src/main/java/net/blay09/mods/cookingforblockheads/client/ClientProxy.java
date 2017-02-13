@@ -41,14 +41,13 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
-	public static TextureAtlasSprite[] ovenToolIcons = new TextureAtlasSprite[4];
+	public static final TextureAtlasSprite[] ovenToolIcons = new TextureAtlasSprite[4];
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {

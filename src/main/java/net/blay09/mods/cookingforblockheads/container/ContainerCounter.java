@@ -2,19 +2,17 @@ package net.blay09.mods.cookingforblockheads.container;
 
 import invtweaks.api.container.ChestContainer;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 @ChestContainer
 public class ContainerCounter extends Container implements IContainerWithDoor {
 
-    private TileCounter tileCounter;
+    private final TileCounter tileCounter;
     private final int numRows;
 
     public ContainerCounter(EntityPlayer player, TileCounter tileCounter) {
@@ -49,21 +47,21 @@ public class ContainerCounter extends Container implements IContainerWithDoor {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack itemStack = null;
+        ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(slotIndex);
         if (slot != null && slot.getHasStack()) {
             ItemStack slotStack = slot.getStack();
             itemStack = slotStack.copy();
             if (slotIndex < numRows * 9) {
                 if (!this.mergeItemStack(slotStack, numRows * 9, inventorySlots.size(), true)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(slotStack, 0, numRows * 9, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (slotStack.stackSize == 0) {
-                slot.putStack(null);
+            if (slotStack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }

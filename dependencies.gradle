@@ -1,10 +1,10 @@
 dependencies {
-    //provided group: "inventorytweaks", name: "InventoryTweaks", version: "1.59-dev-3"
-    //deobfCompile "mezz.jei:jei_1.11.2:4.2.4.228"
-    //deobfCompile "applecore:AppleCore:1.10.2-2.1.0:api"
-    //deobfCompile "mcp.mobius.waila:Hwyla:1.8.9-B22_1.11"
-    //deobfCompile "hosted-api:Quark-r1.2:77"
-    //deobfCompile "hosted-api:CraftTweaker:1.10.2"
-    //deobfCompile "hosted-api:ImmersiveEngineering:0.10.48"
-    //deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.1-51"
+    deobfCompile "hosted-api:InventoryTweaks:1.62-dev"
+    deobfCompile "mezz.jei:jei_1.11.2:4.2.4.226"
+    deobfCompile "applecore:AppleCore:1.10.2-2.1.1:api"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.9-B22_1.11"
+    deobfCompile "hosted-api:Quark-r1.2:81"
+    provided "hosted-api:CraftTweaker:1.10.2"
+    provided "hosted-api:ImmersiveEngineering:0.10.48"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.1-51"
 }

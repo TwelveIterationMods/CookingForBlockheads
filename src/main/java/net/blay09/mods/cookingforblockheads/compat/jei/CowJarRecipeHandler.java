@@ -14,12 +14,6 @@ public class CowJarRecipeHandler implements IRecipeHandler<CowJarRecipe> {
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-		return CowJarRecipeCategory.UID;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull CowJarRecipe recipe) {
 		return CowJarRecipeCategory.UID;
 	}

@@ -4,7 +4,7 @@ public enum RecipeType {
 	CRAFTING,
 	SMELTING;
 
-	private static RecipeType[] values = values();
+	private static final RecipeType[] values = values();
 
 	public static RecipeType fromId(int i) {
 		return values[i];

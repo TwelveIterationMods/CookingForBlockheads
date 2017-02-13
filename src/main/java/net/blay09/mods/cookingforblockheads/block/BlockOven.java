@@ -74,7 +74,7 @@ public class  BlockOven extends BlockKitchen {
                 }
                 if(index != -1) {
                     TileOven tileOven = (TileOven) world.getTileEntity(pos);
-                    if (tileOven != null && tileOven.getToolItem(index) == null) {
+                    if (tileOven != null && tileOven.getToolItem(index).isEmpty()) {
                         ItemStack toolItem = heldItem.splitStack(1);
                         tileOven.setToolItem(index, toolItem);
                     }

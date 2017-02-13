@@ -19,6 +19,7 @@ import net.blay09.mods.cookingforblockheads.container.ContainerFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -52,12 +53,12 @@ public class GuiHandler implements IGuiHandler {
             }
         } else {
             BlockPos pos = new BlockPos(x, y, z);
+            TileEntity tileEntity = world.getTileEntity(pos);
             switch(id) {
                 case COOKING_TABLE:
                     if(world.getBlockState(pos).getBlock() == ModBlocks.cookingTable) {
-                        TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-                        if(tileEntity != null) {
-                            if (tileEntity.hasNoFilterBook()) {
+                        if(tileEntity instanceof TileCookingTable) {
+                            if (((TileCookingTable) tileEntity).hasNoFilterBook()) {
                                 return new ContainerRecipeBook(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
                             } else {
                                 return new ContainerRecipeBook(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
@@ -66,23 +67,23 @@ public class GuiHandler implements IGuiHandler {
                     }
                     break;
                 case COOKING_OVEN:
-                    if(world.getBlockState(pos).getBlock() == ModBlocks.oven) {
-                        return new ContainerOven(player, (TileOven) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileOven) {
+                        return new ContainerOven(player, (TileOven) tileEntity);
                     }
                     break;
                 case FRIDGE:
-                    if(world.getBlockState(pos).getBlock() == ModBlocks.fridge) {
-                        return new ContainerFridge(player, (TileFridge) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileFridge) {
+                        return new ContainerFridge(player, (TileFridge) tileEntity);
                     }
                     break;
                 case SPICE_RACK:
-                    if(world.getBlockState(pos).getBlock() == ModBlocks.spiceRack) {
-                        return new ContainerSpiceRack(player, (TileSpiceRack) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileSpiceRack) {
+                        return new ContainerSpiceRack(player, (TileSpiceRack) tileEntity);
                     }
                     break;
                 case COUNTER:
-                    if(world.getBlockState(pos).getBlock() == ModBlocks.counter) {
-                        return new ContainerCounter(player, (TileCounter) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileCounter) {
+                        return new ContainerCounter(player, (TileCounter) tileEntity);
                     }
                     break;
             }
@@ -106,17 +107,26 @@ public class GuiHandler implements IGuiHandler {
             }
         } else {
             BlockPos pos = new BlockPos(x, y, z);
+            TileEntity tileEntity = world.getTileEntity(pos);
             switch(id) {
                 case COOKING_TABLE:
                     return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
                 case COOKING_OVEN:
-                    return new GuiOven(player, (TileOven) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileOven) {
+                        return new GuiOven(player, (TileOven) tileEntity);
+                    }
                 case FRIDGE:
-                    return new GuiFridge(player, (TileFridge) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileFridge) {
+                        return new GuiFridge(player, (TileFridge) tileEntity);
+                    }
                 case SPICE_RACK:
-                    return new GuiSpiceRack(player, (TileSpiceRack) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileSpiceRack) {
+                        return new GuiSpiceRack(player, (TileSpiceRack) tileEntity);
+                    }
                 case COUNTER:
-                    return new GuiCounter(player, (TileCounter) world.getTileEntity(pos));
+                    if(tileEntity instanceof TileCounter) {
+                        return new GuiCounter(player, (TileCounter) tileEntity);
+                    }
             }
         }
         return null;

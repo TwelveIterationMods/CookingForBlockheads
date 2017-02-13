@@ -29,4 +29,5 @@ public class MessageRequestRecipes implements IMessage {
     public ItemStack getOutputItem() {
         return outputItem;
     }
+
 }

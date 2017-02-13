@@ -26,7 +26,7 @@ import java.util.List;
 public class GuiOven extends GuiContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/oven.png");
-	private TileOven tileEntity;
+	private final TileOven tileEntity;
 
 	public GuiOven(EntityPlayer player, TileOven tileEntity) {
 		super(new ContainerOven(player, tileEntity));
@@ -46,7 +46,7 @@ public class GuiOven extends GuiContainer {
 			Slot slot = inventorySlots.inventorySlots.get(i + 7);
 			if(slot.getHasStack()) {
 				ItemStack itemStack = TileOven.getSmeltingResult(slot.getStack());
-				if (itemStack != null) {
+				if (!itemStack.isEmpty()) {
 					renderItemWithTint(itemStack, slot.xPos, slot.yPos + 16, 0xFFFFFF + ((int) (tileEntity.getCookProgress(i) * 255) << 24));
 				}
 			}
@@ -108,8 +108,8 @@ public class GuiOven extends GuiContainer {
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 	}
 
-	private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color, @Nullable ItemStack stack) {
-		boolean useItemTint = color == -1 && stack != null;
+	private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color, ItemStack stack) {
+		boolean useItemTint = color == -1 && !stack.isEmpty();
 		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {
 			BakedQuad quad = quads.get(i);

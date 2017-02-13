@@ -41,7 +41,7 @@ public class KitchenItemProvider implements IKitchenItemProvider {
 			}
 			return result;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

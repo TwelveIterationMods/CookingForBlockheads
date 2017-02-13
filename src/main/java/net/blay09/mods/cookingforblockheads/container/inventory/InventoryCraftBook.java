@@ -11,6 +11,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -20,9 +21,9 @@ import java.util.List;
 public class InventoryCraftBook extends InventoryCrafting {
 
 	private static class SourceItem {
-		private IKitchenItemProvider sourceProvider;
-		private int sourceSlot;
-		private ItemStack sourceStack;
+		private final IKitchenItemProvider sourceProvider;
+		private final int sourceSlot;
+		private final ItemStack sourceStack;
 
 		public SourceItem(IKitchenItemProvider sourceProvider, int sourceSlot, ItemStack sourceStack) {
 			this.sourceProvider = sourceProvider;
@@ -47,7 +48,7 @@ public class InventoryCraftBook extends InventoryCrafting {
 		super(container, 3, 3);
 	}
 
-	public ItemStack tryCraft(ItemStack outputItem, List<ItemStack> craftMatrix, EntityPlayer player, KitchenMultiBlock multiBlock) {
+	public ItemStack tryCraft(ItemStack outputItem, NonNullList<ItemStack> craftMatrix, EntityPlayer player, KitchenMultiBlock multiBlock) {
 		boolean requireContainer = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
 
 		// Reset the simulation before we start
@@ -61,14 +62,14 @@ public class InventoryCraftBook extends InventoryCrafting {
 		// Find matching items from source inventories
 		matrixLoop:for(int i = 0; i < craftMatrix.size(); i++) {
 			ItemStack ingredient = craftMatrix.get(i);
-            if(ingredient != null) {
+            if(!ingredient.isEmpty()) {
                 for(int j = 0; j < inventories.size(); j++) {
 					IKitchenItemProvider itemProvider = inventories.get(j);
                     for (int k = 0; k < itemProvider.getSlots(); k++) {
                         ItemStack itemStack = itemProvider.getStackInSlot(k);
                         if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, ingredient)) {
 							itemStack = itemProvider.useItemStack(k, 1, true, inventories, requireContainer);
-							if(itemStack != null) {
+							if(!itemStack.isEmpty()) {
 								sourceItems[i] = new SourceItem(inventories.get(j), k, itemStack);
 								continue matrixLoop;
 							}

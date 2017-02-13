@@ -23,8 +23,10 @@ public class TheOneProbeAddon implements Function<ITheOneProbe, Void> {
 
 	@Nullable
 	@Override
-	public Void apply(ITheOneProbe top) {
-		top.registerProvider(new ProbeInfoProvider());
+	public Void apply(@Nullable ITheOneProbe top) {
+		if (top != null) {
+			top.registerProvider(new ProbeInfoProvider());
+		}
 		return null;
 	}
 

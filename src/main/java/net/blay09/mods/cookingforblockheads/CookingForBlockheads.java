@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads;
 
-import java.util.List;
-
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
@@ -17,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,19 +33,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.Lists;
-
 @Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.11]")
 public class CookingForBlockheads {
-
-	// TODO SEARCH FOR ItemStack[]
-	// TODO Search for List<ItemStack>
-	// TODO search FOR moRe WaYS to TypE theSe commentS
 
     public static final String MOD_ID = "cookingforblockheads";
 	private static final Logger logger = LogManager.getLogger();
 
-	public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
+	public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
 		@Override
 		public ItemStack getTabIconItem() {
 			return new ItemStack(ModItems.recipeBook, 1, 1);
@@ -59,7 +52,7 @@ public class CookingForBlockheads {
 	@SidedProxy(clientSide = "net.blay09.mods.cookingforblockheads.client.ClientProxy", serverSide = "net.blay09.mods.cookingforblockheads.CommonProxy")
     public static CommonProxy proxy;
 
-	private final List<ItemStack> nonFoodRecipes = Lists.newArrayList();
+	private final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
 	public final CowJarHandler cowJarHandler = new CowJarHandler();
 
 	private Configuration config;
@@ -146,8 +139,7 @@ public class CookingForBlockheads {
 					if(message.getMessageType() == NBTTagCompound.class) {
 						ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
 						final String langKey = message.getNBTValue().getString("Message");
-						//noinspection ConstantConditions /// Missing @Nullable
-						if(inputItem != null && !langKey.isEmpty()) {
+						if(!inputItem.isEmpty() && !langKey.isEmpty()) {
 							CookingForBlockheadsAPI.addToastHandler(inputItem, new ToastErrorHandler() {
 								@Override
 								public ITextComponent getToasterHint(EntityPlayer player, ItemStack itemStack) {

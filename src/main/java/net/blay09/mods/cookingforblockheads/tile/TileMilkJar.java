@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
@@ -13,6 +12,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,7 +27,7 @@ public class TileMilkJar extends TileEntity {
 	protected static final int MILK_CAPACITY = 8000;
 
 	private static class MilkJarItemProvider implements IKitchenItemProvider {
-		private final List<ItemStack> itemStacks = Lists.newArrayList();
+		private final NonNullList<ItemStack> itemStacks = NonNullList.create();
 		private final TileMilkJar tileMilkJar;
 		private int milkUsed;
 
