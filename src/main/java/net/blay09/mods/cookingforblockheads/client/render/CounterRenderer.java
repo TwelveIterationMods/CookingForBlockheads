@@ -17,7 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
 
     private final ModelCounterDoor modelCounterDoor = new ModelCounterDoor();
-    private final ResourceLocation textureCounterDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/CounterDoor.png");
+    private final ResourceLocation textureCounterDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/counter_door.png");
 
     @Override
     public void renderTileEntityAt(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {

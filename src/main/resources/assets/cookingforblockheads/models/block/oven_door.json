@@ -1,0 +1,266 @@
+{
+  "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Door)",
+  "textures": {
+    "particle": "cookingforblockheads:blocks/cooking_oven_top",
+    "cookingOven_front": "cookingforblockheads:blocks/cooking_oven_front",
+    "cookingOven_top": "cookingforblockheads:blocks/cooking_oven_top",
+    "cookingOven_bottom": "cookingforblockheads:blocks/cooking_oven_bottom",
+    "cookingOven_side": "cookingforblockheads:blocks/cooking_oven_side",
+    "cookingOven_grid": "cookingforblockheads:blocks/cooking_oven_grid"
+  },
+  "elements": [
+    {
+      "__comment": "Door_Handle",
+      "from": [
+        2,
+        10,
+        -1
+      ],
+      "to": [
+        14,
+        11,
+        0
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            2,
+            5,
+            14,
+            6
+          ],
+          "texture": "#cookingOven_front",
+          "cullface": "north"
+        },
+        "up": {
+          "uv": [
+            2,
+            5,
+            14,
+            6
+          ],
+          "texture": "#cookingOven_front",
+          "cullface": "north"
+        },
+        "north": {
+          "uv": [
+            2,
+            5,
+            14,
+            6
+          ],
+          "texture": "#cookingOven_front",
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [
+            2,
+            5,
+            14,
+            6
+          ],
+          "texture": "#cookingOven_front",
+          "cullface": "north"
+        },
+        "west": {
+          "uv": [
+            1,
+            5,
+            2,
+            6
+          ],
+          "texture": "#cookingOven_front",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            14,
+            5,
+            15,
+            6
+          ],
+          "texture": "#cookingOven_front",
+          "cullface": "north"
+        }
+      }
+    },
+    {
+      "__comment": "Door_BopRight",
+      "from": [
+        4,
+        10,
+        0
+      ],
+      "to": [
+        5,
+        11,
+        1
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            2,
+            5,
+            3,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        },
+        "up": {
+          "uv": [
+            1,
+            5,
+            2,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        },
+        "west": {
+          "uv": [
+            5,
+            5,
+            6,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        },
+        "east": {
+          "uv": [
+            6,
+            5,
+            7,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        }
+      }
+    },
+    {
+      "__comment": "Door_BopLeft",
+      "from": [
+        11,
+        10,
+        0
+      ],
+      "to": [
+        12,
+        11,
+        1
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            2,
+            5,
+            3,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        },
+        "up": {
+          "uv": [
+            1,
+            5,
+            2,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        },
+        "west": {
+          "uv": [
+            5,
+            5,
+            6,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        },
+        "east": {
+          "uv": [
+            6,
+            5,
+            7,
+            6
+          ],
+          "texture": "#cookingOven_front"
+        }
+      }
+    },
+    {
+      "__comment": "Door_Main",
+      "from": [
+        2,
+        0,
+        1
+      ],
+      "to": [
+        14,
+        11,
+        2
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            14,
+            2,
+            2,
+            1
+          ],
+          "texture": "#cookingOven_front",
+          "tintindex": 0,
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            2,
+            1,
+            14,
+            2
+          ],
+          "texture": "#cookingOven_front",
+          "tintindex": 0
+        },
+        "north": {
+          "uv": [
+            2,
+            5,
+            14,
+            16
+          ],
+          "texture": "#cookingOven_front",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            2,
+            5,
+            14,
+            16
+          ],
+          "texture": "#cookingOven_front",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            1,
+            5,
+            2,
+            16
+          ],
+          "texture": "#cookingOven_front",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            14,
+            5,
+            15,
+            16
+          ],
+          "texture": "#cookingOven_front",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cookingforblockheads:ovenStatic",
+    "model": "cookingforblockheads:oven_static",
     "custom": {
       "flip-v": true
     },
@@ -10,13 +10,13 @@
   "variants": {
     "normal": [{}],
     "door": [{
-      "model": "cookingforblockheads:ovenDoor"
+      "model": "cookingforblockheads:oven_door"
     }],
     "inventory": [{
-      "model": "cookingforblockheads:ovenStatic",
+      "model": "cookingforblockheads:oven_static",
       "submodel": {
         "door": {
-          "model": "cookingforblockheads:ovenDoor"
+          "model": "cookingforblockheads:oven_door"
         }
       }
     }],

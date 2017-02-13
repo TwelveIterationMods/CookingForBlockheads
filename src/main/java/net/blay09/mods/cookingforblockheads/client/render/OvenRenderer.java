@@ -14,8 +14,8 @@ import net.minecraft.util.ResourceLocation;
 public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 
     private final ModelOvenDoor modelOvenDoor = new ModelOvenDoor();
-    private final ResourceLocation textureOvenDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/OvenDoor.png");
-    private final ResourceLocation textureOvenDoorActive = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/OvenDoorActive.png");
+    private final ResourceLocation textureOvenDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/oven_door.png");
+    private final ResourceLocation textureOvenDoorActive = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/oven_door_active.png");
 
     @Override
     public void renderTileEntityAt(TileOven tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {

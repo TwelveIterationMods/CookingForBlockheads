@@ -64,8 +64,8 @@ public class GuiRecipeBook extends GuiContainer {
 		super(container);
 		this.container = container;
 
-		noIngredients = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":noIngredients").split("\\\\n");
-		noSelection = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":noSelection").split("\\\\n");
+		noIngredients = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_ingredients").split("\\\\n");
+		noSelection = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_selection").split("\\\\n");
 	}
 
 	@Override
@@ -290,38 +290,38 @@ public class GuiRecipeBook extends GuiContainer {
 				FoodRecipeWithIngredients subRecipe = container.getSelection();
 				if(subRecipe != null && subRecipe.getRecipeType() == RecipeType.SMELTING) {
 					if(!container.hasOven()) {
-						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingOven"));
+						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missing_oven"));
 					} else {
 						if (isShiftKeyDown()) {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltStack"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_smelt_stack"));
 						} else {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSmeltOne"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_smelt_one"));
 						}
 					}
 				} else if(slotRecipe.getRecipe() != null) {
 					if (slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_TOOLS) {
-						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingTools"));
+						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missing_tools"));
 					} else if(slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_INGREDIENTS) {
-						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missingIngredients"));
+						event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missing_ingredients"));
 					} else {
 						if (isShiftKeyDown()) {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToCraftStack"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_craft_stack"));
 						} else {
-							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToCraftOne"));
+							event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_craft_one"));
 						}
 					}
 				}
 			} else {
-				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToSeeRecipe"));
+				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_see_recipe"));
 			}
 		} else if(hoverSlot instanceof FakeSlotCraftMatrix && event.getItemStack() == hoverSlot.getStack()) {
 			if(((FakeSlotCraftMatrix) hoverSlot).getVisibleStacks().size() > 1) {
 				if(((FakeSlotCraftMatrix) hoverSlot).isLocked()) {
-					event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToUnlock"));
+					event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_unlock"));
 				} else {
-					event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":clickToLock"));
+					event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_lock"));
 				}
-				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":scrollToSwitch"));
+				event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":scroll_to_switch"));
 			}
 		}
 	}

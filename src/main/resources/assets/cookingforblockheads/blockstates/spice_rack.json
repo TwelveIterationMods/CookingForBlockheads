@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cookingforblockheads:toolRack",
+    "model": "cookingforblockheads:spice_rack",
     "custom": {
       "flip-v": true
     },

@@ -4,19 +4,19 @@
     "custom": {
       "flip-v": true
     },
-    "model": "cookingforblockheads:counterStatic",
+    "model": "cookingforblockheads:counter_static",
     "transform": "forge:default-block"
   },
   "variants": {
     "normal": [{}],
     "inventory": [{
-      "model": "cookingforblockheads:counterStatic",
+      "model": "cookingforblockheads:counter_static",
       "submodel": {
         "door": {
-          "model": "cookingforblockheads:counterDoor"
+          "model": "cookingforblockheads:counter_door"
         },
         "hinge": {
-          "model": "cookingforblockheads:counterHingeLeft"
+          "model": "cookingforblockheads:counter_hinge_left"
         }
       }
     }],
@@ -37,14 +37,14 @@
       "true": {
         "submodel": {
           "hinge": {
-            "model": "cookingforblockheads:counterHingeRight"
+            "model": "cookingforblockheads:counter_hinge_right"
           }
         }
       },
       "false": {
         "submodel": {
           "hinge": {
-            "model": "cookingforblockheads:counterHingeLeft"
+            "model": "cookingforblockheads:counter_hinge_left"
           }
         }
       }

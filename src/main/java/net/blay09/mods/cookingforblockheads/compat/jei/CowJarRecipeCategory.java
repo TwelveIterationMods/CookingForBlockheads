@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 
 public class CowJarRecipeCategory extends BlankRecipeCategory<CowJarRecipe> {
 
-	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/jeiCowJar.png");
+	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
 
 	public static final String UID = "cookingforblockheads.cowjar";
 	private final IDrawableStatic background;
@@ -25,7 +25,7 @@ public class CowJarRecipeCategory extends BlankRecipeCategory<CowJarRecipe> {
 
 	public CowJarRecipeCategory(IGuiHelper guiHelper) {
 		this.background = guiHelper.createBlankDrawable(150, 110);
-		this.title = I18n.format("jei.cookingforblockheads:cowJar");
+		this.title = I18n.format("jei.cookingforblockheads:cow_jar");
 		this.overlay = guiHelper.createDrawable(texture, 0, 0, 64, 80);
 	}
 

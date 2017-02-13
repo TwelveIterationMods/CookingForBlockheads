@@ -20,8 +20,8 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
 
     private final ModelFridgeDoor modelFridgeDoor = new ModelFridgeDoor();
     private final ModelFridgeLargeDoor modelFridgeLargeDoor = new ModelFridgeLargeDoor();
-    private final ResourceLocation textureFridgeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/FridgeDoor.png");
-    private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/FridgeLargeDoor.png");
+    private final ResourceLocation textureFridgeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_door.png");
+    private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_large_door.png");
 
     @Override
     public void renderTileEntityAt(TileFridge tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {

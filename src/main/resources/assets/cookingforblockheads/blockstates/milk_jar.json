@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cookingforblockheads:milkJarStatic",
+    "model": "cookingforblockheads:milk_jar_static",
     "custom": {
       "flip-v": true
     },
@@ -14,15 +14,20 @@
     "inventory": [
       {
         "transform": {
-          "gui": {
-            "rotation": [
-              {"x": 30},
-              {"y": 225}
-            ],
-            "scale": 1.25,
-            "translation": [ 0, 0.25, 0]
-          }
+            "gui": {
+              "rotation": [
+                {"x": 30},
+                {"y": 225}
+              ],
+              "scale": 1.25,
+              "translation": [ 0, 0.25, 0]
+            }
         }
+      }
+    ],
+    "liquid": [
+      {
+        "model": "cookingforblockheads:milk_jar_liquid"
       }
     ],
     "facing": {

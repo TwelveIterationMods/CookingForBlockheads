@@ -9,13 +9,13 @@
   "variants": {
     "normal": [{}],
     "inventory": [{
-      "model": "cookingforblockheads:fridgeStatic",
+      "model": "cookingforblockheads:fridge_static",
       "submodel": {
         "door": {
-          "model": "cookingforblockheads:fridgeDoor"
+          "model": "cookingforblockheads:fridge_door"
         },
         "hinge": {
-          "model": "cookingforblockheads:fridgeHingeLeft"
+          "model": "cookingforblockheads:fridge_hinge_left"
         }
       }
     }],
@@ -34,21 +34,21 @@
     },
     "type": {
       "small": {
-        "model": "cookingforblockheads:fridgeStatic"
+        "model": "cookingforblockheads:fridge_static"
       }
     },
     "flipped": {
       "true": {
         "submodel": {
           "hinge": {
-            "model": "cookingforblockheads:fridgeHingeRight"
+            "model": "cookingforblockheads:fridge_hinge_right"
           }
         }
       },
       "false": {
         "submodel": {
           "hinge": {
-            "model": "cookingforblockheads:fridgeHingeLeft"
+            "model": "cookingforblockheads:fridge_hinge_left"
           }
         }
       }

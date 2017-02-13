@@ -45,7 +45,7 @@ public class WailaProvider implements IWailaPlugin {
 			TileEntity tileEntity = accessor.getTileEntity();
 			if(tileEntity instanceof TileMilkJar) {
 				TileMilkJar tileMilkJar = (TileMilkJar) tileEntity;
-				list.add(I18n.format("waila.cookingforblockheads:milkStored", (int) tileMilkJar.getMilkAmount(), (int) tileMilkJar.getMilkCapacity()));
+				list.add(I18n.format("waila.cookingforblockheads:milk_stored", (int) tileMilkJar.getMilkAmount(), (int) tileMilkJar.getMilkCapacity()));
 			}
 			return list;
 		}
@@ -81,7 +81,7 @@ public class WailaProvider implements IWailaPlugin {
 			if(tileEntity instanceof TileToaster) {
 				TileToaster tileToaster = (TileToaster) tileEntity;
 				if(tileToaster.isActive()) {
-					list.add(I18n.format("waila.cookingforblockheads:toastProgress", (int) (tileToaster.getToastProgress() * 100)) + "%");
+					list.add(I18n.format("waila.cookingforblockheads:toast_progress", (int) (tileToaster.getToastProgress() * 100)) + "%");
 				}
 			}
 			return list;

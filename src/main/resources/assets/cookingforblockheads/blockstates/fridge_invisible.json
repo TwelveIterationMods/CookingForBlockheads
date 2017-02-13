@@ -6,7 +6,7 @@
   "variants": {
     "type": {
       "invisible": {
-        "model": "cookingforblockheads:fridgeInvisible"
+        "model": "cookingforblockheads:fridge_invisible"
       }
     },
     "facing": {
