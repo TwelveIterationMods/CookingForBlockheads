@@ -34,7 +34,7 @@ public class TileSink extends TileEntity {
         @Override
         public int fill(FluidStack resource, boolean doFill) {
             if(!CookingConfig.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
-                return resource.amount;
+                return 0;
             }
             return super.fill(resource, doFill);
         }
