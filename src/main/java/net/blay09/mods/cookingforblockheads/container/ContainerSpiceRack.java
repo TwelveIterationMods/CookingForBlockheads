@@ -35,6 +35,7 @@ public class ContainerSpiceRack extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+		// TODO fix me properly
 		ItemStack itemStack = null;
 		Slot slot = inventorySlots.get(slotIndex);
 		if (slot != null && slot.getHasStack()) {
@@ -48,7 +49,7 @@ public class ContainerSpiceRack extends Container {
 				return null;
 			}
 
-			if (slotStack.stackSize == 0) {
+			if (slotStack.isEmpty()) {
 				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();

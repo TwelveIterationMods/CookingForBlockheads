@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class CowJarRecipe extends BlankRecipeWrapper {
 
 	private ItemStack input = new ItemStack(Blocks.ANVIL);
-	private ItemStack output = new ItemStack(ModBlocks.cowJar);
+	private ItemStack output = new ItemStack(ModBlocks.milkJar);
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {

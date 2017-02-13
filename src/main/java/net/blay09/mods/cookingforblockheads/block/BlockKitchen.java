@@ -50,6 +50,7 @@ public abstract class BlockKitchen extends BlockContainer {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing facing = EnumFacing.getFront(meta);
 		if (facing.getAxis() == EnumFacing.Axis.Y) {
@@ -64,21 +65,25 @@ public abstract class BlockKitchen extends BlockContainer {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return BOUNDING_BOX;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return true;
 	}
@@ -90,7 +95,7 @@ public abstract class BlockKitchen extends BlockContainer {
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		int facing = MathHelper.floor_double((double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		int facing = MathHelper.floor((double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 		switch (facing) {
 			case 0:
 				world.setBlockState(pos, state.withProperty(FACING, EnumFacing.NORTH));
@@ -114,6 +119,11 @@ public abstract class BlockKitchen extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	public void registerModels(ItemModelMesher mesher) {
-		mesher.register(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+		mesher.register(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryNameString(), "inventory"));
+	}
+
+	public String getRegistryNameString() {
+		//noinspection ConstantConditions
+		return getRegistryName().toString();
 	}
 }

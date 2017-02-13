@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 public class BlockCowJar extends BlockMilkJar {
 
     public BlockCowJar() {
-        super("cowJar");
+        super("cow_jar");
     }
 
     @Override

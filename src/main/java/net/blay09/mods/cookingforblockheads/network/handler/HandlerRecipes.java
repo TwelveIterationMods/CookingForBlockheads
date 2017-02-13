@@ -9,9 +9,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import javax.annotation.Nullable;
+
 public class HandlerRecipes implements IMessageHandler<MessageRecipes, IMessage> {
 
     @Override
+	@Nullable
     public IMessage onMessage(final MessageRecipes message, MessageContext ctx) {
 		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
 			@Override

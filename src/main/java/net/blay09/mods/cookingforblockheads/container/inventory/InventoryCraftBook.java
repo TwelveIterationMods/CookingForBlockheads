@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -80,22 +80,22 @@ public class InventoryCraftBook extends InventoryCrafting {
 
 		// Populate the crafting grid
 		for(int i = 0; i < sourceItems.length; i++) {
-			setInventorySlotContents(i, sourceItems[i] != null ? sourceItems[i].getSourceStack() : null);
+			setInventorySlotContents(i, sourceItems[i] != null ? sourceItems[i].getSourceStack() : ItemStack.EMPTY);
 		}
 
 		// Find the matching recipe and make sure it matches what the client expects
-		IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.worldObj);
-		if(craftRecipe == null || craftRecipe.getRecipeOutput() == null || craftRecipe.getRecipeOutput().getItem() != outputItem.getItem()) {
-			return null;
+		IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.world);
+		if(craftRecipe == null || craftRecipe.getRecipeOutput().isEmpty() || craftRecipe.getRecipeOutput().getItem() != outputItem.getItem()) {
+			return ItemStack.EMPTY;
 		}
 
 		// Get the final result and remove ingredients
 		ItemStack result = craftRecipe.getCraftingResult(this);
-		if(result != null) {
+		if(!result.isEmpty()) {
 			fireEventsAndHandleAchievements(player, result);
 			for(int i = 0; i < getSizeInventory(); i++) {
 				ItemStack itemStack = getStackInSlot(i);
-				if(itemStack != null) {
+				if(!itemStack.isEmpty()) {
 					if(sourceItems[i] != null) {
 						// Eat the ingredients
 						IKitchenItemProvider sourceProvider = sourceItems[i].getSourceProvider();
@@ -106,11 +106,9 @@ public class InventoryCraftBook extends InventoryCrafting {
 
 						// Return container items (like empty buckets)
 						ItemStack containerItem = ForgeHooks.getContainerItem(itemStack);
-						if(containerItem != null) {
-							System.out.println("Got a container item, returning it to source provider");
+						if(!containerItem.isEmpty()) {
 							ItemStack restStack = sourceProvider.returnItemStack(containerItem);
-							if(restStack != null && restStack.stackSize > 0) {
-								System.out.println("apparently the source provider didn't want it back so I'll just drop it in your inventory");
+							if(!restStack.isEmpty()) {
 								ItemHandlerHelper.giveItemToPlayer(player, restStack);
 							}
 						}
@@ -123,7 +121,7 @@ public class InventoryCraftBook extends InventoryCrafting {
 
 	private void fireEventsAndHandleAchievements(EntityPlayer player, ItemStack result) {
 		FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
-		result.onCrafting(player.worldObj, player, 1);
+		result.onCrafting(player.world, player, 1);
 		if(result.getItem() == Items.BREAD) {
 			player.addStat(AchievementList.MAKE_BREAD, 1);
 		} else if(result.getItem() == Items.CAKE) {

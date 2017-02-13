@@ -19,6 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileMilkJar extends TileEntity {
@@ -46,7 +47,7 @@ public class TileMilkJar extends TileEntity {
 			if(tileMilkJar.getMilkAmount() - milkUsed >= amount * 1000) {
 				if(requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
 					if(!CookingRegistry.consumeBucket(inventories, simulate)) {
-						return null;
+						return ItemStack.EMPTY;
 					}
 				}
 				if(simulate) {
@@ -56,7 +57,7 @@ public class TileMilkJar extends TileEntity {
 				}
 				return ItemHandlerHelper.copyStackWithSize(getStackInSlot(slot), amount);
 			}
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		@Override
@@ -67,7 +68,7 @@ public class TileMilkJar extends TileEntity {
 					break;
 				}
 			}
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		@Override
@@ -133,14 +134,14 @@ public class TileMilkJar extends TileEntity {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		return capability == CapabilityKitchenItemProvider.CAPABILITY
 				|| super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
 			return (T) itemProvider;
 		}

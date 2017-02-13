@@ -52,7 +52,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
             IItemHandler itemHandler = tileEntity.getItemHandler();
             for(int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);
-                if(itemStack != null) {
+                if(!itemStack.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
                     int rowIndex = i % 13;
                     offsetX = 0.7f;

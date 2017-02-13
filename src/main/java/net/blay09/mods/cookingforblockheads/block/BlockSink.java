@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileSink;
 import net.minecraft.block.SoundType;
@@ -19,14 +18,10 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockSink extends BlockKitchen {
@@ -35,26 +30,27 @@ public class BlockSink extends BlockKitchen {
         super(Material.WOOD);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "sink");
-        setUnlocalizedName(getRegistryName().toString());
+        setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.WOOD);
         setHardness(5f);
         setResistance(10f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
         ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
-        if(resultStack != null) {
+        if(!resultStack.isEmpty()) {
             NBTTagCompound tagCompound = heldItem.getTagCompound();
             ItemStack newItem = resultStack.copy();
             if(tagCompound != null) {
                 newItem.setTagCompound(tagCompound);
             }
-            if(heldItem.stackSize <= 1) {
+            if(heldItem.getCount() <= 1) {
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, newItem);
             } else {
                 if(player.inventory.addItemStackToInventory(newItem)) {
-                    heldItem.stackSize--;
+                    heldItem.shrink(1);
                 }
             }
             spawnParticles(world, pos, state);
@@ -62,9 +58,9 @@ public class BlockSink extends BlockKitchen {
         } else {
             TileEntity tileEntity = world.getTileEntity(pos);
             if(tileEntity != null) {
-                IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+                IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
                 FluidUtil.interactWithFluidHandler(heldItem, fluidHandler, player);
-                return heldItem != null && !(heldItem.getItem() instanceof ItemBlock);
+                return !heldItem.isEmpty() && !(heldItem.getItem() instanceof ItemBlock);
             }
         }
         return true;

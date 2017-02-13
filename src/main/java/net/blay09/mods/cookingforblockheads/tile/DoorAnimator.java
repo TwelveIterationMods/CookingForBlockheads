@@ -108,8 +108,8 @@ public class DoorAnimator {
 		if (!player.isSpectator()) {
 			numPlayersUsing = Math.max(0, numPlayersUsing + 1);
 			tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), eventNumPlayers, numPlayersUsing);
-			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), tileEntity.getBlockType());
-			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), tileEntity.getBlockType());
+			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), tileEntity.getBlockType(), true);
+			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), tileEntity.getBlockType(), true);
 		}
 	}
 
@@ -117,8 +117,8 @@ public class DoorAnimator {
 		if (!player.isSpectator()) {
 			numPlayersUsing--;
 			tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), eventNumPlayers, numPlayersUsing);
-			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), tileEntity.getBlockType());
-			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), tileEntity.getBlockType());
+			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), tileEntity.getBlockType(), true);
+			tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), tileEntity.getBlockType(), true);
 		}
 	}
 

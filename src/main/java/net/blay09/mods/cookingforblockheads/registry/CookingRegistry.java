@@ -12,7 +12,7 @@ import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
@@ -46,6 +46,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
+import javax.annotation.Nullable;
+
 public class CookingRegistry {
 
     private static final List<IRecipe> recipeList = Lists.newArrayList();
@@ -74,7 +76,7 @@ public class CookingRegistry {
         for(Object obj : CraftingManager.getInstance().getRecipeList()) {
             IRecipe recipe = (IRecipe) obj;
             ItemStack output = recipe.getRecipeOutput();
-            if(output != null) {
+            if(!output.isEmpty()) {
                 if (output.getItem() instanceof ItemFood) {
                     if (HarvestCraftAddon.isWeirdBrokenRecipe(recipe)) {
                         continue;
@@ -124,7 +126,7 @@ public class CookingRegistry {
 
     public static void addFoodRecipe(IRecipe recipe) {
         ItemStack output = recipe.getRecipeOutput();
-        if(output != null) {
+        if(!output.isEmpty()) {
             recipeList.add(recipe);
             if (recipe instanceof ShapedRecipes) {
                 foodItems.put(output.getItem().getRegistryName(), new ShapedCraftingFood((ShapedRecipes) recipe));
@@ -151,7 +153,7 @@ public class CookingRegistry {
     }
 
     public static boolean isToolItem(ItemStack itemStack) {
-        if(itemStack == null) {
+        if(itemStack.isEmpty()) {
             return false;
         }
         for(ItemStack toolItem : tools) {
@@ -185,13 +187,14 @@ public class CookingRegistry {
                 return entry.getValue();
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
         toastHandlers.put(itemStack, toastHandler);
     }
 
+    @Nullable
     public static ToastHandler getToastHandler(ItemStack itemStack) {
         for(Map.Entry<ItemStack, ToastHandler> entry : toastHandlers.entrySet()) {
             if(ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
@@ -206,20 +209,20 @@ public class CookingRegistry {
     }
 
     public static ItemStack getSinkOutput(ItemStack itemStack) {
-        if(itemStack == null) {
-            return null;
+        if(itemStack.isEmpty()) {
+            return ItemStack.EMPTY;
         }
         for(Map.Entry<ItemStack, SinkHandler> entry : sinkHandlers.entrySet()) {
             if(ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
                 return entry.getValue().getSinkOutput(itemStack);
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static ItemStack findAnyItemStack(ItemStack checkStack, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-        if(checkStack == null) {
-            return null;
+        if(checkStack.isEmpty()) {
+            return ItemStack.EMPTY;
         }
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
@@ -230,7 +233,7 @@ public class CookingRegistry {
                 }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static ItemStack findAnyItemStack(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket) {
@@ -246,7 +249,7 @@ public class CookingRegistry {
                 }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static boolean consumeBucket(List<IKitchenItemProvider> inventories, boolean simulate) {
@@ -289,6 +292,7 @@ public class CookingRegistry {
         return multiBlock != null ? multiBlock.getItemProviders(inventory) : Lists.<IKitchenItemProvider>newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
     }
 
+    @Nullable
     public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world) {
         for(IRecipe recipe : recipeList) {
             if(recipe.matches(craftMatrix, world)) {
@@ -324,11 +328,10 @@ public class CookingRegistry {
     
     public static boolean doesItemRequireBucketForCrafting(ItemStack outputItem) {
         ItemStack containerItem = ForgeHooks.getContainerItem(outputItem);
-        if(containerItem != null && containerItem.getItem() == Items.BUCKET) {
-            return true;
-        } else if(outputItem.getItem().getRegistryName().getResourcePath().contains("bucket")) {
+        if(!containerItem.isEmpty() && containerItem.getItem() == Items.BUCKET) {
             return true;
         }
-        return false;
+        ResourceLocation registryName = outputItem.getItem().getRegistryName();
+        return registryName != null && registryName.getResourcePath().contains("bucket");
     }
 }

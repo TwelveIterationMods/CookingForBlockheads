@@ -8,14 +8,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import javax.annotation.Nullable;
+
 public class HandlerRequestRecipes implements IMessageHandler<MessageRequestRecipes, IMessage> {
 
     @Override
+	@Nullable
     public IMessage onMessage(final MessageRequestRecipes message, final MessageContext ctx) {
 		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
 			@Override
 			public void run() {
-				Container container = ctx.getServerHandler().playerEntity.openContainer;
+				Container container = ctx.getServerHandler().player.openContainer;
 				if(container instanceof ContainerRecipeBook) {
 					((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem());
 				}

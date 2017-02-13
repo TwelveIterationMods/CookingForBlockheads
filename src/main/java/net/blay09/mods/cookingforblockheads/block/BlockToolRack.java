@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -35,8 +35,8 @@ public class BlockToolRack extends BlockKitchen {
     public BlockToolRack() {
         super(Material.WOOD);
 
-		setRegistryName(CookingForBlockheads.MOD_ID, "toolRack");
-		setUnlocalizedName(getRegistryName().toString());
+		setRegistryName(CookingForBlockheads.MOD_ID, "tool_rack");
+		setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
@@ -54,7 +54,8 @@ public class BlockToolRack extends BlockKitchen {
 
 	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -67,7 +68,8 @@ public class BlockToolRack extends BlockKitchen {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
 			facing = EnumFacing.NORTH;
 		}
@@ -78,14 +80,15 @@ public class BlockToolRack extends BlockKitchen {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(heldItem != null && heldItem.getItem() instanceof ItemBlock) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	ItemStack heldItem = player.getHeldItem(hand);
+        if(!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
             return true;
         }
         if(hitY > 0.25f) {
-			EnumFacing facing = state.getValue(FACING);
+			EnumFacing stateFacing = state.getValue(FACING);
             float hit = hitX;
-            switch(facing) {
+            switch(stateFacing) {
                 case NORTH: hit = hitX; break;
                 case SOUTH: hit = 1f - hitX; break;
                 case WEST: hit = 1f - hitZ; break;
@@ -94,11 +97,11 @@ public class BlockToolRack extends BlockKitchen {
             int hitSlot = hit > 0.5f ? 0 : 1;
             TileToolRack tileToolRack = (TileToolRack) world.getTileEntity(pos);
             if (tileToolRack != null) {
-                if (heldItem != null) {
+                if (!heldItem.isEmpty()) {
 
                     ItemStack oldToolItem = tileToolRack.getItemHandler().getStackInSlot(hitSlot);
                     ItemStack toolItem = heldItem.splitStack(1);
-                    if (oldToolItem != null) {
+                    if (!oldToolItem.isEmpty()) {
                         if (!player.inventory.addItemStackToInventory(oldToolItem)) {
                             player.dropItem(oldToolItem, false);
                         }
@@ -108,8 +111,8 @@ public class BlockToolRack extends BlockKitchen {
                     }
                 } else {
                     ItemStack itemStack = tileToolRack.getItemHandler().getStackInSlot(hitSlot);
-                    if (itemStack != null) {
-                        tileToolRack.getItemHandler().setStackInSlot(hitSlot, null);
+                    if (!itemStack.isEmpty()) {
+                        tileToolRack.getItemHandler().setStackInSlot(hitSlot, ItemStack.EMPTY);
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
                     }
                 }

@@ -176,7 +176,6 @@ public class ContainerRecipeBook extends Container {
 		Slot slot = inventorySlots.get(slotIndex);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
-			//noinspection ConstantConditions
 			itemStack = slotStack.copy();
 			if (slotIndex >= 48 && slotIndex < 57) {
 				if (!mergeItemStack(slotStack, 21, 48, true)) {

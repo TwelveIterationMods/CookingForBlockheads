@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -32,7 +32,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 						itemStack.getItem().getSubItems(itemStack.getItem(), itemStack.getItem().getCreativeTab(), subItems);
 						visibleStacks.addAll(subItems);
 					} else {
-						itemStack.stackSize = 1;
+						itemStack.setCount(1);
 						visibleStacks.add(itemStack);
 					}
 				}
@@ -66,7 +66,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 
 	@Override
 	public ItemStack getStack() {
-		return visibleStacks.size() > 0 ? visibleStacks.get(visibleItemIndex) : null;
+		return visibleStacks.size() > 0 ? visibleStacks.get(visibleItemIndex) : ItemStack.EMPTY;
 	}
 
 	@Override

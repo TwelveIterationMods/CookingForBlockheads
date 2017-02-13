@@ -3,8 +3,6 @@ package net.blay09.mods.cookingforblockheads;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
@@ -12,7 +10,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmel
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -45,14 +43,14 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 				TileEntity tileEntity = world.getTileEntity(position);
 				if (tileEntity != null) {
 					IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
-					if (itemProvider != null) { // Forge needs to update their patches to include @Nullable annotations
+					if (itemProvider != null) {
 						itemProviderList.add(itemProvider);
 					}
 					IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
-					if (smeltingProvider != null) { // Forge needs to update their patches to include @Nullable annotations
+					if (smeltingProvider != null) {
 						smeltingProviderList.add(smeltingProvider);
 					}
-					if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) { // Forge needs to update their patches to include @Nullable annotations
+					if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
 						findNeighbourKitchenBlocks(world, position);
 					}
 				}
@@ -60,6 +58,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 		}
 	}
 
+	@Override
 	public List<IKitchenItemProvider> getItemProviders(InventoryPlayer playerInventory) {
 		List<IKitchenItemProvider> sourceInventories = Lists.newArrayList();
 		for (IKitchenItemProvider provider : itemProviderList) {
@@ -69,7 +68,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 		return sourceInventories;
 	}
 
-	@Nullable
+	@Override
 	public ItemStack smeltItem(ItemStack itemStack, int count) {
 		ItemStack restStack = itemStack.copy().splitStack(count);
 		for (IKitchenSmeltingProvider provider : smeltingProviderList) {
@@ -78,15 +77,12 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 				break;
 			}
 		}
-		itemStack.stackSize -= (count - (restStack != null ? restStack.stackSize : 0));
-		if (itemStack.stackSize <= 0) {
-			return null;
-		}
+		itemStack.shrink(count - (restStack != null ? restStack.getCount() : 0));
 		return itemStack;
 	}
 
-	public void trySmelt(ItemStack outputItem, @Nullable ItemStack inputItem, EntityPlayer player, boolean stack) {
-		if (inputItem == null) {
+	public void trySmelt(ItemStack outputItem, ItemStack inputItem, EntityPlayer player, boolean stack) {
+		if (inputItem.isEmpty()) {
 			return;
 		}
 		boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
@@ -96,11 +92,11 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 			for (int i = 0; i < itemProvider.getSlots(); i++) {
 				ItemStack itemStack = itemProvider.getStackInSlot(i);
 				if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, inputItem)) {
-					int smeltCount = Math.min(itemStack.stackSize, stack ? inputItem.getMaxStackSize() : 1);
+					int smeltCount = Math.min(itemStack.getCount(), stack ? inputItem.getMaxStackSize() : 1);
 					ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories, requireBucket);
 					if (restStack != null) {
 						restStack = smeltItem(restStack, smeltCount);
-						if (restStack != null) {
+						if (!restStack.isEmpty()) {
 							restStack = itemProvider.returnItemStack(restStack);
 							if (!player.inventory.addItemStackToInventory(restStack)) {
 								player.dropItem(restStack, false);
@@ -115,6 +111,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 
 	}
 
+	@Override
 	public boolean hasSmeltingProvider() {
 		return smeltingProviderList.size() > 0;
 	}

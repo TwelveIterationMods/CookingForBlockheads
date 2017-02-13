@@ -18,7 +18,7 @@ public class MilkJarRenderer extends TileEntitySpecialRenderer<TileMilkJar> {
 
 	@Override
 	public void renderTileEntityAt(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-		if(!tileEntity.hasWorldObj()) {
+		if(!tileEntity.hasWorld()) {
 			return;
 		}
 		if(blockRenderer == null) {

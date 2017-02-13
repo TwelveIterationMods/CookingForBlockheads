@@ -14,14 +14,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
+
 public class TileToolRack extends TileEntity {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             markDirty();
-            IBlockState blockState = worldObj.getBlockState(pos);
-            worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), blockState, blockState, 1|2);
+            IBlockState blockState = world.getBlockState(pos);
+            world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), blockState, blockState, 1|2);
         }
     };
 
@@ -61,7 +63,7 @@ public class TileToolRack extends TileEntity {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
                 || capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
@@ -69,7 +71,7 @@ public class TileToolRack extends TileEntity {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) itemHandler;
         }

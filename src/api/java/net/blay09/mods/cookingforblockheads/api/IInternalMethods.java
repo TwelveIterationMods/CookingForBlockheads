@@ -6,7 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface IInternalMethods {
-
     void addSinkHandler(ItemStack itemStack, SinkHandler sinkHandler);
     void addOvenFuel(ItemStack fuelItem, int fuelTime);
     void addOvenRecipe(ItemStack sourceItem, ItemStack resultItem);
@@ -17,5 +16,4 @@ public interface IInternalMethods {
     void addCowClass(Class<? extends EntityLivingBase> clazz);
     IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos);
 	void addSortButton(ISortButton button);
-
 }

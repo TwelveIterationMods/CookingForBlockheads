@@ -19,7 +19,7 @@ public class CookingTableRenderer extends TileEntitySpecialRenderer<TileCookingT
         }
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
         ItemStack itemStack = tileEntity.getNoFilterBook();
-        if (itemStack != null) {
+        if (!itemStack.isEmpty()) {
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
             GlStateManager.translate(x + 0.5, y + 0.825, z + 0.5);

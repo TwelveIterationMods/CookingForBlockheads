@@ -19,7 +19,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockMilkJar extends BlockKitchen {
@@ -27,14 +26,14 @@ public class BlockMilkJar extends BlockKitchen {
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 0.5, 0.7);
 
     public BlockMilkJar() {
-        this("milkJar");
+        this("milk_jar");
     }
 
     public BlockMilkJar(String registryName) {
         super(Material.GLASS);
 
         setRegistryName(CookingForBlockheads.MOD_ID, registryName);
-        setUnlocalizedName(getRegistryName().toString());
+        setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.GLASS);
         setHardness(0.6f);
     }
@@ -45,24 +44,25 @@ public class BlockMilkJar extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
         TileMilkJar tileMilkJar = (TileMilkJar) world.getTileEntity(pos);
-        if(heldItem != null && tileMilkJar != null) {
+        if(!heldItem.isEmpty() && tileMilkJar != null) {
             if (heldItem.getItem() == Items.MILK_BUCKET) {
                 if(tileMilkJar.getMilkAmount() <= tileMilkJar.getMilkCapacity() - 1000) {
                     tileMilkJar.fill(1000);
-                    player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Items.BUCKET);
+                    player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(Items.BUCKET));
                 }
                 return true;
             } else if(heldItem.getItem() == Items.BUCKET) {
                 if(tileMilkJar.getMilkAmount() >= 1000) {
-                    if (heldItem.stackSize == 1) {
+                    if (heldItem.getCount() == 1) {
                         tileMilkJar.drain(1000);
-                        player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Items.MILK_BUCKET);
+                        player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(Items.MILK_BUCKET));
                     } else {
                         if(player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) {
                             tileMilkJar.drain(1000);
-                            heldItem.stackSize--;
+                            heldItem.shrink(1);
                         }
                     }
                 }

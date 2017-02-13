@@ -10,15 +10,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import javax.annotation.Nullable;
+
 public class HandlerCreateCowJar implements IMessageHandler<MessageCreateCowJar, IMessage> {
 
 	@Override
+	@Nullable
 	public IMessage onMessage(final MessageCreateCowJar message, MessageContext ctx) {
 		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
 			@Override
 			public void run() {
-				Minecraft.getMinecraft().theWorld.playSound(message.getPos().getX(), message.getPos().getY(), message.getPos().getZ(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 1f, 1f, false);
-				Minecraft.getMinecraft().theWorld.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, true, message.getPos().getX(), message.getPos().getY() + 1, message.getPos().getZ(), 0f, 0f, 0f);
+				Minecraft.getMinecraft().world.playSound(message.getPos().getX(), message.getPos().getY(), message.getPos().getZ(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 1f, 1f, false);
+				Minecraft.getMinecraft().world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, true, message.getPos().getX(), message.getPos().getY() + 1, message.getPos().getZ(), 0f, 0f, 0f);
 			}
 		});
 		return null;

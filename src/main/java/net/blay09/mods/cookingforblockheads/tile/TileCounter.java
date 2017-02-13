@@ -19,6 +19,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import vazkii.quark.base.handler.IDropoffManager;
 
+import javax.annotation.Nullable;
+
 @Optional.Interface(modid = "Quark", iface = "vazkii.quark.base.handler.IDropoffManager", striprefs = true)
 public class TileCounter extends TileEntity implements ITickable, IDropoffManager {
 
@@ -93,7 +95,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
                 || capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
@@ -101,7 +103,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) itemHandler;
         }

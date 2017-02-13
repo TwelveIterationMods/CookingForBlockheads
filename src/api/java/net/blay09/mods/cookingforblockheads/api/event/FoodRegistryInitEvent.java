@@ -18,4 +18,5 @@ public class FoodRegistryInitEvent extends Event {
     public Collection<ItemStack> getNonFoodRecipes() {
         return nonFoodRecipes;
     }
+
 }

@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiSpiceRack extends GuiContainer {
 
-	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/spiceRack.png");
+	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/spice_rack.png");
 
 	public GuiSpiceRack(EntityPlayer player, TileSpiceRack tileSpiceRack) {
 		super(new ContainerSpiceRack(player, tileSpiceRack));
@@ -19,8 +19,8 @@ public class GuiSpiceRack extends GuiContainer {
 	}
 
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-		fontRendererObj.drawString(I18n.format("container." + CookingForBlockheads.MOD_ID + ":spiceRack"), 8, 6, 4210752);
-		fontRendererObj.drawString(I18n.format("container.inventory"), 8, 38, 4210752);
+		fontRenderer.drawString(I18n.format("container." + CookingForBlockheads.MOD_ID + ":spice_rack"), 8, 6, 4210752);
+		fontRenderer.drawString(I18n.format("container.inventory"), 8, 38, 4210752);
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {

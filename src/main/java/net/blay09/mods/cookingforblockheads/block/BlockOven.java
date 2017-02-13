@@ -1,34 +1,25 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -40,7 +31,7 @@ public class  BlockOven extends BlockKitchen {
         super(Material.IRON);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "oven");
-        setUnlocalizedName(getRegistryName().toString());
+        setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.METAL);
         setHardness(5f);
         setResistance(10f);
@@ -52,19 +43,20 @@ public class  BlockOven extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (heldItem != null && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, side, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                heldItem.stackSize--;
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
+        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
+            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
+                heldItem.shrink(1);
             }
             return true;
         }
-        if(side == EnumFacing.UP) {
+        if(facing == EnumFacing.UP) {
             if(CookingRegistry.isToolItem(heldItem)) {
-                EnumFacing facing = state.getValue(FACING);
+                EnumFacing stateFacing = state.getValue(FACING);
                 float hx = hitX;
                 float hz = hitZ;
-                switch(facing) {
+                switch(stateFacing) {
                     case NORTH: hx = 1f - hitX; hz = 1f - hitZ; break;
 //                    case SOUTH: hx = hitX; hz = hitZ; break;
                     case WEST: hz = 1f - hitX; hx = hitZ; break;
@@ -90,13 +82,13 @@ public class  BlockOven extends BlockKitchen {
                 return true;
             }
         }
-        if(side == state.getValue(FACING)) {
+        if(facing == state.getValue(FACING)) {
             TileOven tileOven = (TileOven) world.getTileEntity(pos);
             if(tileOven != null) {
                 if (player.isSneaking()) {
                     tileOven.getDoorAnimator().toggleForcedOpen();
                     return true;
-                } else if (heldItem != null && tileOven.getDoorAnimator().isForcedOpen()) {
+                } else if (!heldItem.isEmpty() && tileOven.getDoorAnimator().isForcedOpen()) {
                     heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
                     player.setHeldItem(hand, heldItem);
                     return true;
@@ -165,7 +157,6 @@ public class  BlockOven extends BlockKitchen {
 //    }
 
 //    @Override
-//    @SuppressWarnings("unchecked")
 //    @SideOnly(Side.CLIENT)
 //    public void registerModels(ItemModelMesher mesher) {
 //        super.registerModels(mesher);

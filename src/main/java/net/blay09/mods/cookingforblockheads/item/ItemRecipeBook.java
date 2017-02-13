@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -25,35 +26,35 @@ public class ItemRecipeBook extends Item {
 
 	public ItemRecipeBook() {
 		setMaxStackSize(1);
-		setRegistryName(CookingForBlockheads.MOD_ID, "recipeBook");
+		setRegistryName(CookingForBlockheads.MOD_ID, "recipe_book");
 		setCreativeTab(CookingForBlockheads.creativeTab);
 		setHasSubtypes(true);
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack) {
-		return "item." + CookingForBlockheads.MOD_ID + ":recipeBookTier" + itemstack.getItemDamage();
+		return "item." + CookingForBlockheads.MOD_ID + ":recipe_book_tier" + itemstack.getItemDamage();
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems) {
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		subItems.add(new ItemStack(item, 1, 0));
 		subItems.add(new ItemStack(item, 1, 1));
 		subItems.add(new ItemStack(item, 1, 2));
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer, EnumHand hand) {
-		entityPlayer.openGui(CookingForBlockheads.instance, GuiHandler.ITEM_RECIPE_BOOK, world, hand.ordinal(), 0, 0);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		player.openGui(CookingForBlockheads.instance, GuiHandler.ITEM_RECIPE_BOOK, world, hand.ordinal(), 0, 0);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean isShiftDown) {
 		super.addInformation(itemStack, player, list, isShiftDown);
 
-		list.add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":recipeBookTier" + itemStack.getItemDamage()));
-		for (String s : I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":recipeBookTier" + itemStack.getItemDamage() + ".description").split("\\\\n")) {
+		list.add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":recipe_book_tier" + itemStack.getItemDamage()));
+		for (String s : I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":recipe_book_tier" + itemStack.getItemDamage() + ".description").split("\\\\n")) {
 			list.add(TextFormatting.GRAY + s);
 		}
 	}
@@ -62,8 +63,8 @@ public class ItemRecipeBook extends Item {
 	public void registerModels(ItemModelMesher mesher) {
 		ModelBakery.registerItemVariants(this, new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBook"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBookTier1"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBookTier2"));
 
-		mesher.register(this, 0, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipeBook", "inventory"));
-		mesher.register(this, 1, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipeBookTier1", "inventory"));
-		mesher.register(this, 2, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipeBookTier2", "inventory"));
+		mesher.register(this, 0, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book", "inventory"));
+		mesher.register(this, 1, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier1", "inventory"));
+		mesher.register(this, 2, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier2", "inventory"));
 	}
 }

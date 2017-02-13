@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
-import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,7 +27,7 @@ public class SpiceRackRenderer extends TileEntitySpecialRenderer<TileSpiceRack> 
 		GlStateManager.scale(0.5f, 0.5f, 0.5f);
 		for(int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {
 			ItemStack itemStack = tileEntity.getItemHandler().getStackInSlot(i);
-			if(itemStack != null) {
+			if(!itemStack.isEmpty()) {
 				RenderUtils.renderItem(itemRenderer, itemStack, 0.15f, 0.35f, 0.8f - i * 0.2f, 0f, 0f, 0f, 0f);
 			}
 		}

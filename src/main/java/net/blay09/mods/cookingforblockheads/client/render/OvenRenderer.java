@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -75,7 +74,7 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
             float offsetZ = 0.8f;
             for(int i = 0; i < 9; i++) {
                 itemStack = tileEntity.getItemHandler().getStackInSlot(7 + i);
-                if(itemStack != null) {
+                if(!itemStack.isEmpty()) {
                     RenderUtils.renderItem(itemRenderer, itemStack, offsetX, 0f, offsetZ, 90f, 1f, 0f, 0f);
                 }
                 offsetX -= 0.8f;

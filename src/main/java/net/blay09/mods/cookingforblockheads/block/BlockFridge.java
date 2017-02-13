@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.Block;
@@ -53,7 +53,7 @@ public class BlockFridge extends BlockKitchen {
 		super(Material.IRON);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "fridge");
-		setUnlocalizedName(getRegistryName().toString());
+		setUnlocalizedName(getRegistryNameString());
 		setSoundType(SoundType.METAL);
 		setHardness(5f);
 		setResistance(10f);
@@ -110,6 +110,7 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		if (world.getBlockState(pos.up()).getBlock() == this) {
 			state = state.withProperty(TYPE, FridgeType.LARGE);
@@ -132,20 +133,21 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem != null && heldItem.getItem() == Items.DYE) {
-			if (recolorBlock(world, pos, side, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-				heldItem.stackSize--;
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack heldItem = player.getHeldItem(hand);
+		if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
+			if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
+				heldItem.shrink(1);
 			}
 			return true;
 		}
-		if(side == state.getValue(FACING)) {
+		if(facing == state.getValue(FACING)) {
 			TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
 			if(tileFridge != null) {
 				if (player.isSneaking()) {
 					tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
 					return true;
-				} else if (heldItem != null && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
+				} else if (!heldItem.isEmpty() && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
 					heldItem = ItemHandlerHelper.insertItemStacked(tileFridge.getCombinedItemHandler(), heldItem, false);
 					player.setHeldItem(hand, heldItem);
 					return true;
@@ -153,7 +155,7 @@ public class BlockFridge extends BlockKitchen {
 			}
 		}
 		if (!world.isRemote) {
-			if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) == ModBlocks.fridge) {
+			if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) == ModBlocks.fridge) {
 				return false;
 			}
 			player.openGui(CookingForBlockheads.instance, GuiHandler.FRIDGE, world, pos.getX(), pos.getY(), pos.getZ());
@@ -211,7 +213,6 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	@SideOnly(Side.CLIENT)
 	public void registerModels(ItemModelMesher mesher) {
 		super.registerModels(mesher);

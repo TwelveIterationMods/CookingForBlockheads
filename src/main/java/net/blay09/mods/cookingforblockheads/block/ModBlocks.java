@@ -25,43 +25,43 @@ public class ModBlocks {
 	public static void load() {
 		cookingTable = new BlockCookingTable();
 		registerBlock(cookingTable);
-		GameRegistry.registerTileEntity(TileCookingTable.class, cookingTable.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileCookingTable.class, cookingTable.getRegistryNameString());
 
 		oven = new BlockOven();
 		registerBlock(oven);
-		GameRegistry.registerTileEntity(TileOven.class, oven.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileOven.class, oven.getRegistryNameString());
 
 		fridge = new BlockFridge();
 		registerBlock(fridge);
-		GameRegistry.registerTileEntity(TileFridge.class, fridge.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileFridge.class, fridge.getRegistryNameString());
 
 		sink = new BlockSink();
 		registerBlock(sink);
-		GameRegistry.registerTileEntity(TileSink.class, sink.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileSink.class, sink.getRegistryNameString());
 
 		toolRack = new BlockToolRack();
 		registerBlock(toolRack);
-		GameRegistry.registerTileEntity(TileToolRack.class, toolRack.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileToolRack.class, toolRack.getRegistryNameString());
 
 		toaster = new BlockToaster();
 		registerBlock(toaster);
-		GameRegistry.registerTileEntity(TileToaster.class, toaster.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileToaster.class, toaster.getRegistryNameString());
 
 		milkJar = new BlockMilkJar();
 		registerBlock(milkJar);
-		GameRegistry.registerTileEntity(TileMilkJar.class, milkJar.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileMilkJar.class, milkJar.getRegistryNameString());
 
 		cowJar = new BlockCowJar();
 		registerBlock(cowJar);
-		GameRegistry.registerTileEntity(TileCowJar.class, cowJar.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileCowJar.class, cowJar.getRegistryNameString());
 
 		spiceRack = new BlockSpiceRack();
 		registerBlock(spiceRack);
-		GameRegistry.registerTileEntity(TileSpiceRack.class, spiceRack.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileSpiceRack.class, spiceRack.getRegistryNameString());
 
 		counter = new BlockCounter();
 		registerBlock(counter);
-		GameRegistry.registerTileEntity(TileCounter.class, counter.getRegistryName().toString());
+		GameRegistry.registerTileEntity(TileCounter.class, counter.getRegistryNameString());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -82,6 +82,7 @@ public class ModBlocks {
 
 	public static void registerBlock(Block block) {
 		GameRegistry.register(block);
-		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName())); // ...really, Forge? Really?
+		//noinspection ConstantConditions
+		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
 	}
 }

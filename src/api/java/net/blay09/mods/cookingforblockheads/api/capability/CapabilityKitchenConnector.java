@@ -39,4 +39,5 @@ public class CapabilityKitchenConnector {
 	public static class KitchenConnector implements IKitchenConnector {
 
 	}
+
 }

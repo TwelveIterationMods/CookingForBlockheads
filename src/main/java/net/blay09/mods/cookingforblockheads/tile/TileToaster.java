@@ -70,10 +70,10 @@ public class TileToaster extends TileEntity implements ITickable {
     public void update() {
         if(active) {
             toastTicks--;
-            if(toastTicks <= 0 && !worldObj.isRemote) {
+            if(toastTicks <= 0 && !world.isRemote) {
                 for(int i = 0; i < itemHandler.getSlots(); i++) {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
-                    if(inputStack != null) {
+                    if(!inputStack.isEmpty()) {
                         ToastHandler toastHandler = CookingRegistry.getToastHandler(inputStack);
                         ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : null;
                         if (outputStack == null) {
@@ -81,12 +81,12 @@ public class TileToaster extends TileEntity implements ITickable {
                         } else {
                             outputStack = outputStack.copy();
                         }
-                        EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
+                        EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
                         entityItem.motionX = 0f;
                         entityItem.motionY = 0.1f;
                         entityItem.motionZ = 0f;
-                        worldObj.spawnEntityInWorld(entityItem);
-                        itemHandler.setStackInSlot(i, null);
+                        world.spawnEntity(entityItem);
+                        itemHandler.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
                 setActive(false);

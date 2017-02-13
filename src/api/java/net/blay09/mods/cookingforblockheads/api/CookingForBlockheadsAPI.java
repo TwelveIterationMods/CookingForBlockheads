@@ -65,4 +65,5 @@ public class CookingForBlockheadsAPI {
     public static void addSortButton(ISortButton button) {
         internalMethods.addSortButton(button);
     }
+
 }

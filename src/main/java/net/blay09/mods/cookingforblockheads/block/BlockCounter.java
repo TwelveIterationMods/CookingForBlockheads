@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.minecraft.block.SoundType;
@@ -21,7 +21,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockCounter extends BlockKitchen {
@@ -32,7 +31,7 @@ public class BlockCounter extends BlockKitchen {
 		super(Material.IRON);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "counter");
-		setUnlocalizedName(getRegistryName().toString());
+		setUnlocalizedName(getRegistryNameString());
 		setSoundType(SoundType.METAL);
 		setHardness(5f);
 		setResistance(10f);
@@ -94,14 +93,15 @@ public class BlockCounter extends BlockKitchen {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(side == state.getValue(FACING)) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(facing == state.getValue(FACING)) {
+			ItemStack heldItem = player.getHeldItem(hand);
 			TileCounter tileCounter = (TileCounter) world.getTileEntity(pos);
 			if(tileCounter != null) {
 				if (player.isSneaking()) {
 					tileCounter.getDoorAnimator().toggleForcedOpen();
 					return true;
-				} else if (heldItem != null && tileCounter.getDoorAnimator().isForcedOpen()) {
+				} else if (!heldItem.isEmpty() && tileCounter.getDoorAnimator().isForcedOpen()) {
 					heldItem = ItemHandlerHelper.insertItemStacked(tileCounter.getItemHandler(), heldItem, false);
 					player.setHeldItem(hand, heldItem);
 					return true;

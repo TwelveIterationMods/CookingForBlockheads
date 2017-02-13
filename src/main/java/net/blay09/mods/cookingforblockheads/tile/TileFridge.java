@@ -46,8 +46,8 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
 
     public void setFridgeColor(EnumDyeColor fridgeColor) {
         this.fridgeColor = fridgeColor;
-        IBlockState state = worldObj.getBlockState(pos);
-        worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), state, state, 1|2);
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 1|2);
         markDirty();
     }
 
@@ -105,17 +105,17 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
 
     @Nullable
     public TileFridge findNeighbourFridge() {
-        if (worldObj.getBlockState(pos.up()).getBlock() == ModBlocks.fridge) {
-            return (TileFridge) worldObj.getTileEntity(pos.up());
-        } else if (worldObj.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
-            return (TileFridge) worldObj.getTileEntity(pos.down());
+        if (world.getBlockState(pos.up()).getBlock() == ModBlocks.fridge) {
+            return (TileFridge) world.getTileEntity(pos.up());
+        } else if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
+            return (TileFridge) world.getTileEntity(pos.down());
         }
         return null;
     }
 
     public TileFridge getBaseFridge() {
-        if (worldObj.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
-            TileFridge baseFridge = (TileFridge) worldObj.getTileEntity(pos.down());
+        if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
+            TileFridge baseFridge = (TileFridge) world.getTileEntity(pos.down());
             if(baseFridge != null) {
                 return baseFridge;
             }
@@ -128,7 +128,7 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
                 || capability == CapabilityKitchenItemProvider.CAPABILITY
                 || super.hasCapability(capability, facing);
@@ -136,7 +136,7 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) getCombinedItemHandler();
         }

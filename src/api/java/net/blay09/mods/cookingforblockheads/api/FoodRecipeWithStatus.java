@@ -1,8 +1,6 @@
 package net.blay09.mods.cookingforblockheads.api;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class FoodRecipeWithStatus {
     private final ItemStack outputItem;
@@ -20,5 +18,4 @@ public class FoodRecipeWithStatus {
     public RecipeStatus getStatus() {
         return status;
     }
-
 }

@@ -120,7 +120,6 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
         if (slot != null && slot.getHasStack()) {
             ItemStack slotStack = slot.getStack();
-            //noinspection ConstantConditions
             itemStack = slotStack.copy();
 
             if (slotIndex >= 7 && slotIndex < 20) {

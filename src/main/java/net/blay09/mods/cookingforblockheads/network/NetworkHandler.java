@@ -29,7 +29,7 @@ public class NetworkHandler {
     }
 
     public static IThreadListener getThreadListener(MessageContext ctx) {
-        return ctx.side == Side.SERVER ? (WorldServer) ctx.getServerHandler().playerEntity.worldObj : getClientThreadListener();
+        return ctx.side == Side.SERVER ? (WorldServer) ctx.getServerHandler().player.world : getClientThreadListener();
     }
 
     @SideOnly(Side.CLIENT)

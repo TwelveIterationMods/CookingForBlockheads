@@ -34,10 +34,10 @@ public class KitchenItemProvider implements IKitchenItemProvider {
 	@Override
 	public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
 		ItemStack itemStack = itemHandler.getStackInSlot(slot);
-		if(itemStack.stackSize - (simulate ? usedStackSize[slot] : 0) >= amount) {
+		if(itemStack.getCount() - (simulate ? usedStackSize[slot] : 0) >= amount) {
 			ItemStack result = itemHandler.extractItem(slot, amount, simulate);
-			if(simulate && result != null) {
-				usedStackSize[slot] += result.stackSize;
+			if(simulate && !result.isEmpty()) {
+				usedStackSize[slot] += result.getCount();
 			}
 			return result;
 		}

@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
-import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,16 +20,16 @@ public class ToasterRenderer extends TileEntitySpecialRenderer<TileToaster> {
 		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 		ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
 		ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
-		if (leftStack != null || rightStack != null) {
+		if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.color(1f, 1f, 1f, 1f);
 			GlStateManager.translate(x + 0.5, y + 0.25 + (tileEntity.isActive() ? -0.075 : 0), z + 0.5);
 			GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
 			GlStateManager.scale(0.4f, 0.4f, 0.4f);
-			if(leftStack != null) {
+			if(!leftStack.isEmpty()) {
 				RenderUtils.renderItem(itemRenderer, leftStack, -0.025f, 0f, 0.15f, 0f, 0f, 0f, 0f);
 			}
-			if(rightStack != null) {
+			if(!rightStack.isEmpty()) {
 				RenderUtils.renderItem(itemRenderer, rightStack, -0.025f, 0f, -0.15f, 0f, 0f, 0f, 0f);
 			}
 			GlStateManager.popMatrix();

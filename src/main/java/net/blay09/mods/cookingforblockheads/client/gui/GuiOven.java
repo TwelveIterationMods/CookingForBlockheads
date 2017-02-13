@@ -38,8 +38,8 @@ public class GuiOven extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = I18n.format("container." + CookingForBlockheads.MOD_ID + ":oven");
-		this.fontRendererObj.drawString(s, (this.xSize + 22) / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8 + 22, this.ySize - 96 + 2, 4210752);
+		this.fontRenderer.drawString(s, (this.xSize + 22) / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+		this.fontRenderer.drawString(I18n.format("container.inventory"), 8 + 22, this.ySize - 96 + 2, 4210752);
 
 
 		for (int i = 0; i < 9; i++) {
@@ -47,7 +47,7 @@ public class GuiOven extends GuiContainer {
 			if(slot.getHasStack()) {
 				ItemStack itemStack = TileOven.getSmeltingResult(slot.getStack());
 				if (itemStack != null) {
-					renderItemWithTint(itemStack, slot.xDisplayPosition, slot.yDisplayPosition + 16, 0xFFFFFF + ((int) (tileEntity.getCookProgress(i) * 255) << 24));
+					renderItemWithTint(itemStack, slot.xPos, slot.yPos + 16, 0xFFFFFF + ((int) (tileEntity.getCookProgress(i) * 255) << 24));
 				}
 			}
 		}

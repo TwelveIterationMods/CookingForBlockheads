@@ -75,7 +75,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
             for(int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);
-                if(itemStack != null) {
+                if(!itemStack.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
                     if(fridgeType == BlockFridge.FridgeType.LARGE) {
                         int rowIndex = i % 18;

@@ -15,7 +15,6 @@ import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
@@ -37,23 +36,20 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 
-@Mod(modid = CookingForBlockheads.MOD_ID,
-		acceptedMinecraftVersions = "[1.9.4]",
-		updateJSON = "http://balyware.com/new/forge_update.php?modid=" + CookingForBlockheads.MOD_ID)
+@Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.11]")
 public class CookingForBlockheads {
+
+	// TODO SEARCH FOR ItemStack[]
+	// TODO Search for List<ItemStack>
+	// TODO search FOR moRe WaYS to TypE theSe commentS
 
     public static final String MOD_ID = "cookingforblockheads";
 	private static final Logger logger = LogManager.getLogger();
 
 	public static CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
 		@Override
-		public Item getTabIconItem() {
-			return ModItems.recipeBook;
-		}
-
-		@Override
-		public int getIconItemDamage() {
-			return 1;
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.recipeBook, 1, 1);
 		}
 	};
 
@@ -130,10 +126,9 @@ public class CookingForBlockheads {
 					break;
 				case "RegisterToast":
 					if(message.getMessageType() == NBTTagCompound.class) {
-						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
-						final ItemStack outputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Output"));
-						//noinspection ConstantConditions /// Missing @Nullable
-						if(inputItem != null && outputItem != null) {
+						ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
+						final ItemStack outputItem = new ItemStack(message.getNBTValue().getCompoundTag("Output"));
+						if(!inputItem.isEmpty() && !outputItem.isEmpty()) {
 							CookingForBlockheadsAPI.addToastHandler(inputItem, new ToastOutputHandler() {
 								@Override
 								public ItemStack getToasterOutput(ItemStack itemStack) {
@@ -149,7 +144,7 @@ public class CookingForBlockheads {
 					break;
 				case "RegisterToastError":
 					if(message.getMessageType() == NBTTagCompound.class) {
-						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
+						ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
 						final String langKey = message.getNBTValue().getString("Message");
 						//noinspection ConstantConditions /// Missing @Nullable
 						if(inputItem != null && !langKey.isEmpty()) {
@@ -168,9 +163,8 @@ public class CookingForBlockheads {
 					break;
 				case "RegisterOvenFuel":
 					if(message.getMessageType() == NBTTagCompound.class) {
-						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
-						//noinspection ConstantConditions /// Missing @Nullable
-						if(inputItem != null && message.getNBTValue().hasKey("FuelValue", Constants.NBT.TAG_ANY_NUMERIC)) {
+						ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
+						if(!inputItem.isEmpty() && message.getNBTValue().hasKey("FuelValue", Constants.NBT.TAG_ANY_NUMERIC)) {
 							CookingForBlockheadsAPI.addOvenFuel(inputItem, message.getNBTValue().getInteger("FuelValue"));
 						} else {
 							logger.error("IMC API Error: RegisterOvenFuel expected message of type NBT with structure {Input : ItemStack, FuelValue : numeric}");
@@ -181,10 +175,9 @@ public class CookingForBlockheads {
 					break;
 				case "RegisterOvenRecipe":
 					if(message.getMessageType() == NBTTagCompound.class) {
-						ItemStack inputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Input"));
-						ItemStack outputItem = ItemStack.loadItemStackFromNBT(message.getNBTValue().getCompoundTag("Output"));
-						//noinspection ConstantConditions /// Missing @Nullable
-						if(inputItem != null && outputItem != null) {
+						ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
+						ItemStack outputItem = new ItemStack(message.getNBTValue().getCompoundTag("Output"));
+						if(!inputItem.isEmpty() && !outputItem.isEmpty()) {
 							CookingForBlockheadsAPI.addOvenRecipe(inputItem, outputItem);
 						} else {
 							logger.error("IMC API Error: RegisterOvenRecipe expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");

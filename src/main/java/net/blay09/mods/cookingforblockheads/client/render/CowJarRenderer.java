@@ -22,7 +22,7 @@ public class CowJarRenderer extends MilkJarRenderer {
 		if(state.getBlock() != ModBlocks.cowJar) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
 			return;
 		}
-		if(entity == null && tileEntity.hasWorldObj()) {
+		if(entity == null && tileEntity.hasWorld()) {
 			entity = new EntityCow(tileEntity.getWorld());
 			entity.setScaleForAge(false);
 		}

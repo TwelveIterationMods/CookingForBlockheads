@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.minecraft.block.SoundType;
@@ -36,8 +36,8 @@ public class BlockSpiceRack extends BlockKitchen {
     public BlockSpiceRack() {
         super(Material.WOOD);
 
-		setRegistryName(CookingForBlockheads.MOD_ID, "spiceRack");
-		setUnlocalizedName(getRegistryName().toString());
+		setRegistryName(CookingForBlockheads.MOD_ID, "spice_rack");
+		setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
@@ -55,7 +55,8 @@ public class BlockSpiceRack extends BlockKitchen {
 
 	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -67,8 +68,10 @@ public class BlockSpiceRack extends BlockKitchen {
 				world.isSideSolid(pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH);
 	}
 
+
 	@Override
-	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
 			facing = EnumFacing.NORTH;
 		}
@@ -79,14 +82,15 @@ public class BlockSpiceRack extends BlockKitchen {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(heldItem != null && heldItem.getItem() instanceof ItemBlock) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	ItemStack heldItem = player.getHeldItem(hand);
+        if(!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
             return true;
         }
-		if(heldItem != null || player.isSneaking()) {
+		if(!heldItem.isEmpty() || player.isSneaking()) {
 			float hit = hitX;
-			EnumFacing facing = state.getValue(FACING);
-            switch(facing) {
+			EnumFacing stateFacing = state.getValue(FACING);
+            switch(stateFacing) {
                 case NORTH: hit = hitX; break;
                 case SOUTH: hit = 1f - hitX; break;
                 case WEST: hit = 1f - hitZ; break;
@@ -95,10 +99,10 @@ public class BlockSpiceRack extends BlockKitchen {
 			int hitSlot = (int) ((1f - hit) * 9);
 			TileSpiceRack tileSpiceRack = (TileSpiceRack) world.getTileEntity(pos);
 			if(tileSpiceRack != null) {
-				if(heldItem != null) {
+				if(!heldItem.isEmpty()) {
 					ItemStack oldToolItem = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
                     ItemStack toolItem = heldItem.splitStack(1);
-                    if (oldToolItem != null) {
+                    if (!oldToolItem.isEmpty()) {
                         if (!player.inventory.addItemStackToInventory(oldToolItem)) {
                             player.dropItem(oldToolItem, false);
                         }
@@ -108,8 +112,8 @@ public class BlockSpiceRack extends BlockKitchen {
                     }
 				} else {
 					ItemStack itemStack = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
-                    if (itemStack != null) {
-						tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, null);
+                    if (!itemStack.isEmpty()) {
+						tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, ItemStack.EMPTY);
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
                     }
 				}

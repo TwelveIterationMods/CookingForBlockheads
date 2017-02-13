@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
 import net.minecraft.block.SoundType;
@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockCookingTable extends BlockKitchen {
@@ -26,15 +25,16 @@ public class BlockCookingTable extends BlockKitchen {
     public BlockCookingTable() {
         super(Material.WOOD);
 
-        setRegistryName(CookingForBlockheads.MOD_ID, "cookingTable");
-        setUnlocalizedName(getRegistryName().toString());
+        setRegistryName(CookingForBlockheads.MOD_ID, "cooking_table");
+        setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(heldItem != null) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
+        if(!heldItem.isEmpty()) {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
             if(tileEntity != null) {
                 if (!tileEntity.hasNoFilterBook() && heldItem.getItem() == ModItems.recipeBook && heldItem.getItemDamage() == 0) {
@@ -46,11 +46,11 @@ public class BlockCookingTable extends BlockKitchen {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
             if(tileEntity != null) {
                 ItemStack noFilterBook = tileEntity.getNoFilterBook();
-                if (noFilterBook != null) {
+                if (!noFilterBook.isEmpty()) {
                     if (!player.inventory.addItemStackToInventory(noFilterBook)) {
                         player.dropItem(noFilterBook, false);
                     }
-                    tileEntity.setNoFilterBook(null);
+                    tileEntity.setNoFilterBook(ItemStack.EMPTY);
                     return true;
                 }
             }

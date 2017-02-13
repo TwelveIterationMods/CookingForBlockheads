@@ -1,18 +1,19 @@
 package net.blay09.mods.cookingforblockheads.registry.recipe;
 
-import net.blay09.mods.cookingforblockheads.balyware.ItemUtils;
+import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class FoodIngredient {
 
-    private final ItemStack[] itemStacks;
+    private final NonNullList<ItemStack> itemStacks;
     private final boolean isToolItem;
 
     public FoodIngredient(ItemStack itemStack, boolean isToolItem) {
-        this(new ItemStack[] { itemStack }, isToolItem);
+        this(NonNullList.withSize(1, itemStack), isToolItem);
     }
 
-    public FoodIngredient(ItemStack[] itemStacks, boolean isToolItem) {
+    public FoodIngredient(NonNullList<ItemStack> itemStacks, boolean isToolItem) {
         this.itemStacks = itemStacks;
         this.isToolItem = isToolItem;
     }
@@ -26,7 +27,7 @@ public class FoodIngredient {
         return false;
     }
 
-    public ItemStack[] getItemStacks() {
+    public NonNullList<ItemStack> getItemStacks() {
         return itemStacks;
     }
 

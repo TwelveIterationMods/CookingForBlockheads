@@ -1,9 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +21,7 @@ public class VanillaAddon implements FoodStatsProvider {
             @Override
             public ItemStack getSinkOutput(ItemStack itemStack) {
                 ItemStack result = itemStack.copy();
-                result.stackSize = 1;
+                result.setCount(1);
                 result.setItemDamage(0);
                 return result;
             }
@@ -66,7 +64,6 @@ public class VanillaAddon implements FoodStatsProvider {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onFoodRegistryInit(FoodRegistryInitEvent event) {
         event.registerNonFoodRecipe(new ItemStack(Items.CAKE));
         event.registerNonFoodRecipe(new ItemStack(Items.SUGAR));

@@ -81,7 +81,7 @@ public class GuiRecipeBook extends GuiContainer {
 		btnNextRecipe.visible = false;
 		buttonList.add(btnNextRecipe);
 
-		searchBar = new GuiTextField(2, fontRendererObj, guiLeft + xSize - 78, guiTop - 5, 70, 10);
+		searchBar = new GuiTextField(2, fontRenderer, guiLeft + xSize - 78, guiTop - 5, 70, 10);
 //		searchBar.setFocused(true);
 		
 		int yOffset = -80;
@@ -115,7 +115,7 @@ public class GuiRecipeBook extends GuiContainer {
 		
 		for (GuiButton sortButton : this.sortButtons) {
 			if (sortButton instanceof GuiButtonSort && button == sortButton) {
-				container.setSortComparator(((GuiButtonSort)sortButton).getComparator(Minecraft.getMinecraft().thePlayer));
+				container.setSortComparator(((GuiButtonSort)sortButton).getComparator(Minecraft.getMinecraft().player));
 			}
 		}
 	}
@@ -212,10 +212,10 @@ public class GuiRecipeBook extends GuiContainer {
 
 		FoodRecipeWithIngredients selection = container.getSelection();
 		if(selection == null) {
-			int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRendererObj.FONT_HEIGHT;
+			int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRenderer.FONT_HEIGHT;
 			for(String s : noSelection) {
-				fontRendererObj.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
-				curY += fontRendererObj.FONT_HEIGHT + 5;
+				fontRenderer.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRenderer.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
+				curY += fontRenderer.FONT_HEIGHT + 5;
 			}
 		} else if(selection.getRecipeType() == RecipeType.SMELTING) {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
@@ -227,17 +227,17 @@ public class GuiRecipeBook extends GuiContainer {
 
 		if(container.getItemListCount() == 0) {
 			GuiContainer.drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
-			int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRendererObj.FONT_HEIGHT;
+			int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRenderer.FONT_HEIGHT;
 			for(String s : noIngredients) {
-				fontRendererObj.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRendererObj.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
-				curY += fontRendererObj.FONT_HEIGHT + 5;
+				fontRenderer.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRenderer.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
+				curY += fontRenderer.FONT_HEIGHT + 5;
 			}
 		}
 
 		GlStateManager.color(1f, 1f, 1f, 1f);
 		for(FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
 			if(slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-				drawTexturedModalRect(guiLeft + slot.xDisplayPosition, guiTop + slot.yDisplayPosition, 176, 60, 16, 16);
+				drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
 			}
 		}
 

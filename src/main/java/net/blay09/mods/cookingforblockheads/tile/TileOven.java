@@ -74,8 +74,8 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public void setOvenColor(EnumDyeColor color) {
         this.ovenColor = color;
-        IBlockState state = worldObj.getBlockState(pos);
-        worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), state, state, 1|2);
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 1|2);
         markDirty();
     }
 
@@ -99,16 +99,16 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             furnaceBurnTime--;
         }
 
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (furnaceBurnTime == 0 && shouldConsumeFuel()) {
                 // Check for fuel items in side slots
                 for (int i = 0; i < itemHandlerFuel.getSlots(); i++) {
                     ItemStack fuelItem = itemHandlerFuel.getStackInSlot(i);
-                    if (fuelItem != null) {
+                    if (!fuelItem.isEmpty()) {
                         currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * CookingConfig.ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
-                            fuelItem.stackSize--;
-                            if (fuelItem.stackSize == 0) {
+                            fuelItem.shrink(1);
+                            if (fuelItem.getCount() == 0) {
                                 itemHandlerFuel.setStackInSlot(i, fuelItem.getItem().getContainerItem(fuelItem));
                             }
                             hasChanged = true;
@@ -123,7 +123,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             for (int i = 0; i < itemHandlerProcessing.getSlots(); i++) {
                 ItemStack itemStack = itemHandlerProcessing.getStackInSlot(i);
 
-                if (itemStack != null) {
+                if (!itemStack.isEmpty()) {
                     if (slotCookTime[i] != -1) {
                         if(furnaceBurnTime > 0) {
                             slotCookTime[i]++;
@@ -151,7 +151,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 ItemStack transferStack = itemHandlerProcessing.getStackInSlot(firstTransferSlot);
                 transferStack = ItemHandlerHelper.insertItemStacked(itemHandlerOutput, transferStack, false);
                 itemHandlerProcessing.setStackInSlot(firstTransferSlot, transferStack);
-                if(transferStack == null) {
+                if(transferStack.isEmpty()) {
                     slotCookTime[firstTransferSlot] = 0;
                 }
                 hasChanged = true;
@@ -163,7 +163,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                     ItemStack itemStack = itemHandlerInput.getStackInSlot(j);
                     if (itemStack != null) {
                         itemHandlerProcessing.setStackInSlot(firstEmptySlot, itemStack.splitStack(1));
-                        if (itemStack.stackSize <= 0) {
+                        if (itemStack.getCount() <= 0) {
                             itemHandlerInput.setStackInSlot(j, null);
                         }
                         break;
@@ -180,14 +180,14 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     @Nullable
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
-        if(result != null) {
+        if(!result.isEmpty()) {
             return result;
         }
         result = FurnaceRecipes.instance().getSmeltingResult(itemStack);
-        if(result != null && result.getItem() instanceof ItemFood) {
+        if(!result.isEmpty() && result.getItem() instanceof ItemFood) {
             return result;
         }
-        if(result != null && CookingRegistry.isNonFoodRecipe(result)) {
+        if(!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
             return result;
         }
         return null;
@@ -208,7 +208,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private boolean shouldConsumeFuel() {
         for (int i = 0; i < itemHandlerProcessing.getSlots(); i++) {
             ItemStack cookingStack = itemHandlerProcessing.getStackInSlot(i);
-            if (cookingStack != null && slotCookTime[i] != -1) {
+            if (!cookingStack.isEmpty() && slotCookTime[i] != -1) {
                 return true;
             }
         }
@@ -293,7 +293,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
                 || capability == CapabilityKitchenSmeltingProvider.CAPABILITY
                 || capability == CapabilityKitchenItemProvider.CAPABILITY
@@ -322,7 +322,6 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         if(capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
             return (T) this;
         }
-//        noinspection ConstantConditions /// Forge needs to update to use Nullable in their patches
         return super.getCapability(capability, facing);
     }
 

@@ -22,7 +22,6 @@ public class TileCookingTable extends TileEntity {
         return noFilterBook != null;
     }
 
-    @Nullable
     public ItemStack getNoFilterBook() {
         return noFilterBook;
     }
@@ -47,7 +46,7 @@ public class TileCookingTable extends TileEntity {
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         if(tagCompound.hasKey("NoFilterBook")) {
-            setNoFilterBook(ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag("NoFilterBook")));
+            setNoFilterBook(new ItemStack(tagCompound.getCompoundTag("NoFilterBook")));
         }
     }
 
@@ -68,12 +67,12 @@ public class TileCookingTable extends TileEntity {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityKitchenConnector.CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if(capability == CapabilityKitchenConnector.CAPABILITY) {
             return capability.getDefaultInstance();
         }
