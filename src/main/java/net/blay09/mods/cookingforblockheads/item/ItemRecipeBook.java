@@ -17,6 +17,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -60,11 +61,11 @@ public class ItemRecipeBook extends Item {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void registerModels(ItemModelMesher mesher) {
+	public void registerModels() {
 		ModelBakery.registerItemVariants(this, new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBook"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBookTier1"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBookTier2"));
 
-		mesher.register(this, 0, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book", "inventory"));
-		mesher.register(this, 1, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier1", "inventory"));
-		mesher.register(this, 2, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier2", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier1", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, 2, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier2", "inventory"));
 	}
 }

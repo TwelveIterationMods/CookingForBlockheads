@@ -59,9 +59,9 @@ public class ClientProxy extends CommonProxy {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				if(state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.LARGE) {
-					return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridgeLarge", getPropertyString(state.getProperties()));
+					return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridge_large", getPropertyString(state.getProperties()));
 				} else if (state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.INVISIBLE) {
-					return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridgeInvisible", getPropertyString(state.getProperties()));
+					return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridge_invisible", getPropertyString(state.getProperties()));
 				}
 				return super.getModelResourceLocation(state);
 			}
@@ -92,16 +92,16 @@ public class ClientProxy extends CommonProxy {
 
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
-		ovenToolIcons[0] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotBakeware"));
-		ovenToolIcons[1] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotPot"));
-		ovenToolIcons[2] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotSaucepan"));
-		ovenToolIcons[3] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slotSkillet"));
+		ovenToolIcons[0] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_bakeware"));
+		ovenToolIcons[1] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_pot"));
+		ovenToolIcons[2] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_saucepan"));
+		ovenToolIcons[3] = event.getMap().registerSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_skillet"));
 	}
 
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		try {
-			IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milkJarLiquid"));
+			IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milk_jar_liquid"));
 			MilkJarRenderer.modelMilkLiquid = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
 		} catch (Exception e) {
 			e.printStackTrace();
