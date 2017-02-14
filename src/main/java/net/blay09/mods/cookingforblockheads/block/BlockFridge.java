@@ -212,22 +212,4 @@ public class BlockFridge extends BlockKitchen {
 		return true;
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModels() {
-		super.registerModels();
-
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
-			@Override
-			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
-				if(world != null && pos != null) {
-					TileEntity tileEntity = world.getTileEntity(pos);
-					if (tileEntity instanceof TileFridge) {
-						return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
-					}
-				}
-				return 0xFFFFFFFF;
-			}
-		}, this);
-	}
 }

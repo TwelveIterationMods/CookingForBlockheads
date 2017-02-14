@@ -28,11 +28,16 @@ import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModel;
@@ -43,6 +48,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nullable;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
@@ -84,6 +91,19 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
+
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
+			@Override
+			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
+				if(world != null && pos != null) {
+					TileEntity tileEntity = world.getTileEntity(pos);
+					if (tileEntity instanceof TileFridge) {
+						return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
+					}
+				}
+				return 0xFFFFFFFF;
+			}
+		}, ModBlocks.fridge);
 
         CookingRegistry.addSortButton(new SortButtonName());
         CookingRegistry.addSortButton(new SortButtonHunger());

@@ -119,7 +119,7 @@ public abstract class BlockKitchen extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryNameString(), "inventeory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryNameString(), "inventory"));
 	}
 
 	public String getRegistryNameString() {
