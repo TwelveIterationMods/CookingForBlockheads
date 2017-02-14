@@ -76,15 +76,15 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
+
+		ModBlocks.initModels();
+		ModItems.initModels();
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 
-		ModBlocks.initModels();
-		ModItems.initModels();
-		
         CookingRegistry.addSortButton(new SortButtonName());
         CookingRegistry.addSortButton(new SortButtonHunger());
         CookingRegistry.addSortButton(new SortButtonSaturation());

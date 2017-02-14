@@ -2,8 +2,6 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -66,18 +64,17 @@ public class ModBlocks {
 
 	@SideOnly(Side.CLIENT)
 	public static void initModels() {
-		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		cookingTable.registerModels(mesher);
-		sink.registerModels(mesher);
-		toolRack.registerModels(mesher);
-		oven.registerModels(mesher);
-		fridge.registerModels(mesher);
-		toolRack.registerModels(mesher);
-		milkJar.registerModels(mesher);
-		cowJar.registerModels(mesher);
-		toaster.registerModels(mesher);
-		spiceRack.registerModels(mesher);
-		counter.registerModels(mesher);
+		cookingTable.registerModels();
+		sink.registerModels();
+		toolRack.registerModels();
+		oven.registerModels();
+		fridge.registerModels();
+		toolRack.registerModels();
+		milkJar.registerModels();
+		cowJar.registerModels();
+		toaster.registerModels();
+		spiceRack.registerModels();
+		counter.registerModels();
 	}
 
 	public static void registerBlock(Block block) {

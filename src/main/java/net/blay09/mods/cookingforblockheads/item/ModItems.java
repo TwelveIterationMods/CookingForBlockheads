@@ -11,11 +11,10 @@ public class ModItems {
 	public static void load() {
 		recipeBook = new ItemRecipeBook();
 		GameRegistry.register(recipeBook);
-		recipeBook.registerModels();
 	}
 
 	@SideOnly(Side.CLIENT)
-	@Deprecated
 	public static void initModels() {
+		recipeBook.registerModels();
 	}
 }
