@@ -214,8 +214,8 @@ public class BlockFridge extends BlockKitchen {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerModels(ItemModelMesher mesher) {
-		super.registerModels(mesher);
+	public void registerModels() {
+		super.registerModels();
 
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
 			@Override
