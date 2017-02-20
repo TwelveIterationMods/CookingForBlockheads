@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FakeSlotCraftMatrix extends FakeSlot {
 
-	private static final float ITEM_SWITCH_TIME = 40f;
+	private static final float ITEM_SWITCH_TIME = 80f;
 
 	private final List<ItemStack> visibleStacks = Lists.newArrayList();
 
