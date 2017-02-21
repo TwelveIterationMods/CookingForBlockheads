@@ -59,7 +59,7 @@ public class CowJarRecipeCategory extends BlankRecipeCategory<CowJarRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, CowJarRecipe recipeWrapper, IIngredients ingredients) {
 		recipeLayout.getItemStacks().init(0, true, 64, 0);
-		recipeLayout.getItemStacks().init(1, false, 64, 76);
+		recipeLayout.getItemStacks().init(1, true, 64, 76);
 		recipeLayout.getItemStacks().set(ingredients);
 	}
 
