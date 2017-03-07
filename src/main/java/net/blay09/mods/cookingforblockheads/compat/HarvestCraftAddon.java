@@ -5,10 +5,8 @@ import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HarvestCraftAddon extends SimpleAddon {
@@ -34,7 +32,27 @@ public class HarvestCraftAddon extends SimpleAddon {
             "groundnutmegItem",
             "saladdressingItem",
             "batterItem",
-            "oliveoilItem"
+            "oliveoilItem",
+            "hotsauceitem",
+            "sweetandsoursauceitem",
+            "fivespiceitem",
+            "hoisinsauceitem",
+            "noodlesitem",
+            "sesameoilitem",
+            "garammasalaitem",
+            "soysauceitem",
+            "currypowderitem",
+            "bubblywateritem",
+            "carrotcakeItem",
+            "holidaycakeItem",
+            "pumpkincheesecakeItem",
+            "pavlovaItem",
+            "lamingtonItem",
+            "cheesecakeItem",
+            "cherrycheesecakeItem",
+            "pineappleupsidedowncakeItem",
+            "chocolatesprinklecakeItem",
+            "redvelvetcakeItem"
     };
 
     private static final String[] OVEN_RECIPES = new String[] {
