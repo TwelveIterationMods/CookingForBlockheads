@@ -160,7 +160,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 			searchBar.setText("");
 			container.search(null);
 			container.populateRecipeSlots();
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 		} else {
 			searchBar.mouseClicked(mouseX, mouseY, button);
 		}
@@ -175,7 +175,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 		if(searchBar.textboxKeyTyped(c, keyCode)) {
 			container.search(searchBar.getText());
 			container.populateRecipeSlots();
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 		} else {
 			super.keyTyped(c, keyCode);
 		}
@@ -184,7 +184,7 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		if(container.isDirty()) {
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 			container.setDirty(false);
 		}
 
