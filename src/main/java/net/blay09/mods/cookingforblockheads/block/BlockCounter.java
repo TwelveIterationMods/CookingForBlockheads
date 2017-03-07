@@ -28,11 +28,11 @@ public class BlockCounter extends BlockKitchen {
 	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
 
 	public BlockCounter() {
-		super(Material.IRON);
+		super(Material.WOOD);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "counter");
 		setUnlocalizedName(getRegistryNameString());
-		setSoundType(SoundType.METAL);
+		setSoundType(SoundType.WOOD);
 		setHardness(5f);
 		setResistance(10f);
 	}

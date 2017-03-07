@@ -18,6 +18,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -59,7 +60,10 @@ public class BlockSink extends BlockKitchen {
             TileEntity tileEntity = world.getTileEntity(pos);
             if(tileEntity != null) {
                 IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-                FluidUtil.interactWithFluidHandler(heldItem, fluidHandler, player);
+                FluidActionResult fillResult = FluidUtil.interactWithFluidHandler(heldItem, fluidHandler, player);
+                if(fillResult.isSuccess()) {
+                    player.setHeldItem(hand, fillResult.getResult());
+                }
                 return !heldItem.isEmpty() && !(heldItem.getItem() instanceof ItemBlock);
             }
         }
