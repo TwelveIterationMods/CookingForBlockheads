@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.api;
 
+import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +15,7 @@ public class CookingForBlockheadsAPI {
 
     public static void setupAPI(IInternalMethods internalMethods) {
         CookingForBlockheadsAPI.internalMethods = internalMethods;
+        CapabilityKitchenConnector.register();
         CapabilityKitchenItemProvider.register();
         CapabilityKitchenSmeltingProvider.register();
     }
