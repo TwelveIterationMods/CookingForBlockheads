@@ -103,11 +103,13 @@ public class CookingRegistry {
                 sourceStack = (ItemStack) entry.getKey();
             }
             ItemStack resultStack = (ItemStack) entry.getValue();
-            if(resultStack.getItem() instanceof ItemFood) {
-                foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
-            } else {
-                if(isNonFoodRecipe(resultStack)) {
+            if(resultStack != null) {
+                if (resultStack.getItem() instanceof ItemFood) {
                     foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
+                } else {
+                    if (isNonFoodRecipe(resultStack)) {
+                        foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
+                    }
                 }
             }
         }
