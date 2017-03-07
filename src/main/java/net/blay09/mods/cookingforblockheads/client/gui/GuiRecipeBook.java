@@ -6,7 +6,6 @@ import java.util.List;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
@@ -24,16 +23,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.lwjgl.input.Mouse;
 
 import com.google.common.collect.Lists;
-import yalter.mousetweaks.api.IMTModGuiContainer;
+import yalter.mousetweaks.api.MouseTweaksIgnore;
 
-@Optional.Interface(modid = Compat.MOUSE_TWEAKS, iface = "yalter.mousetweaks.api.IMTModGuiContainer")
-public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
+@MouseTweaksIgnore
+public class GuiRecipeBook extends GuiContainer {
 
 	private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
 	private static final int SCROLLBAR_Y = 8;
@@ -335,56 +333,4 @@ public class GuiRecipeBook extends GuiContainer implements IMTModGuiContainer {
 		return sortButtons.toArray(new GuiButton[0]);
 	}
 
-	@Override
-	public int getAPIVersion() {
-		return 1;
-	}
-
-	@Override
-	public String getModName() {
-		return "Cooking for Blockheads";
-	}
-
-	@Override
-	public boolean isMouseTweaksDisabled() {
-		return true;
-	}
-
-	@Override
-	public boolean isWheelTweakDisabled() {
-		return true;
-	}
-
-	@Override
-	public boolean isCraftingOutputSlot(Object o, Object o1) {
-		return false;
-	}
-
-	@Override
-	public Object getModContainer() {
-		return container;
-	}
-
-	@Override
-	public int getModSlotCount(Object o) {
-		return container.inventorySlots.size();
-	}
-
-	@Override
-	public Object getModSlot(Object o, int i) {
-		return container.inventorySlots.get(i);
-	}
-
-	@Override
-	public Object getModSelectedSlot(Object o, int i) {
-		return getSlotUnderMouse();
-	}
-
-	@Override
-	public void clickModSlot(Object o, Object o1, int i, boolean b) {
-	}
-
-	@Override
-	public void disableRMBDragIfRequired(Object o, Object o1, boolean b) {
-	}
 }

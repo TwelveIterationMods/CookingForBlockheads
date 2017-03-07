@@ -37,9 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 
-@Mod(modid = CookingForBlockheads.MOD_ID,
-		acceptedMinecraftVersions = "[1.9.4]",
-		updateJSON = "http://balyware.com/new/forge_update.php?modid=" + CookingForBlockheads.MOD_ID)
+@Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.9.4]", dependencies = "after:mousetweaks[2.8,)")
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";

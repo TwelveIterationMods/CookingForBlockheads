@@ -5,7 +5,7 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     deobfCompile "hosted-api:Quark-beta:50"
     deobfCompile "hosted-api:CraftTweaker:1.10.2"
-    provided "hosted-api:MouseTweaks:2.6.4"
+    provided "hosted-api:MouseTweaks_1.10.2:2.8"
     provided "hosted-api:ImmersiveEngineering:0.10.48"
     provided "mcjty.theoneprobe:TheOneProbe:1.10-1.2.0-40"
 }
