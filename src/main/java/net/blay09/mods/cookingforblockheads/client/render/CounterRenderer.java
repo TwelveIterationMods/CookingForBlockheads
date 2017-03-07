@@ -22,7 +22,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
     @Override
     public void renderTileEntityAt(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        if(state.getBlock() != ModBlocks.counter) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
+        if(true || state.getBlock() != ModBlocks.counter) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
         GlStateManager.pushMatrix();

@@ -19,6 +19,7 @@ public class ModBlocks {
 	public static BlockCowJar cowJar;
 	public static BlockSpiceRack spiceRack;
 	public static BlockCounter counter;
+	public static BlockCorner corner;
 
 	public static void load() {
 		cookingTable = new BlockCookingTable();
@@ -60,6 +61,10 @@ public class ModBlocks {
 		counter = new BlockCounter();
 		registerBlock(counter);
 		GameRegistry.registerTileEntity(TileCounter.class, counter.getRegistryNameString());
+
+		corner = new BlockCorner();
+		registerBlock(corner);
+		GameRegistry.registerTileEntity(TileCorner.class, corner.getRegistryNameString());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -75,6 +80,7 @@ public class ModBlocks {
 		toaster.registerModels();
 		spiceRack.registerModels();
 		counter.registerModels();
+		corner.registerModels();
 	}
 
 	public static void registerBlock(Block block) {

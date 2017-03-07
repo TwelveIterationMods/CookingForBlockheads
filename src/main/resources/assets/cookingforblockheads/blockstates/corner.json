@@ -8,22 +8,12 @@
       "foot": "minecraft:blocks/hardened_clay_stained_black",
       "backsplash": "minecraft:blocks/hardened_clay_stained_black"
     },
-    "model": "cookingforblockheads:counter_static",
+    "model": "cookingforblockheads:corner",
     "transform": "forge:default-block"
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{
-      "model": "cookingforblockheads:counter_static",
-      "submodel": {
-        "door": {
-          "model": "cookingforblockheads:counter_door"
-        },
-        "hinge": {
-          "model": "cookingforblockheads:counter_hinge_left"
-        }
-      }
-    }],
+    "inventory": [{}],
     "facing": {
       "west": {
         "y": -90
@@ -35,12 +25,6 @@
       },
       "south": {
         "y": 180
-      }
-    },
-    "flipped": {
-      "true": {
-      },
-      "false": {
       }
     }
   }

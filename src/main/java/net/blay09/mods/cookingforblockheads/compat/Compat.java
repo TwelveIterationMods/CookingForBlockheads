@@ -10,4 +10,5 @@ public class Compat {
 	public static final String THEONEPROBE = "theoneprobe";
 	public static final String WAILA = "waila";
 	public static final String APPLECORE = "applecore";
+	public static final String MOUSE_TWEAKS = "mousetweaks";
 }

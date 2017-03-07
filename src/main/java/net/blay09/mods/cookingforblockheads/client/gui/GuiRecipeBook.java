@@ -28,7 +28,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
 
 import com.google.common.collect.Lists;
+import yalter.mousetweaks.api.MouseTweaksIgnore;
 
+@MouseTweaksIgnore
 public class GuiRecipeBook extends GuiContainer {
 
 	private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
@@ -66,6 +68,8 @@ public class GuiRecipeBook extends GuiContainer {
 
 		noIngredients = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_ingredients").split("\\\\n");
 		noSelection = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_selection").split("\\\\n");
+
+
 	}
 
 	@Override
@@ -156,7 +160,7 @@ public class GuiRecipeBook extends GuiContainer {
 			searchBar.setText("");
 			container.search(null);
 			container.populateRecipeSlots();
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 		} else {
 			searchBar.mouseClicked(mouseX, mouseY, button);
 		}
@@ -171,7 +175,7 @@ public class GuiRecipeBook extends GuiContainer {
 		if(searchBar.textboxKeyTyped(c, keyCode)) {
 			container.search(searchBar.getText());
 			container.populateRecipeSlots();
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 		} else {
 			super.keyTyped(c, keyCode);
 		}
@@ -180,7 +184,7 @@ public class GuiRecipeBook extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		if(container.isDirty()) {
-			recalculateScrollBar();
+			setCurrentOffset(currentOffset);
 			container.setDirty(false);
 		}
 
@@ -329,4 +333,5 @@ public class GuiRecipeBook extends GuiContainer {
 	public GuiButton[] getSortingButtons() {
 		return sortButtons.toArray(new GuiButton[0]);
 	}
+
 }
