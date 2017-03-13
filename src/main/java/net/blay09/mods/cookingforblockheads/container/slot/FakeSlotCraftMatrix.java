@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 public class FakeSlotCraftMatrix extends FakeSlot {
 
-	private static final float ITEM_SWITCH_TIME = 40f;
+	private static final float ITEM_SWITCH_TIME = 80f;
 
 	private final NonNullList<ItemStack> visibleStacks = NonNullList.create();
 

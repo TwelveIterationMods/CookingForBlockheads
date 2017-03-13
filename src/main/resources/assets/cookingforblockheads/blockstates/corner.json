@@ -6,7 +6,8 @@
       "texture": "minecraft:blocks/log_oak",
       "particle": "minecraft:blocks/log_oak",
       "foot": "minecraft:blocks/hardened_clay_stained_black",
-      "backsplash": "minecraft:blocks/hardened_clay_stained_black"
+      "backsplash": "minecraft:blocks/hardened_clay_stained_black",
+      "handle": "cookingforblockheads:blocks/handle"
     },
     "model": "cookingforblockheads:corner",
     "transform": "forge:default-block"

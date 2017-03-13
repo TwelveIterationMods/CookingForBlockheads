@@ -63,6 +63,8 @@ public class BlockSink extends BlockKitchen {
                 FluidActionResult fillResult = FluidUtil.interactWithFluidHandler(heldItem, fluidHandler, player);
                 if(fillResult.isSuccess()) {
                     player.setHeldItem(hand, fillResult.getResult());
+                } else {
+                    spawnParticles(world, pos, state);
                 }
                 return !heldItem.isEmpty() && !(heldItem.getItem() instanceof ItemBlock);
             }

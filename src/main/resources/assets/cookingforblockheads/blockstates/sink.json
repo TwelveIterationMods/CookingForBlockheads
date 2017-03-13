@@ -2,8 +2,14 @@
   "forge_marker": 1,
   "defaults": {
     "model": "cookingforblockheads:sink",
-    "custom": {
-      "flip-v": true
+    "textures": {
+      "countertop": "minecraft:blocks/stone_andesite_smooth",
+      "texture": "minecraft:blocks/log_oak",
+      "particle": "minecraft:blocks/log_oak",
+      "foot": "minecraft:blocks/hardened_clay_stained_black",
+      "backsplash": "minecraft:blocks/hardened_clay_stained_black",
+      "metal": "cookingforblockheads:blocks/sink_metal",
+      "handle": "cookingforblockheads:blocks/handle"
     },
     "transform": "forge:default-block"
   },

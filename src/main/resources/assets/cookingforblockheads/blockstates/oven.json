@@ -1,24 +1,20 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "cookingforblockheads:oven_static",
-    "custom": {
-      "flip-v": true
+  "defaults": { "model": "cookingforblockheads:oven_static",
+    "textures": {
+      "particle": "cookingforblockheads:blocks/oven_side",
+      "texture": "cookingforblockheads:blocks/oven_side",
+      "oventop": "cookingforblockheads:blocks/oven_top",
+      "ovenbottom": "cookingforblockheads:blocks/oven_bottom",
+      "ovengrid": "cookingforblockheads:blocks/oven_grid",
+      "backsplash": "cookingforblockheads:blocks/oven_side"
     },
     "transform": "forge:default-block"
   },
   "variants": {
     "normal": [{}],
-    "door": [{
-      "model": "cookingforblockheads:oven_door"
-    }],
     "inventory": [{
-      "model": "cookingforblockheads:oven_static",
-      "submodel": {
-        "door": {
-          "model": "cookingforblockheads:oven_door"
-        }
-      }
+      "model": "cookingforblockheads:oven_inventory"
     }],
     "facing": {
       "west": {

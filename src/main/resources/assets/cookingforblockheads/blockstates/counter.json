@@ -14,15 +14,7 @@
   "variants": {
     "normal": [{}],
     "inventory": [{
-      "model": "cookingforblockheads:counter_static",
-      "submodel": {
-        "door": {
-          "model": "cookingforblockheads:counter_door"
-        },
-        "hinge": {
-          "model": "cookingforblockheads:counter_hinge_left"
-        }
-      }
+      "model": "cookingforblockheads:counter_inventory"
     }],
     "facing": {
       "west": {

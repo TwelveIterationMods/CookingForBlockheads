@@ -2,8 +2,14 @@
   "forge_marker": 1,
   "defaults": {
     "model": "cookingforblockheads:cooking_table",
-    "custom": {
-      "flip-v": true
+    "textures": {
+      "countertop": "minecraft:blocks/stone_andesite_smooth",
+      "texture": "minecraft:blocks/log_oak",
+      "particle": "minecraft:blocks/log_oak",
+      "foot": "minecraft:blocks/hardened_clay_stained_black",
+      "backsplash": "minecraft:blocks/hardened_clay_stained_black",
+      "handle": "cookingforblockheads:blocks/handle",
+      "cookingtable_top": "cookingforblockheads:blocks/cooking_table_top"
     },
     "transform": "forge:default-block"
   },
