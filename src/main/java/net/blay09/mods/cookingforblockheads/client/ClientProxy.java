@@ -121,8 +121,11 @@ public class ClientProxy extends CommonProxy {
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		try {
-			IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milk_jar_liquid"));
-			MilkJarRenderer.modelMilkLiquid = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
+			IModel milkJarLiquid = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milk_jar_liquid"));
+			MilkJarRenderer.modelMilkLiquid = milkJarLiquid.bake(milkJarLiquid.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
+
+			IModel ovenDoor = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door"));
+			OvenRenderer.modelDoor = ovenDoor.bake(ovenDoor.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

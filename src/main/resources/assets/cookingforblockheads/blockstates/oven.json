@@ -4,6 +4,7 @@
     "textures": {
       "particle": "cookingforblockheads:blocks/oven_side",
       "texture": "cookingforblockheads:blocks/oven_side",
+      "ovenfront": "cookingforblockheads:blocks/oven_front",
       "oventop": "cookingforblockheads:blocks/oven_top",
       "ovenbottom": "cookingforblockheads:blocks/oven_bottom",
       "ovengrid": "cookingforblockheads:blocks/oven_grid",
@@ -15,6 +16,9 @@
     "normal": [{}],
     "inventory": [{
       "model": "cookingforblockheads:oven_inventory"
+    }],
+    "door": [{
+      "model": "cookingforblockheads:oven_door"
     }],
     "facing": {
       "west": {
