@@ -2,9 +2,6 @@
   "forge_marker": 1,
   "defaults": {
     "model": "cookingforblockheads:toaster",
-    "custom": {
-      "flip-v": true
-    },
     "transform": "forge:default-block"
   },
   "variants": {

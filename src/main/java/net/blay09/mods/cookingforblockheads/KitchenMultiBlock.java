@@ -11,7 +11,9 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -51,6 +53,11 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 						smeltingProviderList.add(smeltingProvider);
 					}
 					if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
+						findNeighbourKitchenBlocks(world, position);
+					}
+				} else {
+					IBlockState state = world.getBlockState(position);
+					if(state.getBlock() == ModBlocks.kitchenFloor) {
 						findNeighbourKitchenBlocks(world, position);
 					}
 				}

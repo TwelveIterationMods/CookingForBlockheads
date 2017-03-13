@@ -91,6 +91,11 @@ public class ModRecipes {
 				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.toolRack), "SSS", "I I", 'S', "slabWood", 'I', Blocks.STONE_BUTTON));
 			}
 		}
+
+		// Kitchen Floor
+		if(config.getBoolean("Kitchen Floor", "blocks", true, "")) {
+			GameRegistry.addRecipe(new ItemStack(ModBlocks.kitchenFloor, 4), "BW", "WB", 'B', Blocks.COAL_BLOCK, 'W', Blocks.QUARTZ_BLOCK);
+		}
 	}
 
 }

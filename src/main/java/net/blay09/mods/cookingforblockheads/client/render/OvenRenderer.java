@@ -28,6 +28,18 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
 		float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
+		// Render the oven door
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5f, y, z + 0.5f);
+		GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
+		GlStateManager.translate(-0.5f, 0f, -0.5f);
+		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
+		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		RenderHelper.disableStandardItemLighting();
+		GlStateManager.color(1f, 1f, 1f, 1f);
+		itemRenderer.renderModel(modelDoor, 0xFFAAAAAA);
+		GlStateManager.popMatrix();
+
 		// Render the oven tools
 		GlStateManager.pushMatrix();
 		GlStateManager.color(1f, 1f, 1f, 1f);
@@ -50,20 +62,6 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		if (!itemStack.isEmpty()) {
 			RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
 		}
-		GlStateManager.popMatrix();
-
-		// Render the oven door
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5f, y, z + 0.5f);
-		GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-		GlStateManager.translate(-0.5f, 0f, -0.5f);
-		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
-		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		RenderHelper.disableStandardItemLighting();
-		GlStateManager.translate(-pos.getX(), -pos.getY(), -pos.getZ());
-		dispatcher.getBlockModelRenderer().renderModel(tileEntity.getWorld(), modelDoor, ModBlocks.oven.getDefaultState(), pos, renderer, false);
-		tessellator.draw();
 		GlStateManager.popMatrix();
 
 		// Render the oven content when the door is open

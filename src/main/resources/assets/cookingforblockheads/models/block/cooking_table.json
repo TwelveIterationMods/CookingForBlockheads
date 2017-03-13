@@ -52,14 +52,14 @@
 		},
 		{
 			"__comment": "CraftingPlate",
-			"from": [ 3.5, 15, 3.5 ],
-			"to": [ 12.5, 16, 12.5 ],
+			"from": [ 3.5, 15, 3 ],
+			"to": [ 12.5, 16, 12 ],
 			"faces": {
-				"up": { "uv": [ 3.5, 3.5, 12.5, 12.5 ], "texture": "#cookingtable_top", "cullface": "up" },
+				"up": { "uv": [ 3, 3, 13, 13 ], "texture": "#cookingtable_top", "cullface": "up" },
 				"north": { "uv": [ 3.5, 0, 12.5, 1 ], "texture": "#cookingtable_top" },
 				"south": { "uv": [ 3.5, 0, 12.5, 1 ], "texture": "#cookingtable_top" },
-				"west": { "uv": [ 3.5, 0, 12.5, 1 ], "texture": "#cookingtable_top" },
-				"east": { "uv": [ 3.5, 0, 12.5, 1 ], "texture": "#cookingtable_top" }
+				"west": { "uv": [ 3, 0, 12, 1 ], "texture": "#cookingtable_top" },
+				"east": { "uv": [ 4, 0, 13, 1 ], "texture": "#cookingtable_top" }
 			}
 		},
 		{

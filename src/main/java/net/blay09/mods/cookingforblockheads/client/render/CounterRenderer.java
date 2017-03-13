@@ -45,15 +45,12 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
         GlStateManager.translate(n, 0f, m);
         GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
         GlStateManager.translate(-n, 0f, -m);
-        renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         RenderHelper.disableStandardItemLighting();
-        GlStateManager.translate(-pos.getX(), -pos.getY(), -pos.getZ());
-        dispatcher.getBlockModelRenderer().renderModel(tileEntity.getWorld(), modelDoor, ModBlocks.oven.getDefaultState(), pos, renderer, false);
-        tessellator.draw();
+        itemRenderer.renderModel(modelDoor, 0xFFAAAAAA);
         GlStateManager.popMatrix();
 
-        // Render the content if hte door is open
+        // Render the content if the door is open
         if(doorAngle > 0f) {
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
