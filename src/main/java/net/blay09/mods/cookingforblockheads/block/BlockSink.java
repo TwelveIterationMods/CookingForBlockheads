@@ -51,7 +51,7 @@ public class BlockSink extends BlockKitchen {
                 newItem.setTagCompound(tagCompound);
             }
             if(heldItem.stackSize <= 1) {
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, newItem);
+                player.setHeldItem(hand, newItem);
             } else {
                 if(player.inventory.addItemStackToInventory(newItem)) {
                     heldItem.stackSize--;

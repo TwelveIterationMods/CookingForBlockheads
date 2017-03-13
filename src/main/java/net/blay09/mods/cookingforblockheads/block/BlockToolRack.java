@@ -79,7 +79,10 @@ public class BlockToolRack extends BlockKitchen {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if(heldItem != null && heldItem.getItem() instanceof ItemBlock) {
+		if(hand != EnumHand.MAIN_HAND) {
+			return true;
+		}
+    	if(heldItem != null && heldItem.getItem() instanceof ItemBlock) {
             return true;
         }
         if(hitY > 0.25f) {
@@ -110,7 +113,7 @@ public class BlockToolRack extends BlockKitchen {
                     ItemStack itemStack = tileToolRack.getItemHandler().getStackInSlot(hitSlot);
                     if (itemStack != null) {
                         tileToolRack.getItemHandler().setStackInSlot(hitSlot, null);
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
+                        player.setHeldItem(hand, itemStack);
                     }
                 }
                 return true;
