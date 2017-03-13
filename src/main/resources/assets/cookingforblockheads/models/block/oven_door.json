@@ -1,0 +1,61 @@
+{
+	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"texture": "cookingforblockheads:blocks/oven_side",
+		"ovenfront": "cookingforblockheads:blocks/oven_front"
+	},
+	"elements": [
+		{
+			"__comment": "Door",
+			"from": [ 1.0001, 0, 0.5 ],
+			"to": [ 15.0001, 11, 1.5 ],
+			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"faces": {
+				"down": { "uv": [ 1, 14.5, 15, 15.5 ], "texture": "#texture", "cullface": "down" },
+				"up": { "uv": [ 1, 0.5, 15, 1.5 ], "texture": "#texture" },
+				"north": { "uv": [ 1, 5, 15, 16 ], "texture": "#ovenfront" },
+				"south": { "uv": [ 1, 5, 15, 16 ], "texture": "#ovenfront" },
+				"west": { "uv": [ 0.5, 5, 1.5, 16 ], "texture": "#texture" },
+				"east": { "uv": [ 14.5, 5, 15.5, 16 ], "texture": "#texture" }
+			}
+		},
+		{
+			"__comment": "HandleLeft",
+			"from": [ 12, 10, -0.5 ],
+			"to": [ 13, 11, 0.5 ],
+			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"faces": {
+				"down": { "uv": [ 12, 5.5, 13, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"up": { "uv": [ 12, 5, 13, 5.5 ], "texture": "#ovenfront", "cullface": "north" },
+				"west": { "uv": [ 1, 5, 1.5, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"east": { "uv": [ 14.5, 5, 15, 6 ], "texture": "#ovenfront", "cullface": "north" }
+			}
+		},
+		{
+			"__comment": "HandleRight",
+			"from": [ 3, 10, -0.5 ],
+			"to": [ 4, 11, 0.5 ],
+			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"faces": {
+				"down": { "uv": [ 3, 5.5, 4, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"up": { "uv": [ 3, 5, 4, 5.5 ], "texture": "#ovenfront", "cullface": "north" },
+				"west": { "uv": [ 1, 5, 1.5, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"east": { "uv": [ 14.5, 5, 15, 6 ], "texture": "#ovenfront", "cullface": "north" }
+			}
+		},
+		{
+			"__comment": "Handle",
+			"from": [ 1, 10, -1.5 ],
+			"to": [ 15, 11, -0.5 ],
+			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"faces": {
+				"down": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"up": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"north": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"south": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"west": { "uv": [ 14, 5, 15, 6 ], "texture": "#ovenfront", "cullface": "north" },
+				"east": { "uv": [ 1, 5, 2, 6 ], "texture": "#ovenfront", "cullface": "north" }
+			}
+		}
+	]
+}

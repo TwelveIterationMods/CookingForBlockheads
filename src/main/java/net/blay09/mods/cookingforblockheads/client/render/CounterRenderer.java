@@ -1,52 +1,64 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.client.model.ModelCounterDoor;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.opengl.GL11;
 
 public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
 
-    private final ModelCounterDoor modelCounterDoor = new ModelCounterDoor();
-    private final ResourceLocation textureCounterDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/counter_door.png");
+    public static IBakedModel modelDoor;
 
     @Override
     public void renderTileEntityAt(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-        IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        if(true || state.getBlock() != ModBlocks.counter) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-            return;
-        }
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
-        GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-        GlStateManager.rotate(180f, 0f, 0f, 1f);
-        boolean isFlipped = state.getValue(BlockFridge.FLIPPED);
+        BlockPos pos = tileEntity.getPos();
+        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer renderer = tessellator.getBuffer();
+
+        float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
-        bindTexture(textureCounterDoor);
-        modelCounterDoor.DoorMain.rotateAngleY = doorAngle;
-        modelCounterDoor.DoorHandle.rotateAngleY = doorAngle;
-        modelCounterDoor.DoorMainFlipped.rotateAngleY = -doorAngle;
-        modelCounterDoor.DoorHandleFlipped.rotateAngleY = -doorAngle;
-        modelCounterDoor.render(isFlipped);
-        GlStateManager.color(1f, 1f, 1f, 1f);
-        modelCounterDoor.renderNoTint(isFlipped);
+        boolean isFlipped = tileEntity.isFlipped();
+
+        // Render the door
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5f, y, z + 0.5f);
+        GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
+        GlStateManager.translate(-0.5f, 0f, -0.5f);
+        float n = 0.84375f;
+        float m = 0.09375f;
+        GlStateManager.translate(n, 0f, m);
+        GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
+        GlStateManager.translate(-n, 0f, -m);
+        renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.translate(-pos.getX(), -pos.getY(), -pos.getZ());
+        dispatcher.getBlockModelRenderer().renderModel(tileEntity.getWorld(), modelDoor, ModBlocks.oven.getDefaultState(), pos, renderer, false);
+        tessellator.draw();
         GlStateManager.popMatrix();
 
+        // Render the content if hte door is open
         if(doorAngle > 0f) {
-            RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-            GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+            GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
             float topY = 0.25f;
             IItemHandler itemHandler = tileEntity.getItemHandler();

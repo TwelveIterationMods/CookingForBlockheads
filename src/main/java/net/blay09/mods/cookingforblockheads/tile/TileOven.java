@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler;
 import net.blay09.mods.cookingforblockheads.CookingConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -65,12 +66,15 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private final KitchenItemProvider itemProvider = new KitchenItemProvider(new CombinedInvWrapper(itemHandlerTools, itemHandlerOutput));
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
+    private boolean isFirstTick = true;
+
     public int[] slotCookTime = new int[9];
     public int furnaceBurnTime;
     public int currentItemBurnTime;
     private boolean isDirty;
 
     private EnumDyeColor ovenColor = EnumDyeColor.WHITE;
+    private EnumFacing facing;
 
     public void setOvenColor(EnumDyeColor color) {
         this.ovenColor = color;
@@ -86,6 +90,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     @Override
     public void update() {
+        if(isFirstTick) {
+            facing = world.getBlockState(pos).getValue(BlockOven.FACING);
+            isFirstTick = false;
+        }
+
         doorAnimator.update();
 
         if(isDirty) {
@@ -332,8 +341,12 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return oldState.getBlock() != newSate.getBlock();
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        if(oldState.getBlock() == newState.getBlock()) {
+            facing = newState.getValue(BlockOven.FACING);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -366,5 +379,9 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             }
         }
         return energyConsumed;
+    }
+
+    public EnumFacing getFacing() {
+        return facing;
     }
 }

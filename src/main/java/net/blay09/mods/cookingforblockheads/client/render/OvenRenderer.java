@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -10,13 +9,10 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
-
-	protected static BlockRendererDispatcher blockRenderer;
 
 	public static IBakedModel modelDoor;
 	public static IBakedModel modelDoorActive;
@@ -24,18 +20,19 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 	@Override
 	public void renderTileEntityAt(TileOven tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
 		BlockPos pos = tileEntity.getPos();
-		IBlockState state = tileEntity.getWorld().getBlockState(pos);
-		if (state.getBlock() != ModBlocks.oven) {
-			return; // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-		}
-		if (blockRenderer == null) {
-			blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
-		}
+		BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer renderer = tessellator.getBuffer();
+
+		float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
+		float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
+
+		// Render the oven tools
 		GlStateManager.pushMatrix();
 		GlStateManager.color(1f, 1f, 1f, 1f);
 		GlStateManager.translate(x + 0.5, y + 1.05, z + 0.5);
-		GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
+		GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
 		GlStateManager.scale(0.4f, 0.4f, 0.4f);
 		ItemStack itemStack = tileEntity.getToolItem(0);
 		if (!itemStack.isEmpty()) {
@@ -55,39 +52,25 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		}
 		GlStateManager.popMatrix();
 
-
+		// Render the oven door
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5f, y, z + 0.5f);
-		GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+		GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
 		GlStateManager.translate(-0.5f, 0f, -0.5f);
-		float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
-
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer renderer = tessellator.getBuffer();
 		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		RenderHelper.disableStandardItemLighting();
-
 		GlStateManager.translate(-pos.getX(), -pos.getY(), -pos.getZ());
-		BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-		try {
-			EnumBlockRenderType renderType = state.getRenderType();
-			if (renderType == EnumBlockRenderType.MODEL) {
-				dispatcher.getBlockModelRenderer().renderModel(tileEntity.getWorld(), modelDoor, state, pos, renderer, false);
-			}
-		} catch (Throwable ignored) {
-		}
-
+		dispatcher.getBlockModelRenderer().renderModel(tileEntity.getWorld(), modelDoor, ModBlocks.oven.getDefaultState(), pos, renderer, false);
 		tessellator.draw();
-
 		GlStateManager.popMatrix();
 
-
+		// Render the oven content when the door is open
 		if (doorAngle > 0f) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5, y + 0.4, z + 0.5);
-			GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+			GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
 			GlStateManager.scale(0.3f, 0.3f, 0.3f);
 			float offsetX = 0.825f;
 			float offsetZ = 0.8f;

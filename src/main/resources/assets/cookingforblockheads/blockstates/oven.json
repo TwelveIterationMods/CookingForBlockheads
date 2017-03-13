@@ -17,9 +17,6 @@
     "inventory": [{
       "model": "cookingforblockheads:oven_inventory"
     }],
-    "door": [{
-      "model": "cookingforblockheads:oven_door"
-    }],
     "facing": {
       "west": {
         "y": -90

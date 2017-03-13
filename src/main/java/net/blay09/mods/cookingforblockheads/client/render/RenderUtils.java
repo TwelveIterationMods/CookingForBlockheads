@@ -8,16 +8,13 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 public class RenderUtils {
 
-	public static float getFacingAngle(TileEntity tileEntity) {
-		return getFacingAngle(tileEntity.getWorld().getBlockState(tileEntity.getPos()));
-	}
-
-	public static float getFacingAngle(IBlockState state) {
+	public static float getFacingAngle(EnumFacing facing) {
 		float angle;
-		switch (state.getValue(BlockKitchen.FACING)) {
+		switch (facing) {
 			case NORTH:
 				angle = 0;
 				break;
@@ -33,6 +30,16 @@ public class RenderUtils {
 				break;
 		}
 		return angle;
+	}
+
+	@Deprecated
+	public static float getFacingAngle(TileEntity tileEntity) {
+		return getFacingAngle(tileEntity.getWorld().getBlockState(tileEntity.getPos()));
+	}
+
+	@Deprecated
+	public static float getFacingAngle(IBlockState state) {
+		return getFacingAngle(state.getValue(BlockKitchen.FACING));
 	}
 
 	public static void renderItem(RenderItem itemRenderer, ItemStack itemStack, float x, float y, float z, float angle, float xr, float yr, float zr) {

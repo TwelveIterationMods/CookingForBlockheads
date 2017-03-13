@@ -2,6 +2,9 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.BlockCorner;
+import net.blay09.mods.cookingforblockheads.block.BlockCounter;
+import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +37,11 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
+    private boolean isFirstTick = true;
+
     private boolean isDirty;
+    private EnumFacing facing;
+    private boolean flipped;
 
     public TileCounter() {
         doorAnimator.setOpenRadius(2);
@@ -42,6 +49,14 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
 
     @Override
     public void update() {
+        if(isFirstTick) {
+            // onLoad doesn't work when you need to touch the world
+            IBlockState state = world.getBlockState(pos);
+            facing = state.getValue(BlockCounter.FACING);
+            flipped = state.getValue(BlockCounter.FLIPPED);
+            isFirstTick = false;
+        }
+
         doorAnimator.update();
 
         if(isDirty) {
@@ -118,8 +133,24 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return oldState.getBlock() != newSate.getBlock();
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        if(oldState.getBlock() == newState.getBlock()) {
+            facing = newState.getValue(BlockCounter.FACING);
+            flipped = newState.getValue(BlockCounter.FLIPPED);
+            return false;
+        }
+        return true;
+    }
+
+    public EnumFacing getFacing() {
+        if(facing == null) {
+            return world.getBlockState(pos).getValue(BlockCounter.FACING);
+        }
+        return facing;
+    }
+
+    public boolean isFlipped() {
+        return flipped;
     }
 
     @Override

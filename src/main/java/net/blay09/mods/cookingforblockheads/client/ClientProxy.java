@@ -126,6 +126,9 @@ public class ClientProxy extends CommonProxy {
 
 			IModel ovenDoor = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door"));
 			OvenRenderer.modelDoor = ovenDoor.bake(ovenDoor.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
+
+			IModel counterDoor = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"));
+			CounterRenderer.modelDoor = counterDoor.bake(counterDoor.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
