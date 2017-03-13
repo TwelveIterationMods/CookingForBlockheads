@@ -83,6 +83,9 @@ public class BlockSpiceRack extends BlockKitchen {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	if(hand != EnumHand.MAIN_HAND) {
+    		return true;
+		}
     	ItemStack heldItem = player.getHeldItem(hand);
         if(!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
             return true;
@@ -114,7 +117,7 @@ public class BlockSpiceRack extends BlockKitchen {
 					ItemStack itemStack = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
                     if (!itemStack.isEmpty()) {
 						tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, ItemStack.EMPTY);
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, itemStack);
+						player.setHeldItem(hand, itemStack);
                     }
 				}
 			}
