@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -42,6 +43,8 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
 
     public TileFridge() {
         doorAnimator.setOpenRadius(2);
+        doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen);
+        doorAnimator.setSoundEventClose(ModSounds.fridgeClose);
     }
 
     public void setFridgeColor(EnumDyeColor fridgeColor) {

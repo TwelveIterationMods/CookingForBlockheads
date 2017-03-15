@@ -37,7 +37,8 @@ public abstract class BlockKitchen extends BlockContainer {
 		}
 	});
 
-	private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.975, 0.9375);
+	private static final AxisAlignedBB BOUNDING_BOX_X = new AxisAlignedBB(0.03125, 0, 0, 0.96875, 0.9375, 1);
+	private static final AxisAlignedBB BOUNDING_BOX_Z = new AxisAlignedBB(0, 0, 0.03125, 1, 0.9375, 0.96875);
 
 	protected BlockKitchen(Material material) {
 		super(material);
@@ -67,14 +68,11 @@ public abstract class BlockKitchen extends BlockContainer {
 	@Override
 	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		// TODO fix me
 		if(state.getValue(FACING).getAxis() == EnumFacing.Axis.X) {
-			return new AxisAlignedBB(0.03125, 0, 0, 0.96875, 0.9375, 1);
+			return BOUNDING_BOX_X;
 		} else {
-			return new AxisAlignedBB(0, 0, 0.03125, 1, 0.9375, 0.96875);
+			return BOUNDING_BOX_Z;
 		}
-//		return FULL_BLOCK_AABB;
-//		return BOUNDING_BOX;
 	}
 
 	@Override

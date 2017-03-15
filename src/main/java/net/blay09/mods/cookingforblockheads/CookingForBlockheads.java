@@ -36,7 +36,6 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.11]", dependencies = "after:mousetweaks[2.8,)")
 public class CookingForBlockheads {
 
-	// TODO fix the bounding boxes
 	// TODO fix the counter wood texture
 	// TODO fix the oven handle texture
 

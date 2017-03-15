@@ -17,14 +17,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 
 public class BlockCorner extends BlockKitchen {
+
+	private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[] {
+			new AxisAlignedBB(0, 0, 0, 0.96875, 0.9375, 0.96875),
+			new AxisAlignedBB(0.03125, 0, 0.03125, 1, 0.9375, 1),
+			new AxisAlignedBB(0, 0, 0.03125, 0.96875, 0.9375, 1),
+			new AxisAlignedBB(0.03125, 0, 0, 1, 0.9375, 0.96875)
+	};
 
 	public BlockCorner() {
 		super(Material.WOOD);
@@ -34,6 +43,11 @@ public class BlockCorner extends BlockKitchen {
 		setSoundType(SoundType.WOOD);
 		setHardness(5f);
 		setResistance(10f);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return BOUNDING_BOXES[state.getValue(FACING).getIndex() - 2];
 	}
 
 	@Override

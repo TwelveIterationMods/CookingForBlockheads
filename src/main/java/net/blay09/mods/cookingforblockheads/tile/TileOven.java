@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler;
 import net.blay09.mods.cookingforblockheads.CookingConfig;
+import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -75,6 +76,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     private EnumDyeColor ovenColor = EnumDyeColor.WHITE;
     private EnumFacing facing;
+
+    public TileOven() {
+        doorAnimator.setSoundEventOpen(ModSounds.ovenOpen);
+        doorAnimator.setSoundEventClose(ModSounds.ovenClose);
+    }
 
     public void setOvenColor(EnumDyeColor color) {
         this.ovenColor = color;

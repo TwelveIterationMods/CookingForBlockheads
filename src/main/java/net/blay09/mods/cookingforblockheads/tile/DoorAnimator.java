@@ -59,7 +59,7 @@ public class DoorAnimator {
 
 		prevAngle = angle;
 
-		if ((isForcedOpen && numPlayersUsing > 0) && angle == 0f && soundEventOpen != null) {
+		if ((isForcedOpen || numPlayersUsing > 0) && angle == 0f && soundEventOpen != null) {
 			tileEntity.getWorld().playSound(null, tileEntity.getPos(), soundEventOpen, SoundCategory.BLOCKS, 0.5f, tileEntity.getWorld().rand.nextFloat() * 0.1f + 0.9f);
 		}
 
