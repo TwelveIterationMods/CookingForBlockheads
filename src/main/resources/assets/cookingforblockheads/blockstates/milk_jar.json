@@ -22,11 +22,6 @@
         }
       }
     ],
-    "liquid": [
-      {
-        "model": "cookingforblockheads:milk_jar_liquid"
-      }
-    ],
     "facing": {
       "west": {
       },

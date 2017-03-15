@@ -26,6 +26,7 @@ public class BlockKitchenFloor extends Block {
 		setSoundType(SoundType.STONE);
 		setHardness(5f);
 		setResistance(10f);
+		setCreativeTab(CookingForBlockheads.creativeTab);
 	}
 
 	@Override

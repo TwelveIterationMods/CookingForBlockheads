@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -17,6 +18,7 @@ import javax.annotation.Nullable;
 public class TileCookingTable extends TileEntity {
 
     private ItemStack noFilterBook = ItemStack.EMPTY;
+    private EnumDyeColor color = EnumDyeColor.WHITE;
 
     public boolean hasNoFilterBook() {
         return !noFilterBook.isEmpty();
@@ -39,6 +41,7 @@ public class TileCookingTable extends TileEntity {
             noFilterBook.writeToNBT(itemCompound);
         }
         tagCompound.setTag("NoFilterBook", itemCompound);
+        tagCompound.setByte("Color", (byte) color.getDyeDamage());
         return tagCompound;
     }
 
@@ -48,6 +51,7 @@ public class TileCookingTable extends TileEntity {
         if(tagCompound.hasKey("NoFilterBook")) {
             setNoFilterBook(new ItemStack(tagCompound.getCompoundTag("NoFilterBook")));
         }
+        color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
     }
 
     @Override
@@ -84,4 +88,14 @@ public class TileCookingTable extends TileEntity {
         return oldState.getBlock() != newSate.getBlock();
     }
 
+    public EnumDyeColor getColor() {
+        return color;
+    }
+
+    public void setColor(EnumDyeColor color) {
+        this.color = color;
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
+    }
 }

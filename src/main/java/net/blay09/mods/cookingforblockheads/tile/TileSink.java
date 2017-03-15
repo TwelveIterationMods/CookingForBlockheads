@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -118,6 +119,8 @@ public class TileSink extends TileEntity {
     private final FluidTank waterTank = new WaterTank(16000);
     private final SinkItemProvider itemProvider = new SinkItemProvider(waterTank);
 
+    private EnumDyeColor color = EnumDyeColor.WHITE;
+
     @Override
     public NBTTagCompound getUpdateTag() {
         return writeToNBT(new NBTTagCompound());
@@ -138,6 +141,7 @@ public class TileSink extends TileEntity {
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         waterTank.writeToNBT(tagCompound);
+        tagCompound.setByte("Color", (byte) color.getDyeDamage());
         return tagCompound;
     }
 
@@ -145,6 +149,7 @@ public class TileSink extends TileEntity {
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         waterTank.readFromNBT(tagCompound);
+        color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
     }
 
     public int getWaterAmount() {
@@ -172,5 +177,16 @@ public class TileSink extends TileEntity {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    public EnumDyeColor getColor() {
+        return color;
+    }
+
+    public void setColor(EnumDyeColor color) {
+        this.color = color;
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
     }
 }

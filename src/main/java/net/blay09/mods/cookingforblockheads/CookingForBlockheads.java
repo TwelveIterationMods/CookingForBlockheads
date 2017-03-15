@@ -36,6 +36,12 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.11]", dependencies = "after:mousetweaks[2.8,)")
 public class CookingForBlockheads {
 
+	// TODO Sink can't be flipped at the moment
+	// TODO Counter doors open wrong on some facing atm
+	// TODO fix the toaster
+	// TODO fix the fridge
+	// TODO cow jar inventory model
+
     public static final String MOD_ID = "cookingforblockheads";
 	private static final Logger logger = LogManager.getLogger();
 

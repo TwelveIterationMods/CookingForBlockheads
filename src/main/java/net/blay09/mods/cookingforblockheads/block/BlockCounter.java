@@ -4,7 +4,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -45,7 +44,6 @@ public class BlockCounter extends BlockKitchen {
 
 	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
 	public static final PropertyEnum<ModelPass> PASS = PropertyEnum.create("pass", ModelPass.class);
-	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
 	public BlockCounter() {
 		super(Material.WOOD);

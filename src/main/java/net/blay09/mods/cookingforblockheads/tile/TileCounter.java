@@ -52,12 +52,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         doorAnimator.setSoundEventClose(SoundEvents.BLOCK_CHEST_CLOSE);
     }
 
-    public void setColor(EnumDyeColor color) {
-        this.color = color;
-        IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
-        markDirty();
-    }
+
 
 
     @Override
@@ -147,6 +142,13 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         return doorAnimator;
     }
 
+    public void setColor(EnumDyeColor color) {
+        this.color = color;
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
+    }
+
     public EnumDyeColor getColor() {
         return color;
     }
@@ -163,7 +165,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
 
     public EnumFacing getFacing() {
         if(cachedFacing == null) {
-            return world.getBlockState(pos).getValue(BlockCounter.FACING);
+            return EnumFacing.NORTH;
         }
         return cachedFacing;
     }
