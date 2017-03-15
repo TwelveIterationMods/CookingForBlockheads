@@ -29,21 +29,18 @@
     ],
     "facing": {
       "west": {
-        "y": -90
       },
       "east": {
-        "y": 90
       },
       "north": {
       },
       "south": {
-        "y": 180
       }
     },
-    "lower": {
+    "lowered": {
       "true": {
         "transform": {
-          "translation": [ 0, -0.1, 0]
+          "translation": [ 0, -0.05, 0]
         }
       },
       "false": {

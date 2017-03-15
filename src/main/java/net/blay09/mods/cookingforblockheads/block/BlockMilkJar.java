@@ -2,8 +2,10 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +41,22 @@ public class BlockMilkJar extends BlockKitchen {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, LOWERED);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return state.withProperty(LOWERED, isLowered(world, pos));
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        Block blockBelow = world.getBlockState(pos.down()).getBlock();
+        if(blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter) {
+            return BOUNDING_BOX.addCoord(0, -0.05, 0);
+        }
         return BOUNDING_BOX;
     }
 
@@ -88,6 +105,11 @@ public class BlockMilkJar extends BlockKitchen {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileMilkJar();
+    }
+
+    public boolean isLowered(IBlockAccess world, BlockPos pos) {
+        Block blockBelow = world.getBlockState(pos.down()).getBlock();
+        return blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter;
     }
 
 }

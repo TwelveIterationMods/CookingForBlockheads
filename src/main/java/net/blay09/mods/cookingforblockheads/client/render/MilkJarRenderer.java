@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -31,7 +32,7 @@ public class MilkJarRenderer extends TileEntitySpecialRenderer<TileMilkJar> {
 			GlStateManager.disableCull();
 			GlStateManager.pushMatrix();
 
-			GlStateManager.translate(x, y, z);
+			GlStateManager.translate(x, y + (ModBlocks.milkJar.isLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z);
 			GlStateManager.scale(1f, tileEntity.getMilkAmount() / tileEntity.getMilkCapacity(), 1f);
 			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			Minecraft.getMinecraft().getRenderItem().renderModel(modelMilkLiquid, 0xFFFFFFFF);

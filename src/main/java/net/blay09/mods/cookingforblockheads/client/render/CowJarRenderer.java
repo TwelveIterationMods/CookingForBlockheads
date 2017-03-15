@@ -30,7 +30,7 @@ public class CowJarRenderer extends MilkJarRenderer {
 		bindTexture(COW_TEXTURES);
 		if(entity != null) {
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+			GlStateManager.translate(x + 0.5, y + 0.5 + (ModBlocks.milkJar.isLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z + 0.5);
 			GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
 			GlStateManager.rotate(180f, 0f, 0f, 1f);
 			GlStateManager.scale(0.02, 0.02, 0.02);
