@@ -50,7 +50,7 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     public void setFridgeColor(EnumDyeColor fridgeColor) {
         this.fridgeColor = fridgeColor;
         IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 1|2);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
         markDirty();
     }
 

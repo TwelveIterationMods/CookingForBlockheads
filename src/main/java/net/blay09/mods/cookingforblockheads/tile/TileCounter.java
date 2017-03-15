@@ -2,19 +2,17 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.block.BlockCorner;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
-import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,8 +40,11 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     private boolean isFirstTick = true;
 
     private boolean isDirty;
-    private EnumFacing facing;
-    private boolean flipped;
+
+    private EnumDyeColor color = EnumDyeColor.WHITE;
+
+    private EnumFacing cachedFacing;
+    private boolean cachedFlipped;
 
     public TileCounter() {
         doorAnimator.setOpenRadius(2);
@@ -51,13 +52,21 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         doorAnimator.setSoundEventClose(SoundEvents.BLOCK_CHEST_CLOSE);
     }
 
+    public void setColor(EnumDyeColor color) {
+        this.color = color;
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
+    }
+
+
     @Override
     public void update() {
         if(isFirstTick) {
             // onLoad doesn't work when you need to touch the world
             IBlockState state = world.getBlockState(pos);
-            facing = state.getValue(BlockCounter.FACING);
-            flipped = state.getValue(BlockCounter.FLIPPED);
+            cachedFacing = state.getValue(BlockCounter.FACING);
+            cachedFlipped = state.getValue(BlockCounter.FLIPPED);
             isFirstTick = false;
         }
 
@@ -78,12 +87,14 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
+        color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
+        tagCompound.setByte("Color", (byte) color.getDyeDamage());
         return tagCompound;
     }
 
@@ -136,25 +147,29 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         return doorAnimator;
     }
 
+    public EnumDyeColor getColor() {
+        return color;
+    }
+
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         if(oldState.getBlock() == newState.getBlock()) {
-            facing = newState.getValue(BlockCounter.FACING);
-            flipped = newState.getValue(BlockCounter.FLIPPED);
+            cachedFacing = newState.getValue(BlockCounter.FACING);
+            cachedFlipped = newState.getValue(BlockCounter.FLIPPED);
             return false;
         }
         return true;
     }
 
     public EnumFacing getFacing() {
-        if(facing == null) {
+        if(cachedFacing == null) {
             return world.getBlockState(pos).getValue(BlockCounter.FACING);
         }
-        return facing;
+        return cachedFacing;
     }
 
     public boolean isFlipped() {
-        return flipped;
+        return cachedFlipped;
     }
 
     @Override

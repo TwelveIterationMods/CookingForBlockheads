@@ -62,7 +62,7 @@ public class ItemRecipeBook extends Item {
 
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
-		ModelBakery.registerItemVariants(this, new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBook"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBookTier1"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipeBookTier2"));
+		ModelBakery.registerItemVariants(this, new ResourceLocation(CookingForBlockheads.MOD_ID, "recipe_book"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipe_book_tier1"), new ResourceLocation(CookingForBlockheads.MOD_ID, "recipe_book_tier2"));
 
 		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":recipe_book_tier1", "inventory"));

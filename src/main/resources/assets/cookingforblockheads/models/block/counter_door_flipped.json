@@ -1,9 +1,5 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
-	"textures": {
-		"texture": "minecraft:blocks/hardened_clay",
-		"handle": "cookingforblockheads:blocks/handle"
-	},
 	"elements": [
 		{
 			"__comment": "Door",

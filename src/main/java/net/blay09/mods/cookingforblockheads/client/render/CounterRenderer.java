@@ -9,13 +9,14 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
 
-    public static IBakedModel modelDoor;
-    public static IBakedModel modelDoorFlipped;
+    public static IBakedModel[][] models;
+    public static IBakedModel[][] modelsFlipped;
 
     @Override
     public void renderTileEntityAt(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -27,15 +28,12 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
 
         // Render the door
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 0.5f, y, z + 0.5f);
-        GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-        GlStateManager.translate(-0.5f, 0f, -0.5f);
+        GlStateManager.translate(x, y, z);
         float n = 0.84375f;
         float m = 0.09375f;
         float o = -1f;
         if(isFlipped) {
             n = 1 - n;
-//            m = 1 - m;
             o = 1f;
         }
         GlStateManager.translate(n, 0f, m);
@@ -43,7 +41,8 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
         GlStateManager.translate(-n, 0f, -m);
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         RenderHelper.enableStandardItemLighting();
-        itemRenderer.renderModel(isFlipped ? modelDoorFlipped : modelDoor, 0xFFFFFFFF);
+        EnumDyeColor blockColor = tileEntity.getColor();
+        itemRenderer.renderModel(isFlipped ? modelsFlipped[tileEntity.getFacing().getIndex() - 2][blockColor.getMetadata()] : models[tileEntity.getFacing().getIndex() - 2][blockColor.getMetadata()], 0xFFFFFFFF);
         GlStateManager.popMatrix();
 
         // Render the content if the door is open

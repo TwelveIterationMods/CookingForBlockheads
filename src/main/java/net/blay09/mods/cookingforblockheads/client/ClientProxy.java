@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.block.BlockCounter;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButtonHunger;
@@ -31,13 +32,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -61,6 +65,8 @@ public class ClientProxy extends CommonProxy {
 
 	public static final TextureAtlasSprite[] ovenToolIcons = new TextureAtlasSprite[4];
 
+	private final DefaultStateMapper dummyStateMapper = new DefaultStateMapper();
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
@@ -70,7 +76,7 @@ public class ClientProxy extends CommonProxy {
 		ModelLoader.setCustomStateMapper(ModBlocks.fridge, new DefaultStateMapper() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				if(state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.LARGE) {
+				if (state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.LARGE) {
 					return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridge_large", getPropertyString(state.getProperties()));
 				} else if (state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.INVISIBLE) {
 					return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridge_invisible", getPropertyString(state.getProperties()));
@@ -100,7 +106,7 @@ public class ClientProxy extends CommonProxy {
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
 			@Override
 			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
-				if(world != null && pos != null) {
+				if (world != null && pos != null) {
 					TileEntity tileEntity = world.getTileEntity(pos);
 					if (tileEntity instanceof TileFridge) {
 						return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getMapColor().colorValue;
@@ -110,9 +116,9 @@ public class ClientProxy extends CommonProxy {
 			}
 		}, ModBlocks.fridge);
 
-        CookingRegistry.addSortButton(new SortButtonName());
-        CookingRegistry.addSortButton(new SortButtonHunger());
-        CookingRegistry.addSortButton(new SortButtonSaturation());
+		CookingRegistry.addSortButton(new SortButtonName());
+		CookingRegistry.addSortButton(new SortButtonHunger());
+		CookingRegistry.addSortButton(new SortButtonSaturation());
 	}
 
 	@SubscribeEvent
@@ -131,14 +137,23 @@ public class ClientProxy extends CommonProxy {
 
 			model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door"));
 			OvenRenderer.modelDoor = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
-
-			model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"));
-			CounterRenderer.modelDoor = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
-
-			model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door_flipped"));
-			CounterRenderer.modelDoorFlipped = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		EnumDyeColor[] colors = EnumDyeColor.values();
+		CounterRenderer.models = new IBakedModel[4][colors.length];
+		CounterRenderer.modelsFlipped = new IBakedModel[4][colors.length];
+		IBlockState defaultState = ModBlocks.counter.getDefaultState();
+		IBlockState state = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR);
+		IBlockState flippedState = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR_FLIPPED);
+		for (int i = 0; i < 4; i++) {
+			EnumFacing facing = EnumFacing.getFront(i + 2);
+			for (int j = 0; j < colors.length; j++) {
+				EnumDyeColor color = colors[j];
+				CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(ModBlocks.counter.getRegistryNameString(), dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+				CounterRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(ModBlocks.counter.getRegistryNameString(), dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+			}
 		}
 	}
 

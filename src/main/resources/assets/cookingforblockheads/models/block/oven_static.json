@@ -1,14 +1,5 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
-	"textures": {
-		"particle": "blocks/e_particle",
-		"texture": "blocks/oven_side",
-		"backsplash": "blocks/e_texture",
-		"oventop": "blocks/oven_top",
-		"ovengrid": "blocks/oven_grid",
-		"ovenbottom": "blocks/e_texture",
-		"ovenfront": "blocks/oven_front"
-	},
 	"elements": [
 		{
 			"__comment": "Backsplash",
