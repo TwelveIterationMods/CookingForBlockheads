@@ -174,10 +174,11 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		double blockRotation = (double) (placer.rotationYaw * 4f / 360f) + 0.5;
 		boolean flipped = Math.abs(blockRotation - (int) blockRotation) < 0.5;
-		super.onBlockPlacedBy(world, pos, state.withProperty(FLIPPED, !flipped), placer, stack);
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FLIPPED, flipped);
 	}
 
 	@Override

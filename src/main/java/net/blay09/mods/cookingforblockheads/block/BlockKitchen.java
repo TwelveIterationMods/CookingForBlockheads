@@ -99,22 +99,9 @@ public abstract class BlockKitchen extends BlockContainer {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		int facing = MathHelper.floor((double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		switch (facing) {
-			case 0:
-				world.setBlockState(pos, state.withProperty(FACING, EnumFacing.NORTH));
-				break;
-			case 1:
-				world.setBlockState(pos, state.withProperty(FACING, EnumFacing.EAST));
-				break;
-			case 2:
-				world.setBlockState(pos, state.withProperty(FACING, EnumFacing.SOUTH));
-				break;
-			case 3:
-				world.setBlockState(pos, state.withProperty(FACING, EnumFacing.WEST));
-				break;
-		}
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
