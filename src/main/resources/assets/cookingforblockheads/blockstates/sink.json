@@ -4,8 +4,8 @@
     "model": "cookingforblockheads:sink",
     "textures": {
       "countertop": "minecraft:blocks/stone_andesite_smooth",
-      "texture": "minecraft:blocks/log_oak",
-      "particle": "minecraft:blocks/log_oak",
+      "texture": "minecraft:blocks/hardened_clay",
+      "particle": "minecraft:blocks/hardened_clay",
       "foot": "minecraft:blocks/hardened_clay_stained_black",
       "backsplash": "minecraft:blocks/hardened_clay_stained_black",
       "metal": "cookingforblockheads:blocks/sink_metal",

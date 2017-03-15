@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ public class CookingTableRenderer extends TileEntitySpecialRenderer<TileCookingT
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
             GlStateManager.translate(x + 0.5, y + 0.825, z + 0.5);
-            GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+            GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
             GlStateManager.rotate(90f, 1f, 0f, 0f);
             GlStateManager.scale(0.5f, 0.5f, 0.5f);
             RenderUtils.renderItem(itemRenderer, itemStack, 0f, 0f, 0f, 0f, 0f, 0f, 0f);

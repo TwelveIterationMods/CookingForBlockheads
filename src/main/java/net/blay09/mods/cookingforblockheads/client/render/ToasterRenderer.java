@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.minecraft.block.state.IBlockState;

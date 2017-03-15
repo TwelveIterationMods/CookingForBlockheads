@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.model.ModelFridgeDoor;
@@ -70,7 +71,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-            GlStateManager.rotate(RenderUtils.getFacingAngle(tileEntity), 0f, 1f, 0f);
+            GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
             float topY = fridgeType == BlockFridge.FridgeType.LARGE ? 3.25f : 0.35f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();

@@ -1,35 +1,25 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.block.BlockFridge;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
-import org.lwjgl.opengl.GL11;
 
 public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
 
     public static IBakedModel modelDoor;
+    public static IBakedModel modelDoorFlipped;
 
     @Override
     public void renderTileEntityAt(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-        BlockPos pos = tileEntity.getPos();
-        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
 
         float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
@@ -42,12 +32,18 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
         GlStateManager.translate(-0.5f, 0f, -0.5f);
         float n = 0.84375f;
         float m = 0.09375f;
+        float o = -1f;
+        if(isFlipped) {
+            n = 1 - n;
+//            m = 1 - m;
+            o = 1f;
+        }
         GlStateManager.translate(n, 0f, m);
-        GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
+        GlStateManager.rotate(o * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
         GlStateManager.translate(-n, 0f, -m);
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        RenderHelper.disableStandardItemLighting();
-        itemRenderer.renderModel(modelDoor, 0xFFAAAAAA);
+        RenderHelper.enableStandardItemLighting();
+        itemRenderer.renderModel(isFlipped ? modelDoorFlipped : modelDoor, 0xFFFFFFFF);
         GlStateManager.popMatrix();
 
         // Render the content if the door is open

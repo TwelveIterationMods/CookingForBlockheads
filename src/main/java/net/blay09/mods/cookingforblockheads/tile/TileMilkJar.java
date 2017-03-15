@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -84,6 +85,7 @@ public class TileMilkJar extends TileEntity {
 	}
 
 	private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
+
 	protected float milkAmount;
 
 	public void fill(int amount) {
@@ -152,4 +154,5 @@ public class TileMilkJar extends TileEntity {
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return oldState.getBlock() != newSate.getBlock();
 	}
+
 }

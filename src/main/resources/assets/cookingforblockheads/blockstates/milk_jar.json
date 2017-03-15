@@ -2,9 +2,6 @@
   "forge_marker": 1,
   "defaults": {
     "model": "cookingforblockheads:milk_jar_static",
-    "custom": {
-      "flip-v": true
-    },
     "transform": "forge:default-block"
   },
   "variants": {
@@ -41,6 +38,15 @@
       },
       "south": {
         "y": 180
+      }
+    },
+    "lower": {
+      "true": {
+        "transform": {
+          "translation": [ 0, -0.1, 0]
+        }
+      },
+      "false": {
       }
     }
   }

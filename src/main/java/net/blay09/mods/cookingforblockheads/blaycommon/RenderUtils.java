@@ -1,16 +1,29 @@
-package net.blay09.mods.cookingforblockheads.client.render;
+package net.blay09.mods.cookingforblockheads.blaycommon;
 
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class RenderUtils {
+
+	@Deprecated
+	public static float getFacingAngle(IBlockState state) {
+		return getFacingAngle(state.getValue(BlockKitchen.FACING));
+	}
 
 	public static float getFacingAngle(EnumFacing facing) {
 		float angle;
@@ -32,14 +45,21 @@ public class RenderUtils {
 		return angle;
 	}
 
-	@Deprecated
-	public static float getFacingAngle(TileEntity tileEntity) {
-		return getFacingAngle(tileEntity.getWorld().getBlockState(tileEntity.getPos()));
+	public static void renderBlockAt(Minecraft mc, IBlockState state, World world, BlockPos pos, VertexBuffer renderer, @Nullable IBakedModel modelOverride) {
+		BlockRendererDispatcher dispatcher = mc.getBlockRendererDispatcher();
+		try {
+			EnumBlockRenderType renderType = state.getRenderType();
+			if (renderType == EnumBlockRenderType.MODEL) {
+				if(modelOverride == null) {
+					modelOverride = dispatcher.getModelForState(state);
+				}
+				dispatcher.getBlockModelRenderer().renderModel(world, modelOverride, state, pos, renderer, false);
+			}
+		} catch (Throwable ignored) {}
 	}
 
-	@Deprecated
-	public static float getFacingAngle(IBlockState state) {
-		return getFacingAngle(state.getValue(BlockKitchen.FACING));
+	public static void renderBlockAt(Minecraft mc, IBlockState state, World world, BlockPos pos, VertexBuffer renderer) {
+		renderBlockAt(mc, state, world, pos, renderer, null);
 	}
 
 	public static void renderItem(RenderItem itemRenderer, ItemStack itemStack, float x, float y, float z, float angle, float xr, float yr, float zr) {

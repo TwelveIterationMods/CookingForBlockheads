@@ -37,8 +37,6 @@ public class BlockCounter extends BlockKitchen {
 		setResistance(10f);
 	}
 
-
-
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, FLIPPED);
@@ -96,8 +94,8 @@ public class BlockCounter extends BlockKitchen {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack heldItem = player.getHeldItem(hand);
 		if(facing == state.getValue(FACING)) {
-			ItemStack heldItem = player.getHeldItem(hand);
 			TileCounter tileCounter = (TileCounter) world.getTileEntity(pos);
 			if(tileCounter != null) {
 				if (player.isSneaking()) {
@@ -111,16 +109,20 @@ public class BlockCounter extends BlockKitchen {
 			}
 		}
 		if (!world.isRemote) {
+			if(facing == EnumFacing.UP && !heldItem.isEmpty()) {
+				return false;
+			}
 			player.openGui(CookingForBlockheads.instance, GuiHandler.COUNTER, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		double blockRotation = (double) (placer.rotationYaw * 4f / 360f) + 0.5;
 		boolean flipped = Math.abs(blockRotation - (int) blockRotation) < 0.5;
-		super.onBlockPlacedBy(world, pos, state.withProperty(FLIPPED, !flipped), placer, stack);
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FLIPPED, flipped);
 	}
 
 	@Override
