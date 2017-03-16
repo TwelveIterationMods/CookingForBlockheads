@@ -136,6 +136,7 @@ public class BlockSink extends BlockKitchen {
                 }
             }
             spawnParticles(world, pos, state);
+            world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, world.rand.nextFloat() + 0.5f);
             return true;
         } else {
             TileEntity tileEntity = world.getTileEntity(pos);
