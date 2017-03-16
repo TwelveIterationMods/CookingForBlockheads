@@ -34,7 +34,7 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		RenderHelper.enableStandardItemLighting();
-		itemRenderer.renderModel(modelDoor, 0xFFFFFFFF);
+		itemRenderer.renderModel(doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor, 0xFFFFFFFF);
 		GlStateManager.popMatrix();
 
 		// Render the oven tools

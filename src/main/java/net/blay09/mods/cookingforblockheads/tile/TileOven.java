@@ -342,6 +342,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return itemHandlerInput;
     }
 
+    public RangedWrapper getItemHandlerFuel() {
+        return itemHandlerFuel;
+    }
+
     public EnumDyeColor getOvenColor() {
         return ovenColor;
     }

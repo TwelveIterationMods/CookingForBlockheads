@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -18,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -25,6 +27,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Random;
 
 public class BlockToaster extends BlockKitchen {
 
@@ -102,6 +105,19 @@ public class BlockToaster extends BlockKitchen {
         super.addInformation(stack, player, tooltip, advanced);
         for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
+        }
+    }
+
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+        TileToaster tileEntity = (TileToaster) world.getTileEntity(pos);
+        if (tileEntity != null && tileEntity.isActive()) {
+            if(rand.nextFloat() < tileEntity.getToastProgress()) {
+                double x = (float) pos.getX() + 0.5f + (rand.nextFloat() - 0.5f) * 0.25f;
+                double y = (float) pos.getY() + 0.2f + rand.nextFloat() * 6f / 16f;
+                double z = (float) pos.getZ() + 0.5f + (rand.nextFloat() - 0.5f) * 0.25f;
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0, 0, 0);
+            }
         }
     }
 }

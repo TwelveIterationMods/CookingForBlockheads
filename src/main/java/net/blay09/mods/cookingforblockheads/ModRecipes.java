@@ -41,7 +41,7 @@ public class ModRecipes {
 
 		// Sink
 		if(config.getBoolean("Sink", "blocks", true, "")) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.sink), "III", "WBW", "WWW", 'I', "ingotIron", 'W', "logWood", 'B', Items.WATER_BUCKET));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.sink), "III", "CBC", "CCC", 'I', "ingotIron", 'C', Blocks.HARDENED_CLAY, 'B', Items.WATER_BUCKET));
 		}
 
 		// Toaster
@@ -62,20 +62,20 @@ public class ModRecipes {
 		// Cooking Table
 		if(config.getBoolean("Cooking Table", "blocks", true, "")) {
 			if(craftingEdition) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.cookingTable), "CCC", "WBW", "WWW", 'B', new ItemStack(ModItems.recipeBook, 1, 2), 'W', "logWood", 'C', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15)));
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.cookingTable), "SSS", "CBC", "CCC", 'B', new ItemStack(ModItems.recipeBook, 1, 2), 'C', Blocks.HARDENED_CLAY, 'S', Blocks.STONE));
 			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.cookingTable), "CCC", "WBW", "WWW", 'B', Items.BOOK, 'W', "logWood", 'C', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15)));
+				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.cookingTable), "SSS", "CBC", "CCC", 'B', Items.BOOK, 'C', Blocks.HARDENED_CLAY, 'S', Blocks.STONE));
 			}
 		}
 
 		// Kitchen Counter
 		if(config.getBoolean("Kitchen Counter", "blocks", true, "")) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.counter), "B", "C", 'B', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15), 'C', Blocks.CHEST));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.counter), "SSS", "CBC", "CCC", 'S', Blocks.STONE, 'C', Blocks.HARDENED_CLAY, 'B', Blocks.CHEST));
 		}
 
 		// Kitchen Corner
 		if(config.getBoolean("Kitchen Corner", "blocks", true, "")) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.corner), "B", "W", 'B', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 15), 'W', "logWood"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.corner), "SSS", "CCC", "CCC", 'S', Blocks.STONE, 'C', Blocks.HARDENED_CLAY));
 		}
 
 		// Cooking Oven

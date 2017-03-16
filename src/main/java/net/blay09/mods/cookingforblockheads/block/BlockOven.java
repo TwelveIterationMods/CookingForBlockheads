@@ -90,6 +90,9 @@ public class  BlockOven extends BlockKitchen {
                     return true;
                 } else if (!heldItem.isEmpty() && tileOven.getDoorAnimator().isForcedOpen()) {
                     heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
+                    if(!heldItem.isEmpty()) {
+                        heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getItemHandlerFuel(), heldItem, false);
+                    }
                     player.setHeldItem(hand, heldItem);
                     return true;
                 }

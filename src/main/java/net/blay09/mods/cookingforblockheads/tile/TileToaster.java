@@ -43,6 +43,10 @@ public class TileToaster extends TileEntity implements ITickable {
         } else if(id == 1) {
             world.playSound(null, pos, ModSounds.toasterStop, SoundCategory.BLOCKS, 1f, 1f);
             return true;
+        } else if(id == 2) {
+            IBlockState state = world.getBlockState(pos);
+            world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+            return true;
         }
         return super.receiveClientEvent(id, type);
     }
@@ -101,7 +105,6 @@ public class TileToaster extends TileEntity implements ITickable {
                         entityItem.motionZ = 0f;
                         world.spawnEntity(entityItem);
                         itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-                        world.addBlockEvent(pos, blockType, 1, 0);
                     }
                 }
                 setActive(false);
@@ -116,9 +119,11 @@ public class TileToaster extends TileEntity implements ITickable {
             world.addBlockEvent(pos, blockType, 0, 0);
         } else {
             toastTicks = 0;
+            world.addBlockEvent(pos, blockType, 1, 0);
         }
         IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        world.addBlockEvent(pos, blockType, 2, 0);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, blockType.getActualState(state, world, pos), 3);
         markDirty();
     }
 
