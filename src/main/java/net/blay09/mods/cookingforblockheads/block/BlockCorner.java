@@ -32,11 +32,11 @@ public class BlockCorner extends BlockKitchen {
 	};
 
 	public BlockCorner() {
-		super(Material.WOOD);
+		super(Material.ROCK);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "corner");
 		setUnlocalizedName(getRegistryNameString());
-		setSoundType(SoundType.WOOD);
+		setSoundType(SoundType.STONE);
 		setHardness(5f);
 		setResistance(10f);
 	}

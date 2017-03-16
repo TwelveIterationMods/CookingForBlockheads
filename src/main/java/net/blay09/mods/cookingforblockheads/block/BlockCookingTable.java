@@ -28,11 +28,11 @@ import java.util.List;
 public class BlockCookingTable extends BlockKitchen {
 
     public BlockCookingTable() {
-        super(Material.WOOD);
+        super(Material.ROCK);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "cooking_table");
         setUnlocalizedName(getRegistryNameString());
-        setSoundType(SoundType.WOOD);
+        setSoundType(SoundType.STONE);
         setHardness(2.5f);
     }
 

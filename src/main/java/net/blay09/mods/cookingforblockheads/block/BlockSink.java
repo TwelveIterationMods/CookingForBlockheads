@@ -36,11 +36,11 @@ import java.util.List;
 public class BlockSink extends BlockKitchen {
 
     public BlockSink() {
-        super(Material.WOOD);
+        super(Material.ROCK);
 
         setRegistryName(CookingForBlockheads.MOD_ID, "sink");
         setUnlocalizedName(getRegistryNameString());
-        setSoundType(SoundType.WOOD);
+        setSoundType(SoundType.STONE);
         setHardness(5f);
         setResistance(10f);
     }

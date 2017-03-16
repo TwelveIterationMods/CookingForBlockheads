@@ -45,11 +45,11 @@ public class BlockCounter extends BlockKitchen {
 	public static final PropertyEnum<ModelPass> PASS = PropertyEnum.create("pass", ModelPass.class);
 
 	public BlockCounter() {
-		super(Material.WOOD);
+		super(Material.ROCK);
 
 		setRegistryName(CookingForBlockheads.MOD_ID, "counter");
 		setUnlocalizedName(getRegistryNameString());
-		setSoundType(SoundType.WOOD);
+		setSoundType(SoundType.STONE);
 		setHardness(5f);
 		setResistance(10f);
 	}
