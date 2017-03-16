@@ -148,7 +148,7 @@ public class ClientProxy extends CommonProxy {
 		IBlockState state = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR);
 		IBlockState flippedState = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR_FLIPPED);
 		for (int i = 0; i < 4; i++) {
-			EnumFacing facing = EnumFacing.getFront(i + 2);
+			EnumFacing facing = EnumFacing.getHorizontal(i);
 			for (int j = 0; j < colors.length; j++) {
 				EnumDyeColor color = colors[j];
 				CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(ModBlocks.counter.getRegistryNameString(), dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));

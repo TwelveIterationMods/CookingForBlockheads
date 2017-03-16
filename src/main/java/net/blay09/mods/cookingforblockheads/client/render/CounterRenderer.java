@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
 public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
@@ -18,10 +19,25 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
     public static IBakedModel[][] models;
     public static IBakedModel[][] modelsFlipped;
 
+    private static final float[] doorOriginsX = new float[] {
+            1 - 0.84375f,
+            0.09375f,
+            0.84375f,
+            1 - 0.09375f
+    };
+
+    private static final float[] doorOriginsZ = new float[] {
+            1 - 0.09375f,
+            1 - 0.84375f,
+            0.09375f,
+            0.84375f
+    };
+
     @Override
     public void renderTileEntityAt(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
+        EnumFacing facing = tileEntity.getFacing();
         float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = tileEntity.isFlipped();
@@ -29,20 +45,24 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
         // Render the door
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        float n = 0.84375f;
-        float m = 0.09375f;
-        float o = -1f;
+        float doorOriginX = doorOriginsX[facing.getHorizontalIndex()];
+        float doorOriginZ = doorOriginsZ[facing.getHorizontalIndex()];
+        float doorDirection = -1f;
         if(isFlipped) {
-            n = 1 - n;
-            o = 1f;
+            if(facing.getAxis() == EnumFacing.Axis.X) {
+                doorOriginZ = 1 - doorOriginZ;
+            } else {
+                doorOriginX = 1 - doorOriginX;
+            }
+            doorDirection = 1f;
         }
-        GlStateManager.translate(n, 0f, m);
-        GlStateManager.rotate(o * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
-        GlStateManager.translate(-n, 0f, -m);
+        GlStateManager.translate(doorOriginX, 0f, doorOriginZ);
+        GlStateManager.rotate(doorDirection * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
+        GlStateManager.translate(-doorOriginX, 0f, -doorOriginZ);
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         RenderHelper.enableStandardItemLighting();
         EnumDyeColor blockColor = tileEntity.getColor();
-        itemRenderer.renderModel(isFlipped ? modelsFlipped[tileEntity.getFacing().getIndex() - 2][blockColor.getMetadata()] : models[tileEntity.getFacing().getIndex() - 2][blockColor.getMetadata()], 0xFFFFFFFF);
+        itemRenderer.renderModel(isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getMetadata()] : models[tileEntity.getFacing().getHorizontalIndex()][blockColor.getMetadata()], 0xFFFFFFFF);
         GlStateManager.popMatrix();
 
         // Render the content if the door is open
@@ -52,7 +72,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
             GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
-            float topY = 0.25f;
+            float topY = 0.35f;
             IItemHandler itemHandler = tileEntity.getItemHandler();
             for(int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);

@@ -52,9 +52,6 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         doorAnimator.setSoundEventClose(SoundEvents.BLOCK_CHEST_CLOSE);
     }
 
-
-
-
     @Override
     public void update() {
         if(isFirstTick) {

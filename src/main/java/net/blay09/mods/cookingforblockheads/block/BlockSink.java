@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -46,7 +47,7 @@ public class BlockSink extends BlockKitchen {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, COLOR);
+        return new BlockStateContainer(this, FACING, COLOR, FLIPPED);
     }
 
     @Override
@@ -57,6 +58,58 @@ public class BlockSink extends BlockKitchen {
             return state.withProperty(COLOR, ((TileSink) tileEntity).getColor());
         }
         return state;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
+        return state.withProperty(FLIPPED, shouldbePlacedFlipped(pos, state.getValue(FACING), placer));
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        EnumFacing facing;
+        switch (meta & 7) {
+            case 0:
+                facing = EnumFacing.EAST;
+                break;
+            case 1:
+                facing = EnumFacing.WEST;
+                break;
+            case 2:
+                facing = EnumFacing.SOUTH;
+                break;
+            case 3:
+            default:
+                facing = EnumFacing.NORTH;
+                break;
+        }
+        return getDefaultState().withProperty(FACING, facing).withProperty(FLIPPED, (meta & 8) != 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        int meta;
+        switch (state.getValue(FACING)) {
+            case EAST:
+                meta = 0;
+                break;
+            case WEST:
+                meta = 1;
+                break;
+            case SOUTH:
+                meta = 2;
+                break;
+            case NORTH:
+            default:
+                meta = 3;
+                break;
+        }
+        if (state.getValue(FLIPPED)) {
+            meta |= 8;
+        }
+        return meta;
     }
 
     @Override

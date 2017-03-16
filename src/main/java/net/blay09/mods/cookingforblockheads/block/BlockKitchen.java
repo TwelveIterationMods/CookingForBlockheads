@@ -42,6 +42,7 @@ public abstract class BlockKitchen extends BlockContainer {
 	});
 
 	public static final PropertyBool LOWERED = PropertyBool.create("lowered");
+	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
 	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
 	private static final AxisAlignedBB BOUNDING_BOX_X = new AxisAlignedBB(0.03125, 0, 0, 0.96875, 0.9375, 1);
@@ -119,6 +120,23 @@ public abstract class BlockKitchen extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryNameString(), "inventory"));
+	}
+
+	public boolean shouldbePlacedFlipped(BlockPos pos, EnumFacing facing, EntityLivingBase placer) {
+		boolean flipped;
+		double dir = 0;
+		if(facing.getAxis() == EnumFacing.Axis.Z) {
+			dir = pos.getX() - placer.posX;
+			dir *= -1;
+		} else if(facing.getAxis() == EnumFacing.Axis.X) {
+			dir = pos.getZ() - placer.posZ;
+		}
+		if(facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE) {
+			flipped = dir < 0;
+		} else {
+			flipped = dir > 0;
+		}
+		return flipped;
 	}
 
 	public String getRegistryNameString() {

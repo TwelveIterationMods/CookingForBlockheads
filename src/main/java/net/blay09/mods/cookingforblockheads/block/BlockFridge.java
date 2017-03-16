@@ -41,7 +41,6 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	public static final PropertyEnum<FridgeType> TYPE = PropertyEnum.create("type", FridgeType.class);
-	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
 
 	public BlockFridge() {
 		super(Material.IRON);
@@ -169,10 +168,9 @@ public class BlockFridge extends BlockKitchen {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		double blockRotation = (double) (placer.rotationYaw * 4f / 360f) + 0.5;
-		boolean flipped = Math.abs(blockRotation - (int) blockRotation) < 0.5;
-		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FLIPPED, flipped);
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
+		return state.withProperty(FLIPPED, shouldbePlacedFlipped(pos, state.getValue(FACING), placer));
 	}
 
 	@Override

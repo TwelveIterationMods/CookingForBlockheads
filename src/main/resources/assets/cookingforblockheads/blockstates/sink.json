@@ -29,6 +29,13 @@
         "y": 180
       }
     },
+    "flipped": {
+      "true": {
+        "model": "cookingforblockheads:sink_flipped"
+      },
+      "false": {
+      }
+    },
     "color": {
       "white": {
         "textures": {
