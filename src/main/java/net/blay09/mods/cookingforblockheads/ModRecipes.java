@@ -70,7 +70,7 @@ public class ModRecipes {
 
 		// Kitchen Counter
 		if(config.getBoolean("Kitchen Counter", "blocks", true, "")) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.counter), "SSS", "CBC", "CCC", 'S', Blocks.STONE, 'C', Blocks.HARDENED_CLAY, 'B', Blocks.CHEST));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.counter), "SSS", "CBC", "CCC", 'S', Blocks.STONE, 'C', Blocks.HARDENED_CLAY, 'B', "chestWood"));
 		}
 
 		// Kitchen Corner
