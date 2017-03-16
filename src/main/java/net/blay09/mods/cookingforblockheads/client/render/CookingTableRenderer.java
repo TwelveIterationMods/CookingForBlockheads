@@ -23,7 +23,7 @@ public class CookingTableRenderer extends TileEntitySpecialRenderer<TileCookingT
         if (!itemStack.isEmpty()) {
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
-            GlStateManager.translate(x + 0.5, y + 0.825, z + 0.5);
+            GlStateManager.translate(x + 0.5, y + 1, z + 0.5);
             GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
             GlStateManager.rotate(90f, 1f, 0f, 0f);
             GlStateManager.scale(0.5f, 0.5f, 0.5f);

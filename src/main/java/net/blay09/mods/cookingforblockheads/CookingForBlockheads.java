@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 public class CookingForBlockheads {
 
 	// TODO fix the toaster
-	// TODO fix the fridge
+	// TODO change the recipes
 
     public static final String MOD_ID = "cookingforblockheads";
 	private static final Logger logger = LogManager.getLogger();
