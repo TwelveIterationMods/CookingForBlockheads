@@ -75,4 +75,15 @@ waila.cookingforblockheads:toast_progress=Toasting... (%s)
 
 hint.cookingforblockheads:more_foods.cut_bread_first=Use a Knife to cut the bread first.
 
+###
+
+cookingforblockheads:subtitle.fridge_open=Fridge opens
+cookingforblockheads:subtitle.fridge_close=Fridge closes
+cookingforblockheads:subtitle.oven_open=Oven opens
+cookingforblockheads:subtitle.oven_close=Oven closes
+cookingforblockheads:subtitle.toaster_start=Toaster starts toasting
+cookingforblockheads:subtitle.toaster_stop=Toaster finished toasting
+
+###
+
 jei.cookingforblockheads:cow_jar=Cow in a Jar

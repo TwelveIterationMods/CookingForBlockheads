@@ -2,7 +2,14 @@
   "forge_marker": 1,
   "defaults": {
     "model": "cookingforblockheads:toaster",
-    "transform": "forge:default-block"
+    "transform": "forge:default-block",
+    "textures": {
+      "particle": "cookingforblockheads:blocks/toaster",
+      "toaster_front": "cookingforblockheads:blocks/toaster_front",
+      "toaster_bottom": "cookingforblockheads:blocks/toaster_bottom",
+      "toaster_feet": "cookingforblockheads:blocks/toaster_feet",
+      "toaster_lever": "cookingforblockheads:blocks/toaster_lever"
+    }
   },
   "variants": {
     "normal": [{}],
@@ -34,6 +41,13 @@
           "scale": 0.5,
           "rotation": {"y": 180}
         }
+      }
+    },
+    "active": {
+      "true": {
+        "model": "cookingforblockheads:toaster_active"
+      },
+      "false": {
       }
     }
   }

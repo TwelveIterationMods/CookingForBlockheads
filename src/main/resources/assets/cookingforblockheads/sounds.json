@@ -18,5 +18,15 @@
     "category": "blocks",
     "subtitle": "cookingforblockheads:subtitle.oven_close",
     "sounds": [ "cookingforblockheads:oven_close" ]
+  },
+  "toaster_start": {
+    "category": "blocks",
+    "subtitle": "cookingforblockheads:subtitle.toaster_start",
+    "sounds": [ "cookingforblockheads:toaster_start" ]
+  },
+  "toaster_stop": {
+    "category": "blocks",
+    "subtitle": "cookingforblockheads:subtitle.toaster_stop",
+    "sounds": [ "cookingforblockheads:toaster_stop" ]
   }
 }

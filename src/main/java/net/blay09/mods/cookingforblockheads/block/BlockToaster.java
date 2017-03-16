@@ -8,11 +8,14 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,6 +30,8 @@ public class BlockToaster extends BlockKitchen {
 
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.275, 0, 0.275, 0.725, 0.4, 0.725);
 
+    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+
     public BlockToaster() {
         super(Material.IRON);
 
@@ -34,6 +39,21 @@ public class BlockToaster extends BlockKitchen {
         setUnlocalizedName(getRegistryNameString());
         setSoundType(SoundType.METAL);
         setHardness(2.5f);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, ACTIVE);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if(tileEntity instanceof TileToaster) {
+            return state.withProperty(ACTIVE, ((TileToaster) tileEntity).isActive());
+        }
+        return state;
     }
 
     @Override

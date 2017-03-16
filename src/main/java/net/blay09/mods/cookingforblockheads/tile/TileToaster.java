@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
@@ -12,6 +13,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -32,6 +34,18 @@ public class TileToaster extends TileEntity implements ITickable {
 
     private boolean active;
     private int toastTicks;
+
+    @Override
+    public boolean receiveClientEvent(int id, int type) {
+        if(id == 0) {
+            world.playSound(null, pos, ModSounds.toasterStart, SoundCategory.BLOCKS, 1f, 1f);
+            return true;
+        } else if(id == 1) {
+            world.playSound(null, pos, ModSounds.toasterStop, SoundCategory.BLOCKS, 1f, 1f);
+            return true;
+        }
+        return super.receiveClientEvent(id, type);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
@@ -87,6 +101,7 @@ public class TileToaster extends TileEntity implements ITickable {
                         entityItem.motionZ = 0f;
                         world.spawnEntity(entityItem);
                         itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+                        world.addBlockEvent(pos, blockType, 1, 0);
                     }
                 }
                 setActive(false);
@@ -98,10 +113,13 @@ public class TileToaster extends TileEntity implements ITickable {
         this.active = active;
         if(active) {
             toastTicks = TOAST_TICKS;
+            world.addBlockEvent(pos, blockType, 0, 0);
         } else {
             toastTicks = 0;
         }
-        VanillaPacketHandler.sendTileEntityUpdate(this);
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
     }
 
     public boolean isActive() {
