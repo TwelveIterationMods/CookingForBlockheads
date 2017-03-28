@@ -49,7 +49,3 @@ processResources{
         exclude 'mcmod.info'
     }
 }
-
-dependencies {
-    compile 'cofhcore:CoFHCore-[1.10.2]:release:universal'
-}
