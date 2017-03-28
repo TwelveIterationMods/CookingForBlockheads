@@ -328,7 +328,9 @@ public class CookingRegistry {
         ItemStack containerItem = ForgeHooks.getContainerItem(outputItem);
         if(containerItem != null && containerItem.getItem() == Items.BUCKET) {
             return true;
-        } else if(outputItem.getItem().getRegistryName().getResourcePath().contains("bucket")) {
+        }
+        ResourceLocation registryName = outputItem.getItem().getRegistryName();
+        if(registryName != null && registryName.getResourcePath().contains("bucket")) {
             return true;
         }
         return false;
