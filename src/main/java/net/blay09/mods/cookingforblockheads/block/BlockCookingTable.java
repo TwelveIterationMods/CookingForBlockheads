@@ -91,7 +91,7 @@ public class BlockCookingTable extends BlockKitchen {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
         if(tileEntity != null) {
-            ItemUtils.dropItem(world, pos, tileEntity.getNoFilterBook());
+            ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());
         }
         super.breakBlock(world, pos, state);
     }

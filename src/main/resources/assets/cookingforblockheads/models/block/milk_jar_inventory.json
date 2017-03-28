@@ -1,13 +1,5 @@
 {
 	"__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Static)",
-	"textures": {
-		"particle": "blocks/milk_glass",
-		"texture": "blocks/cow",
-		"milk_glass": "blocks/milk_glass",
-		"milk_lid": "blocks/milk_lid",
-		"milk_glass_top": "blocks/milk_glass_top",
-		"milk": "blocks/milk"
-	},
 	"elements": [
 		{
 			"__comment": "Static_Glass",

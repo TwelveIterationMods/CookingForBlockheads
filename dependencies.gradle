@@ -8,4 +8,5 @@ dependencies {
     provided "hosted-api:ImmersiveEngineering:0.10.48"
     deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.1-51"
     provided "hosted-api:MouseTweaks_1.11:2.8:api"
+    compile 'cofhcore:CoFHCore-[1.10.2]:release:universal'
 }

@@ -32,7 +32,7 @@ public class GuiOven extends GuiContainer {
 		super(new ContainerOven(player, tileEntity));
 		this.tileEntity = tileEntity;
 		this.xSize += 22;
-		this.ySize = 192;
+		this.ySize = 193;
 	}
 
 	@Override

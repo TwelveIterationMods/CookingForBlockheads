@@ -6,8 +6,10 @@ import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,6 +23,7 @@ public class JEIAddon extends BlankModPlugin {
 	public void register(@Nonnull IModRegistry registry) {
 		// Register cow jar recipe
 		registry.addRecipeCategories(new CowJarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+		registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
 		registry.addRecipeHandlers(new CowJarRecipeHandler());
 		registry.addRecipes(ImmutableList.of(new CowJarRecipe()));
 

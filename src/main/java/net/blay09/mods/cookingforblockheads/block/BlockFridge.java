@@ -177,7 +177,7 @@ public class BlockFridge extends BlockKitchen {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileFridge tileEntity = (TileFridge) world.getTileEntity(pos);
 		if (tileEntity != null) {
-			ItemUtils.dropContent(world, pos, tileEntity.getItemHandler());
+			ItemUtils.dropItemHandlerItems(world, pos, tileEntity.getItemHandler());
 		}
 		super.breakBlock(world, pos, state);
 	}

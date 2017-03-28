@@ -161,7 +161,7 @@ public class BlockCounter extends BlockKitchen {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileCounter tileEntity = (TileCounter) world.getTileEntity(pos);
 		if (tileEntity != null) {
-			ItemUtils.dropContent(world, pos, tileEntity.getItemHandler());
+			ItemUtils.dropItemHandlerItems(world, pos, tileEntity.getItemHandler());
 		}
 		super.breakBlock(world, pos, state);
 	}
