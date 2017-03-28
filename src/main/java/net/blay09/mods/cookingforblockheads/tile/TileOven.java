@@ -391,6 +391,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return energyConsumed;
     }
 
+    @Nullable
     public EnumFacing getFacing() {
         return facing;
     }

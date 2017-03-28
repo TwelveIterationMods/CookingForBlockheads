@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
@@ -23,7 +24,11 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer renderer = tessellator.getBuffer();
 
-		float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
+		EnumFacing facing = tileEntity.getFacing();
+		if(facing == null) {
+			return;
+		}
+		float blockAngle = RenderUtils.getFacingAngle(facing);
 		float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
 		// Render the oven door
