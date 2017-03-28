@@ -1,15 +1,20 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 
@@ -18,6 +23,10 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 
 	@Override
 	public void renderTileEntityAt(TileOven tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+		if(!tileEntity.hasWorld()) {
+			return;
+		}
+		World world = tileEntity.getWorld();
 		BlockPos pos = tileEntity.getPos();
 		BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
@@ -41,6 +50,20 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		RenderHelper.enableStandardItemLighting();
 		itemRenderer.renderModel(doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor, 0xFFFFFFFF);
 		GlStateManager.popMatrix();
+
+		// Render the oven door (new way) -- DOESN'T WORK RIGHT NOW FOR SOME REASON
+		// ALSO NEEDS A MODEL FOR EACH DIRECTION (see Kitchen Counter) OTHERWISE LIGHTING WILL BREAK
+//		GlStateManager.pushMatrix();
+//		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+//		GlStateManager.translate(0.5f, 0, 0.5f);
+//		GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
+//		GlStateManager.translate(-0.5f, 0f, -0.5f);
+//		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
+//		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+//		IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor;
+//		dispatcher.getBlockModelRenderer().renderModel(world, model, ModBlocks.oven.getDefaultState(), pos, renderer, false);
+//		tessellator.draw();
+//		GlStateManager.popMatrix();
 
 		// Render the oven tools
 		GlStateManager.pushMatrix();
