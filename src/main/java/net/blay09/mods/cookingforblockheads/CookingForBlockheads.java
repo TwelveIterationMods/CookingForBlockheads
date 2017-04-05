@@ -65,6 +65,7 @@ public class CookingForBlockheads {
 
 		ModBlocks.load();
 		ModItems.load();
+		ModSounds.register();
 
 		proxy.preInit(event);
 
