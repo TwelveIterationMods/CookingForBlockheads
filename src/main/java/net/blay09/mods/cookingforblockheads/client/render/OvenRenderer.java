@@ -26,17 +26,10 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		if(!tileEntity.hasWorld()) {
 			return;
 		}
-		World world = tileEntity.getWorld();
-		BlockPos pos = tileEntity.getPos();
 		BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer renderer = tessellator.getBuffer();
 
 		EnumFacing facing = tileEntity.getFacing();
-		if(facing == null) {
-			return;
-		}
 		float blockAngle = RenderUtils.getFacingAngle(facing);
 		float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
@@ -47,23 +40,9 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 		GlStateManager.translate(-0.5f, 0f, -0.5f);
 		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		RenderHelper.enableStandardItemLighting();
-		itemRenderer.renderModel(doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor, 0xFFFFFFFF);
+		IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor;
+		dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
 		GlStateManager.popMatrix();
-
-		// Render the oven door (new way) -- DOESN'T WORK RIGHT NOW FOR SOME REASON
-		// ALSO NEEDS A MODEL FOR EACH DIRECTION (see Kitchen Counter) OTHERWISE LIGHTING WILL BREAK
-//		GlStateManager.pushMatrix();
-//		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-//		GlStateManager.translate(0.5f, 0, 0.5f);
-//		GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-//		GlStateManager.translate(-0.5f, 0f, -0.5f);
-//		GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
-//		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-//		IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor;
-//		dispatcher.getBlockModelRenderer().renderModel(world, model, ModBlocks.oven.getDefaultState(), pos, renderer, false);
-//		tessellator.draw();
-//		GlStateManager.popMatrix();
 
 		// Render the oven tools
 		GlStateManager.pushMatrix();
