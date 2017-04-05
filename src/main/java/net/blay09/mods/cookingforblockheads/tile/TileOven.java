@@ -46,6 +46,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 if(getSmeltingResult(stack).isEmpty()) {
                     return stack;
                 }
+            } else if(slot == 3) {
+                if(!isItemFuel(stack)) {
+                    return stack;
+                }
             }
             return super.insertItem(slot, stack, simulate);
         }
