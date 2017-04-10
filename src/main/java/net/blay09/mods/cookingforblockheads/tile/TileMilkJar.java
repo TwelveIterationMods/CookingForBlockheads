@@ -17,11 +17,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class TileMilkJar extends TileEntity {
+public class TileMilkJar extends TileEntity implements IFluidHandler {
 
 	protected static final int MILK_CAPACITY = 8000;
 
@@ -85,14 +90,32 @@ public class TileMilkJar extends TileEntity {
 	private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
 	protected float milkAmount;
 
-	public void fill(int amount) {
+	public int fill(int amount) {
+		
+		int filled = amount;
+		if (filled > MILK_CAPACITY - milkAmount)
+		{
+			filled = (int) (MILK_CAPACITY - milkAmount);
+		}
+
 		milkAmount = Math.min(MILK_CAPACITY, milkAmount + amount);
 		VanillaPacketHandler.sendTileEntityUpdate(this);
+		
+		return filled;
 	}
 
-	public void drain(int amount) {
+	public int drain(int amount) {
+		
+		int drained = amount;
+		if (milkAmount < drained)
+		{
+			drained = (int) milkAmount;
+		}
+		
 		milkAmount = Math.max(0, milkAmount - amount);
 		VanillaPacketHandler.sendTileEntityUpdate(this);
+		
+		return drained;
 	}
 
 	@Override
@@ -150,5 +173,77 @@ public class TileMilkJar extends TileEntity {
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return oldState.getBlock() != newSate.getBlock();
+	}
+
+	@Override
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+		
+		if (FluidRegistry.getFluid("milk") == null || resource.getFluid().getName() != "milk")
+		{
+			return 0;
+		}
+		
+		if (doFill)
+		{
+			return fill(resource.amount);
+		}
+		else
+		{
+			return (int) (MILK_CAPACITY - milkAmount + resource.amount);
+		}
+	}
+
+	@Override
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+		
+		if (FluidRegistry.getFluid("milk") == null || resource.getFluid().getName() != "milk")
+		{
+			return null;
+		}
+		
+		if (doDrain)
+		{
+			return new FluidStack(resource.getFluid(), drain(resource.amount));
+		}
+		else
+		{
+			return new FluidStack(resource.getFluid(), (int) Math.min(milkAmount, resource.amount));
+		}
+	}
+
+	@Override
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+		
+		if (FluidRegistry.getFluid("milk") == null)
+		{
+			return null;
+		}
+		
+		if (doDrain)
+		{
+			return new FluidStack(FluidRegistry.getFluid("milk"), drain(maxDrain));
+		}
+		else
+		{
+			return new FluidStack(FluidRegistry.getFluid("milk"), (int) Math.min(milkAmount, maxDrain));
+		}
+	}
+
+	@Override
+	public boolean canFill(EnumFacing from, Fluid fluid) {
+		
+		return (FluidRegistry.getFluid("milk") != null);
+	}
+
+	@Override
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
+		
+		return (FluidRegistry.getFluid("milk") != null);
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
+		
+		return new FluidTankInfo[] { new FluidTankInfo(new FluidStack(FluidRegistry.getFluid("milk"), (int) milkAmount), MILK_CAPACITY) };
 	}
 }
