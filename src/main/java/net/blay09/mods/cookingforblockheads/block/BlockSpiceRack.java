@@ -109,6 +109,9 @@ public class BlockSpiceRack extends BlockKitchen {
                     } else {
 						tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, toolItem);
                     }
+					if(heldItem.stackSize == 0) {
+						player.setHeldItem(hand, null);
+					}
 				} else {
 					ItemStack itemStack = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
                     if (itemStack != null) {
