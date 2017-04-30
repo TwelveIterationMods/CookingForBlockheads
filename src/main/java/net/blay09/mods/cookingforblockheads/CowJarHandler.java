@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageCreateCowJar;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.DamageSource;
@@ -47,7 +48,8 @@ public class CowJarHandler {
 				return true;
 			}
 		}
-		return false;
+		String registryName = EntityList.getEntityString(entity);
+		return registryName != null && registryName.contains("cow");
 	}
 
 }
