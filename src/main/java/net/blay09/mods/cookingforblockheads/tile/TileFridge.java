@@ -25,7 +25,7 @@ import vazkii.quark.base.handler.IDropoffManager;
 
 import javax.annotation.Nullable;
 
-@Optional.Interface(modid = "Quark", iface = "vazkii.quark.base.handler.IDropoffManager", striprefs = true)
+@Optional.Interface(modid = "quark", iface = "vazkii.quark.base.handler.IDropoffManager", striprefs = true)
 public class TileFridge extends TileEntity implements ITickable, IDropoffManager {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
@@ -177,7 +177,7 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     }
 
     @Override
-    @Optional.Method(modid = "Quark")
+    @Optional.Method(modid = "quark")
     public boolean acceptsDropoff() {
         return true;
     }
