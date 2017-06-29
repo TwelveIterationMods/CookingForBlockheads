@@ -5,9 +5,11 @@ import com.google.common.collect.Lists;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.gui.BlankAdvancedGuiHandler;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,14 +27,13 @@ public class JEIAddon extends BlankModPlugin {
 		registry.addRecipes(ImmutableList.of(new CowJarRecipe()));
 
 		// Do not put JEI items behind the sorting buttons
-		registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiRecipeBook>() {
+		registry.addAdvancedGuiHandlers(new BlankAdvancedGuiHandler<GuiRecipeBook>() {
 			@Nonnull
 			@Override
 			public Class<GuiRecipeBook> getGuiContainerClass() {
 				return GuiRecipeBook.class;
 			}
 
-			@Nullable
 			@Override
 			public List<Rectangle> getGuiExtraAreas(GuiRecipeBook guiContainer) {
 				List<Rectangle> list = Lists.newArrayList();

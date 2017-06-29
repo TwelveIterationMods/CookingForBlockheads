@@ -13,27 +13,27 @@ import java.util.List;
 public class HarvestCraftAddon extends SimpleAddon {
 
     private static final String[] ADDITIONAL_RECIPES = new String[] {
-            "flourItem",
-            "doughItem",
-            "cornmealItem",
-            "freshwaterItem",
-            "pastaItem",
-            "vanillaItem",
-            "butterItem",
-            "heavycreamItem",
-            "saltItem",
-            "freshmilkItem",
-            "mayoItem",
-            "cocoapowderItem",
-            "ketchupItem",
-            "vinegarItem",
-            "mustardItem",
-            "blackpepperItem",
-            "groundcinnamonItem",
-            "groundnutmegItem",
-            "saladdressingItem",
-            "batterItem",
-            "oliveoilItem",
+            "flouritem",
+            "doughitem",
+            "cornmealitem",
+            "freshwateritem",
+            "pastaitem",
+            "vanillaitem",
+            "butteritem",
+            "heavycreamitem",
+            "saltitem",
+            "freshmilkitem",
+            "mayoitem",
+            "cocoapowderitem",
+            "ketchupitem",
+            "vinegaritem",
+            "mustarditem",
+            "blackpepperitem",
+            "groundcinnamonitem",
+            "groundnutmegitem",
+            "saladdressingitem",
+            "batteritem",
+            "oliveoilitem",
             "hotsauceitem",
             "sweetandsoursauceitem",
             "fivespiceitem",
@@ -44,40 +44,40 @@ public class HarvestCraftAddon extends SimpleAddon {
             "soysauceitem",
             "currypowderitem",
             "bubblywateritem",
-            "carrotcakeItem",
-            "holidaycakeItem",
-            "pumpkincheesecakeItem",
-            "pavlovaItem",
-            "lamingtonItem",
-            "cheesecakeItem",
-            "cherrycheesecakeItem",
-            "pineappleupsidedowncakeItem",
-            "chocolatesprinklecakeItem",
-            "redvelvetcakeItem"
+            "carrotcakeitem",
+            "holidaycakeitem",
+            "pumpkincheesecakeitem",
+            "pavlovaitem",
+            "lamingtonitem",
+            "cheesecakeitem",
+            "cherrycheesecakeitem",
+            "pineappleupsidedowncakeitem",
+            "chocolatesprinklecakeitem",
+            "redvelvetcakeitem"
     };
 
     private static final String[] OVEN_RECIPES = new String[] {
-            "turkeyrawItem", "turkeycookedItem",
-            "rabbitrawItem", "rabbitcookedItem",
-            "venisonrawItem", "venisoncookedItem"
+            "turkeyrawitem", "turkeycookeditem",
+            "rabbitrawitem", "rabbitcookeditem",
+            "venisonrawitem", "venisoncookeditem"
     };
 
     private static final String[] TOOLS = new String[] {
-            "cuttingboardItem",
-            "potItem",
-            "skilletItem",
-            "saucepanItem",
-            "bakewareItem",
-            "mortarandpestleItem",
-            "mixingbowlItem",
-            "juicerItem"
+            "cuttingboarditem",
+            "potitem",
+            "skilletitem",
+            "saucepanitem",
+            "bakewareitem",
+            "mortarandpestleitem",
+            "mixingbowlitem",
+            "juiceritem"
     };
 
-    private static final String OLIVE_OIL_ITEM = "oliveoilItem";
-    private static final String TOAST_ITEM = "toastItem";
+    private static final String OLIVE_OIL_ITEM = "oliveoilitem";
+    private static final String TOAST_ITEM = "toastitem";
 
-    private static final String FRESH_WATER_ITEM = "freshwaterItem";
-    private static final String FRESH_MILK_ITEM = "freshmilkItem";
+    private static final String FRESH_WATER_ITEM = "freshwateritem";
+    private static final String FRESH_MILK_ITEM = "freshmilkitem";
 
     public HarvestCraftAddon() {
         super("harvestcraft");
