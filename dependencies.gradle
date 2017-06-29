@@ -1,11 +1,11 @@
 dependencies {
     provided "hosted-api:InventoryTweaks:1.62-dev"
-    deobfCompile "mezz.jei:jei_1.11.2:4.2.4.226"
+    deobfCompile "mezz.jei:jei_1.12:4.7.0.68"
     deobfCompile "applecore:AppleCore:1.10.2-2.1.1:api"
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.9-B22_1.11"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12"
     deobfCompile "hosted-api:Quark-r1.2:81"
     provided "hosted-api:CraftTweaker:1.10.2"
     provided "hosted-api:ImmersiveEngineering:0.10.48"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.1-51"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.8-2"
     provided "hosted-api:MouseTweaks_1.11:2.8:api"
 }
