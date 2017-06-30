@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
@@ -29,7 +30,10 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 				if(!itemStack.isEmpty()) {
 					if (itemStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
 						NonNullList<ItemStack> subItems = NonNullList.create();
-						itemStack.getItem().getSubItems(itemStack.getItem(), itemStack.getItem().getCreativeTab(), subItems);
+						CreativeTabs tab = itemStack.getItem().getCreativeTab();
+						if(tab != null) {
+							itemStack.getItem().getSubItems(tab, subItems);
+						}
 						visibleStacks.addAll(subItems);
 					} else {
 						itemStack.setCount(1);
@@ -75,7 +79,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 	}
 
 	@Override
-	public boolean canBeHovered() {
+	public boolean isEnabled() {
 		return visibleStacks.size() > 0;
 	}
 

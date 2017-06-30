@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
+import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.block.state.IBlockState;
@@ -17,8 +17,8 @@ public class CowJarRenderer extends MilkJarRenderer {
 	private static EntityCow entity;
 
 	@Override
-	public void renderTileEntityAt(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-		super.renderTileEntityAt(tileEntity, x, y, z, partialTicks, destroyStage);
+	public void render(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		super.render(tileEntity, x, y, z, partialTicks, destroyStage, alpha);
 		IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
 		if(state.getBlock() != ModBlocks.cowJar) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
 			return;
@@ -30,7 +30,7 @@ public class CowJarRenderer extends MilkJarRenderer {
 		bindTexture(COW_TEXTURES);
 		if(entity != null) {
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(x + 0.5, y + 0.5 + (ModBlocks.milkJar.isLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z + 0.5);
+			GlStateManager.translate(x + 0.5, y + 0.5 + (BlockMilkJar.isLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z + 0.5);
 			GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
 			GlStateManager.rotate(180f, 0f, 0f, 1f);
 			GlStateManager.scale(0.02, 0.02, 0.02);

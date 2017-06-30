@@ -10,7 +10,6 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmel
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -68,9 +67,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 	@Override
 	public List<IKitchenItemProvider> getItemProviders(InventoryPlayer playerInventory) {
 		List<IKitchenItemProvider> sourceInventories = Lists.newArrayList();
-		for (IKitchenItemProvider provider : itemProviderList) {
-			sourceInventories.add(provider);
-		}
+		sourceInventories.addAll(itemProviderList);
 		sourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
 		return sourceInventories;
 	}

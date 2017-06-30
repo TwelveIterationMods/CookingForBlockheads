@@ -6,8 +6,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
-import java.util.concurrent.Callable;
-
 public class CapabilityKitchenSmeltingProvider {
 
 	@CapabilityInject(IKitchenSmeltingProvider.class)
@@ -24,12 +22,7 @@ public class CapabilityKitchenSmeltingProvider {
 			public void readNBT(Capability<IKitchenSmeltingProvider> capability, IKitchenSmeltingProvider instance, EnumFacing side, NBTBase nbt) {
 
 			}
-		}, new Callable<IKitchenSmeltingProvider>() {
-			@Override
-			public IKitchenSmeltingProvider call() throws Exception {
-				return new KitchenSmeltingProvider();
-			}
-		});
+		}, KitchenSmeltingProvider::new);
 	}
 
 }

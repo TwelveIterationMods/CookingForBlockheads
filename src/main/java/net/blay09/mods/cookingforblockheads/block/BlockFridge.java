@@ -1,17 +1,17 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -25,9 +25,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockFridge extends BlockKitchen {
+
+	public static final String name = "fridge";
+	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
 	public enum FridgeType implements IStringSerializable {
 		SMALL,
@@ -45,8 +49,7 @@ public class BlockFridge extends BlockKitchen {
 	public BlockFridge() {
 		super(Material.IRON);
 
-		setRegistryName(CookingForBlockheads.MOD_ID, "fridge");
-		setUnlocalizedName(getRegistryNameString());
+		setUnlocalizedName(registryName.toString());
 		setSoundType(SoundType.METAL);
 		setHardness(5f);
 		setResistance(10f);
@@ -170,7 +173,7 @@ public class BlockFridge extends BlockKitchen {
 	@SuppressWarnings("deprecation")
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
-		return state.withProperty(FLIPPED, shouldbePlacedFlipped(pos, state.getValue(FACING), placer));
+		return state.withProperty(FLIPPED, shouldBePlacedFlipped(pos, state.getValue(FACING), placer));
 	}
 
 	@Override
@@ -183,12 +186,12 @@ public class BlockFridge extends BlockKitchen {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		super.addInformation(stack, player, tooltip, advanced);
-		for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+		super.addInformation(stack, world, tooltip, advanced);
+		for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
 			tooltip.add(TextFormatting.GRAY + s);
 		}
-		tooltip.add(TextFormatting.AQUA + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":dyeable"));
+		tooltip.add(TextFormatting.AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
 	}
 
 	@Override

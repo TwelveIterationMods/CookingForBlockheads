@@ -26,8 +26,8 @@ public class GuiButtonSort extends GuiButton {
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x   + this.width && mouseY < this.y + this.height;
 
         int texY = button.getIconTextureY();
         if(!enabled) {
@@ -37,7 +37,7 @@ public class GuiButtonSort extends GuiButton {
         }
         GlStateManager.color(1f, 1f, 1f, 1f);
         mc.getTextureManager().bindTexture(this.button.getIcon());
-        drawTexturedModalRect(xPosition, yPosition, button.getIconTextureX(), texY, width, height);
+        drawTexturedModalRect(x, y, button.getIconTextureX(), texY, width, height);
     }
 
     public List<String> getTooltipLines() {

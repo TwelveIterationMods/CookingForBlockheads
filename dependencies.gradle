@@ -1,9 +1,9 @@
 dependencies {
-    provided "hosted-api:InventoryTweaks:1.62-dev"
+    deobfCompile 'inventory-tweaks:InventoryTweaks:1.63+dev.98'
     deobfCompile "mezz.jei:jei_1.12:4.7.0.68"
-    deobfCompile "applecore:AppleCore:1.10.2-2.1.1:api"
+    deobfCompile "applecore:AppleCore:1.12-2.2.1"
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12"
-    deobfCompile "hosted-api:Quark-r1.2:81"
+    deobfCompile "quark:Quark:r1.2:98"
     provided "hosted-api:CraftTweaker:1.10.2"
     provided "hosted-api:ImmersiveEngineering:0.10.48"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.8-2"

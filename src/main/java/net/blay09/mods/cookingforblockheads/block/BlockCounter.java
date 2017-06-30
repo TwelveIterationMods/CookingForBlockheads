@@ -1,16 +1,16 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -20,16 +20,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 
 public class BlockCounter extends BlockKitchen {
+
+	public static final String name = "counter";
+	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
 	public enum ModelPass implements IStringSerializable {
 		STATIC,
@@ -47,8 +52,7 @@ public class BlockCounter extends BlockKitchen {
 	public BlockCounter() {
 		super(Material.ROCK);
 
-		setRegistryName(CookingForBlockheads.MOD_ID, "counter");
-		setUnlocalizedName(getRegistryNameString());
+		setUnlocalizedName(registryName.toString());
 		setSoundType(SoundType.STONE);
 		setHardness(5f);
 		setResistance(10f);
@@ -154,7 +158,7 @@ public class BlockCounter extends BlockKitchen {
 	@SuppressWarnings("deprecation")
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
-		return state.withProperty(FLIPPED, shouldbePlacedFlipped(pos, state.getValue(FACING), placer));
+		return state.withProperty(FLIPPED, shouldBePlacedFlipped(pos, state.getValue(FACING), placer));
 	}
 
 	@Override
@@ -167,9 +171,9 @@ public class BlockCounter extends BlockKitchen {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		super.addInformation(stack, player, tooltip, advanced);
-		for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+		super.addInformation(stack, world, tooltip, advanced);
+		for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
 			tooltip.add(TextFormatting.GRAY + s);
 		}
 	}

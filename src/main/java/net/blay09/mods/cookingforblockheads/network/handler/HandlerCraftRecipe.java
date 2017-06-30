@@ -15,13 +15,10 @@ public class HandlerCraftRecipe implements IMessageHandler<MessageCraftRecipe, I
     @Override
 	@Nullable
     public IMessage onMessage(final MessageCraftRecipe message, final MessageContext ctx) {
-		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
-			@Override
-			public void run() {
-				Container container = ctx.getServerHandler().player.openContainer;
-				if(container instanceof ContainerRecipeBook) {
-					((ContainerRecipeBook) container).tryCraft(message.getOutputItem(), message.getRecipeType(), message.getCraftMatrix(), message.isStack());
-				}
+		NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
+			Container container = ctx.getServerHandler().player.openContainer;
+			if(container instanceof ContainerRecipeBook) {
+				((ContainerRecipeBook) container).tryCraft(message.getOutputItem(), message.getRecipeType(), message.getCraftMatrix(), message.isStack());
 			}
 		});
         return null;

@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler;
-import net.blay09.mods.cookingforblockheads.CookingConfig;
+import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;
@@ -124,7 +124,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 for (int i = 0; i < itemHandlerFuel.getSlots(); i++) {
                     ItemStack fuelItem = itemHandlerFuel.getStackInSlot(i);
                     if (!fuelItem.isEmpty()) {
-                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * CookingConfig.ovenFuelTimeMultiplier);
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * ModConfig.general.ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
                             fuelItem.shrink(1);
                             if (fuelItem.getCount() == 0) {
@@ -147,7 +147,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                         if(furnaceBurnTime > 0) {
                             slotCookTime[i]++;
                         }
-                        if (slotCookTime[i] >= COOK_TIME * CookingConfig.ovenCookTimeMultiplier) {
+                        if (slotCookTime[i] >= COOK_TIME * ModConfig.general.ovenCookTimeMultiplier) {
                             ItemStack resultStack = getSmeltingResult(itemStack);
                             if (!resultStack.isEmpty()) {
                                 itemHandlerProcessing.setStackInSlot(i, resultStack.copy());
@@ -217,7 +217,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public static int getItemBurnTime(ItemStack fuelItem) {
         int fuelTime = CookingRegistry.getOvenFuelTime(fuelItem);
-        if(fuelTime != 0 || CookingConfig.ovenRequiresCookingOil) {
+        if(fuelTime != 0 || ModConfig.compat.ovenRequiresCookingOil) {
             return fuelTime;
         }
         return TileEntityFurnace.getItemBurnTime(fuelItem);
@@ -285,7 +285,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     public float getCookProgress(int i) {
-        return (float) slotCookTime[i] / ((float) COOK_TIME * CookingConfig.ovenCookTimeMultiplier);
+        return (float) slotCookTime[i] / ((float) COOK_TIME * ModConfig.general.ovenCookTimeMultiplier);
     }
 
     @Override
@@ -371,7 +371,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             boolean burning = isBurning();
             if(furnaceBurnTime < 200) {
                 int heatAttempt = 4;
-                int heatEnergyRatio = (int) Math.max(1, ExternalHeaterHandler.defaultFurnaceEnergyCost * CookingConfig.ovenFuelTimeMultiplier);
+                int heatEnergyRatio = (int) Math.max(1, ExternalHeaterHandler.defaultFurnaceEnergyCost * ModConfig.general.ovenFuelTimeMultiplier);
                 int energyToUse = Math.min(energyAvailable, heatAttempt * heatEnergyRatio);
                 int heat = energyToUse / heatEnergyRatio;
                 if(heat > 0) {

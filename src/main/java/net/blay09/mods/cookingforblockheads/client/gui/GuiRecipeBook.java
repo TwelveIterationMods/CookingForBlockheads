@@ -156,7 +156,7 @@ public class GuiRecipeBook extends GuiContainer {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) throws IOException {
 		super.mouseClicked(mouseX, mouseY, button);
-		if(button == 1 && mouseX >= searchBar.xPosition && mouseX < searchBar.xPosition + searchBar.width && mouseY >= searchBar.yPosition && mouseY < searchBar.yPosition + searchBar.height) {
+		if(button == 1 && mouseX >= searchBar.x && mouseX < searchBar.x + searchBar.width && mouseY >= searchBar.y && mouseY < searchBar.y + searchBar.height) {
 			searchBar.setText("");
 			container.search(null);
 			container.populateRecipeSlots();

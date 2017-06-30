@@ -12,7 +12,7 @@ import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
@@ -74,8 +74,7 @@ public class CookingRegistry {
         nonFoodRecipes = init.getNonFoodRecipes();
 
         // Crafting Recipes of Food Items
-        for(Object obj : CraftingManager.getInstance().getRecipeList()) {
-            IRecipe recipe = (IRecipe) obj;
+        for(IRecipe recipe : CraftingManager.REGISTRY) {
             ItemStack output = recipe.getRecipeOutput();
             if(!output.isEmpty()) {
                 if (output.getItem() instanceof ItemFood) {
@@ -290,7 +289,7 @@ public class CookingRegistry {
     }
 
     public static List<IKitchenItemProvider> getItemProviders(@Nullable KitchenMultiBlock multiBlock, InventoryPlayer inventory) {
-        return multiBlock != null ? multiBlock.getItemProviders(inventory) : Lists.<IKitchenItemProvider>newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
+        return multiBlock != null ? multiBlock.getItemProviders(inventory) : Lists.newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
     }
 
     @Nullable

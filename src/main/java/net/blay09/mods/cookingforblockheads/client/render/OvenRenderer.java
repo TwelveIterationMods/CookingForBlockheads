@@ -1,20 +1,13 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 
@@ -22,7 +15,7 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 	public static IBakedModel modelDoorActive;
 
 	@Override
-	public void renderTileEntityAt(TileOven tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileOven tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(!tileEntity.hasWorld()) {
 			return;
 		}

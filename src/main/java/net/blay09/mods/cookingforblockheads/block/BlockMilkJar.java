@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,27 +16,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockMilkJar extends BlockKitchen {
 
+    public static final String name = "milk_jar";
+    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 0.5, 0.7);
 
     public BlockMilkJar() {
-        this("milk_jar");
-    }
-
-    public BlockMilkJar(String registryName) {
         super(Material.GLASS);
 
-        setRegistryName(CookingForBlockheads.MOD_ID, registryName);
-        setUnlocalizedName(getRegistryNameString());
+        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.GLASS);
         setHardness(0.6f);
     }
@@ -55,7 +55,7 @@ public class BlockMilkJar extends BlockKitchen {
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         Block blockBelow = world.getBlockState(pos.down()).getBlock();
         if(blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter) {
-            return BOUNDING_BOX.addCoord(0, -0.05, 0);
+            return BOUNDING_BOX.expand(0, -0.05, 0);
         }
         return BOUNDING_BOX;
     }
@@ -90,9 +90,9 @@ public class BlockMilkJar extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, player, tooltip, advanced);
-        for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, world, tooltip, advanced);
+        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
     }
@@ -107,7 +107,7 @@ public class BlockMilkJar extends BlockKitchen {
         return new TileMilkJar();
     }
 
-    public boolean isLowered(IBlockAccess world, BlockPos pos) {
+    public static boolean isLowered(IBlockAccess world, BlockPos pos) {
         Block blockBelow = world.getBlockState(pos.down()).getBlock();
         return blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter;
     }

@@ -1,12 +1,13 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -25,6 +27,9 @@ import java.util.List;
 
 public class BlockToolRack extends BlockKitchen {
 
+	public static final String name = "tool_rack";
+	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+
 	private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[] {
 			new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1),
 			new AxisAlignedBB(0, 0.25, 0, 1, 1, 0.125),
@@ -35,8 +40,7 @@ public class BlockToolRack extends BlockKitchen {
     public BlockToolRack() {
         super(Material.WOOD);
 
-		setRegistryName(CookingForBlockheads.MOD_ID, "tool_rack");
-		setUnlocalizedName(getRegistryNameString());
+		setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
@@ -134,10 +138,10 @@ public class BlockToolRack extends BlockKitchen {
 		super.breakBlock(world, pos, state);
 	}
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, player, tooltip, advanced);
-        for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+		super.addInformation(stack, world, tooltip, advanced);
+        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
     }

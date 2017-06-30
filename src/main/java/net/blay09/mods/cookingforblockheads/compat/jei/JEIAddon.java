@@ -2,10 +2,11 @@ package net.blay09.mods.cookingforblockheads.compat.jei;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
 import net.minecraft.client.gui.GuiButton;
@@ -17,30 +18,26 @@ import java.awt.Rectangle;
 import java.util.List;
 
 @JEIPlugin
-public class JEIAddon extends BlankModPlugin {
+public class JEIAddon implements IModPlugin {
 
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
 		// Register cow jar recipe
-		registry.addRecipeCategories(new CowJarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-		registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
-		registry.addRecipeHandlers(new CowJarRecipeHandler());
-		registry.addRecipes(ImmutableList.of(new CowJarRecipe()));
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
+		registry.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
 
 		// Do not put JEI items behind the sorting buttons
 		registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiRecipeBook>() {
-			@Nonnull
 			@Override
 			public Class<GuiRecipeBook> getGuiContainerClass() {
 				return GuiRecipeBook.class;
 			}
 
-			@Nullable
 			@Override
 			public List<Rectangle> getGuiExtraAreas(GuiRecipeBook guiContainer) {
 				List<Rectangle> list = Lists.newArrayList();
 				for(GuiButton button : guiContainer.getSortingButtons()) {
-					list.add(new Rectangle(button.xPosition, button.yPosition, button.width, button.height));
+					list.add(new Rectangle(button.x, button.y, button.width, button.height));
 				}
 				return list;
 			}
@@ -53,4 +50,8 @@ public class JEIAddon extends BlankModPlugin {
 		});
 	}
 
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registry) {
+		registry.addRecipeCategories(new CowJarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+	}
 }

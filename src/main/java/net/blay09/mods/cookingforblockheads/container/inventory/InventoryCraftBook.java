@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -10,7 +10,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -124,9 +123,9 @@ public class InventoryCraftBook extends InventoryCrafting {
 		FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
 		result.onCrafting(player.world, player, 1);
 		if(result.getItem() == Items.BREAD) {
-			player.addStat(AchievementList.MAKE_BREAD, 1);
+//			player.addStat(AdvancementList.MAKE_BREAD, 1); // TODO check achievement
 		} else if(result.getItem() == Items.CAKE) {
-			player.addStat(AchievementList.BAKE_CAKE, 1);
+//			player.addStat(AdvancementList.BAKE_CAKE, 1); // TODO check achievement
 		}
 	}
 

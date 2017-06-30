@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.model.ModelFridgeDoor;
@@ -25,7 +24,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
     private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_large_door.png");
 
     @Override
-    public void renderTileEntityAt(TileFridge tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileFridge tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if(state.getBlock() != ModBlocks.fridge) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
@@ -38,7 +37,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         }
         GlStateManager.pushMatrix();
         EnumDyeColor fridgeColor = tileEntity.getFridgeColor();
-        int color = fridgeColor.getMapColor().colorValue;
+        int color = fridgeColor.getColorValue();
         GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, 1f);
         GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
         GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);

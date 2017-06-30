@@ -152,12 +152,12 @@ public class ContainerRecipeBook extends Container {
 		super.detectAndSendChanges();
 
 		if (!player.world.isRemote) {
-			if (isDirty || player.inventory.inventoryChanged) {
+			if (isDirty || player.inventory.inventoryChanged) { // TODO AT timesChanged
 				findAndSendItemList();
 				if (!lastOutputItem.isEmpty()) {
 					findAndSendRecipes(lastOutputItem);
 				}
-				player.inventory.inventoryChanged = false;
+				player.inventory.inventoryChanged = false; // TODO AT timesChanged
 				isDirty = false;
 			}
 		}

@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
@@ -9,6 +9,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -20,18 +21,21 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
 public class  BlockOven extends BlockKitchen {
 
+    public static final String name = "oven";
+    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final Random random = new Random();
 
     public BlockOven() {
         super(Material.IRON);
 
-        setRegistryName(CookingForBlockheads.MOD_ID, "oven");
-        setUnlocalizedName(getRegistryNameString());
+        setRegistryName(name);
+        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.METAL);
         setHardness(5f);
         setResistance(10f);
@@ -143,38 +147,11 @@ public class  BlockOven extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, player, tooltip, advanced);
-        for (String s : I18n.format("tooltip." + getRegistryName() + ".description").split("\\\\n")) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, world, tooltip, advanced);
+        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
     }
 
-//    @Override
-//    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-//        TileEntity tileEntity = world.getTileEntity(pos);
-//        if(tileEntity instanceof TileOven) {
-//            ((TileOven) tileEntity).setOvenColor(color);
-//        }
-//        return true;
-//    }
-
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerModels(ItemModelMesher mesher) {
-//        super.registerModels(mesher);
-
-//        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() {
-//            @Override
-//            public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
-//                if(world != null && pos != null) {
-//                    TileEntity tileEntity = world.getTileEntity(pos);
-//                    if (tileEntity instanceof TileOven) {
-//                        return ((TileOven) tileEntity).getOvenColor().getMapColor().colorValue;
-//                    }
-//                }
-//                return 0xFFFFFFFF;
-//            }
-//        }, this);
-//    }
 }

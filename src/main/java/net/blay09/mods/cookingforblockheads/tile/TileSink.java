@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.CookingConfig;
+import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -35,7 +35,7 @@ public class TileSink extends TileEntity {
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if(!CookingConfig.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
+            if(!ModConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
                 return resource.amount;
             }
             return super.fill(resource, doFill);
@@ -43,7 +43,7 @@ public class TileSink extends TileEntity {
 
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if(!CookingConfig.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
+            if(!ModConfig.general.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
                 return resource.copy();
             }
             return super.drain(resource, doDrain);
@@ -51,7 +51,7 @@ public class TileSink extends TileEntity {
 
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
-            if(!CookingConfig.sinkRequiresWater) {
+            if(!ModConfig.general.sinkRequiresWater) {
                 return new FluidStack(FluidRegistry.WATER, maxDrain);
             }
             return super.drain(maxDrain, doDrain);
@@ -77,7 +77,7 @@ public class TileSink extends TileEntity {
 
         @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-            if(!CookingConfig.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
+            if(!ModConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
                 if(requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
                     if(!CookingRegistry.consumeBucket(inventories, simulate)) {
                         return ItemStack.EMPTY;

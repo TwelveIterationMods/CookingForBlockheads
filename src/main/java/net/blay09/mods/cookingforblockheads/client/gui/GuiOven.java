@@ -20,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class GuiOven extends GuiContainer {
@@ -92,7 +91,7 @@ public class GuiOven extends GuiContainer {
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GUI, false);
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexBuffer = tessellator.getBuffer();
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 		vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 		for (EnumFacing facing : EnumFacing.values()) {
 			renderQuads(vertexBuffer, model.getQuads(null, facing, 0L), color, itemStack);
@@ -108,7 +107,7 @@ public class GuiOven extends GuiContainer {
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 	}
 
-	private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color, ItemStack stack) {
+	private void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack) {
 		boolean useItemTint = color == -1 && !stack.isEmpty();
 		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {

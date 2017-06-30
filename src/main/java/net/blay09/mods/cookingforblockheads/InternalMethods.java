@@ -50,7 +50,7 @@ public class InternalMethods implements IInternalMethods {
 
     @Override
     public void addCowClass(Class<? extends EntityLivingBase> clazz) {
-        CookingForBlockheads.instance.cowJarHandler.registerCowClass(clazz);
+        CowJarHandler.registerCowClass(clazz);
     }
     
     @Override

@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModSounds {
 
@@ -13,20 +13,22 @@ public class ModSounds {
 	public static SoundEvent toasterStart;
 	public static SoundEvent toasterStop;
 
-	public static void register() {
-		fridgeOpen = registerSound("fridge_open");
-		fridgeClose = registerSound("fridge_close");
-		ovenOpen = registerSound("oven_open");
-		ovenClose = registerSound("oven_close");
-		toasterStart = registerSound("toaster_start");
-		toasterStop = registerSound("toaster_stop");
+	public static void register(IForgeRegistry<SoundEvent> registry) {
+		registry.registerAll(
+				fridgeOpen = newSoundEvent("fridge_open"),
+				fridgeClose = newSoundEvent("fridge_close"),
+				ovenOpen = newSoundEvent("oven_open"),
+				ovenClose = newSoundEvent("oven_close"),
+				toasterStart = newSoundEvent("toaster_start"),
+				toasterStop = newSoundEvent("toaster_stop")
+		);
 	}
 
-	private static SoundEvent registerSound(String name) {
+	private static SoundEvent newSoundEvent(String name) {
 		ResourceLocation location = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 		SoundEvent sound = new SoundEvent(location);
 		sound.setRegistryName(location);
-		GameRegistry.register(sound);
 		return sound;
 	}
+
 }

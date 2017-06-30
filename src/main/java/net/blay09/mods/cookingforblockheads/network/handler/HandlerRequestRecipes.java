@@ -15,13 +15,10 @@ public class HandlerRequestRecipes implements IMessageHandler<MessageRequestReci
     @Override
 	@Nullable
     public IMessage onMessage(final MessageRequestRecipes message, final MessageContext ctx) {
-		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
-			@Override
-			public void run() {
-				Container container = ctx.getServerHandler().player.openContainer;
-				if(container instanceof ContainerRecipeBook) {
-					((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem());
-				}
+		NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
+			Container container = ctx.getServerHandler().player.openContainer;
+			if(container instanceof ContainerRecipeBook) {
+				((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem());
 			}
 		});
         return null;

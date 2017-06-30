@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.google.common.base.Predicate;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -11,21 +10,20 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,12 +32,7 @@ import java.util.List;
 
 public abstract class BlockKitchen extends BlockContainer {
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>() {
-		@Override
-		public boolean apply(@Nullable EnumFacing input) {
-			return input != EnumFacing.DOWN && input != EnumFacing.UP;
-		}
-	});
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", input -> input != EnumFacing.DOWN && input != EnumFacing.UP);
 
 	public static final PropertyBool LOWERED = PropertyBool.create("lowered");
 	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
@@ -113,16 +106,11 @@ public abstract class BlockKitchen extends BlockContainer {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":multiblock_kitchen"));
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+		tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:multiblock_kitchen"));
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryNameString(), "inventory"));
-	}
-
-	public boolean shouldbePlacedFlipped(BlockPos pos, EnumFacing facing, EntityLivingBase placer) {
+	public boolean shouldBePlacedFlipped(BlockPos pos, EnumFacing facing, EntityLivingBase placer) {
 		boolean flipped;
 		double dir = 0;
 		if(facing.getAxis() == EnumFacing.Axis.Z) {
@@ -139,8 +127,4 @@ public abstract class BlockKitchen extends BlockContainer {
 		return flipped;
 	}
 
-	public String getRegistryNameString() {
-		//noinspection ConstantConditions
-		return getRegistryName().toString();
-	}
 }

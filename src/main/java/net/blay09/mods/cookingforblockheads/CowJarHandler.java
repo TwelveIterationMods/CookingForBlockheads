@@ -18,10 +18,18 @@ import java.util.List;
 
 public class CowJarHandler {
 
-	private final List<Class<? extends EntityLivingBase>> additionalCowClasses = Lists.newArrayList();
+	private static final List<Class<? extends EntityLivingBase>> additionalCowClasses = Lists.newArrayList();
+
+	@SuppressWarnings("unchecked")
+	public static void registerCowClass(Class<?> clazz) {
+		additionalCowClasses.add((Class<? extends EntityLivingBase>) clazz);
+	}
 
 	@SubscribeEvent
 	public void onEntityDamage(LivingAttackEvent event) {
+		if(!ModConfig.general.cowJarEnabled) {
+			return;
+		}
 		if(event.getSource() == DamageSource.ANVIL && isCow(event.getEntityLiving())) {
 			BlockPos pos = event.getEntity().getPosition().down();
 			IBlockState blockBelow = event.getEntity().getEntityWorld().getBlockState(pos);
@@ -32,11 +40,6 @@ public class CowJarHandler {
 			event.getEntity().setDead();
 			event.setCanceled(true);
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void registerCowClass(Class<?> clazz) {
-		additionalCowClasses.add((Class<? extends EntityLivingBase>) clazz);
 	}
 
 	public boolean isCow(EntityLivingBase entity) {

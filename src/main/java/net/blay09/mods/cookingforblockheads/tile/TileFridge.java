@@ -4,8 +4,10 @@ import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -21,11 +23,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import vazkii.quark.base.handler.IDropoffManager;
+import vazkii.quark.api.IDropoffManager;
 
 import javax.annotation.Nullable;
 
-@Optional.Interface(modid = "Quark", iface = "vazkii.quark.base.handler.IDropoffManager", striprefs = true)
+@Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
 public class TileFridge extends TileEntity implements ITickable, IDropoffManager {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
@@ -177,8 +179,8 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     }
 
     @Override
-    @Optional.Method(modid = "Quark")
-    public boolean acceptsDropoff() {
+    public boolean acceptsDropoff(EntityPlayer entityPlayer) {
         return true;
     }
+
 }

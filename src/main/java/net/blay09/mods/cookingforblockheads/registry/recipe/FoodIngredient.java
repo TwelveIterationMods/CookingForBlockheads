@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.registry.recipe;
 
-import net.blay09.mods.cookingforblockheads.blaycommon.ItemUtils;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 

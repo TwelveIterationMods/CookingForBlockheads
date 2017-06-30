@@ -16,13 +16,10 @@ public class HandlerRecipes implements IMessageHandler<MessageRecipes, IMessage>
     @Override
 	@Nullable
     public IMessage onMessage(final MessageRecipes message, MessageContext ctx) {
-		NetworkHandler.getThreadListener(ctx).addScheduledTask(new Runnable() {
-			@Override
-			public void run() {
-				Container container = FMLClientHandler.instance().getClientPlayerEntity().openContainer;
-				if(container instanceof ContainerRecipeBook) {
-					((ContainerRecipeBook) container).setRecipeList(message.getOutputItem(), message.getRecipeList());
-				}
+		NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
+			Container container = FMLClientHandler.instance().getClientPlayerEntity().openContainer;
+			if(container instanceof ContainerRecipeBook) {
+				((ContainerRecipeBook) container).setRecipeList(message.getOutputItem(), message.getRecipeList());
 			}
 		});
         return null;

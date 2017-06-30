@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.blaycommon.RenderUtils;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.minecraft.block.state.IBlockState;
@@ -13,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class SpiceRackRenderer extends TileEntitySpecialRenderer<TileSpiceRack> {
 
 	@Override
-	public void renderTileEntityAt(TileSpiceRack tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileSpiceRack tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
 		if(state.getBlock() != ModBlocks.spiceRack) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
 			return;

@@ -5,7 +5,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class CowJarRecipeCategory extends BlankRecipeCategory<CowJarRecipe> {
+public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
 	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
 
@@ -39,6 +39,11 @@ public class CowJarRecipeCategory extends BlankRecipeCategory<CowJarRecipe> {
 	@Override
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public String getModName() {
+		return "Cooking for Blockheads";
 	}
 
 	@Nonnull
