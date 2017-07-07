@@ -5,6 +5,7 @@ public class Compat {
 	public static final String MORE_FOOD = "morefood";
 	public static final String EXTRA_FOOD = "extrafood";
 	public static final String FOOD_EXPANSION = "fe"; // pls
+	public static final String VANILLA_FOOD_PANTRY = "vanillafoodpantry";
 	public static final String MINETWEAKER = "minetweaker3";
 	public static final String IMMERSIVE_ENGINEERING = "immersiveengineering";
 	public static final String THEONEPROBE = "theoneprobe";

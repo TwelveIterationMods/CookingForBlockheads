@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ public class SimpleAddon {
 
 	private final String modId;
 	private final List<String> additionalRecipes = Lists.newArrayList();
+	private final List<String> wildcardRecipes = Lists.newArrayList();
 
 	public SimpleAddon(String modId) {
 		this.modId = modId;
@@ -31,11 +33,22 @@ public class SimpleAddon {
 				event.registerNonFoodRecipe(itemStack);
 			}
 		}
+                for(String s : wildcardRecipes) {
+			ItemStack itemStack = getModItemStack(s);
+			if(!itemStack.isEmpty()) {
+                                itemStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
+				event.registerNonFoodRecipe(itemStack);
+			}
+                }
 	}
 
 	public void addNonFoodRecipe(String... names) {
 		Collections.addAll(additionalRecipes, names);
 	}
+
+        public void addWildcardNonFoodRecipe(String... names) {
+                Collections.addAll(wildcardRecipes, names);
+        }
 
 	public void addTool(String... names) {
 		for(String name : names) {
