@@ -12,6 +12,7 @@ public class ShapedOreCraftingFood extends FoodRecipe {
     @SuppressWarnings("unchecked")
     public ShapedOreCraftingFood(ShapedOreRecipe recipe) {
         this.outputItem = recipe.getRecipeOutput();
+        this.recipeWidth = recipe.getWidth();
         this.craftMatrix = Lists.newArrayList();
         for(int i = 0; i < recipe.getInput().length; i++) {
             Object input = recipe.getInput()[i];
