@@ -70,6 +70,7 @@ public class VanillaFoodPantryAddon extends SimpleAddon {
         super("vanillafoodpantry");
 
         addNonFoodRecipe(ADDITIONAL_RECIPES);
+        addWildcardNonFoodRecipe(WILDCARD_RECIPES);
         addTool(TOOLS);
 
         CookingForBlockheadsAPI.addWaterItem(getModItemStack(FRESH_WATER_ITEM));
