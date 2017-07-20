@@ -215,12 +215,12 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void findAndSendItemList() {
-		Map<ResourceLocation, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
+		Map<CookingRegistry.ItemID, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		keyLoop:
-		for (ResourceLocation key : CookingRegistry.getFoodRecipes().keySet()) {
+		for (CookingRegistry.ItemID key : CookingRegistry.getFoodRecipes().keySet()) {
 			RecipeStatus bestStatus = null;
-			for (FoodRecipe recipe : CookingRegistry.getFoodRecipes().get(key)) {
+			for (FoodRecipe recipe : CookingRegistry.getFoodRecipes(key)) {
 				RecipeStatus thisStatus = CookingRegistry.getRecipeStatus(recipe, inventories);
 				if (noFilter || thisStatus != RecipeStatus.MISSING_INGREDIENTS) {
 					if (bestStatus == null || thisStatus.ordinal() > bestStatus.ordinal()) {
