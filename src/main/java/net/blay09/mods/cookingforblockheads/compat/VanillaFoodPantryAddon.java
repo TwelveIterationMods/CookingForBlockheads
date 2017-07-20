@@ -47,16 +47,9 @@ public class VanillaFoodPantryAddon extends SimpleAddon {
         "skewers_wood",
     };
 
-    private static final String[] WILDCARD_RECIPES = new String[] {
-        "dough_ball",
-        "foodpowder",
-        "meat_portion",
-        "nuggets",
-        "water_bottle",
-    };
-
     private static final String[] TOOLS = new String[] {
         "bit_pipette",
+        "fermenting_bucket",
         "flint_cutter",
         "whisk",
         "weighted_plate"
@@ -70,7 +63,6 @@ public class VanillaFoodPantryAddon extends SimpleAddon {
         super("vanillafoodpantry");
 
         addNonFoodRecipe(ADDITIONAL_RECIPES);
-        addWildcardNonFoodRecipe(WILDCARD_RECIPES);
         addTool(TOOLS);
 
         CookingForBlockheadsAPI.addWaterItem(getModItemStack(FRESH_WATER_ITEM));
