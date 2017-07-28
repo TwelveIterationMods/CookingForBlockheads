@@ -13,7 +13,9 @@ import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.blay09.mods.cookingforblockheads.tile.TileToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -106,6 +108,7 @@ public class ModBlocks {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(spiceRack), 0, new ModelResourceLocation(BlockSpiceRack.registryName, "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(counter), 0, new ModelResourceLocation(BlockCounter.registryName, "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(kitchenFloor), 0, new ModelResourceLocation(BlockKitchenFloor.registryName, "inventory"));
 	}
 
 	public static void registerTileEntities() {

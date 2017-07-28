@@ -5,18 +5,18 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = CookingForBlockheads.MOD_ID, category = "")
 public class ModConfig {
 
-    public static General general;
+    public static General general = new General();
 
-    public static Compat compat;
-
-    @Config.Comment("Setting any of these options to false will disable their crafting recipe.")
-    public static Blocks blocks;
+    public static Compat compat = new Compat();
 
     @Config.Comment("Setting any of these options to false will disable their crafting recipe.")
-    public static Items items;
+    public static Blocks blocks = new Blocks();
+
+    @Config.Comment("Setting any of these options to false will disable their crafting recipe.")
+    public static Items items = new Items();
 
     @Config.Comment("Setting any of these options to false will disable their specific mod support.")
-    public static Modules modules;
+    public static Modules modules = new Modules();
 
     public static class General {
         @Config.Name("Cow in a Jar")
@@ -81,6 +81,10 @@ public class ModConfig {
         @Config.Name("Food Expansion")
         @Config.Comment("Ingredient recipes")
         public boolean foodExpansion = true;
+
+        @Config.Name("Vanilla Food Pantry")
+        @Config.Comment("Tool support, Ingredient recipes")
+        public boolean vanillaFoodPantry = true;
     }
 
 }

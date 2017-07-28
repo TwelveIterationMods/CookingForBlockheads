@@ -68,8 +68,6 @@ public class GuiRecipeBook extends GuiContainer {
 
 		noIngredients = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_ingredients").split("\\\\n");
 		noSelection = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_selection").split("\\\\n");
-
-
 	}
 
 	@Override
@@ -259,6 +257,8 @@ public class GuiRecipeBook extends GuiContainer {
 				drawHoveringText(((GuiButtonSort)sortButton).getTooltipLines(), mouseX, mouseY);
 			}
 		}
+
+		renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override

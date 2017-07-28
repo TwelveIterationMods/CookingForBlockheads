@@ -5,9 +5,7 @@ import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import java.util.List;
+import net.minecraft.item.crafting.Ingredient;
 
 public class HarvestCraftAddon extends SimpleAddon {
 
@@ -96,12 +94,7 @@ public class HarvestCraftAddon extends SimpleAddon {
 
         final ItemStack toastItem = getModItemStack(TOAST_ITEM);
         if(!toastItem.isEmpty()) {
-            CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), new ToastOutputHandler() {
-                @Override
-                public ItemStack getToasterOutput(ItemStack itemStack) {
-                    return toastItem;
-                }
-            });
+            CookingForBlockheadsAPI.addToastHandler(new ItemStack(Items.BREAD), (ToastOutputHandler) itemStack -> toastItem);
         }
 
         addNonFoodRecipe(ADDITIONAL_RECIPES);
@@ -111,30 +104,11 @@ public class HarvestCraftAddon extends SimpleAddon {
         CookingForBlockheadsAPI.addMilkItem(getModItemStack(FRESH_MILK_ITEM));
     }
 
-    public static boolean isWeirdBrokenRecipe(IRecipe recipe) {
-        if(recipe.getRecipeSize() == 2 && recipe instanceof ShapelessOreRecipe) {
-            ShapelessOreRecipe oreRecipe = (ShapelessOreRecipe) recipe;
-            Object first = oreRecipe.getInput().get(0);
-            Object second = oreRecipe.getInput().get(1);
-            ItemStack firstItem = ItemStack.EMPTY;
-            ItemStack secondItem = ItemStack.EMPTY;
-            if (first instanceof ItemStack) {
-                firstItem = (ItemStack) first;
-            } else if (first instanceof List) {
-                List list = (List) first;
-                if (list.size() == 1) {
-                    firstItem = (ItemStack) list.get(0);
-                }
-            }
-            if (second instanceof ItemStack) {
-                secondItem = (ItemStack) second;
-            } else if (second instanceof List) {
-                List list = (List) second;
-                if (list.size() == 1) {
-                    secondItem = (ItemStack) list.get(0);
-                }
-            }
-            if (firstItem != null && secondItem != null && ItemStack.areItemStacksEqual(firstItem, secondItem) && !oreRecipe.getRecipeOutput().isEmpty() && oreRecipe.getRecipeOutput().isItemEqual(firstItem)) {
+    public static boolean isWeirdConversionRecipe(IRecipe recipe) {
+        if(recipe.getIngredients().size() == 2 && recipe.getRecipeOutput().getCount() == 2) {
+            Ingredient first = recipe.getIngredients().get(0);
+            Ingredient second = recipe.getIngredients().get(1);
+            if(first.apply(recipe.getRecipeOutput()) && second.apply(recipe.getRecipeOutput())) {
                 return true;
             }
         }

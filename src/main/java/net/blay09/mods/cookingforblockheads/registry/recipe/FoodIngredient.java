@@ -1,34 +1,24 @@
 package net.blay09.mods.cookingforblockheads.registry.recipe;
 
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.crafting.Ingredient;
 
 public class FoodIngredient {
 
-    private final NonNullList<ItemStack> itemStacks;
+    private final Ingredient ingredient;
     private final boolean isToolItem;
 
-    public FoodIngredient(ItemStack itemStack, boolean isToolItem) {
-        this(NonNullList.withSize(1, itemStack), isToolItem);
-    }
-
-    public FoodIngredient(NonNullList<ItemStack> itemStacks, boolean isToolItem) {
-        this.itemStacks = itemStacks;
+    public FoodIngredient(Ingredient ingredient, boolean isToolItem) {
+        this.ingredient = ingredient;
         this.isToolItem = isToolItem;
     }
 
     public boolean isValidItem(ItemStack itemStack) {
-        for(ItemStack oreStack : itemStacks) {
-            if(ItemUtils.areItemStacksEqualWithWildcard(oreStack, itemStack)) {
-                return true;
-            }
-        }
-        return false;
+        return ingredient.apply(itemStack);
     }
 
-    public NonNullList<ItemStack> getItemStacks() {
-        return itemStacks;
+    public ItemStack[] getItemStacks() {
+        return ingredient.getMatchingStacks();
     }
 
     public boolean isToolItem() {

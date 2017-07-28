@@ -29,7 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
-@Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.11]", dependencies = "after:mousetweaks[2.8,)")
+@Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.12]", dependencies = "after:mousetweaks[2.8,)")
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";
@@ -93,6 +93,10 @@ public class CookingForBlockheads {
 			event.buildSoftDependProxy(Compat.FOOD_EXPANSION, "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
 		}
 
+		if(ModConfig.modules.vanillaFoodPantry) {
+			event.buildSoftDependProxy(Compat.VANILLA_FOOD_PANTRY, "net.blay09.mods.cookingforblockheads.compat.VanillaFoodPantryAddon");
+		}
+
 		event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
 		event.buildSoftDependProxy(Compat.MINETWEAKER, "net.blay09.mods.cookingforblockheads.compat.MineTweakerAddon");
 
@@ -122,6 +126,7 @@ public class CookingForBlockheads {
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
+		proxy.registerModels();
 		ModBlocks.registerModels();
 		ModItems.registerModels();
 	}

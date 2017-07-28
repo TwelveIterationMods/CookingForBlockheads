@@ -122,11 +122,6 @@ public class InventoryCraftBook extends InventoryCrafting {
 	private void fireEventsAndHandleAchievements(EntityPlayer player, ItemStack result) {
 		FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
 		result.onCrafting(player.world, player, 1);
-		if(result.getItem() == Items.BREAD) {
-//			player.addStat(AdvancementList.MAKE_BREAD, 1); // TODO check achievement
-		} else if(result.getItem() == Items.CAKE) {
-//			player.addStat(AdvancementList.BAKE_CAKE, 1); // TODO check achievement
-		}
 	}
 
 

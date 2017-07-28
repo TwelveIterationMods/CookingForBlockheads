@@ -34,6 +34,19 @@ public class GuiOven extends GuiContainer {
 		this.ySize = 193;
 	}
 
+	/**
+	 * Mojang HQ, on a snowy winter day
+	 * "One of our new GUIs has different tooltip handling than the 14 others"
+	 * "Let's change the 14 others"
+	 * "It doesn't matter that we'll be pasting the same code into each of those 14"
+	 */
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = I18n.format("container." + CookingForBlockheads.MOD_ID + ":oven");
@@ -66,7 +79,7 @@ public class GuiOven extends GuiContainer {
 		}
 	}
 
-	public void renderItemWithTint(ItemStack itemStack, int x, int y, int color) {
+	private void renderItemWithTint(ItemStack itemStack, int x, int y, int color) {
 		RenderItem itemRenderer = mc.getRenderItem();
 		IBakedModel model = itemRenderer.getItemModelWithOverrides(itemStack, null, null);
 		GlStateManager.pushMatrix();

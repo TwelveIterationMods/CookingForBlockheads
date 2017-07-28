@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.block.BlockCorner;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -60,7 +61,10 @@ public class ClientProxy extends CommonProxy {
 		super.preInit(event);
 
 		MinecraftForge.EVENT_BUS.register(this);
+	}
 
+	@Override
+	public void registerModels() {
 		ModelLoader.setCustomStateMapper(ModBlocks.fridge, new DefaultStateMapper() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
@@ -136,8 +140,8 @@ public class ClientProxy extends CommonProxy {
 			EnumFacing facing = EnumFacing.getHorizontal(i);
 			for (int j = 0; j < colors.length; j++) {
 				EnumDyeColor color = colors[j];
-				CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(ModBlocks.counter.getRegistryNameString(), dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
-				CounterRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(ModBlocks.counter.getRegistryNameString(), dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+				CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCounter.registryName, dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+				CounterRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCounter.registryName, dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
 			}
 		}
 	}

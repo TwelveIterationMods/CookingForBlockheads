@@ -29,9 +29,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -138,12 +135,12 @@ public class ContainerRecipeBook extends Container {
 		super.detectAndSendChanges();
 
 		if (!player.world.isRemote) {
-			if (isDirty || player.inventory.inventoryChanged) { // TODO AT timesChanged
+			if (isDirty || player.inventory.timesChanged > 0) {
 				findAndSendItemList();
 				if (!lastOutputItem.isEmpty()) {
 					findAndSendRecipes(lastOutputItem);
 				}
-				player.inventory.inventoryChanged = false; // TODO AT timesChanged
+				player.inventory.timesChanged = 0;
 				isDirty = false;
 			}
 		}
@@ -201,10 +198,10 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public void findAndSendItemList() {
-		Map<ResourceLocation, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
+		Map<CookingRegistry.ItemIdentifier, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
 		keyLoop:
-		for (ResourceLocation key : CookingRegistry.getFoodRecipes().keySet()) {
+		for (CookingRegistry.ItemIdentifier key : CookingRegistry.getFoodRecipes().keySet()) {
 			RecipeStatus bestStatus = null;
 			for (FoodRecipe recipe : CookingRegistry.getFoodRecipes().get(key)) {
 				RecipeStatus thisStatus = CookingRegistry.getRecipeStatus(recipe, inventories);
@@ -241,7 +238,7 @@ public class ContainerRecipeBook extends Container {
 						ItemStack foundStack = CookingRegistry.findAnyItemStack(checkStack, inventories, requireBucket);
 						if (foundStack.isEmpty()) {
 							if (noFilter || ingredient.isToolItem()) {
-								foundStack = !ingredient.getItemStacks().isEmpty() ? ingredient.getItemStacks().get(0) : ItemStack.EMPTY;
+								foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : ItemStack.EMPTY;
 							}
 						}
 						if (!foundStack.isEmpty()) {
@@ -299,7 +296,7 @@ public class ContainerRecipeBook extends Container {
 		search(currentSearch);
 
 		// Re-apply the sorting
-		Collections.sort(filteredItems, currentSorting);
+		filteredItems.sort(currentSorting);
 
 		// Make sure the recipe stays on the same slot, even if others moved
 		if (selectedRecipe != null && selectedRecipe.getRecipe() != null) {
@@ -365,13 +362,8 @@ public class ContainerRecipeBook extends Container {
 	public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
 		this.currentSorting = comparator;
 		// When re-sorting, make sure to remove all null slots that were added to preserve layout
-		Iterator<FoodRecipeWithStatus> it = filteredItems.iterator();
-		while (it.hasNext()) {
-			if (it.next() == null) {
-				it.remove();
-			}
-		}
-		Collections.sort(filteredItems, comparator);
+		filteredItems.removeIf(Objects::isNull);
+		filteredItems.sort(comparator);
 		populateRecipeSlots();
 	}
 
@@ -397,7 +389,7 @@ public class ContainerRecipeBook extends Container {
 				}
 			}
 		}
-		Collections.sort(filteredItems, currentSorting);
+		filteredItems.sort(currentSorting);
 	}
 
 	@Nullable

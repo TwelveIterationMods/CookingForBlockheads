@@ -20,11 +20,26 @@ public class GuiCounter extends GuiContainer {
         this.ySize = 114 + this.inventoryRows * 18;
     }
 
+    /**
+     * Mojang HQ, on a snowy winter day
+     * "One of our new GUIs has different tooltip handling than the 14 others"
+     * "Let's change the 14 others"
+     * "It doesn't matter that we'll be pasting the same code into each of those 14"
+     */
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRenderer.drawString(I18n.format("container." + CookingForBlockheads.MOD_ID + ":counter"), 8, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1f, 1f, 1f);
         this.mc.getTextureManager().bindTexture(texture);

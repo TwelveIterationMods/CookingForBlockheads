@@ -34,7 +34,6 @@ public class  BlockOven extends BlockKitchen {
     public BlockOven() {
         super(Material.IRON);
 
-        setRegistryName(name);
         setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.METAL);
         setHardness(5f);
