@@ -53,30 +53,16 @@ public class ContainerRecipeBook extends Container {
 
 	private ItemStack lastOutputItem = ItemStack.EMPTY;
 
-	// These are client-only too, but I don't want a separate client-only constructor and it crashes if initialized here while SideOnly(Side.CLIENT)
 	private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
 	private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
 	private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
 
-	@SideOnly(Side.CLIENT)
 	private String currentSearch;
-
-	@SideOnly(Side.CLIENT)
 	private boolean isDirtyClient;
-
-	@SideOnly(Side.CLIENT)
 	private boolean hasOven;
-
-	@SideOnly(Side.CLIENT)
 	private int scrollOffset;
-
-	@SideOnly(Side.CLIENT)
 	private FakeSlotRecipe selectedRecipe;
-
-	@SideOnly(Side.CLIENT)
 	private List<FoodRecipeWithIngredients> selectedRecipeList;
-
-	@SideOnly(Side.CLIENT)
 	private int selectedRecipeIndex;
 
 	public ContainerRecipeBook(EntityPlayer player) {
@@ -305,7 +291,6 @@ public class ContainerRecipeBook extends Container {
 		return allowCrafting;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void setItemList(Collection<FoodRecipeWithStatus> recipeList) {
 		this.itemList.clear();
 		this.itemList.addAll(recipeList);
@@ -340,7 +325,6 @@ public class ContainerRecipeBook extends Container {
 		setDirty(true);
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void populateRecipeSlots() {
 		int i = scrollOffset * 3;
 		for (FakeSlotRecipe slot : recipeSlots) {
@@ -353,7 +337,6 @@ public class ContainerRecipeBook extends Container {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void populateMatrixSlots() {
 		if (selectedRecipeList == null) {
 			for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
@@ -379,7 +362,6 @@ public class ContainerRecipeBook extends Container {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
 		this.currentSorting = comparator;
 		// When re-sorting, make sure to remove all null slots that were added to preserve layout
@@ -393,18 +375,15 @@ public class ContainerRecipeBook extends Container {
 		populateRecipeSlots();
 	}
 
-	@SideOnly(Side.CLIENT)
 	public int getItemListCount() {
 		return filteredItems.size();
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void setScrollOffset(int scrollOffset) {
 		this.scrollOffset = scrollOffset;
 		populateRecipeSlots();
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void search(@Nullable String term) {
 		this.scrollOffset = 0;
 		this.currentSearch = term;
@@ -422,37 +401,30 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	@Nullable
-	@SideOnly(Side.CLIENT)
 	public FoodRecipeWithIngredients getSelection() {
 		return selectedRecipeList != null ? selectedRecipeList.get(selectedRecipeIndex) : null;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public boolean isSelectedSlot(FakeSlotRecipe slot) {
 		return slot == selectedRecipe;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public boolean isDirty() {
 		return isDirtyClient;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void setDirty(boolean dirty) {
 		isDirtyClient = dirty;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void setHasOven(boolean hasOven) {
 		this.hasOven = hasOven;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public boolean hasOven() {
 		return hasOven;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void setRecipeList(ItemStack outputItem, List<FoodRecipeWithIngredients> recipeList) {
 		selectedRecipeList = recipeList.size() > 0 ? recipeList : null;
 		if (lastOutputItem.isEmpty() || lastOutputItem.getItem() != outputItem.getItem() || selectedRecipeList == null || selectedRecipeIndex >= selectedRecipeList.size()) {
@@ -462,7 +434,6 @@ public class ContainerRecipeBook extends Container {
 		lastOutputItem = outputItem;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void nextSubRecipe(int i) {
 		if (selectedRecipeList != null) {
 			selectedRecipeIndex = Math.max(0, Math.min(selectedRecipeList.size() - 1, selectedRecipeIndex + i));
@@ -470,24 +441,20 @@ public class ContainerRecipeBook extends Container {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public boolean hasVariants() {
 		return selectedRecipeList != null && selectedRecipeList.size() > 1;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public void updateSlots(float partialTicks) {
 		for (FakeSlotCraftMatrix slot : matrixSlots) {
 			slot.updateSlot(partialTicks);
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	public int getSelectionIndex() {
 		return selectedRecipeIndex;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public int getRecipeCount() {
 		return selectedRecipeList != null ? selectedRecipeList.size() : 0;
 	}

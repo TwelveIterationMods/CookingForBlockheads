@@ -94,6 +94,19 @@ public class ModBlocks {
 		);
 	}
 
+	public static void registerModels() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cookingTable), 0, new ModelResourceLocation(BlockCookingTable.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(oven), 0, new ModelResourceLocation(BlockOven.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fridge), 0, new ModelResourceLocation(BlockFridge.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sink), 0, new ModelResourceLocation(BlockSink.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(toolRack), 0, new ModelResourceLocation(BlockToolRack.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(toaster), 0, new ModelResourceLocation(BlockToaster.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(milkJar), 0, new ModelResourceLocation(BlockMilkJar.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cowJar), 0, new ModelResourceLocation(BlockCowJar.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(spiceRack), 0, new ModelResourceLocation(BlockSpiceRack.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(counter), 0, new ModelResourceLocation(BlockCounter.registryName, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
+	}
 
 	public static void registerTileEntities() {
 		GameRegistry.registerTileEntity(TileCookingTable.class, BlockCookingTable.registryName.toString());
@@ -107,19 +120,5 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileSpiceRack.class, BlockSpiceRack.registryName.toString());
 		GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName.toString());
 		GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName.toString());
-	}
-
-	public static void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cookingTable), 0, new ModelResourceLocation(BlockCookingTable.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(oven), 0, new ModelResourceLocation(BlockOven.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fridge), 0, new ModelResourceLocation(BlockFridge.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sink), 0, new ModelResourceLocation(BlockSink.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(toolRack), 0, new ModelResourceLocation(BlockToolRack.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(toaster), 0, new ModelResourceLocation(BlockToaster.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(milkJar), 0, new ModelResourceLocation(BlockMilkJar.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cowJar), 0, new ModelResourceLocation(BlockCowJar.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(spiceRack), 0, new ModelResourceLocation(BlockSpiceRack.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(counter), 0, new ModelResourceLocation(BlockCounter.registryName, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
 	}
 }
