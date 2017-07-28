@@ -11,12 +11,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import vazkii.quark.base.handler.IDropoffManager;
 
 import javax.annotation.Nullable;
 
-public class TileSpiceRack extends TileEntity {
+@Optional.Interface(modid = "quark", iface = "vazkii.quark.base.handler.IDropoffManager", striprefs = true)
+public class TileSpiceRack extends TileEntity implements IDropoffManager {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
         @Override
@@ -84,5 +87,11 @@ public class TileSpiceRack extends TileEntity {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    @Override
+    @Optional.Method(modid = "quark")
+    public boolean acceptsDropoff() {
+        return true;
     }
 }

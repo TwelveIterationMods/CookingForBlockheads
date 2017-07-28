@@ -47,12 +47,48 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
+import java.util.Objects;
 import javax.annotation.Nullable;
 
 public class CookingRegistry {
+    public static class ItemID {
+        ResourceLocation location;
+        int metadata;
+
+        public ItemID(ResourceLocation location, int metadata) {
+            this.location = location;
+            this.metadata = metadata;
+        }
+
+        public ItemID(ItemStack object) {
+            this.location = object.getItem().getRegistryName();
+            this.metadata = object.getItemDamage();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) return true;
+            if (!(o instanceof ItemID)) {
+                return false;
+            }
+            ItemID itemid = (ItemID) o;
+            return metadata == itemid.metadata &&
+                Objects.equals(location, itemid.location);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(location, metadata);
+        }
+
+        @Override
+        public String toString() {
+            return location.toString() + "@" + metadata;
+        }
+    }
 
     private static final List<IRecipe> recipeList = Lists.newArrayList();
-    private static final ArrayListMultimap<ResourceLocation, FoodRecipe> foodItems = ArrayListMultimap.create();
+    private static final ArrayListMultimap<ItemID, FoodRecipe> foodItems = ArrayListMultimap.create();
     private static final NonNullList<ItemStack> tools = NonNullList.create();
     private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
     private static final Map<ItemStack, ItemStack> ovenRecipes = Maps.newHashMap();
@@ -107,10 +143,10 @@ public class CookingRegistry {
             }
             ItemStack resultStack = (ItemStack) entry.getValue();
             if(resultStack.getItem() instanceof ItemFood) {
-                foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
+                foodItems.put(new ItemID(resultStack), new SmeltingFood(resultStack, sourceStack));
             } else {
                 if(isNonFoodRecipe(resultStack)) {
-                    foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
+                    foodItems.put(new ItemID(resultStack), new SmeltingFood(resultStack, sourceStack));
                 }
             }
         }
@@ -130,23 +166,27 @@ public class CookingRegistry {
         if(!output.isEmpty()) {
             recipeList.add(recipe);
             if (recipe instanceof ShapedRecipes) {
-                foodItems.put(output.getItem().getRegistryName(), new ShapedCraftingFood((ShapedRecipes) recipe));
+                foodItems.put(new ItemID(output), new ShapedCraftingFood((ShapedRecipes) recipe));
             } else if (recipe instanceof ShapelessRecipes) {
-                foodItems.put(output.getItem().getRegistryName(), new ShapelessCraftingFood((ShapelessRecipes) recipe));
+                foodItems.put(new ItemID(output), new ShapelessCraftingFood((ShapelessRecipes) recipe));
             } else if (recipe instanceof ShapelessOreRecipe) {
-                foodItems.put(output.getItem().getRegistryName(), new ShapelessOreCraftingFood((ShapelessOreRecipe) recipe));
+                foodItems.put(new ItemID(output), new ShapelessOreCraftingFood((ShapelessOreRecipe) recipe));
             } else if (recipe instanceof ShapedOreRecipe) {
-                foodItems.put(output.getItem().getRegistryName(), new ShapedOreCraftingFood((ShapedOreRecipe) recipe));
+                foodItems.put(new ItemID(output), new ShapedOreCraftingFood((ShapedOreRecipe) recipe));
             }
         }
     }
 
-    public static Multimap<ResourceLocation, FoodRecipe> getFoodRecipes() {
+    public static Multimap<ItemID, FoodRecipe> getFoodRecipes() {
         return foodItems;
     }
 
     public static Collection<FoodRecipe> getFoodRecipes(ItemStack outputItem) {
-        return foodItems.get(outputItem.getItem().getRegistryName());
+        return foodItems.get(new ItemID(outputItem));
+    }
+
+    public static Collection<FoodRecipe> getFoodRecipes(ItemID outputItem) {
+        return foodItems.get(outputItem);
     }
 
     public static void addToolItem(ItemStack toolItem) {
@@ -314,7 +354,7 @@ public class CookingRegistry {
     public static void addSortButton(ISortButton button) {
         customSortButtons.add(button);
     }
-    
+
     public static NonNullList<ItemStack> getWaterItems() {
         return waterItems;
     }
@@ -326,7 +366,7 @@ public class CookingRegistry {
     public static List<ISortButton> getSortButtons() {
         return customSortButtons;
     }
-    
+
     public static boolean doesItemRequireBucketForCrafting(ItemStack outputItem) {
         ItemStack containerItem = ForgeHooks.getContainerItem(outputItem);
         if(!containerItem.isEmpty() && containerItem.getItem() == Items.BUCKET) {
