@@ -45,6 +45,8 @@ public class VanillaFoodPantryAddon extends SimpleAddon {
         "sticky_paste",
         "salt",
         "skewers_wood",
+        "heat_portion",
+        "lava_sand_portion"
     };
 
     private static final String[] TOOLS = new String[] {
