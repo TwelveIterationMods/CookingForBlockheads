@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "cookingforblockheads:kitchen_floor"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BW",
+    "WB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:coal_block"
+    },
+    "W": {
+      "item": "minecraft:quartz_block",
+      "data": 0
+    }
+  }
+}

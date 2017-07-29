@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "cookingforblockheads:fridge"
+  },
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "#CHEST"
+    },
+    {
+      "item": "minecraft:iron_door"
+    }
+  ]
+}

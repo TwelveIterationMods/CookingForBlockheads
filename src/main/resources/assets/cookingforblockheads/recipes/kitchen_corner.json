@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "cookingforblockheads:corner"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "S": {
+      "item": "#STONE"
+    },
+    "C": {
+      "item": "minecraft:hardened_clay"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "cookingforblockheads:tool_rack"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "I I"
+  ],
+  "key": {
+    "S": {
+      "item": "#SLAB_WOOD"
+    },
+    "I": {
+      "item": "#IRON_NUGGET"
+    }
+  }
+}

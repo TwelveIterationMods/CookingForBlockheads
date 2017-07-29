@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "cookingforblockheads:recipe_book",
+    "data": 2
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " D ",
+    "CBC",
+    " D "
+  ],
+  "key": {
+    "C": {
+      "item": "#WORKBENCH"
+    },
+    "D": {
+      "item": "#DIAMOND"
+    },
+    "B": {
+      "item": "cookingforblockheads:recipe_book",
+      "data": 1
+    }
+  }
+}

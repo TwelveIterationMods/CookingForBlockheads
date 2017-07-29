@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "cookingforblockheads:counter"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "CBC",
+    "CCC"
+  ],
+  "key": {
+    "S": {
+      "item": "#STONE"
+    },
+    "C": {
+      "item": "minecraft:hardened_clay"
+    },
+    "B": {
+      "item": "#CHEST"
+    }
+  }
+}

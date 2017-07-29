@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "cookingforblockheads:toaster"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "  B",
+    "IDI",
+    "ILI"
+  ],
+  "key": {
+    "I": {
+      "item": "#IRON_INGOT"
+    },
+    "B": {
+      "item": "minecraft:stone_button"
+    },
+    "D": {
+      "item": "minecraft:iron_trapdoor"
+    },
+    "L": {
+      "item": "minecraft:lava_bucket"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "cookingforblockheads:oven"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "GGG",
+    "IFI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "#IRON_INGOT"
+    },
+    "G": {
+      "item": "minecraft:stained_glass",
+      "data": 15
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    }
+  }
+}

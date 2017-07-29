@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "cookingforblockheads:milk_jar"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "GPG",
+    "GMG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "#GLASS"
+    },
+    "P": {
+      "item": "#PLANKS"
+    },
+    "M": {
+      "item": "minecraft:milk_bucket"
+    }
+  }
+}

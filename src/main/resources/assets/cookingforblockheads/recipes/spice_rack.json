@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "cookingforblockheads:spice_rack"
+  },
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "#SLAB_WOOD"
+    }
+  ]
+}
