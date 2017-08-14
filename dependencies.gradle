@@ -1,8 +1,8 @@
 dependencies {
     provided 'inventory-tweaks:InventoryTweaks:1.63+dev.98'
-    deobfCompile "mezz.jei:jei_1.12:4.7.0.68"
-    deobfCompile "applecore:AppleCore:1.12-2.2.1"
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12"
+    provided "mezz.jei:jei_1.12:4.7.0.68"
+    provided "applecore:AppleCore:1.12-2.2.1"
+    provided "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12"
     provided "quark:Quark:r1.2:98"
     provided "hosted-api:CraftTweaker:1.10.2"
     provided "hosted-api:ImmersiveEngineering:0.10.48"
