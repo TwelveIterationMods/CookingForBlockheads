@@ -5,6 +5,7 @@
       "particle": "cookingforblockheads:blocks/oven_side",
       "texture": "cookingforblockheads:blocks/oven_side",
       "ovenfront": "cookingforblockheads:blocks/oven_front",
+      "ovenfront_active": "cookingforblockheads:blocks/oven_front_active",
       "oventop": "cookingforblockheads:blocks/oven_top",
       "ovenbottom": "cookingforblockheads:blocks/oven_bottom",
       "ovengrid": "cookingforblockheads:blocks/oven_grid",
