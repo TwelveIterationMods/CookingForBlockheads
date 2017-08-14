@@ -281,6 +281,9 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     public float getBurnTimeProgress() {
+        if(currentItemBurnTime == 0 && furnaceBurnTime > 0) {
+            return 1f;
+        }
         return (float) furnaceBurnTime / (float) currentItemBurnTime;
     }
 
@@ -386,7 +389,9 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 int energyToUse = ExternalHeaterHandler.defaultFurnaceSpeedupCost * 9; // speed up affects nine items after all
                 if(energyAvailable - energyConsumed > energyToUse) {
                     for(int i = 0; i < slotCookTime.length; i++) {
-                        slotCookTime[i]++;
+                        if(slotCookTime[i] != -1) {
+                            slotCookTime[i]++;
+                        }
                     }
                     energyConsumed += energyToUse;
                 }
