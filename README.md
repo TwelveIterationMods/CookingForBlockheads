@@ -1,12 +1,12 @@
-#Cooking for Blockheads
+# Cooking for Blockheads
 
 Minecraft Mod. Adds a cooking book and multiblock kitchens that only shows recipes you can make with what you currently have in your inventory.
 
-##Development Builds
+## Development Builds
 Potentially unstable in-development releases built straight from the latest code in this repository are available [on my Jenkins](http://jenkins.blay09.net).
 They may contain unfinished and broken features and no support is provided for these builds.
 
-##IMC API
+## IMC API
 
 The below is a list of IMC message keys handled by Cooking for Blockheads.
 
@@ -20,7 +20,7 @@ The below is a list of IMC message keys handled by Cooking for Blockheads.
 * **RegisterNonFoodRecipe** (ItemStack)
 * **RegisterCowClass** (EntityCowClassName : String) - this will cause the class to be loaded if it isn't already!
 
-##Java API
+## Java API
 
 If the IMC API is not enough for you, you can build against Cooking for Blockheads' Java API.
 The Java API allows everything the IMC API does, and certain tasks can only be achieved via the Java API.
