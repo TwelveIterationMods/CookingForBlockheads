@@ -6,9 +6,9 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraftforge.fml.common.Optional;
 
 @Optional.Interface(modid = Compat.CRAFTTWEAKER, iface = "minetweaker.util.IEventHandler", striprefs = true)
-public class MineTweakerAddon implements IEventHandler<MineTweakerImplementationAPI.ReloadEvent> {
+public class CraftTweakerAddon implements IEventHandler<MineTweakerImplementationAPI.ReloadEvent> {
 
-    public MineTweakerAddon() {
+    public CraftTweakerAddon() {
         MineTweakerImplementationAPI.onPostReload(this);
     }
 

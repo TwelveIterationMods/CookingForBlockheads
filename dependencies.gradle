@@ -1,6 +1,6 @@
 dependencies {
     provided "hosted-api:InventoryTweaks:1.62-dev"
-    deobfCompile "mezz.jei:jei_1.11.2:4.2.4.226"
+    deobfCompile "mezz.jei:jei_1.11.2:4.2.6.238"
     deobfCompile "applecore:AppleCore:1.10.2-2.1.1:api"
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.9-B22_1.11"
     provided "hosted-api:Quark-r1.2:81"
