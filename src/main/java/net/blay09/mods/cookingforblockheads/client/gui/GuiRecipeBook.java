@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
@@ -212,6 +213,19 @@ public class GuiRecipeBook extends GuiContainer {
 			sortButton.enabled = hasRecipes;
 		}
 
+		GlStateManager.color(1f, 1f, 1f, 1f);
+
+		if(ModConfig.client.showIngredientIcon) {
+			float prevZLevel = zLevel;
+			zLevel = 300f;
+			for (Slot slot : inventorySlots.inventorySlots) {
+				if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
+					drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
+				}
+			}
+			zLevel = prevZLevel;
+		}
+
 		FoodRecipeWithIngredients selection = container.getSelection();
 		if(selection == null) {
 			int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRenderer.FONT_HEIGHT;
@@ -225,6 +239,14 @@ public class GuiRecipeBook extends GuiContainer {
 			drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
 		}
 
+		if(selection != null) {
+			for (FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
+				if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
+					drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
+				}
+			}
+		}
+
 		GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 
 		if(container.getItemListCount() == 0) {
@@ -236,12 +258,7 @@ public class GuiRecipeBook extends GuiContainer {
 			}
 		}
 
-		GlStateManager.color(1f, 1f, 1f, 1f);
-		for(FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
-			if(slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-				drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
-			}
-		}
+
 
 		searchBar.drawTextBox();
 	}

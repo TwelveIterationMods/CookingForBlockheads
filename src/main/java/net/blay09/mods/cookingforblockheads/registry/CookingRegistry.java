@@ -145,6 +145,9 @@ public class CookingRegistry {
 	}
 
 	public static boolean isNonFoodRecipe(ItemStack itemStack) {
+		if(itemStack.isEmpty()) {
+			return false;
+		}
 		for (ItemStack nonFoodStack : nonFoodRecipes) {
 			if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, nonFoodStack)) {
 				return true;

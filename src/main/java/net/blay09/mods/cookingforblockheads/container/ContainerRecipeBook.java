@@ -299,14 +299,16 @@ public class ContainerRecipeBook extends Container {
 		filteredItems.sort(currentSorting);
 
 		// Make sure the recipe stays on the same slot, even if others moved
+		// TODO fix this entire thing - don't rely on the slot you dummy, what if someone scrolls down or up?
 		if (selectedRecipe != null && selectedRecipe.getRecipe() != null) {
 			Iterator<FoodRecipeWithStatus> it = filteredItems.iterator();
 			FoodRecipeWithStatus found = null;
 			while (it.hasNext()) {
 				FoodRecipeWithStatus recipe = it.next();
-				if (recipe.getOutputItem().getItem() == selectedRecipe.getRecipe().getOutputItem().getItem()) {
+				if (recipe.getOutputItem().getItem() == selectedRecipe.getRecipe().getOutputItem().getItem() && recipe.getOutputItem().getItemDamage() == selectedRecipe.getRecipe().getOutputItem().getItemDamage()) {
 					found = recipe;
 					it.remove();
+					break;
 				}
 			}
 			int index = scrollOffset + selectedRecipe.getSlotIndex();

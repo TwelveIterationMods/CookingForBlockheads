@@ -7,6 +7,8 @@ public class ModConfig {
 
     public static General general = new General();
 
+    public static Client client = new Client();
+
     public static Compat compat = new Compat();
 
     @Config.Comment("Setting any of these options to false will disable their crafting recipe.")
@@ -45,6 +47,12 @@ public class ModConfig {
         @Config.Comment("The cooking time multiplier for the cooking oven. Higher values means it will take longer.")
         @Config.RangeDouble(min = 0.25f, max = 9f)
         public float ovenCookTimeMultiplier = 1f;
+    }
+
+    public static class Client {
+        @Config.Name("Show Ingredient Icon")
+        @Config.Comment("Set to false if you don't want ingredients to be marked with a special icon in the recipe book.")
+        public boolean showIngredientIcon = true;
     }
 
     public static class Compat {
