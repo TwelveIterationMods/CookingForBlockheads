@@ -1,6 +1,13 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+
+import javax.annotation.Nullable;
+
 public class Compat {
+	private static Fluid milkFluid = null;
+
 	public static final String PAMS_HARVESTCRAFT = "harvestcraft";
 	public static final String MORE_FOOD = "morefood";
 	public static final String EXTRA_FOOD = "extrafood";
@@ -14,4 +21,12 @@ public class Compat {
 	public static final String MOUSE_TWEAKS = "mousetweaks";
 	public static final String INVENTORY_TWEAKS = "inventorytweaks";
 	public static final String QUARK = "quark";
+
+	@Nullable
+	public static Fluid getMilkFluid() {
+		if (milkFluid == null) {
+			milkFluid = FluidRegistry.getFluid("milk");
+		}
+		return milkFluid;
+	}
 }
