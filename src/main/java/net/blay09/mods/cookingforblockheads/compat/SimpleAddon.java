@@ -47,7 +47,11 @@ public class SimpleAddon {
 	}
 
 	public ItemStack getModItemStack(String name) {
+		return getModItemStack(name, 0);
+	}
+
+	public ItemStack getModItemStack(String name, int damage) {
 		Item item = Item.REGISTRY.getObject(new ResourceLocation(modId, name));
-		return item != null ? new ItemStack(item) : ItemStack.EMPTY;
+		return item != null ? new ItemStack(item, 1, damage) : ItemStack.EMPTY;
 	}
 }

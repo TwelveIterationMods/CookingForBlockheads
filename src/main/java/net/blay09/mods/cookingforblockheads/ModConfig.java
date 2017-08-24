@@ -85,6 +85,10 @@ public class ModConfig {
         @Config.Name("Vanilla Food Pantry")
         @Config.Comment("Tool support, Ingredient recipes")
         public boolean vanillaFoodPantry = true;
+
+        @Config.Name("Actually Additions")
+        @Config.Comment("Tool support, Ingredient recipes")
+        public boolean actuallyAdditions = true;
     }
 
 }

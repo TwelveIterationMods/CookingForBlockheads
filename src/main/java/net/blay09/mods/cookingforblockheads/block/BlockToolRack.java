@@ -105,7 +105,6 @@ public class BlockToolRack extends BlockKitchen {
             TileToolRack tileToolRack = (TileToolRack) world.getTileEntity(pos);
             if (tileToolRack != null) {
                 if (!heldItem.isEmpty()) {
-
                     ItemStack oldToolItem = tileToolRack.getItemHandler().getStackInSlot(hitSlot);
                     ItemStack toolItem = heldItem.splitStack(1);
                     if (!oldToolItem.isEmpty()) {

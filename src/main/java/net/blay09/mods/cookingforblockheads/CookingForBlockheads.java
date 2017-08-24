@@ -98,6 +98,10 @@ public class CookingForBlockheads {
 			event.buildSoftDependProxy(Compat.VANILLA_FOOD_PANTRY, "net.blay09.mods.cookingforblockheads.compat.VanillaFoodPantryAddon");
 		}
 
+		if(ModConfig.modules.actuallyAdditions) {
+			event.buildSoftDependProxy(Compat.ACTUALLY_ADDITIONS, "net.blay09.mods.cookingforblockheads.compat.ActuallyAdditionsAddon");
+		}
+
 		event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
 		event.buildSoftDependProxy(Compat.CRAFTTWERKER, "net.blay09.mods.cookingforblockheads.compat.CraftTweakerAddon");
 
