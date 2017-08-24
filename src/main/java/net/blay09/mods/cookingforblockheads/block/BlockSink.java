@@ -12,11 +12,13 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -145,8 +148,25 @@ public class BlockSink extends BlockKitchen {
             TileEntity tileEntity = world.getTileEntity(pos);
             if(tileEntity != null) {
                 IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-                if(fluidHandler == null || !FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) {
+                if(fluidHandler == null) {
                     spawnParticles(world, pos, state);
+                } else {
+                    if (!FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) {
+                        // Special case for bottles, they can hold 1/3 of a bucket
+                        if(heldItem.getItem() == Items.GLASS_BOTTLE) {
+                            FluidStack simulated = fluidHandler.drain(333, false);
+                            if(simulated != null && simulated.amount == 333) {
+                                fluidHandler.drain(333, true);
+                                if(player.addItemStackToInventory(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER))) {
+                                    heldItem.shrink(1);
+                                }
+                            } else {
+                                spawnParticles(world, pos, state);
+                            }
+                        } else {
+                            spawnParticles(world, pos, state);
+                        }
+                    }
                 }
                 return !heldItem.isEmpty() && !(heldItem.getItem() instanceof ItemBlock);
             }
