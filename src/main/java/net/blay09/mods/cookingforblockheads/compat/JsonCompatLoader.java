@@ -185,6 +185,11 @@ public class JsonCompatLoader {
 	}
 
 	private static ItemStack parseItemStackSimple(String modId, String name) {
+		int colon = name.indexOf(':');
+		if(colon != -1) {
+			modId = name.substring(0, colon);
+			name = name.substring(colon + 1);
+		}
 		Item item = Item.REGISTRY.getObject(new ResourceLocation(modId, name));
 		if (item == null || item == Items.AIR) {
 			return ItemStack.EMPTY;
