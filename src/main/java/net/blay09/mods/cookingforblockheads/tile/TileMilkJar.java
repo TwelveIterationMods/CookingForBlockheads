@@ -40,7 +40,6 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 
 		public MilkJarItemProvider(TileMilkJar tileMilkJar) {
 			this.tileMilkJar = tileMilkJar;
-			itemStacks.add(new ItemStack(Items.MILK_BUCKET));
 			itemStacks.addAll(CookingRegistry.getMilkItems());
 		}
 

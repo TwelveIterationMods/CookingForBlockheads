@@ -1,4 +1,5 @@
 package net.blay09.mods.cookingforblockheads.api;
 
-public interface ToastHandler {
+@Deprecated
+public interface ToastHandler { // TODO remove in 1.13
 }

@@ -5,6 +5,8 @@ import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
+import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -21,6 +23,11 @@ public class InternalMethods implements IInternalMethods {
     @Override
     public void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
         CookingRegistry.addToastHandler(itemStack, toastHandler);
+    }
+
+    @Override
+    public void addToasterHandler(ItemStack itemStack, ToasterHandler toastHandler) {
+        CookingRegistry.addToastHandler(itemStack, (ToastOutputHandler) toastHandler::getToasterOutput);
     }
 
     @Override

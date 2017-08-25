@@ -1,0 +1,78 @@
+{
+  "modid": "harvestcraft",
+  "foods": {
+    "INGREDIENTS": [
+      "flouritem",
+      "doughitem",
+      "cornmealitem",
+      "freshwateritem",
+      "pastaitem",
+      "vanillaitem",
+      "butteritem",
+      "heavycreamitem",
+      "saltitem",
+      "freshmilkitem",
+      "mayoitem",
+      "cocoapowderitem",
+      "ketchupitem",
+      "vinegaritem",
+      "mustarditem",
+      "blackpepperitem",
+      "groundcinnamonitem",
+      "groundnutmegitem",
+      "saladdressingitem",
+      "batteritem",
+      "oliveoilitem",
+      "hotsauceitem",
+      "sweetandsoursauceitem",
+      "fivespiceitem",
+      "hoisinsauceitem",
+      "noodlesitem",
+      "sesameoilitem",
+      "garammasalaitem",
+      "soysauceitem",
+      "currypowderitem",
+      "bubblywateritem",
+      "carrotcakeitem",
+      "holidaycakeitem",
+      "pumpkincheesecakeitem",
+      "pavlovaitem",
+      "lamingtonitem",
+      "cheesecakeitem",
+      "cherrycheesecakeitem",
+      "pineappleupsidedowncakeitem",
+      "chocolatesprinklecakeitem",
+      "redvelvetcakeitem"
+    ]
+  },
+  "tools": [
+    "cuttingboarditem",
+    "potitem",
+    "skilletitem",
+    "saucepanitem",
+    "bakewareitem",
+    "mortarandpestleitem",
+    "mixingbowlitem",
+    "juiceritem"
+  ],
+  "water": [
+    "freshwateritem"
+  ],
+  "milk": [
+    "freshmilkitem"
+  ],
+  "oven_recipes": {
+    "turkeyrawitem": "turkeycookeditem",
+    "rabbitrawitem": "rabbitcookeditem",
+    "venisonrawitem": "venisoncookeditem"
+  },
+  "oven_fuel": [
+    {
+      "item": "oliveoilitem",
+      "value": 100
+    }
+  ],
+  "toaster": {
+    "minecraft:bread": "toastitem"
+  }
+}

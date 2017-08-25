@@ -5,7 +5,7 @@ import minetweaker.util.IEventHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraftforge.fml.common.Optional;
 
-@Optional.Interface(modid = Compat.CRAFTTWERKER, iface = "minetweaker.util.IEventHandler", striprefs = true)
+@Optional.Interface(modid = Compat.CRAFTTWEAKER, iface = "minetweaker.util.IEventHandler", striprefs = true) // TODO package rename too?
 public class CraftTweakerAddon implements IEventHandler<MineTweakerImplementationAPI.ReloadEvent> {
 
     public CraftTweakerAddon() {

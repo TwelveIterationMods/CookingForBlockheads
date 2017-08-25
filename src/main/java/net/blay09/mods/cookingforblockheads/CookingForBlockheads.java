@@ -2,7 +2,11 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButtonHunger;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButtonName;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButtonSaturation;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.compat.JsonCompatLoader;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
@@ -52,12 +56,14 @@ public class CookingForBlockheads {
 	public void preInit(FMLPreInitializationEvent event) {
 		CookingForBlockheadsAPI.setupAPI(new InternalMethods());
 
+		CookingRegistry.addSortButton(new SortButtonName());
+		CookingRegistry.addSortButton(new SortButtonHunger());
+		CookingRegistry.addSortButton(new SortButtonSaturation());
+
 		MinecraftForge.EVENT_BUS.register(new IMCHandler());
 		MinecraftForge.EVENT_BUS.register(new CowJarHandler());
 
 		ModBlocks.registerTileEntities();
-
-		proxy.preInit(event);
 	}
 
     @Mod.EventHandler
@@ -74,36 +80,14 @@ public class CookingForBlockheads {
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		if(ModConfig.modules.vanilla) {
-			new VanillaAddon();
-		}
-
-		if(ModConfig.modules.pamsHarvestcraft) {
-			event.buildSoftDependProxy(Compat.PAMS_HARVESTCRAFT, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
-		}
-
-		if(ModConfig.modules.moreFoods) {
-			event.buildSoftDependProxy(Compat.MORE_FOOD, "net.blay09.mods.cookingforblockheads.compat.MoreFoodsAddon");
-		}
-
-		if(ModConfig.modules.extraFood) {
-			event.buildSoftDependProxy(Compat.EXTRA_FOOD, "net.blay09.mods.cookingforblockheads.compat.ExtraFoodAddon");
-		}
-
-		if(ModConfig.modules.foodExpansion) {
-			event.buildSoftDependProxy(Compat.FOOD_EXPANSION, "net.blay09.mods.cookingforblockheads.compat.FoodExpansionAddon");
-		}
-
-		if(ModConfig.modules.vanillaFoodPantry) {
-			event.buildSoftDependProxy(Compat.VANILLA_FOOD_PANTRY, "net.blay09.mods.cookingforblockheads.compat.VanillaFoodPantryAddon");
-		}
-
-		if(ModConfig.modules.actuallyAdditions) {
-			event.buildSoftDependProxy(Compat.ACTUALLY_ADDITIONS, "net.blay09.mods.cookingforblockheads.compat.ActuallyAdditionsAddon");
-		}
-
+		new VanillaAddon();
+		event.buildSoftDependProxy(Compat.PAMS_HARVESTCRAFT, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 		event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
-		event.buildSoftDependProxy(Compat.CRAFTTWERKER, "net.blay09.mods.cookingforblockheads.compat.CraftTweakerAddon");
+		event.buildSoftDependProxy(Compat.CRAFTTWEAKER, "net.blay09.mods.cookingforblockheads.compat.CraftTweakerAddon");
+
+		if(!JsonCompatLoader.loadCompat()) {
+			logger.error("Failed to load Cooking for Blockheads compatibility! Things may not work as expected.");
+		}
 
 		CookingRegistry.initFoodRegistry();
 	}

@@ -1,0 +1,18 @@
+{
+  "modid": "actuallyadditions",
+  "foods": {
+    "INGREDIENTS": [
+      {
+        "item": "item_misc",
+        "data": 4
+      },
+      {
+        "item": "item_misc",
+        "data": 9
+      }
+    ]
+  },
+  "tools": [
+    "item_knife"
+  ]
+}

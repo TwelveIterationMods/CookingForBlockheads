@@ -1,13 +1,11 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -54,17 +52,7 @@ public class IMCHandler {
 					}
 					break;
 				case "RegisterToastError":
-					if(message.getMessageType() == NBTTagCompound.class) {
-						ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
-						final String langKey = message.getNBTValue().getString("Message");
-						if(!inputItem.isEmpty() && !langKey.isEmpty()) {
-							CookingForBlockheadsAPI.addToastHandler(inputItem, (ToastErrorHandler) (player, itemStack) -> new TextComponentTranslation(langKey));
-						} else {
-							CookingForBlockheads.logger.error("IMC API Error: RegisterToastError expected message of type NBT with structure {Input : ItemStack, Message : String}");
-						}
-					} else {
-						CookingForBlockheads.logger.error("IMC API Error: RegisterToastError expected message of type NBT");
-					}
+					CookingForBlockheads.logger.warn("IMC API Warning: RegisterToastError is no longer supported and will be ignored");
 					break;
 				case "RegisterOvenFuel":
 					if(message.getMessageType() == NBTTagCompound.class) {

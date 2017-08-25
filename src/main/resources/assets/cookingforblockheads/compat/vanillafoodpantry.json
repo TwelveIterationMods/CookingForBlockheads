@@ -1,0 +1,61 @@
+{
+  "modid": "vanillafoodpantry",
+  "foods": {
+    "INGREDIENTS": [
+      "acornmeal_portion",
+      "baking_soda",
+      "broth_jar",
+      "bucket_condensed_milk",
+      "fizzing_agent",
+      "cloth_bag",
+      "condensed_milk_jar",
+      "dark_empty_jar",
+      "dried_seeds",
+      "drying_agent",
+      "drying_agent_unprocessed",
+      "drying_agent_unprocessed_ball",
+      "drying_agent_ball",
+      "egg_white",
+      "empty_bottle",
+      "empty_jar",
+      "enzyme_extractor_agent",
+      "fermented_feather",
+      "fizzing_agent",
+      "flesh_meal",
+      "flour_portion",
+      "fudge_portion",
+      "gelatin_ball",
+      "jungle_juice_jar",
+      "leavening_agent",
+      "leavening_agent_ball",
+      "luminesce_jar",
+      "molasses_ball",
+      "portion_mayonnaise",
+      "portion_butter",
+      "portion_salt",
+      "portion_sugar",
+      "raw_caffeine",
+      "rennet",
+      "sand_jar",
+      "seedmush",
+      "seedoil_jar",
+      "small_bone",
+      "sticky_paste",
+      "salt",
+      "skewers_wood"
+    ]
+  },
+  "tools": [
+    "bit_pipette",
+    "fermenting_bucket",
+    "flint_cutter",
+    "whisk",
+    "weighted_plate"
+  ],
+  "water": [
+    "water_portion"
+  ],
+  "milk": [
+    "milk_portion"
+  ]
+}

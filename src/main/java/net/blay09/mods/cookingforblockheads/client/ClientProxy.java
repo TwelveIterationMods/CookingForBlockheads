@@ -56,10 +56,7 @@ public class ClientProxy extends CommonProxy {
 
 	private final DefaultStateMapper dummyStateMapper = new DefaultStateMapper();
 
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
-
+	public ClientProxy() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
@@ -102,9 +99,7 @@ public class ClientProxy extends CommonProxy {
 			return 0xFFFFFFFF;
 		}, ModBlocks.fridge);
 
-		CookingRegistry.addSortButton(new SortButtonName());
-		CookingRegistry.addSortButton(new SortButtonHunger());
-		CookingRegistry.addSortButton(new SortButtonSaturation());
+
 	}
 
 	@SubscribeEvent

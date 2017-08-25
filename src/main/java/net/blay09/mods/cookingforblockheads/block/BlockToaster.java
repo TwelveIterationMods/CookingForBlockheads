@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.api.ToastErrorHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -88,8 +87,6 @@ public class BlockToaster extends BlockKitchen {
                             }
                         }
                         return true;
-                    } else if (!world.isRemote && toastHandler instanceof ToastErrorHandler) {
-                        player.sendStatusMessage(((ToastErrorHandler) toastHandler).getToasterHint(player, heldItem), true);
                     }
                 }
             }

@@ -32,8 +32,16 @@ public class CookingForBlockheadsAPI {
         internalMethods.addSinkHandler(itemStack, sinkHandler);
     }
 
+    /**
+     * @deprecated use addToasterHandler
+     */
+    @Deprecated
     public static void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
         internalMethods.addToastHandler(itemStack, toastHandler);
+    }
+
+    public static void addToasterHandler(ItemStack itemStack, ToasterHandler toastHandler) {
+        internalMethods.addToasterHandler(itemStack, toastHandler);
     }
 
     public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {

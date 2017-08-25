@@ -1,0 +1,8 @@
+{
+  "modid": "fe",
+  "foods": {
+    "INGREDIENTS": [
+      "foodexpansion:itemDough"
+    ]
+  }
+}

@@ -66,7 +66,6 @@ public class TileSink extends TileEntity {
 
         public SinkItemProvider(FluidTank fluidTank) {
             this.fluidTank = fluidTank;
-            itemStacks.add(new ItemStack(Items.WATER_BUCKET));
             itemStacks.addAll(CookingRegistry.getWaterItems());
         }
 
