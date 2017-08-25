@@ -58,7 +58,7 @@ public class ContainerRecipeBook extends Container {
 	private boolean isDirtyClient;
 	private boolean hasOven;
 	private int scrollOffset;
-	private FakeSlotRecipe selectedRecipe;
+	private FoodRecipeWithStatus selectedRecipe;
 	private List<FoodRecipeWithIngredients> selectedRecipeList;
 	private int selectedRecipeIndex;
 
@@ -99,27 +99,25 @@ public class ContainerRecipeBook extends Container {
 			if (player.world.isRemote) {
 				if (slot instanceof FakeSlotRecipe) {
 					FakeSlotRecipe slotRecipe = (FakeSlotRecipe) slot;
-					if (slotRecipe.getRecipe() != null) {
-						if (slotRecipe == selectedRecipe) {
-							if (allowCrafting && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP)) {
-								FoodRecipeWithIngredients recipe = getSelection();
-								if (recipe != null) {
-									NonNullList<ItemStack> craftMatrix = NonNullList.create();
-									if (recipe.getRecipeType() == RecipeType.CRAFTING) {
-										for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
-											craftMatrix.add(matrixSlot.getStack());
-										}
-									} else if (recipe.getRecipeType() == RecipeType.SMELTING) {
-										craftMatrix.add(matrixSlots.get(4).getStack());
+					if (selectedRecipe != null && slotRecipe.getRecipe() == selectedRecipe) {
+						if (allowCrafting && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP)) {
+							FoodRecipeWithIngredients recipe = getSelection();
+							if (recipe != null) {
+								NonNullList<ItemStack> craftMatrix = NonNullList.create();
+								if (recipe.getRecipeType() == RecipeType.CRAFTING) {
+									for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
+										craftMatrix.add(matrixSlot.getStack());
 									}
-									NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipe.getOutputItem(), recipe.getRecipeType(), craftMatrix, clickType == ClickType.QUICK_MOVE));
+								} else if (recipe.getRecipeType() == RecipeType.SMELTING) {
+									craftMatrix.add(matrixSlots.get(4).getStack());
 								}
+								NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipe.getOutputItem(), recipe.getRecipeType(), craftMatrix, clickType == ClickType.QUICK_MOVE));
 							}
-						} else {
-							selectedRecipe = slotRecipe;
-							if(selectedRecipe.getRecipe() != null) {
-								NetworkHandler.instance.sendToServer(new MessageRequestRecipes(selectedRecipe.getRecipe().getOutputItem()));
-							}
+						}
+					} else {
+						selectedRecipe = slotRecipe.getRecipe();
+						if (selectedRecipe != null) {
+							NetworkHandler.instance.sendToServer(new MessageRequestRecipes(selectedRecipe.getOutputItem()));
 						}
 					}
 				} else if (slot instanceof FakeSlotCraftMatrix) {
@@ -224,7 +222,8 @@ public class ContainerRecipeBook extends Container {
 		lastOutputItem = outputItem;
 		List<FoodRecipeWithIngredients> resultList = Lists.newArrayList();
 		List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
-		outerLoop:for (FoodRecipe recipe : CookingRegistry.getFoodRecipes(outputItem)) {
+		outerLoop:
+		for (FoodRecipe recipe : CookingRegistry.getFoodRecipes(outputItem)) {
 			for (IKitchenItemProvider itemProvider : inventories) {
 				itemProvider.resetSimulation();
 			}
@@ -245,7 +244,7 @@ public class ContainerRecipeBook extends Container {
 							stackList.add(foundStack);
 						}
 					}
-					if(stackList.isEmpty()) {
+					if (stackList.isEmpty()) {
 						continue outerLoop;
 					}
 				}
@@ -292,6 +291,8 @@ public class ContainerRecipeBook extends Container {
 		this.itemList.clear();
 		this.itemList.addAll(recipeList);
 
+		int previousSelectionIndex = selectedRecipe != null ? filteredItems.indexOf(selectedRecipe) : -1;
+
 		// Re-apply the search to populate filteredItems
 		search(currentSearch);
 
@@ -299,23 +300,22 @@ public class ContainerRecipeBook extends Container {
 		filteredItems.sort(currentSorting);
 
 		// Make sure the recipe stays on the same slot, even if others moved
-		// TODO fix this entire thing - don't rely on the slot you dummy, what if someone scrolls down or up?
-		if (selectedRecipe != null && selectedRecipe.getRecipe() != null) {
+		if (selectedRecipe != null && previousSelectionIndex != -1) {
 			Iterator<FoodRecipeWithStatus> it = filteredItems.iterator();
 			FoodRecipeWithStatus found = null;
 			while (it.hasNext()) {
 				FoodRecipeWithStatus recipe = it.next();
-				if (recipe.getOutputItem().getItem() == selectedRecipe.getRecipe().getOutputItem().getItem() && recipe.getOutputItem().getItemDamage() == selectedRecipe.getRecipe().getOutputItem().getItemDamage()) {
+				if (recipe.getOutputItem().getItem() == selectedRecipe.getOutputItem().getItem() && recipe.getOutputItem().getItemDamage() == selectedRecipe.getOutputItem().getItemDamage()) {
 					found = recipe;
 					it.remove();
 					break;
 				}
 			}
-			int index = scrollOffset + selectedRecipe.getSlotIndex();
-			while (index > filteredItems.size()) {
+			while (previousSelectionIndex > filteredItems.size()) {
 				filteredItems.add(null);
 			}
-			filteredItems.add(index, found);
+			filteredItems.add(previousSelectionIndex, found);
+			selectedRecipe = found;
 		}
 
 		// Updates the items inside the recipe slots
@@ -400,7 +400,7 @@ public class ContainerRecipeBook extends Container {
 	}
 
 	public boolean isSelectedSlot(FakeSlotRecipe slot) {
-		return slot == selectedRecipe;
+		return slot.getRecipe() == selectedRecipe;
 	}
 
 	public boolean isDirty() {
