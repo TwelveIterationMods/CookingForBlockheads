@@ -1,6 +1,7 @@
 {
   "result": {
-    "item": "cookingforblockheads:kitchen_floor"
+    "item": "cookingforblockheads:kitchen_floor",
+    "count": 12
   },
   "type": "forge:ore_shaped",
   "pattern": [

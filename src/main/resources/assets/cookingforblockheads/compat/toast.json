@@ -1,0 +1,6 @@
+{
+  "modid": "toast",
+  "toaster": {
+    "minecraft:bread": "toast"
+  }
+}

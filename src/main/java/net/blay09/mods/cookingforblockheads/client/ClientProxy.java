@@ -98,8 +98,6 @@ public class ClientProxy extends CommonProxy {
 			}
 			return 0xFFFFFFFF;
 		}, ModBlocks.fridge);
-
-
 	}
 
 	@SubscribeEvent

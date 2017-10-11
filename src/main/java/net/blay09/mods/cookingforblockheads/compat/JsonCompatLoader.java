@@ -33,11 +33,11 @@ import java.util.Map;
 @Mod.EventBusSubscriber
 public class JsonCompatLoader {
 
+	private static final Gson gson = new Gson();
 	private static final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
 
 	public static boolean loadCompat() {
 		nonFoodRecipes.clear();
-		Gson gson = new Gson();
 		ModContainer mod = Loader.instance().getIndexedModList().get(CookingForBlockheads.MOD_ID);
 		return CraftingHelper.findFiles(mod, "assets/cookingforblockheads/compat", (root) -> true, (root, file) -> {
 			String relative = root.relativize(file).toString();
@@ -47,10 +47,7 @@ public class JsonCompatLoader {
 
 			String fileName = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
 			try (BufferedReader reader = Files.newBufferedReader(file)) {
-				JsonObject json = JsonUtils.fromJson(gson, reader, JsonObject.class);
-				if(json != null) {
-					parse(json);
-				}
+				parse(reader);
 			} catch (JsonParseException e) {
 				CookingForBlockheads.logger.error("Parsing error loading compat {}", fileName, e);
 				return false;
@@ -73,6 +70,17 @@ public class JsonCompatLoader {
 	private static final JsonArray EMPTY_ARRAY = new JsonArray();
 
 	private static final ItemStack[] SINGLE_BUFFER = new ItemStack[1];
+
+	public static void parse(String json) {
+		parse(gson.fromJson(json, JsonObject.class));
+	}
+
+	public static void parse(BufferedReader reader) {
+		JsonObject json = JsonUtils.fromJson(gson, reader, JsonObject.class);
+		if(json != null) {
+			parse(json);
+		}
+	}
 
 	private static void parse(JsonObject root) {
 		String modId = JsonUtils.getString(root, "modid");
