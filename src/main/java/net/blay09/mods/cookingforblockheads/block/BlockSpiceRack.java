@@ -19,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -103,7 +104,7 @@ public class BlockSpiceRack extends BlockKitchen {
                 case WEST: hit = 1f - hitZ; break;
                 case EAST: hit = hitZ; break;
             }
-			int hitSlot = (int) ((1f - hit) * 9);
+			int hitSlot = MathHelper.clamp((int) ((1f - hit) * 9), 0, 8);
 			TileSpiceRack tileSpiceRack = (TileSpiceRack) world.getTileEntity(pos);
 			if(tileSpiceRack != null) {
 				if(!heldItem.isEmpty()) {
