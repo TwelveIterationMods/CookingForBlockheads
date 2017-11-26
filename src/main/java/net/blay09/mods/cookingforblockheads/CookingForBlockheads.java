@@ -33,7 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
-@Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.12]", dependencies = "after:mousetweaks[2.8,)")
+@Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.12]", dependencies = "after:mousetweaks[2.8,);after:crafttweaker")
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";
@@ -83,7 +83,6 @@ public class CookingForBlockheads {
 		new VanillaAddon();
 		event.buildSoftDependProxy(Compat.PAMS_HARVESTCRAFT, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 		event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
-		event.buildSoftDependProxy(Compat.CRAFTTWEAKER, "net.blay09.mods.cookingforblockheads.compat.CraftTweakerAddon");
 
 		if(!JsonCompatLoader.loadCompat()) {
 			logger.error("Failed to load Cooking for Blockheads compatibility! Things may not work as expected.");

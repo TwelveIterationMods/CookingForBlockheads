@@ -4,7 +4,7 @@ dependencies {
     provided "applecore:AppleCore:1.12-2.2.1"
     provided "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12"
     provided "quark:Quark:r1.2:98"
-    provided "hosted-api:CraftTweaker:1.10.2"
+    compile "crafttweaker:CraftTweaker2:1.12:4.0.10"
     provided "hosted-api:ImmersiveEngineering:0.10.48"
     provided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.8-2"
     provided "hosted-api:MouseTweaks_1.11:2.8:api"
