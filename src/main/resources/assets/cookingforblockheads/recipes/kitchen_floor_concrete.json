@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "cookingforblockheads:kitchen_floor",
+    "count": 4
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BW",
+    "WB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:concrete",
+      "data": 15
+    },
+    "W": {
+      "item": "minecraft:concrete",
+      "data": 0
+    }
+  }
+}

@@ -60,7 +60,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
 		if (isFirstTick) {
 			// onLoad doesn't work when you need to touch the world TODO I think this was fixed in a newer Forge build?
 			IBlockState state = world.getBlockState(pos);
-			if(state.getBlock() == ModBlocks.counter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
+			if (state.getBlock() == ModBlocks.counter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
 				cachedFacing = state.getValue(BlockCounter.FACING);
 				cachedFlipped = state.getValue(BlockCounter.FLIPPED);
 				isFirstTick = false;
