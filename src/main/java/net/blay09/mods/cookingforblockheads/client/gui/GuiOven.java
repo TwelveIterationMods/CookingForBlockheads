@@ -127,7 +127,7 @@ public class GuiOven extends GuiContainer {
 			BakedQuad quad = quads.get(i);
 			int k = color;
 			if (useItemTint && quad.hasTintIndex()) {
-				k = mc.getItemColors().getColorFromItemstack(stack, quad.getTintIndex());
+				k = mc.getItemColors().colorMultiplier(stack, quad.getTintIndex());
 				if (EntityRenderer.anaglyphEnable) {
 					k = TextureUtil.anaglyphColor(k);
 				}
