@@ -1,0 +1,93 @@
+### Translated by RoCoko
+
+item.cookingforblockheads:recipe_book_tier0.name=Cooking for Blockheads
+item.cookingforblockheads:recipe_book_tier1.name=Cooking for Blockheads I
+item.cookingforblockheads:recipe_book_tier2.name=Cooking for Blockheads II
+
+tooltip.cookingforblockheads:recipe_book_tier0=Tüm Yemek Tarifleri
+tooltip.cookingforblockheads:recipe_book_tier0.description=Tüm yemek tariflerini gösterir.
+tooltip.cookingforblockheads:recipe_book_tier1=Yemek Tarifi Kitabı
+tooltip.cookingforblockheads:recipe_book_tier1.description=Envanterinizdeki şeylerle yapabileceğiniz yiyecekleri gösterir.
+tooltip.cookingforblockheads:recipe_book_tier2=Üretim Kitabı
+tooltip.cookingforblockheads:recipe_book_tier2.description=Envanterinizdeki şeyleri kullanarak yiyecek hazırlayabilirsiniz.
+
+###
+
+tile.cookingforblockheads:cooking_table.name=Yemek Pişirme Masası
+tile.cookingforblockheads:oven.name=Fırın
+tile.cookingforblockheads:fridge.name=Buzdolabı
+tile.cookingforblockheads:sink.name=Lavabo
+tile.cookingforblockheads:tool_rack.name=Alet Rafı
+tile.cookingforblockheads:milk_jar.name=Sütlü Kavanoz
+tile.cookingforblockheads:cow_jar.name=İnekli Kavanoz
+tile.cookingforblockheads:toaster.name=Tost Makinası
+tile.cookingforblockheads:spice_rack.name=Baharat Rafı
+tile.cookingforblockheads:counter.name=Mutfak Tezgahı
+tile.cookingforblockheads:corner.name=Mutfak Köşesi
+tile.cookingforblockheads:kitchen_floor.name=Mutfak Zemini
+
+tooltip.cookingforblockheads:multiblock_kitchen=Mutfak
+tooltip.cookingforblockheads:dyeable=Boyanabilir
+tooltip.cookingforblockheads:cooking_table.description=Üretimi sağlar.
+tooltip.cookingforblockheads:oven.description=Pişirmeyi sağlar.
+tooltip.cookingforblockheads:sink.description=Yemek tarifleri için su sağlar.
+tooltip.cookingforblockheads:fridge.description=Yemek tarifleri için malzemeleri depolar.
+tooltip.cookingforblockheads:tool_rack.description=Yemek tarifleri için aletler sağlar.
+tooltip.cookingforblockheads:milk_jar.description=Yemek tarifleri için süt sağlar.
+tooltip.cookingforblockheads:cow_jar.description=Yemek tarifleri için yavaş yavaş süt üretir.
+tooltip.cookingforblockheads:toaster.description=Büyülü bir şekilde ekmeği tosta çevirir.
+tooltip.cookingforblockheads:spice_rack.description=Baharat ve malzemeleri depolar.
+tooltip.cookingforblockheads:counter.description=Yemek tarifleri için malzemeleri depolar.
+tooltip.cookingforblockheads:corner.description=Bir özelliği yok.
+tooltip.cookingforblockheads:kitchen_floor.description=Bir özelliği yok.
+
+###
+
+gui.cookingforblockheads:no_ingredients=Yeterli\nmalzeme\nyok.
+
+gui.cookingforblockheads:no_selection=Tarifini görmek\niçin sağdan öğe\nseçiniz.
+
+
+tooltip.cookingforblockheads:click_to_see_recipe=Tarifi görmek için tıklayın.
+tooltip.cookingforblockheads:click_to_craft_one=Üretmek için tekrar tıklayın.
+tooltip.cookingforblockheads:click_to_smelt_one=Pişirmek için tekrar tıklayın.
+tooltip.cookingforblockheads:click_to_craft_stack=Bir yığın üretmek için Shift+Tıkla.
+tooltip.cookingforblockheads:click_to_smelt_stack=Bir yığın pişirmek için Shift+Tıkla.
+tooltip.cookingforblockheads:missing_tools=Üretmek için alet eksik.
+tooltip.cookingforblockheads:missing_ingredients=Üretmek için malzeme eksik.
+tooltip.cookingforblockheads:missing_oven=Pişirmek için fırın eksik.
+tooltip.cookingforblockheads:sort_by_name=İsme Göre Sırala
+tooltip.cookingforblockheads:sort_by_hunger=Doygunluk Derecesine Göre Sırala
+tooltip.cookingforblockheads:sort_by_saturation=Saturasyon Derecesine Göre Sırala
+tooltip.cookingforblockheads:click_to_lock=Öğeyi kilitlemek için tıklayın.
+tooltip.cookingforblockheads:click_to_unlock=Öğenin kilidini açmak için tıklayın.
+tooltip.cookingforblockheads:scroll_to_switch=Öğeyi seçmek için kaydırın.
+
+###
+
+container.cookingforblockheads:oven=Pişirme Fırını
+container.cookingforblockheads:fridge=Buzdolabı
+container.cookingforblockheads:spice_rack=Baharat Rafı
+container.cookingforblockheads:counter=Mutfak Tezgahı
+
+itemGroup.cookingforblockheads=Cooking for Blockheads
+
+###
+
+waila.cookingforblockheads:milk_stored=Depolanan Süt: %d/%d
+waila.cookingforblockheads:toast_progress=Kızartıyor... (%s)
+
+hint.cookingforblockheads:more_foods.cut_bread_first=Önce ekmeği kesmek için bıçak kullanın.
+
+###
+
+cookingforblockheads:subtitle.fridge_open=Buzdolabı açılıyor
+cookingforblockheads:subtitle.fridge_close=Buzdolabı kapanıyor
+cookingforblockheads:subtitle.oven_open=Fırın açılıyor
+cookingforblockheads:subtitle.oven_close=Fırın kapanıyor
+cookingforblockheads:subtitle.toaster_start=Tost Makinası kızartmaya başlıyor
+cookingforblockheads:subtitle.toaster_stop=Tost Makinası kızartmayı bitirdi
+
+###
+
+jei.cookingforblockheads:cow_jar=İnekli Kavanoz
