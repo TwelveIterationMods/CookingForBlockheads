@@ -1,11 +1,11 @@
 dependencies {
-    provided 'inventory-tweaks:InventoryTweaks:1.63+dev.98'
-    deobfCompile "mezz.jei:jei_1.12.1:4.7.6.89"
-    provided "applecore:AppleCore:1.12-2.2.1"
-    provided "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12"
-    provided "quark:Quark:r1.2:98"
-    compile "crafttweaker:CraftTweaker2:1.12:4.0.10"
-    provided "hosted-api:ImmersiveEngineering:0.10.48"
-    provided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.8-2"
-    provided "hosted-api:MouseTweaks_1.11:2.8:api"
+    provided 'inventory-tweaks:InventoryTweaks:1.63'
+    deobfCompile "jei:jei_1.12.2:4.8.5.157"
+    provided "applecore:AppleCore:mc1.12.2:3.1.1"
+    provided "hwyla:Hwyla:1.8.23:B38_1.12"
+    provided "quark:Quark:r1.4:122"
+    provided "crafttweaker:CraftTweaker2:1.12:4.1.4"
+    provided "immersive-engineering:ImmersiveEngineering:0.12:77"
+    provided "the-one-probe:theoneprobe:1.12:1.4.19"
+    provided "mouse-tweaks:MouseTweaks:2.8:mc1.12.1"
 }
