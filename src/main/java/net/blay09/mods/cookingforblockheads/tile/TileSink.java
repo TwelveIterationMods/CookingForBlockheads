@@ -33,6 +33,32 @@ public class TileSink extends TileEntity {
             super(capacity);
         }
 
+        private static final FluidStack MAX_WATER = new FluidStack(FluidRegistry.WATER, Integer.MAX_VALUE);
+
+        @Override
+        public FluidStack getFluid() {
+            if(!ModConfig.general.sinkRequiresWater) {
+                return MAX_WATER;
+            }
+            return super.getFluid();
+        }
+
+        @Override
+        public int getFluidAmount() {
+            if(!ModConfig.general.sinkRequiresWater) {
+                return Integer.MAX_VALUE;
+            }
+            return super.getFluidAmount();
+        }
+
+        @Override
+        public int getCapacity() {
+            if(!ModConfig.general.sinkRequiresWater) {
+                return Integer.MAX_VALUE;
+            }
+            return super.getCapacity();
+        }
+
         @Override
         public int fill(FluidStack resource, boolean doFill) {
             if(!ModConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
