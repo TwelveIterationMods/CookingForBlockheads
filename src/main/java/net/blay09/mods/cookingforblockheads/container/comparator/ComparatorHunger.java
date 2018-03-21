@@ -20,17 +20,19 @@ public class ComparatorHunger implements Comparator<FoodRecipeWithStatus> {
     public int compare(FoodRecipeWithStatus o1, FoodRecipeWithStatus o2) {
         boolean isFirstFood = o1.getOutputItem().getItem() instanceof ItemFood;
         boolean isSecondFood = o2.getOutputItem().getItem() instanceof ItemFood;
-        if(!isFirstFood && !isSecondFood) {
-            return 0;
-        } else if(!isFirstFood) {
+        if (!isFirstFood && !isSecondFood) {
+            return fallback.compare(o1, o2);
+        } else if (!isFirstFood) {
             return 1;
-        } else if(!isSecondFood) {
+        } else if (!isSecondFood) {
             return -1;
         }
+
         int result = CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o2.getOutputItem(), entityPlayer) - CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o1.getOutputItem(), entityPlayer);
-        if(result == 0) {
+        if (result == 0) {
             return fallback.compare(o1, o2);
         }
+
         return result;
     }
 
