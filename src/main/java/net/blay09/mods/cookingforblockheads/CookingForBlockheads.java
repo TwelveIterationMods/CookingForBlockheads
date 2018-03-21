@@ -32,6 +32,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
 @Mod(modid = CookingForBlockheads.MOD_ID, acceptedMinecraftVersions = "[1.12]", dependencies = "after:mousetweaks[2.8,);after:crafttweaker")
 public class CookingForBlockheads {
@@ -52,8 +54,12 @@ public class CookingForBlockheads {
 	@SidedProxy(clientSide = "net.blay09.mods.cookingforblockheads.client.ClientProxy", serverSide = "net.blay09.mods.cookingforblockheads.CommonProxy")
     public static CommonProxy proxy;
 
+	public static File configDir;
+
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		configDir = event.getModConfigurationDirectory();
+
 		CookingForBlockheadsAPI.setupAPI(new InternalMethods());
 
 		CookingRegistry.addSortButton(new SortButtonName());
