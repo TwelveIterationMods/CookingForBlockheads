@@ -42,7 +42,17 @@
       "cherrycheesecakeitem",
       "pineappleupsidedowncakeitem",
       "chocolatesprinklecakeitem",
-      "redvelvetcakeitem"
+      "redvelvetcakeitem",
+      "groundbeefitem",
+      "groundchickenitem",
+      "groundduckitem",
+      "groundfishitem",
+      "groundmuttonitem",
+      "groundporkitem",
+      "groundrabbititem",
+      "groundturkeyitem",
+      "groundvenisonitem"
+
     ]
   },
   "tools": [
@@ -64,7 +74,8 @@
   "oven_recipes": {
     "turkeyrawitem": "turkeycookeditem",
     "rabbitrawitem": "rabbitcookeditem",
-    "venisonrawitem": "venisoncookeditem"
+    "venisonrawitem": "venisoncookeditem",
+    "duckrawitem": "duckcookeditem"
   },
   "oven_fuel": [
     {
