@@ -1,0 +1,12 @@
+{
+  "modid": "storagedrawers",
+  "tiles": {
+    "kitchenConnectors" : [
+      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntitySlave",
+      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityController"
+    ],
+    "kitchenItemProviders" : [
+      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawers"
+    ]
+  }
+}
