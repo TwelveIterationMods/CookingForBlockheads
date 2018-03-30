@@ -184,19 +184,12 @@ public class JsonCompatLoader {
             }
         }
         JsonObject tilesObject = JsonUtils.getJsonObject(root, "tiles", EMPTY_OBJECT);
-        JsonArray tiles = JsonUtils.getJsonArray(tilesObject, "dynamicKitchenItemProviders", EMPTY_ARRAY);
+        JsonArray tiles = JsonUtils.getJsonArray(tilesObject, "kitchenItemProviders", EMPTY_ARRAY);
         for (JsonElement element : tiles) {
             if (!element.isJsonPrimitive()) {
                 throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
             }
-            CompatCapabilityLoader.addDynamicKitchenItemProviderClass(element.getAsString());
-        }
-        tiles = JsonUtils.getJsonArray(tilesObject, "kitchenItemProviders", EMPTY_ARRAY);
-        for (JsonElement element : tiles) {
-            if (!element.isJsonPrimitive()) {
-                throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
-            }
-            CompatCapabilityLoader.addDynamicKitchenItemProviderClass(element.getAsString());
+            CompatCapabilityLoader.addKitchenItemProviderClass(element.getAsString());
         }
         tiles = JsonUtils.getJsonArray(tilesObject, "kitchenConnectors", EMPTY_ARRAY);
         for (JsonElement element : tiles) {
