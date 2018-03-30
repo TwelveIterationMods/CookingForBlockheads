@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import java.util.HashSet;
+import java.util.HashMap;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
@@ -19,10 +19,13 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class CompatCapabilityLoader {
-    private final static HashSet<Class<? extends TileEntity>> itemProviderClasses = new HashSet<Class<? extends TileEntity>>();
-    private final static HashSet<Class<? extends TileEntity>> connectorClasses = new HashSet<Class<? extends TileEntity>>();
+    private final static HashMap<Class<? extends TileEntity>, CapabilityType> tilesClasses = new HashMap<Class<? extends TileEntity>, CapabilityType>();
     private final static CompatCapabilityLoader instance = new CompatCapabilityLoader();
     private static boolean registered = false;
+
+    private enum CapabilityType {
+        CONNECTOR, ITEM_PROVIDER
+    }
 
     public static void register() {
         if (! registered) {
@@ -32,11 +35,11 @@ public class CompatCapabilityLoader {
     }
 
     @SuppressWarnings("unchecked")
-    private static void addTileEntityClass(final String className, final HashSet<Class<? extends TileEntity>> list) {
+    private final static void addTileEntityClass(final String className, final CapabilityType type) {
         try {
             Class<?> c = Class.forName(className);
             if (TileEntity.class.isAssignableFrom(c)) {
-                list.add((Class<? extends TileEntity>) c);
+                tilesClasses.put((Class<? extends TileEntity>) c, type);
                 register();
             } else {
                 CookingForBlockheads.logger.warn("Incompatible TileEntity class: {}", className);
@@ -47,11 +50,11 @@ public class CompatCapabilityLoader {
     }
 
     public static void addKitchenItemProviderClass(String className) {
-        addTileEntityClass(className, itemProviderClasses);
+        addTileEntityClass(className, CapabilityType.ITEM_PROVIDER);
     }
 
     public static void addKitchenConnectorClass(String className) {
-        addTileEntityClass(className, connectorClasses);
+        addTileEntityClass(className, CapabilityType.CONNECTOR);
     }
 
     private final static ResourceLocation itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID,
@@ -65,13 +68,18 @@ public class CompatCapabilityLoader {
         final TileEntity entity = event.getObject();
         final Class<? extends TileEntity> entityClass = entity.getClass();
 
-        if (itemProviderClasses.contains(entityClass)) {
-            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(entity));
+        final CapabilityType type = tilesClasses.get(entityClass);
+        if (type == null) {
+            CookingForBlockheads.logger.info("DEBUGME -- Un known class: " + entityClass);
             return;
         }
-        if (connectorClasses.contains(entityClass)) {
+        switch (type) {
+        case CONNECTOR:
             event.addCapability(connectorResourceKey, connectorCapabilityProvider);
-            return;
+            break;
+        case ITEM_PROVIDER:
+            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(entity));
+            break;
         }
     }
 
