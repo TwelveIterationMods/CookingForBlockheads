@@ -73,7 +73,6 @@ public class CompatCapabilityLoader {
             event.addCapability(connectorResourceKey, connectorCapabilityProvider);
             return;
         }
-        CookingForBlockheads.logger.warn("Entity class not handled: " + entityClass);
     }
 
     private static final class KitchenConnectorCapabilityProvider implements ICapabilityProvider {
