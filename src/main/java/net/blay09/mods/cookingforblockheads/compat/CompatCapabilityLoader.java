@@ -70,7 +70,6 @@ public class CompatCapabilityLoader {
 
         final CapabilityType type = tilesClasses.get(entityClass);
         if (type == null) {
-            CookingForBlockheads.logger.info("DEBUGME -- Un known class: " + entityClass);
             return;
         }
         switch (type) {
