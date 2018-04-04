@@ -64,14 +64,6 @@ public class BlockToolRack extends BlockKitchen {
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		return world.isSideSolid(pos.offset(EnumFacing.WEST), EnumFacing.EAST) ||
-				world.isSideSolid(pos.offset(EnumFacing.EAST), EnumFacing.WEST) ||
-				world.isSideSolid(pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH) ||
-				world.isSideSolid(pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH);
-	}
-
-	@Override
 	@SuppressWarnings("deprecation")
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
