@@ -183,6 +183,21 @@ public class JsonCompatLoader {
                 CookingForBlockheadsAPI.addToasterHandler(input, itemStack -> output);
             }
         }
+        JsonObject tilesObject = JsonUtils.getJsonObject(root, "tiles", EMPTY_OBJECT);
+        JsonArray tiles = JsonUtils.getJsonArray(tilesObject, "kitchenItemProviders", EMPTY_ARRAY);
+        for (JsonElement element : tiles) {
+            if (!element.isJsonPrimitive()) {
+                throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
+            }
+            CompatCapabilityLoader.addKitchenItemProviderClass(element.getAsString());
+        }
+        tiles = JsonUtils.getJsonArray(tilesObject, "kitchenConnectors", EMPTY_ARRAY);
+        for (JsonElement element : tiles) {
+            if (!element.isJsonPrimitive()) {
+                throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
+            }
+            CompatCapabilityLoader.addKitchenConnectorClass(element.getAsString());
+        }
     }
 
     private static ItemStack[] parseItemStacks(String modId, JsonElement element) {
