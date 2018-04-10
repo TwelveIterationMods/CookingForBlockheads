@@ -2,9 +2,9 @@ package net.blay09.mods.cookingforblockheads.registry;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
+import net.blay09.mods.cookingforblockheads.network.message.ByteBufUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.List;
 
