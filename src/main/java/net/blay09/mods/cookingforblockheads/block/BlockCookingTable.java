@@ -117,8 +117,12 @@ public class BlockCookingTable extends BlockKitchen {
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if(tileEntity instanceof TileCookingTable) {
-            TileCookingTable tileCounter = (TileCookingTable) tileEntity;
-            tileCounter.setColor(color);
+            TileCookingTable tileCookingTable = (TileCookingTable) tileEntity;
+            if (tileCookingTable.getColor() == color) {
+                return false;
+            }
+
+            tileCookingTable.setColor(color);
         }
         return true;
     }

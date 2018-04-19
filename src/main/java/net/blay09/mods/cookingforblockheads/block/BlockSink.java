@@ -210,7 +210,12 @@ public class BlockSink extends BlockKitchen {
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if(tileEntity instanceof TileSink) {
-            ((TileSink) tileEntity).setColor(color);
+            TileSink tileSink = (TileSink) tileEntity;
+            if (tileSink.getColor() == color) {
+                return false;
+            }
+
+            tileSink.setColor(color);
         }
         return true;
     }

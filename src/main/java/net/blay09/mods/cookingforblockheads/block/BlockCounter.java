@@ -183,6 +183,10 @@ public class BlockCounter extends BlockKitchen {
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if(tileEntity instanceof TileCounter) {
 			TileCounter tileCounter = (TileCounter) tileEntity;
+			if (tileCounter.getColor() == color) {
+				return false;
+			}
+
 			tileCounter.setColor(color);
 		}
 		return true;

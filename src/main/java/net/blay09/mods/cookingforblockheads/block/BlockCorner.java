@@ -27,91 +27,96 @@ import java.util.List;
 
 public class BlockCorner extends BlockKitchen {
 
-	public static final String name = "corner";
-	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+    public static final String name = "corner";
+    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-	private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[] {
-			new AxisAlignedBB(0, 0, 0, 0.96875, 0.9375, 0.96875),
-			new AxisAlignedBB(0.03125, 0, 0.03125, 1, 0.9375, 1),
-			new AxisAlignedBB(0, 0, 0.03125, 0.96875, 0.9375, 1),
-			new AxisAlignedBB(0.03125, 0, 0, 1, 0.9375, 0.96875)
-	};
+    private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[]{
+            new AxisAlignedBB(0, 0, 0, 0.96875, 0.9375, 0.96875),
+            new AxisAlignedBB(0.03125, 0, 0.03125, 1, 0.9375, 1),
+            new AxisAlignedBB(0, 0, 0.03125, 0.96875, 0.9375, 1),
+            new AxisAlignedBB(0.03125, 0, 0, 1, 0.9375, 0.96875)
+    };
 
-	public BlockCorner() {
-		super(Material.ROCK);
+    public BlockCorner() {
+        super(Material.ROCK);
 
-		setUnlocalizedName(registryName.toString());
-		setSoundType(SoundType.STONE);
-		setHardness(5f);
-		setResistance(10f);
-	}
+        setUnlocalizedName(registryName.toString());
+        setSoundType(SoundType.STONE);
+        setHardness(5f);
+        setResistance(10f);
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, COLOR);
-	}
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, COLOR);
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TileEntity tileEntity = world.getTileEntity(pos);
-		if(tileEntity instanceof TileCorner) {
-			return state.withProperty(COLOR, ((TileCorner) tileEntity).getColor());
-		}
-		return state;
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileCorner) {
+            return state.withProperty(COLOR, ((TileCorner) tileEntity).getColor());
+        }
+        return state;
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack heldItem = player.getHeldItem(hand);
-		if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-			if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-				heldItem.shrink(1);
-			}
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
+        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
+            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
+                heldItem.shrink(1);
+            }
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return BOUNDING_BOXES[state.getValue(FACING).getIndex() - 2];
-	}
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return BOUNDING_BOXES[state.getValue(FACING).getIndex() - 2];
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing facing = EnumFacing.getFront(meta);
-		if(facing.getAxis() == EnumFacing.Axis.Y) {
-			facing = EnumFacing.NORTH;
-		}
-		return getDefaultState().withProperty(FACING, facing);
-	}
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        EnumFacing facing = EnumFacing.getFront(meta);
+        if (facing.getAxis() == EnumFacing.Axis.Y) {
+            facing = EnumFacing.NORTH;
+        }
+        return getDefaultState().withProperty(FACING, facing);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
-	}
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getIndex();
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
-		return new TileCorner();
-	}
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        return new TileCorner();
+    }
 
-	@Override
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-		super.addInformation(stack, world, tooltip, advanced);
-		for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-			tooltip.add(TextFormatting.GRAY + s);
-		}
-	}
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, world, tooltip, advanced);
+        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
+            tooltip.add(TextFormatting.GRAY + s);
+        }
+    }
 
-	@Override
-	public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-		TileEntity tileEntity = world.getTileEntity(pos);
-		if(tileEntity instanceof TileCorner) {
-			((TileCorner) tileEntity).setColor(color);
-		}
-		return true;
-	}
+    @Override
+    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileCorner) {
+            TileCorner tileCorner = (TileCorner) tileEntity;
+            if (tileCorner.getColor() == color) {
+                return false;
+            }
+
+            tileCorner.setColor(color);
+        }
+        return true;
+    }
 
 }
