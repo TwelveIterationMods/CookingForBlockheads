@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class MessageCraftRecipe implements IMessage {

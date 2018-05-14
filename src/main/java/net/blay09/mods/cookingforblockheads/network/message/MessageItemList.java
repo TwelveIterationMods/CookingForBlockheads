@@ -7,7 +7,6 @@ import java.util.Collection;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import com.google.common.collect.Lists;
