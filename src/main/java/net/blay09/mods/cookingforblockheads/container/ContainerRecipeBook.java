@@ -23,12 +23,10 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
@@ -241,7 +239,7 @@ public class ContainerRecipeBook extends Container {
 							}
 						}
 						if (!foundStack.isEmpty()) {
-							stackList.add(foundStack);
+							stackList.add(foundStack.getCount() > 127 ? ItemHandlerHelper.copyStackWithSize(foundStack, 127) : foundStack);
 						}
 					}
 					if (stackList.isEmpty()) {
