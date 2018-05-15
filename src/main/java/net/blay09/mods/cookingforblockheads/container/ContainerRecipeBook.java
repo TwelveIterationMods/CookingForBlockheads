@@ -257,6 +257,7 @@ public class ContainerRecipeBook extends Container {
 		if (outputItem.isEmpty() || craftMatrix.size() == 0) {
 			return;
 		}
+
 		if (allowCrafting) {
 			if (recipeType == RecipeType.CRAFTING) {
 				int craftCount = stack ? outputItem.getMaxStackSize() : 1;

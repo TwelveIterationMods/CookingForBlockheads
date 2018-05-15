@@ -194,7 +194,7 @@ public class CookingRegistry {
 			return false;
 		}
 		for (ItemStack toolItem : tools) {
-			if (ItemUtils.areItemStacksEqualWithWildcard(toolItem, itemStack)) {
+			if (ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(toolItem, itemStack)) {
 				return true;
 			}
 		}
@@ -274,7 +274,7 @@ public class CookingRegistry {
 			IKitchenItemProvider itemProvider = inventories.get(i);
 			for (int j = 0; j < itemProvider.getSlots(); j++) {
 				ItemStack itemStack = itemProvider.getStackInSlot(j);
-				if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, checkStack) && !itemProvider.useItemStack(j, 1, true, inventories, requireBucket).isEmpty()) {
+				if (ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(itemStack, checkStack) && !itemProvider.useItemStack(j, 1, true, inventories, requireBucket).isEmpty()) {
 					return itemStack;
 				}
 			}

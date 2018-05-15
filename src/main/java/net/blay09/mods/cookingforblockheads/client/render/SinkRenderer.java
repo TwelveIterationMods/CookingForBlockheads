@@ -49,15 +49,17 @@ public class SinkRenderer extends TileEntitySpecialRenderer<TileSink> {
             }
         }
 
-        GlStateManager.enableBlend();
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y + 0.5f, z);
-        float filledPercentage = tileEntity.getWaterAmount() / (float) tileEntity.getWaterCapacity();
-        GlStateManager.scale(1f, filledPercentage, 1f);
-        GlStateManager.translate(0f, -0.5f, 0f);
-        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        Minecraft.getMinecraft().getRenderItem().renderModel(modelSinkLiquid, 0xFFFFFFFF);
-        GlStateManager.popMatrix();
+        if (tileEntity.getWaterAmount() > 0) {
+            GlStateManager.enableBlend();
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y + 0.5f, z);
+            float filledPercentage = tileEntity.getWaterAmount() / (float) tileEntity.getWaterCapacity();
+            GlStateManager.scale(1f, filledPercentage, 1f);
+            GlStateManager.translate(0f, -0.5f, 0f);
+            bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            Minecraft.getMinecraft().getRenderItem().renderModel(modelSinkLiquid, 0xFFFFFFFF);
+            GlStateManager.popMatrix();
+        }
 
         RenderHelper.enableStandardItemLighting();
     }
