@@ -37,49 +37,55 @@ public class TileSink extends TileEntity {
 
         @Override
         public FluidStack getFluid() {
-            if(!ModConfig.general.sinkRequiresWater) {
+            if (!ModConfig.general.sinkRequiresWater) {
                 return MAX_WATER;
             }
+
             return super.getFluid();
         }
 
         @Override
         public int getFluidAmount() {
-            if(!ModConfig.general.sinkRequiresWater) {
+            if (!ModConfig.general.sinkRequiresWater) {
                 return Integer.MAX_VALUE;
             }
+
             return super.getFluidAmount();
         }
 
         @Override
         public int getCapacity() {
-            if(!ModConfig.general.sinkRequiresWater) {
+            if (!ModConfig.general.sinkRequiresWater) {
                 return Integer.MAX_VALUE;
             }
+
             return super.getCapacity();
         }
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if(!ModConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
+            if (!ModConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
                 return resource.amount;
             }
+
             return super.fill(resource, doFill);
         }
 
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if(!ModConfig.general.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
+            if (!ModConfig.general.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
                 return resource.copy();
             }
+
             return super.drain(resource, doDrain);
         }
 
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
-            if(!ModConfig.general.sinkRequiresWater) {
+            if (!ModConfig.general.sinkRequiresWater) {
                 return new FluidStack(FluidRegistry.WATER, maxDrain);
             }
+
             return super.drain(maxDrain, doDrain);
         }
 
@@ -102,13 +108,13 @@ public class TileSink extends TileEntity {
 
         @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-            if(!ModConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
-                if(requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
-                    if(!CookingRegistry.consumeBucket(inventories, simulate)) {
+            if (!ModConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
+                if (requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
+                    if (!CookingRegistry.consumeBucket(inventories, simulate)) {
                         return ItemStack.EMPTY;
                     }
                 }
-                if(simulate) {
+                if (simulate) {
                     waterUsed += amount * 1000;
                 } else {
                     fluidTank.drain(amount * 1000, true);
@@ -181,6 +187,10 @@ public class TileSink extends TileEntity {
         return waterTank.getFluidAmount();
     }
 
+    public int getWaterCapacity() {
+        return waterTank.getCapacity();
+    }
+
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityKitchenItemProvider.CAPABILITY
@@ -191,9 +201,9 @@ public class TileSink extends TileEntity {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
+        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
-        } else if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return (T) waterTank;
         }
         return super.getCapability(capability, facing);

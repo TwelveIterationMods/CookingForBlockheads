@@ -1,0 +1,78 @@
+{
+  "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Liquid)",
+  "textures": {
+    "particle": "blocks/water_still",
+    "milk": "blocks/water_still"
+  },
+  "elements": [
+    {
+      "__comment": "Liquid_Milk",
+      "from": [
+        2.5,
+        8,
+        2.5
+      ],
+      "to": [
+        13.5,
+        13,
+        13.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            10.5,
+            10.5,
+            5.5,
+            5.5
+          ],
+          "texture": "#milk"
+        },
+        "up": {
+          "uv": [
+            5.5,
+            5.5,
+            10.5,
+            10.5
+          ],
+          "texture": "#milk"
+        },
+        "north": {
+          "uv": [
+            5.5,
+            10,
+            10.5,
+            15.5
+          ],
+          "texture": "#milk"
+        },
+        "south": {
+          "uv": [
+            5.5,
+            10,
+            10.5,
+            15.5
+          ],
+          "texture": "#milk"
+        },
+        "west": {
+          "uv": [
+            5.5,
+            10,
+            10.5,
+            15.5
+          ],
+          "texture": "#milk"
+        },
+        "east": {
+          "uv": [
+            5.5,
+            10,
+            10.5,
+            15.5
+          ],
+          "texture": "#milk"
+        }
+      }
+    }
+  ]
+}

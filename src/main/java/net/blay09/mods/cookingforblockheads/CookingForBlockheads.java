@@ -19,7 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -39,90 +42,97 @@ import java.io.File;
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";
-	public static final Logger logger = LogManager.getLogger(MOD_ID);
+    public static final Logger logger = LogManager.getLogger(MOD_ID);
 
-	public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
-		@Override
-		public ItemStack getTabIconItem() {
-			return new ItemStack(ModItems.recipeBook, 1, 1);
-		}
-	};
+    public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(ModItems.recipeBook, 1, 1);
+        }
+    };
 
-	@Mod.Instance(MOD_ID)
+    @Mod.Instance(MOD_ID)
     public static CookingForBlockheads instance;
 
-	@SidedProxy(clientSide = "net.blay09.mods.cookingforblockheads.client.ClientProxy", serverSide = "net.blay09.mods.cookingforblockheads.CommonProxy")
+    @SidedProxy(clientSide = "net.blay09.mods.cookingforblockheads.client.ClientProxy", serverSide = "net.blay09.mods.cookingforblockheads.CommonProxy")
     public static CommonProxy proxy;
 
-	public static File configDir;
+    public static File configDir;
 
-	@Mod.EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		configDir = event.getModConfigurationDirectory();
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        configDir = event.getModConfigurationDirectory();
 
-		CookingForBlockheadsAPI.setupAPI(new InternalMethods());
+        CookingForBlockheadsAPI.setupAPI(new InternalMethods());
 
-		CookingRegistry.addSortButton(new SortButtonName());
-		CookingRegistry.addSortButton(new SortButtonHunger());
-		CookingRegistry.addSortButton(new SortButtonSaturation());
+        CookingRegistry.addSortButton(new SortButtonName());
+        CookingRegistry.addSortButton(new SortButtonHunger());
+        CookingRegistry.addSortButton(new SortButtonSaturation());
 
-		MinecraftForge.EVENT_BUS.register(new IMCHandler());
-		MinecraftForge.EVENT_BUS.register(new CowJarHandler());
+        MinecraftForge.EVENT_BUS.register(new IMCHandler());
+        MinecraftForge.EVENT_BUS.register(new CowJarHandler());
 
-		ModBlocks.registerTileEntities();
-	}
+        ModBlocks.registerTileEntities();
+    }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-		NetworkHandler.init();
-		NetworkRegistry.INSTANCE.registerGuiHandler(CookingForBlockheads.instance, new GuiHandler());
+        NetworkHandler.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(CookingForBlockheads.instance, new GuiHandler());
 
-		ModRecipes.load();
+        ModRecipes.load();
 
-		FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
+        FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
 
-		proxy.init(event);
-	}
+        proxy.init(event);
+    }
 
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		new VanillaAddon();
-		event.buildSoftDependProxy(Compat.PAMS_HARVESTCRAFT, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
-		event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        new VanillaAddon();
+        event.buildSoftDependProxy(Compat.PAMS_HARVESTCRAFT, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
+        event.buildSoftDependProxy(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
 
-		if(!JsonCompatLoader.loadCompat()) {
-			logger.error("Failed to load Cooking for Blockheads compatibility! Things may not work as expected.");
-		}
+        if (!JsonCompatLoader.loadCompat()) {
+            logger.error("Failed to load Cooking for Blockheads compatibility! Things may not work as expected.");
+        }
 
-		CookingRegistry.initFoodRegistry();
-	}
+        CookingRegistry.initFoodRegistry();
+    }
 
-	@Mod.EventHandler
-	public void imc(FMLInterModComms.IMCEvent event) {
-		IMCHandler.handleIMCMessage(event);
-	}
+    @Mod.EventHandler
+    public void imc(FMLInterModComms.IMCEvent event) {
+        IMCHandler.handleIMCMessage(event);
+    }
 
-	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		ModBlocks.register(event.getRegistry());
-	}
+    @SubscribeEvent
+    public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equals(MOD_ID)) {
+            ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
+        }
+    }
 
-	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event) {
-		ModBlocks.registerItemBlocks(event.getRegistry());
-		ModItems.register(event.getRegistry());
-	}
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        ModBlocks.register(event.getRegistry());
+    }
 
-	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-		ModSounds.register(event.getRegistry());
-	}
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        ModBlocks.registerItemBlocks(event.getRegistry());
+        ModItems.register(event.getRegistry());
+    }
 
-	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event) {
-		proxy.registerModels();
-		ModBlocks.registerModels();
-		ModItems.registerModels();
-	}
+    @SubscribeEvent
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+        ModSounds.register(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        proxy.registerModels();
+        ModBlocks.registerModels();
+        ModItems.registerModels();
+    }
 
 }

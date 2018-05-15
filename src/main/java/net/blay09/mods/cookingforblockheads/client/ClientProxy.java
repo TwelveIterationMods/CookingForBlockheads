@@ -9,25 +9,9 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButtonHunger;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButtonName;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButtonSaturation;
-import net.blay09.mods.cookingforblockheads.client.render.CookingTableRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.CounterRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.CowJarRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.FridgeRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.MilkJarRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.OvenRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.SpiceRackRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.ToasterRenderer;
-import net.blay09.mods.cookingforblockheads.client.render.ToolRackRenderer;
+import net.blay09.mods.cookingforblockheads.client.render.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
-import net.blay09.mods.cookingforblockheads.tile.TileCounter;
-import net.blay09.mods.cookingforblockheads.tile.TileCowJar;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
-import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
-import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
-import net.blay09.mods.cookingforblockheads.tile.TileToaster;
-import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
+import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -83,6 +67,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
 	}
 
 	@Override
@@ -113,6 +98,9 @@ public class ClientProxy extends CommonProxy {
 		try {
 			IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milk_jar_liquid"));
 			MilkJarRenderer.modelMilkLiquid = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
+
+			model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_liquid"));
+			SinkRenderer.modelSinkLiquid = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
 
 			model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door"));
 			OvenRenderer.modelDoor = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
