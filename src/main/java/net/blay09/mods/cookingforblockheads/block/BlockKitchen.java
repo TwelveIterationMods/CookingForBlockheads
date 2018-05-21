@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
+import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -13,6 +15,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -20,6 +23,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -119,6 +124,34 @@ public abstract class BlockKitchen extends BlockContainer {
 			flipped = dir > 0;
 		}
 		return flipped;
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity != null) {
+			IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			if (itemHandler != null) {
+				ItemUtils.dropItemHandlerItems(world, pos, itemHandler);
+			}
+		}
+
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof IDyeableKitchen) {
+			IDyeableKitchen dyeable = (IDyeableKitchen) tileEntity;
+			if (dyeable.getDyedColor() == color) {
+				return false;
+			}
+
+			dyeable.setDyedColor(color);
+		}
+
+		return true;
 	}
 
 }

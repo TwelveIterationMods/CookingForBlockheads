@@ -54,7 +54,7 @@ public class BlockToaster extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileToaster) {
+        if (tileEntity instanceof TileToaster) {
             return state.withProperty(ACTIVE, ((TileToaster) tileEntity).isActive());
         }
         return state;
@@ -68,7 +68,7 @@ public class BlockToaster extends BlockKitchen {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileToaster) {
+        if (tileEntity instanceof TileToaster) {
             TileToaster tileToaster = (TileToaster) tileEntity;
             ItemStack heldItem = player.getHeldItem(hand);
             if (heldItem.isEmpty() || !tileToaster.getItemHandler().getStackInSlot(0).isEmpty() && !tileToaster.getItemHandler().getStackInSlot(1).isEmpty()) {
@@ -77,7 +77,7 @@ public class BlockToaster extends BlockKitchen {
                 }
             } else {
                 ToastHandler toastHandler = CookingRegistry.getToastHandler(heldItem);
-                if(toastHandler != null) {
+                if (toastHandler != null) {
                     ItemStack output = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(heldItem) : ItemStack.EMPTY;
                     if (!output.isEmpty()) {
                         for (int i = 0; i < tileToaster.getItemHandler().getSlots(); i++) {
@@ -86,11 +86,13 @@ public class BlockToaster extends BlockKitchen {
                                 return true;
                             }
                         }
+
                         return true;
                     }
                 }
             }
         }
+
         return true;
     }
 
@@ -102,6 +104,7 @@ public class BlockToaster extends BlockKitchen {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
+
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
@@ -111,7 +114,7 @@ public class BlockToaster extends BlockKitchen {
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
         TileToaster tileEntity = (TileToaster) world.getTileEntity(pos);
         if (tileEntity != null && tileEntity.isActive()) {
-            if(rand.nextFloat() < tileEntity.getToastProgress()) {
+            if (rand.nextFloat() < tileEntity.getToastProgress()) {
                 double x = (float) pos.getX() + 0.5f + (rand.nextFloat() - 0.5f) * 0.25f;
                 double y = (float) pos.getY() + 0.2f + rand.nextFloat() * 6f / 16f;
                 double z = (float) pos.getZ() + 0.5f + (rand.nextFloat() - 0.5f) * 0.25f;

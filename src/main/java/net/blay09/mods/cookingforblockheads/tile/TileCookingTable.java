@@ -15,7 +15,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 
-public class TileCookingTable extends TileEntity {
+public class TileCookingTable extends TileEntity implements IDyeableKitchen {
 
     private ItemStack noFilterBook = ItemStack.EMPTY;
     private EnumDyeColor color = EnumDyeColor.WHITE;
@@ -88,11 +88,13 @@ public class TileCookingTable extends TileEntity {
         return oldState.getBlock() != newSate.getBlock();
     }
 
-    public EnumDyeColor getColor() {
+    @Override
+    public EnumDyeColor getDyedColor() {
         return color;
     }
 
-    public void setColor(EnumDyeColor color) {
+    @Override
+    public void setDyedColor(EnumDyeColor color) {
         this.color = color;
         IBlockState state = world.getBlockState(pos);
         world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);

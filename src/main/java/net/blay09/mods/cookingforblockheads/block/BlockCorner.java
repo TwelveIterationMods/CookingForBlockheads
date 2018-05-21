@@ -56,8 +56,9 @@ public class BlockCorner extends BlockKitchen {
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileCorner) {
-            return state.withProperty(COLOR, ((TileCorner) tileEntity).getColor());
+            return state.withProperty(COLOR, ((TileCorner) tileEntity).getDyedColor());
         }
+
         return state;
     }
 
@@ -70,6 +71,7 @@ public class BlockCorner extends BlockKitchen {
             }
             return true;
         }
+
         return false;
     }
 
@@ -100,23 +102,10 @@ public class BlockCorner extends BlockKitchen {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
+
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
-    }
-
-    @Override
-    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileCorner) {
-            TileCorner tileCorner = (TileCorner) tileEntity;
-            if (tileCorner.getColor() == color) {
-                return false;
-            }
-
-            tileCorner.setColor(color);
-        }
-        return true;
     }
 
 }

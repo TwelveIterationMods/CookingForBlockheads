@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class  BlockOven extends BlockKitchen {
+public class BlockOven extends BlockKitchen {
 
     public static final String name = "oven";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -54,28 +54,38 @@ public class  BlockOven extends BlockKitchen {
             }
             return true;
         }
-        if(facing == EnumFacing.UP) {
-            if(CookingRegistry.isToolItem(heldItem)) {
+
+        if (facing == EnumFacing.UP) {
+            if (CookingRegistry.isToolItem(heldItem)) {
                 EnumFacing stateFacing = state.getValue(FACING);
                 float hx = hitX;
                 float hz = hitZ;
-                switch(stateFacing) {
-                    case NORTH: hx = 1f - hitX; hz = 1f - hitZ; break;
+                switch (stateFacing) {
+                    case NORTH:
+                        hx = 1f - hitX;
+                        hz = 1f - hitZ;
+                        break;
 //                    case SOUTH: hx = hitX; hz = hitZ; break;
-                    case WEST: hz = 1f - hitX; hx = hitZ; break;
-                    case EAST: hz = hitX; hx = 1f - hitZ; break;
+                    case WEST:
+                        hz = 1f - hitX;
+                        hx = hitZ;
+                        break;
+                    case EAST:
+                        hz = hitX;
+                        hx = 1f - hitZ;
+                        break;
                 }
                 int index = -1;
-                if(hx < 0.5f && hz < 0.5f) {
+                if (hx < 0.5f && hz < 0.5f) {
                     index = 1;
-                } else if(hx >= 0.5f && hz < 0.5f) {
+                } else if (hx >= 0.5f && hz < 0.5f) {
                     index = 0;
-                } else if(hx < 0.5f && hz >= 0.5f) {
+                } else if (hx < 0.5f && hz >= 0.5f) {
                     index = 3;
-                } else if(hx >= 0.5f && hz >= 0.5f) {
+                } else if (hx >= 0.5f && hz >= 0.5f) {
                     index = 2;
                 }
-                if(index != -1) {
+                if (index != -1) {
                     TileOven tileOven = (TileOven) world.getTileEntity(pos);
                     if (tileOven != null && tileOven.getToolItem(index).isEmpty()) {
                         ItemStack toolItem = heldItem.splitStack(1);
@@ -85,15 +95,16 @@ public class  BlockOven extends BlockKitchen {
                 return true;
             }
         }
-        if(facing == state.getValue(FACING)) {
+
+        if (facing == state.getValue(FACING)) {
             TileOven tileOven = (TileOven) world.getTileEntity(pos);
-            if(tileOven != null) {
+            if (tileOven != null) {
                 if (player.isSneaking()) {
                     tileOven.getDoorAnimator().toggleForcedOpen();
                     return true;
                 } else if (!heldItem.isEmpty() && tileOven.getDoorAnimator().isForcedOpen()) {
                     heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
-                    if(!heldItem.isEmpty()) {
+                    if (!heldItem.isEmpty()) {
                         heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getItemHandlerFuel(), heldItem, false);
                     }
                     player.setHeldItem(hand, heldItem);
@@ -101,25 +112,17 @@ public class  BlockOven extends BlockKitchen {
                 }
             }
         }
-        if(!world.isRemote) {
+
+        if (!world.isRemote) {
             player.openGui(CookingForBlockheads.instance, GuiHandler.COOKING_OVEN, world, pos.getX(), pos.getY(), pos.getZ());
         }
+
         return true;
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
-    {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileOven();
-    }
-
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileOven tileEntity = (TileOven) world.getTileEntity(pos);
-        if (tileEntity != null) {
-            ItemUtils.dropItemHandlerItems(world, pos, tileEntity.getItemHandler());
-        }
-        super.breakBlock(world, pos, state);
     }
 
     @Override
@@ -148,6 +151,7 @@ public class  BlockOven extends BlockKitchen {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
+
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }

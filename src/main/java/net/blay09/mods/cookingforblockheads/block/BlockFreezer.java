@@ -3,10 +3,10 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
-import net.blay09.mods.cookingforblockheads.tile.TileCounter;
+import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
+import net.blay09.mods.cookingforblockheads.tile.TileFreezer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -17,61 +17,34 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Locale;
 
-public class BlockCounter extends BlockKitchen {
+public class BlockFreezer extends BlockKitchen {
 
-    public static final String name = "counter";
+    public static final String name = "freezer";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public enum ModelPass implements IStringSerializable {
-        STATIC,
-        DOOR,
-        DOOR_FLIPPED;
-
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ENGLISH);
-        }
-    }
-
-    public static final PropertyEnum<ModelPass> PASS = PropertyEnum.create("pass", ModelPass.class);
-
-    public BlockCounter() {
-        super(Material.ROCK);
+    public BlockFreezer() {
+        super(Material.IRON);
 
         setUnlocalizedName(registryName.toString());
-        setSoundType(SoundType.STONE);
+        setSoundType(SoundType.METAL);
         setHardness(5f);
         setResistance(10f);
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, FLIPPED, PASS, COLOR);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileCounter) {
-            return state.withProperty(COLOR, ((TileCounter) tileEntity).getDyedColor());
-        }
-
-        return state;
+        return new BlockStateContainer(this, FACING, FLIPPED);
     }
 
     @Override
@@ -123,8 +96,13 @@ public class BlockCounter extends BlockKitchen {
     }
 
     @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return (layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT);
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileCounter();
+        return new TileFreezer();
     }
 
     @Override
@@ -138,13 +116,13 @@ public class BlockCounter extends BlockKitchen {
         }
 
         if (facing == state.getValue(FACING)) {
-            TileCounter tileCounter = (TileCounter) world.getTileEntity(pos);
-            if (tileCounter != null) {
+            TileFreezer tileFreezer = (TileFreezer) world.getTileEntity(pos);
+            if (tileFreezer != null) {
                 if (player.isSneaking()) {
-                    tileCounter.getDoorAnimator().toggleForcedOpen();
+                    tileFreezer.getDoorAnimator().toggleForcedOpen();
                     return true;
-                } else if (!heldItem.isEmpty() && tileCounter.getDoorAnimator().isForcedOpen()) {
-                    heldItem = ItemHandlerHelper.insertItemStacked(tileCounter.getItemHandler(), heldItem, false);
+                } else if (!heldItem.isEmpty() && tileFreezer.getDoorAnimator().isForcedOpen()) {
+                    heldItem = ItemHandlerHelper.insertItemStacked(tileFreezer.getItemHandler(), heldItem, false);
                     player.setHeldItem(hand, heldItem);
                     return true;
                 }
@@ -152,11 +130,7 @@ public class BlockCounter extends BlockKitchen {
         }
 
         if (!world.isRemote) {
-            if (facing == EnumFacing.UP && !heldItem.isEmpty()) {
-                return false;
-            }
-
-            player.openGui(CookingForBlockheads.instance, GuiHandler.COUNTER, world, pos.getX(), pos.getY(), pos.getZ());
+            player.openGui(CookingForBlockheads.instance, GuiHandler.FREEZER, world, pos.getX(), pos.getY(), pos.getZ());
         }
 
         return true;
@@ -175,6 +149,9 @@ public class BlockCounter extends BlockKitchen {
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
+
+        tooltip.add(TextFormatting.AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
     }
+
 
 }

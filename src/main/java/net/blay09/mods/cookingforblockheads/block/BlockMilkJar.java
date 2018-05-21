@@ -54,9 +54,10 @@ public class BlockMilkJar extends BlockKitchen {
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         Block blockBelow = world.getBlockState(pos.down()).getBlock();
-        if(blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter) {
+        if (blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter) {
             return BOUNDING_BOX.expand(0, -0.05, 0);
         }
+
         return BOUNDING_BOX;
     }
 
@@ -64,20 +65,20 @@ public class BlockMilkJar extends BlockKitchen {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
         TileMilkJar tileMilkJar = (TileMilkJar) world.getTileEntity(pos);
-        if(!heldItem.isEmpty() && tileMilkJar != null) {
+        if (!heldItem.isEmpty() && tileMilkJar != null) {
             if (heldItem.getItem() == Items.MILK_BUCKET) {
-                if(tileMilkJar.getMilkAmount() <= tileMilkJar.getMilkCapacity() - 1000) {
+                if (tileMilkJar.getMilkAmount() <= tileMilkJar.getMilkCapacity() - 1000) {
                     tileMilkJar.fill(1000, true);
                     player.setHeldItem(hand, new ItemStack(Items.BUCKET));
                 }
                 return true;
-            } else if(heldItem.getItem() == Items.BUCKET) {
-                if(tileMilkJar.getMilkAmount() >= 1000) {
+            } else if (heldItem.getItem() == Items.BUCKET) {
+                if (tileMilkJar.getMilkAmount() >= 1000) {
                     if (heldItem.getCount() == 1) {
                         tileMilkJar.drain(1000, true);
                         player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
                     } else {
-                        if(player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) {
+                        if (player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) {
                             tileMilkJar.drain(1000, true);
                             heldItem.shrink(1);
                         }
@@ -86,12 +87,14 @@ public class BlockMilkJar extends BlockKitchen {
                 return true;
             }
         }
+
         return false;
     }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
+
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }

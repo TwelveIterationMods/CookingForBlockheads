@@ -1,14 +1,13 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.block.BlockCounter;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -23,14 +22,15 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import vazkii.quark.api.IDropoffManager;
 
 import javax.annotation.Nullable;
 
 @Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
-public class TileCounter extends TileEntity implements ITickable, IDropoffManager, IDyeableKitchen {
+public class TileFreezer extends TileEntity implements ITickable, IDropoffManager, IDyeableKitchen {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(54) {
         @Override
         protected void onContentsChanged(int slot) {
             isDirty = true;
@@ -41,36 +41,33 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
-    private boolean isFirstTick = true;
-
+    private EnumDyeColor fridgeColor = EnumDyeColor.WHITE;
     private boolean isDirty;
 
-    private EnumDyeColor color = EnumDyeColor.WHITE;
-
-    private EnumFacing cachedFacing;
-    private boolean cachedFlipped;
-
-    public TileCounter() {
+    public TileFreezer() {
         doorAnimator.setOpenRadius(2);
-        doorAnimator.setSoundEventOpen(SoundEvents.BLOCK_CHEST_OPEN);
-        doorAnimator.setSoundEventClose(SoundEvents.BLOCK_CHEST_CLOSE);
+        doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen);
+        doorAnimator.setSoundEventClose(ModSounds.fridgeClose);
+    }
+
+    @Override
+    public void setDyedColor(EnumDyeColor fridgeColor) {
+        this.fridgeColor = fridgeColor;
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
+    }
+
+    @Override
+    public EnumDyeColor getDyedColor() {
+        return fridgeColor;
     }
 
     @Override
     public void update() {
-        if (isFirstTick) {
-            // onLoad doesn't work when you need to touch the world TODO I think this was fixed in a newer Forge build?
-            IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() == ModBlocks.counter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
-                cachedFacing = state.getValue(BlockCounter.FACING);
-                cachedFlipped = state.getValue(BlockCounter.FLIPPED);
-                isFirstTick = false;
-            }
-        }
-
         doorAnimator.update();
 
-        if (isDirty) {
+        if(isDirty) {
             VanillaPacketHandler.sendTileEntityUpdate(this);
             isDirty = false;
         }
@@ -85,14 +82,14 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
-        color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
+        fridgeColor = EnumDyeColor.byDyeDamage(tagCompound.getByte("FridgeColor"));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
-        tagCompound.setByte("Color", (byte) color.getDyeDamage());
+        tagCompound.setByte("FridgeColor", (byte) fridgeColor.getDyeDamage());
         return tagCompound;
     }
 
@@ -132,12 +129,14 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) itemHandler;
         }
-        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
+
+        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
+
         return super.getCapability(capability, facing);
     }
 
@@ -146,37 +145,8 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     }
 
     @Override
-    public void setDyedColor(EnumDyeColor color) {
-        this.color = color;
-        IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
-        markDirty();
-    }
-
-    @Override
-    public EnumDyeColor getDyedColor() {
-        return color;
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        if (oldState.getBlock() == newState.getBlock()) {
-            cachedFacing = newState.getValue(BlockCounter.FACING);
-            cachedFlipped = newState.getValue(BlockCounter.FLIPPED);
-            return false;
-        }
-        return true;
-    }
-
-    public EnumFacing getFacing() {
-        if (cachedFacing == null) {
-            return EnumFacing.NORTH;
-        }
-        return cachedFacing;
-    }
-
-    public boolean isFlipped() {
-        return cachedFlipped;
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return oldState.getBlock() != newSate.getBlock();
     }
 
     @Override

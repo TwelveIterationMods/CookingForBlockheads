@@ -60,8 +60,8 @@ public class BlockSink extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileSink) {
-            return state.withProperty(COLOR, ((TileSink) tileEntity).getColor());
+        if (tileEntity instanceof TileSink) {
+            return state.withProperty(COLOR, ((TileSink) tileEntity).getDyedColor());
         }
         return state;
     }
@@ -91,6 +91,7 @@ public class BlockSink extends BlockKitchen {
                 facing = EnumFacing.NORTH;
                 break;
         }
+
         return getDefaultState().withProperty(FACING, facing).withProperty(FLIPPED, (meta & 8) != 0);
     }
 
@@ -112,9 +113,11 @@ public class BlockSink extends BlockKitchen {
                 meta = 3;
                 break;
         }
+
         if (state.getValue(FLIPPED)) {
             meta |= 8;
         }
+
         return meta;
     }
 
@@ -127,17 +130,18 @@ public class BlockSink extends BlockKitchen {
             }
             return true;
         }
+
         ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
-        if(!resultStack.isEmpty()) {
+        if (!resultStack.isEmpty()) {
             NBTTagCompound tagCompound = heldItem.getTagCompound();
             ItemStack newItem = resultStack.copy();
-            if(tagCompound != null) {
+            if (tagCompound != null) {
                 newItem.setTagCompound(tagCompound);
             }
-            if(heldItem.getCount() <= 1) {
+            if (heldItem.getCount() <= 1) {
                 player.setHeldItem(hand, newItem);
             } else {
-                if(player.inventory.addItemStackToInventory(newItem)) {
+                if (player.inventory.addItemStackToInventory(newItem)) {
                     heldItem.shrink(1);
                 }
             }
@@ -146,18 +150,18 @@ public class BlockSink extends BlockKitchen {
             return true;
         } else {
             TileEntity tileEntity = world.getTileEntity(pos);
-            if(tileEntity != null) {
+            if (tileEntity != null) {
                 IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-                if(fluidHandler == null) {
+                if (fluidHandler == null) {
                     spawnParticles(world, pos, state);
                 } else {
                     if (!FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) {
                         // Special case for bottles, they can hold 1/3 of a bucket
-                        if(heldItem.getItem() == Items.GLASS_BOTTLE) {
+                        if (heldItem.getItem() == Items.GLASS_BOTTLE) {
                             FluidStack simulated = fluidHandler.drain(333, false);
-                            if(simulated != null && simulated.amount == 333) {
+                            if (simulated != null && simulated.amount == 333) {
                                 fluidHandler.drain(333, true);
-                                if(player.addItemStackToInventory(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER))) {
+                                if (player.addItemStackToInventory(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER))) {
                                     heldItem.shrink(1);
                                 }
                             } else {
@@ -171,25 +175,38 @@ public class BlockSink extends BlockKitchen {
                 return !heldItem.isEmpty() && !(heldItem.getItem() instanceof ItemBlock);
             }
         }
+
         return true;
     }
 
     private void spawnParticles(World world, BlockPos pos, IBlockState state) {
         float dripWaterX = 0f;
         float dripWaterZ = 0f;
-        switch(state.getValue(FACING)) {
-            case NORTH: dripWaterZ = 0.25f; dripWaterX = -0.05f; break;
-            case SOUTH: dripWaterX = 0.25f; break;
-            case WEST: dripWaterX = 0.25f; dripWaterZ = 0.25f; break;
-            case EAST: dripWaterZ = -0.05f; break;
+        switch (state.getValue(FACING)) {
+            case NORTH:
+                dripWaterZ = 0.25f;
+                dripWaterX = -0.05f;
+                break;
+            case SOUTH:
+                dripWaterX = 0.25f;
+                break;
+            case WEST:
+                dripWaterX = 0.25f;
+                dripWaterZ = 0.25f;
+                break;
+            case EAST:
+                dripWaterZ = -0.05f;
+                break;
         }
+
         float particleX = (float) pos.getX() + 0.5f;
         float particleY = (float) pos.getY() + 1.25f;
         float particleZ = (float) pos.getZ() + 0.5f;
         world.spawnParticle(EnumParticleTypes.WATER_SPLASH, (double) particleX + dripWaterX, (double) particleY - 0.45f, (double) particleZ + dripWaterZ, 0, 0, 0);
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             world.spawnParticle(EnumParticleTypes.WATER_SPLASH, (double) particleX + Math.random() - 0.5f, (double) particleY + Math.random() - 0.5f, (double) particleZ + Math.random() - 0.5f, 0, 0, 0);
         }
+
         world.playSound(null, pos, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, 0.1f, world.rand.nextFloat() + 0.5f);
     }
 
@@ -201,6 +218,7 @@ public class BlockSink extends BlockKitchen {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
+
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
@@ -209,13 +227,13 @@ public class BlockSink extends BlockKitchen {
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileSink) {
+        if (tileEntity instanceof TileSink) {
             TileSink tileSink = (TileSink) tileEntity;
-            if (tileSink.getColor() == color) {
+            if (tileSink.getDyedColor() == color) {
                 return false;
             }
 
-            tileSink.setColor(color);
+            tileSink.setDyedColor(color);
         }
         return true;
     }

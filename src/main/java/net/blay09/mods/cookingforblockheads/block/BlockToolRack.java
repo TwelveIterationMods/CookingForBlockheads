@@ -27,20 +27,20 @@ import java.util.List;
 
 public class BlockToolRack extends BlockKitchen {
 
-	public static final String name = "tool_rack";
-	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+    public static final String name = "tool_rack";
+    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-	private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[] {
-			new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1),
-			new AxisAlignedBB(0, 0.25, 0, 1, 1, 0.125),
-			new AxisAlignedBB(1 - 0.125, 0.25, 0, 1, 1, 1),
-			new AxisAlignedBB(0, 0.25, 0, 0.125, 1, 1),
-	};
+    private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[]{
+            new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1),
+            new AxisAlignedBB(0, 0.25, 0, 1, 1, 0.125),
+            new AxisAlignedBB(1 - 0.125, 0.25, 0, 1, 1, 1),
+            new AxisAlignedBB(0, 0.25, 0, 0.125, 1, 1),
+    };
 
     public BlockToolRack() {
         super(Material.WOOD);
 
-		setUnlocalizedName(registryName.toString());
+        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
@@ -50,49 +50,62 @@ public class BlockToolRack extends BlockKitchen {
         return new TileToolRack();
     }
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing facing = state.getValue(FACING);
-		return BOUNDING_BOXES[facing.getIndex() - 2];
-	}
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        EnumFacing facing = state.getValue(FACING);
+        return BOUNDING_BOXES[facing.getIndex() - 2];
+    }
 
-	@Nullable
-	@Override
-	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
-		return NULL_AABB;
-	}
+    @Nullable
+    @Override
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
+        return NULL_AABB;
+    }
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
-			facing = EnumFacing.NORTH;
-		}
-		return getDefaultState().withProperty(FACING, facing);
-	}
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
+            facing = EnumFacing.NORTH;
+        }
 
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {}
+        return getDefaultState().withProperty(FACING, facing);
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    	if(hand != EnumHand.MAIN_HAND) {
-    		return true;
-		}
-    	ItemStack heldItem = player.getHeldItem(hand);
-        if(!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (hand != EnumHand.MAIN_HAND) {
             return true;
         }
-        if(hitY > 0.25f) {
-			EnumFacing stateFacing = state.getValue(FACING);
+
+        ItemStack heldItem = player.getHeldItem(hand);
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
+            return true;
+        }
+
+        if (hitY > 0.25f) {
+            EnumFacing stateFacing = state.getValue(FACING);
             float hit = hitX;
-            switch(stateFacing) {
-                case NORTH: hit = hitX; break;
-                case SOUTH: hit = 1f - hitX; break;
-                case WEST: hit = 1f - hitZ; break;
-                case EAST: hit = hitZ; break;
+            switch (stateFacing) {
+                case NORTH:
+                    hit = hitX;
+                    break;
+                case SOUTH:
+                    hit = 1f - hitX;
+                    break;
+                case WEST:
+                    hit = 1f - hitZ;
+                    break;
+                case EAST:
+                    hit = hitZ;
+                    break;
             }
+
             int hitSlot = hit > 0.5f ? 0 : 1;
             TileToolRack tileToolRack = (TileToolRack) world.getTileEntity(pos);
             if (tileToolRack != null) {
@@ -117,21 +130,14 @@ public class BlockToolRack extends BlockKitchen {
                 return true;
             }
         }
+
         return true;
     }
 
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileToolRack tileEntity = (TileToolRack) world.getTileEntity(pos);
-		if (tileEntity != null) {
-			ItemUtils.dropItemHandlerItems(world, pos, tileEntity.getItemHandler());
-		}
-		super.breakBlock(world, pos, state);
-	}
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, world, tooltip, advanced);
 
-	@Override
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-		super.addInformation(stack, world, tooltip, advanced);
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }

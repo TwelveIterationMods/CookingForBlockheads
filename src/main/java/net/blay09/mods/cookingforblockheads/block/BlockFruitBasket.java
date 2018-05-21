@@ -1,9 +1,8 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
-import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
+import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,27 +18,22 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockSpiceRack extends BlockKitchen {
+public class BlockFruitBasket extends BlockKitchen {
 
-    public static final String name = "spice_rack";
+    public static final String name = "fruit_basket";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[]{
-            new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1),
-            new AxisAlignedBB(0, 0.25, 0, 1, 1, 0.125),
-            new AxisAlignedBB(1 - 0.125, 0.25, 0, 1, 1, 1),
-            new AxisAlignedBB(0, 0.25, 0, 0.125, 1, 1),
-    };
+    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1);
 
-    public BlockSpiceRack() {
+    public BlockFruitBasket() {
         super(Material.WOOD);
 
         setUnlocalizedName(registryName.toString());
@@ -49,20 +43,12 @@ public class BlockSpiceRack extends BlockKitchen {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileSpiceRack();
+        return new TileFruitBasket();
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        EnumFacing facing = state.getValue(FACING);
-        return BOUNDING_BOXES[facing.getIndex() - 2];
-    }
-
-    @Nullable
-    @Override
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return NULL_AABB;
+        return BOUNDING_BOX;
     }
 
     @Override
@@ -91,46 +77,15 @@ public class BlockSpiceRack extends BlockKitchen {
         }
 
         if (!heldItem.isEmpty() || player.isSneaking()) {
-            float hit = hitX;
-            EnumFacing stateFacing = state.getValue(FACING);
-            switch (stateFacing) {
-                case NORTH:
-                    hit = hitX;
-                    break;
-                case SOUTH:
-                    hit = 1f - hitX;
-                    break;
-                case WEST:
-                    hit = 1f - hitZ;
-                    break;
-                case EAST:
-                    hit = hitZ;
-                    break;
-            }
-            int hitSlot = MathHelper.clamp((int) ((1f - hit) * 9), 0, 8);
-            TileSpiceRack tileSpiceRack = (TileSpiceRack) world.getTileEntity(pos);
-            if (tileSpiceRack != null) {
+            TileFruitBasket tileFruitBasket = (TileFruitBasket) world.getTileEntity(pos);
+            if (tileFruitBasket != null) {
                 if (!heldItem.isEmpty()) {
-                    ItemStack oldToolItem = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
-                    ItemStack toolItem = heldItem.splitStack(1);
-                    if (!oldToolItem.isEmpty()) {
-                        if (!player.inventory.addItemStackToInventory(oldToolItem)) {
-                            player.dropItem(oldToolItem, false);
-                        }
-                        tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, toolItem);
-                    } else {
-                        tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, toolItem);
-                    }
-                } else {
-                    ItemStack itemStack = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
-                    if (!itemStack.isEmpty()) {
-                        tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, ItemStack.EMPTY);
-                        player.setHeldItem(hand, itemStack);
-                    }
+                    heldItem = ItemHandlerHelper.insertItemStacked(tileFruitBasket.getItemHandler(), heldItem, false);
+                    player.setHeldItem(hand, heldItem);
                 }
             }
         } else {
-            player.openGui(CookingForBlockheads.instance, GuiHandler.SPICE_RACK, world, pos.getX(), pos.getY(), pos.getZ());
+            player.openGui(CookingForBlockheads.instance, GuiHandler.FRUIT_BASKET, world, pos.getX(), pos.getY(), pos.getZ());
         }
 
         return true;

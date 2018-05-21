@@ -32,6 +32,7 @@ public class BlockKitchenFloor extends Block {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":multiblock_kitchen"));
+
 		for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
 			tooltip.add(TextFormatting.GRAY + s);
 		}

@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.Block;
@@ -137,6 +136,7 @@ public class BlockFridge extends BlockKitchen {
             }
             return true;
         }
+
         if (facing == state.getValue(FACING)) {
             TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
             if (tileFridge != null) {
@@ -150,12 +150,15 @@ public class BlockFridge extends BlockKitchen {
                 }
             }
         }
+
         if (!world.isRemote) {
             if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) == ModBlocks.fridge) {
                 return false;
             }
+
             player.openGui(CookingForBlockheads.instance, GuiHandler.FRIDGE, world, pos.getX(), pos.getY(), pos.getZ());
         }
+
         return true;
     }
 
@@ -174,15 +177,6 @@ public class BlockFridge extends BlockKitchen {
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
         return state.withProperty(FLIPPED, shouldBePlacedFlipped(pos, state.getValue(FACING), placer));
-    }
-
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileFridge tileEntity = (TileFridge) world.getTileEntity(pos);
-        if (tileEntity != null) {
-            ItemUtils.dropItemHandlerItems(world, pos, tileEntity.getItemHandler());
-        }
-        super.breakBlock(world, pos, state);
     }
 
     @Override
@@ -209,6 +203,7 @@ public class BlockFridge extends BlockKitchen {
                 neighbourFridge.setFridgeColor(color);
             }
         }
+
         return true;
     }
 

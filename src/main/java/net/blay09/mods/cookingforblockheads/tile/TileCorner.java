@@ -14,7 +14,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 
-public class TileCorner extends TileEntity {
+public class TileCorner extends TileEntity implements IDyeableKitchen {
 
     private final CapabilityKitchenConnector.IKitchenConnector connector = CapabilityKitchenConnector.CAPABILITY.getDefaultInstance();
 
@@ -71,14 +71,16 @@ public class TileCorner extends TileEntity {
         return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
-    public void setColor(EnumDyeColor color) {
+    @Override
+    public void setDyedColor(EnumDyeColor color) {
         this.color = color;
         IBlockState state = world.getBlockState(pos);
         world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
         markDirty();
     }
 
-    public EnumDyeColor getColor() {
+    @Override
+    public EnumDyeColor getDyedColor() {
         return color;
     }
 

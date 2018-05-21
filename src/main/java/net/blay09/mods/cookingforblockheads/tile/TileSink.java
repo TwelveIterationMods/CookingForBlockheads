@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileSink extends TileEntity {
+public class TileSink extends TileEntity implements IDyeableKitchen {
 
     private static class WaterTank extends FluidTank {
 
@@ -206,6 +206,7 @@ public class TileSink extends TileEntity {
         } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return (T) waterTank;
         }
+
         return super.getCapability(capability, facing);
     }
 
@@ -214,11 +215,13 @@ public class TileSink extends TileEntity {
         return oldState.getBlock() != newSate.getBlock();
     }
 
-    public EnumDyeColor getColor() {
+    @Override
+    public EnumDyeColor getDyedColor() {
         return color;
     }
 
-    public void setColor(EnumDyeColor color) {
+    @Override
+    public void setDyedColor(EnumDyeColor color) {
         this.color = color;
         IBlockState state = world.getBlockState(pos);
         world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);

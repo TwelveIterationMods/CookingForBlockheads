@@ -49,18 +49,19 @@ public class BlockCookingTable extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileCookingTable) {
-            return state.withProperty(COLOR, ((TileCookingTable) tileEntity).getColor());
+        if (tileEntity instanceof TileCookingTable) {
+            return state.withProperty(COLOR, ((TileCookingTable) tileEntity).getDyedColor());
         }
+
         return state;
     }
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if(!heldItem.isEmpty()) {
+        if (!heldItem.isEmpty()) {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-            if(tileEntity != null) {
+            if (tileEntity != null) {
                 if (heldItem.getItem() == Items.DYE) {
                     if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
                         heldItem.shrink(1);
@@ -72,9 +73,9 @@ public class BlockCookingTable extends BlockKitchen {
                     return true;
                 }
             }
-        } else if(player.isSneaking()) {
+        } else if (player.isSneaking()) {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-            if(tileEntity != null) {
+            if (tileEntity != null) {
                 ItemStack noFilterBook = tileEntity.getNoFilterBook();
                 if (!noFilterBook.isEmpty()) {
                     if (!player.inventory.addItemStackToInventory(noFilterBook)) {
@@ -85,18 +86,21 @@ public class BlockCookingTable extends BlockKitchen {
                 }
             }
         }
-        if(!world.isRemote) {
+
+        if (!world.isRemote) {
             player.openGui(CookingForBlockheads.instance, GuiHandler.COOKING_TABLE, world, pos.getX(), pos.getY(), pos.getZ());
         }
+
         return true;
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-        if(tileEntity != null) {
+        if (tileEntity != null) {
             ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());
         }
+
         super.breakBlock(world, pos, state);
     }
 
@@ -108,22 +112,10 @@ public class BlockCookingTable extends BlockKitchen {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
+
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
     }
 
-    @Override
-    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TileCookingTable) {
-            TileCookingTable tileCookingTable = (TileCookingTable) tileEntity;
-            if (tileCookingTable.getColor() == color) {
-                return false;
-            }
-
-            tileCookingTable.setColor(color);
-        }
-        return true;
-    }
 }
