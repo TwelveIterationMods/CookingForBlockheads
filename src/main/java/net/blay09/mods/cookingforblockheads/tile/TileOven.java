@@ -9,7 +9,6 @@ import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -23,6 +22,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -63,6 +63,27 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             markDirty();
         }
     };
+
+    private EnergyStorageModifiable energyStorage = new EnergyStorageModifiable(10000) {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            if (!simulate) {
+                markDirty();
+            }
+
+            return super.receiveEnergy(maxReceive, simulate);
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            if (!simulate) {
+                markDirty();
+            }
+
+            return super.extractEnergy(maxExtract, simulate);
+        }
+    };
+
     private final RangedWrapper itemHandlerInput = new RangedWrapper(itemHandler, 0, 3);
     private final RangedWrapper itemHandlerFuel = new RangedWrapper(itemHandler, 3, 4);
     private final RangedWrapper itemHandlerOutput = new RangedWrapper(itemHandler, 4, 7);
@@ -78,19 +99,12 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public int currentItemBurnTime;
     private boolean isDirty;
 
-    private EnumDyeColor ovenColor = EnumDyeColor.WHITE;
+    private boolean hasPowerUpgrade;
     private EnumFacing facing;
 
     public TileOven() {
         doorAnimator.setSoundEventOpen(ModSounds.ovenOpen);
         doorAnimator.setSoundEventClose(ModSounds.ovenClose);
-    }
-
-    public void setOvenColor(EnumDyeColor color) {
-        this.ovenColor = color;
-        IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 1 | 2);
-        markDirty();
     }
 
     @Override
@@ -113,6 +127,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         }
 
         boolean hasChanged = false;
+
+        int burnPotential = 200 - furnaceBurnTime;
+        if (hasPowerUpgrade && burnPotential > 0 && shouldConsumeFuel()) {
+            furnaceBurnTime += energyStorage.extractEnergy(burnPotential, false);
+        }
 
         if (furnaceBurnTime > 0) {
             furnaceBurnTime--;
@@ -196,18 +215,29 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         }
     }
 
+    public int getEnergyStored() {
+        return energyStorage.getEnergyStored();
+    }
+
+    public int getEnergyCapacity() {
+        return energyStorage.getMaxEnergyStored();
+    }
+
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if (!result.isEmpty()) {
             return result;
         }
+
         result = FurnaceRecipes.instance().getSmeltingResult(itemStack);
         if (!result.isEmpty() && result.getItem() instanceof ItemFood) {
             return result;
         }
+
         if (!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
             return result;
         }
+
         return ItemStack.EMPTY;
     }
 
@@ -230,6 +260,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 return true;
             }
         }
+
         return false;
     }
 
@@ -240,7 +271,9 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         furnaceBurnTime = tagCompound.getShort("BurnTime");
         currentItemBurnTime = tagCompound.getShort("CurrentItemBurnTime");
         slotCookTime = tagCompound.getIntArray("CookTimes");
-        ovenColor = EnumDyeColor.byDyeDamage(tagCompound.getByte("OvenColor"));
+
+        hasPowerUpgrade = tagCompound.getBoolean("HasPowerUpgrade");
+        energyStorage.setEnergyStored(tagCompound.getInteger("EnergyStored"));
     }
 
     @Override
@@ -250,7 +283,9 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         tagCompound.setShort("BurnTime", (short) furnaceBurnTime);
         tagCompound.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         tagCompound.setIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
-        tagCompound.setByte("OvenColor", (byte) ovenColor.getDyeDamage());
+
+        tagCompound.setBoolean("HasPowerUpgrade", hasPowerUpgrade);
+        tagCompound.setInteger("EnergyStored", energyStorage.getEnergyStored());
         return tagCompound;
     }
 
@@ -276,6 +311,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }
 
+    public boolean hasPowerUpgrade() {
+        return hasPowerUpgrade;
+    }
+
     public boolean isBurning() {
         return furnaceBurnTime > 0;
     }
@@ -284,6 +323,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         if (currentItemBurnTime == 0 && furnaceBurnTime > 0) {
             return 1f;
         }
+
         return (float) furnaceBurnTime / (float) currentItemBurnTime;
     }
 
@@ -314,6 +354,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        if (hasPowerUpgrade && capability == CapabilityEnergy.ENERGY) {
+            return true;
+        }
+
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
                 || capability == CapabilityKitchenSmeltingProvider.CAPABILITY
                 || capability == CapabilityKitchenItemProvider.CAPABILITY
@@ -340,6 +384,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
             }
         }
 
+        if (hasPowerUpgrade && capability == CapabilityEnergy.ENERGY) {
+            return (T) energyStorage;
+        }
+
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
@@ -357,10 +405,6 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public RangedWrapper getItemHandlerFuel() {
         return itemHandlerFuel;
-    }
-
-    public EnumDyeColor getOvenColor() {
-        return ovenColor;
     }
 
     @Override

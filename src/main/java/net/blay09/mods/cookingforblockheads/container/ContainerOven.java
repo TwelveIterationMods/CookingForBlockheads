@@ -27,19 +27,21 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     public ContainerOven(EntityPlayer player, TileOven tileEntity) {
         this.tileEntity = tileEntity;
 
+        int offsetX = tileEntity.hasPowerUpgrade() ? -5 : 0;
+
         for(int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotOvenInput(tileEntity.getItemHandler(), i, 84 + i * 18, 19));
+            addSlotToContainer(new SlotOvenInput(tileEntity.getItemHandler(), i, 84 + i * 18 + offsetX, 19));
         }
 
-        addSlotToContainer(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61, 59));
+        addSlotToContainer(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61 + offsetX, 59));
 
         for(int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotOvenResult(tileEntity.getItemHandler(), i + 4, 142, 41 + i * 18));
+            addSlotToContainer(new SlotOvenResult(tileEntity.getItemHandler(), i + 4, 142 + offsetX, 41 + i * 18));
         }
 
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                addSlotToContainer(new SlotOven(tileEntity.getItemHandler(), 7 + j + i * 3, 84 + j * 18, 41 + i * 18));
+                addSlotToContainer(new SlotOven(tileEntity.getItemHandler(), 7 + j + i * 3, 84 + j * 18 + offsetX, 41 + i * 18));
             }
         }
 

@@ -60,6 +60,7 @@ tooltip.cookingforblockheads:sort_by_saturation=Sort by Saturation
 tooltip.cookingforblockheads:click_to_lock=Click to lock item
 tooltip.cookingforblockheads:click_to_unlock=Click to unlock item
 tooltip.cookingforblockheads:scroll_to_switch=Scroll to select item
+tooltip.cookingforblockheads:energy_stored=Energy stored: %d/%d
 
 ###
 
@@ -74,8 +75,6 @@ itemGroup.cookingforblockheads=Cooking for Blockheads
 
 waila.cookingforblockheads:milk_stored=Milk Stored: %d/%d
 waila.cookingforblockheads:toast_progress=Toasting... (%s)
-
-hint.cookingforblockheads:more_foods.cut_bread_first=Use a Knife to cut the bread first.
 
 ###
 
