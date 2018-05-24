@@ -85,54 +85,7 @@ public class BlockSpiceRack extends BlockKitchen {
             return true;
         }
 
-        ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
-            return true;
-        }
-
-        if (!heldItem.isEmpty() || player.isSneaking()) {
-            float hit = hitX;
-            EnumFacing stateFacing = state.getValue(FACING);
-            switch (stateFacing) {
-                case NORTH:
-                    hit = hitX;
-                    break;
-                case SOUTH:
-                    hit = 1f - hitX;
-                    break;
-                case WEST:
-                    hit = 1f - hitZ;
-                    break;
-                case EAST:
-                    hit = hitZ;
-                    break;
-            }
-            int hitSlot = MathHelper.clamp((int) ((1f - hit) * 9), 0, 8);
-            TileSpiceRack tileSpiceRack = (TileSpiceRack) world.getTileEntity(pos);
-            if (tileSpiceRack != null) {
-                if (!heldItem.isEmpty()) {
-                    ItemStack oldToolItem = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
-                    ItemStack toolItem = heldItem.splitStack(1);
-                    if (!oldToolItem.isEmpty()) {
-                        if (!player.inventory.addItemStackToInventory(oldToolItem)) {
-                            player.dropItem(oldToolItem, false);
-                        }
-                        tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, toolItem);
-                    } else {
-                        tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, toolItem);
-                    }
-                } else {
-                    ItemStack itemStack = tileSpiceRack.getItemHandler().getStackInSlot(hitSlot);
-                    if (!itemStack.isEmpty()) {
-                        tileSpiceRack.getItemHandler().setStackInSlot(hitSlot, ItemStack.EMPTY);
-                        player.setHeldItem(hand, itemStack);
-                    }
-                }
-            }
-        } else {
-            player.openGui(CookingForBlockheads.instance, GuiHandler.SPICE_RACK, world, pos.getX(), pos.getY(), pos.getZ());
-        }
-
+        player.openGui(CookingForBlockheads.instance, GuiHandler.SPICE_RACK, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 

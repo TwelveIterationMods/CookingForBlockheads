@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads;
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
-import net.blay09.mods.cookingforblockheads.network.message.MessageCreateCowJar;
+import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,7 +36,7 @@ public class CowJarHandler {
 			if(blockBelow.getBlock() == ModBlocks.milkJar) {
 				event.getEntity().getEntityWorld().setBlockState(pos, ModBlocks.cowJar.getDefaultState());
 			}
-			NetworkHandler.instance.sendToAllAround(new MessageCreateCowJar(pos), new NetworkRegistry.TargetPoint(event.getEntity().world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+			NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.COW_IN_A_JAR), new NetworkRegistry.TargetPoint(event.getEntity().world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
 			event.getEntity().setDead();
 			event.setCanceled(true);
 		}

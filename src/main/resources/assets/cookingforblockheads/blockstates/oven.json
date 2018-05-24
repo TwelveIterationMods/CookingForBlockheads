@@ -18,6 +18,16 @@
     "inventory": [{
       "model": "cookingforblockheads:oven_inventory"
     }],
+    "powered": {
+      "true": {
+        "textures": {
+          "ovenfront": "cookingforblockheads:blocks/oven_front_powered",
+          "ovenfront_active": "cookingforblockheads:blocks/oven_front_powered_active"
+        }
+      },
+      "false": {
+      }
+    },
     "facing": {
       "west": {
         "y": -90

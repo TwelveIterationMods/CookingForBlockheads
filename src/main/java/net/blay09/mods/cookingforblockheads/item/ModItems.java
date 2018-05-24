@@ -14,9 +14,17 @@ public class ModItems {
 	@GameRegistry.ObjectHolder(ItemRecipeBook.name)
 	public static Item recipeBook = Items.AIR;
 
+	@GameRegistry.ObjectHolder(ItemHeatingUnit.name)
+	public static Item heatingUnit = Items.AIR;
+
+	@GameRegistry.ObjectHolder(ItemIceUnit.name)
+	public static Item iceUnit = Items.AIR;
+
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.registerAll(
-				new ItemRecipeBook().setRegistryName(ItemRecipeBook.name)
+				new ItemRecipeBook().setRegistryName(ItemRecipeBook.name),
+				new ItemHeatingUnit().setRegistryName(ItemHeatingUnit.name),
+				new ItemIceUnit().setRegistryName(ItemIceUnit.name)
 		);
 	}
 
@@ -24,5 +32,7 @@ public class ModItems {
 		ModelLoader.setCustomModelResourceLocation(recipeBook, 0, new ModelResourceLocation("cookingforblockheads:recipe_book", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(recipeBook, 1, new ModelResourceLocation("cookingforblockheads:recipe_book_tier1", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(recipeBook, 2, new ModelResourceLocation("cookingforblockheads:recipe_book_tier2", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(heatingUnit, 0, new ModelResourceLocation("cookingforblockheads:heating_unit", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(iceUnit, 0, new ModelResourceLocation("cookingforblockheads:ice_unit", "inventory"));
 	}
 }

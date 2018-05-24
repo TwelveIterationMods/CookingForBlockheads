@@ -315,6 +315,13 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return hasPowerUpgrade;
     }
 
+    public void setHasPowerUpgrade(boolean hasPowerUpgrade) {
+        this.hasPowerUpgrade = hasPowerUpgrade;
+        markDirty();
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+    }
+
     public boolean isBurning() {
         return furnaceBurnTime > 0;
     }

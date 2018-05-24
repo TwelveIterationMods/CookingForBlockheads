@@ -1,6 +1,8 @@
 item.cookingforblockheads:recipe_book_tier0.name=Cooking for Blockheads
 item.cookingforblockheads:recipe_book_tier1.name=Cooking for Blockheads I
 item.cookingforblockheads:recipe_book_tier2.name=Cooking for Blockheads II
+item.cookingforblockheads:heating_unit.name=Heating Unit
+item.cookingforblockheads:ice_unit.name=Ice Unit
 
 tooltip.cookingforblockheads:recipe_book_tier0=#NoFilter Edition
 tooltip.cookingforblockheads:recipe_book_tier0.description=Shows all food recipes.
@@ -40,6 +42,8 @@ tooltip.cookingforblockheads:spice_rack.description=Stores spices and ingredient
 tooltip.cookingforblockheads:counter.description=Stores ingredients for recipes.
 tooltip.cookingforblockheads:corner.description=No use in particular.
 tooltip.cookingforblockheads:kitchen_floor.description=No use in particular.
+tooltip.cookingforblockheads:heating_unit.description=Allows to heat an oven using energy.
+tooltip.cookingforblockheads:ice_unit.description=Provides snow and ice to recipes.
 
 ###
 
@@ -61,6 +65,8 @@ tooltip.cookingforblockheads:click_to_lock=Click to lock item
 tooltip.cookingforblockheads:click_to_unlock=Click to unlock item
 tooltip.cookingforblockheads:scroll_to_switch=Scroll to select item
 tooltip.cookingforblockheads:energy_stored=Energy stored: %d/%d
+tooltip.cookingforblockheads:oven_upgrade=Oven Upgrade
+tooltip.cookingforblockheads:fridgge_upgrade=Fridge Upgrade
 
 ###
 

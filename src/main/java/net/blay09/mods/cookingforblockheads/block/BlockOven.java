@@ -2,11 +2,14 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -26,6 +30,8 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockOven extends BlockKitchen {
+
+    public static PropertyBool POWERED = PropertyBool.create("powered");
 
     public static final String name = "oven";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -41,6 +47,11 @@ public class BlockOven extends BlockKitchen {
     }
 
     @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, POWERED);
+    }
+
+    @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
@@ -53,6 +64,10 @@ public class BlockOven extends BlockKitchen {
                 heldItem.shrink(1);
             }
             return true;
+        }
+
+        if (!heldItem.isEmpty() && heldItem.getItem() == ModItems.heatingUnit) {
+            return false;
         }
 
         if (facing == EnumFacing.UP) {
@@ -118,6 +133,13 @@ public class BlockOven extends BlockKitchen {
         }
 
         return true;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        boolean hasPowerUpgrade = tileEntity instanceof TileOven && ((TileOven) tileEntity).hasPowerUpgrade();
+        return state.withProperty(POWERED, hasPowerUpgrade);
     }
 
     @Override
