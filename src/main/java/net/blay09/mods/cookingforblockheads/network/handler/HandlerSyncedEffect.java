@@ -7,7 +7,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -33,6 +32,7 @@ public class HandlerSyncedEffect implements IMessageHandler<MessageSyncedEffect,
                     particleOffset = new Vec3i(0, 1, 0);
                     break;
                 case OVEN_UPGRADE:
+                case FRIDGE_UPGRADE:
                     soundEvent = SoundEvents.BLOCK_ANVIL_USE;
                     particleTypes = EnumParticleTypes.SMOKE_LARGE;
                     particleCount = 10;

@@ -8,7 +8,8 @@ public class MessageSyncedEffect implements IMessage {
 
     public enum Type {
         COW_IN_A_JAR,
-        OVEN_UPGRADE
+        OVEN_UPGRADE,
+        FRIDGE_UPGRADE
     }
 
     private BlockPos pos;

@@ -4,8 +4,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
-import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,12 +22,12 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemIceUnit extends Item {
+public class ItemPreservationChamber extends Item {
 
-	public static final String name = "ice_unit";
+	public static final String name = "preservation_chamber";
 	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-	public ItemIceUnit() {
+	public ItemPreservationChamber() {
 		setUnlocalizedName(registryName.toString());
 		setCreativeTab(CookingForBlockheads.creativeTab);
 		setMaxStackSize(1);
@@ -38,12 +36,12 @@ public class ItemIceUnit extends Item {
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasIceUpgrade()) {
+		if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasPreservationUpgrade()) {
 			if (!player.capabilities.isCreativeMode) {
 				player.getHeldItem(hand).shrink(1);
 			}
 
-			((TileFridge) tileEntity).getBaseFridge().setHasIceUpgrade(true);
+			((TileFridge) tileEntity).getBaseFridge().setHasPreservationUpgrade(true);
 			if (!world.isRemote) {
 				NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.FRIDGE_UPGRADE), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
 			}
@@ -59,7 +57,7 @@ public class ItemIceUnit extends Item {
 		super.addInformation(itemStack, world, tooltip, flag);
 
 		tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:fridge_upgrade"));
-		for (String s : I18n.format("tooltip.cookingforblockheads:ice_unit.description").split("\\\\n")) {
+		for (String s : I18n.format("tooltip.cookingforblockheads:preservation_chamber.description").split("\\\\n")) {
 			tooltip.add(TextFormatting.GRAY + s);
 		}
 	}

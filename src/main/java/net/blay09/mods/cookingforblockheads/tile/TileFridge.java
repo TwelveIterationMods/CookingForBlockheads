@@ -37,11 +37,14 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
             markDirty();
         }
     };
+
     private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private EnumDyeColor fridgeColor = EnumDyeColor.WHITE;
     private boolean isDirty;
+    public boolean hasIceUpgrade;
+    public boolean hasPreservationUpgrade;
 
     public TileFridge() {
         doorAnimator.setOpenRadius(2);
@@ -49,18 +52,34 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         doorAnimator.setSoundEventClose(ModSounds.fridgeClose);
     }
 
+    public boolean hasIceUpgrade() {
+        return hasIceUpgrade;
+    }
+
+    public void setHasIceUpgrade(boolean hasIceUpgrade) {
+        this.hasIceUpgrade = hasIceUpgrade;
+        markDirtyAndUpdate();
+    }
+
+    public boolean hasPreservationUpgrade() {
+        return hasPreservationUpgrade;
+    }
+
+    public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
+        this.hasPreservationUpgrade = hasPreservationUpgrade;
+        markDirtyAndUpdate();
+    }
+
     public void setFridgeColor(EnumDyeColor fridgeColor) {
         this.fridgeColor = fridgeColor;
-        IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
-        markDirty();
+        markDirtyAndUpdate();
     }
 
     @Override
     public void update() {
         doorAnimator.update();
 
-        if(isDirty) {
+        if (isDirty) {
             VanillaPacketHandler.sendTileEntityUpdate(this);
             isDirty = false;
         }
@@ -76,6 +95,8 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         super.readFromNBT(tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
         fridgeColor = EnumDyeColor.byDyeDamage(tagCompound.getByte("FridgeColor"));
+        hasIceUpgrade = tagCompound.getBoolean("HasIceUpgrade");
+        hasPreservationUpgrade = tagCompound.getBoolean("HasPreservationUpgrade");
     }
 
     @Override
@@ -83,6 +104,8 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         super.writeToNBT(tagCompound);
         tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
         tagCompound.setByte("FridgeColor", (byte) fridgeColor.getDyeDamage());
+        tagCompound.setBoolean("HasIceUpgrade", hasIceUpgrade);
+        tagCompound.setBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
         return tagCompound;
     }
 
@@ -115,16 +138,18 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         } else if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
             return (TileFridge) world.getTileEntity(pos.down());
         }
+
         return null;
     }
 
     public TileFridge getBaseFridge() {
         if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
             TileFridge baseFridge = (TileFridge) world.getTileEntity(pos.down());
-            if(baseFridge != null) {
+            if (baseFridge != null) {
                 return baseFridge;
             }
         }
+
         return this;
     }
 
@@ -142,12 +167,14 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) getCombinedItemHandler();
         }
-        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
+
+        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
+
         return super.getCapability(capability, facing);
     }
 
@@ -162,14 +189,16 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     public IItemHandler getCombinedItemHandler() {
         TileFridge baseFridge = getBaseFridge();
         TileFridge neighbourFridge;
-        if(baseFridge == this) {
+        if (baseFridge == this) {
             neighbourFridge = findNeighbourFridge();
         } else {
             neighbourFridge = this;
         }
+
         if (neighbourFridge != null) {
             return new CombinedInvWrapper(neighbourFridge.itemHandler, baseFridge.itemHandler);
         }
+
         return itemHandler;
     }
 
@@ -181,6 +210,12 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     @Override
     public boolean acceptsDropoff(EntityPlayer entityPlayer) {
         return true;
+    }
+
+    public void markDirtyAndUpdate() {
+        IBlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        markDirty();
     }
 
 }

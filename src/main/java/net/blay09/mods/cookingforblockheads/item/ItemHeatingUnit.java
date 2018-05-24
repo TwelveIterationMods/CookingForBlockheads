@@ -34,9 +34,13 @@ public class ItemHeatingUnit extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileOven && !((TileOven) tileEntity).hasPowerUpgrade()) {
+            if (!player.capabilities.isCreativeMode) {
+                player.getHeldItem(hand).shrink(1);
+            }
+
             ((TileOven) tileEntity).setHasPowerUpgrade(true);
             if (!world.isRemote) {
                 NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.OVEN_UPGRADE), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));

@@ -66,10 +66,6 @@ public class BlockOven extends BlockKitchen {
             return true;
         }
 
-        if (!heldItem.isEmpty() && heldItem.getItem() == ModItems.heatingUnit) {
-            return false;
-        }
-
         if (facing == EnumFacing.UP) {
             if (CookingRegistry.isToolItem(heldItem)) {
                 EnumFacing stateFacing = state.getValue(FACING);
