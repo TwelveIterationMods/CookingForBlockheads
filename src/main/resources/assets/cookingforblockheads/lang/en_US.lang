@@ -13,8 +13,6 @@ tooltip.cookingforblockheads:recipe_book_tier2.description=Can craft food using 
 
 tile.cookingforblockheads:cooking_table.name=Cooking Table
 tile.cookingforblockheads:oven.name=Oven
-tile.cookingforblockheads:electric_oven.name=Electric Oven
-tile.cookingforblockheads:gas_oven.name=Gas Oven
 tile.cookingforblockheads:fruit_basket.name=Fruit Basket
 tile.cookingforblockheads:fridge.name=Fridge
 tile.cookingforblockheads:sink.name=Sink
@@ -26,17 +24,13 @@ tile.cookingforblockheads:spice_rack.name=Spice Rack
 tile.cookingforblockheads:counter.name=Kitchen Counter
 tile.cookingforblockheads:corner.name=Kitchen Corner
 tile.cookingforblockheads:kitchen_floor.name=Kitchen Floor
-tile.cookingforblockheads:freezer.name=Freezer
 
 tooltip.cookingforblockheads:multiblock_kitchen=Multiblock Kitchen
 tooltip.cookingforblockheads:dyeable=Dyeable
 tooltip.cookingforblockheads:cooking_table.description=Enables crafting abilities.
 tooltip.cookingforblockheads:oven.description=Enables smelting abilities.
-tooltip.cookingforblockheads:gas_oven.description=Enables smelting abilities via gases.
-tooltip.cookingforblockheads:electric_oven.description=Enables smelting abilities via power.
 tooltip.cookingforblockheads:sink.description=Provides water to recipes.
 tooltip.cookingforblockheads:fridge.description=Stores ingredients for recipes.
-tooltip.cookingforblockheads:freezer.description=Stores ingredients for recipes.
 tooltip.cookingforblockheads:fruit_basket.description=Stores fruits for recipes.
 tooltip.cookingforblockheads:tool_rack.description=Provides tools to recipes.
 tooltip.cookingforblockheads:milk_jar.description=Provides milk to recipes.
@@ -71,7 +65,6 @@ tooltip.cookingforblockheads:scroll_to_switch=Scroll to select item
 
 container.cookingforblockheads:oven=Cooking Oven
 container.cookingforblockheads:fridge=Fridge
-container.cookingforblockheads:freezer=Freezer
 container.cookingforblockheads:spice_rack=Spice Rack
 container.cookingforblockheads:counter=Kitchen Counter
 

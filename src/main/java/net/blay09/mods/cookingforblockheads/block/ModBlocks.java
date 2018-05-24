@@ -23,9 +23,6 @@ public class ModBlocks {
     @GameRegistry.ObjectHolder(BlockFridge.name)
     public static final Block fridge = Blocks.AIR;
 
-    @GameRegistry.ObjectHolder(BlockFreezer.name)
-    public static final Block freezer = Blocks.AIR;
-
     @GameRegistry.ObjectHolder(BlockSink.name)
     public static final Block sink = Blocks.AIR;
 
@@ -56,12 +53,6 @@ public class ModBlocks {
     @GameRegistry.ObjectHolder(BlockFruitBasket.name)
     public static final Block fruitBasket = Blocks.AIR;
 
-    @GameRegistry.ObjectHolder(BlockGasOven.name)
-    public static final Block gasOven = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockElectricOven.name)
-    public static final Block electricOven = Blocks.AIR;
-
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 new BlockCookingTable().setRegistryName(BlockCookingTable.name),
@@ -76,10 +67,7 @@ public class ModBlocks {
                 new BlockCounter().setRegistryName(BlockCounter.name),
                 new BlockCorner().setRegistryName(BlockCorner.name),
                 new BlockKitchenFloor().setRegistryName(BlockKitchenFloor.name),
-                new BlockFreezer().setRegistryName(BlockFreezer.name),
-                new BlockFruitBasket().setRegistryName(BlockFruitBasket.name),
-                new BlockGasOven().setRegistryName(BlockGasOven.name),
-                new BlockElectricOven().setRegistryName(BlockElectricOven.name)
+                new BlockFruitBasket().setRegistryName(BlockFruitBasket.name)
         );
     }
 
@@ -97,10 +85,7 @@ public class ModBlocks {
                 new ItemBlock(ModBlocks.counter).setRegistryName(BlockCounter.name),
                 new ItemBlock(ModBlocks.corner).setRegistryName(BlockCorner.name),
                 new ItemBlock(ModBlocks.kitchenFloor).setRegistryName(BlockKitchenFloor.name),
-                new ItemBlock(ModBlocks.freezer).setRegistryName(BlockFreezer.name),
-                new ItemBlock(ModBlocks.fruitBasket).setRegistryName(BlockFruitBasket.name),
-                new ItemBlock(ModBlocks.gasOven).setRegistryName(BlockGasOven.name),
-                new ItemBlock(ModBlocks.electricOven).setRegistryName(BlockElectricOven.name)
+                new ItemBlock(ModBlocks.fruitBasket).setRegistryName(BlockFruitBasket.name)
         );
     }
 
@@ -117,10 +102,7 @@ public class ModBlocks {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(counter), 0, new ModelResourceLocation(BlockCounter.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(kitchenFloor), 0, new ModelResourceLocation(BlockKitchenFloor.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(freezer), 0, new ModelResourceLocation(BlockFreezer.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fruitBasket), 0, new ModelResourceLocation(BlockFruitBasket.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(gasOven), 0, new ModelResourceLocation(BlockGasOven.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(electricOven), 0, new ModelResourceLocation(BlockElectricOven.registryName, "inventory"));
     }
 
     public static void registerTileEntities() {
@@ -135,6 +117,5 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileSpiceRack.class, BlockSpiceRack.registryName.toString());
         GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName.toString());
         GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName.toString());
-        GameRegistry.registerTileEntity(TileFreezer.class, BlockFreezer.registryName.toString());
     }
 }

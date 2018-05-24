@@ -21,8 +21,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int FRIDGE = 4;
     public static final int SPICE_RACK = 5;
     public static final int COUNTER = 6;
-    public static final int FREEZER = 7;
-    public static final int FRUIT_BASKET = 8;
+    public static final int FRUIT_BASKET = 7;
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -77,11 +76,6 @@ public class GuiHandler implements IGuiHandler {
                         return new ContainerCounter(player, (TileCounter) tileEntity);
                     }
                     break;
-                case FREEZER:
-                    if (tileEntity instanceof TileFreezer) {
-                        return new ContainerFreezer(player, (TileFreezer) tileEntity);
-                    }
-                    break;
                 case FRUIT_BASKET:
                     if (tileEntity instanceof TileFruitBasket) {
                         return new ContainerFruitBasket(player, (TileFruitBasket) tileEntity);
@@ -131,11 +125,6 @@ public class GuiHandler implements IGuiHandler {
                 case COUNTER:
                     if (tileEntity instanceof TileCounter) {
                         return new GuiCounter(player, (TileCounter) tileEntity);
-                    }
-                    break;
-                case FREEZER:
-                    if (tileEntity instanceof TileFreezer) {
-                        return new GuiFreezer(player, (TileFreezer) tileEntity);
                     }
                     break;
                 case FRUIT_BASKET:
