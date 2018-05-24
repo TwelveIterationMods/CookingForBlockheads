@@ -42,12 +42,12 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private final ItemStackHandler itemHandler = new ItemStackHandler(20) {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            if(slot < 3) { // Input Slots
-                if(getSmeltingResult(stack).isEmpty()) {
+            if (slot < 3) { // Input Slots
+                if (getSmeltingResult(stack).isEmpty()) {
                     return stack;
                 }
-            } else if(slot == 3) {
-                if(!isItemFuel(stack)) {
+            } else if (slot == 3) {
+                if (!isItemFuel(stack)) {
                     return stack;
                 }
             }
@@ -56,7 +56,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
         @Override
         protected void onContentsChanged(int slot) {
-            if(slot >= 7 && slot < 16) {
+            if (slot >= 7 && slot < 16) {
                 slotCookTime[slot - 7] = 0;
             }
             isDirty = true;
@@ -89,7 +89,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public void setOvenColor(EnumDyeColor color) {
         this.ovenColor = color;
         IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 1|2);
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 1 | 2);
         markDirty();
     }
 
@@ -100,14 +100,14 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     @Override
     public void update() {
-        if(isFirstTick) {
+        if (isFirstTick) {
             facing = world.getBlockState(pos).getValue(BlockOven.FACING);
             isFirstTick = false;
         }
 
         doorAnimator.update();
 
-        if(isDirty) {
+        if (isDirty) {
             VanillaPacketHandler.sendTileEntityUpdate(this);
             isDirty = false;
         }
@@ -144,7 +144,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
                 if (!itemStack.isEmpty()) {
                     if (slotCookTime[i] != -1) {
-                        if(furnaceBurnTime > 0) {
+                        if (furnaceBurnTime > 0) {
                             slotCookTime[i]++;
                         }
                         if (slotCookTime[i] >= COOK_TIME * ModConfig.general.ovenCookTimeMultiplier) {
@@ -170,7 +170,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 ItemStack transferStack = itemHandlerProcessing.getStackInSlot(firstTransferSlot);
                 transferStack = ItemHandlerHelper.insertItemStacked(itemHandlerOutput, transferStack, false);
                 itemHandlerProcessing.setStackInSlot(firstTransferSlot, transferStack);
-                if(transferStack.isEmpty()) {
+                if (transferStack.isEmpty()) {
                     slotCookTime[firstTransferSlot] = 0;
                 }
                 hasChanged = true;
@@ -198,14 +198,14 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
-        if(!result.isEmpty()) {
+        if (!result.isEmpty()) {
             return result;
         }
         result = FurnaceRecipes.instance().getSmeltingResult(itemStack);
-        if(!result.isEmpty() && result.getItem() instanceof ItemFood) {
+        if (!result.isEmpty() && result.getItem() instanceof ItemFood) {
             return result;
         }
-        if(!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
+        if (!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
             return result;
         }
         return ItemStack.EMPTY;
@@ -217,7 +217,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public static int getItemBurnTime(ItemStack fuelItem) {
         int fuelTime = CookingRegistry.getOvenFuelTime(fuelItem);
-        if(fuelTime != 0 || ModConfig.compat.ovenRequiresCookingOil) {
+        if (fuelTime != 0 || ModConfig.compat.ovenRequiresCookingOil) {
             return fuelTime;
         }
         return TileEntityFurnace.getItemBurnTime(fuelItem);
@@ -281,7 +281,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     public float getBurnTimeProgress() {
-        if(currentItemBurnTime == 0 && furnaceBurnTime > 0) {
+        if (currentItemBurnTime == 0 && furnaceBurnTime > 0) {
             return 1f;
         }
         return (float) furnaceBurnTime / (float) currentItemBurnTime;
@@ -323,25 +323,31 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if(facing == null) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) {
                 return (T) itemHandler;
             }
-            switch(facing) {
-                case UP:
-                    return (T) itemHandlerInput;
-                case DOWN:
-                    return (T) itemHandlerOutput;
-                default:
-                    return (T) itemHandlerFuel;
+
+            if (!ModConfig.general.disallowOvenAutomation) {
+                switch (facing) {
+                    case UP:
+                        return (T) itemHandlerInput;
+                    case DOWN:
+                        return (T) itemHandlerOutput;
+                    default:
+                        return (T) itemHandlerFuel;
+                }
             }
         }
-        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
+
+        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
-        if(capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
+
+        if (capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
             return (T) this;
         }
+
         return super.getCapability(capability, facing);
     }
 
@@ -359,7 +365,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        if(oldState.getBlock() == newState.getBlock()) {
+        if (oldState.getBlock() == newState.getBlock()) {
             facing = newState.getValue(BlockOven.FACING);
             return false;
         }
@@ -370,26 +376,26 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public int doHeatTick(int energyAvailable, boolean redstone) {
         int energyConsumed = 0;
         boolean canCook = shouldConsumeFuel();
-        if(canCook || redstone) {
+        if (canCook || redstone) {
             boolean burning = isBurning();
-            if(furnaceBurnTime < 200) {
+            if (furnaceBurnTime < 200) {
                 int heatAttempt = 4;
                 int heatEnergyRatio = (int) Math.max(1, ExternalHeaterHandler.defaultFurnaceEnergyCost * ModConfig.general.ovenFuelTimeMultiplier);
                 int energyToUse = Math.min(energyAvailable, heatAttempt * heatEnergyRatio);
                 int heat = energyToUse / heatEnergyRatio;
-                if(heat > 0) {
+                if (heat > 0) {
                     furnaceBurnTime += heat;
                     energyConsumed += heat * heatEnergyRatio;
-                    if(!burning) {
+                    if (!burning) {
                         isDirty = true;
                     }
                 }
             }
-            if(canCook && furnaceBurnTime >= 200) {
+            if (canCook && furnaceBurnTime >= 200) {
                 int energyToUse = ExternalHeaterHandler.defaultFurnaceSpeedupCost * 9; // speed up affects nine items after all
-                if(energyAvailable - energyConsumed > energyToUse) {
-                    for(int i = 0; i < slotCookTime.length; i++) {
-                        if(slotCookTime[i] != -1) {
+                if (energyAvailable - energyConsumed > energyToUse) {
+                    for (int i = 0; i < slotCookTime.length; i++) {
+                        if (slotCookTime[i] != -1) {
                             slotCookTime[i]++;
                         }
                     }
@@ -401,7 +407,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     public EnumFacing getFacing() {
-        if(facing == null) {
+        if (facing == null) {
             return EnumFacing.NORTH;
         }
         return facing;

@@ -27,7 +27,7 @@ public class ModConfig {
 
         @Config.Name("Disallow Oven Automation")
         @Config.Comment("Set this to true if you'd like to disallow automation of the oven (pipes and such won't be able to insert/extract)")
-        public boolean disallowOvenAutomation = false; // TODO unused
+        public boolean disallowOvenAutomation = false;
 
         @Config.Name("Oven Fuel Time Multiplier")
         @Config.Comment("The fuel multiplier for the cooking oven. Higher values means fuel lasts longer, 1.0 is furnace default.")
