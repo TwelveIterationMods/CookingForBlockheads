@@ -25,6 +25,10 @@ public class ModConfig {
         @Config.Comment("Set this to true if you'd like the sink to require water to be piped in, instead of providing infinite of it.")
         public boolean sinkRequiresWater = false;
 
+        @Config.Name("Large Counters")
+        @Config.Comment("Enabling this will make the kitchen counters have twice as much inventory space.")
+        public boolean largeCounters = false;
+
         @Config.Name("Disallow Oven Automation")
         @Config.Comment("Set this to true if you'd like to disallow automation of the oven (pipes and such won't be able to insert/extract)")
         public boolean disallowOvenAutomation = false;

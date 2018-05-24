@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -76,23 +77,19 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
             GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
             GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
-            float topY = 0.35f;
             IItemHandler itemHandler = tileEntity.getItemHandler();
+            int itemsPerShelf = itemHandler.getSlots() / 2;
+            int itemsPerRow = itemsPerShelf / 2;
             for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);
                 if (!itemStack.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
-                    int rowIndex = i % 13;
-                    offsetX = 0.7f;
-                    float spacing = 0.175f;
-                    if (rowIndex / 9 > 0) {
-                        offsetX -= 0.2f;
-                        spacing *= 2;
-                    }
-
-                    offsetX -= (rowIndex % 9) * spacing;
-                    offsetY = topY - i / 13 * 1.25f;
-                    offsetZ = 0.5f - (rowIndex / 9) * 0.9f;
+                    int shelfIndex = i % itemsPerShelf;
+                    int rowIndex = i % itemsPerRow;
+                    float spacing = 2f / (float) itemsPerRow;
+                    offsetX = (rowIndex - itemsPerRow / 2f) * -spacing + (shelfIndex >= itemsPerRow ? -0.2f : 0f);
+                    offsetY = i < itemsPerShelf ? 0.35f : -0.85f;
+                    offsetZ = shelfIndex < itemsPerRow ? 0.5f : -0.5f;
                     RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
                 }
             }

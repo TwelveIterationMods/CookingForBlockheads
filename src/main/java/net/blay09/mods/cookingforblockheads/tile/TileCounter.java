@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
@@ -30,7 +31,7 @@ import javax.annotation.Nullable;
 @Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
 public class TileCounter extends TileEntity implements ITickable, IDropoffManager, IDyeableKitchen {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(ModConfig.general.largeCounters ? 54 : 27) {
         @Override
         protected void onContentsChanged(int slot) {
             isDirty = true;
