@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -91,7 +92,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
     }
 
-    private static class SinkItemProvider implements IKitchenItemProvider {
+    private static class SinkItemProvider extends DefaultKitchenItemProvider {
         private final NonNullList<ItemStack> itemStacks = NonNullList.create();
         private final FluidTank fluidTank;
         private int waterUsed;
@@ -109,7 +110,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
             if (!ModConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
-                if (requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
+                if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {
                     if (!CookingRegistry.consumeBucket(inventories, simulate)) {
                         return ItemStack.EMPTY;
                     }
@@ -119,7 +120,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
                 } else {
                     fluidTank.drain(amount * 1000, true);
                 }
-                return ItemHandlerHelper.copyStackWithSize(getStackInSlot(slot), amount);
+                return ItemHandlerHelper.copyStackWithSize(itemStacks.get(slot), amount);
             }
             return ItemStack.EMPTY;
         }

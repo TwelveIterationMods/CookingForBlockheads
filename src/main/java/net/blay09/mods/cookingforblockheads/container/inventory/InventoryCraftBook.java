@@ -1,11 +1,11 @@
 package net.blay09.mods.cookingforblockheads.container.inventory;
 
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -18,30 +18,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import java.util.List;
 
 public class InventoryCraftBook extends InventoryCrafting {
-
-    private static class SourceItem {
-        private final IKitchenItemProvider sourceProvider;
-        private final int sourceSlot;
-        private final ItemStack sourceStack;
-
-        public SourceItem(IKitchenItemProvider sourceProvider, int sourceSlot, ItemStack sourceStack) {
-            this.sourceProvider = sourceProvider;
-            this.sourceSlot = sourceSlot;
-            this.sourceStack = sourceStack;
-        }
-
-        public IKitchenItemProvider getSourceProvider() {
-            return sourceProvider;
-        }
-
-        public int getSourceSlot() {
-            return sourceSlot;
-        }
-
-        public ItemStack getSourceStack() {
-            return sourceStack;
-        }
-    }
 
     public InventoryCraftBook(Container container) {
         super(container, 3, 3);
@@ -65,15 +41,10 @@ public class InventoryCraftBook extends InventoryCrafting {
             if (!ingredient.isEmpty()) {
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
-                    for (int k = 0; k < itemProvider.getSlots(); k++) {
-                        ItemStack itemStack = itemProvider.getStackInSlot(k);
-                        if (ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(itemStack, ingredient)) {
-                            itemStack = itemProvider.useItemStack(k, 1, true, inventories, requireContainer);
-                            if (!itemStack.isEmpty()) {
-                                sourceItems[i] = new SourceItem(inventories.get(j), k, itemStack);
-                                continue matrixLoop;
-                            }
-                        }
+                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(it -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, ingredient), 1, inventories, requireContainer, true);
+                    if (sourceItem != null) {
+                        sourceItems[i] = sourceItem;
+                        continue matrixLoop;
                     }
                 }
             }

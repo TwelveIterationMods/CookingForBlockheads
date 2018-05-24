@@ -27,97 +27,94 @@ import com.google.common.collect.Sets;
 
 public class KitchenMultiBlock implements IKitchenMultiBlock {
 
-	private final Set<BlockPos> checkedPos = Sets.newHashSet();
-	private final List<IKitchenItemProvider> itemProviderList = Lists.newArrayList();
-	private final List<IKitchenSmeltingProvider> smeltingProviderList = Lists.newArrayList();
+    private final Set<BlockPos> checkedPos = Sets.newHashSet();
+    private final List<IKitchenItemProvider> itemProviderList = Lists.newArrayList();
+    private final List<IKitchenSmeltingProvider> smeltingProviderList = Lists.newArrayList();
 
-	public KitchenMultiBlock(World world, BlockPos pos) {
-		findNeighbourKitchenBlocks(world, pos);
-	}
+    public KitchenMultiBlock(World world, BlockPos pos) {
+        findNeighbourKitchenBlocks(world, pos);
+    }
 
-	private void findNeighbourKitchenBlocks(World world, BlockPos pos) {
-		for (int i = 0; i <= 5; i++) {
-			EnumFacing dir = EnumFacing.getFront(i);
-			BlockPos position = pos.offset(dir);
-			if (!checkedPos.contains(position)) {
-				checkedPos.add(position);
-				TileEntity tileEntity = world.getTileEntity(position);
-				if (tileEntity != null) {
-					IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
-					if (itemProvider != null) {
-						itemProviderList.add(itemProvider);
-					}
-					IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
-					if (smeltingProvider != null) {
-						smeltingProviderList.add(smeltingProvider);
-					}
-					if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
-						findNeighbourKitchenBlocks(world, position);
-					}
-				} else {
-					IBlockState state = world.getBlockState(position);
-					if(state.getBlock() == ModBlocks.kitchenFloor) {
-						findNeighbourKitchenBlocks(world, position);
-					}
-				}
-			}
-		}
-	}
+    private void findNeighbourKitchenBlocks(World world, BlockPos pos) {
+        for (int i = 0; i <= 5; i++) {
+            EnumFacing dir = EnumFacing.getFront(i);
+            BlockPos position = pos.offset(dir);
+            if (!checkedPos.contains(position)) {
+                checkedPos.add(position);
+                TileEntity tileEntity = world.getTileEntity(position);
+                if (tileEntity != null) {
+                    IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
+                    if (itemProvider != null) {
+                        itemProviderList.add(itemProvider);
+                    }
+                    IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
+                    if (smeltingProvider != null) {
+                        smeltingProviderList.add(smeltingProvider);
+                    }
+                    if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
+                        findNeighbourKitchenBlocks(world, position);
+                    }
+                } else {
+                    IBlockState state = world.getBlockState(position);
+                    if (state.getBlock() == ModBlocks.kitchenFloor) {
+                        findNeighbourKitchenBlocks(world, position);
+                    }
+                }
+            }
+        }
+    }
 
-	@Override
-	public List<IKitchenItemProvider> getItemProviders(InventoryPlayer playerInventory) {
-		List<IKitchenItemProvider> sourceInventories = Lists.newArrayList();
-		sourceInventories.addAll(itemProviderList);
-		sourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
-		return sourceInventories;
-	}
+    @Override
+    public List<IKitchenItemProvider> getItemProviders(InventoryPlayer playerInventory) {
+        List<IKitchenItemProvider> sourceInventories = Lists.newArrayList();
+        sourceInventories.addAll(itemProviderList);
+        sourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
+        return sourceInventories;
+    }
 
-	@Override
-	public ItemStack smeltItem(ItemStack itemStack, int count) {
-		ItemStack restStack = itemStack.copy().splitStack(count);
-		for (IKitchenSmeltingProvider provider : smeltingProviderList) {
-			restStack = provider.smeltItem(restStack);
-			if (restStack.isEmpty()) {
-				break;
-			}
-		}
-		itemStack.shrink(count - (!restStack.isEmpty() ? restStack.getCount() : 0));
-		return itemStack;
-	}
+    @Override
+    public ItemStack smeltItem(ItemStack itemStack, int count) {
+        ItemStack restStack = itemStack.copy().splitStack(count);
+        for (IKitchenSmeltingProvider provider : smeltingProviderList) {
+            restStack = provider.smeltItem(restStack);
+            if (restStack.isEmpty()) {
+                break;
+            }
+        }
 
-	public void trySmelt(ItemStack outputItem, ItemStack inputItem, EntityPlayer player, boolean stack) {
-		if (inputItem.isEmpty()) {
-			return;
-		}
-		boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
-		List<IKitchenItemProvider> inventories = getItemProviders(player.inventory);
-		for (IKitchenItemProvider itemProvider : inventories) {
-			itemProvider.resetSimulation();
-			for (int i = 0; i < itemProvider.getSlots(); i++) {
-				ItemStack itemStack = itemProvider.getStackInSlot(i);
-				if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, inputItem)) {
-					int smeltCount = Math.min(itemStack.getCount(), stack ? inputItem.getMaxStackSize() : 1);
-					ItemStack restStack = itemProvider.useItemStack(i, smeltCount, false, inventories, requireBucket);
-					if (!restStack.isEmpty()) {
-						restStack = smeltItem(restStack, smeltCount);
-						if (!restStack.isEmpty()) {
-							restStack = itemProvider.returnItemStack(restStack);
-							if (!player.inventory.addItemStackToInventory(restStack)) {
-								player.dropItem(restStack, false);
-							}
-						}
-						player.openContainer.detectAndSendChanges();
-						return;
-					}
-				}
-			}
-		}
+        itemStack.shrink(count - (!restStack.isEmpty() ? restStack.getCount() : 0));
+        return itemStack;
+    }
 
-	}
+    public void trySmelt(ItemStack outputItem, ItemStack inputItem, EntityPlayer player, boolean stack) {
+        if (inputItem.isEmpty()) {
+            return;
+        }
 
-	@Override
-	public boolean hasSmeltingProvider() {
-		return smeltingProviderList.size() > 0;
-	}
+        boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
+        List<IKitchenItemProvider> inventories = getItemProviders(player.inventory);
+        for (IKitchenItemProvider itemProvider : inventories) {
+            itemProvider.resetSimulation();
+            ItemStack found = itemProvider.findAndMarkAsUsed(it -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem), stack ? inputItem.getMaxStackSize() : 1, inventories, requireBucket, false);
+            if (!found.isEmpty()) {
+                int amount = Math.min(found.getCount(), stack ? inputItem.getMaxStackSize() : 1);
+                ItemStack restStack = smeltItem(found, amount);
+                if (!restStack.isEmpty()) {
+                    restStack = itemProvider.returnItemStack(restStack);
+                    if (!player.inventory.addItemStackToInventory(restStack)) {
+                        player.dropItem(restStack, false);
+                    }
+                }
+                player.openContainer.detectAndSendChanges();
+                return;
+            }
+        }
+
+    }
+
+    @Override
+    public boolean hasSmeltingProvider() {
+        return smeltingProviderList.size() > 0;
+    }
 
 }

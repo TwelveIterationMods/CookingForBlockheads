@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
@@ -33,7 +34,7 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 
 	protected static final int MILK_CAPACITY = 8000;
 
-	private static class MilkJarItemProvider implements IKitchenItemProvider {
+	private static class MilkJarItemProvider extends DefaultKitchenItemProvider {
 		private final NonNullList<ItemStack> itemStacks = NonNullList.create();
 		private final TileMilkJar tileMilkJar;
 		private int milkUsed;
@@ -51,7 +52,7 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 		@Override
 		public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
 			if (tileMilkJar.getMilkAmount() - milkUsed >= amount * 1000) {
-				if (requireBucket && getStackInSlot(slot).getItem() == Items.MILK_BUCKET) {
+				if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {
 					if (!CookingRegistry.consumeBucket(inventories, simulate)) {
 						return ItemStack.EMPTY;
 					}
@@ -61,7 +62,7 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 				} else {
 					tileMilkJar.drain(amount * 1000, true);
 				}
-				return ItemHandlerHelper.copyStackWithSize(getStackInSlot(slot), amount);
+				return ItemHandlerHelper.copyStackWithSize(itemStacks.get(slot), amount);
 			}
 			return ItemStack.EMPTY;
 		}

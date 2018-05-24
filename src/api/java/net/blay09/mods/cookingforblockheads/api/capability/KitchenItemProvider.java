@@ -6,57 +6,57 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 
-public class KitchenItemProvider implements IKitchenItemProvider {
+public class KitchenItemProvider extends DefaultKitchenItemProvider {
 
-	private IItemHandler itemHandler;
-	private int[] usedStackSize;
+    private IItemHandler itemHandler;
+    private int[] usedStackSize;
 
-	public KitchenItemProvider() {
-	}
+    public KitchenItemProvider() {
+    }
 
-	public KitchenItemProvider(IItemHandler itemHandler) {
-		this.itemHandler = itemHandler;
-		this.usedStackSize = new int[itemHandler.getSlots()];
-	}
+    public KitchenItemProvider(IItemHandler itemHandler) {
+        this.itemHandler = itemHandler;
+        this.usedStackSize = new int[itemHandler.getSlots()];
+    }
 
-	public void setItemHandler(IItemHandler itemHandler) {
-		this.itemHandler = itemHandler;
-		this.usedStackSize = new int[itemHandler.getSlots()];
-	}
+    public void setItemHandler(IItemHandler itemHandler) {
+        this.itemHandler = itemHandler;
+        this.usedStackSize = new int[itemHandler.getSlots()];
+    }
 
-	@Override
-	public void resetSimulation() {
-		for(int i = 0; i < usedStackSize.length; i++) {
-			usedStackSize[i] = 0;
-		}
-	}
+    @Override
+    public void resetSimulation() {
+        for (int i = 0; i < usedStackSize.length; i++) {
+            usedStackSize[i] = 0;
+        }
+    }
 
-	@Override
-	public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-		ItemStack itemStack = itemHandler.getStackInSlot(slot);
-		if(itemStack.getCount() - (simulate ? usedStackSize[slot] : 0) >= amount) {
-			ItemStack result = itemHandler.extractItem(slot, amount, simulate);
-			if(simulate && !result.isEmpty()) {
-				usedStackSize[slot] += result.getCount();
-			}
-			return result;
-		}
-		return ItemStack.EMPTY;
-	}
+    @Override
+    public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+        ItemStack itemStack = itemHandler.getStackInSlot(slot);
+        if (itemStack.getCount() - (simulate ? usedStackSize[slot] : 0) >= amount) {
+            ItemStack result = itemHandler.extractItem(slot, amount, simulate);
+            if (simulate && !result.isEmpty()) {
+                usedStackSize[slot] += result.getCount();
+            }
+            return result;
+        }
+        return ItemStack.EMPTY;
+    }
 
-	@Override
-	public ItemStack returnItemStack(ItemStack itemStack) {
-		return ItemHandlerHelper.insertItemStacked(itemHandler, itemStack, false);
-	}
+    @Override
+    public ItemStack returnItemStack(ItemStack itemStack) {
+        return ItemHandlerHelper.insertItemStacked(itemHandler, itemStack, false);
+    }
 
-	@Override
-	public int getSlots() {
-		return itemHandler.getSlots();
-	}
+    @Override
+    public int getSlots() {
+        return itemHandler.getSlots();
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return itemHandler.getStackInSlot(slot);
-	}
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return itemHandler.getStackInSlot(slot);
+    }
 
 }
