@@ -117,5 +117,6 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileSpiceRack.class, BlockSpiceRack.registryName.toString());
         GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName.toString());
         GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName.toString());
+        GameRegistry.registerTileEntity(TileFruitBasket.class, BlockFruitBasket.registryName.toString());
     }
 }

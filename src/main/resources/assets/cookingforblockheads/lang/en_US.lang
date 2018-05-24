@@ -76,6 +76,7 @@ container.cookingforblockheads:oven=Cooking Oven
 container.cookingforblockheads:fridge=Fridge
 container.cookingforblockheads:spice_rack=Spice Rack
 container.cookingforblockheads:counter=Kitchen Counter
+container.cookingforblockheads:fruit_basket=Fruit Basket
 
 itemGroup.cookingforblockheads=Cooking for Blockheads
 

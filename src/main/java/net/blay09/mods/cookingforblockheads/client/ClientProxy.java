@@ -68,6 +68,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileFruitBasket.class, new FruitBasketRenderer());
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -107,6 +108,11 @@ public abstract class BlockKitchen extends BlockContainer {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:multiblock_kitchen"));
+	}
+
+	public static boolean shouldBlockRenderLowered(IBlockAccess world, BlockPos pos) {
+		Block blockBelow = world.getBlockState(pos.down()).getBlock();
+		return blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter;
 	}
 
 	public boolean shouldBePlacedFlipped(BlockPos pos, EnumFacing facing, EntityLivingBase placer) {

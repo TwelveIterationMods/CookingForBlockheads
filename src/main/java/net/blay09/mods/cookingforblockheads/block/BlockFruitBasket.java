@@ -3,8 +3,10 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -31,7 +33,7 @@ public class BlockFruitBasket extends BlockKitchen {
     public static final String name = "fruit_basket";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1);
+    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.1, 0.875);
 
     public BlockFruitBasket() {
         super(Material.WOOD);
@@ -42,13 +44,22 @@ public class BlockFruitBasket extends BlockKitchen {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileFruitBasket();
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        if (shouldBlockRenderLowered(world, pos)) {
+            return BOUNDING_BOX.expand(0, -0.05, 0);
+        }
+
+        return BOUNDING_BOX;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return BOUNDING_BOX;
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, LOWERED);
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        return new TileFruitBasket();
     }
 
     @Override
@@ -62,32 +73,12 @@ public class BlockFruitBasket extends BlockKitchen {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-    }
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (hand != EnumHand.MAIN_HAND) {
             return true;
         }
 
-        ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
-            return true;
-        }
-
-        if (!heldItem.isEmpty() || player.isSneaking()) {
-            TileFruitBasket tileFruitBasket = (TileFruitBasket) world.getTileEntity(pos);
-            if (tileFruitBasket != null) {
-                if (!heldItem.isEmpty()) {
-                    heldItem = ItemHandlerHelper.insertItemStacked(tileFruitBasket.getItemHandler(), heldItem, false);
-                    player.setHeldItem(hand, heldItem);
-                }
-            }
-        } else {
-            player.openGui(CookingForBlockheads.instance, GuiHandler.FRUIT_BASKET, world, pos.getX(), pos.getY(), pos.getZ());
-        }
-
+        player.openGui(CookingForBlockheads.instance, GuiHandler.FRUIT_BASKET, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
@@ -98,6 +89,12 @@ public class BlockFruitBasket extends BlockKitchen {
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return state.withProperty(LOWERED, shouldBlockRenderLowered(world, pos));
     }
 
 }

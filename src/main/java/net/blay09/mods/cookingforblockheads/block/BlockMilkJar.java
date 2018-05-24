@@ -48,13 +48,12 @@ public class BlockMilkJar extends BlockKitchen {
     @Override
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return state.withProperty(LOWERED, isLowered(world, pos));
+        return state.withProperty(LOWERED, shouldBlockRenderLowered(world, pos));
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        Block blockBelow = world.getBlockState(pos.down()).getBlock();
-        if (blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter) {
+        if (shouldBlockRenderLowered(world, pos)) {
             return BOUNDING_BOX.expand(0, -0.05, 0);
         }
 
@@ -108,11 +107,6 @@ public class BlockMilkJar extends BlockKitchen {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileMilkJar();
-    }
-
-    public static boolean isLowered(IBlockAccess world, BlockPos pos) {
-        Block blockBelow = world.getBlockState(pos.down()).getBlock();
-        return blockBelow == ModBlocks.corner || blockBelow == ModBlocks.counter;
     }
 
 }
