@@ -41,7 +41,7 @@ public class InventoryCraftBook extends InventoryCrafting {
             if (!ingredient.isEmpty()) {
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
-                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(it -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, ingredient), 1, inventories, requireContainer, true);
+                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, ingredient), 1, inventories, requireContainer, true);
                     if (sourceItem != null) {
                         sourceItems[i] = sourceItem;
                         continue matrixLoop;
@@ -73,7 +73,7 @@ public class InventoryCraftBook extends InventoryCrafting {
                         IKitchenItemProvider sourceProvider = sourceItems[i].getSourceProvider();
                         if (sourceItems[i].getSourceSlot() != -1) {
                             sourceProvider.resetSimulation();
-                            sourceProvider.useItemStack(sourceItems[i].getSourceSlot(), 1, false, inventories, requireContainer);
+                            sourceProvider.consumeSourceItem(sourceItems[i], 1, inventories, requireContainer);
                         }
 
                         // Return container items (like empty buckets)

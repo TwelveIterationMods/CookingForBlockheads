@@ -32,6 +32,11 @@ public class KitchenItemProvider extends DefaultKitchenItemProvider {
     }
 
     @Override
+    public int getSimulatedUseCount(int slot) {
+        return usedStackSize[slot];
+    }
+
+    @Override
     public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
         ItemStack itemStack = itemHandler.getStackInSlot(slot);
         if (itemStack.getCount() - (simulate ? usedStackSize[slot] : 0) >= amount) {

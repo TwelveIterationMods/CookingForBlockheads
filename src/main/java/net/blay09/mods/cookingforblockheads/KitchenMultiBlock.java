@@ -95,7 +95,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
         List<IKitchenItemProvider> inventories = getItemProviders(player.inventory);
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
-            ItemStack found = itemProvider.findAndMarkAsUsed(it -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem), stack ? inputItem.getMaxStackSize() : 1, inventories, requireBucket, false);
+            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem), stack ? inputItem.getMaxStackSize() : 1, inventories, requireBucket, false);
             if (!found.isEmpty()) {
                 int amount = Math.min(found.getCount(), stack ? inputItem.getMaxStackSize() : 1);
                 ItemStack restStack = smeltItem(found, amount);

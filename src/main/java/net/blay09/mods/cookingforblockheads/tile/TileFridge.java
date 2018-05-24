@@ -1,14 +1,21 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.ModSounds;
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -21,11 +28,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import vazkii.quark.api.IDropoffManager;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Predicate;
 
 @Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
 public class TileFridge extends TileEntity implements ITickable, IDropoffManager {
@@ -38,7 +48,31 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         }
     };
 
-    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
+    private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler) {
+
+        private final ItemStack snowStack = new ItemStack(Items.SNOWBALL);
+        private final ItemStack iceStack = new ItemStack(Blocks.ICE);
+
+        @Nullable
+        @Override
+        public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+            if (getBaseFridge().hasIceUpgrade && predicate.test(snowStack, 64)) {
+                return new SourceItem(this, -1, ItemHandlerHelper.copyStackWithSize(snowStack, maxAmount));
+            }
+
+            if (getBaseFridge().hasIceUpgrade && predicate.test(iceStack, 64)) {
+                return new SourceItem(this, -1, ItemHandlerHelper.copyStackWithSize(iceStack, maxAmount));
+            }
+
+            IngredientPredicate modifiedPredicate = predicate;
+            if (getBaseFridge().hasPreservationUpgrade) {
+                modifiedPredicate = (it, count) -> (count > 1 || !it.getItem().getContainerItem(it).isEmpty() || CookingRegistry.isToolItem(it)) && predicate.test(it, count);
+            }
+
+            return super.findSourceAndMarkAsUsed(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+        }
+    };
+
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private EnumDyeColor fridgeColor = EnumDyeColor.WHITE;

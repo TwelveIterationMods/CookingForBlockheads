@@ -50,6 +50,11 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 		}
 
 		@Override
+		public int getSimulatedUseCount(int slot) {
+			return milkUsed / 1000;
+		}
+
+		@Override
 		public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
 			if (tileMilkJar.getMilkAmount() - milkUsed >= amount * 1000) {
 				if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {

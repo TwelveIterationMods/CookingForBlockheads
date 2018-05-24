@@ -38,7 +38,7 @@ public class ItemIceUnit extends Item {
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasIceUpgrade()) {
+		if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasIceUpgrade) {
 			if (!player.capabilities.isCreativeMode) {
 				player.getHeldItem(hand).shrink(1);
 			}

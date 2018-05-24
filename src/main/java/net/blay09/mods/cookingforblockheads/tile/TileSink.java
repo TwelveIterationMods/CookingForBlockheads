@@ -108,6 +108,11 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         }
 
         @Override
+        public int getSimulatedUseCount(int slot) {
+            return waterUsed / 1000;
+        }
+
+        @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
             if (!ModConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
                 if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {

@@ -5,11 +5,15 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Predicate;
 
 public interface IKitchenItemProvider {
 	void resetSimulation();
+
+	@Deprecated
 	ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket);
+
+	int getSimulatedUseCount(int slot);
+
 	ItemStack returnItemStack(ItemStack itemStack);
 
 	@Deprecated
@@ -18,8 +22,10 @@ public interface IKitchenItemProvider {
 	@Deprecated
 	ItemStack getStackInSlot(int slot);
 
-	ItemStack findAndMarkAsUsed(Predicate<ItemStack> checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate);
+	ItemStack findAndMarkAsUsed(IngredientPredicate checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate);
 
 	@Nullable
-	SourceItem findSourceAndMarkAsUsed(Predicate<ItemStack> checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate);
+	SourceItem findSourceAndMarkAsUsed(IngredientPredicate checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate);
+
+	void consumeSourceItem(SourceItem sourceItem, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireContainer);
 }
