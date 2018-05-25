@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.TileCuttingBoard;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -84,7 +86,9 @@ public class BlockCuttingBoard extends BlockKitchen {
             tooltip.add(TextFormatting.GRAY + s);
         }
 
-        tooltip.add(I18n.format("tooltip.cookingforblockheads:requires_pams"));
+        if (!Loader.isModLoaded(Compat.PAMS_HARVESTCRAFT)) {
+            tooltip.add(TextFormatting.RED + I18n.format("tooltip.cookingforblockheads:requires_pams"));
+        }
     }
 
 }

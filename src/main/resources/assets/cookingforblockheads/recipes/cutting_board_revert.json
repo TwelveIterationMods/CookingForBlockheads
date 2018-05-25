@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "harvestcraft:cuttingboarditem"
+  },
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "cookingforblockheads:cutting_board"
+    }
+  ],
+  "conditions": [
+    {
+      "type": "minecraft:item_exists",
+      "item": "harvestcraft:cuttingboarditem"
+    }
+  ]
+}
