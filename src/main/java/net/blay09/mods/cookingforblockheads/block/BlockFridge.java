@@ -1,17 +1,22 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
+import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -22,6 +27,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -44,6 +51,7 @@ public class BlockFridge extends BlockKitchen {
     }
 
     public static final PropertyEnum<FridgeType> TYPE = PropertyEnum.create("type", FridgeType.class);
+    public static final PropertyBool PRESERVATION_CHAMBER = PropertyBool.create("preservation_chamber");
 
     public BlockFridge() {
         super(Material.IRON);
@@ -56,7 +64,7 @@ public class BlockFridge extends BlockKitchen {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, TYPE, FLIPPED);
+        return new BlockStateContainer(this, FACING, TYPE, FLIPPED, PRESERVATION_CHAMBER);
     }
 
     @Override
@@ -114,6 +122,11 @@ public class BlockFridge extends BlockKitchen {
         } else {
             state = state.withProperty(TYPE, FridgeType.SMALL);
         }
+
+        TileEntity tileEntity = world.getTileEntity(pos);
+        boolean hasPreservationUpgrade = tileEntity instanceof TileFridge && ((TileFridge) tileEntity).hasPreservationUpgrade();
+        state = state.withProperty(PRESERVATION_CHAMBER, hasPreservationUpgrade);
+
         return state;
     }
 
@@ -186,6 +199,22 @@ public class BlockFridge extends BlockKitchen {
             tooltip.add(TextFormatting.GRAY + s);
         }
         tooltip.add(TextFormatting.AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileFridge) {
+            if (((TileFridge) tileEntity).hasIceUpgrade()) {
+                ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
+            }
+
+            if (((TileFridge) tileEntity).hasPreservationUpgrade()) {
+                ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            }
+        }
+
+        super.breakBlock(world, pos, state);
     }
 
     @Override

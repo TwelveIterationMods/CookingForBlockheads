@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "cookingforblockheads:ice_unit"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "ICI"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:snowball"
+    },
+    "I": {
+      "item": "#IRON_INGOT"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
+  }
+}

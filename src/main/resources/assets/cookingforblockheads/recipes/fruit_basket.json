@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "cookingforblockheads:fruit_basket"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SPS"
+  ],
+  "key": {
+    "S": {
+      "item": "#SLAB_WOOD"
+    },
+    "P": {
+      "item": "minecraft:wooden_pressure_plate"
+    }
+  }
+}

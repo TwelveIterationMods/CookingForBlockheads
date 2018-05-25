@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "cookingforblockheads:heating_unit"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "NNN",
+    "ICI"
+  ],
+  "key": {
+    "N": {
+      "item": "#IRON_NUGGET"
+    },
+    "I": {
+      "item": "#IRON_INGOT"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
+  }
+}

@@ -10,6 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -20,21 +22,23 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
 
     private final ModelFridgeDoor modelFridgeDoor = new ModelFridgeDoor();
     private final ModelFridgeLargeDoor modelFridgeLargeDoor = new ModelFridgeLargeDoor();
+
     private final ResourceLocation textureFridgeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_door.png");
     private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_large_door.png");
 
     @Override
     public void render(TileFridge tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        if(state.getBlock() != ModBlocks.fridge) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
+        if (state.getBlock() != ModBlocks.fridge) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
-        //noinspection deprecation
+
         state = state.getBlock().getActualState(state, tileEntity.getWorld(), tileEntity.getPos());
         BlockFridge.FridgeType fridgeType = state.getValue(BlockFridge.TYPE);
-        if(fridgeType == BlockFridge.FridgeType.INVISIBLE) {
+        if (fridgeType == BlockFridge.FridgeType.INVISIBLE) {
             return;
         }
+
         GlStateManager.pushMatrix();
         EnumDyeColor fridgeColor = tileEntity.getFridgeColor();
         int color = fridgeColor.getColorValue();
@@ -42,9 +46,10 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
         GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
         GlStateManager.rotate(180f, 0f, 0f, 1f);
+
         boolean isFlipped = state.getValue(BlockFridge.FLIPPED);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
-        if(fridgeType == BlockFridge.FridgeType.SMALL) {
+        if (fridgeType == BlockFridge.FridgeType.SMALL) {
             bindTexture(textureFridgeDoor);
             modelFridgeDoor.DoorMain.rotateAngleY = doorAngle;
             modelFridgeDoor.DoorHandle.rotateAngleY = doorAngle;
@@ -53,7 +58,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             modelFridgeDoor.render(isFlipped);
             GlStateManager.color(1f, 1f, 1f, 1f);
             modelFridgeDoor.renderNoTint(isFlipped);
-        } else if(fridgeType == BlockFridge.FridgeType.LARGE) {
+        } else if (fridgeType == BlockFridge.FridgeType.LARGE) {
             bindTexture(textureFridgeLargeDoor);
             modelFridgeLargeDoor.DoorMain.rotateAngleY = doorAngle;
             modelFridgeLargeDoor.DoorHandle.rotateAngleY = doorAngle;
@@ -65,7 +70,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         }
         GlStateManager.popMatrix();
 
-        if(doorAngle > 0f) {
+        if (doorAngle > 0f) {
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
@@ -74,11 +79,11 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             GlStateManager.scale(0.3f, 0.3f, 0.3f);
             float topY = fridgeType == BlockFridge.FridgeType.LARGE ? 3.25f : 0.35f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
-            for(int i = itemHandler.getSlots() - 1; i >= 0; i--) {
+            for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);
-                if(!itemStack.isEmpty()) {
+                if (!itemStack.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
-                    if(fridgeType == BlockFridge.FridgeType.LARGE) {
+                    if (fridgeType == BlockFridge.FridgeType.LARGE) {
                         int rowIndex = i % 18;
                         offsetX = 0.7f - (rowIndex % 9) * 0.175f;
                         offsetY = topY - i / 18 * 1.25f;
@@ -87,7 +92,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
                         int rowIndex = i % 13;
                         offsetX = 0.7f;
                         float spacing = 0.175f;
-                        if(rowIndex / 9 > 0) {
+                        if (rowIndex / 9 > 0) {
                             offsetX -= 0.2f;
                             spacing *= 2;
                         }

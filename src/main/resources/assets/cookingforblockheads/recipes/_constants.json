@@ -61,5 +61,12 @@
       "type": "forge:ore_dict",
       "ore": "nuggetIron"
     }
+  },
+  {
+    "name": "REDSTONE",
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
   }
 ]

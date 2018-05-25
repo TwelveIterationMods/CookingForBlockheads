@@ -52,6 +52,17 @@
           }
         }
       }
+    },
+    "preservation_chamber": {
+      "true": {
+        "submodel": {
+          "preservation_chamber": {
+            "model": "cookingforblockheads:fridge_preservation"
+          }
+        }
+      },
+      "false": {
+      }
     }
   }
 }

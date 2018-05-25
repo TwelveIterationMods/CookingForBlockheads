@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "cookingforblockheads:preservation_chamber"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RRR",
+    "ICI"
+  ],
+  "key": {
+    "R": {
+      "item": "#REDSTONE"
+    },
+    "I": {
+      "item": "#IRON_INGOT"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
+  }
+}
