@@ -16,6 +16,9 @@
         },
         "hinge": {
           "model": "cookingforblockheads:fridge_hinge_left"
+        },
+        "handle": {
+          "model": "cookingforblockheads:fridge_door_handle"
         }
       }
     }],
@@ -60,6 +63,12 @@
             "model": "cookingforblockheads:fridge_preservation"
           }
         }
+      },
+      "false": {
+      }
+    },
+    "ice_unit": {
+      "true": {
       },
       "false": {
       }

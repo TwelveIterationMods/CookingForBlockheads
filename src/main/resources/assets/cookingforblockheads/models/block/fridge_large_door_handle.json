@@ -9,78 +9,67 @@
   },
   "elements": [
     {
-      "__comment": "Door_Main",
+      "__comment": "Door_Handle",
       "from": [
-        1,
-        0,
-        1
+        2,
+        3,
+        0
       ],
       "to": [
-        15,
-        29,
-        2
+        3,
+        26,
+        1
       ],
       "faces": {
         "down": {
           "uv": [
+            3,
             1,
-            1,
-            15,
+            4,
             2
           ],
-          "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "down"
+          "texture": "#fridge_top",
+          "cullface": "north"
         },
         "up": {
           "uv": [
+            3,
             1,
-            1,
-            15,
+            4,
             2
           ],
-          "texture": "#fridge_side",
-          "tintindex": 0
+          "texture": "#fridge_top",
+          "cullface": "north"
         },
         "north": {
           "uv": [
+            3,
             1,
-            1,
-            15,
-            16
+            4,
+            3
           ],
-          "texture": "#fridge_side",
-          "tintindex": 0
-        },
-        "south": {
-          "uv": [
-            1,
-            1,
-            15,
-            16
-          ],
-          "texture": "#fridge_side",
-          "tintindex": 0
+          "texture": "#fridge_top",
+          "cullface": "north"
         },
         "west": {
           "uv": [
+            3,
             1,
-            1,
-            2,
-            16
+            4,
+            3
           ],
-          "texture": "#fridge_side",
-          "tintindex": 0
+          "texture": "#fridge_top",
+          "cullface": "north"
         },
         "east": {
           "uv": [
+            3,
             1,
-            1,
-            2,
-            16
+            4,
+            3
           ],
-          "texture": "#fridge_side",
-          "tintindex": 0
+          "texture": "#fridge_top",
+          "cullface": "north"
         }
       }
     }

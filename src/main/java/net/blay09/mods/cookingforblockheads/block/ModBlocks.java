@@ -53,6 +53,9 @@ public class ModBlocks {
     @GameRegistry.ObjectHolder(BlockFruitBasket.name)
     public static final Block fruitBasket = Blocks.AIR;
 
+    @GameRegistry.ObjectHolder(BlockCuttingBoard.name)
+    public static final Block cuttingBoard = Blocks.AIR;
+
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
                 new BlockCookingTable().setRegistryName(BlockCookingTable.name),
@@ -67,7 +70,8 @@ public class ModBlocks {
                 new BlockCounter().setRegistryName(BlockCounter.name),
                 new BlockCorner().setRegistryName(BlockCorner.name),
                 new BlockKitchenFloor().setRegistryName(BlockKitchenFloor.name),
-                new BlockFruitBasket().setRegistryName(BlockFruitBasket.name)
+                new BlockFruitBasket().setRegistryName(BlockFruitBasket.name),
+                new BlockCuttingBoard().setRegistryName(BlockCuttingBoard.name)
         );
     }
 
@@ -85,7 +89,8 @@ public class ModBlocks {
                 new ItemBlock(ModBlocks.counter).setRegistryName(BlockCounter.name),
                 new ItemBlock(ModBlocks.corner).setRegistryName(BlockCorner.name),
                 new ItemBlock(ModBlocks.kitchenFloor).setRegistryName(BlockKitchenFloor.name),
-                new ItemBlock(ModBlocks.fruitBasket).setRegistryName(BlockFruitBasket.name)
+                new ItemBlock(ModBlocks.fruitBasket).setRegistryName(BlockFruitBasket.name),
+                new ItemBlock(ModBlocks.cuttingBoard).setRegistryName(BlockCuttingBoard.name)
         );
     }
 
@@ -103,6 +108,7 @@ public class ModBlocks {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(kitchenFloor), 0, new ModelResourceLocation(BlockKitchenFloor.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fruitBasket), 0, new ModelResourceLocation(BlockFruitBasket.registryName, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cuttingBoard), 0, new ModelResourceLocation(BlockCuttingBoard.registryName, "inventory"));
     }
 
     public static void registerTileEntities() {
@@ -118,5 +124,6 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName.toString());
         GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName.toString());
         GameRegistry.registerTileEntity(TileFruitBasket.class, BlockFruitBasket.registryName.toString());
+        GameRegistry.registerTileEntity(TileCuttingBoard.class, BlockCuttingBoard.registryName.toString());
     }
 }

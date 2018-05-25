@@ -27,10 +27,14 @@
     },
     "preservation_chamber": {
       "true": {
-
       },
       "false": {
-
+      }
+    },
+    "ice_unit": {
+      "true": {
+      },
+      "false": {
       }
     }
   }

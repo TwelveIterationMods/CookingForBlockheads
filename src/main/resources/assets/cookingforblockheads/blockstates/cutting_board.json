@@ -4,7 +4,8 @@
     "model": "cookingforblockheads:cutting_board",
     "textures": {
       "particle": "blocks/planks_oak",
-      "texture": "blocks/planks_oak"
+      "texture": "blocks/planks_oak",
+      "voxels_atlas": "cookingforblockheads:blocks/cutting_board"
     },
     "transform": "forge:default-block"
   },

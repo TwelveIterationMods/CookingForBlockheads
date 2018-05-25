@@ -52,6 +52,7 @@ public class BlockFridge extends BlockKitchen {
 
     public static final PropertyEnum<FridgeType> TYPE = PropertyEnum.create("type", FridgeType.class);
     public static final PropertyBool PRESERVATION_CHAMBER = PropertyBool.create("preservation_chamber");
+    public static final PropertyBool ICE_UNIT = PropertyBool.create("ice_unit");
 
     public BlockFridge() {
         super(Material.IRON);
@@ -64,7 +65,7 @@ public class BlockFridge extends BlockKitchen {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, TYPE, FLIPPED, PRESERVATION_CHAMBER);
+        return new BlockStateContainer(this, FACING, TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT);
     }
 
     @Override
@@ -126,6 +127,9 @@ public class BlockFridge extends BlockKitchen {
         TileEntity tileEntity = world.getTileEntity(pos);
         boolean hasPreservationUpgrade = tileEntity instanceof TileFridge && ((TileFridge) tileEntity).hasPreservationUpgrade();
         state = state.withProperty(PRESERVATION_CHAMBER, hasPreservationUpgrade);
+
+        boolean hasIceUpgrade = tileEntity instanceof TileFridge && ((TileFridge) tileEntity).hasIceUpgrade();
+        state = state.withProperty(ICE_UNIT, hasIceUpgrade);
 
         return state;
     }
