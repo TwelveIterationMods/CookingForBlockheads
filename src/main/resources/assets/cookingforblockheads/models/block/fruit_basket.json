@@ -1,10 +1,10 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "blocks/e_particle",
-		"texture": "blocks/e_texture"
+		"particle": "blocks/planks_oak",
+		"texture": "blocks/planks_oak"
 	},
-	"elements": [ 	 
+	"elements": [
 		{
 			"__comment": "Box1",
 			"from": [ 2.5, 0, 4 ],

@@ -83,6 +83,8 @@ public class BlockCuttingBoard extends BlockKitchen {
         for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
             tooltip.add(TextFormatting.GRAY + s);
         }
+
+        tooltip.add(I18n.format("tooltip.cookingforblockheads:requires_pams"));
     }
 
 }

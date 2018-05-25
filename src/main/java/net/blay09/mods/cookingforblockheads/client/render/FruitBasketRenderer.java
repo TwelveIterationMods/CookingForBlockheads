@@ -24,7 +24,7 @@ public class FruitBasketRenderer extends TileEntitySpecialRenderer<TileFruitBask
         GlStateManager.pushMatrix();
         GlStateManager.color(1f, 1f, 1f, 1f);
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-        GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
+        GlStateManager.rotate(RenderUtils.getFacingAngle(state) + 180f, 0f, 1f, 0f);
         GlStateManager.scale(0.25f, 0.25f, 0.25f);
         int itemsPerRow = 7;
         for (int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {
@@ -38,6 +38,7 @@ public class FruitBasketRenderer extends TileEntitySpecialRenderer<TileFruitBask
                 if (BlockKitchen.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos())) {
                     curY -= 0.2f;
                 }
+
                 float curZ = -0.85f + colIndex * 0.35f + antiZFight;
                 RenderUtils.renderItem(itemRenderer, itemStack, curX, curY, curZ, -25f, 1f, 0f, 0f);
             }

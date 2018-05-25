@@ -1,9 +1,14 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "blocks/planks_oak",
+		"texture": "blocks/planks_oak",
+		"voxels_atlas": "cookingforblockheads:blocks/cutting_board"
+	},
 	"elements": [
 		{
 			"__comment": "Box1",
-			"from": [ 1.5, 0, 2 ],
+			"from": [ 2, 0, 2 ],
 			"to": [ 14, 0.5, 13 ],
 			"faces": {
 				"down": { "uv": [ 2, 2, 14.5, 14 ], "texture": "#texture", "rotation": 180 },

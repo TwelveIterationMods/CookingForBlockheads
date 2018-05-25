@@ -2,21 +2,19 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.block.BlockCorner;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.client.gui.SortButtonHunger;
-import net.blay09.mods.cookingforblockheads.client.gui.SortButtonName;
-import net.blay09.mods.cookingforblockheads.client.gui.SortButtonSaturation;
 import net.blay09.mods.cookingforblockheads.client.render.*;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.EnumDyeColor;
@@ -31,8 +29,9 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.Map;
 
 public class ClientProxy extends CommonProxy {
 
@@ -58,6 +57,16 @@ public class ClientProxy extends CommonProxy {
 			}
 		});
 
+		DefaultStateMapper ignorePropertiesStateMapper = new DefaultStateMapper() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				ResourceLocation location = state.getBlock().getRegistryName();
+				return new ModelResourceLocation(location != null ? location.toString() : "", "normal");
+			}
+		};
+		ModelLoader.setCustomStateMapper(ModBlocks.cuttingBoard, ignorePropertiesStateMapper);
+		ModelLoader.setCustomStateMapper(ModBlocks.fruitBasket, ignorePropertiesStateMapper);
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileToolRack.class, new ToolRackRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCookingTable.class, new CookingTableRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileOven.class, new OvenRenderer());
@@ -69,7 +78,6 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileFruitBasket.class, new FruitBasketRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCuttingBoard.class, new CuttingBoardRenderer());
 	}
 
 	@Override
@@ -127,6 +135,12 @@ public class ClientProxy extends CommonProxy {
 
 			model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door_ice_unit"));
 			FridgeRenderer.modelDoorIceUnitLarge = model.bake(model.getDefaultState(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
+
+			IModel cuttingBoard = ModelLoaderRegistry.getModel(new ResourceLocation("cookingforblockheads", "block/cutting_board"));
+			event.getModelRegistry().putObject(new ModelResourceLocation("cookingforblockheads:cutting_board", "normal"), new LowerableFacingOnDemandModel(cuttingBoard));
+
+			IModel fruitBasket = ModelLoaderRegistry.getModel(new ResourceLocation("cookingforblockheads", "block/fruit_basket"));
+			event.getModelRegistry().putObject(new ModelResourceLocation("cookingforblockheads:fruit_basket", "normal"), new LowerableFacingOnDemandModel(fruitBasket));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

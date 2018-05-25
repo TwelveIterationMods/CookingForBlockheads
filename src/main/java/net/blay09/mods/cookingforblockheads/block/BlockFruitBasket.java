@@ -69,16 +69,6 @@ public class BlockFruitBasket extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
-            facing = EnumFacing.NORTH;
-        }
-
-        return getDefaultState().withProperty(FACING, facing);
-    }
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (hand != EnumHand.MAIN_HAND) {
             return true;

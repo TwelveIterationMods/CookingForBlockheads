@@ -9,6 +9,35 @@ import java.util.List;
 public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider {
 
     @Override
+    public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public int getSlots() {
+        return 0;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack returnItemStack(ItemStack itemStack) {
+        return itemStack;
+    }
+
+    @Override
+    public void resetSimulation() {
+    }
+
+    @Override
+    public int getSimulatedUseCount(int slot) {
+        return 0;
+    }
+
+    @Override
     public ItemStack findAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
         SourceItem sourceItem = findSourceAndMarkAsUsed(predicate, maxAmount, inventories, requireBucket, simulate);
         if (sourceItem != null) {

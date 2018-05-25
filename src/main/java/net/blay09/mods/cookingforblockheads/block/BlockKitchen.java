@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -33,7 +34,6 @@ import java.util.List;
 public abstract class BlockKitchen extends BlockContainer {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", input -> input != EnumFacing.DOWN && input != EnumFacing.UP);
-
 	public static final PropertyBool LOWERED = PropertyBool.create("lowered");
 	public static final PropertyBool FLIPPED = PropertyBool.create("flipped");
 	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
