@@ -311,11 +311,12 @@ public class CookingRegistry {
         return false;
     }
 
-    public static RecipeStatus getRecipeStatus(FoodRecipe recipe, List<IKitchenItemProvider> inventories) {
+    public static RecipeStatus getRecipeStatus(FoodRecipe recipe, List<IKitchenItemProvider> inventories, boolean hasOven) {
         boolean requireBucket = doesItemRequireBucketForCrafting(recipe.getOutputItem());
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
         }
+
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
         NonNullList<ItemStack> itemFound = NonNullList.withSize(craftMatrix.size(), ItemStack.EMPTY);
         boolean missingTools = false;
@@ -327,9 +328,18 @@ public class CookingRegistry {
                     missingTools = true;
                     continue;
                 }
+
                 return RecipeStatus.MISSING_INGREDIENTS;
             }
         }
+
+        // Do not mark smeltable recipes as available unless an oven is present.
+        // This is not a full fix though since crafting recipes would still pretend to be craftable when missing tools if an oven is present.
+        // This just makes it less likely to happen, which is good enough for now ... in the next refactor we'll need to move RecipeStatus to the individual recipes instead of having it per-item.
+        if (recipe.getType() == RecipeType.SMELTING && !hasOven) {
+            return RecipeStatus.MISSING_TOOLS;
+        }
+
         return missingTools ? RecipeStatus.MISSING_TOOLS : RecipeStatus.AVAILABLE;
     }
 
