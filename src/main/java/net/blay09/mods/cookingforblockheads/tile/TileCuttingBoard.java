@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,12 +20,11 @@ import java.util.List;
 public class TileCuttingBoard extends TileEntity {
 
     private final IKitchenItemProvider itemProvider = new DefaultKitchenItemProvider() {
-        private final Item cuttingBoardItem = Item.REGISTRY.getObject(new ResourceLocation(Compat.PAMS_HARVESTCRAFT, "cuttingboarditem"));
-        private final ItemStack cuttingBoard = cuttingBoardItem != null ? new ItemStack(cuttingBoardItem) : ItemStack.EMPTY;
+        private final ItemStack cuttingBoard = Compat.cuttingBoardItem != Items.AIR ? new ItemStack(Compat.cuttingBoardItem) : ItemStack.EMPTY;
 
         @Override
         public ItemStack returnItemStack(ItemStack itemStack) {
-            if (itemStack.getItem() == cuttingBoardItem) {
+            if (itemStack.getItem() == Compat.cuttingBoardItem) {
                 return ItemStack.EMPTY;
             }
 

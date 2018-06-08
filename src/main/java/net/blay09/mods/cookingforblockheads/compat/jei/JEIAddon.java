@@ -48,6 +48,9 @@ public class JEIAddon implements IModPlugin {
 				return null;
 			}
 		});
+
+		// Blacklist the cutting board block from JEI (can't remove the item block yet since it's already been released)
+		registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModBlocks.cuttingBoard));
 	}
 
 	@Override

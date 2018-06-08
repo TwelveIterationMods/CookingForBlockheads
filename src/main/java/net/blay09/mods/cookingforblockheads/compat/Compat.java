@@ -1,5 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -24,5 +26,7 @@ public class Compat {
 		}
 		return milkFluid;
 	}
+
+	public static Item cuttingBoardItem = Items.AIR;
 
 }

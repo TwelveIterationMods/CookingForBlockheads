@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,10 +45,18 @@ public class CookingForBlockheads {
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 
+    public static final NonNullList<ItemStack> extraCreativeTabItems = NonNullList.create();
     public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
         @Override
         public ItemStack getTabIconItem() {
             return new ItemStack(ModItems.recipeBook, 1, 1);
+        }
+
+        @Override
+        public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+            super.displayAllRelevantItems(list);
+
+            list.addAll(extraCreativeTabItems);
         }
     };
 
