@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,14 +25,19 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HarvestCraftAddon {
+
+    private boolean cuttingBoardFound;
 
     public HarvestCraftAddon() {
         MinecraftForge.EVENT_BUS.register(this);
         Compat.cuttingBoardItem = Item.REGISTRY.getObject(new ResourceLocation(Compat.PAMS_HARVESTCRAFT, "cuttingboarditem"));
-        if (Compat.cuttingBoardItem != null) {
+        if (Compat.cuttingBoardItem != null && Compat.cuttingBoardItem != Items.AIR) {
             CookingForBlockheads.extraCreativeTabItems.add(new ItemStack(Compat.cuttingBoardItem));
+            cuttingBoardFound = true;
         }
     }
 
@@ -47,7 +53,12 @@ public class HarvestCraftAddon {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onItemTooltip(ItemTooltipEvent event) {
+        if (!cuttingBoardFound) {
+            return;
+        }
+
         if (event.getItemStack().getItem() == Compat.cuttingBoardItem) {
             event.getToolTip().add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:multiblock_kitchen"));
             event.getToolTip().add(I18n.format("tooltip.cookingforblockheads:can_be_placed_in_world"));
@@ -56,6 +67,10 @@ public class HarvestCraftAddon {
 
     @SubscribeEvent
     public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (!cuttingBoardFound) {
+            return;
+        }
+
         if (event.getItemStack().getItem() != Compat.cuttingBoardItem) {
             return;
         }
