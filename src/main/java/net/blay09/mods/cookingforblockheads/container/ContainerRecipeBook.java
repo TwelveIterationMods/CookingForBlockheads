@@ -200,7 +200,7 @@ public class ContainerRecipeBook extends Container {
 		for (CookingRegistry.ItemIdentifier key : CookingRegistry.getFoodRecipes().keySet()) {
 			RecipeStatus bestStatus = null;
 			for (FoodRecipe recipe : CookingRegistry.getFoodRecipes().get(key)) {
-				RecipeStatus thisStatus = CookingRegistry.getRecipeStatus(recipe, inventories, multiBlock.hasSmeltingProvider());
+				RecipeStatus thisStatus = CookingRegistry.getRecipeStatus(recipe, inventories, multiBlock != null && multiBlock.hasSmeltingProvider());
 				if (noFilter || thisStatus != RecipeStatus.MISSING_INGREDIENTS) {
 					if (bestStatus == null || thisStatus.ordinal() > bestStatus.ordinal()) {
 						statusMap.put(key, new FoodRecipeWithStatus(recipe.getOutputItem(), thisStatus));
