@@ -79,8 +79,6 @@ public class CookingForBlockheads {
 
         MinecraftForge.EVENT_BUS.register(new IMCHandler());
         MinecraftForge.EVENT_BUS.register(new CowJarHandler());
-
-        ModBlocks.registerTileEntities();
     }
 
     @Mod.EventHandler
@@ -123,6 +121,7 @@ public class CookingForBlockheads {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         ModBlocks.register(event.getRegistry());
+        ModBlocks.registerTileEntities();
     }
 
     @SubscribeEvent

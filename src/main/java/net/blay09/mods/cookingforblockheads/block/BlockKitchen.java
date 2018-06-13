@@ -14,6 +14,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +32,7 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class BlockKitchen extends BlockContainer {
+public abstract class BlockKitchen extends BlockContainer implements IRegisterableBlock {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", input -> input != EnumFacing.DOWN && input != EnumFacing.UP);
     public static final PropertyBool LOWERED = PropertyBool.create("lowered");
@@ -101,6 +103,12 @@ public abstract class BlockKitchen extends BlockContainer {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:multiblock_kitchen"));
+
+        addDefaultTooltipDescription(tooltip);
+
+        if (isDyeable()) {
+            tooltip.add(TextFormatting.AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
+        }
     }
 
     public static boolean shouldBlockRenderLowered(IBlockAccess world, BlockPos pos) {
@@ -138,6 +146,20 @@ public abstract class BlockKitchen extends BlockContainer {
         super.breakBlock(world, pos, state);
     }
 
+    public boolean applyDye(World world, BlockPos pos, EnumFacing facing, EntityPlayer player, ItemStack heldItem) {
+        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
+            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
+                if (!player.capabilities.isCreativeMode) {
+                    heldItem.shrink(1);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
@@ -151,6 +173,10 @@ public abstract class BlockKitchen extends BlockContainer {
         }
 
         return true;
+    }
+
+    public boolean isDyeable() {
+        return false;
     }
 
 }

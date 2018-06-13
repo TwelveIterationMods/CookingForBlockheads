@@ -7,34 +7,24 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockFruitBasket extends BlockKitchen {
-
-    public static final String name = "fruit_basket";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.1, 0.875);
 
     public BlockFruitBasket() {
         super(Material.WOOD);
 
-        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
@@ -74,12 +64,13 @@ public class BlockFruitBasket extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
+    public String getIdentifier() {
+        return "fruit_basket";
     }
 
+    @Nullable
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileFruitBasket.class;
+    }
 }

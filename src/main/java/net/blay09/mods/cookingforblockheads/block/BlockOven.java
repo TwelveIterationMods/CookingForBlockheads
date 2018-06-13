@@ -11,36 +11,32 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
-public class BlockOven extends BlockKitchen {
+public class BlockOven extends BlockKitchen implements IRegisterableBlock {
 
     public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-    public static final String name = "oven";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final Random random = new Random();
 
     public BlockOven() {
         super(Material.IRON);
 
-        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.METAL);
         setHardness(5f);
         setResistance(10f);
@@ -132,8 +128,8 @@ public class BlockOven extends BlockKitchen {
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
         boolean hasPowerUpgrade = tileEntity instanceof TileOven && ((TileOven) tileEntity).hasPowerUpgrade();
         return state.withProperty(POWERED, hasPowerUpgrade);
     }
@@ -168,6 +164,7 @@ public class BlockOven extends BlockKitchen {
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        // TODO move to getDrops in 1.13 if https://github.com/MinecraftForge/MinecraftForge/pull/4727 is merged
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileOven) {
             if (((TileOven) tileEntity).hasPowerUpgrade()) {
@@ -179,12 +176,14 @@ public class BlockOven extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
+    public String getIdentifier() {
+        return "oven";
+    }
 
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
+    @Nullable
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileOven.class;
     }
 
 }

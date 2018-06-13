@@ -1,12 +1,9 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -14,20 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BlockToolRack extends BlockKitchen {
-
-    public static final String name = "tool_rack";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class BlockToolRack extends BlockKitchen implements IRegisterableBlock {
 
     private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[]{
             new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1),
@@ -39,7 +30,6 @@ public class BlockToolRack extends BlockKitchen {
     public BlockToolRack() {
         super(Material.WOOD);
 
-        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
     }
@@ -132,12 +122,14 @@ public class BlockToolRack extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
+    public String getIdentifier() {
+        return "tool_rack";
+    }
 
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
+    @Nullable
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileToolRack.class;
     }
 
 }

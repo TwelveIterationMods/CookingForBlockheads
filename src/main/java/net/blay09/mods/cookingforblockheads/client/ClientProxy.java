@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
+import net.blay09.mods.cookingforblockheads.block.IRegisterableBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.render.*;
 import net.blay09.mods.cookingforblockheads.tile.*;
@@ -146,12 +147,13 @@ public class ClientProxy extends CommonProxy {
         IBlockState defaultState = ModBlocks.counter.getDefaultState();
         IBlockState state = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR);
         IBlockState flippedState = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR_FLIPPED);
+        ResourceLocation counterResLoc = ((IRegisterableBlock) ModBlocks.counter).createRegistryName();
         for (int i = 0; i < 4; i++) {
             EnumFacing facing = EnumFacing.getHorizontal(i);
             for (int j = 0; j < colors.length; j++) {
                 EnumDyeColor color = colors[j];
-                CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCounter.registryName, dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
-                CounterRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCounter.registryName, dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+                CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(counterResLoc, dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+                CounterRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(counterResLoc, dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
             }
         }
     }

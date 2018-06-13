@@ -12,28 +12,23 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BlockFridge extends BlockKitchen {
-
-    public static final String name = "fridge";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class BlockFridge extends BlockKitchen implements IRegisterableBlock {
 
     public enum FridgeType implements IStringSerializable {
         SMALL,
@@ -53,7 +48,6 @@ public class BlockFridge extends BlockKitchen {
     public BlockFridge() {
         super(Material.IRON);
 
-        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.METAL);
         setHardness(5f);
         setResistance(10f);
@@ -142,10 +136,7 @@ public class BlockFridge extends BlockKitchen {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                heldItem.shrink(1);
-            }
+        if (applyDye(world, pos, facing, player, heldItem)) {
             return true;
         }
 
@@ -191,16 +182,13 @@ public class BlockFridge extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
-        tooltip.add(TextFormatting.AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
+    public boolean isDyeable() {
+        return true;
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        // TODO move to getDrops in 1.13 if https://github.com/MinecraftForge/MinecraftForge/pull/4727 is merged
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileFridge) {
             if (((TileFridge) tileEntity).hasIceUpgrade()) {
@@ -234,4 +222,14 @@ public class BlockFridge extends BlockKitchen {
         return true;
     }
 
+    @Override
+    public String getIdentifier() {
+        return "fridge";
+    }
+
+    @Nullable
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileFridge.class;
+    }
 }

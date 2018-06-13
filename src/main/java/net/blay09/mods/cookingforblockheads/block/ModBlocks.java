@@ -1,129 +1,90 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.*;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@GameRegistry.ObjectHolder(CookingForBlockheads.MOD_ID)
+import java.util.List;
+
 public class ModBlocks {
 
-    @GameRegistry.ObjectHolder(BlockCookingTable.name)
-    public static final Block cookingTable = Blocks.AIR;
+    private static final List<Block> blocks = Lists.newArrayList();
 
-    @GameRegistry.ObjectHolder(BlockOven.name)
-    public static final Block oven = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockFridge.name)
-    public static final Block fridge = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockSink.name)
-    public static final Block sink = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockToolRack.name)
-    public static final Block toolRack = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockToaster.name)
-    public static final Block toaster = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockMilkJar.name)
-    public static final Block milkJar = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockCowJar.name)
-    public static final Block cowJar = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockSpiceRack.name)
-    public static final Block spiceRack = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockCounter.name)
-    public static final Block counter = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockCorner.name)
-    public static final Block corner = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockKitchenFloor.name)
-    public static final Block kitchenFloor = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockFruitBasket.name)
-    public static final Block fruitBasket = Blocks.AIR;
-
-    @GameRegistry.ObjectHolder(BlockCuttingBoard.name)
-    public static final Block cuttingBoard = Blocks.AIR;
+    public static Block cookingTable;
+    public static Block oven;
+    public static Block fridge;
+    public static Block sink;
+    public static Block toolRack;
+    public static Block toaster;
+    public static Block milkJar;
+    public static Block cowJar;
+    public static Block spiceRack;
+    public static Block counter;
+    public static Block corner;
+    public static Block kitchenFloor;
+    public static Block fruitBasket;
+    public static Block cuttingBoard;
 
     public static void register(IForgeRegistry<Block> registry) {
-        registry.registerAll(
-                new BlockCookingTable().setRegistryName(BlockCookingTable.name),
-                new BlockOven().setRegistryName(BlockOven.name),
-                new BlockFridge().setRegistryName(BlockFridge.name),
-                new BlockSink().setRegistryName(BlockSink.name),
-                new BlockToolRack().setRegistryName(BlockToolRack.name),
-                new BlockToaster().setRegistryName(BlockToaster.name),
-                new BlockMilkJar().setRegistryName(BlockMilkJar.name),
-                new BlockCowJar().setRegistryName(BlockCowJar.name),
-                new BlockSpiceRack().setRegistryName(BlockSpiceRack.name),
-                new BlockCounter().setRegistryName(BlockCounter.name),
-                new BlockCorner().setRegistryName(BlockCorner.name),
-                new BlockKitchenFloor().setRegistryName(BlockKitchenFloor.name),
-                new BlockFruitBasket().setRegistryName(BlockFruitBasket.name),
-                new BlockCuttingBoard().setRegistryName(BlockCuttingBoard.name)
-        );
+        cookingTable = registerBlock(registry, new BlockCookingTable());
+        oven = registerBlock(registry, new BlockOven());
+        fridge = registerBlock(registry, new BlockFridge());
+        sink = registerBlock(registry, new BlockSink());
+        toolRack = registerBlock(registry, new BlockToolRack());
+        toaster = registerBlock(registry, new BlockToaster());
+        milkJar = registerBlock(registry, new BlockMilkJar());
+        cowJar = registerBlock(registry, new BlockCowJar());
+        spiceRack = registerBlock(registry, new BlockSpiceRack());
+        counter = registerBlock(registry, new BlockCounter());
+        corner = registerBlock(registry, new BlockCorner());
+        kitchenFloor = registerBlock(registry, new BlockKitchenFloor());
+        fruitBasket = registerBlock(registry, new BlockFruitBasket());
+        cuttingBoard = registerBlock(registry, new BlockCuttingBoard());
+    }
+
+    private static Block registerBlock(IForgeRegistry<Block> registry, Block block) {
+        if (block instanceof IRegisterableBlock) {
+            ResourceLocation registryName = ((IRegisterableBlock) block).createRegistryName();
+            block.setRegistryName(registryName);
+            block.setUnlocalizedName(registryName.toString());
+            registry.register(block);
+            blocks.add(block);
+            return block;
+        } else {
+            throw new RuntimeException("Tried to register a block that does not implement IBlockCFB");
+        }
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
-        registry.registerAll(
-                new ItemBlock(ModBlocks.cookingTable).setRegistryName(BlockCookingTable.name),
-                new ItemBlock(ModBlocks.oven).setRegistryName(BlockOven.name),
-                new ItemBlock(ModBlocks.fridge).setRegistryName(BlockFridge.name),
-                new ItemBlock(ModBlocks.sink).setRegistryName(BlockSink.name),
-                new ItemBlock(ModBlocks.toolRack).setRegistryName(BlockToolRack.name),
-                new ItemBlock(ModBlocks.toaster).setRegistryName(BlockToaster.name),
-                new ItemBlock(ModBlocks.milkJar).setRegistryName(BlockMilkJar.name),
-                new ItemBlock(ModBlocks.cowJar).setRegistryName(BlockCowJar.name),
-                new ItemBlock(ModBlocks.spiceRack).setRegistryName(BlockSpiceRack.name),
-                new ItemBlock(ModBlocks.counter).setRegistryName(BlockCounter.name),
-                new ItemBlock(ModBlocks.corner).setRegistryName(BlockCorner.name),
-                new ItemBlock(ModBlocks.kitchenFloor).setRegistryName(BlockKitchenFloor.name),
-                new ItemBlock(ModBlocks.fruitBasket).setRegistryName(BlockFruitBasket.name),
-                new ItemBlock(ModBlocks.cuttingBoard).setRegistryName(BlockCuttingBoard.name)
-        );
+        for (Block block : blocks) {
+            ItemBlock itemBlock = ((IRegisterableBlock) block).createItemBlock(block);
+            if (itemBlock != null) {
+                itemBlock.setRegistryName(((IRegisterableBlock) block).createRegistryName());
+            }
+            registry.register(itemBlock);
+        }
     }
 
     public static void registerModels() {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cookingTable), 0, new ModelResourceLocation(BlockCookingTable.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(oven), 0, new ModelResourceLocation(BlockOven.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fridge), 0, new ModelResourceLocation(BlockFridge.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sink), 0, new ModelResourceLocation(BlockSink.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(toolRack), 0, new ModelResourceLocation(BlockToolRack.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(toaster), 0, new ModelResourceLocation(BlockToaster.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(milkJar), 0, new ModelResourceLocation(BlockMilkJar.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cowJar), 0, new ModelResourceLocation(BlockCowJar.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(spiceRack), 0, new ModelResourceLocation(BlockSpiceRack.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(counter), 0, new ModelResourceLocation(BlockCounter.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(kitchenFloor), 0, new ModelResourceLocation(BlockKitchenFloor.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fruitBasket), 0, new ModelResourceLocation(BlockFruitBasket.registryName, "inventory"));
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cuttingBoard), 0, new ModelResourceLocation(BlockCuttingBoard.registryName, "inventory"));
+        for (Block block : blocks) {
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(((IRegisterableBlock) block).createRegistryName(), "inventory"));
+        }
     }
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(TileCookingTable.class, BlockCookingTable.registryName.toString());
-        GameRegistry.registerTileEntity(TileOven.class, BlockOven.registryName.toString());
-        GameRegistry.registerTileEntity(TileFridge.class, BlockFridge.registryName.toString());
-        GameRegistry.registerTileEntity(TileSink.class, BlockSink.registryName.toString());
-        GameRegistry.registerTileEntity(TileToolRack.class, BlockToolRack.registryName.toString());
-        GameRegistry.registerTileEntity(TileToaster.class, BlockToaster.registryName.toString());
-        GameRegistry.registerTileEntity(TileMilkJar.class, BlockMilkJar.registryName.toString());
-        GameRegistry.registerTileEntity(TileCowJar.class, BlockCowJar.registryName.toString());
-        GameRegistry.registerTileEntity(TileSpiceRack.class, BlockSpiceRack.registryName.toString());
-        GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName.toString());
-        GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName.toString());
-        GameRegistry.registerTileEntity(TileFruitBasket.class, BlockFruitBasket.registryName.toString());
-        GameRegistry.registerTileEntity(TileCuttingBoard.class, BlockCuttingBoard.registryName.toString());
+        for (Block block : blocks) {
+            Class<? extends TileEntity> tileEntityClass = ((IRegisterableBlock) block).getTileEntityClass();
+            if (tileEntityClass != null) {
+                GameRegistry.registerTileEntity(tileEntityClass, ((IRegisterableBlock) block).createRegistryName());
+            }
+        }
     }
+
 }

@@ -1,13 +1,10 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,26 +12,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockMilkJar extends BlockKitchen {
 
-    public static final String name = "milk_jar";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 0.5, 0.7);
 
     public BlockMilkJar() {
         super(Material.GLASS);
 
-        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.GLASS);
         setHardness(0.6f);
     }
@@ -89,15 +80,6 @@ public class BlockMilkJar extends BlockKitchen {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
-    }
-
-    @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
@@ -105,6 +87,17 @@ public class BlockMilkJar extends BlockKitchen {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileMilkJar();
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "milk_jar";
+    }
+
+    @Nullable
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileMilkJar.class;
     }
 
 }

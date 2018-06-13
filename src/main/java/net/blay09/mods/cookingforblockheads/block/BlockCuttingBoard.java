@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.TileCuttingBoard;
 import net.minecraft.block.SoundType;
@@ -14,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -29,15 +27,11 @@ import java.util.Random;
 
 public class BlockCuttingBoard extends BlockKitchen {
 
-    public static final String name = "cutting_board";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
-
     private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.1, 0.875);
 
     public BlockCuttingBoard() {
         super(Material.WOOD);
 
-        setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
         //noinspection ConstantConditions TODO remove ItemBlock for cutting board in 1.13, making this no longer necessary (hopefully)
@@ -97,10 +91,6 @@ public class BlockCuttingBoard extends BlockKitchen {
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, world, tooltip, advanced);
 
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
-
         if (!Loader.isModLoaded(Compat.PAMS_HARVESTCRAFT)) {
             tooltip.add(TextFormatting.RED + I18n.format("tooltip.cookingforblockheads:requires_pams"));
         } else {
@@ -108,6 +98,17 @@ public class BlockCuttingBoard extends BlockKitchen {
                 tooltip.add(TextFormatting.RED + s);
             }
         }
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "cutting_board";
+    }
+
+    @Nullable
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileCuttingBoard.class;
     }
 
 }
