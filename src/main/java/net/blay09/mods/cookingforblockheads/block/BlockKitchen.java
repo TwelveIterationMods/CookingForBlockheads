@@ -107,7 +107,7 @@ public abstract class BlockKitchen extends BlockContainer implements IRegisterab
         addDefaultTooltipDescription(tooltip);
 
         if (isDyeable()) {
-            tooltip.add(TextFormatting.AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
+            tooltip.add(TextFormatting.DARK_AQUA + I18n.format("tooltip.cookingforblockheads:dyeable"));
         }
     }
 

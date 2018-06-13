@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.*;
 import net.blay09.mods.cookingforblockheads.container.*;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,13 +33,12 @@ public class GuiHandler implements IGuiHandler {
 
             ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
             if (!heldItem.isEmpty()) {
-                switch (heldItem.getItemDamage()) {
-                    case 0:
-                        return new ContainerRecipeBook(player).setNoFilter();
-                    case 1:
-                        return new ContainerRecipeBook(player);
-                    case 2:
-                        return new ContainerRecipeBook(player).allowCrafting();
+                if(heldItem.getItem() == ModItems.recipeBook) {
+                    return new ContainerRecipeBook(player);
+                } else if(heldItem.getItem() == ModItems.craftingBook) {
+                    return new ContainerRecipeBook(player).allowCrafting();
+                } else if(heldItem.getItem() == ModItems.noFilterBook) {
+                    return new ContainerRecipeBook(player).setNoFilter();
                 }
             }
         } else {
@@ -92,13 +92,12 @@ public class GuiHandler implements IGuiHandler {
         if (id == ITEM_RECIPE_BOOK) { // x: EnumHand
             ItemStack heldItem = player.getHeldItem(EnumHand.values()[x]);
             if (!heldItem.isEmpty()) {
-                switch (heldItem.getItemDamage()) {
-                    case 0:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());
-                    case 1:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player));
-                    case 2:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
+                if(heldItem.getItem() == ModItems.recipeBook) {
+                    return new GuiRecipeBook(new ContainerRecipeBook(player));
+                } else if(heldItem.getItem() == ModItems.craftingBook) {
+                    return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
+                } else if(heldItem.getItem() == ModItems.noFilterBook) {
+                    return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());
                 }
             }
         } else {

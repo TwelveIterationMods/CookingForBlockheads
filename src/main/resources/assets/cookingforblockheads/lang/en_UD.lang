@@ -1,13 +1,13 @@
-item.cookingforblockheads:recipe_book_tier0.name=spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ
-item.cookingforblockheads:recipe_book_tier1.name=I spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ
-item.cookingforblockheads:recipe_book_tier2.name=II spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ
+item.cookingforblockheads:no_filter_book.name=spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ
+item.cookingforblockheads:recipe_book.name=I spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ
+item.cookingforblockheads:crafting_book.name=II spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ
 
-tooltip.cookingforblockheads:recipe_book_tier0=uoᴉʇᴉpƎ ɹǝʇꞁᴉℲoN#
-tooltip.cookingforblockheads:recipe_book_tier0.description=˙sǝdᴉɔǝɹ pooɟ ꞁꞁɐ sʍoɥS
-tooltip.cookingforblockheads:recipe_book_tier1=ʞooᗺ ǝdᴉɔǝᴚ
-tooltip.cookingforblockheads:recipe_book_tier1.description=˙ʎɹoʇuǝʌuᴉ ɹnoʎ uᴉ ǝʌɐɥ noʎ sᵷuᴉɥʇ\nǝɥʇ ɥʇᴉʍ ǝʞɐɯ uɐɔ noʎ pooɟ sʍoɥS
-tooltip.cookingforblockheads:recipe_book_tier2=ʞooᗺ ᵷuᴉʇɟɐɹƆ
-tooltip.cookingforblockheads:recipe_book_tier2.description=˙ʎɹoʇuǝʌuᴉ ɹnoʎ uᴉ ǝʌɐɥ noʎ\nsᵷuᴉɥʇ ǝɥʇ ᵷuᴉsn pooɟ ʇɟɐɹɔ uɐƆ
+tooltip.cookingforblockheads:no_filter_book=uoᴉʇᴉpƎ ɹǝʇꞁᴉℲoN#
+tooltip.cookingforblockheads:no_filter_book.description=˙sǝdᴉɔǝɹ pooɟ ꞁꞁɐ sʍoɥS
+tooltip.cookingforblockheads:recipe_book=ʞooᗺ ǝdᴉɔǝᴚ
+tooltip.cookingforblockheads:recipe_book.description=˙ʎɹoʇuǝʌuᴉ ɹnoʎ uᴉ ǝʌɐɥ noʎ sᵷuᴉɥʇ\nǝɥʇ ɥʇᴉʍ ǝʞɐɯ uɐɔ noʎ pooɟ sʍoɥS
+tooltip.cookingforblockheads:crafting_book=ʞooᗺ ᵷuᴉʇɟɐɹƆ
+tooltip.cookingforblockheads:crafting_book.description=˙ʎɹoʇuǝʌuᴉ ɹnoʎ uᴉ ǝʌɐɥ noʎ\nsᵷuᴉɥʇ ǝɥʇ ᵷuᴉsn pooɟ ʇɟɐɹɔ uɐƆ
 
 
 tile.cookingforblockheads:cooking_table.name=ǝꞁqɐ⟘ ᵷuᴉʞooƆ

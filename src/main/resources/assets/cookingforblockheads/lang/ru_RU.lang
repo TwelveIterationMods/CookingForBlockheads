@@ -1,13 +1,13 @@
-item.cookingforblockheads:recipe_book_tier0.name=Кулинария для болванов
+item.cookingforblockheads:no_filter_book.name=Кулинария для болванов
 item.cookingforblockheads:recipe_book_tier1.name=Кулинария для болванов I
 item.cookingforblockheads:recipe_book_tier2.name=Кулинария для болванов II
 
-tooltip.cookingforblockheads:recipe_book_tier0=#Издание без фильтра
-tooltip.cookingforblockheads:recipe_book_tier0.description=Показывает все продуктовые рецепты.
-tooltip.cookingforblockheads:recipe_book_tier1=Книга рецептов
-tooltip.cookingforblockheads:recipe_book_tier1.description=Показывает еду, которую вы можете сделать с\nпредметами, которые есть в Вашем инвентаре.
-tooltip.cookingforblockheads:recipe_book_tier2=Книга создания
-tooltip.cookingforblockheads:recipe_book_tier2.description=Можете создать продукты, используя предметы\nкоторые есть в Вашем инвентаре.
+tooltip.cookingforblockheads:no_filter_book=#Издание без фильтра
+tooltip.cookingforblockheads:no_filter_book.description=Показывает все продуктовые рецепты.
+tooltip.cookingforblockheads:recipe_book=Книга рецептов
+tooltip.cookingforblockheads:recipe_book.description=Показывает еду, которую вы можете сделать с\nпредметами, которые есть в Вашем инвентаре.
+tooltip.cookingforblockheads:crafting_book=Книга создания
+tooltip.cookingforblockheads:crafting_book.description=Можете создать продукты, используя предметы\nкоторые есть в Вашем инвентаре.
 
 ###
 

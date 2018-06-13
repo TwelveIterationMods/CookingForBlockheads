@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -17,30 +16,22 @@ import javax.annotation.Nullable;
 
 public class TileCookingTable extends TileEntity implements IDyeableKitchen {
 
-    private ItemStack noFilterBook = ItemStack.EMPTY;
+    private boolean hasNoFilterBook;
     private EnumDyeColor color = EnumDyeColor.WHITE;
 
     public boolean hasNoFilterBook() {
-        return !noFilterBook.isEmpty();
+        return hasNoFilterBook;
     }
 
-    public ItemStack getNoFilterBook() {
-        return noFilterBook;
-    }
-
-    public void setNoFilterBook(ItemStack noFilterBook) {
-        this.noFilterBook = noFilterBook;
+    public void setHasNoFilterBook(boolean hasNoFilterBook) {
+        this.hasNoFilterBook = hasNoFilterBook;
         markDirty();
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
-        NBTTagCompound itemCompound = new NBTTagCompound();
-        if (!noFilterBook.isEmpty()) {
-            noFilterBook.writeToNBT(itemCompound);
-        }
-        tagCompound.setTag("NoFilterBook", itemCompound);
+        tagCompound.setBoolean("HasNoFilterBook", hasNoFilterBook);
         tagCompound.setByte("Color", (byte) color.getDyeDamage());
         return tagCompound;
     }
@@ -49,7 +40,9 @@ public class TileCookingTable extends TileEntity implements IDyeableKitchen {
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         if (tagCompound.hasKey("NoFilterBook")) {
-            setNoFilterBook(new ItemStack(tagCompound.getCompoundTag("NoFilterBook")));
+            setHasNoFilterBook(true);
+        } else {
+            hasNoFilterBook = tagCompound.getBoolean("HasNoFilterBook");
         }
         color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
     }

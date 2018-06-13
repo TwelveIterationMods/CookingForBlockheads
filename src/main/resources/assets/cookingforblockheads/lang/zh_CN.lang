@@ -1,13 +1,13 @@
-item.cookingforblockheads:recipe_book_tier0.name=傻瓜烹饪手册
-item.cookingforblockheads:recipe_book_tier1.name=傻瓜烹饪手册I
+item.cookingforblockheads:no_filter_book.name=傻瓜烹饪手册
+item.cookingforblockheads:recipe_book.name=傻瓜烹饪手册I
 item.cookingforblockheads:recipe_book_tier2.name=傻瓜烹饪手册II
 
-tooltip.cookingforblockheads:recipe_book_tier0=#无过滤版
-tooltip.cookingforblockheads:recipe_book_tier0.description=显示所有的食谱.
-tooltip.cookingforblockheads:recipe_book_tier1=食谱
-tooltip.cookingforblockheads:recipe_book_tier1.description=显示你背包食材能够烹饪的食物.
-tooltip.cookingforblockheads:recipe_book_tier2=合成书
-tooltip.cookingforblockheads:recipe_book_tier2.description=能够使用背包食材合成食物.
+tooltip.cookingforblockheads:no_filter_book=#无过滤版
+tooltip.cookingforblockheads:no_filter_book.description=显示所有的食谱.
+tooltip.cookingforblockheads:recipe_book=食谱
+tooltip.cookingforblockheads:recipe_book.description=显示你背包食材能够烹饪的食物.
+tooltip.cookingforblockheads:crafting_book=合成书
+tooltip.cookingforblockheads:crafting_book.description=能够使用背包食材合成食物.
 
 
 

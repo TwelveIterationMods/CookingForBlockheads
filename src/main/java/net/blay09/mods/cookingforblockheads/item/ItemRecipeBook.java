@@ -4,7 +4,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,30 +13,23 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Locale;
 
-public class ItemRecipeBook extends Item {
+public class ItemRecipeBook extends Item implements IRegisterableItem {
 
-    public static final String name = "recipe_book";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+    public enum BookType {
+        RECIPE_BOOK,
+        CRAFTING_BOOK,
+        NO_FILTER_BOOK
+    }
 
-    public ItemRecipeBook() {
+    public final BookType type;
+
+    public ItemRecipeBook(BookType type) {
+        this.type = type;
+
         setCreativeTab(CookingForBlockheads.creativeTab);
-        setHasSubtypes(true);
         setMaxStackSize(1);
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack) {
-        return "item.cookingforblockheads:recipe_book_tier" + itemstack.getItemDamage();
-    }
-
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (isInCreativeTab(tab)) {
-            items.add(new ItemStack(this, 1, 0));
-            items.add(new ItemStack(this, 1, 1));
-            items.add(new ItemStack(this, 1, 2));
-        }
     }
 
     @Override
@@ -50,10 +42,16 @@ public class ItemRecipeBook extends Item {
     public void addInformation(ItemStack itemStack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         super.addInformation(itemStack, world, tooltip, flag);
 
-        tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:recipe_book_tier" + itemStack.getItemDamage()));
-        for (String s : I18n.format("tooltip.cookingforblockheads:recipe_book_tier" + itemStack.getItemDamage() + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
+        tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip." + createRegistryName()));
+
+        addDefaultTooltipDescription(tooltip);
     }
+
+    @Override
+    public String getIdentifier() {
+        return type.name().toLowerCase(Locale.ENGLISH);
+    }
+
+
 
 }

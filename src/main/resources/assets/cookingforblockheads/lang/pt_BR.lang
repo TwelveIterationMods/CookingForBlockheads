@@ -1,13 +1,13 @@
-item.cookingforblockheads:recipe_book_tier0.name=Culinária para Quadradões
-item.cookingforblockheads:recipe_book_tier1.name=Culinária para Quadradões I
-item.cookingforblockheads:recipe_book_tier2.name=Culinária para Quadradões II
+item.cookingforblockheads:no_filter_book.name=Culinária para Quadradões
+item.cookingforblockheads:recipe_book.name=Culinária para Quadradões I
+item.cookingforblockheads:crafting_book.name=Culinária para Quadradões II
 
-tooltip.cookingforblockheads:recipe_book_tier0=Edição #NoFilter
-tooltip.cookingforblockheads:recipe_book_tier0.description=Mostra todas as receitas de comida.
-tooltip.cookingforblockheads:recipe_book_tier1=Livro de Receitas
-tooltip.cookingforblockheads:recipe_book_tier1.description=Mostra as comidas que você pode fazer com\n o que você tem no inventário.
-tooltip.cookingforblockheads:recipe_book_tier2=Livro de Crafting
-tooltip.cookingforblockheads:recipe_book_tier2.description=Pode fazer comida com as coisas\n com o que você tem no inventário.
+tooltip.cookingforblockheads:no_filter_book=Edição #NoFilter
+tooltip.cookingforblockheads:no_filter_book.description=Mostra todas as receitas de comida.
+tooltip.cookingforblockheads:recipe_book=Livro de Receitas
+tooltip.cookingforblockheads:recipe_book.description=Mostra as comidas que você pode fazer com\n o que você tem no inventário.
+tooltip.cookingforblockheads:crafting_book=Livro de Crafting
+tooltip.cookingforblockheads:crafting_book.description=Pode fazer comida com as coisas\n com o que você tem no inventário.
 
 ###
 

@@ -1,15 +1,15 @@
 ### Translated by RoCoko
 
-item.cookingforblockheads:recipe_book_tier0.name=Cooking for Blockheads
+item.cookingforblockheads:no_filter_book.name=Cooking for Blockheads
 item.cookingforblockheads:recipe_book_tier1.name=Cooking for Blockheads I
 item.cookingforblockheads:recipe_book_tier2.name=Cooking for Blockheads II
 
-tooltip.cookingforblockheads:recipe_book_tier0=Tüm Yemek Tarifleri
-tooltip.cookingforblockheads:recipe_book_tier0.description=Tüm yemek tariflerini gösterir.
-tooltip.cookingforblockheads:recipe_book_tier1=Yemek Tarifi Kitabı
-tooltip.cookingforblockheads:recipe_book_tier1.description=Envanterinizdeki şeylerle yapabileceğiniz yiyecekleri gösterir.
-tooltip.cookingforblockheads:recipe_book_tier2=Üretim Kitabı
-tooltip.cookingforblockheads:recipe_book_tier2.description=Envanterinizdeki şeyleri kullanarak yiyecek hazırlayabilirsiniz.
+tooltip.cookingforblockheads:no_filter_book=Tüm Yemek Tarifleri
+tooltip.cookingforblockheads:no_filter_book.description=Tüm yemek tariflerini gösterir.
+tooltip.cookingforblockheads:recipe_book=Yemek Tarifi Kitabı
+tooltip.cookingforblockheads:recipe_book.description=Envanterinizdeki şeylerle yapabileceğiniz yiyecekleri gösterir.
+tooltip.cookingforblockheads:crafting_book=Üretim Kitabı
+tooltip.cookingforblockheads:crafting_book.description=Envanterinizdeki şeyleri kullanarak yiyecek hazırlayabilirsiniz.
 
 ###
 

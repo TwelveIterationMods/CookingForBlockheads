@@ -16,14 +16,20 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.IFixableData;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.util.CompoundDataFixer;
+import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,13 +48,14 @@ import java.io.File;
 public class CookingForBlockheads {
 
     public static final String MOD_ID = "cookingforblockheads";
+    public static final int MOD_DATA_VERSION = 0;
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 
     public static final NonNullList<ItemStack> extraCreativeTabItems = NonNullList.create();
     public static final CreativeTabs creativeTab = new CreativeTabs(MOD_ID) {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(ModItems.recipeBook, 1, 1);
+            return new ItemStack(ModItems.recipeBook);
         }
 
         @Override
@@ -91,6 +98,38 @@ public class CookingForBlockheads {
         FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
 
         proxy.init(event);
+
+        CompoundDataFixer dataFixer = FMLCommonHandler.instance().getDataFixer();
+        ModFixs modDataFixer = dataFixer.init(MOD_ID, MOD_DATA_VERSION);
+        modDataFixer.registerFix(FixTypes.ITEM_INSTANCE, new IFixableData() {
+            @Override
+            public int getFixVersion() {
+                return MOD_DATA_VERSION;
+            }
+
+            @Override
+            public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+                String id = compound.getString("id");
+                if (id.equals("cookingforblockheads:recipe_book")) {
+                    short damage = compound.getShort("Damage");
+                    switch (damage) {
+                        case 0:
+                            compound.setString("id", "cookingforblockheads:no_filter_book");
+                            compound.setShort("Damage", (short) 0);
+                            break;
+                        case 1:
+                            compound.setString("id", "cookingforblockheads:recipe_book");
+                            compound.setShort("Damage", (short) 0);
+                            break;
+                        case 2:
+                            compound.setString("id", "cookingforblockheads:crafting_book");
+                            compound.setShort("Damage", (short) 0);
+                            break;
+                    }
+                }
+                return compound;
+            }
+        });
     }
 
     @Mod.EventHandler

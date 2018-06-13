@@ -1,43 +1,47 @@
 package net.blay09.mods.cookingforblockheads.item;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@GameRegistry.ObjectHolder(CookingForBlockheads.MOD_ID)
+import java.util.List;
+
 public class ModItems {
 
-    @GameRegistry.ObjectHolder(ItemRecipeBook.name)
-    public static Item recipeBook = Items.AIR;
+    private static final List<Item> items = Lists.newArrayList();
 
-    @GameRegistry.ObjectHolder(ItemHeatingUnit.name)
-    public static Item heatingUnit = Items.AIR;
-
-    @GameRegistry.ObjectHolder(ItemIceUnit.name)
-    public static Item iceUnit = Items.AIR;
-
-    @GameRegistry.ObjectHolder(ItemPreservationChamber.name)
-    public static Item preservationChamber = Items.AIR;
+    public static Item recipeBook;
+    public static Item craftingBook;
+    public static Item noFilterBook;
+    public static Item heatingUnit;
+    public static Item iceUnit;
+    public static Item preservationChamber;
 
     public static void register(IForgeRegistry<Item> registry) {
-        registry.registerAll(
-                new ItemRecipeBook().setRegistryName(ItemRecipeBook.name),
-                new ItemHeatingUnit().setRegistryName(ItemHeatingUnit.name),
-                new ItemIceUnit().setRegistryName(ItemIceUnit.name),
-                new ItemPreservationChamber().setRegistryName(ItemPreservationChamber.name)
-        );
+        recipeBook = registerItem(registry, new ItemRecipeBook(ItemRecipeBook.BookType.RECIPE_BOOK));
+        craftingBook = registerItem(registry, new ItemRecipeBook(ItemRecipeBook.BookType.CRAFTING_BOOK));
+        noFilterBook = registerItem(registry, new ItemRecipeBook(ItemRecipeBook.BookType.NO_FILTER_BOOK));
+        heatingUnit = registerItem(registry, new ItemHeatingUnit());
+        iceUnit = registerItem(registry, new ItemIceUnit());
+        preservationChamber = registerItem(registry, new ItemPreservationChamber());
+    }
+
+    private static Item registerItem(IForgeRegistry<Item> registry, Item item) {
+        ResourceLocation registryName = ((IRegisterableItem) item).createRegistryName();
+        item.setRegistryName(registryName);
+        item.setUnlocalizedName(registryName.toString());
+        registry.register(item);
+        items.add(item);
+        return item;
     }
 
     public static void registerModels() {
-        ModelLoader.setCustomModelResourceLocation(recipeBook, 0, new ModelResourceLocation("cookingforblockheads:recipe_book", "inventory"));
-        ModelLoader.setCustomModelResourceLocation(recipeBook, 1, new ModelResourceLocation("cookingforblockheads:recipe_book_tier1", "inventory"));
-        ModelLoader.setCustomModelResourceLocation(recipeBook, 2, new ModelResourceLocation("cookingforblockheads:recipe_book_tier2", "inventory"));
-        ModelLoader.setCustomModelResourceLocation(heatingUnit, 0, new ModelResourceLocation("cookingforblockheads:heating_unit", "inventory"));
-        ModelLoader.setCustomModelResourceLocation(iceUnit, 0, new ModelResourceLocation("cookingforblockheads:ice_unit", "inventory"));
-        ModelLoader.setCustomModelResourceLocation(preservationChamber, 0, new ModelResourceLocation("cookingforblockheads:preservation_chamber", "inventory"));
+        for (Item item : items) {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(((IRegisterableItem) item).createRegistryName(), "inventory"));
+        }
     }
+
 }

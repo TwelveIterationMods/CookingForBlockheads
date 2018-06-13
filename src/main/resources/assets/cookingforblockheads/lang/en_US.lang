@@ -1,16 +1,16 @@
-item.cookingforblockheads:recipe_book_tier0.name=Cooking for Blockheads
-item.cookingforblockheads:recipe_book_tier1.name=Cooking for Blockheads I
-item.cookingforblockheads:recipe_book_tier2.name=Cooking for Blockheads II
+item.cookingforblockheads:no_filter_book.name=Cooking for Blockheads
+item.cookingforblockheads:recipe_book.name=Cooking for Blockheads I
+item.cookingforblockheads:crafting_book.name=Cooking for Blockheads II
 item.cookingforblockheads:heating_unit.name=Heating Unit
 item.cookingforblockheads:ice_unit.name=Ice Unit
 item.cookingforblockheads:preservation_chamber.name=Preservation Chamber
 
-tooltip.cookingforblockheads:recipe_book_tier0=#NoFilter Edition
-tooltip.cookingforblockheads:recipe_book_tier0.description=Shows all food recipes.
-tooltip.cookingforblockheads:recipe_book_tier1=Recipe Book
-tooltip.cookingforblockheads:recipe_book_tier1.description=Shows food you can make with the\nthings you have in your inventory.
-tooltip.cookingforblockheads:recipe_book_tier2=Crafting Book
-tooltip.cookingforblockheads:recipe_book_tier2.description=Can craft food using the things\nyou have in your inventory.
+tooltip.cookingforblockheads:no_filter_book=#NoFilter Edition
+tooltip.cookingforblockheads:no_filter_book.description=Shows all food recipes.
+tooltip.cookingforblockheads:recipe_book=Recipe Book
+tooltip.cookingforblockheads:recipe_book.description=Shows food you can make with the\nthings you have in your inventory.
+tooltip.cookingforblockheads:crafting_book=Crafting Book
+tooltip.cookingforblockheads:crafting_book.description=Can craft food using the things\nyou have in your inventory.
 
 ###
 

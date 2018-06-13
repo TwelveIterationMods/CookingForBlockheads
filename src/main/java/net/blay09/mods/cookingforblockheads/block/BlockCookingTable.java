@@ -57,20 +57,24 @@ public class BlockCookingTable extends BlockKitchen {
                 return true;
             }
 
-            if (!tileEntity.hasNoFilterBook() && heldItem.getItem() == ModItems.recipeBook && heldItem.getItemDamage() == 0) {
-                tileEntity.setNoFilterBook(heldItem.splitStack(1));
+            if (!tileEntity.hasNoFilterBook() && heldItem.getItem() == ModItems.noFilterBook) {
+                if (!player.capabilities.isCreativeMode) {
+                    heldItem.splitStack(1);
+                }
+
+                tileEntity.setHasNoFilterBook(true);
                 return true;
             }
         }
 
         if (player.isSneaking()) {
-            ItemStack noFilterBook = tileEntity.getNoFilterBook();
-            if (!noFilterBook.isEmpty()) {
+            if (tileEntity.hasNoFilterBook()) {
+                ItemStack noFilterBook = new ItemStack(ModItems.noFilterBook);
                 if (!player.inventory.addItemStackToInventory(noFilterBook)) {
                     player.dropItem(noFilterBook, false);
                 }
 
-                tileEntity.setNoFilterBook(ItemStack.EMPTY);
+                tileEntity.setHasNoFilterBook(false);
                 return true;
             }
         }
@@ -86,8 +90,8 @@ public class BlockCookingTable extends BlockKitchen {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         // TODO move to getDrops in 1.13 if https://github.com/MinecraftForge/MinecraftForge/pull/4727 is merged
         TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
-        if (tileEntity != null) {
-            ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());
+        if (tileEntity != null && tileEntity.hasNoFilterBook()) {
+            ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.noFilterBook));
         }
 
         super.breakBlock(world, pos, state);

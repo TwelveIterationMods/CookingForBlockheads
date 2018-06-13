@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -22,13 +21,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemPreservationChamber extends Item {
-
-    public static final String name = "preservation_chamber";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class ItemPreservationChamber extends Item implements IRegisterableItem {
 
     public ItemPreservationChamber() {
-        setUnlocalizedName(registryName.toString());
         setCreativeTab(CookingForBlockheads.creativeTab);
         setMaxStackSize(1);
     }
@@ -57,9 +52,13 @@ public class ItemPreservationChamber extends Item {
         super.addInformation(itemStack, world, tooltip, flag);
 
         tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:fridge_upgrade"));
-        for (String s : I18n.format("tooltip.cookingforblockheads:preservation_chamber.description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
+
+        addDefaultTooltipDescription(tooltip);
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "preservation_chamber";
     }
 
 }
