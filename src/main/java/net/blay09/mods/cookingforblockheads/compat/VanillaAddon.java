@@ -15,19 +15,19 @@ public class VanillaAddon implements FoodStatsProvider {
 
     public VanillaAddon() {
         SinkHandler simpleHandler = itemStack -> {
-			ItemStack result = itemStack.copy();
-			result.setCount(1);
-			result.setItemDamage(0);
-			return result;
-		};
+            ItemStack result = itemStack.copy();
+            result.setCount(1);
+            result.setItemDamage(0);
+            return result;
+        };
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.CARPET, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
         SinkHandler armorHandler = itemStack -> {
-			if(itemStack.getItem() instanceof ItemArmor) {
-				((ItemArmor) itemStack.getItem()).removeColor(itemStack);
-			}
-			return itemStack;
-		};
+            if (itemStack.getItem() instanceof ItemArmor) {
+                ((ItemArmor) itemStack.getItem()).removeColor(itemStack);
+            }
+            return itemStack;
+        };
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE), armorHandler);

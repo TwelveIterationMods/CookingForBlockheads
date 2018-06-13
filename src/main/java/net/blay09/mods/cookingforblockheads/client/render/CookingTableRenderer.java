@@ -14,7 +14,7 @@ public class CookingTableRenderer extends TileEntitySpecialRenderer<TileCookingT
     @Override
     public void render(TileCookingTable tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        if(state.getBlock() != ModBlocks.cookingTable) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
+        if (state.getBlock() != ModBlocks.cookingTable) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();

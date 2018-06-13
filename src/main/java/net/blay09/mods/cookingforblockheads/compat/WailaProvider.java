@@ -1,11 +1,6 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaPlugin;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import mcp.mobius.waila.api.WailaPlugin;
+import mcp.mobius.waila.api.*;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;

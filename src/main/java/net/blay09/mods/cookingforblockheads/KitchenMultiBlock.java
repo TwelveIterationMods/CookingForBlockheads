@@ -1,15 +1,9 @@
 package net.blay09.mods.cookingforblockheads;
 
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -22,8 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
 
 public class KitchenMultiBlock implements IKitchenMultiBlock {
 

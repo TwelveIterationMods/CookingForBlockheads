@@ -2,11 +2,7 @@ package net.blay09.mods.cookingforblockheads.network;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.handler.*;
-import net.blay09.mods.cookingforblockheads.network.message.MessageCraftRecipe;
-import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
-import net.blay09.mods.cookingforblockheads.network.message.MessageItemList;
-import net.blay09.mods.cookingforblockheads.network.message.MessageRecipes;
-import net.blay09.mods.cookingforblockheads.network.message.MessageRequestRecipes;
+import net.blay09.mods.cookingforblockheads.network.message.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.WorldServer;

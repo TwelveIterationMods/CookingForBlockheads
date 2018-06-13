@@ -14,15 +14,15 @@ import javax.annotation.Nullable;
 public class HandlerItemList implements IMessageHandler<MessageItemList, IMessage> {
 
     @Override
-	@Nullable
+    @Nullable
     public IMessage onMessage(final MessageItemList message, MessageContext ctx) {
-		NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
-			Container container = FMLClientHandler.instance().getClientPlayerEntity().openContainer;
-			if(container instanceof ContainerRecipeBook) {
-				((ContainerRecipeBook) container).setItemList(message.getRecipeList());
-				((ContainerRecipeBook) container).setHasOven(message.getHasOven());
-			}
-		});
+        NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
+            Container container = FMLClientHandler.instance().getClientPlayerEntity().openContainer;
+            if (container instanceof ContainerRecipeBook) {
+                ((ContainerRecipeBook) container).setItemList(message.getRecipeList());
+                ((ContainerRecipeBook) container).setHasOven(message.getHasOven());
+            }
+        });
         return null;
     }
 

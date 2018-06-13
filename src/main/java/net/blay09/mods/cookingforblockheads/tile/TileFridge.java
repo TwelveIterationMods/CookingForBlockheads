@@ -35,7 +35,6 @@ import vazkii.quark.api.IDropoffManager;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Predicate;
 
 @Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
 public class TileFridge extends TileEntity implements ITickable, IDropoffManager {

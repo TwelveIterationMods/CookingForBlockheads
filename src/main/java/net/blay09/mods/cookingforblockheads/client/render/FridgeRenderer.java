@@ -18,7 +18,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
-import org.fusesource.jansi.internal.Kernel32;
 
 public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
 
@@ -72,7 +71,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
 
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model;
-        if(isLarge) {
+        if (isLarge) {
             model = hasIceUnit ? modelDoorIceUnitLarge : modelDoorLarge;
         } else {
             model = hasIceUnit ? modelDoorIceUnit : modelDoor;

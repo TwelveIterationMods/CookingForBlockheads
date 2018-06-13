@@ -16,56 +16,56 @@ import javax.annotation.Nonnull;
 
 public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
-	private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
+    private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
 
-	public static final String UID = "cookingforblockheads.cowjar";
-	private final IDrawableStatic background;
-	private final String title;
-	private final IDrawableStatic overlay;
+    public static final String UID = "cookingforblockheads.cowjar";
+    private final IDrawableStatic background;
+    private final String title;
+    private final IDrawableStatic overlay;
 
-	public CowJarRecipeCategory(IGuiHelper guiHelper) {
-		this.background = guiHelper.createBlankDrawable(150, 110);
-		this.title = I18n.format("jei.cookingforblockheads:cow_jar");
-		this.overlay = guiHelper.createDrawable(texture, 0, 0, 64, 80);
-	}
+    public CowJarRecipeCategory(IGuiHelper guiHelper) {
+        this.background = guiHelper.createBlankDrawable(150, 110);
+        this.title = I18n.format("jei.cookingforblockheads:cow_jar");
+        this.overlay = guiHelper.createDrawable(texture, 0, 0, 64, 80);
+    }
 
-	@Nonnull
-	@Override
-	public String getUid() {
-		return UID;
-	}
+    @Nonnull
+    @Override
+    public String getUid() {
+        return UID;
+    }
 
-	@Nonnull
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Nonnull
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	@Override
-	public String getModName() {
-		return "Cooking for Blockheads";
-	}
+    @Override
+    public String getModName() {
+        return "Cooking for Blockheads";
+    }
 
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-		return background;
-	}
+    @Nonnull
+    @Override
+    public IDrawable getBackground() {
+        return background;
+    }
 
-	@Override
-	public void drawExtras(@Nonnull Minecraft minecraft) {
-		GlStateManager.enableAlpha();
-		GlStateManager.enableBlend();
-		overlay.draw(minecraft, 56, 20);
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
-	}
+    @Override
+    public void drawExtras(@Nonnull Minecraft minecraft) {
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+        overlay.draw(minecraft, 56, 20);
+        GlStateManager.disableBlend();
+        GlStateManager.disableAlpha();
+    }
 
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, CowJarRecipe recipeWrapper, IIngredients ingredients) {
-		recipeLayout.getItemStacks().init(0, true, 64, 0);
-		recipeLayout.getItemStacks().init(1, true, 64, 76);
-		recipeLayout.getItemStacks().set(ingredients);
-	}
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, CowJarRecipe recipeWrapper, IIngredients ingredients) {
+        recipeLayout.getItemStacks().init(0, true, 64, 0);
+        recipeLayout.getItemStacks().init(1, true, 64, 76);
+        recipeLayout.getItemStacks().set(ingredients);
+    }
 
 }

@@ -28,7 +28,7 @@ public class TileSpiceRack extends TileEntity implements IDropoffManager {
         protected void onContentsChanged(int slot) {
             markDirty();
             IBlockState blockState = world.getBlockState(pos);
-            world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), blockState, blockState, 1|2);
+            world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), blockState, blockState, 1 | 2);
         }
     };
 
@@ -77,10 +77,10 @@ public class TileSpiceRack extends TileEntity implements IDropoffManager {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) itemHandler;
         }
-        if(capability == CapabilityKitchenItemProvider.CAPABILITY) {
+        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
             return (T) itemProvider;
         }
         return super.getCapability(capability, facing);

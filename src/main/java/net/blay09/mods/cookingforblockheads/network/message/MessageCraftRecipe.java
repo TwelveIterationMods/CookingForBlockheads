@@ -14,7 +14,8 @@ public class MessageCraftRecipe implements IMessage {
     private NonNullList<ItemStack> craftMatrix;
     private boolean stack;
 
-    public MessageCraftRecipe() {}
+    public MessageCraftRecipe() {
+    }
 
     public MessageCraftRecipe(ItemStack outputItem, RecipeType recipeType, NonNullList<ItemStack> craftMatrix, boolean stack) {
         this.outputItem = outputItem;
@@ -29,7 +30,7 @@ public class MessageCraftRecipe implements IMessage {
         recipeType = RecipeType.fromId(buf.readByte());
         int ingredientCount = buf.readByte();
         craftMatrix = NonNullList.create();
-        for(int i = 0; i < ingredientCount; i++) {
+        for (int i = 0; i < ingredientCount; i++) {
             craftMatrix.add(ByteBufUtils.readItemStack(buf));
         }
         stack = buf.readBoolean();
@@ -40,7 +41,7 @@ public class MessageCraftRecipe implements IMessage {
         ByteBufUtils.writeItemStack(buf, outputItem);
         buf.writeByte(recipeType.ordinal());
         buf.writeByte(craftMatrix.size());
-        for(ItemStack itemstack : craftMatrix) {
+        for (ItemStack itemstack : craftMatrix) {
             ByteBufUtils.writeItemStack(buf, itemstack);
         }
         buf.writeBoolean(stack);

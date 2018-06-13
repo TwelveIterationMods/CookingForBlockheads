@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;

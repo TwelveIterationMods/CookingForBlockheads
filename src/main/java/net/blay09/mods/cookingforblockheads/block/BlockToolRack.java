@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

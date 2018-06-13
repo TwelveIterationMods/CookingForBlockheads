@@ -4,8 +4,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
-import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,42 +24,42 @@ import java.util.List;
 
 public class ItemIceUnit extends Item {
 
-	public static final String name = "ice_unit";
-	public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+    public static final String name = "ice_unit";
+    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-	public ItemIceUnit() {
-		setUnlocalizedName(registryName.toString());
-		setCreativeTab(CookingForBlockheads.creativeTab);
-		setMaxStackSize(1);
-	}
+    public ItemIceUnit() {
+        setUnlocalizedName(registryName.toString());
+        setCreativeTab(CookingForBlockheads.creativeTab);
+        setMaxStackSize(1);
+    }
 
-	@Override
-	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasIceUpgrade) {
-			if (!player.capabilities.isCreativeMode) {
-				player.getHeldItem(hand).shrink(1);
-			}
+    @Override
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasIceUpgrade) {
+            if (!player.capabilities.isCreativeMode) {
+                player.getHeldItem(hand).shrink(1);
+            }
 
-			((TileFridge) tileEntity).getBaseFridge().setHasIceUpgrade(true);
-			if (!world.isRemote) {
-				NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.FRIDGE_UPGRADE), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-			}
+            ((TileFridge) tileEntity).getBaseFridge().setHasIceUpgrade(true);
+            if (!world.isRemote) {
+                NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.FRIDGE_UPGRADE), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+            }
 
-			return EnumActionResult.SUCCESS;
-		}
+            return EnumActionResult.SUCCESS;
+        }
 
-		return EnumActionResult.PASS;
-	}
+        return EnumActionResult.PASS;
+    }
 
-	@Override
-	public void addInformation(ItemStack itemStack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
-		super.addInformation(itemStack, world, tooltip, flag);
+    @Override
+    public void addInformation(ItemStack itemStack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+        super.addInformation(itemStack, world, tooltip, flag);
 
-		tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:fridge_upgrade"));
-		for (String s : I18n.format("tooltip.cookingforblockheads:ice_unit.description").split("\\\\n")) {
-			tooltip.add(TextFormatting.GRAY + s);
-		}
-	}
+        tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:fridge_upgrade"));
+        for (String s : I18n.format("tooltip.cookingforblockheads:ice_unit.description").split("\\\\n")) {
+            tooltip.add(TextFormatting.GRAY + s);
+        }
+    }
 
 }

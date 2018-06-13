@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
-import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

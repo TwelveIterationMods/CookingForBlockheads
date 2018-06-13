@@ -11,13 +11,13 @@ import java.util.List;
 
 public class CowJarRecipe implements IRecipeWrapper {
 
-	private List<ItemStack> input = Lists.newArrayList(new ItemStack(Blocks.ANVIL), new ItemStack(ModBlocks.milkJar));
-	private final ItemStack output = new ItemStack(ModBlocks.cowJar);
+    private List<ItemStack> input = Lists.newArrayList(new ItemStack(Blocks.ANVIL), new ItemStack(ModBlocks.milkJar));
+    private final ItemStack output = new ItemStack(ModBlocks.cowJar);
 
-	@Override
-	public void getIngredients(IIngredients ingredients) {
-		ingredients.setInputs(ItemStack.class, input);
-		ingredients.setOutput(ItemStack.class, output);
-	}
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, input);
+        ingredients.setOutput(ItemStack.class, output);
+    }
 
 }

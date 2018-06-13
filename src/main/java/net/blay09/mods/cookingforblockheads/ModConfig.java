@@ -19,7 +19,7 @@ public class ModConfig {
         @Config.Name("Cow in a Jar Milk per Tick")
         @Config.Comment("The amount of milk the cow in a jar generates per tick.")
         @Config.RangeDouble(min = 0)
-        public float cowJarMilkPerTick  = 0.5f;
+        public float cowJarMilkPerTick = 0.5f;
 
         @Config.Name("Sink Requires Water")
         @Config.Comment("Set this to true if you'd like the sink to require water to be piped in, instead of providing infinite of it.")

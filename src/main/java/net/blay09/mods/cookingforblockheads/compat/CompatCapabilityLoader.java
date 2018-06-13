@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import java.util.HashMap;
-
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
@@ -18,6 +16,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.HashMap;
+
 public class CompatCapabilityLoader {
     private final static HashMap<Class<? extends TileEntity>, CapabilityType> tilesClasses = new HashMap<Class<? extends TileEntity>, CapabilityType>();
     private final static CompatCapabilityLoader instance = new CompatCapabilityLoader();
@@ -28,7 +28,7 @@ public class CompatCapabilityLoader {
     }
 
     public static void register() {
-        if (! registered) {
+        if (!registered) {
             MinecraftForge.EVENT_BUS.register(instance);
             registered = true;
         }
@@ -73,12 +73,12 @@ public class CompatCapabilityLoader {
             return;
         }
         switch (type) {
-        case CONNECTOR:
-            event.addCapability(connectorResourceKey, connectorCapabilityProvider);
-            break;
-        case ITEM_PROVIDER:
-            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(entity));
-            break;
+            case CONNECTOR:
+                event.addCapability(connectorResourceKey, connectorCapabilityProvider);
+                break;
+            case ITEM_PROVIDER:
+                event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(entity));
+                break;
         }
     }
 

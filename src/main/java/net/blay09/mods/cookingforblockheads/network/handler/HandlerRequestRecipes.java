@@ -13,14 +13,14 @@ import javax.annotation.Nullable;
 public class HandlerRequestRecipes implements IMessageHandler<MessageRequestRecipes, IMessage> {
 
     @Override
-	@Nullable
+    @Nullable
     public IMessage onMessage(final MessageRequestRecipes message, final MessageContext ctx) {
-		NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
-			Container container = ctx.getServerHandler().player.openContainer;
-			if(container instanceof ContainerRecipeBook) {
-				((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem());
-			}
-		});
+        NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
+            Container container = ctx.getServerHandler().player.openContainer;
+            if (container instanceof ContainerRecipeBook) {
+                ((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem());
+            }
+        });
         return null;
     }
 

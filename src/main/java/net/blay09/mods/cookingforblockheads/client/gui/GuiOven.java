@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.container.ContainerOven;
+import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;

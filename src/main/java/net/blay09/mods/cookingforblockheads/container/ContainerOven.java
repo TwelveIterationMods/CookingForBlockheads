@@ -4,8 +4,8 @@ import com.google.common.collect.Maps;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.container.slot.*;
+import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -29,33 +29,33 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
         int offsetX = tileEntity.hasPowerUpgrade() ? -5 : 0;
 
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             addSlotToContainer(new SlotOvenInput(tileEntity.getItemHandler(), i, 84 + i * 18 + offsetX, 19));
         }
 
         addSlotToContainer(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61 + offsetX, 59));
 
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             addSlotToContainer(new SlotOvenResult(tileEntity.getItemHandler(), i + 4, 142 + offsetX, 41 + i * 18));
         }
 
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 addSlotToContainer(new SlotOven(tileEntity.getItemHandler(), 7 + j + i * 3, 84 + j * 18 + offsetX, 41 + i * 18));
             }
         }
 
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             addSlotToContainer(new SlotOvenTool(tileEntity.getItemHandler(), 16 + i, 8, 19 + i * 18, i));
         }
 
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 9; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 30 + j * 18, 111 + i * 18));
             }
         }
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(player.inventory, i, 30 + i * 18, 169));
         }
 
@@ -67,7 +67,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
         super.addListener(listener);
         listener.sendWindowProperty(this, 0, tileEntity.furnaceBurnTime);
         listener.sendWindowProperty(this, 1, tileEntity.currentItemBurnTime);
-        for(int i = 0; i < tileEntity.slotCookTime.length; i++) {
+        for (int i = 0; i < tileEntity.slotCookTime.length; i++) {
             listener.sendWindowProperty(this, 2 + i, tileEntity.slotCookTime[i]);
         }
     }
@@ -82,7 +82,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for(IContainerListener listener : listeners) {
+        for (IContainerListener listener : listeners) {
             if (this.lastBurnTime != tileEntity.furnaceBurnTime) {
                 listener.sendWindowProperty(this, 0, tileEntity.furnaceBurnTime);
             }
@@ -110,7 +110,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
             tileEntity.furnaceBurnTime = value;
         } else if (id == 1) {
             tileEntity.currentItemBurnTime = value;
-        } else if(id >= 2 && id <= tileEntity.slotCookTime.length + 2) {
+        } else if (id >= 2 && id <= tileEntity.slotCookTime.length + 2) {
             tileEntity.slotCookTime[id - 2] = value;
         }
     }
@@ -129,7 +129,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
                     return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(slotStack, itemStack);
-            } else if(slotIndex >= 4 && slotIndex <= 6) {
+            } else if (slotIndex >= 4 && slotIndex <= 6) {
                 if (!this.mergeItemStack(slotStack, 20, 56, false)) {
                     return ItemStack.EMPTY;
                 }

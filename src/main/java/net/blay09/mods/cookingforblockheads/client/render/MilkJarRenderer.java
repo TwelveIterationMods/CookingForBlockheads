@@ -1,8 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
-import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;

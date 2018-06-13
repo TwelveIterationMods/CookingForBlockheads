@@ -37,7 +37,7 @@ public class TileCookingTable extends TileEntity implements IDyeableKitchen {
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         NBTTagCompound itemCompound = new NBTTagCompound();
-        if(!noFilterBook.isEmpty()) {
+        if (!noFilterBook.isEmpty()) {
             noFilterBook.writeToNBT(itemCompound);
         }
         tagCompound.setTag("NoFilterBook", itemCompound);
@@ -48,7 +48,7 @@ public class TileCookingTable extends TileEntity implements IDyeableKitchen {
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        if(tagCompound.hasKey("NoFilterBook")) {
+        if (tagCompound.hasKey("NoFilterBook")) {
             setNoFilterBook(new ItemStack(tagCompound.getCompoundTag("NoFilterBook")));
         }
         color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
@@ -77,7 +77,7 @@ public class TileCookingTable extends TileEntity implements IDyeableKitchen {
 
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityKitchenConnector.CAPABILITY) {
+        if (capability == CapabilityKitchenConnector.CAPABILITY) {
             return capability.getDefaultInstance();
         }
         return super.getCapability(capability, facing);

@@ -1,15 +1,16 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;

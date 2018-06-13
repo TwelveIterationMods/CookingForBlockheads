@@ -1,8 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
-import java.util.Comparator;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.Minecraft;
@@ -11,7 +9,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.google.common.collect.Lists;
+import java.util.Comparator;
+import java.util.List;
 
 public class GuiButtonSort extends GuiButton {
 
@@ -27,12 +26,12 @@ public class GuiButtonSort extends GuiButton {
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x   + this.width && mouseY < this.y + this.height;
+        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
         int texY = button.getIconTextureY();
-        if(!enabled) {
+        if (!enabled) {
             texY += 40;
-        } else if(hovered) {
+        } else if (hovered) {
             texY += 20;
         }
         GlStateManager.color(1f, 1f, 1f, 1f);
@@ -43,7 +42,7 @@ public class GuiButtonSort extends GuiButton {
     public List<String> getTooltipLines() {
         return tooltipLines;
     }
-    
+
     public Comparator<FoodRecipeWithStatus> getComparator(EntityPlayer player) {
         return button.getComparator(player);
     }

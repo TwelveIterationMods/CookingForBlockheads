@@ -1,23 +1,22 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
-
-import java.util.Collection;
-
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import com.google.common.collect.Lists;
+import java.util.Collection;
 
 public class MessageItemList implements IMessage {
 
     private Collection<FoodRecipeWithStatus> recipeList;
     private boolean hasOven;
 
-    public MessageItemList() {}
+    public MessageItemList() {
+    }
 
     public MessageItemList(Collection<FoodRecipeWithStatus> recipeList, boolean hasOven) {
         this.recipeList = recipeList;
@@ -28,7 +27,7 @@ public class MessageItemList implements IMessage {
     public void fromBytes(ByteBuf buf) {
         int recipeCount = buf.readInt();
         recipeList = Lists.newArrayListWithCapacity(recipeCount);
-        for(int i = 0; i < recipeCount; i++) {
+        for (int i = 0; i < recipeCount; i++) {
             recipeList.add(readRecipe(buf));
         }
         hasOven = buf.readBoolean();
@@ -51,7 +50,7 @@ public class MessageItemList implements IMessage {
     public boolean getHasOven() {
         return hasOven;
     }
-    
+
     private FoodRecipeWithStatus readRecipe(ByteBuf buf) {
         ItemStack outputItem = ByteBufUtils.readItemStack(buf);
         RecipeStatus status = RecipeStatus.fromId(buf.readByte());

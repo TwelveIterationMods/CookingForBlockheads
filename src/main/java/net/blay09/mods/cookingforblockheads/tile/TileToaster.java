@@ -38,13 +38,13 @@ public class TileToaster extends TileEntity implements ITickable {
 
     @Override
     public boolean receiveClientEvent(int id, int type) {
-        if(id == 0) {
+        if (id == 0) {
             world.playSound(null, pos, ModSounds.toasterStart, SoundCategory.BLOCKS, 1f, 1f);
             return true;
-        } else if(id == 1) {
+        } else if (id == 1) {
             world.playSound(null, pos, ModSounds.toasterStop, SoundCategory.BLOCKS, 1f, 1f);
             return true;
-        } else if(id == 2) {
+        } else if (id == 2) {
             IBlockState state = world.getBlockState(pos);
             world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
             return true;
@@ -87,12 +87,12 @@ public class TileToaster extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if(active) {
+        if (active) {
             toastTicks--;
-            if(toastTicks <= 0 && !world.isRemote) {
-                for(int i = 0; i < itemHandler.getSlots(); i++) {
+            if (toastTicks <= 0 && !world.isRemote) {
+                for (int i = 0; i < itemHandler.getSlots(); i++) {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
-                    if(!inputStack.isEmpty()) {
+                    if (!inputStack.isEmpty()) {
                         ToastHandler toastHandler = CookingRegistry.getToastHandler(inputStack);
                         ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : ItemStack.EMPTY;
                         if (outputStack.isEmpty()) {
@@ -115,7 +115,7 @@ public class TileToaster extends TileEntity implements ITickable {
 
     public void setActive(boolean active) {
         this.active = active;
-        if(active) {
+        if (active) {
             toastTicks = TOAST_TICKS;
             world.addBlockEvent(pos, ModBlocks.toaster, 0, 0);
         } else {

@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads.registry;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
@@ -13,7 +13,6 @@ import net.blay09.mods.cookingforblockheads.api.ToastHandler;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
@@ -37,12 +36,11 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
 import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class CookingRegistry {
     public static class ItemIdentifier {

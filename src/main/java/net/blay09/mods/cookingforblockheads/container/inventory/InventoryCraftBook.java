@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads.container.inventory;
 
+import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

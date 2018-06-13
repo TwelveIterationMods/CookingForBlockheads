@@ -7,34 +7,34 @@ import javax.annotation.Nullable;
 
 public class FakeSlotRecipe extends FakeSlot {
 
-	private FoodRecipeWithStatus recipe;
+    private FoodRecipeWithStatus recipe;
 
-	public FakeSlotRecipe(int slotId, int x, int y) {
-		super(slotId, x, y);
-	}
+    public FakeSlotRecipe(int slotId, int x, int y) {
+        super(slotId, x, y);
+    }
 
-	@Override
-	public ItemStack getStack() {
-		return recipe != null ? recipe.getOutputItem() : ItemStack.EMPTY;
-	}
+    @Override
+    public ItemStack getStack() {
+        return recipe != null ? recipe.getOutputItem() : ItemStack.EMPTY;
+    }
 
-	@Override
-	public boolean getHasStack() {
-		return recipe != null;
-	}
+    @Override
+    public boolean getHasStack() {
+        return recipe != null;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return recipe != null;
-	}
+    @Override
+    public boolean isEnabled() {
+        return recipe != null;
+    }
 
-	public void setFoodRecipe(@Nullable FoodRecipeWithStatus recipe) {
-		this.recipe = recipe;
-	}
+    public void setFoodRecipe(@Nullable FoodRecipeWithStatus recipe) {
+        this.recipe = recipe;
+    }
 
-	@Nullable
-	public FoodRecipeWithStatus getRecipe() {
-		return recipe;
-	}
+    @Nullable
+    public FoodRecipeWithStatus getRecipe() {
+        return recipe;
+    }
 
 }

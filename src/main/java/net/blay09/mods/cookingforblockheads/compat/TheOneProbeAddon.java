@@ -1,11 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import com.google.common.base.Function;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ITheOneProbe;
-import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.*;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;

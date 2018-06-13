@@ -1,12 +1,6 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.cookingforblockheads.api.IInternalMethods;
-import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.ISortButton;
-import net.blay09.mods.cookingforblockheads.api.SinkHandler;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
-import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
-import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
+import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -59,14 +53,14 @@ public class InternalMethods implements IInternalMethods {
     public void addCowClass(Class<? extends EntityLivingBase> clazz) {
         CowJarHandler.registerCowClass(clazz);
     }
-    
+
     @Override
     public IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
         return new KitchenMultiBlock(world, pos);
     }
-    
-	@Override
-	public void addSortButton(ISortButton button) {
-		CookingRegistry.addSortButton(button);
-	}
+
+    @Override
+    public void addSortButton(ISortButton button) {
+        CookingRegistry.addSortButton(button);
+    }
 }

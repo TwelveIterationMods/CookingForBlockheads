@@ -5,6 +5,7 @@ import net.minecraft.item.EnumDyeColor;
 public interface IDyeableKitchen {
 
     EnumDyeColor getDyedColor();
+
     void setDyedColor(EnumDyeColor color);
 
 }

@@ -14,47 +14,47 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 
 @JEIPlugin
 public class JEIAddon implements IModPlugin {
 
-	@Override
-	public void register(@Nonnull IModRegistry registry) {
-		// Register cow jar recipe
-		registry.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
-		registry.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
+    @Override
+    public void register(@Nonnull IModRegistry registry) {
+        // Register cow jar recipe
+        registry.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
+        registry.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
 
-		// Do not put JEI items behind the sorting buttons
-		registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiRecipeBook>() {
-			@Override
-			public Class<GuiRecipeBook> getGuiContainerClass() {
-				return GuiRecipeBook.class;
-			}
+        // Do not put JEI items behind the sorting buttons
+        registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiRecipeBook>() {
+            @Override
+            public Class<GuiRecipeBook> getGuiContainerClass() {
+                return GuiRecipeBook.class;
+            }
 
-			@Override
-			public List<Rectangle> getGuiExtraAreas(GuiRecipeBook guiContainer) {
-				List<Rectangle> list = Lists.newArrayList();
-				for(GuiButton button : guiContainer.getSortingButtons()) {
-					list.add(new Rectangle(button.x, button.y, button.width, button.height));
-				}
-				return list;
-			}
+            @Override
+            public List<Rectangle> getGuiExtraAreas(GuiRecipeBook guiContainer) {
+                List<Rectangle> list = Lists.newArrayList();
+                for (GuiButton button : guiContainer.getSortingButtons()) {
+                    list.add(new Rectangle(button.x, button.y, button.width, button.height));
+                }
+                return list;
+            }
 
-			@Nullable
-			@Override
-			public Object getIngredientUnderMouse(GuiRecipeBook guiContainer, int mouseX, int mouseY) {
-				return null;
-			}
-		});
+            @Nullable
+            @Override
+            public Object getIngredientUnderMouse(GuiRecipeBook guiContainer, int mouseX, int mouseY) {
+                return null;
+            }
+        });
 
-		// Blacklist the cutting board block from JEI (can't remove the item block yet since it's already been released)
-		registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModBlocks.cuttingBoard));
-	}
+        // Blacklist the cutting board block from JEI (can't remove the item block yet since it's already been released)
+        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModBlocks.cuttingBoard));
+    }
 
-	@Override
-	public void registerCategories(IRecipeCategoryRegistration registry) {
-		registry.addRecipeCategories(new CowJarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-	}
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registry) {
+        registry.addRecipeCategories(new CowJarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+    }
 }

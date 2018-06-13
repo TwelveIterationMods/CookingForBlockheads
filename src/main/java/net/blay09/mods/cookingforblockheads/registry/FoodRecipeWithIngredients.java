@@ -28,9 +28,9 @@ public class FoodRecipeWithIngredients {
         List<NonNullList<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredientCount);
         for (int i = 0; i < ingredientCount; i++) {
             int stackCount = buf.readByte();
-            if(stackCount > 0) {
+            if (stackCount > 0) {
                 NonNullList<ItemStack> stackList = NonNullList.create();
-                for(int j = 0; j < stackCount; j++) {
+                for (int j = 0; j < stackCount; j++) {
                     stackList.add(ByteBufUtils.readItemStack(buf));
                 }
                 craftMatrix.add(stackList);
@@ -46,9 +46,9 @@ public class FoodRecipeWithIngredients {
         ByteBufUtils.writeItemStack(buf, outputItem);
         buf.writeByte(recipeWidth);
         buf.writeByte(craftMatrix.size());
-        for(List<ItemStack> stackList : craftMatrix) {
+        for (List<ItemStack> stackList : craftMatrix) {
             buf.writeByte(stackList.size());
-            for(ItemStack stack : stackList) {
+            for (ItemStack stack : stackList) {
                 ByteBufUtils.writeItemStack(buf, stack);
             }
         }
