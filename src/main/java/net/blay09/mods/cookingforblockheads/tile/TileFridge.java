@@ -198,14 +198,13 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) getCombinedItemHandler();
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getCombinedItemHandler());
         }
 
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(itemProvider);
         }
 
         return super.getCapability(capability, facing);

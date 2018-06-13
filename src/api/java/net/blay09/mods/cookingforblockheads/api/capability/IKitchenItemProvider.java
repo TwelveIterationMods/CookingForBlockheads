@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.api.capability;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 

@@ -42,8 +42,6 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     private final KitchenItemProvider itemProvider = new KitchenItemProvider(itemHandler);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
-    private boolean isFirstTick = true;
-
     private boolean isDirty;
 
     private EnumDyeColor color = EnumDyeColor.WHITE;
@@ -58,17 +56,17 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     }
 
     @Override
-    public void update() {
-        if (isFirstTick) {
-            // onLoad doesn't work when you need to touch the world TODO I think this was fixed in a newer Forge build?
-            IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() == ModBlocks.counter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
-                cachedFacing = state.getValue(BlockCounter.FACING);
-                cachedFlipped = state.getValue(BlockCounter.FLIPPED);
-                isFirstTick = false;
-            }
+    public void onLoad() {
+        IBlockState state = world.getBlockState(pos);
+        // We have to check the state because there are weird in-between cases where the TE does not match the block type
+        if (state.getBlock() == ModBlocks.counter) {
+            cachedFacing = state.getValue(BlockCounter.FACING);
+            cachedFlipped = state.getValue(BlockCounter.FLIPPED);
         }
+    }
 
+    @Override
+    public void update() {
         doorAnimator.update();
 
         if (isDirty) {
@@ -131,13 +129,12 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) itemHandler;
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
         }
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(itemProvider);
         }
         return super.getCapability(capability, facing);
     }

@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
+public class TileMilkJar extends TileEntity {
 
     protected static final int MILK_CAPACITY = 8000;
 
@@ -203,12 +203,11 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(itemProvider);
         } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && Compat.getMilkFluid() != null) {
-            return (T) milkFluidHandler;
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(milkFluidHandler);
         }
         return super.getCapability(capability, facing);
     }

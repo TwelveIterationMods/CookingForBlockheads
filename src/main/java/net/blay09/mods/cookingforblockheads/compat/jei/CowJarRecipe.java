@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CowJarRecipe implements IRecipeWrapper {
 
-    private List<ItemStack> input = Lists.newArrayList(new ItemStack(Blocks.ANVIL), new ItemStack(ModBlocks.milkJar));
+    private final List<ItemStack> input = Lists.newArrayList(new ItemStack(Blocks.ANVIL), new ItemStack(ModBlocks.milkJar));
     private final ItemStack output = new ItemStack(ModBlocks.cowJar);
 
     @Override

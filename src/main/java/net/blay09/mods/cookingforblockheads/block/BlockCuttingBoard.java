@@ -40,6 +40,7 @@ public class BlockCuttingBoard extends BlockKitchen {
         setUnlocalizedName(registryName.toString());
         setSoundType(SoundType.WOOD);
         setHardness(2.5f);
+        //noinspection ConstantConditions TODO remove ItemBlock for cutting board in 1.13, making this no longer necessary (hopefully)
         setCreativeTab(null);
     }
 
@@ -58,7 +59,6 @@ public class BlockCuttingBoard extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return state.withProperty(LOWERED, shouldBlockRenderLowered(world, pos));
     }

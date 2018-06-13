@@ -53,7 +53,6 @@ public class BlockSink extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileSink) {
@@ -63,7 +62,6 @@ public class BlockSink extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
         return state.withProperty(FLIPPED, shouldBePlacedFlipped(pos, state.getValue(FACING), placer));

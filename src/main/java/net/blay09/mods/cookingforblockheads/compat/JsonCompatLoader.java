@@ -210,7 +210,7 @@ public class JsonCompatLoader {
         } else if (element.isJsonObject()) {
             itemStackList.add(parseItemStack(modId, element.getAsJsonObject()));
         }
-        return itemStackList.toArray(new ItemStack[itemStackList.size()]);
+        return itemStackList.toArray(new ItemStack[0]);
     }
 
     private static ItemStack parseItemStack(String modId, JsonElement element) {

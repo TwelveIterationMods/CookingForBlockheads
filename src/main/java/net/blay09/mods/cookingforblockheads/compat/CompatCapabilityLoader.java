@@ -16,10 +16,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class CompatCapabilityLoader {
-    private final static HashMap<Class<? extends TileEntity>, CapabilityType> tilesClasses = new HashMap<Class<? extends TileEntity>, CapabilityType>();
+    private final static HashMap<Class<? extends TileEntity>, CapabilityType> tilesClasses = new HashMap<>();
     private final static CompatCapabilityLoader instance = new CompatCapabilityLoader();
     private static boolean registered = false;
 
@@ -35,7 +36,7 @@ public class CompatCapabilityLoader {
     }
 
     @SuppressWarnings("unchecked")
-    private final static void addTileEntityClass(final String className, final CapabilityType type) {
+    private static void addTileEntityClass(final String className, final CapabilityType type) {
         try {
             Class<?> c = Class.forName(className);
             if (TileEntity.class.isAssignableFrom(c)) {
@@ -84,12 +85,12 @@ public class CompatCapabilityLoader {
 
     private static final class KitchenConnectorCapabilityProvider implements ICapabilityProvider {
         @Override
-        public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
             return CapabilityKitchenConnector.CAPABILITY == capability;
         }
 
         @Override
-        public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
             return null;
         }
     }
@@ -105,19 +106,18 @@ public class CompatCapabilityLoader {
         }
 
         @Override
-        public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
             return CapabilityKitchenItemProvider.CAPABILITY == capability;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
             if (CapabilityKitchenItemProvider.CAPABILITY != capability) {
                 return null;
             }
 
             if (kitchenProvider != null) {
-                return (T) kitchenProvider;
+                return CapabilityKitchenItemProvider.CAPABILITY.cast(kitchenProvider);
             }
 
             IItemHandler handler = null;
@@ -125,7 +125,7 @@ public class CompatCapabilityLoader {
                 handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             }
             kitchenProvider = new KitchenItemProvider(handler != null ? handler : emptyItemHandler);
-            return (T) kitchenProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(kitchenProvider);
         }
     }
 

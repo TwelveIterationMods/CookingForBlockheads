@@ -44,8 +44,8 @@ import java.util.Objects;
 
 public class CookingRegistry {
     public static class ItemIdentifier {
-        ResourceLocation location;
-        int metadata;
+        private final ResourceLocation location;
+        private final int metadata;
 
         public ItemIdentifier(ResourceLocation location, int metadata) {
             this.location = location;

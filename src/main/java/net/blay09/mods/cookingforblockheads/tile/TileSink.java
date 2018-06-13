@@ -207,12 +207,11 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(itemProvider);
         } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) waterTank;
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(waterTank);
         }
 
         return super.getCapability(capability, facing);

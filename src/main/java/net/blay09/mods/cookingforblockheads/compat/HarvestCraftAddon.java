@@ -45,10 +45,9 @@ public class HarvestCraftAddon {
         if (recipe.getIngredients().size() == 2 && recipe.getRecipeOutput().getCount() == 2) {
             Ingredient first = recipe.getIngredients().get(0);
             Ingredient second = recipe.getIngredients().get(1);
-            if (first.apply(recipe.getRecipeOutput()) && second.apply(recipe.getRecipeOutput())) {
-                return true;
-            }
+            return first.apply(recipe.getRecipeOutput()) && second.apply(recipe.getRecipeOutput());
         }
+
         return false;
     }
 

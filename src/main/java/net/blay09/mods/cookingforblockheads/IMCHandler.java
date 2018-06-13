@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -14,6 +15,7 @@ public class IMCHandler {
 
     private static final NonNullList<ItemStack> imcNonFoodRecipes = NonNullList.create();
 
+    @SuppressWarnings("unchecked")
     public static void handleIMCMessage(FMLInterModComms.IMCEvent event) {
         for (FMLInterModComms.IMCMessage message : event.getMessages()) {
             switch (message.key) {
@@ -90,7 +92,7 @@ public class IMCHandler {
                     if (message.getMessageType() == String.class) {
                         try {
                             Class<?> clazz = Class.forName(message.getStringValue());
-                            CowJarHandler.registerCowClass(clazz);
+                            CowJarHandler.registerCowClass((Class<? extends EntityLivingBase>) clazz);
                         } catch (ClassNotFoundException e) {
                             CookingForBlockheads.logger.error("Could not register cow class " + message.getStringValue() + ": " + e.getMessage());
                             e.printStackTrace();

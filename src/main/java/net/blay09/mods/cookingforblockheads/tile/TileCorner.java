@@ -27,10 +27,9 @@ public class TileCorner extends TileEntity implements IDyeableKitchen {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityKitchenConnector.CAPABILITY) {
-            return (T) connector;
+            return CapabilityKitchenConnector.CAPABILITY.cast(connector);
         }
         return super.getCapability(capability, facing);
     }

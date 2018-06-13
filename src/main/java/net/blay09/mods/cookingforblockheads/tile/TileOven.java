@@ -67,7 +67,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         }
     };
 
-    private EnergyStorageModifiable energyStorage = new EnergyStorageModifiable(10000) {
+    private final EnergyStorageModifiable energyStorage = new EnergyStorageModifiable(10000) {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
             if (!simulate) {
@@ -375,35 +375,34 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) {
-                return (T) itemHandler;
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
             }
 
             if (!ModConfig.general.disallowOvenAutomation) {
                 switch (facing) {
                     case UP:
-                        return (T) itemHandlerInput;
+                        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandlerInput);
                     case DOWN:
-                        return (T) itemHandlerOutput;
+                        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandlerOutput);
                     default:
-                        return (T) itemHandlerFuel;
+                        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandlerFuel);
                 }
             }
         }
 
         if (hasPowerUpgrade && capability == CapabilityEnergy.ENERGY) {
-            return (T) energyStorage;
+            return CapabilityEnergy.ENERGY.cast(energyStorage);
         }
 
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(itemProvider);
         }
 
         if (capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
-            return (T) this;
+            return CapabilityKitchenSmeltingProvider.CAPABILITY.cast(this);
         }
 
         return super.getCapability(capability, facing);

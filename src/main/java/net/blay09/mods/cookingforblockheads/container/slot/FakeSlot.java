@@ -9,7 +9,7 @@ public class FakeSlot extends Slot {
     private ItemStack displayStack = ItemStack.EMPTY;
 
     public FakeSlot(int slotId, int x, int y) {
-        super(null, slotId, x, y);
+        super(new FakeInventory(), slotId, x, y);
     }
 
     public void setDisplayStack(ItemStack itemStack) {

@@ -23,7 +23,7 @@ public class LowerableFacingOnDemandModel implements IBakedModel {
 
     private final Map<IBlockState, IBakedModel> cache = Maps.newHashMap();
 
-    private IModel baseModel;
+    private final IModel baseModel;
     private TextureAtlasSprite particleTexture;
 
     public LowerableFacingOnDemandModel(IModel baseModel) {

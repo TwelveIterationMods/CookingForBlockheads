@@ -31,7 +31,7 @@ import java.util.Random;
 
 public class BlockOven extends BlockKitchen {
 
-    public static PropertyBool POWERED = PropertyBool.create("powered");
+    public static final PropertyBool POWERED = PropertyBool.create("powered");
 
     public static final String name = "oven";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

@@ -52,7 +52,6 @@ public class BlockCorner extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileCorner) {

@@ -11,11 +11,9 @@ import net.minecraftforge.items.SlotItemHandler;
 @ChestContainer
 public class ContainerFruitBasket extends Container {
 
-    private final TileFruitBasket tileFruitBasket;
     private final int numRows;
 
     public ContainerFruitBasket(EntityPlayer player, TileFruitBasket tileFruitBasket) {
-        this.tileFruitBasket = tileFruitBasket;
         this.numRows = tileFruitBasket.getItemHandler().getSlots() / 9;
         int playerInventoryStart = numRows * 18;
 

@@ -20,9 +20,8 @@ public class CowJarHandler {
 
     private static final List<Class<? extends EntityLivingBase>> additionalCowClasses = Lists.newArrayList();
 
-    @SuppressWarnings("unchecked")
-    public static void registerCowClass(Class<?> clazz) {
-        additionalCowClasses.add((Class<? extends EntityLivingBase>) clazz);
+    public static void registerCowClass(Class<? extends EntityLivingBase> clazz) {
+        additionalCowClasses.add(clazz);
     }
 
     @SubscribeEvent

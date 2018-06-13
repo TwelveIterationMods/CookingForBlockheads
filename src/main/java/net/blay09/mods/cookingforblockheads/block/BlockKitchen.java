@@ -51,7 +51,6 @@ public abstract class BlockKitchen extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing facing = EnumFacing.getFront(meta);
         if (facing.getAxis() == EnumFacing.Axis.Y) {
@@ -66,7 +65,6 @@ public abstract class BlockKitchen extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         if (state.getValue(FACING).getAxis() == EnumFacing.Axis.X) {
             return BOUNDING_BOX_X;
@@ -76,19 +74,16 @@ public abstract class BlockKitchen extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return true;
     }
@@ -99,7 +94,6 @@ public abstract class BlockKitchen extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }

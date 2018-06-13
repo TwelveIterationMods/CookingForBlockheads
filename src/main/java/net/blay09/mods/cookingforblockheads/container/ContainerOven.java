@@ -143,11 +143,11 @@ public class ContainerOven extends Container implements IContainerWithDoor {
                     if (!this.mergeItemStack(slotStack, 0, 3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (slotIndex >= 20 && slotIndex < 47) {
+                } else if (slotIndex < 47) {
                     if (!this.mergeItemStack(slotStack, 47, 56, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (slotIndex >= 47 && slotIndex < 56 && !this.mergeItemStack(slotStack, 20, 47, false)) {
+                } else if (slotIndex < 56 && !this.mergeItemStack(slotStack, 20, 47, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(slotStack, 20, 47, false)) {
@@ -182,7 +182,6 @@ public class ContainerOven extends Container implements IContainerWithDoor {
 
     @ContainerSectionCallback
     @Optional.Method(modid = Compat.INVENTORY_TWEAKS)
-    @SuppressWarnings("unchecked unused")
     public Map<ContainerSection, List<Slot>> getContainerSections() {
         Map<ContainerSection, List<Slot>> map = Maps.newHashMap();
         map.put(ContainerSection.FURNACE_IN, inventorySlots.subList(0, 3));

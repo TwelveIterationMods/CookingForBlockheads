@@ -57,13 +57,11 @@ public class BlockToolRack extends BlockKitchen {
 
     @Nullable
     @Override
-    @SuppressWarnings("deprecation")
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
         return NULL_AABB;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
             facing = EnumFacing.NORTH;

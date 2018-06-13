@@ -54,7 +54,6 @@ public class BlockFruitBasket extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return state.withProperty(LOWERED, shouldBlockRenderLowered(world, pos));
     }

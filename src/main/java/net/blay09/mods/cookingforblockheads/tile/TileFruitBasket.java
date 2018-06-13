@@ -70,14 +70,13 @@ public class TileFruitBasket extends TileEntity {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) itemHandler;
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
         }
 
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return CapabilityKitchenItemProvider.CAPABILITY.cast(itemProvider);
         }
 
         return super.getCapability(capability, facing);
