@@ -118,10 +118,10 @@ public abstract class BlockKitchen extends BlockContainer {
         boolean flipped;
         double dir = 0;
         if (facing.getAxis() == EnumFacing.Axis.Z) {
-            dir = pos.getX() - placer.posX;
+            dir = pos.getX() + 0.5f - placer.posX;
             dir *= -1;
         } else if (facing.getAxis() == EnumFacing.Axis.X) {
-            dir = pos.getZ() - placer.posZ;
+            dir = pos.getZ() + 0.5f - placer.posZ;
         }
         if (facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE) {
             flipped = dir < 0;
