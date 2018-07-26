@@ -35,7 +35,7 @@ public class ModConfig {
 
         @Config.Name("Oven Fuel Time Multiplier")
         @Config.Comment("The fuel multiplier for the cooking oven. Higher values means fuel lasts longer, 1.0 is furnace default.")
-        @Config.RangeDouble(min = 0.1f, max = 0.2f)
+        @Config.RangeDouble(min = 0.1f, max = 2f)
         public float ovenFuelTimeMultiplier = 0.33f;
 
         @Config.Name("Oven Cook Time Multiplier")
