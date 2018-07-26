@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class LowerableFacingOnDemandModel implements IBakedModel {
 
-    private final Map<IBlockState, IBakedModel> cache = Maps.newHashMap();
+    private final Map<String, IBakedModel> cache = Maps.newHashMap();
 
     private IModel baseModel;
     private TextureAtlasSprite particleTexture;
@@ -33,7 +33,8 @@ public class LowerableFacingOnDemandModel implements IBakedModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         if (state != null) {
-            IBakedModel bakedModel = cache.get(state);
+            String stateString = state.toString();
+            IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
                 TRSRTransformation transform = TRSRTransformation.from(state.getValue(BlockKitchen.FACING));
                 if (state.getValue(BlockKitchen.LOWERED)) {
@@ -41,7 +42,7 @@ public class LowerableFacingOnDemandModel implements IBakedModel {
                 }
 
                 bakedModel = baseModel.bake(transform, DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
-                cache.put(state, bakedModel);
+                cache.put(stateString, bakedModel);
 
                 if (particleTexture == null) {
                     particleTexture = bakedModel.getParticleTexture();
