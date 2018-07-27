@@ -69,7 +69,7 @@ tooltip.cookingforblockheads:click_to_unlock=點擊解鎖物品
 tooltip.cookingforblockheads:scroll_to_switch=滾動選擇物品
 tooltip.cookingforblockheads:energy_stored=已儲存電力：%d／%d
 tooltip.cookingforblockheads:oven_upgrade=烤箱升級
-tooltip.cookingforblockheads:fridge_upgrade=Fridge Upgrade
+tooltip.cookingforblockheads:fridge_upgrade=冰箱升級
 
 container.cookingforblockheads:oven=烤箱
 container.cookingforblockheads:fridge=冰箱
