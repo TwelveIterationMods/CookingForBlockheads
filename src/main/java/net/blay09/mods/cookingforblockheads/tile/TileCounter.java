@@ -85,7 +85,13 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
+        NBTTagCompound itemHandlerCompound = tagCompound.getCompoundTag("ItemHandler");
+        if (ModConfig.general.largeCounters && itemHandlerCompound.getInteger("Size") < 54) {
+            itemHandlerCompound.setInteger("Size", 54);
+        }
+
+        itemHandler.deserializeNBT(itemHandlerCompound);
+
         color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
     }
 
