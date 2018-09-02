@@ -156,7 +156,7 @@ public class CookingRegistry {
 
     public static void addFoodRecipe(IRecipe recipe) {
         ItemStack output = recipe.getRecipeOutput();
-        if (!output.isEmpty()) {
+        if (!output.isEmpty() && !recipe.getIngredients().isEmpty()) {
             recipeList.add(recipe);
             foodItems.put(new ItemIdentifier(output), new GeneralFoodRecipe(recipe));
 //			if (recipe instanceof ShapedRecipes) {
