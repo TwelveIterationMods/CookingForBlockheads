@@ -336,6 +336,7 @@ public class ContainerRecipeBook extends Container {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void populateMatrixSlots() {
         if (selectedRecipeList == null) {
             for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
@@ -343,20 +344,23 @@ public class ContainerRecipeBook extends Container {
             }
             return;
         }
+
         FoodRecipeWithIngredients recipe = selectedRecipeList.get(selectedRecipeIndex);
         if (recipe.getRecipeType() == RecipeType.SMELTING) {
             for (int i = 0; i < matrixSlots.size(); i++) {
                 matrixSlots.get(i).setIngredient(i == 4 ? recipe.getCraftMatrix().get(0) : null);
             }
         } else {
-            for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
-                matrixSlot.setIngredient(null);
-            }
+            NonNullList[] matrix = new NonNullList[9];
             for (int i = 0; i < recipe.getCraftMatrix().size(); i++) {
                 int origX = i % recipe.getRecipeWidth();
                 int origY = i / recipe.getRecipeWidth();
                 int targetIdx = origY * 3 + origX;
-                matrixSlots.get(targetIdx).setIngredient(recipe.getCraftMatrix().get(i));
+                matrix[targetIdx] = recipe.getCraftMatrix().get(i);
+            }
+
+            for (int i = 0; i < matrix.length; i++) {
+                matrixSlots.get(i).setIngredient(matrix[i]);
             }
         }
     }

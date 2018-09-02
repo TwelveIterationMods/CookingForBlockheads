@@ -42,9 +42,11 @@ public class FakeSlotCraftMatrix extends FakeSlot {
                 }
             }
         }
+
         visibleItemTime = 0;
         visibleItemIndex = 0;
         isLocked = false;
+
         if (!prevLockStack.isEmpty()) {
             for (int i = 0; i < visibleStacks.size(); i++) {
                 if (ItemUtils.areItemStacksEqualWithWildcard(visibleStacks.get(i), prevLockStack)) {
