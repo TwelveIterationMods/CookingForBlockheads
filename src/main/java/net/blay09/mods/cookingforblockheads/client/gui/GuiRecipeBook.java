@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.gui;
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
@@ -217,10 +218,20 @@ public class GuiRecipeBook extends GuiContainer {
             float prevZLevel = zLevel;
             zLevel = 300f;
             for (Slot slot : inventorySlots.inventorySlots) {
+                if (!(slot instanceof FakeSlotRecipe)) {
+                    continue;
+                }
+
                 if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
                     drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
                 }
+
+                FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
+                if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
+                    drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 92, 16, 16);
+                }
             }
+
             zLevel = prevZLevel;
         }
 
