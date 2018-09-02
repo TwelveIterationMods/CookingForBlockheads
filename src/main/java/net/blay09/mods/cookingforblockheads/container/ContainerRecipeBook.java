@@ -208,6 +208,7 @@ public class ContainerRecipeBook extends Container {
                         bestStatus = thisStatus;
                     }
                 }
+
                 if (bestStatus == RecipeStatus.AVAILABLE) {
                     // If we already marked this as available it can't get any better; so go to the next item
                     continue keyLoop;
@@ -226,6 +227,7 @@ public class ContainerRecipeBook extends Container {
             for (IKitchenItemProvider itemProvider : inventories) {
                 itemProvider.resetSimulation();
             }
+
             List<FoodIngredient> ingredients = recipe.getCraftMatrix();
             List<NonNullList<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredients.size());
             boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(recipe.getOutputItem());
@@ -239,18 +241,26 @@ public class ContainerRecipeBook extends Container {
                                 foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : ItemStack.EMPTY;
                             }
                         }
+
                         if (!foundStack.isEmpty()) {
                             stackList.add(foundStack.getCount() > 127 ? ItemHandlerHelper.copyStackWithSize(foundStack, 127) : foundStack);
                         }
                     }
+
                     if (stackList.isEmpty()) {
                         continue outerLoop;
                     }
                 }
+
                 craftMatrix.add(stackList);
             }
-            resultList.add(new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), recipe.getRecipeWidth(), craftMatrix));
+
+            RecipeStatus recipeStatus = CookingRegistry.getRecipeStatus(recipe, inventories, multiBlock != null && multiBlock.hasSmeltingProvider());
+            resultList.add(new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), recipeStatus, recipe.getRecipeWidth(), craftMatrix));
         }
+
+        resultList.sort((o1, o2) -> o2.getRecipeStatus().ordinal() - o1.getRecipeStatus().ordinal());
+
         NetworkHandler.instance.sendTo(new MessageRecipes(outputItem, resultList), (EntityPlayerMP) player);
     }
 

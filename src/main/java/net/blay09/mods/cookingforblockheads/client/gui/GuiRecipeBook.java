@@ -307,7 +307,11 @@ public class GuiRecipeBook extends GuiContainer {
             FakeSlotRecipe slotRecipe = (FakeSlotRecipe) hoverSlot;
             if (container.isSelectedSlot(slotRecipe) && container.isAllowCrafting()) {
                 FoodRecipeWithIngredients subRecipe = container.getSelection();
-                if (subRecipe != null && subRecipe.getRecipeType() == RecipeType.SMELTING) {
+                if (subRecipe == null) {
+                    return;
+                }
+
+                if (subRecipe.getRecipeType() == RecipeType.SMELTING) {
                     if (!container.hasOven()) {
                         event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missing_oven"));
                     } else {
@@ -317,10 +321,10 @@ public class GuiRecipeBook extends GuiContainer {
                             event.getToolTip().add(TextFormatting.GREEN + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":click_to_smelt_one"));
                         }
                     }
-                } else if (slotRecipe.getRecipe() != null) {
-                    if (slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_TOOLS) {
+                } else {
+                    if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_TOOLS) {
                         event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missing_tools"));
-                    } else if (slotRecipe.getRecipe().getStatus() == RecipeStatus.MISSING_INGREDIENTS) {
+                    } else if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_INGREDIENTS) {
                         event.getToolTip().add(TextFormatting.RED + I18n.format("tooltip." + CookingForBlockheads.MOD_ID + ":missing_ingredients"));
                     } else {
                         if (isShiftKeyDown()) {

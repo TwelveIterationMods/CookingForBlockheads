@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.registry;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
+import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -11,12 +12,14 @@ import java.util.List;
 public class FoodRecipeWithIngredients {
     private final ItemStack outputItem;
     private final RecipeType recipeType;
+    private final RecipeStatus recipeStatus;
     private final int recipeWidth;
     private final List<NonNullList<ItemStack>> craftMatrix;
 
-    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, int recipeWidth, List<NonNullList<ItemStack>> craftMatrix) {
+    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, RecipeStatus recipeStatus, int recipeWidth, List<NonNullList<ItemStack>> craftMatrix) {
         this.outputItem = outputItem;
         this.recipeType = recipeType;
+        this.recipeStatus = recipeStatus;
         this.recipeWidth = recipeWidth;
         this.craftMatrix = craftMatrix;
     }
@@ -39,7 +42,8 @@ public class FoodRecipeWithIngredients {
             }
         }
         RecipeType recipeType = RecipeType.fromId(buf.readByte());
-        return new FoodRecipeWithIngredients(outputItem, recipeType, recipeWidth, craftMatrix);
+        RecipeStatus recipeStatus = RecipeStatus.fromId(buf.readByte());
+        return new FoodRecipeWithIngredients(outputItem, recipeType, recipeStatus, recipeWidth, craftMatrix);
     }
 
     public void write(ByteBuf buf) {
@@ -53,10 +57,15 @@ public class FoodRecipeWithIngredients {
             }
         }
         buf.writeByte(recipeType.ordinal());
+        buf.writeByte(recipeStatus.ordinal());
     }
 
     public RecipeType getRecipeType() {
         return recipeType;
+    }
+
+    public RecipeStatus getRecipeStatus() {
+        return recipeStatus;
     }
 
     public int getRecipeWidth() {
