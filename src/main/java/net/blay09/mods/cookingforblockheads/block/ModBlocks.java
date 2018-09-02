@@ -44,6 +44,9 @@ public class ModBlocks {
     @GameRegistry.ObjectHolder(BlockCounter.name)
     public static final Block counter = Blocks.AIR;
 
+    @GameRegistry.ObjectHolder(BlockCabinet.name)
+    public static final Block wallCounter = Blocks.AIR;
+
     @GameRegistry.ObjectHolder(BlockCorner.name)
     public static final Block corner = Blocks.AIR;
 
@@ -68,6 +71,7 @@ public class ModBlocks {
                 new BlockCowJar().setRegistryName(BlockCowJar.name),
                 new BlockSpiceRack().setRegistryName(BlockSpiceRack.name),
                 new BlockCounter().setRegistryName(BlockCounter.name),
+                new BlockCabinet().setRegistryName(BlockCabinet.name),
                 new BlockCorner().setRegistryName(BlockCorner.name),
                 new BlockKitchenFloor().setRegistryName(BlockKitchenFloor.name),
                 new BlockFruitBasket().setRegistryName(BlockFruitBasket.name),
@@ -87,6 +91,7 @@ public class ModBlocks {
                 new ItemBlock(ModBlocks.cowJar).setRegistryName(BlockCowJar.name),
                 new ItemBlock(ModBlocks.spiceRack).setRegistryName(BlockSpiceRack.name),
                 new ItemBlock(ModBlocks.counter).setRegistryName(BlockCounter.name),
+                new ItemBlock(ModBlocks.wallCounter).setRegistryName(BlockCabinet.name),
                 new ItemBlock(ModBlocks.corner).setRegistryName(BlockCorner.name),
                 new ItemBlock(ModBlocks.kitchenFloor).setRegistryName(BlockKitchenFloor.name),
                 new ItemBlock(ModBlocks.fruitBasket).setRegistryName(BlockFruitBasket.name),
@@ -105,6 +110,7 @@ public class ModBlocks {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(cowJar), 0, new ModelResourceLocation(BlockCowJar.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(spiceRack), 0, new ModelResourceLocation(BlockSpiceRack.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(counter), 0, new ModelResourceLocation(BlockCounter.registryName, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(wallCounter), 0, new ModelResourceLocation(BlockCabinet.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(corner), 0, new ModelResourceLocation(BlockCorner.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(kitchenFloor), 0, new ModelResourceLocation(BlockKitchenFloor.registryName, "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(fruitBasket), 0, new ModelResourceLocation(BlockFruitBasket.registryName, "inventory"));
@@ -112,18 +118,19 @@ public class ModBlocks {
     }
 
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(TileCookingTable.class, BlockCookingTable.registryName.toString());
-        GameRegistry.registerTileEntity(TileOven.class, BlockOven.registryName.toString());
-        GameRegistry.registerTileEntity(TileFridge.class, BlockFridge.registryName.toString());
-        GameRegistry.registerTileEntity(TileSink.class, BlockSink.registryName.toString());
-        GameRegistry.registerTileEntity(TileToolRack.class, BlockToolRack.registryName.toString());
-        GameRegistry.registerTileEntity(TileToaster.class, BlockToaster.registryName.toString());
-        GameRegistry.registerTileEntity(TileMilkJar.class, BlockMilkJar.registryName.toString());
-        GameRegistry.registerTileEntity(TileCowJar.class, BlockCowJar.registryName.toString());
-        GameRegistry.registerTileEntity(TileSpiceRack.class, BlockSpiceRack.registryName.toString());
-        GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName.toString());
-        GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName.toString());
-        GameRegistry.registerTileEntity(TileFruitBasket.class, BlockFruitBasket.registryName.toString());
-        GameRegistry.registerTileEntity(TileCuttingBoard.class, BlockCuttingBoard.registryName.toString());
+        GameRegistry.registerTileEntity(TileCookingTable.class, BlockCookingTable.registryName);
+        GameRegistry.registerTileEntity(TileOven.class, BlockOven.registryName);
+        GameRegistry.registerTileEntity(TileFridge.class, BlockFridge.registryName);
+        GameRegistry.registerTileEntity(TileSink.class, BlockSink.registryName);
+        GameRegistry.registerTileEntity(TileToolRack.class, BlockToolRack.registryName);
+        GameRegistry.registerTileEntity(TileToaster.class, BlockToaster.registryName);
+        GameRegistry.registerTileEntity(TileMilkJar.class, BlockMilkJar.registryName);
+        GameRegistry.registerTileEntity(TileCowJar.class, BlockCowJar.registryName);
+        GameRegistry.registerTileEntity(TileSpiceRack.class, BlockSpiceRack.registryName);
+        GameRegistry.registerTileEntity(TileCounter.class, BlockCounter.registryName);
+        GameRegistry.registerTileEntity(TileCabinet.class, BlockCabinet.registryName);
+        GameRegistry.registerTileEntity(TileCorner.class, BlockCorner.registryName);
+        GameRegistry.registerTileEntity(TileFruitBasket.class, BlockFruitBasket.registryName);
+        GameRegistry.registerTileEntity(TileCuttingBoard.class, BlockCuttingBoard.registryName);
     }
 }

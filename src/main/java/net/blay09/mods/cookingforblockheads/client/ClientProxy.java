@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.block.BlockCabinet;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -71,6 +72,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCabinet.class, new CabinetRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileFruitBasket.class, new FruitBasketRenderer());
     }
@@ -143,6 +145,8 @@ public class ClientProxy extends CommonProxy {
         EnumDyeColor[] colors = EnumDyeColor.values();
         CounterRenderer.models = new IBakedModel[4][colors.length];
         CounterRenderer.modelsFlipped = new IBakedModel[4][colors.length];
+        CabinetRenderer.models = new IBakedModel[4][colors.length];
+        CabinetRenderer.modelsFlipped = new IBakedModel[4][colors.length];
         IBlockState defaultState = ModBlocks.counter.getDefaultState();
         IBlockState state = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR);
         IBlockState flippedState = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR_FLIPPED);
@@ -152,6 +156,9 @@ public class ClientProxy extends CommonProxy {
                 EnumDyeColor color = colors[j];
                 CounterRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCounter.registryName, dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
                 CounterRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCounter.registryName, dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+
+                CabinetRenderer.models[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCabinet.registryName, dummyStateMapper.getPropertyString(state.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
+                CabinetRenderer.modelsFlipped[i][j] = event.getModelRegistry().getObject(new ModelResourceLocation(BlockCabinet.registryName, dummyStateMapper.getPropertyString(flippedState.withProperty(BlockCounter.FACING, facing).withProperty(BlockCounter.COLOR, color).getProperties())));
             }
         }
     }

@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.block.state.IBlockState;
@@ -62,7 +62,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         if (isFirstTick) {
             // onLoad doesn't work when you need to touch the world TODO I think this was fixed in a newer Forge build?
             IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() == ModBlocks.counter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
+            if (state.getBlock() instanceof BlockCounter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
                 cachedFacing = state.getValue(BlockCounter.FACING);
                 cachedFlipped = state.getValue(BlockCounter.FLIPPED);
                 isFirstTick = false;
@@ -191,4 +191,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
         return true;
     }
 
+    public String getUnlocalizedName() {
+        return CookingForBlockheads.MOD_ID + ":counter";
+    }
 }

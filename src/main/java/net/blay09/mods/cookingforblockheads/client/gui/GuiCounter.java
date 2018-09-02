@@ -13,9 +13,11 @@ public class GuiCounter extends GuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation("textures/gui/container/generic_54.png");
     private final int inventoryRows;
+    private final TileCounter tileCounter;
 
     public GuiCounter(EntityPlayer player, TileCounter tileCounter) {
         super(new ContainerCounter(player, tileCounter));
+        this.tileCounter = tileCounter;
         this.inventoryRows = tileCounter.getItemHandler().getSlots() / 9;
         this.ySize = 114 + this.inventoryRows * 18;
     }
@@ -35,7 +37,7 @@ public class GuiCounter extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRenderer.drawString(I18n.format("container." + CookingForBlockheads.MOD_ID + ":counter"), 8, 6, 4210752);
+        this.fontRenderer.drawString(I18n.format("container." + tileCounter.getUnlocalizedName()), 8, 6, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 

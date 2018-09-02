@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "cookingforblockheads:cabinet"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "CBC",
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:hardened_clay"
+    },
+    "B": {
+      "item": "#CHEST"
+    }
+  }
+}

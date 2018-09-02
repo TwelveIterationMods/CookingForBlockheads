@@ -26,32 +26,37 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
     private final List<IKitchenSmeltingProvider> smeltingProviderList = Lists.newArrayList();
 
     public KitchenMultiBlock(World world, BlockPos pos) {
-        findNeighbourKitchenBlocks(world, pos);
+        findNeighbourKitchenBlocks(world, pos, true);
     }
 
-    private void findNeighbourKitchenBlocks(World world, BlockPos pos) {
+    private void findNeighbourKitchenBlocks(World world, BlockPos pos, boolean extendedUpSearch) {
         for (int i = 0; i <= 5; i++) {
             EnumFacing dir = EnumFacing.getFront(i);
-            BlockPos position = pos.offset(dir);
-            if (!checkedPos.contains(position)) {
-                checkedPos.add(position);
-                TileEntity tileEntity = world.getTileEntity(position);
-                if (tileEntity != null) {
-                    IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
-                    if (itemProvider != null) {
-                        itemProviderList.add(itemProvider);
-                    }
-                    IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
-                    if (smeltingProvider != null) {
-                        smeltingProviderList.add(smeltingProvider);
-                    }
-                    if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
-                        findNeighbourKitchenBlocks(world, position);
-                    }
-                } else {
-                    IBlockState state = world.getBlockState(position);
-                    if (state.getBlock() == ModBlocks.kitchenFloor) {
-                        findNeighbourKitchenBlocks(world, position);
+            int upSearch = (extendedUpSearch && dir == EnumFacing.UP) ? 2 : 1;
+            for (int n = 1; n <= upSearch; n++) {
+                BlockPos position = pos.offset(dir, n);
+                if (!checkedPos.contains(position)) {
+                    checkedPos.add(position);
+                    TileEntity tileEntity = world.getTileEntity(position);
+                    if (tileEntity != null) {
+                        IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
+                        if (itemProvider != null) {
+                            itemProviderList.add(itemProvider);
+                        }
+
+                        IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
+                        if (smeltingProvider != null) {
+                            smeltingProviderList.add(smeltingProvider);
+                        }
+
+                        if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
+                            findNeighbourKitchenBlocks(world, position, true);
+                        }
+                    } else {
+                        IBlockState state = world.getBlockState(position);
+                        if (state.getBlock() == ModBlocks.kitchenFloor) {
+                            findNeighbourKitchenBlocks(world, position, false);
+                        }
                     }
                 }
             }

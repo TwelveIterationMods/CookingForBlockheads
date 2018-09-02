@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
+import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -66,8 +67,8 @@ public class BlockCounter extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileCounter) {
-            return state.withProperty(COLOR, ((TileCounter) tileEntity).getDyedColor());
+        if (tileEntity instanceof IDyeableKitchen) {
+            return state.withProperty(COLOR, ((IDyeableKitchen) tileEntity).getDyedColor());
         }
 
         return state;
