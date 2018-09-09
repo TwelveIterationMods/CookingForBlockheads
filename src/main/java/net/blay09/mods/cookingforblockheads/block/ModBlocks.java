@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.google.common.collect.Lists;
+
+import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -47,6 +49,7 @@ public class ModBlocks {
         kitchenFloor = registerBlock(registry, new BlockKitchenFloor());
         fruitBasket = registerBlock(registry, new BlockFruitBasket());
         cuttingBoard = registerBlock(registry, new BlockCuttingBoard());
+        KitchenMultiBlock.registerConnectorBlock(kitchenFloor);
     }
 
     private static Block registerBlock(IForgeRegistry<Block> registry, Block block) {

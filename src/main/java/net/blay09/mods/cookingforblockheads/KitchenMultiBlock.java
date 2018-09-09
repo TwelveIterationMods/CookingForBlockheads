@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,11 +16,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class KitchenMultiBlock implements IKitchenMultiBlock {
-
+    private final static ArrayList<Block> blockConnectors = new ArrayList<Block>();
     private final Set<BlockPos> checkedPos = Sets.newHashSet();
     private final List<IKitchenItemProvider> itemProviderList = Lists.newArrayList();
     private final List<IKitchenSmeltingProvider> smeltingProviderList = Lists.newArrayList();
@@ -50,7 +51,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
                     }
                 } else {
                     IBlockState state = world.getBlockState(position);
-                    if (state.getBlock() == ModBlocks.kitchenFloor) {
+                    if (blockConnectors.contains(state.getBlock())) {
                         findNeighbourKitchenBlocks(world, position);
                     }
                 }
@@ -111,4 +112,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
         return smeltingProviderList.size() > 0;
     }
 
+    public static void registerConnectorBlock(final Block block) {
+        blockConnectors.add(block);
+    }
 }
