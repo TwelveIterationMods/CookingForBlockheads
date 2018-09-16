@@ -34,12 +34,12 @@ public class TileCuttingBoard extends TileEntity {
 
         @Nullable
         @Override
-        public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+        public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
             if (predicate.test(cuttingBoard, 1)) {
                 return new SourceItem(this, -1, cuttingBoard);
             }
 
-            return super.findSourceAndMarkAsUsed(predicate, maxAmount, inventories, requireBucket, simulate);
+            return super.findSource(predicate, maxAmount, inventories, requireBucket, simulate);
         }
     };
 

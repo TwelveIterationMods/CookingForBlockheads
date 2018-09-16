@@ -41,6 +41,14 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
         return doorOriginsZ[facing.getHorizontalIndex()];
     }
 
+    protected float getBottomShelfOffsetY() {
+        return -0.85f;
+    }
+
+    protected float getTopShelfOffsetY() {
+        return 0.35f;
+    }
+
     protected IBakedModel getDoorModel(EnumFacing facing, EnumDyeColor blockColor, boolean isFlipped) {
         return isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getMetadata()] : models[facing.getHorizontalIndex()][blockColor.getMetadata()];
     }
@@ -74,11 +82,11 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
             doorDirection = 1f;
         }
 
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translate(doorOriginX, 0f, doorOriginZ);
-//        GlStateManager.scale(0.1f, 0.1f, 0.1f);
-//        RenderUtils.renderItem(itemRenderer, new ItemStack(Items.APPLE), 0f, 0f, 0f, 0f, 0f, 1f, 0f);
-//        GlStateManager.popMatrix();
+        /*GlStateManager.pushMatrix();
+        GlStateManager.translate(doorOriginX, 0.25f, doorOriginZ);
+        GlStateManager.scale(0.1f, 0.1f, 0.1f);
+        RenderUtils.renderItem(itemRenderer, new ItemStack(Items.APPLE), 0f, 0f, 0f, 0f, 0f, 1f, 0f);
+        GlStateManager.popMatrix();*/
 
         GlStateManager.translate(doorOriginX, 0f, doorOriginZ);
         GlStateManager.rotate(doorDirection * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
@@ -106,7 +114,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
                     int rowIndex = i % itemsPerRow;
                     float spacing = 2f / (float) itemsPerRow;
                     offsetX = (rowIndex - itemsPerRow / 2f) * -spacing + (shelfIndex >= itemsPerRow ? -0.2f : 0f);
-                    offsetY = i < itemsPerShelf ? 0.35f : -0.85f;
+                    offsetY = i < itemsPerShelf ? getTopShelfOffsetY() : getBottomShelfOffsetY();
                     offsetZ = shelfIndex < itemsPerRow ? 0.5f : -0.5f;
                     RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
                 }
