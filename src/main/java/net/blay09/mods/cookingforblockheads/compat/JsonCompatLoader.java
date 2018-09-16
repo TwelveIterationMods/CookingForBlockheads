@@ -3,8 +3,10 @@ package net.blay09.mods.cookingforblockheads.compat;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +18,9 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
@@ -33,6 +38,7 @@ public class JsonCompatLoader {
 
     private static final Gson gson = new Gson();
     private static final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
+    private static IForgeRegistry<Block> blockRegistry = null;
 
     public static boolean loadCompat() {
         nonFoodRecipes.clear();
@@ -193,6 +199,20 @@ public class JsonCompatLoader {
                 throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
             }
             CompatCapabilityLoader.addKitchenConnectorClass(element.getAsString());
+        }
+        tiles = JsonUtils.getJsonArray(tilesObject, "multiBlockConnectors", EMPTY_ARRAY);
+        for (JsonElement element : tiles) {
+            if (!element.isJsonPrimitive()) {
+                throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
+            }
+            if (blockRegistry == null)
+                blockRegistry = GameRegistry.findRegistry(Block.class);
+            final ResourceLocation blockLocation = new ResourceLocation(modId, element.getAsString());
+            if (! blockRegistry.containsKey(blockLocation)) {
+                CookingForBlockheads.logger.warn("Connector block '" + blockLocation + "' not found");
+                continue;
+            }
+            KitchenMultiBlock.registerConnectorBlock(blockRegistry.getValue(blockLocation));
         }
     }
 

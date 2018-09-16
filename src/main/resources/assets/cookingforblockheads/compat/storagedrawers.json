@@ -11,6 +11,9 @@
       "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersStandard$Slot2",
       "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersStandard$Slot4",
       "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersComp"
+    ],
+    "multiBlockConnectors" : [
+      "trim"
     ]
   }
 }
