@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.registry;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
+import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -80,4 +81,7 @@ public class FoodRecipeWithIngredients {
         return outputItem;
     }
 
+    public static FoodRecipeWithIngredients fromFoodRecipe(FoodRecipe recipe, RecipeStatus status, List<NonNullList<ItemStack>> craftMatrix) {
+        return new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), status, recipe.getRecipeWidth(), craftMatrix);
+    }
 }

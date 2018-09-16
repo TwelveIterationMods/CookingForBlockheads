@@ -61,6 +61,8 @@ public class ContainerRecipeBook extends Container {
     private List<FoodRecipeWithIngredients> selectedRecipeList;
     private int selectedRecipeIndex;
 
+    private boolean isInNoFilterPreview;
+
     public ContainerRecipeBook(EntityPlayer player) {
         this.player = player;
 
@@ -114,17 +116,22 @@ public class ContainerRecipeBook extends Container {
                             }
                         }
                     } else {
-                        selectedRecipe = slotRecipe.getRecipe();
-                        if (selectedRecipe != null) {
-                            NetworkHandler.instance.sendToServer(new MessageRequestRecipes(selectedRecipe.getOutputItem()));
-                        }
+                        setSelectedRecipe(slotRecipe.getRecipe(), false);
                     }
-                } else if (slot instanceof FakeSlotCraftMatrix) {
-                    ((FakeSlotCraftMatrix) slot).setLocked(!((FakeSlotCraftMatrix) slot).isLocked());
                 }
             }
         }
         return super.slotClick(slotNumber, dragType, clickType, player);
+    }
+
+    public void setSelectedRecipe(@Nullable FoodRecipeWithStatus recipe, boolean forceNoFilter) {
+        selectedRecipe = recipe;
+
+        if (selectedRecipe != null) {
+            NetworkHandler.instance.sendToServer(new MessageRequestRecipes(selectedRecipe.getOutputItem(), forceNoFilter));
+        }
+
+        this.isInNoFilterPreview = forceNoFilter;
     }
 
     @Override
@@ -135,7 +142,7 @@ public class ContainerRecipeBook extends Container {
             if (isDirty || player.inventory.timesChanged > 0) {
                 findAndSendItemList();
                 if (!lastOutputItem.isEmpty()) {
-                    findAndSendRecipes(lastOutputItem);
+                    findAndSendRecipes(lastOutputItem, isInNoFilterPreview);
                 }
                 player.inventory.timesChanged = 0;
                 isDirty = false;
@@ -218,8 +225,10 @@ public class ContainerRecipeBook extends Container {
         NetworkHandler.instance.sendTo(new MessageItemList(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
     }
 
-    public void findAndSendRecipes(ItemStack outputItem) {
+    public void findAndSendRecipes(ItemStack outputItem, boolean forceNoFilter) {
         lastOutputItem = outputItem;
+        isInNoFilterPreview = forceNoFilter;
+
         List<FoodRecipeWithIngredients> resultList = Lists.newArrayList();
         List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
         outerLoop:
@@ -237,8 +246,8 @@ public class ContainerRecipeBook extends Container {
                     for (ItemStack checkStack : ingredient.getItemStacks()) {
                         ItemStack foundStack = CookingRegistry.findAnyItemStack(checkStack, inventories, requireBucket);
                         if (foundStack.isEmpty()) {
-                            if (noFilter || ingredient.isToolItem()) {
-                                foundStack = ingredient.getItemStacks().length > 0 ? ingredient.getItemStacks()[0] : ItemStack.EMPTY;
+                            if (forceNoFilter || noFilter || ingredient.isToolItem()) {
+                                foundStack = checkStack;
                             }
                         }
 
@@ -256,7 +265,7 @@ public class ContainerRecipeBook extends Container {
             }
 
             RecipeStatus recipeStatus = CookingRegistry.getRecipeStatus(recipe, inventories, multiBlock != null && multiBlock.hasSmeltingProvider());
-            resultList.add(new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), recipeStatus, recipe.getRecipeWidth(), craftMatrix));
+            resultList.add(FoodRecipeWithIngredients.fromFoodRecipe(recipe, recipeStatus, craftMatrix));
         }
 
         resultList.sort((o1, o2) -> o2.getRecipeStatus().ordinal() - o1.getRecipeStatus().ordinal());
@@ -346,16 +355,20 @@ public class ContainerRecipeBook extends Container {
         }
     }
 
+    private void populateMatrixSlots() {
+        FoodRecipeWithIngredients recipe = selectedRecipeList != null ? selectedRecipeList.get(selectedRecipeIndex) : null;
+        populateMatrixSlots(recipe);
+    }
+
     @SuppressWarnings("unchecked")
-    public void populateMatrixSlots() {
-        if (selectedRecipeList == null) {
+    public void populateMatrixSlots(@Nullable FoodRecipeWithIngredients recipe) {
+        if (recipe == null) {
             for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
                 matrixSlot.setIngredient(null);
             }
             return;
         }
 
-        FoodRecipeWithIngredients recipe = selectedRecipeList.get(selectedRecipeIndex);
         if (recipe.getRecipeType() == RecipeType.SMELTING) {
             for (int i = 0; i < matrixSlots.size(); i++) {
                 matrixSlots.get(i).setIngredient(i == 4 ? recipe.getCraftMatrix().get(0) : null);
@@ -469,5 +482,14 @@ public class ContainerRecipeBook extends Container {
 
     public List<FakeSlotCraftMatrix> getCraftingMatrixSlots() {
         return matrixSlots;
+    }
+
+    @Nullable
+    public FoodRecipeWithStatus findAvailableRecipe(ItemStack itemStack) {
+        return itemList.stream().filter(it -> ItemStack.areItemsEqual(it.getOutputItem(), itemStack)).findAny().orElse(null);
+    }
+
+    public int getSelectedRecipeIndex() {
+        return filteredItems.indexOf(selectedRecipe);
     }
 }

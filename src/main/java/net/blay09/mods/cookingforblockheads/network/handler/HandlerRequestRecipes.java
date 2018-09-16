@@ -18,7 +18,7 @@ public class HandlerRequestRecipes implements IMessageHandler<MessageRequestReci
         NetworkHandler.getThreadListener(ctx).addScheduledTask(() -> {
             Container container = ctx.getServerHandler().player.openContainer;
             if (container instanceof ContainerRecipeBook) {
-                ((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem());
+                ((ContainerRecipeBook) container).findAndSendRecipes(message.getOutputItem(), message.isForceNoFilter());
             }
         });
         return null;

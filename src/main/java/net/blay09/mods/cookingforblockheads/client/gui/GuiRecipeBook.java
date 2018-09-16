@@ -19,6 +19,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -129,6 +130,7 @@ public class GuiRecipeBook extends GuiContainer {
         if (delta == 0) {
             return;
         }
+
         int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
         if (container.getSelection() != null && mouseX >= guiLeft + 7 && mouseY >= guiTop + 17 && mouseX < guiLeft + 92 && mouseY < guiTop + 95) {
@@ -144,6 +146,7 @@ public class GuiRecipeBook extends GuiContainer {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state);
+
         if (state != -1 && mouseClickY != -1) {
             mouseClickY = -1;
             indexWhenClicked = 0;
@@ -154,6 +157,7 @@ public class GuiRecipeBook extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int button) throws IOException {
         super.mouseClicked(mouseX, mouseY, button);
+
         if (button == 1 && mouseX >= searchBar.x && mouseX < searchBar.x + searchBar.width && mouseY >= searchBar.y && mouseY < searchBar.y + searchBar.height) {
             searchBar.setText("");
             container.search(null);
@@ -162,9 +166,26 @@ public class GuiRecipeBook extends GuiContainer {
         } else {
             searchBar.mouseClicked(mouseX, mouseY, button);
         }
+
         if (mouseX >= scrollBarXPos && mouseX <= scrollBarXPos + SCROLLBAR_WIDTH && mouseY >= scrollBarYPos && mouseY <= scrollBarYPos + scrollBarScaledHeight) {
             mouseClickY = mouseY;
             indexWhenClicked = currentOffset;
+        }
+
+        Slot mouseSlot = getSlotUnderMouse();
+        if (mouseSlot instanceof FakeSlotCraftMatrix) {
+            if (button == 0) {
+                ItemStack itemStack = mouseSlot.getStack();
+                FoodRecipeWithStatus recipe = container.findAvailableRecipe(itemStack);
+                if (recipe != null) {
+                    container.setSelectedRecipe(recipe, false);
+                    setCurrentOffset(container.getSelectedRecipeIndex());
+                } else if (!CookingRegistry.getFoodRecipes(itemStack).isEmpty()) {
+                    container.setSelectedRecipe(new FoodRecipeWithStatus(itemStack, RecipeStatus.MISSING_INGREDIENTS), true);
+                }
+            } else if (button == 1) {
+                ((FakeSlotCraftMatrix) mouseSlot).setLocked(!((FakeSlotCraftMatrix) mouseSlot).isLocked());
+            }
         }
     }
 
@@ -239,7 +260,7 @@ public class GuiRecipeBook extends GuiContainer {
         if (selection == null) {
             int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRenderer.FONT_HEIGHT;
             for (String s : noSelection) {
-                fontRenderer.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRenderer.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
+                fontRenderer.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
                 curY += fontRenderer.FONT_HEIGHT + 5;
             }
         } else if (selection.getRecipeType() == RecipeType.SMELTING) {
@@ -262,7 +283,7 @@ public class GuiRecipeBook extends GuiContainer {
             GuiContainer.drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
             int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRenderer.FONT_HEIGHT;
             for (String s : noIngredients) {
-                fontRenderer.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRenderer.getStringWidth(s) / 2, curY, 0xFFFFFFFF);
+                fontRenderer.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
                 curY += fontRenderer.FONT_HEIGHT + 5;
             }
         }
