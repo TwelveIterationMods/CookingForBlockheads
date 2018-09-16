@@ -2,7 +2,9 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.util.NonOccupyingItemHandler;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -12,11 +14,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import vazkii.quark.api.IDropoffManager;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
-public class TileFruitBasket extends TileEntity {
+public class TileFruitBasket extends TileEntity implements IDropoffManager {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
         @Override
@@ -88,4 +93,13 @@ public class TileFruitBasket extends TileEntity {
         return oldState.getBlock() != newSate.getBlock();
     }
 
+    @Override
+    public boolean acceptsDropoff(EntityPlayer entityPlayer) {
+        return true;
+    }
+
+    @Override
+    public IItemHandler getDropoffItemHandler(Supplier<IItemHandler> defaultSupplier) {
+        return new NonOccupyingItemHandler(itemHandler);
+    }
 }
