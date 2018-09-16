@@ -28,7 +28,7 @@ public class SpiceRackRenderer extends TileEntitySpecialRenderer<TileSpiceRack> 
         for (int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {
             ItemStack itemStack = tileEntity.getItemHandler().getStackInSlot(i);
             if (!itemStack.isEmpty()) {
-                RenderUtils.renderItem(itemRenderer, itemStack, 0.15f, 0.35f, 0.8f - i * 0.2f, (float) Math.random() * 360f, 0f, 1f, 0f);
+                RenderUtils.renderItem(itemRenderer, itemStack, 0.15f, 0.35f, 0.8f - i * 0.2f, -30f, 0f, 1f, 0f);
             }
         }
 
