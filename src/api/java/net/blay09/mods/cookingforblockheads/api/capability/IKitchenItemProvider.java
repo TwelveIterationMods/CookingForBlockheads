@@ -44,6 +44,6 @@ public interface IKitchenItemProvider {
 	void consumeSourceItem(SourceItem sourceItem, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireContainer);
 
 	default void markAsUsed(SourceItem sourceItem, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-		useItemStack(sourceItem.getSourceSlot(), Math.max(sourceItem.getSourceStack().getCount(), maxAmount), true, inventories, requireBucket);
+		useItemStack(sourceItem.getSourceSlot(), Math.min(sourceItem.getSourceStack().getCount(), maxAmount), true, inventories, requireBucket);
 	}
 }
