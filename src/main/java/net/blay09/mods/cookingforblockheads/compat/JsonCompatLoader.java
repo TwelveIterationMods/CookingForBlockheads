@@ -3,8 +3,10 @@ package net.blay09.mods.cookingforblockheads.compat;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -111,6 +113,7 @@ public class JsonCompatLoader {
         if (!modId.equals("minecraft") && !Loader.isModLoaded(modId)) {
             return;
         }
+
         JsonObject foods = JsonUtils.getJsonObject(root, "foods", EMPTY_OBJECT);
         for (Map.Entry<String, JsonElement> entry : foods.entrySet()) {
             String category = entry.getKey();
@@ -124,6 +127,7 @@ public class JsonCompatLoader {
                 }
             }
         }
+
         JsonArray tools = JsonUtils.getJsonArray(root, "tools", EMPTY_ARRAY);
         for (JsonElement element : tools) {
             ItemStack[] results = parseItemStacks(modId, element);
@@ -133,6 +137,7 @@ public class JsonCompatLoader {
                 }
             }
         }
+
         JsonArray water = JsonUtils.getJsonArray(root, "water", EMPTY_ARRAY);
         for (JsonElement element : water) {
             ItemStack[] results = parseItemStacks(modId, element);
@@ -140,6 +145,7 @@ public class JsonCompatLoader {
                 CookingForBlockheadsAPI.addWaterItem(result);
             }
         }
+
         JsonArray milk = JsonUtils.getJsonArray(root, "milk", EMPTY_ARRAY);
         for (JsonElement element : milk) {
             ItemStack[] results = parseItemStacks(modId, element);
@@ -147,6 +153,7 @@ public class JsonCompatLoader {
                 CookingForBlockheadsAPI.addMilkItem(result);
             }
         }
+
         JsonArray ovenFuel = JsonUtils.getJsonArray(root, "oven_fuel", EMPTY_ARRAY);
         for (JsonElement element : ovenFuel) {
             if (!element.isJsonObject()) {
@@ -163,6 +170,7 @@ public class JsonCompatLoader {
                 CookingForBlockheadsAPI.addOvenFuel(result, fuelTime);
             }
         }
+
         JsonObject ovenRecipes = JsonUtils.getJsonObject(root, "oven_recipes", EMPTY_OBJECT);
         for (Map.Entry<String, JsonElement> entry : ovenRecipes.entrySet()) {
             ItemStack input = parseItemStackSimple(modId, entry.getKey());
@@ -171,6 +179,7 @@ public class JsonCompatLoader {
                 CookingForBlockheadsAPI.addOvenRecipe(input, output);
             }
         }
+
         JsonObject toaster = JsonUtils.getJsonObject(root, "toaster", EMPTY_OBJECT);
         for (Map.Entry<String, JsonElement> entry : toaster.entrySet()) {
             ItemStack input = parseItemStackSimple(modId, entry.getKey());
@@ -179,6 +188,7 @@ public class JsonCompatLoader {
                 CookingForBlockheadsAPI.addToasterHandler(input, itemStack -> output);
             }
         }
+
         JsonObject tilesObject = JsonUtils.getJsonObject(root, "tiles", EMPTY_OBJECT);
         JsonArray tiles = JsonUtils.getJsonArray(tilesObject, "kitchenItemProviders", EMPTY_ARRAY);
         for (JsonElement element : tiles) {
@@ -187,12 +197,28 @@ public class JsonCompatLoader {
             }
             CompatCapabilityLoader.addKitchenItemProviderClass(element.getAsString());
         }
+
         tiles = JsonUtils.getJsonArray(tilesObject, "kitchenConnectors", EMPTY_ARRAY);
         for (JsonElement element : tiles) {
             if (!element.isJsonPrimitive()) {
                 throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
             }
             CompatCapabilityLoader.addKitchenConnectorClass(element.getAsString());
+        }
+
+        tiles = JsonUtils.getJsonArray(tilesObject, "kitchenConnectorBlocks", EMPTY_ARRAY);
+        for (JsonElement element : tiles) {
+            if (!element.isJsonPrimitive()) {
+                throw new JsonSyntaxException("Expected array elements to be a primitive, got " + element);
+            }
+
+            final ResourceLocation blockLocation = new ResourceLocation(modId, element.getAsString());
+            if (!Block.REGISTRY.containsKey(blockLocation)) {
+                CookingForBlockheads.logger.warn("Connector block '" + blockLocation + "' not found");
+                continue;
+            }
+
+            KitchenMultiBlock.registerConnectorBlock(Block.REGISTRY.getObject(blockLocation));
         }
     }
 
@@ -210,7 +236,7 @@ public class JsonCompatLoader {
         } else if (element.isJsonObject()) {
             itemStackList.add(parseItemStack(modId, element.getAsJsonObject()));
         }
-        return itemStackList.toArray(new ItemStack[itemStackList.size()]);
+        return itemStackList.toArray(new ItemStack[0]);
     }
 
     private static ItemStack parseItemStack(String modId, JsonElement element) {

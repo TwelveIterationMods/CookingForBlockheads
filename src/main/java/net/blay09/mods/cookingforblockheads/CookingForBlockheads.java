@@ -88,6 +88,7 @@ public class CookingForBlockheads {
         NetworkHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(CookingForBlockheads.instance, new GuiHandler());
 
+        KitchenMultiBlock.registerConnectorBlock(ModBlocks.kitchenFloor);
         ModRecipes.load();
 
         FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
