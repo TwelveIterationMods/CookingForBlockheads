@@ -6,11 +6,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.ISortButton;
-import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
-import net.blay09.mods.cookingforblockheads.api.SinkHandler;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
+import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon;
@@ -37,10 +35,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CookingRegistry {
     public static class ItemIdentifier {
@@ -264,43 +259,55 @@ public class CookingRegistry {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack findAnyItemStack(ItemStack checkStack, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+    @Nullable
+    private static SourceItem findAnyItemStack(ItemStack checkStack, List<IKitchenItemProvider> inventories, boolean requireBucket) {
         if (checkStack.isEmpty()) {
-            return ItemStack.EMPTY;
+            return null;
         }
 
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, checkStack), 1, inventories, requireBucket, true);
-            if (!found.isEmpty()) {
+            IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, checkStack) && count > 0;
+            SourceItem found = itemProvider.findSource(predicate, 1, inventories, requireBucket, true);
+            if (found != null) {
                 return found;
             }
         }
 
-        return ItemStack.EMPTY;
+        return null;
     }
 
-    public static ItemStack findAnyItemStack(@Nullable FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-        if (ingredient == null) {
-            return ItemStack.EMPTY;
-        }
+    public static List<SourceItem> findSourceCandidates(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean isNoFilter) {
+        List<SourceItem> sourceList = new ArrayList<>();
 
-        for (int i = 0; i < inventories.size(); i++) {
-            IKitchenItemProvider itemProvider = inventories.get(i);
-            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ingredient.isValidItem(it), 1, inventories, requireBucket, true);
-            if (!found.isEmpty()) {
-                return found;
+        ItemStack[] variants = ingredient.getItemStacks();
+        for (ItemStack checkStack : variants) {
+            SourceItem sourceItem = CookingRegistry.findAnyItemStack(checkStack, inventories, requireBucket);
+            ItemStack foundStack = sourceItem != null ? sourceItem.getSourceStack() : ItemStack.EMPTY;
+            if (foundStack.isEmpty()) {
+                if (isNoFilter || ingredient.isToolItem()) {
+                    sourceItem = new SourceItem(null, -1, checkStack);
+                }
+            }
+
+            if (sourceItem != null) {
+                sourceList.add(sourceItem);
             }
         }
 
-        return ItemStack.EMPTY;
+        SourceItem sourceItem = !sourceList.isEmpty() ? sourceList.get(0) : null;
+        if (sourceItem != null && sourceItem.getSourceProvider() != null) {
+            sourceItem.getSourceProvider().markAsUsed(sourceItem, 1, inventories, requireBucket);
+        }
+
+        return sourceList;
     }
 
     public static boolean consumeBucket(List<IKitchenItemProvider> inventories, boolean simulate) {
         ItemStack bucketStack = new ItemStack(Items.BUCKET);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, bucketStack), 1, inventories, false, simulate);
+            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, bucketStack) && count > 0, 1, inventories, false, simulate);
             if (!found.isEmpty()) {
                 return true;
             }
@@ -316,24 +323,22 @@ public class CookingRegistry {
         }
 
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
-        NonNullList<ItemStack> itemFound = NonNullList.withSize(craftMatrix.size(), ItemStack.EMPTY);
         boolean missingTools = false;
         for (int i = 0; i < craftMatrix.size(); i++) {
             FoodIngredient ingredient = craftMatrix.get(i);
-            itemFound.set(i, findAnyItemStack(ingredient, inventories, requireBucket));
-            if (itemFound.get(i).isEmpty() && ingredient != null) {
-                if (ingredient.isToolItem()) {
-                    missingTools = true;
-                    continue;
+            if (ingredient != null) {
+                List<SourceItem> sourceList = findSourceCandidates(ingredient, inventories, requireBucket, false);
+                if (sourceList.isEmpty()) {
+                    return RecipeStatus.MISSING_INGREDIENTS;
                 }
 
-                return RecipeStatus.MISSING_INGREDIENTS;
+                if (sourceList.stream().allMatch(it -> it.getSourceProvider() == null)) {
+                    missingTools = true;
+                }
             }
         }
 
         // Do not mark smeltable recipes as available unless an oven is present.
-        // This is not a full fix though since crafting recipes would still pretend to be craftable when missing tools if an oven is present.
-        // This just makes it less likely to happen, which is good enough for now ... in the next refactor we'll need to move RecipeStatus to the individual recipes instead of having it per-item.
         if (recipe.getType() == RecipeType.SMELTING && !hasOven) {
             return RecipeStatus.MISSING_TOOLS;
         }

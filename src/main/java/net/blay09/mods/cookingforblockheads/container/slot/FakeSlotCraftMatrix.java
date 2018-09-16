@@ -44,7 +44,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
         }
 
         visibleItemTime = 0;
-        visibleItemIndex = 0;
+        visibleItemIndex = !visibleStacks.isEmpty() ? slotNumber % visibleStacks.size() : 0;
         isLocked = false;
 
         if (!prevLockStack.isEmpty()) {

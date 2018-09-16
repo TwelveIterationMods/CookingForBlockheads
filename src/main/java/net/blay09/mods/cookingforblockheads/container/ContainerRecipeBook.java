@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.container.inventory.InventoryCraftBook;
@@ -49,6 +50,7 @@ public class ContainerRecipeBook extends Container {
 
     private ItemStack lastOutputItem = ItemStack.EMPTY;
 
+    private final Random random = new Random();
     private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
     private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
     private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
@@ -243,21 +245,14 @@ public class ContainerRecipeBook extends Container {
             for (FoodIngredient ingredient : ingredients) {
                 NonNullList<ItemStack> stackList = NonNullList.create();
                 if (ingredient != null) {
-                    for (ItemStack checkStack : ingredient.getItemStacks()) {
-                        ItemStack foundStack = CookingRegistry.findAnyItemStack(checkStack, inventories, requireBucket);
-                        if (foundStack.isEmpty()) {
-                            if (forceNoFilter || noFilter || ingredient.isToolItem()) {
-                                foundStack = checkStack;
-                            }
-                        }
-
-                        if (!foundStack.isEmpty()) {
-                            stackList.add(foundStack.getCount() > 127 ? ItemHandlerHelper.copyStackWithSize(foundStack, 127) : foundStack);
-                        }
+                    List<SourceItem> sourceList = CookingRegistry.findSourceCandidates(ingredient, inventories, requireBucket, noFilter || forceNoFilter);
+                    if (sourceList.isEmpty()) {
+                        continue outerLoop;
                     }
 
-                    if (stackList.isEmpty()) {
-                        continue outerLoop;
+                    for (SourceItem source : sourceList) {
+                        ItemStack foundStack = source.getSourceStack();
+                        stackList.add(foundStack.getCount() > 127 ? ItemHandlerHelper.copyStackWithSize(foundStack, 127) : foundStack);
                     }
                 }
 

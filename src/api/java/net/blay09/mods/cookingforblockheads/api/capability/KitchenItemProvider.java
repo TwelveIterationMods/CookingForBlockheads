@@ -44,8 +44,10 @@ public class KitchenItemProvider extends DefaultKitchenItemProvider {
             if (simulate && !result.isEmpty()) {
                 usedStackSize[slot] += result.getCount();
             }
+
             return result;
         }
+
         return ItemStack.EMPTY;
     }
 

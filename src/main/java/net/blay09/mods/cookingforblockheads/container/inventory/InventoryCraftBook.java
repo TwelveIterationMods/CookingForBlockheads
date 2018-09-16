@@ -41,7 +41,7 @@ public class InventoryCraftBook extends InventoryCrafting {
             if (!ingredient.isEmpty()) {
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
-                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, ingredient), 1, inventories, requireContainer, true);
+                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, ingredient) && count > 0, 1, inventories, requireContainer, true);
                     if (sourceItem != null) {
                         sourceItems[i] = sourceItem;
                         continue matrixLoop;
@@ -61,6 +61,11 @@ public class InventoryCraftBook extends InventoryCrafting {
             return ItemStack.EMPTY;
         }
 
+        // Make sure the recipe actually matches to prevent illegal crafting
+        if (!craftRecipe.matches(this, player.world)) {
+            return ItemStack.EMPTY;
+        }
+
         // Get the final result and remove ingredients
         ItemStack result = craftRecipe.getCraftingResult(this);
         if (!result.isEmpty()) {
@@ -71,13 +76,17 @@ public class InventoryCraftBook extends InventoryCrafting {
                     if (sourceItems[i] != null) {
                         // Eat the ingredients
                         IKitchenItemProvider sourceProvider = sourceItems[i].getSourceProvider();
+                        if (sourceProvider == null) {
+                            continue;
+                        }
+
+                        ItemStack containerItem = ForgeHooks.getContainerItem(itemStack);
                         if (sourceItems[i].getSourceSlot() != -1) {
                             sourceProvider.resetSimulation();
                             sourceProvider.consumeSourceItem(sourceItems[i], 1, inventories, requireContainer);
                         }
 
                         // Return container items (like empty buckets)
-                        ItemStack containerItem = ForgeHooks.getContainerItem(itemStack);
                         if (!containerItem.isEmpty()) {
                             ItemStack restStack = sourceProvider.returnItemStack(containerItem);
                             if (!restStack.isEmpty()) {

@@ -38,6 +38,16 @@ public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider
     }
 
     @Override
+    public ItemStack find(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+        SourceItem sourceItem = findSource(predicate, maxAmount, inventories, requireBucket, simulate);
+        if (sourceItem != null) {
+            return sourceItem.getSourceStack();
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    @Override
     public ItemStack findAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
         SourceItem sourceItem = findSourceAndMarkAsUsed(predicate, maxAmount, inventories, requireBucket, simulate);
         if (sourceItem != null) {
@@ -49,12 +59,10 @@ public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider
 
     @Override
     @Nullable
-    public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+    public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
         for (int j = 0; j < getSlots(); j++) {
             ItemStack itemStack = getStackInSlot(j);
-            int amount = Math.min(itemStack.getCount(), maxAmount);
             if (!itemStack.isEmpty() && predicate.test(itemStack, itemStack.getCount() - getSimulatedUseCount(j))) {
-                itemStack = useItemStack(j, amount, simulate, inventories, requireBucket);
                 if (!itemStack.isEmpty()) {
                     return new SourceItem(this, j, itemStack);
                 }
@@ -62,6 +70,17 @@ public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider
         }
 
         return null;
+    }
+
+    @Override
+    @Nullable
+    public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+        SourceItem sourceItem = findSource(predicate, maxAmount, inventories, requireBucket, simulate);
+        if (sourceItem != null) {
+            useItemStack(sourceItem.getSourceSlot(), Math.min(sourceItem.getSourceStack().getCount(), maxAmount), simulate, inventories, requireBucket);
+        }
+
+        return sourceItem;
     }
 
     @Override
