@@ -38,26 +38,6 @@ public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider
     }
 
     @Override
-    public ItemStack find(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
-        SourceItem sourceItem = findSource(predicate, maxAmount, inventories, requireBucket, simulate);
-        if (sourceItem != null) {
-            return sourceItem.getSourceStack();
-        }
-
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public ItemStack findAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
-        SourceItem sourceItem = findSourceAndMarkAsUsed(predicate, maxAmount, inventories, requireBucket, simulate);
-        if (sourceItem != null) {
-            return sourceItem.getSourceStack();
-        }
-
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     @Nullable
     public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
         for (int j = 0; j < getSlots(); j++) {

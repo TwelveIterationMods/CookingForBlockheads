@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -133,13 +134,14 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         }
 
         @Override
-        public ItemStack returnItemStack(ItemStack itemStack) {
+        public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
             for (ItemStack providedStack : itemStacks) {
                 if (ItemHandlerHelper.canItemStacksStackRelaxed(itemStack, providedStack)) {
                     fluidTank.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
                     break;
                 }
             }
+
             return ItemStack.EMPTY;
         }
 

@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -102,12 +103,14 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
         List<IKitchenItemProvider> inventories = getItemProviders(player.inventory);
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
-            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem) && count > 0, stack ? inputItem.getMaxStackSize() : 1, inventories, requireBucket, false);
-            if (!found.isEmpty()) {
-                int amount = Math.min(found.getCount(), stack ? inputItem.getMaxStackSize() : 1);
-                ItemStack restStack = smeltItem(found, amount);
+            IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem) && count > 0;
+            SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, stack ? inputItem.getMaxStackSize() : 1, inventories, requireBucket, false);
+            if (sourceItem != null) {
+                ItemStack sourceStack = sourceItem.getSourceStack();
+                int amount = Math.min(sourceStack.getCount(), stack ? inputItem.getMaxStackSize() : 1);
+                ItemStack restStack = smeltItem(sourceStack, amount);
                 if (!restStack.isEmpty()) {
-                    restStack = itemProvider.returnItemStack(restStack);
+                    restStack = itemProvider.returnItemStack(restStack, sourceItem);
                     if (!player.inventory.addItemStackToInventory(restStack)) {
                         player.dropItem(restStack, false);
                     }

@@ -150,6 +150,7 @@ public class BlockFridge extends BlockKitchen {
             return true;
         }
 
+        EnumFacing frontFace = state.getValue(FACING);
         if (facing == state.getValue(FACING)) {
             TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
             if (tileFridge != null) {
@@ -165,7 +166,7 @@ public class BlockFridge extends BlockKitchen {
         }
 
         if (!world.isRemote) {
-            if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) == ModBlocks.fridge) {
+            if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) == ModBlocks.fridge && facing != frontFace) {
                 return false;
             }
 

@@ -24,7 +24,7 @@ public class TileCuttingBoard extends TileEntity {
         private final ItemStack cuttingBoard = Compat.cuttingBoardItem != Items.AIR ? new ItemStack(Compat.cuttingBoardItem) : ItemStack.EMPTY;
 
         @Override
-        public ItemStack returnItemStack(ItemStack itemStack) {
+        public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
             if (itemStack.getItem() == Compat.cuttingBoardItem) {
                 return ItemStack.EMPTY;
             }

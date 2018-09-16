@@ -14,7 +14,12 @@ public interface IKitchenItemProvider {
 
 	int getSimulatedUseCount(int slot);
 
+	@Deprecated
 	ItemStack returnItemStack(ItemStack itemStack);
+
+	default ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
+		return returnItemStack(itemStack);
+	}
 
 	@Deprecated
 	int getSlots();
@@ -22,11 +27,11 @@ public interface IKitchenItemProvider {
 	@Deprecated
 	ItemStack getStackInSlot(int slot);
 
-	default ItemStack find(IngredientPredicate checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
-		return findAndMarkAsUsed(checkStack, maxAmount, inventories, requireBucket, simulate);
+	@Deprecated
+	default ItemStack findAndMarkAsUsed(IngredientPredicate checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+		SourceItem sourceItem = findSourceAndMarkAsUsed(checkStack, maxAmount, inventories, requireBucket, simulate);
+		return sourceItem != null ? sourceItem.getSourceStack() :ItemStack.EMPTY;
 	}
-
-	ItemStack findAndMarkAsUsed(IngredientPredicate checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate);
 
 	@Nullable
 	default SourceItem findSource(IngredientPredicate checkStack, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {

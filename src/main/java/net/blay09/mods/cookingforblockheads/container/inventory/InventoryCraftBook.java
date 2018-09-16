@@ -88,7 +88,7 @@ public class InventoryCraftBook extends InventoryCrafting {
 
                         // Return container items (like empty buckets)
                         if (!containerItem.isEmpty()) {
-                            ItemStack restStack = sourceProvider.returnItemStack(containerItem);
+                            ItemStack restStack = sourceProvider.returnItemStack(containerItem, sourceItems[i]);
                             if (!restStack.isEmpty()) {
                                 ItemHandlerHelper.giveItemToPlayer(player, restStack);
                             }

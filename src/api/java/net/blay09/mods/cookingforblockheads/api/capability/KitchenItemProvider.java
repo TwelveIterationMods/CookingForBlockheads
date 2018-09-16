@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.api.capability;
 
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -52,8 +53,13 @@ public class KitchenItemProvider extends DefaultKitchenItemProvider {
     }
 
     @Override
-    public ItemStack returnItemStack(ItemStack itemStack) {
-        return ItemHandlerHelper.insertItemStacked(itemHandler, itemStack, false);
+    public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
+        ItemStack restStack = itemHandler.insertItem(sourceItem.getSourceSlot(), itemStack, false);
+        if (!restStack.isEmpty()) {
+            restStack = ItemHandlerHelper.insertItemStacked(itemHandler, itemStack, false);
+        }
+
+        return restStack;
     }
 
     @Override

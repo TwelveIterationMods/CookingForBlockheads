@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -73,13 +74,14 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
         }
 
         @Override
-        public ItemStack returnItemStack(ItemStack itemStack) {
+        public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
             for (ItemStack providedStack : itemStacks) {
                 if (ItemHandlerHelper.canItemStacksStackRelaxed(itemStack, providedStack)) {
                     tileMilkJar.fill(1000, true);
                     break;
                 }
             }
+
             return ItemStack.EMPTY;
         }
 

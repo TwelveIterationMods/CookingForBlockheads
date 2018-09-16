@@ -307,8 +307,9 @@ public class CookingRegistry {
         ItemStack bucketStack = new ItemStack(Items.BUCKET);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            ItemStack found = itemProvider.findAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, bucketStack) && count > 0, 1, inventories, false, simulate);
-            if (!found.isEmpty()) {
+            IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, bucketStack) && count > 0;
+            SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, 1, inventories, false, simulate);
+            if (sourceItem != null) {
                 return true;
             }
         }
