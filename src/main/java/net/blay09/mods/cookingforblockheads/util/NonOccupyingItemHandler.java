@@ -27,11 +27,15 @@ public class NonOccupyingItemHandler implements IItemHandler {
     @Nonnull
     @Override
     public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        if (itemHandler.extractItem(slot, 1, true).isEmpty()) {
-            return stack;
+        boolean foundItem = false;
+        for (int i = 0; i < getSlots(); i++) {
+            if (itemHandler.extractItem(i, 1, true).getItem() == stack.getItem()) {
+                foundItem = true;
+                break;
+            }
         }
 
-        return itemHandler.insertItem(slot, stack, simulate);
+        return foundItem ? itemHandler.insertItem(slot, stack, simulate) : stack;
     }
 
     @Nonnull
