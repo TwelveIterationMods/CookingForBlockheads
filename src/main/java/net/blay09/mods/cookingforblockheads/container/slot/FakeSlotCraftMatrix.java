@@ -17,6 +17,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
     private float visibleItemTime;
     private int visibleItemIndex;
     private boolean isLocked;
+    private boolean available = true;
 
     public FakeSlotCraftMatrix(int slotId, int x, int y) {
         super(slotId, x, y);
@@ -55,6 +56,14 @@ public class FakeSlotCraftMatrix extends FakeSlot {
                 }
             }
         }
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public boolean isAvailable() {
+        return available;
     }
 
     public void updateSlot(float partialTicks) {

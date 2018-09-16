@@ -16,13 +16,15 @@ public class FoodRecipeWithIngredients {
     private final RecipeStatus recipeStatus;
     private final int recipeWidth;
     private final List<NonNullList<ItemStack>> craftMatrix;
+    private final int availabilityMap;
 
-    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, RecipeStatus recipeStatus, int recipeWidth, List<NonNullList<ItemStack>> craftMatrix) {
+    public FoodRecipeWithIngredients(ItemStack outputItem, RecipeType recipeType, RecipeStatus recipeStatus, int recipeWidth, List<NonNullList<ItemStack>> craftMatrix, int availabilityMap) {
         this.outputItem = outputItem;
         this.recipeType = recipeType;
         this.recipeStatus = recipeStatus;
         this.recipeWidth = recipeWidth;
         this.craftMatrix = craftMatrix;
+        this.availabilityMap = availabilityMap;
     }
 
     public static FoodRecipeWithIngredients read(ByteBuf buf) {
@@ -44,7 +46,8 @@ public class FoodRecipeWithIngredients {
         }
         RecipeType recipeType = RecipeType.fromId(buf.readByte());
         RecipeStatus recipeStatus = RecipeStatus.fromId(buf.readByte());
-        return new FoodRecipeWithIngredients(outputItem, recipeType, recipeStatus, recipeWidth, craftMatrix);
+        int availabilityMap = buf.readShort();
+        return new FoodRecipeWithIngredients(outputItem, recipeType, recipeStatus, recipeWidth, craftMatrix, availabilityMap);
     }
 
     public void write(ByteBuf buf) {
@@ -59,6 +62,7 @@ public class FoodRecipeWithIngredients {
         }
         buf.writeByte(recipeType.ordinal());
         buf.writeByte(recipeStatus.ordinal());
+        buf.writeShort(availabilityMap);
     }
 
     public RecipeType getRecipeType() {
@@ -81,7 +85,11 @@ public class FoodRecipeWithIngredients {
         return outputItem;
     }
 
-    public static FoodRecipeWithIngredients fromFoodRecipe(FoodRecipe recipe, RecipeStatus status, List<NonNullList<ItemStack>> craftMatrix) {
-        return new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), status, recipe.getRecipeWidth(), craftMatrix);
+    public static FoodRecipeWithIngredients fromFoodRecipe(FoodRecipe recipe, RecipeStatus status, List<NonNullList<ItemStack>> craftMatrix, int availabilityMap) {
+        return new FoodRecipeWithIngredients(recipe.getOutputItem(), recipe.getType(), status, recipe.getRecipeWidth(), craftMatrix, availabilityMap);
+    }
+
+    public int getAvailabilityMap() {
+        return availabilityMap;
     }
 }

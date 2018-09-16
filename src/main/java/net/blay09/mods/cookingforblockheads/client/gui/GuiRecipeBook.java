@@ -239,17 +239,15 @@ public class GuiRecipeBook extends GuiContainer {
             float prevZLevel = zLevel;
             zLevel = 300f;
             for (Slot slot : inventorySlots.inventorySlots) {
-                if (!(slot instanceof FakeSlotRecipe)) {
-                    continue;
-                }
+                if (slot instanceof FakeSlotRecipe) {
+                    if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
+                        drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
+                    }
 
-                if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
-                    drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
-                }
-
-                FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
-                if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
-                    drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 92, 16, 16);
+                    FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
+                    if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
+                        drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 92, 16, 16);
+                    }
                 }
             }
 
@@ -295,7 +293,19 @@ public class GuiRecipeBook extends GuiContainer {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
+
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        float prevZLevel = zLevel;
+        zLevel = 300f;
+        for (Slot slot : inventorySlots.inventorySlots) {
+            if (slot instanceof FakeSlotCraftMatrix) {
+                if (!((FakeSlotCraftMatrix) slot).isAvailable() && !slot.getStack().isEmpty()) {
+                    drawGradientRect(guiLeft + slot.xPos, guiTop + slot.yPos, guiLeft + slot.xPos + 16, guiTop + slot.yPos + 16, 0x77FF4444, 0x77FF5555);
+                }
+            }
+        }
+        zLevel = prevZLevel;
 
         container.updateSlots(partialTicks);
 

@@ -242,12 +242,18 @@ public class ContainerRecipeBook extends Container {
             List<FoodIngredient> ingredients = recipe.getCraftMatrix();
             List<NonNullList<ItemStack>> craftMatrix = Lists.newArrayListWithCapacity(ingredients.size());
             boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(recipe.getOutputItem());
-            for (FoodIngredient ingredient : ingredients) {
+            int availabilityMap = 0;
+            for (int i = 0; i < ingredients.size(); i++) {
+                FoodIngredient ingredient = ingredients.get(i);
                 NonNullList<ItemStack> stackList = NonNullList.create();
                 if (ingredient != null) {
                     List<SourceItem> sourceList = CookingRegistry.findSourceCandidates(ingredient, inventories, requireBucket, noFilter || forceNoFilter);
                     if (sourceList.isEmpty()) {
                         continue outerLoop;
+                    }
+
+                    if (sourceList.stream().anyMatch(it -> it.getSourceProvider() != null)) {
+                        availabilityMap |= 1 << i;
                     }
 
                     for (SourceItem source : sourceList) {
@@ -260,7 +266,7 @@ public class ContainerRecipeBook extends Container {
             }
 
             RecipeStatus recipeStatus = CookingRegistry.getRecipeStatus(recipe, inventories, multiBlock != null && multiBlock.hasSmeltingProvider());
-            resultList.add(FoodRecipeWithIngredients.fromFoodRecipe(recipe, recipeStatus, craftMatrix));
+            resultList.add(FoodRecipeWithIngredients.fromFoodRecipe(recipe, recipeStatus, craftMatrix, availabilityMap));
         }
 
         resultList.sort((o1, o2) -> o2.getRecipeStatus().ordinal() - o1.getRecipeStatus().ordinal());
@@ -360,6 +366,7 @@ public class ContainerRecipeBook extends Container {
         if (recipe == null) {
             for (FakeSlotCraftMatrix matrixSlot : matrixSlots) {
                 matrixSlot.setIngredient(null);
+                matrixSlot.setAvailable(true);
             }
             return;
         }
@@ -367,6 +374,7 @@ public class ContainerRecipeBook extends Container {
         if (recipe.getRecipeType() == RecipeType.SMELTING) {
             for (int i = 0; i < matrixSlots.size(); i++) {
                 matrixSlots.get(i).setIngredient(i == 4 ? recipe.getCraftMatrix().get(0) : null);
+                matrixSlots.get(i).setAvailable((recipe.getAvailabilityMap() & 1) == 1);
             }
         } else {
             NonNullList[] matrix = new NonNullList[9];
@@ -379,6 +387,7 @@ public class ContainerRecipeBook extends Container {
 
             for (int i = 0; i < matrix.length; i++) {
                 matrixSlots.get(i).setIngredient(matrix[i]);
+                matrixSlots.get(i).setAvailable((recipe.getAvailabilityMap() & (1 << i)) == (1 << i));
             }
         }
     }
@@ -446,6 +455,7 @@ public class ContainerRecipeBook extends Container {
         if (lastOutputItem.isEmpty() || lastOutputItem.getItem() != outputItem.getItem() || selectedRecipeList == null || selectedRecipeIndex >= selectedRecipeList.size()) {
             selectedRecipeIndex = 0;
         }
+
         populateMatrixSlots();
         lastOutputItem = outputItem;
     }
