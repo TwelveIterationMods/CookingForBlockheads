@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.container;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
@@ -419,6 +420,14 @@ public class ContainerRecipeBook extends Container {
             for (FoodRecipeWithStatus recipe : itemList) {
                 if (recipe.getOutputItem().getDisplayName().toLowerCase().contains(term.toLowerCase())) {
                     filteredItems.add(recipe);
+                } else {
+                    List<String> tooltips = CookingForBlockheads.proxy.getItemTooltip(recipe.getOutputItem(), player);
+                    for (String tooltip : tooltips) {
+                        if (tooltip.toLowerCase().contains(term.toLowerCase())) {
+                            filteredItems.add(recipe);
+                            break;
+                        }
+                    }
                 }
             }
         }
