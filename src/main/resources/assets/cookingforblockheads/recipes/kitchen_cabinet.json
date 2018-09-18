@@ -5,7 +5,7 @@
   "type": "forge:ore_shaped",
   "pattern": [
     "CCC",
-    "CBC",
+    "CBC"
   ],
   "key": {
     "C": {
