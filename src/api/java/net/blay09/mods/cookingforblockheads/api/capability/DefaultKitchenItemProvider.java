@@ -43,7 +43,7 @@ public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider
         for (int j = 0; j < getSlots(); j++) {
             ItemStack itemStack = getStackInSlot(j);
             if (!itemStack.isEmpty() && predicate.test(itemStack, itemStack.getCount() - getSimulatedUseCount(j))) {
-                return new SourceItem(this, j, itemStack);
+                return new SourceItem(this, j, itemStack.copy());
             }
         }
 

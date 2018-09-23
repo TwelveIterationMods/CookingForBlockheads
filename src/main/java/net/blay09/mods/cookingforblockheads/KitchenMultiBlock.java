@@ -90,8 +90,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
             }
         }
 
-        itemStack.shrink(count - (!restStack.isEmpty() ? restStack.getCount() : 0));
-        return itemStack;
+        return restStack;
     }
 
     public void trySmelt(ItemStack outputItem, ItemStack inputItem, EntityPlayer player, boolean stack) {
@@ -104,10 +103,11 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
             IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem) && count > 0;
-            SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, stack ? inputItem.getMaxStackSize() : 1, inventories, requireBucket, false);
+            int count = stack ? inputItem.getMaxStackSize() : 1;
+            SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, count, inventories, requireBucket, false);
             if (sourceItem != null) {
                 ItemStack sourceStack = sourceItem.getSourceStack();
-                int amount = Math.min(sourceStack.getCount(), stack ? inputItem.getMaxStackSize() : 1);
+                int amount = Math.min(sourceStack.getCount(), count);
                 ItemStack restStack = smeltItem(sourceStack, amount);
                 if (!restStack.isEmpty()) {
                     restStack = itemProvider.returnItemStack(restStack, sourceItem);
