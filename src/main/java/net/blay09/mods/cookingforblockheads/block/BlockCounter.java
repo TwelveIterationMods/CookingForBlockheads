@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
@@ -15,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -152,7 +154,7 @@ public class BlockCounter extends BlockKitchen {
         }
 
         if (!world.isRemote) {
-            if (facing == EnumFacing.UP && !heldItem.isEmpty()) {
+            if (facing == EnumFacing.UP && !heldItem.isEmpty() && (heldItem.getItem() instanceof ItemBlock || heldItem.getItem() == Compat.cuttingBoardItem)) {
                 return false;
             }
 
