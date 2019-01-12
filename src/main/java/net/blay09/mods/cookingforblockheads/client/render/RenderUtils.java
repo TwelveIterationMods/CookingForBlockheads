@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 
 import javax.annotation.Nullable;
 
@@ -41,7 +41,7 @@ public class RenderUtils {
         return angle;
     }
 
-    public static void renderBlockAt(Minecraft mc, IBlockState state, World world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
+    public static void renderBlockAt(Minecraft mc, IBlockState state, IBlockAccess world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
         BlockRendererDispatcher dispatcher = mc.getBlockRendererDispatcher();
         try {
             EnumBlockRenderType renderType = state.getRenderType();
@@ -55,7 +55,7 @@ public class RenderUtils {
         }
     }
 
-    public static void renderBlockAt(Minecraft mc, IBlockState state, World world, BlockPos pos, BufferBuilder renderer) {
+    public static void renderBlockAt(Minecraft mc, IBlockState state, IBlockAccess world, BlockPos pos, BufferBuilder renderer) {
         renderBlockAt(mc, state, world, pos, renderer, null);
     }
 

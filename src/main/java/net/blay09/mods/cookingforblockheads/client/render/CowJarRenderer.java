@@ -18,15 +18,22 @@ public class CowJarRenderer extends MilkJarRenderer {
 
     @Override
     public void render(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (!tileEntity.hasWorld()) {
+            return;
+        }
+
         super.render(tileEntity, x, y, z, partialTicks, destroyStage, alpha);
+
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (state.getBlock() != ModBlocks.cowJar) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
+
         if (entity == null && tileEntity.hasWorld()) {
             entity = new EntityCow(tileEntity.getWorld());
             entity.setScaleForAge(false);
         }
+
         bindTexture(COW_TEXTURES);
         if (entity != null) {
             GlStateManager.pushMatrix();

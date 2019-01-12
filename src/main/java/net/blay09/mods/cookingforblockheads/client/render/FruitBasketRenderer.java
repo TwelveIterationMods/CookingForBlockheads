@@ -14,6 +14,10 @@ public class FruitBasketRenderer extends TileEntitySpecialRenderer<TileFruitBask
 
     @Override
     public void render(TileFruitBasket tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (!tileEntity.hasWorld()) {
+            return;
+        }
+
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (state.getBlock() != ModBlocks.fruitBasket) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;

@@ -30,6 +30,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -93,7 +94,8 @@ public class ClientProxy extends CommonProxy {
             if (world != null && pos != null) {
                 TileEntity tileEntity = world.getTileEntity(pos);
                 if (tileEntity instanceof TileFridge) {
-                    return ((TileFridge) tileEntity).getBaseFridge().getFridgeColor().getColorValue();
+                    TileFridge baseFridge = ((TileFridge) tileEntity).getBaseFridge();
+                    return baseFridge.getFridgeColor().getColorValue();
                 }
             }
             return 0xFFFFFFFF;
@@ -102,10 +104,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public List<String> getItemTooltip(ItemStack itemStack, EntityPlayer player) {
-        List<String> tooltips = new ArrayList<>();
-        itemStack.getItem().addInformation(itemStack, player.world, tooltips, ITooltipFlag.TooltipFlags.NORMAL);
-        ForgeEventFactory.onItemTooltip(itemStack, player, tooltips, ITooltipFlag.TooltipFlags.NORMAL);
-        return tooltips;
+        return itemStack.getTooltip(player, ITooltipFlag.TooltipFlags.NORMAL);
     }
 
     @SubscribeEvent

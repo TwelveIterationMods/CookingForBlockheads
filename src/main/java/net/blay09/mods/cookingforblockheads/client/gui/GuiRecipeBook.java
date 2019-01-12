@@ -25,6 +25,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import yalter.mousetweaks.api.MouseTweaksIgnore;
 
@@ -75,6 +76,8 @@ public class GuiRecipeBook extends GuiContainer {
     public void initGui() {
         ySize = 174;
         super.initGui();
+
+        Keyboard.enableRepeatEvents(true);
 
         btnPrevRecipe = new GuiButton(0, width / 2 - 79, height / 2 - 51, 13, 20, "<");
         btnPrevRecipe.visible = false;
@@ -321,6 +324,9 @@ public class GuiRecipeBook extends GuiContainer {
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
+
+        Keyboard.enableRepeatEvents(false);
+
         if (isEventHandler) {
             MinecraftForge.EVENT_BUS.unregister(this);
             isEventHandler = false;

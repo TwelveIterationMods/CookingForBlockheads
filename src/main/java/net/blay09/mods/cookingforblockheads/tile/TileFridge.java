@@ -177,6 +177,10 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
     }
 
     public TileFridge getBaseFridge() {
+        if (!hasWorld()) {
+            return this;
+        }
+
         if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
             TileFridge baseFridge = (TileFridge) world.getTileEntity(pos.down());
             if (baseFridge != null) {

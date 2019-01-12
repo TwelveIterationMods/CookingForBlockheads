@@ -21,6 +21,7 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         if (!tileEntity.hasWorld()) {
             return;
         }
+
         BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 

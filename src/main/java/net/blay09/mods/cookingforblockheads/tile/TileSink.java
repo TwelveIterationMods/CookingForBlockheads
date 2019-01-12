@@ -153,6 +153,10 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         @Override
         @Nonnull
         public ItemStack getStackInSlot(int slot) {
+            if (ModConfig.general.sinkRequiresWater && fluidTank.getFluidAmount() - waterUsed < 1000) {
+                return ItemStack.EMPTY;
+            }
+
             return itemStacks.get(slot);
         }
     }

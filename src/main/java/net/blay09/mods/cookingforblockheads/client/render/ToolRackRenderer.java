@@ -13,10 +13,15 @@ public class ToolRackRenderer extends TileEntitySpecialRenderer<TileToolRack> {
 
     @Override
     public void render(TileToolRack tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (!tileEntity.hasWorld()) {
+            return;
+        }
+
         IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (state.getBlock() != ModBlocks.toolRack) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
+
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);

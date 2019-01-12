@@ -93,6 +93,10 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
         @Override
         @Nonnull
         public ItemStack getStackInSlot(int slot) {
+            if (tileMilkJar.getMilkAmount() - milkUsed < 1000) {
+                return ItemStack.EMPTY;
+            }
+
             return itemStacks.get(slot);
         }
     }
