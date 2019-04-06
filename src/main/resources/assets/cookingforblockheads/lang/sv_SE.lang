@@ -1,0 +1,110 @@
+item.cookingforblockheads:recipe_book_tier0.name=Matlagning för dumskallar
+item.cookingforblockheads:recipe_book_tier1.name=Matlagning för dumskallar I
+item.cookingforblockheads:recipe_book_tier2.name=Matlagning för dumskallar II
+item.cookingforblockheads:heating_unit.name=Uppvärmningsenhet
+item.cookingforblockheads:ice_unit.name=Isenhet
+item.cookingforblockheads:preservation_chamber.name=Konserveringskammare
+
+tooltip.cookingforblockheads:recipe_book_tier0=Den filterlösa utgåvan
+tooltip.cookingforblockheads:recipe_book_tier0.description=Visar alla matrecept.
+tooltip.cookingforblockheads:recipe_book_tier1=Receptbok
+tooltip.cookingforblockheads:recipe_book_tier1.description=Visar mat som du kan göra med\nsakerna du har i din utrustning.
+tooltip.cookingforblockheads:recipe_book_tier2=Tillverkningsbok
+tooltip.cookingforblockheads:recipe_book_tier2.description=Kan tillverka mata med sakerna\ndu har i din utrustning.
+
+###
+
+tile.cookingforblockheads:cooking_table.name=Matlagningsbänk
+tile.cookingforblockheads:oven.name=Ugn
+tile.cookingforblockheads:fruit_basket.name=Fruktkorg
+tile.cookingforblockheads:fridge.name=Kylskåp
+tile.cookingforblockheads:sink.name=Diskho
+tile.cookingforblockheads:tool_rack.name=Verktygshylla
+tile.cookingforblockheads:milk_jar.name=Mjölk i glasburk
+tile.cookingforblockheads:cow_jar.name=Ko i glasburk
+tile.cookingforblockheads:toaster.name=Brödrost
+tile.cookingforblockheads:spice_rack.name=Kryddhylla
+tile.cookingforblockheads:counter.name=Köksbänk
+tile.cookingforblockheads:cabinet.name=Kökslucka
+tile.cookingforblockheads:corner.name=Köksbänkhörn
+tile.cookingforblockheads:kitchen_floor.name=Köksgolv
+tile.cookingforblockheads:cutting_board.name=Skärbräde
+
+tooltip.cookingforblockheads:multiblock_kitchen=Multiblockskök
+tooltip.cookingforblockheads:dyeable=Kan färgläggas
+tooltip.cookingforblockheads:cooking_table.description=Gör det möjligt att tillverka.
+tooltip.cookingforblockheads:oven.description=Gör det möjligt att smälta.
+tooltip.cookingforblockheads:sink.description=Tillförser recept med vatten.
+tooltip.cookingforblockheads:fridge.description=Lagrar ingredienser for recept.
+tooltip.cookingforblockheads:fruit_basket.description=Lagrar frukter för recept.
+tooltip.cookingforblockheads:tool_rack.description=Tillförser recept med verktyg.
+tooltip.cookingforblockheads:milk_jar.description=Tillförser recept med mjölk.
+tooltip.cookingforblockheads:cow_jar.description=Producerar långsamt mjölk för recept.
+tooltip.cookingforblockheads:toaster.description=Förvandlar bröd till rostat bröd med magi.
+tooltip.cookingforblockheads:spice_rack.description=Lagrar kryddor och ingredienser.
+tooltip.cookingforblockheads:counter.description=Lagrar ingredienser för recept.
+tooltip.cookingforblockheads:cabinet.description=Kan placeras på väggen ovanför köksblock.
+tooltip.cookingforblockheads:corner.description=Ingen speciell användning.
+tooltip.cookingforblockheads:kitchen_floor.description=Ingen speciell användning.
+tooltip.cookingforblockheads:heating_unit.description=Gör det möjligt att värma upp en ugn med energi.
+tooltip.cookingforblockheads:ice_unit.description=Förser recept med snö och is.
+tooltip.cookingforblockheads:preservation_chamber.description=Förhindrar det sista föremålet i en plats från att användas.
+tooltip.cookingforblockheads:cutting_board.description=Förser recept med ett skärbräde.
+tooltip.cookingforblockheads:requires_pams=Kräver Pam's Harvestcraft
+tooltip.cookingforblockheads:cutting_board_deprecated=Detta föremål är föråldrat.\nPams skärbräde kan placeras direkt numera.
+tooltip.cookingforblockheads:can_be_placed_in_world=Kan placeras i världen.
+
+###
+
+gui.cookingforblockheads:no_ingredients=En eller\nflera\ningredienser\nsaknas
+gui.cookingforblockheads:no_selection=Välj ett föremål\ntill höger för\natt se receptet.
+
+tooltip.cookingforblockheads:click_to_see_recipe=Klicka för att se receptet
+tooltip.cookingforblockheads:click_to_craft_one=Klicka igen för att tillverka
+tooltip.cookingforblockheads:click_to_smelt_one=Klicka igen för att tillaga
+tooltip.cookingforblockheads:click_to_craft_stack=Shift-klicka för att tillverka en föremålsgrupp
+tooltip.cookingforblockheads:click_to_smelt_stack=Shift-klicka för att tillaga en föremålsgrupp
+tooltip.cookingforblockheads:missing_tools=Verktyg saknas för att kunna tillverka
+tooltip.cookingforblockheads:missing_ingredients=Ingredienser saknas för att kunna tillverka
+tooltip.cookingforblockheads:missing_oven=Ugn saknas för att kunna tillaga
+tooltip.cookingforblockheads:sort_by_name=Sortera efter namn
+tooltip.cookingforblockheads:sort_by_hunger=Sortera efter återställd hunger
+tooltip.cookingforblockheads:sort_by_saturation=Sortera efter mättnad
+tooltip.cookingforblockheads:click_to_lock=Högerklicka för att låsa föremål
+tooltip.cookingforblockheads:click_to_unlock=Högerklicka för att låsa upp föremål 
+tooltip.cookingforblockheads:scroll_to_switch=Rulla för att välja föremål
+tooltip.cookingforblockheads:energy_stored=Lagrad energi: %d/%d
+tooltip.cookingforblockheads:oven_upgrade=Ugnuppgradering
+tooltip.cookingforblockheads:fridge_upgrade=Kylskåpsuppgradering
+
+###
+
+container.cookingforblockheads:oven=Matlagningsugn
+container.cookingforblockheads:fridge=Kylskåp
+container.cookingforblockheads:spice_rack=Kryddhylla
+container.cookingforblockheads:counter=Köksbänk
+container.cookingforblockheads:cabinet=Kökslucka
+container.cookingforblockheads:fruit_basket=Fruktkorg
+
+itemGroup.cookingforblockheads=Cooking for Blockheads
+
+###
+
+waila.cookingforblockheads:milk_stored=Lagrad mjölk: %d/%d
+waila.cookingforblockheads:toast_progress=Rostar... (%s)
+waila.cookingforblockheads:heating_unit=Uppgradering: Uppvärmningsenhet
+waila.cookingforblockheads:ice_unit=Uppgradering: Isenhet
+waila.cookingforblockheads:preservation_chamber=Uppgradering: Konserveringskammare
+
+###
+
+cookingforblockheads:subtitle.fridge_open=Kylskåp öppnas
+cookingforblockheads:subtitle.fridge_close=Kylskåp stängs
+cookingforblockheads:subtitle.oven_open=Ugn öppnas
+cookingforblockheads:subtitle.oven_close=Ugn stängs
+cookingforblockheads:subtitle.toaster_start=Brödrost börjar rosta
+cookingforblockheads:subtitle.toaster_stop=Brödrost slutar rosta
+
+###
+
+jei.cookingforblockheads:cow_jar=Ko i glasburk

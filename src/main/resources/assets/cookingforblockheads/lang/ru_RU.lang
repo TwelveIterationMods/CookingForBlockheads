@@ -1,6 +1,9 @@
 item.cookingforblockheads:recipe_book_tier0.name=Кулинария для болванов
 item.cookingforblockheads:recipe_book_tier1.name=Кулинария для болванов I
 item.cookingforblockheads:recipe_book_tier2.name=Кулинария для болванов II
+item.cookingforblockheads:heating_unit.name=Нагревательный блок
+item.cookingforblockheads:ice_unit.name=Ледяной блок
+item.cookingforblockheads:preservation_chamber.name=Камера консервации
 
 tooltip.cookingforblockheads:recipe_book_tier0=#Издание без фильтра
 tooltip.cookingforblockheads:recipe_book_tier0.description=Показывает все продуктовые рецепты.
@@ -13,6 +16,7 @@ tooltip.cookingforblockheads:recipe_book_tier2.description=Можете созд
 
 tile.cookingforblockheads:cooking_table.name=Кулинарный стол
 tile.cookingforblockheads:oven.name=Кухонная плита
+tile.cookingforblockheads:fruit_basket.name=Фруктовая корзина
 tile.cookingforblockheads:fridge.name=Холодильник
 tile.cookingforblockheads:sink.name=Раковина
 tile.cookingforblockheads:tool_rack.name=Вешалка для инструментов
@@ -21,8 +25,10 @@ tile.cookingforblockheads:cow_jar.name=Корова в банке
 tile.cookingforblockheads:toaster.name=Тостер
 tile.cookingforblockheads:spice_rack.name=Набор специй
 tile.cookingforblockheads:counter.name=Кухонная стойка
+tile.cookingforblockheads:cabinet.name=Кухонный шкаф
 tile.cookingforblockheads:corner.name=Кухонный уголок
 tile.cookingforblockheads:kitchen_floor.name=Кухонный пол
+tile.cookingforblockheads:cutting_board.name=Разделочная доска
 
 tooltip.cookingforblockheads:multiblock_kitchen=Многоблочная кухня
 tooltip.cookingforblockheads:dyeable=Покраска
@@ -30,14 +36,23 @@ tooltip.cookingforblockheads:cooking_table.description=Включает спос
 tooltip.cookingforblockheads:oven.description=Включает способность готовить.
 tooltip.cookingforblockheads:sink.description=Обеспечивает рецептам воду.
 tooltip.cookingforblockheads:fridge.description=Хранит ингредиенты для рецептов.
+tooltip.cookingforblockheads:fruit_basket.description=Хранит фрукты для рецептов.
 tooltip.cookingforblockheads:tool_rack.description=Предоставляет инструменты для рецептов.
 tooltip.cookingforblockheads:milk_jar.description=Обеспечивает молоком рецепты.
 tooltip.cookingforblockheads:cow_jar.description=Медленно производит молоко для рецептов.
 tooltip.cookingforblockheads:toaster.description=Волшебно превращает хлеб в тост.
 tooltip.cookingforblockheads:spice_rack.description=Хранит специи и ингредиенты.
 tooltip.cookingforblockheads:counter.description=Хранит ингредиенты для рецептов.
+tooltip.cookingforblockheads:cabinet.description=Может быть размещен на стене над кухонными блоками.
 tooltip.cookingforblockheads:corner.description=Не используется, в частности.
 tooltip.cookingforblockheads:kitchen_floor.description=Не используется, в частности.
+tooltip.cookingforblockheads:heating_unit.description=Позволяет нагревать духовку с помощью энергии.
+tooltip.cookingforblockheads:ice_unit.description=Обеспечивает снег и лед по рецептам.
+tooltip.cookingforblockheads:preservation_chamber.description=Предотвращает израсходование последнего предмета слота.
+tooltip.cookingforblockheads:cutting_board.description=Обеспечивает разделочную доску для рецептов.
+tooltip.cookingforblockheads:requires_pams=Требует Pam's Harvestcraft
+tooltip.cookingforblockheads:cutting_board_deprecated=Этот предмет устарел.\nPam's разделочная доска может быть помещена прямо сейчас.
+tooltip.cookingforblockheads:can_be_placed_in_world=Может быть размещен в мире.
 
 ###
 
@@ -58,6 +73,9 @@ tooltip.cookingforblockheads:sort_by_saturation=Сортировать по на
 tooltip.cookingforblockheads:click_to_lock=Нажмите, чтобы заблокировать предмет
 tooltip.cookingforblockheads:click_to_unlock=Нажмите, чтобы разблокировать предмет
 tooltip.cookingforblockheads:scroll_to_switch=Прокрутите для выбора предмета
+tooltip.cookingforblockheads:energy_stored=Энергия хранится: %d/%d
+tooltip.cookingforblockheads:oven_upgrade=Обновление кухонной плиты
+tooltip.cookingforblockheads:fridge_upgrade=Обновление холодильника
 
 ###
 
@@ -65,6 +83,8 @@ container.cookingforblockheads:oven=Кухонная плита
 container.cookingforblockheads:fridge=Холодильник
 container.cookingforblockheads:spice_rack=Набор специй
 container.cookingforblockheads:counter=Кухонная стойка
+container.cookingforblockheads:cabinet=Кухонный шкаф
+container.cookingforblockheads:fruit_basket=Фруктовая корзина
 
 itemGroup.cookingforblockheads=Кулинария для болванов
 
@@ -72,8 +92,9 @@ itemGroup.cookingforblockheads=Кулинария для болванов
 
 waila.cookingforblockheads:milk_stored=Хранится молока: %d/%d
 waila.cookingforblockheads:toast_progress=Обжаривание... (%s)
-
-hint.cookingforblockheads:more_foods.cut_bread_first=Сначала используйте нож, чтобы разрезать хлеб.
+waila.cookingforblockheads:heating_unit=Обновление: Нагревательный блок
+waila.cookingforblockheads:ice_unit=Обновление: Ледяной блок
+waila.cookingforblockheads:preservation_chamber=Обновление: Камера консервации
 
 ###
 
