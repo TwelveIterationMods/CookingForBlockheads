@@ -59,12 +59,12 @@ public class BlockOven extends BlockKitchen {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
+        /*if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
             if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
                 heldItem.shrink(1);
             }
             return true;
-        }
+        }*/
 
         if (facing == EnumFacing.UP) {
             if (CookingRegistry.isToolItem(heldItem)) {
