@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmel
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -118,8 +119,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     @Override
     public void update() {
         if (isFirstTick) {
-            facing = world.getBlockState(pos).getValue(BlockOven.FACING);
-            isFirstTick = false;
+            IBlockState state = world.getBlockState(pos);
+            if (state.getBlock() == ModBlocks.oven) {
+                facing = state.getValue(BlockOven.FACING);
+                isFirstTick = false;
+            }
         }
 
         doorAnimator.update();
