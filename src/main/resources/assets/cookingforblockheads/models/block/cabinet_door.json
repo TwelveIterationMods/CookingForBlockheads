@@ -1,12 +1,6 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
-	"textures": {
-		"backsplash": "blocks/e_texture",
-		"texture": "blocks/e_texture",
-		"countertop": "blocks/e_texture",
-		"handle": "blocks/e_texture"
-	},
-	"elements": [ 	 
+	"elements": [
 		{
 			"__comment": "Door",
 			"from": [ 2.5, 3.5, 2 ],
