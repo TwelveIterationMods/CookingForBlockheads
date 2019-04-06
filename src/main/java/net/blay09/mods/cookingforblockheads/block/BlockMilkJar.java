@@ -67,18 +67,24 @@ public class BlockMilkJar extends BlockKitchen {
             if (heldItem.getItem() == Items.MILK_BUCKET) {
                 if (tileMilkJar.getMilkAmount() <= tileMilkJar.getMilkCapacity() - 1000) {
                     tileMilkJar.fill(1000, true);
-                    player.setHeldItem(hand, new ItemStack(Items.BUCKET));
+                    if (!player.capabilities.isCreativeMode) {
+                        player.setHeldItem(hand, new ItemStack(Items.BUCKET));
+                    }
                 }
                 return true;
             } else if (heldItem.getItem() == Items.BUCKET) {
                 if (tileMilkJar.getMilkAmount() >= 1000) {
                     if (heldItem.getCount() == 1) {
                         tileMilkJar.drain(1000, true);
-                        player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
+                        if (!player.capabilities.isCreativeMode) {
+                            player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
+                        }
                     } else {
                         if (player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) {
                             tileMilkJar.drain(1000, true);
-                            heldItem.shrink(1);
+                            if (!player.capabilities.isCreativeMode) {
+                                heldItem.shrink(1);
+                            }
                         }
                     }
                 }
