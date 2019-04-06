@@ -39,6 +39,11 @@ public class KitchenItemProvider extends DefaultKitchenItemProvider {
 
     @Override
     public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
+        // A slot of -1 means it's being infinitely provided by this block or an upgrade.
+        if (slot == -1) {
+            return ItemStack.EMPTY;
+        }
+
         ItemStack itemStack = itemHandler.getStackInSlot(slot);
         if (itemStack.getCount() - (simulate ? usedStackSize[slot] : 0) >= amount) {
             ItemStack result = itemHandler.extractItem(slot, amount, simulate);

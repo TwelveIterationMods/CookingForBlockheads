@@ -54,14 +54,35 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         private final ItemStack iceStack = new ItemStack(Blocks.ICE);
 
         @Nullable
-        @Override
-        public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+        private SourceItem applyIceUnit(IngredientPredicate predicate, int maxAmount) {
             if (getBaseFridge().hasIceUpgrade && predicate.test(snowStack, 64)) {
                 return new SourceItem(this, -1, ItemHandlerHelper.copyStackWithSize(snowStack, maxAmount));
             }
 
             if (getBaseFridge().hasIceUpgrade && predicate.test(iceStack, 64)) {
                 return new SourceItem(this, -1, ItemHandlerHelper.copyStackWithSize(iceStack, maxAmount));
+            }
+
+            return null;
+        }
+
+        @Nullable
+        @Override
+        public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+            SourceItem iceUnitResult = applyIceUnit(predicate, maxAmount);
+            if (iceUnitResult != null) {
+                return iceUnitResult;
+            }
+
+            return super.findSource(predicate, maxAmount, inventories, requireBucket, simulate);
+        }
+
+        @Nullable
+        @Override
+        public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+            SourceItem iceUnitResult = applyIceUnit(predicate, maxAmount);
+            if (iceUnitResult != null) {
+                return iceUnitResult;
             }
 
             IngredientPredicate modifiedPredicate = predicate;
