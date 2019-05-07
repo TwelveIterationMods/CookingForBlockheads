@@ -122,7 +122,7 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         GlStateManager.popMatrix();*/
 
         // Render the fridge content if the door is open
-        if (doorAngle > 0f) {
+        if (doorAngle != 0f) {
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
             GlStateManager.pushMatrix();
             GlStateManager.color(1f, 1f, 1f, 1f);
