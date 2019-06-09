@@ -79,9 +79,4 @@ public class ContainerCounter extends Container implements IContainerWithDoor {
         return tileCounter == tileEntity;
     }
 
-    @ChestContainer.IsLargeCallback
-    public boolean isLargeCounter() {
-        return numRows > 3;
-    }
-
 }

@@ -80,9 +80,4 @@ public class ContainerFridge extends Container implements IContainerWithDoor {
     public boolean isTileEntity(TileEntity tileEntity) {
         return tileFridge == tileEntity || tileFridge.getBaseFridge() == tileEntity;
     }
-
-    @ChestContainer.IsLargeCallback
-    public boolean isLargeFridge() {
-        return numRows > 3;
-    }
 }
