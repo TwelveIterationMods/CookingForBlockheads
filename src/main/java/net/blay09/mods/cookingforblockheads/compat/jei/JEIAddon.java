@@ -7,6 +7,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import net.blay09.mods.cookingforblockheads.ModConfig;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
 import net.minecraft.client.gui.GuiButton;
@@ -24,7 +25,10 @@ public class JEIAddon implements IModPlugin {
     public void register(@Nonnull IModRegistry registry) {
         // Register cow jar recipe
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
-        registry.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
+
+        if (ModConfig.general.cowJarEnabled) {
+            registry.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
+        }
 
         // Do not put JEI items behind the sorting buttons
         registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiRecipeBook>() {
