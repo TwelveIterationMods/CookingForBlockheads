@@ -5,18 +5,17 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class GeneralFoodRecipe extends FoodRecipe {
 
     public GeneralFoodRecipe(IRecipe recipe) {
         this.outputItem = recipe.getRecipeOutput();
-        if (recipe instanceof ShapedRecipes) {
-            this.recipeWidth = ((ShapedRecipes) recipe).getWidth();
-        } else if (recipe instanceof ShapedOreRecipe) {
-            this.recipeWidth = ((ShapedOreRecipe) recipe).getWidth();
+        if (recipe instanceof IShapedRecipe) {
+            this.recipeWidth = ((IShapedRecipe) recipe).getRecipeWidth();
         } else {
-            this.recipeWidth = recipe.canFit(1, 1) ? 1 : recipe.canFit(2, 1) ? 2 : 3;
+            this.recipeWidth = recipe.canFit(1, 1) ? 1 : recipe.canFit(2, 2) ? 2 : 3;
         }
         craftMatrix = Lists.newArrayList();
         for (Ingredient ingredient : recipe.getIngredients()) {
