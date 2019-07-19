@@ -16,6 +16,7 @@ tooltip.cookingforblockheads:recipe_book_tier2.description=Может созда
 
 tile.cookingforblockheads:cooking_table.name=Кухонный стол
 tile.cookingforblockheads:oven.name=Духовка
+tile.cookingforblockheads:fruit_basket.name=Корзина для фруктов
 tile.cookingforblockheads:fridge.name=Холодильник
 tile.cookingforblockheads:sink.name=Раковина
 tile.cookingforblockheads:tool_rack.name=Полка для инструментов
@@ -41,6 +42,7 @@ tooltip.cookingforblockheads:cow_jar.description=Медленно произво
 tooltip.cookingforblockheads:toaster.description=Превращает хлеб в тосты волшебным образом.
 tooltip.cookingforblockheads:spice_rack.description=Хранит специи и ингредиенты.
 tooltip.cookingforblockheads:counter.description=Хранит ингредиенты для рецептов.
+tooltip.cookingforblockheads:cabinet.description=Можно разместить на стене над кухонными блоками.
 tooltip.cookingforblockheads:corner.description=Не используется по-отдельности.
 tooltip.cookingforblockheads:kitchen_floor.description=Не используется по-отдельности.
 tooltip.cookingforblockheads:heating_unit.description=Позволяет нагревать духовку, используя энергию.
