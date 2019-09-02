@@ -36,7 +36,7 @@ public class HarvestCraftAddon {
         MinecraftForge.EVENT_BUS.register(this);
         Compat.cuttingBoardItem = Item.REGISTRY.getObject(new ResourceLocation(Compat.PAMS_HARVESTCRAFT, "cuttingboarditem"));
         if (Compat.cuttingBoardItem != null && Compat.cuttingBoardItem != Items.AIR) {
-            CookingForBlockheads.extraCreativeTabItems.add(new ItemStack(Compat.cuttingBoardItem));
+            CookingForBlockheads.extraItemGroupItems.add(new ItemStack(Compat.cuttingBoardItem));
             cuttingBoardFound = true;
         }
     }

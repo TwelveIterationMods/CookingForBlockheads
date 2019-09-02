@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
+import net.blay09.mods.cookingforblockheads.tile.SpiceRackTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 
-public class SpiceRackRenderer extends TileEntitySpecialRenderer<TileSpiceRack> {
+public class SpiceRackRenderer extends TileEntitySpecialRenderer<SpiceRackTileEntity> {
 
     @Override
-    public void render(TileSpiceRack tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(SpiceRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (!tileEntity.hasWorld()) {
             return;
         }

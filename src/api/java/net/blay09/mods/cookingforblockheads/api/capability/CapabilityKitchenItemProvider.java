@@ -1,28 +1,28 @@
 package net.blay09.mods.cookingforblockheads.api.capability;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.INBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class CapabilityKitchenItemProvider {
 
-	@CapabilityInject(IKitchenItemProvider.class)
-	public static Capability<IKitchenItemProvider> CAPABILITY;
+    @CapabilityInject(IKitchenItemProvider.class)
+    public static Capability<IKitchenItemProvider> CAPABILITY;
 
-	public static void register() {
-		CapabilityManager.INSTANCE.register(IKitchenItemProvider.class, new Capability.IStorage<IKitchenItemProvider>() {
-			@Override
-			public NBTBase writeNBT(Capability<IKitchenItemProvider> capability, IKitchenItemProvider instance, EnumFacing side) {
-				return null;
-			}
+    public static void register() {
+        CapabilityManager.INSTANCE.register(IKitchenItemProvider.class, new Capability.IStorage<IKitchenItemProvider>() {
+            @Override
+            public INBT writeNBT(Capability<IKitchenItemProvider> capability, IKitchenItemProvider instance, Direction side) {
+                return null;
+            }
 
-			@Override
-			public void readNBT(Capability<IKitchenItemProvider> capability, IKitchenItemProvider instance, EnumFacing side, NBTBase nbt) {
+            @Override
+            public void readNBT(Capability<IKitchenItemProvider> capability, IKitchenItemProvider instance, Direction side, INBT nbt) {
 
-			}
-		}, KitchenItemProvider::new);
-	}
+            }
+        }, KitchenItemProvider::new);
+    }
 
 }

@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 @Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
-public class TileSpiceRack extends TileEntity implements IDropoffManager {
+public class SpiceRackTileEntity extends TileEntity implements IDropoffManager {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
         @Override

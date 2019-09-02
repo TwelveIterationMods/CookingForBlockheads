@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.util.ITickable;
 
@@ -14,7 +14,7 @@ public class TileCowJar extends TileMilkJar implements ITickable {
     @Override
     public void update() {
         if (milkAmount < MILK_CAPACITY) {
-            milkAmount += ModConfig.general.cowJarMilkPerTick;
+            milkAmount += CookingForBlockheadsConfig.general.cowJarMilkPerTick;
             isDirty = true;
         }
         ticksSinceUpdate++;

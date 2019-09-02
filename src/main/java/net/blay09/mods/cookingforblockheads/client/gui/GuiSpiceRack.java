@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.container.ContainerSpiceRack;
-import net.blay09.mods.cookingforblockheads.tile.TileSpiceRack;
+import net.blay09.mods.cookingforblockheads.container.SpiceRackContainer;
+import net.blay09.mods.cookingforblockheads.tile.SpiceRackTileEntity;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -13,8 +13,8 @@ public class GuiSpiceRack extends GuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/spice_rack.png");
 
-    public GuiSpiceRack(EntityPlayer player, TileSpiceRack tileSpiceRack) {
-        super(new ContainerSpiceRack(player, tileSpiceRack));
+    public GuiSpiceRack(EntityPlayer player, SpiceRackTileEntity tileSpiceRack) {
+        super(new SpiceRackContainer(player, tileSpiceRack));
         ySize = 132;
     }
 

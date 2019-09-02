@@ -1,11 +1,11 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.DyeColor;
 
 public interface IDyeableKitchen {
 
-    EnumDyeColor getDyedColor();
+    DyeColor getDyedColor();
 
-    void setDyedColor(EnumDyeColor color);
+    void setDyedColor(DyeColor color);
 
 }

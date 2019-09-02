@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.container.ContainerOven;
+import net.blay09.mods.cookingforblockheads.container.OvenContainer;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.*;
@@ -28,7 +28,7 @@ public class GuiOven extends GuiContainer {
     private final TileOven tileEntity;
 
     public GuiOven(EntityPlayer player, TileOven tileEntity) {
-        super(new ContainerOven(player, tileEntity));
+        super(new OvenContainer(player, tileEntity));
         this.tileEntity = tileEntity;
         this.xSize += 22;
         this.ySize = 193;

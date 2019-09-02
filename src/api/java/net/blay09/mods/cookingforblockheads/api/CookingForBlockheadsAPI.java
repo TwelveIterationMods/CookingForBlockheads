@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.api;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,14 +32,6 @@ public class CookingForBlockheadsAPI {
         internalMethods.addSinkHandler(itemStack, sinkHandler);
     }
 
-    /**
-     * @deprecated use addToasterHandler
-     */
-    @Deprecated
-    public static void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
-        internalMethods.addToastHandler(itemStack, toastHandler);
-    }
-
     public static void addToasterHandler(ItemStack itemStack, ToasterHandler toastHandler) {
         internalMethods.addToasterHandler(itemStack, toastHandler);
     }
@@ -64,7 +56,7 @@ public class CookingForBlockheadsAPI {
         internalMethods.addMilkItem(milkItem);
     }
 
-    public static void addCowClass(Class<? extends EntityLivingBase> clazz) {
+    public static void addCowClass(Class<? extends LivingEntity> clazz) {
         internalMethods.addCowClass(clazz);
     }
 

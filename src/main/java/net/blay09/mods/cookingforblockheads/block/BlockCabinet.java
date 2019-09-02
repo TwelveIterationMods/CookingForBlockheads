@@ -27,10 +27,6 @@ public class BlockCabinet extends BlockCounter {
     private static final AxisAlignedBB BOUNDING_BOX_WEST = new AxisAlignedBB(0.125f, 0.125f, 0, 1f, 1f, 1);
     private static final AxisAlignedBB BOUNDING_BOX_SOUTH = new AxisAlignedBB(0f, 0.125f, 0f, 1f, 1f, 0.875f);
 
-    public BlockCabinet() {
-        setUnlocalizedName(registryName.toString());
-    }
-
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileCabinet();
@@ -47,7 +43,7 @@ public class BlockCabinet extends BlockCounter {
 
     @Override
     @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
         switch(state.getValue(FACING)) {
             case EAST:
                 return BOUNDING_BOX_EAST;

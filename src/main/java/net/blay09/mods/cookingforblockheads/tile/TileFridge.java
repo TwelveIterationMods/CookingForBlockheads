@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -125,7 +126,7 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         markDirtyAndUpdate();
     }
 
-    public void setFridgeColor(EnumDyeColor fridgeColor) {
+    public void setFridgeColor(DyeColor fridgeColor) {
         this.fridgeColor = fridgeColor;
         markDirtyAndUpdate();
     }
@@ -237,7 +238,7 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
         return super.getCapability(capability, facing);
     }
 
-    public EnumDyeColor getFridgeColor() {
+    public DyeColor getFridgeColor() {
         return fridgeColor;
     }
 

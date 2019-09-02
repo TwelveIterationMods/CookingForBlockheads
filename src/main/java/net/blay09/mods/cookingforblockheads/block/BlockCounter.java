@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
 import net.blay09.mods.cookingforblockheads.tile.TileCounter;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -15,6 +16,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -164,11 +166,11 @@ public class BlockCounter extends BlockKitchen {
         return true;
     }
 
+    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
-        return state.withProperty(FLIPPED, shouldBePlacedFlipped(pos, state.getValue(FACING), placer));
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        return state.with(FLIPPED, shouldBePlacedFlipped(context, state.get(FACING)));
     }
 
     @Override

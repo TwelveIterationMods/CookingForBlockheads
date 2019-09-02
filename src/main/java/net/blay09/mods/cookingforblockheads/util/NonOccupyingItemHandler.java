@@ -24,6 +24,11 @@ public class NonOccupyingItemHandler implements IItemHandler {
         return itemHandler.getStackInSlot(slot);
     }
 
+    @Override
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+        return itemHandler.isItemValid(slot, stack);
+    }
+
     @Nonnull
     @Override
     public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {

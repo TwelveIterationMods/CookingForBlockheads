@@ -1,0 +1,85 @@
+{
+    "item.cookingforblockheads:recipe_book_tier0": "spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ",
+    "item.cookingforblockheads:recipe_book_tier1": "I spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ",
+    "item.cookingforblockheads:recipe_book_tier2": "II spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ",
+
+    "tooltip.cookingforblockheads:recipe_book_tier0": "uoᴉʇᴉpƎ ɹǝʇꞁᴉℲoN#",
+    "tooltip.cookingforblockheads:recipe_book_tier0.description": "˙sǝdᴉɔǝɹ pooɟ ꞁꞁɐ sʍoɥS",
+    "tooltip.cookingforblockheads:recipe_book_tier1": "ʞooᗺ ǝdᴉɔǝᴚ",
+    "tooltip.cookingforblockheads:recipe_book_tier1.description": "˙ʎɹoʇuǝʌuᴉ ɹnoʎ uᴉ ǝʌɐɥ noʎ sᵷuᴉɥʇ\\nǝɥʇ ɥʇᴉʍ ǝʞɐɯ uɐɔ noʎ pooɟ sʍoɥS",
+    "tooltip.cookingforblockheads:recipe_book_tier2": "ʞooᗺ ᵷuᴉʇɟɐɹƆ",
+    "tooltip.cookingforblockheads:recipe_book_tier2.description": "˙ʎɹoʇuǝʌuᴉ ɹnoʎ uᴉ ǝʌɐɥ noʎ\\nsᵷuᴉɥʇ ǝɥʇ ᵷuᴉsn pooɟ ʇɟɐɹɔ uɐƆ",
+
+
+    "block.cookingforblockheads:cooking_table": "ǝꞁqɐ⟘ ᵷuᴉʞooƆ",
+    "block.cookingforblockheads:oven": "uǝʌO",
+    "block.cookingforblockheads:fridge": "ǝᵷpᴉɹℲ",
+    "block.cookingforblockheads:sink": "ʞuᴉS",
+    "block.cookingforblockheads:tool_rack": "ʞɔɐᴚ ꞁoo⟘",
+    "block.cookingforblockheads:milk_jar": "ɹɐՐ ʞꞁᴉW",
+    "block.cookingforblockheads:cow_jar": "ɹɐՐ ɐ uᴉ ʍoƆ",
+    "block.cookingforblockheads:toaster": "ɹǝʇsɐo⟘",
+    "block.cookingforblockheads:spice_rack": "ʞɔɐᴚ ǝɔᴉdS",
+    "block.cookingforblockheads:counter": "ɹǝʇunoƆ uǝɥɔʇᴉʞ",
+    "block.cookingforblockheads:corner": "ɹǝuɹoƆ uǝɥɔʇᴉʞ",
+    "block.cookingforblockheads:kitchen_floor": "ɹooꞁℲ uǝɥɔʇᴉʞ",
+
+    "tooltip.cookingforblockheads:multiblock_kitchen": "uǝɥɔʇᴉʞ ʞɔoꞁqᴉʇꞁnW",
+    "tooltip.cookingforblockheads:dyeable": "ǝꞁqɐǝʎᗡ",
+    "tooltip.cookingforblockheads:cooking_table.description": "˙sǝᴉʇᴉꞁᴉqɐ ᵷuᴉʇɟɐɹɔ sǝꞁqɐuƎ",
+    "tooltip.cookingforblockheads:oven.description": "˙sǝᴉʇᴉꞁᴉqɐ ᵷuᴉʇꞁǝɯs sǝꞁqɐuƎ",
+    "tooltip.cookingforblockheads:sink.description": "˙sǝdᴉɔǝɹ oʇ ɹǝʇɐʍ sǝpᴉʌoɹԀ",
+    "tooltip.cookingforblockheads:fridge.description": "˙sǝdᴉɔǝɹ ɹoɟ sʇuǝᴉpǝɹᵷuᴉ sǝɹoʇS",
+    "tooltip.cookingforblockheads:tool_rack.description": "˙sǝdᴉɔǝɹ oʇ sꞁooʇ sǝpᴉʌoɹԀ",
+    "tooltip.cookingforblockheads:milk_jar.description": "˙sǝdᴉɔǝɹ oʇ ʞꞁᴉɯ sǝpᴉʌoɹԀ",
+    "tooltip.cookingforblockheads:cow_jar.description": "˙sǝdᴉɔǝɹ ɹoɟ ʞꞁᴉɯ sǝɔnpoɹd ʎꞁʍoꞁS",
+    "tooltip.cookingforblockheads:toaster.description": "˙ʇsɐoʇ oʇuᴉ pɐǝɹq suɹnʇ ʎꞁꞁɐɔᴉᵷɐW",
+    "tooltip.cookingforblockheads:spice_rack.description": "˙sʇuǝᴉpǝɹᵷuᴉ puɐ sǝɔᴉds sǝɹoʇS",
+    "tooltip.cookingforblockheads:counter.description": "˙sǝdᴉɔǝɹ ɹoɟ sʇuǝᴉpǝɹᵷuᴉ sǝɹoʇS",
+    "tooltip.cookingforblockheads:corner.description": "˙ɹɐꞁnɔᴉʇɹɐd uᴉ ǝsn oN",
+    "tooltip.cookingforblockheads:kitchen_floor.description": "˙ɹɐꞁnɔᴉʇɹɐd uᴉ ǝsn oN",
+
+
+    "gui.cookingforblockheads:no_ingredients": "sʇuǝᴉpǝɹᵷuᴉ\\nɥᵷnouǝ\\nʇoN",
+    "gui.cookingforblockheads:no_selection": "˙ǝdᴉɔǝɹ sʇᴉ ǝǝs\\noʇ ʇɥᵷᴉɹ ǝɥʇ uo\\nɯǝʇᴉ uɐ ʇɔǝꞁǝS",
+
+    "tooltip.cookingforblockheads:click_to_see_recipe": "ǝdᴉɔǝɹ ǝǝs oʇ ʞɔᴉꞁƆ",
+    "tooltip.cookingforblockheads:click_to_craft_one": "ʇɟɐɹɔ oʇ uᴉɐᵷɐ ʞɔᴉꞁƆ",
+    "tooltip.cookingforblockheads:click_to_smelt_one": "ʞooɔ oʇ uᴉɐᵷɐ ʞɔᴉꞁƆ",
+    "tooltip.cookingforblockheads:click_to_craft_stack": "ʞɔɐʇs ɐ ʇɟɐɹɔ oʇ ʞɔᴉꞁƆ-ʇɟᴉɥS",
+    "tooltip.cookingforblockheads:click_to_smelt_stack": "ʞɔɐʇs ɐ ʞooɔ oʇ ʞɔᴉꞁƆ-ʇɟᴉɥS",
+    "tooltip.cookingforblockheads:missing_tools": "ʇɟɐɹɔ oʇ sꞁooʇ ᵷuᴉssᴉW",
+    "tooltip.cookingforblockheads:missing_ingredients": "ʇɟɐɹɔ oʇ sʇuǝᴉpǝɹᵷuᴉ ᵷuᴉssᴉW",
+    "tooltip.cookingforblockheads:missing_oven": "ʞooɔ oʇ uǝʌo ᵷuᴉssᴉW",
+    "tooltip.cookingforblockheads:sort_by_name": "ǝɯɐN ʎq ʇɹoS",
+    "tooltip.cookingforblockheads:sort_by_hunger": "pǝɹoʇsǝᴚ ɹǝᵷunH ʎq ʇɹoS",
+    "tooltip.cookingforblockheads:sort_by_saturation": "uoᴉʇɐɹnʇɐS ʎq ʇɹoS",
+    "tooltip.cookingforblockheads:click_to_lock": "ɯǝʇᴉ ʞɔoꞁ oʇ ʞɔᴉꞁƆ",
+    "tooltip.cookingforblockheads:click_to_unlock": "ɯǝʇᴉ ʞɔoꞁun oʇ ʞɔᴉꞁƆ",
+    "tooltip.cookingforblockheads:scroll_to_switch": "ɯǝʇᴉ ʇɔǝꞁǝs oʇ ꞁꞁoɹɔS",
+
+
+    "container.cookingforblockheads:oven": "uǝʌO ᵷuᴉʞooƆ",
+    "container.cookingforblockheads:fridge": "ǝᵷpᴉɹℲ",
+    "container.cookingforblockheads:spice_rack": "ʞɔɐᴚ ǝɔᴉdS",
+    "container.cookingforblockheads:counter": "ɹǝʇunoƆ uǝɥɔʇᴉʞ",
+
+    "itemGroup.cookingforblockheads": "spɐǝɥʞɔoꞁᗺ ɹoɟ ᵷuᴉʞooƆ",
+
+
+    "waila.cookingforblockheads:milk_stored": "%2$d/%1$d :pǝɹoʇS ʞꞁᴉW",
+    "waila.cookingforblockheads:toast_progress": "(%s) ˙˙˙ᵷuᴉʇsɐo⟘",
+
+    "hint.cookingforblockheads:more_foods.cut_bread_first": "˙ʇsɹᴉɟ pɐǝɹq ǝɥʇ ʇnɔ oʇ ǝɟᴉuʞ ɐ ǝs∩",
+
+
+    "cookingforblockheads:subtitle.fridge_open": "suǝdo ǝᵷpᴉɹℲ",
+    "cookingforblockheads:subtitle.fridge_close": "sǝsoꞁɔ ǝᵷpᴉɹℲ",
+    "cookingforblockheads:subtitle.oven_open": "suǝdo uǝʌO",
+    "cookingforblockheads:subtitle.oven_close": "sǝsoꞁɔ uǝʌO",
+    "cookingforblockheads:subtitle.toaster_start": "ᵷuᴉʇsɐoʇ sʇɹɐʇs ɹǝʇsɐo⟘",
+    "cookingforblockheads:subtitle.toaster_stop": "ᵷuᴉʇsɐoʇ pǝɥsᴉuᴉɟ ɹǝʇsɐo⟘",
+
+
+    "jei.cookingforblockheads:cow_jar": "ɹɐՐ ɐ uᴉ ʍoƆ"
+}

@@ -29,7 +29,7 @@ public class ItemPreservationChamber extends Item {
 
     public ItemPreservationChamber() {
         setUnlocalizedName(registryName.toString());
-        setCreativeTab(CookingForBlockheads.creativeTab);
+        setCreativeTab(CookingForBlockheads.itemGroup);
         setMaxStackSize(1);
     }
 

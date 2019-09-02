@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.api.event;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.Collection;
 

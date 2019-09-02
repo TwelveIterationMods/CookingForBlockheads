@@ -1,8 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.ToastHandler;
-import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -93,7 +91,7 @@ public class TileToaster extends TileEntity implements ITickable {
                 for (int i = 0; i < itemHandler.getSlots(); i++) {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
                     if (!inputStack.isEmpty()) {
-                        ToastHandler toastHandler = CookingRegistry.getToastHandler(inputStack);
+                        ToastHandler toastHandler = CookingRegistry.getToasterHandler(inputStack);
                         ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : ItemStack.EMPTY;
                         if (outputStack.isEmpty()) {
                             outputStack = inputStack;

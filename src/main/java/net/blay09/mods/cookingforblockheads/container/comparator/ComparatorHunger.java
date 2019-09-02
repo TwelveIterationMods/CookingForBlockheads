@@ -2,24 +2,23 @@ package net.blay09.mods.cookingforblockheads.container.comparator;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemFood;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Comparator;
 
 public class ComparatorHunger implements Comparator<FoodRecipeWithStatus> {
 
     private final ComparatorName fallback = new ComparatorName();
-    private final EntityPlayer entityPlayer;
+    private final PlayerEntity player;
 
-    public ComparatorHunger(EntityPlayer entityPlayer) {
-        this.entityPlayer = entityPlayer;
+    public ComparatorHunger(PlayerEntity player) {
+        this.player = player;
     }
 
     @Override
     public int compare(FoodRecipeWithStatus o1, FoodRecipeWithStatus o2) {
-        boolean isFirstFood = o1.getOutputItem().getItem() instanceof ItemFood;
-        boolean isSecondFood = o2.getOutputItem().getItem() instanceof ItemFood;
+        boolean isFirstFood = o1.getOutputItem().getItem().isFood();
+        boolean isSecondFood = o2.getOutputItem().getItem().isFood();
         if (!isFirstFood && !isSecondFood) {
             return fallback.compare(o1, o2);
         } else if (!isFirstFood) {
@@ -28,7 +27,7 @@ public class ComparatorHunger implements Comparator<FoodRecipeWithStatus> {
             return -1;
         }
 
-        int result = CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o2.getOutputItem(), entityPlayer) - CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o1.getOutputItem(), entityPlayer);
+        int result = CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o2.getOutputItem(), player) - CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o1.getOutputItem(), player);
         if (result == 0) {
             return fallback.compare(o1, o2);
         }

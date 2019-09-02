@@ -6,58 +6,53 @@ import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 public class BlockOven extends BlockKitchen {
 
-    public static PropertyBool POWERED = PropertyBool.create("powered");
+    public static BooleanProperty POWERED = BooleanProperty.create("powered");
 
     public static final String name = "oven";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final Random random = new Random();
 
     public BlockOven() {
-        super(Material.IRON);
-
-        setUnlocalizedName(registryName.toString());
-        setSoundType(SoundType.METAL);
-        setHardness(5f);
-        setResistance(10f);
+        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, POWERED);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, POWERED);
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
         /*if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
             if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
@@ -66,9 +61,9 @@ public class BlockOven extends BlockKitchen {
             return true;
         }*/
 
-        if (facing == EnumFacing.UP) {
+        if (facing == Direction.UP) {
             if (CookingRegistry.isToolItem(heldItem)) {
-                EnumFacing stateFacing = state.getValue(FACING);
+                Direction stateFacing = state.get(FACING);
                 float hx = hitX;
                 float hz = hitZ;
                 switch (stateFacing) {
@@ -99,7 +94,7 @@ public class BlockOven extends BlockKitchen {
                 if (index != -1) {
                     TileOven tileOven = (TileOven) world.getTileEntity(pos);
                     if (tileOven != null && tileOven.getToolItem(index).isEmpty()) {
-                        ItemStack toolItem = heldItem.splitStack(1);
+                        ItemStack toolItem = heldItem.split(1);
                         tileOven.setToolItem(index, toolItem);
                     }
                 }
@@ -107,7 +102,7 @@ public class BlockOven extends BlockKitchen {
             }
         }
 
-        if (facing == state.getValue(FACING)) {
+        if (facing == state.get(FACING)) {
             TileOven tileOven = (TileOven) world.getTileEntity(pos);
             if (tileOven != null) {
                 if (player.isSneaking()) {
@@ -138,36 +133,37 @@ public class BlockOven extends BlockKitchen {
         return state.withProperty(POWERED, hasPowerUpgrade);
     }
 
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new TileOven();
     }
 
     @Override
-    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+    public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
         TileOven tileEntity = (TileOven) world.getTileEntity(pos);
         if (tileEntity != null && tileEntity.isBurning()) {
-            EnumFacing facing = state.getValue(FACING);
+            Direction facing = state.get(FACING);
             float x = (float) pos.getX() + 0.5f;
-            float y = (float) pos.getY() + 0f + random.nextFloat() * 6f / 16f;
+            float y = (float) pos.getY() + 0f + BlockOven.random.nextFloat() * 6f / 16f;
             float z = (float) pos.getZ() + 0.5f;
             float f3 = 0.52f;
-            float f4 = random.nextFloat() * 0.6f - 0.3f;
+            float f4 = BlockOven.random.nextFloat() * 0.6f - 0.3f;
 
-            if (facing == EnumFacing.WEST) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (x - f3), (double) y, (double) (z + f4), 0, 0, 0);
-            } else if (facing == EnumFacing.EAST) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (x + f3), (double) y, (double) (z + f4), 0, 0, 0);
-            } else if (facing == EnumFacing.NORTH) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (x + f4), (double) y, (double) (z - f3), 0, 0, 0);
-            } else if (facing == EnumFacing.SOUTH) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (x + f4), (double) y, (double) (z + f3), 0, 0, 0);
+            if (facing == Direction.WEST) {
+                world.addParticle(ParticleTypes.SMOKE, (double) (x - f3), (double) y, (double) (z + f4), 0, 0, 0);
+            } else if (facing == Direction.EAST) {
+                world.addParticle(ParticleTypes.SMOKE, (double) (x + f3), (double) y, (double) (z + f4), 0, 0, 0);
+            } else if (facing == Direction.NORTH) {
+                world.addParticle(ParticleTypes.SMOKE, (double) (x + f4), (double) y, (double) (z - f3), 0, 0, 0);
+            } else if (facing == Direction.SOUTH) {
+                world.addParticle(ParticleTypes.SMOKE, (double) (x + f4), (double) y, (double) (z + f3), 0, 0, 0);
             }
         }
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileOven) {
             if (((TileOven) tileEntity).hasPowerUpgrade()) {
@@ -175,16 +171,7 @@ public class BlockOven extends BlockKitchen {
             }
         }
 
-        super.breakBlock(world, pos, state);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
+        super.onReplaced(state, world, pos, newState, isMoving);
     }
 
 }

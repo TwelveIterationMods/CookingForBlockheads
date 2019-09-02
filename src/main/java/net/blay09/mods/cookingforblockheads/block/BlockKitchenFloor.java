@@ -20,13 +20,7 @@ public class BlockKitchenFloor extends Block {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public BlockKitchenFloor() {
-        super(Material.ROCK);
-
-        setUnlocalizedName(registryName.toString());
-        setSoundType(SoundType.STONE);
-        setCreativeTab(CookingForBlockheads.creativeTab);
-        setHardness(5f);
-        setResistance(10f);
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override

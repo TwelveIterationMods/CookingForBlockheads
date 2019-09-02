@@ -4,53 +4,56 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 
 public class CowJarHandler {
 
-    private static final List<Class<? extends EntityLivingBase>> additionalCowClasses = Lists.newArrayList();
+    private static final List<Class<? extends LivingEntity>> additionalCowClasses = Lists.newArrayList();
 
     @SuppressWarnings("unchecked")
     public static void registerCowClass(Class<?> clazz) {
-        additionalCowClasses.add((Class<? extends EntityLivingBase>) clazz);
+        additionalCowClasses.add((Class<? extends LivingEntity>) clazz);
     }
 
     @SubscribeEvent
     public void onEntityDamage(LivingAttackEvent event) {
-        if (!ModConfig.general.cowJarEnabled) {
+        if (!CookingForBlockheadsConfig.COMMON.cowJarEnabled.get()) {
             return;
         }
         if (event.getSource() == DamageSource.ANVIL && isCow(event.getEntityLiving())) {
             BlockPos pos = event.getEntity().getPosition().down();
-            IBlockState blockBelow = event.getEntity().getEntityWorld().getBlockState(pos);
+            BlockState blockBelow = event.getEntity().getEntityWorld().getBlockState(pos);
             if (blockBelow.getBlock() == ModBlocks.milkJar) {
                 event.getEntity().getEntityWorld().setBlockState(pos, ModBlocks.cowJar.getDefaultState());
             }
             NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.COW_IN_A_JAR), new NetworkRegistry.TargetPoint(event.getEntity().world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
-            event.getEntity().setDead();
+            event.getEntity().remove();
             event.setCanceled(true);
         }
     }
 
-    public boolean isCow(EntityLivingBase entity) {
-        if (entity instanceof EntityCow) {
+    public boolean isCow(LivingEntity entity) {
+        if (entity instanceof CowEntity) {
             return true;
         }
-        for (Class<? extends EntityLivingBase> clazz : additionalCowClasses) {
+
+        for (Class<? extends LivingEntity> clazz : additionalCowClasses) {
             if (clazz.isAssignableFrom(entity.getClass())) {
                 return true;
             }
         }
+
         String registryName = EntityList.getEntityString(entity);
         return registryName != null && registryName.contains("cow");
     }

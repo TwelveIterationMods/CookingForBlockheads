@@ -22,12 +22,12 @@ import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -35,9 +35,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class ContainerRecipeBook extends Container {
+public class RecipeBookContainer extends Container {
 
-    private final EntityPlayer player;
+    private final PlayerEntity player;
 
     private final List<FakeSlotRecipe> recipeSlots = Lists.newArrayList();
     private final List<FakeSlotCraftMatrix> matrixSlots = Lists.newArrayList();
@@ -66,14 +66,14 @@ public class ContainerRecipeBook extends Container {
 
     private boolean isInNoFilterPreview;
 
-    public ContainerRecipeBook(EntityPlayer player) {
+    public RecipeBookContainer(PlayerEntity player) {
         this.player = player;
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
                 FakeSlotRecipe slot = new FakeSlotRecipe(j + i * 3, 102 + j * 18, 11 + i * 18);
                 recipeSlots.add(slot);
-                addSlotToContainer(slot);
+                addSlot(slot);
             }
         }
 
@@ -81,23 +81,23 @@ public class ContainerRecipeBook extends Container {
             for (int j = 0; j < 3; j++) {
                 FakeSlotCraftMatrix slot = new FakeSlotCraftMatrix(j + i * 3, 24 + j * 18, 20 + i * 18);
                 matrixSlots.add(slot);
-                addSlotToContainer(slot);
+                addSlot(slot);
             }
         }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
+                addSlot(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 92 + i * 18));
             }
         }
 
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 150));
+            addSlot(new Slot(player.inventory, i, 8 + i * 18, 150));
         }
     }
 
     @Override
-    public ItemStack slotClick(int slotNumber, int dragType, ClickType clickType, EntityPlayer player) {
+    public ItemStack slotClick(int slotNumber, int dragType, ClickType clickType, PlayerEntity player) {
         if (slotNumber >= 0 && slotNumber < inventorySlots.size()) {
             Slot slot = inventorySlots.get(slotNumber);
             if (player.world.isRemote) {
@@ -115,7 +115,7 @@ public class ContainerRecipeBook extends Container {
                                 } else if (recipe.getRecipeType() == RecipeType.SMELTING) {
                                     craftMatrix.add(matrixSlots.get(4).getStack());
                                 }
-                                NetworkHandler.instance.sendToServer(new MessageCraftRecipe(recipe.getOutputItem(), recipe.getRecipeType(), craftMatrix, clickType == ClickType.QUICK_MOVE));
+                                NetworkHandler.channel.sendToServer(new MessageCraftRecipe(recipe.getOutputItem(), recipe.getRecipeType(), craftMatrix, clickType == ClickType.QUICK_MOVE));
                             }
                         }
                     } else {
@@ -154,7 +154,7 @@ public class ContainerRecipeBook extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(PlayerEntity player) {
         return true;
     }
 
@@ -164,7 +164,7 @@ public class ContainerRecipeBook extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+    public ItemStack transferStackInSlot(PlayerEntity player, int slotIndex) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(slotIndex);
         if (slot != null && slot.getHasStack()) {
@@ -189,17 +189,17 @@ public class ContainerRecipeBook extends Container {
         return itemStack;
     }
 
-    public ContainerRecipeBook setNoFilter() {
+    public RecipeBookContainer setNoFilter() {
         this.noFilter = true;
         return this;
     }
 
-    public ContainerRecipeBook allowCrafting() {
+    public RecipeBookContainer allowCrafting() {
         this.allowCrafting = true;
         return this;
     }
 
-    public ContainerRecipeBook setKitchenMultiBlock(KitchenMultiBlock kitchenMultiBlock) {
+    public RecipeBookContainer setKitchenMultiBlock(KitchenMultiBlock kitchenMultiBlock) {
         this.multiBlock = kitchenMultiBlock;
         return this;
     }
@@ -225,7 +225,7 @@ public class ContainerRecipeBook extends Container {
                 }
             }
         }
-        NetworkHandler.instance.sendTo(new MessageItemList(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), (EntityPlayerMP) player);
+        NetworkHandler.channel.sendTo(new MessageItemList(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), (ServerPlayerEntity) player);
     }
 
     public void findAndSendRecipes(ItemStack outputItem, boolean forceNoFilter) {
@@ -272,7 +272,7 @@ public class ContainerRecipeBook extends Container {
 
         resultList.sort((o1, o2) -> o2.getRecipeStatus().ordinal() - o1.getRecipeStatus().ordinal());
 
-        NetworkHandler.instance.sendTo(new MessageRecipes(outputItem, resultList), (EntityPlayerMP) player);
+        NetworkHandler.channel.sendTo(new MessageRecipes(outputItem, resultList), (ServerPlayerEntity) player);
     }
 
     public void tryCraft(ItemStack outputItem, RecipeType recipeType, NonNullList<ItemStack> craftMatrix, boolean stack) {
@@ -418,6 +418,7 @@ public class ContainerRecipeBook extends Container {
             filteredItems.addAll(itemList);
         } else {
             for (FoodRecipeWithStatus recipe : itemList) {
+                // TODO toLowerCase without locale
                 if (recipe.getOutputItem().getDisplayName().toLowerCase().contains(term.toLowerCase())) {
                     filteredItems.add(recipe);
                 } else {

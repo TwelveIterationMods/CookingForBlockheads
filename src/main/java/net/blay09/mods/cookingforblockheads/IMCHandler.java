@@ -1,22 +1,21 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.ToastOutputHandler;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 
 public class IMCHandler {
 
     private static final NonNullList<ItemStack> imcNonFoodRecipes = NonNullList.create();
 
-    public static void handleIMCMessage(FMLInterModComms.IMCEvent event) {
-        for (FMLInterModComms.IMCMessage message : event.getMessages()) {
-            switch (message.key) {
+    public static void handleIMCMessage(InterModProcessEvent event) {
+        event.getIMCStream().forEach(message -> {
+            switch (message.getMethod()) {
                 case "RegisterTool":
                     if (message.getMessageType() == ItemStack.class) {
                         CookingForBlockheadsAPI.addToolItem(message.getItemStackValue());
@@ -100,7 +99,7 @@ public class IMCHandler {
                     }
                     break;
             }
-        }
+        });
     }
 
     @SubscribeEvent

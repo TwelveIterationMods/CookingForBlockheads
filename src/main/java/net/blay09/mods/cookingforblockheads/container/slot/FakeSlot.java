@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class FakeSlot extends Slot {
@@ -52,7 +52,7 @@ public class FakeSlot extends Slot {
     }
 
     @Override
-    public boolean canTakeStack(EntityPlayer player) {
+    public boolean canTakeStack(PlayerEntity player) {
         return false;
     }
 }

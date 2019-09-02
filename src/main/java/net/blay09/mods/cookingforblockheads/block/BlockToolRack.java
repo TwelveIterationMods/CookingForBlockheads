@@ -2,23 +2,28 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -37,15 +42,12 @@ public class BlockToolRack extends BlockKitchen {
     };
 
     public BlockToolRack() {
-        super(Material.WOOD);
-
-        setUnlocalizedName(registryName.toString());
-        setSoundType(SoundType.WOOD);
-        setHardness(2.5f);
+        super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
 
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new TileToolRack();
     }
 
@@ -63,32 +65,29 @@ public class BlockToolRack extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
-            facing = EnumFacing.NORTH;
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        Direction facing = context.getFace();
+        if (facing == Direction.UP || facing == Direction.DOWN) {
+            facing = Direction.NORTH;
         }
 
-        return getDefaultState().withProperty(FACING, facing);
+        return getDefaultState().with(FACING, facing);
     }
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-    }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (hand != EnumHand.MAIN_HAND) {
+    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+        if (hand != Hand.MAIN_HAND) {
             return true;
         }
 
         ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof BlockItem) {
             return true;
         }
 
         if (hitY > 0.25f) {
-            EnumFacing stateFacing = state.getValue(FACING);
+            Direction stateFacing = state.get(FACING);
             float hit = hitX;
             switch (stateFacing) {
                 case NORTH:
@@ -110,7 +109,7 @@ public class BlockToolRack extends BlockKitchen {
             if (tileToolRack != null) {
                 if (!heldItem.isEmpty()) {
                     ItemStack oldToolItem = tileToolRack.getItemHandler().getStackInSlot(hitSlot);
-                    ItemStack toolItem = heldItem.splitStack(1);
+                    ItemStack toolItem = heldItem.split(1);
                     if (!oldToolItem.isEmpty()) {
                         if (!player.inventory.addItemStackToInventory(oldToolItem)) {
                             player.dropItem(oldToolItem, false);
@@ -131,15 +130,6 @@ public class BlockToolRack extends BlockKitchen {
         }
 
         return true;
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
     }
 
 }

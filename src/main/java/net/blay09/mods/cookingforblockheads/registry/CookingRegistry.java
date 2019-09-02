@@ -234,7 +234,7 @@ public class CookingRegistry {
     }
 
     @Nullable
-    public static ToastHandler getToastHandler(ItemStack itemStack) {
+    public static ToasterHandler getToasterHandler(ItemStack itemStack) {
         for (Map.Entry<ItemStack, ToastHandler> entry : toastHandlers.entrySet()) {
             if (ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
                 return entry.getValue();

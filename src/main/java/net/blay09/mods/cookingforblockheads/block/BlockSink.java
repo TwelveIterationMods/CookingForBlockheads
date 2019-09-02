@@ -3,9 +3,10 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.TileSink;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -13,14 +14,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
@@ -39,17 +43,12 @@ public class BlockSink extends BlockKitchen {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public BlockSink() {
-        super(Material.ROCK);
-
-        setUnlocalizedName(registryName.toString());
-        setSoundType(SoundType.STONE);
-        setHardness(5f);
-        setResistance(10f);
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, COLOR, FLIPPED);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, COLOR, FLIPPED)
     }
 
     @Override
@@ -57,16 +56,16 @@ public class BlockSink extends BlockKitchen {
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileSink) {
-            return state.withProperty(COLOR, ((TileSink) tileEntity).getDyedColor());
+            return state.with(COLOR, ((TileSink) tileEntity).getDyedColor());
         }
         return state;
     }
 
+    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer);
-        return state.withProperty(FLIPPED, shouldBePlacedFlipped(pos, state.getValue(FACING), placer));
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        return state.with(FLIPPED, shouldBePlacedFlipped(context.getPos(), state.get(FACING), context.getPlayer()));
     }
 
     @Override

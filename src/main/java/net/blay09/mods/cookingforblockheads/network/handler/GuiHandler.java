@@ -34,11 +34,11 @@ public class GuiHandler implements IGuiHandler {
             if (!heldItem.isEmpty()) {
                 switch (heldItem.getItemDamage()) {
                     case 0:
-                        return new ContainerRecipeBook(player).setNoFilter();
+                        return new RecipeBookContainer(player).setNoFilter();
                     case 1:
-                        return new ContainerRecipeBook(player);
+                        return new RecipeBookContainer(player);
                     case 2:
-                        return new ContainerRecipeBook(player).allowCrafting();
+                        return new RecipeBookContainer(player).allowCrafting();
                 }
             }
         } else {
@@ -49,36 +49,36 @@ public class GuiHandler implements IGuiHandler {
                     if (world.getBlockState(pos).getBlock() == ModBlocks.cookingTable) {
                         if (tileEntity instanceof TileCookingTable) {
                             if (((TileCookingTable) tileEntity).hasNoFilterBook()) {
-                                return new ContainerRecipeBook(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                                return new RecipeBookContainer(player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
                             } else {
-                                return new ContainerRecipeBook(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                                return new RecipeBookContainer(player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
                             }
                         }
                     }
                     break;
                 case COOKING_OVEN:
                     if (tileEntity instanceof TileOven) {
-                        return new ContainerOven(player, (TileOven) tileEntity);
+                        return new OvenContainer(player, (TileOven) tileEntity);
                     }
                     break;
                 case FRIDGE:
                     if (tileEntity instanceof TileFridge) {
-                        return new ContainerFridge(player, (TileFridge) tileEntity);
+                        return new FridgeContainer(player, (TileFridge) tileEntity);
                     }
                     break;
                 case SPICE_RACK:
-                    if (tileEntity instanceof TileSpiceRack) {
-                        return new ContainerSpiceRack(player, (TileSpiceRack) tileEntity);
+                    if (tileEntity instanceof SpiceRackTileEntity) {
+                        return new SpiceRackContainer(player, (SpiceRackTileEntity) tileEntity);
                     }
                     break;
                 case COUNTER:
                     if (tileEntity instanceof TileCounter) {
-                        return new ContainerCounter(player, (TileCounter) tileEntity);
+                        return new CounterContainer(player, (TileCounter) tileEntity);
                     }
                     break;
                 case FRUIT_BASKET:
                     if (tileEntity instanceof TileFruitBasket) {
-                        return new ContainerFruitBasket(player, (TileFruitBasket) tileEntity);
+                        return new FruitBasketContainer(player, (TileFruitBasket) tileEntity);
                     }
                     break;
             }
@@ -94,11 +94,11 @@ public class GuiHandler implements IGuiHandler {
             if (!heldItem.isEmpty()) {
                 switch (heldItem.getItemDamage()) {
                     case 0:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player).setNoFilter());
+                        return new GuiRecipeBook(new RecipeBookContainer(player).setNoFilter());
                     case 1:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player));
+                        return new GuiRecipeBook(new RecipeBookContainer(player));
                     case 2:
-                        return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
+                        return new GuiRecipeBook(new RecipeBookContainer(player).allowCrafting());
                 }
             }
         } else {
@@ -106,7 +106,7 @@ public class GuiHandler implements IGuiHandler {
             TileEntity tileEntity = world.getTileEntity(pos);
             switch (id) {
                 case COOKING_TABLE:
-                    return new GuiRecipeBook(new ContainerRecipeBook(player).allowCrafting());
+                    return new GuiRecipeBook(new RecipeBookContainer(player).allowCrafting());
                 case COOKING_OVEN:
                     if (tileEntity instanceof TileOven) {
                         return new GuiOven(player, (TileOven) tileEntity);
@@ -118,8 +118,8 @@ public class GuiHandler implements IGuiHandler {
                     }
                     break;
                 case SPICE_RACK:
-                    if (tileEntity instanceof TileSpiceRack) {
-                        return new GuiSpiceRack(player, (TileSpiceRack) tileEntity);
+                    if (tileEntity instanceof SpiceRackTileEntity) {
+                        return new GuiSpiceRack(player, (SpiceRackTileEntity) tileEntity);
                     }
                     break;
                 case COUNTER:

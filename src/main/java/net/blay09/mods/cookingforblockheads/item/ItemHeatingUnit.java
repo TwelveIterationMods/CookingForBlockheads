@@ -29,7 +29,7 @@ public class ItemHeatingUnit extends Item {
 
     public ItemHeatingUnit() {
         setUnlocalizedName(registryName.toString());
-        setCreativeTab(CookingForBlockheads.creativeTab);
+        setCreativeTab(CookingForBlockheads.itemGroup);
         setMaxStackSize(1);
     }
 

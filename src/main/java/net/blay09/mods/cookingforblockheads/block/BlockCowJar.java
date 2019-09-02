@@ -2,21 +2,21 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.TileCowJar;
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
+
+import javax.annotation.Nullable;
 
 public class BlockCowJar extends BlockMilkJar {
 
     public static final String name = "cow_jar";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public BlockCowJar() {
-        setUnlocalizedName(registryName.toString());
-    }
-
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new TileCowJar();
     }
 

@@ -1,36 +1,23 @@
 package net.blay09.mods.cookingforblockheads.network;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.network.handler.*;
 import net.blay09.mods.cookingforblockheads.network.message.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.IThreadListener;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class NetworkHandler {
 
-    public static final SimpleNetworkWrapper instance = NetworkRegistry.INSTANCE.newSimpleChannel(CookingForBlockheads.MOD_ID);
+    private static final String version = "1.0";
+
+    public static final SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(CookingForBlockheads.MOD_ID, "network"), () -> version, it -> it.equals(version), it -> it.equals(version));
 
     public static void init() {
-        instance.registerMessage(HandlerItemList.class, MessageItemList.class, 0, Side.CLIENT);
-        instance.registerMessage(HandlerCraftRecipe.class, MessageCraftRecipe.class, 1, Side.SERVER);
-        instance.registerMessage(HandlerSyncedEffect.class, MessageSyncedEffect.class, 2, Side.CLIENT);
-        instance.registerMessage(HandlerRequestRecipes.class, MessageRequestRecipes.class, 3, Side.SERVER);
-        instance.registerMessage(HandlerRecipes.class, MessageRecipes.class, 4, Side.CLIENT);
-    }
-
-    public static IThreadListener getThreadListener(MessageContext ctx) {
-        return ctx.side == Side.SERVER ? (WorldServer) ctx.getServerHandler().player.world : getClientThreadListener();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static IThreadListener getClientThreadListener() {
-        return Minecraft.getMinecraft();
+        channel.registerMessage(0, MessageItemList.class, MessageItemList::encode, MessageItemList::decode, MessageItemList::handle);
+        channel.registerMessage(1, MessageCraftRecipe.class, MessageCraftRecipe::encode, MessageCraftRecipe::decode, MessageCraftRecipe::handle);
+        channel.registerMessage(2, MessageSyncedEffect.class, MessageSyncedEffect::encode, MessageSyncedEffect::decode, MessageSyncedEffect::handle);
+        channel.registerMessage(3, MessageRequestRecipes.class, MessageRequestRecipes::encode, MessageRequestRecipes::decode, MessageRequestRecipes::handle);
+        channel.registerMessage(4, MessageRecipes.class, MessageRecipes::encode, MessageRecipes::decode, MessageRecipes::handle);
     }
 
 }

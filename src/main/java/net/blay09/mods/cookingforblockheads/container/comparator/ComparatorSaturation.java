@@ -2,24 +2,23 @@ package net.blay09.mods.cookingforblockheads.container.comparator;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemFood;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Comparator;
 
 public class ComparatorSaturation implements Comparator<FoodRecipeWithStatus> {
 
     private final ComparatorName fallback = new ComparatorName();
-    private final EntityPlayer entityPlayer;
+    private final PlayerEntity entityPlayer;
 
-    public ComparatorSaturation(EntityPlayer entityPlayer) {
+    public ComparatorSaturation(PlayerEntity entityPlayer) {
         this.entityPlayer = entityPlayer;
     }
 
     @Override
     public int compare(FoodRecipeWithStatus o1, FoodRecipeWithStatus o2) {
-        boolean isFirstFood = o1.getOutputItem().getItem() instanceof ItemFood;
-        boolean isSecondFood = o2.getOutputItem().getItem() instanceof ItemFood;
+        boolean isFirstFood = o1.getOutputItem().getItem().isFood();
+        boolean isSecondFood = o2.getOutputItem().getItem().isFood();
         if (!isFirstFood && !isSecondFood) {
             return fallback.compare(o1, o2);
         } else if (!isFirstFood) {

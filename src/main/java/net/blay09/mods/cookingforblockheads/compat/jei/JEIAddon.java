@@ -7,7 +7,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
 import net.minecraft.client.gui.GuiButton;
@@ -26,7 +26,7 @@ public class JEIAddon implements IModPlugin {
         // Register cow jar recipe
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
 
-        if (ModConfig.general.cowJarEnabled) {
+        if (CookingForBlockheadsConfig.general.cowJarEnabled) {
             registry.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
         }
 

@@ -1,0 +1,14 @@
+modLoader="javafml"
+loaderVersion="[24,)"
+issueTrackerURL="https://github.com/blay09/CookingForBlockheads/issues"
+displayURL="https://minecraft.curseforge.com/projects/cooking-for-blockheads"
+authors="BlayTheNinth, ZeroTheShinigami"
+credits="BlayTheNinth: developer; ZeroTheShinigami: artist"
+
+[[mods]]
+modId="cookingforblockheads"
+version="${file.jarVersion}"
+displayName="Cooking for Blockheads"
+description='''
+Adds a cooking book and multiblock kitchens that only shows recipes you can make with what you currently have in your inventory.
+'''

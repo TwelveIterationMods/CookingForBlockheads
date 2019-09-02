@@ -2,11 +2,11 @@ package net.blay09.mods.cookingforblockheads.client.gui;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
-import net.blay09.mods.cookingforblockheads.container.ContainerRecipeBook;
+import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -43,7 +43,7 @@ public class GuiRecipeBook extends GuiContainer {
     private static final ResourceLocation guiTexture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
     private static final int VISIBLE_ROWS = 4;
 
-    private final ContainerRecipeBook container;
+    private final RecipeBookContainer container;
     private boolean isEventHandler;
     private int scrollBarScaledHeight;
     private int scrollBarXPos;
@@ -64,7 +64,7 @@ public class GuiRecipeBook extends GuiContainer {
     private final String[] noIngredients;
     private final String[] noSelection;
 
-    public GuiRecipeBook(ContainerRecipeBook container) {
+    public GuiRecipeBook(RecipeBookContainer container) {
         super(container);
         this.container = container;
 
@@ -238,7 +238,7 @@ public class GuiRecipeBook extends GuiContainer {
 
         GlStateManager.color(1f, 1f, 1f, 1f);
 
-        if (ModConfig.client.showIngredientIcon) {
+        if (CookingForBlockheadsConfig.client.showIngredientIcon) {
             float prevZLevel = zLevel;
             zLevel = 300f;
             for (Slot slot : inventorySlots.inventorySlots) {

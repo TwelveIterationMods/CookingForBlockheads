@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.container.ContainerFridge;
+import net.blay09.mods.cookingforblockheads.container.FridgeContainer;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,7 +15,7 @@ public class GuiFridge extends GuiContainer {
     private final int inventoryRows;
 
     public GuiFridge(EntityPlayer player, TileFridge tileFridge) {
-        super(new ContainerFridge(player, tileFridge));
+        super(new FridgeContainer(player, tileFridge));
         this.inventoryRows = tileFridge.getCombinedItemHandler().getSlots() / 9;
         this.ySize = 114 + this.inventoryRows * 18;
     }

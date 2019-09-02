@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.container.IContainerWithDoor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -104,7 +105,7 @@ public class DoorAnimator {
         return false;
     }
 
-    public void openContainer(EntityPlayer player) {
+    public void openContainer(PlayerEntity player) {
         if (!player.isSpectator()) {
             numPlayersUsing = Math.max(0, numPlayersUsing + 1);
             tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), eventNumPlayers, numPlayersUsing);
@@ -113,7 +114,7 @@ public class DoorAnimator {
         }
     }
 
-    public void closeContainer(EntityPlayer player) {
+    public void closeContainer(PlayerEntity player) {
         if (!player.isSpectator()) {
             numPlayersUsing--;
             tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), eventNumPlayers, numPlayersUsing);

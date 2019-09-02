@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.BlockCounter;
@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 @Optional.Interface(modid = Compat.QUARK, iface = "vazkii.quark.api.IDropoffManager", striprefs = true)
 public class TileCounter extends TileEntity implements ITickable, IDropoffManager, IDyeableKitchen {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(ModConfig.general.largeCounters ? 54 : 27) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(CookingForBlockheadsConfig.general.largeCounters ? 54 : 27) {
         @Override
         protected void onContentsChanged(int slot) {
             isDirty = true;
@@ -86,7 +86,7 @@ public class TileCounter extends TileEntity implements ITickable, IDropoffManage
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         NBTTagCompound itemHandlerCompound = tagCompound.getCompoundTag("ItemHandler");
-        if (ModConfig.general.largeCounters && itemHandlerCompound.getInteger("Size") < 54) {
+        if (CookingForBlockheadsConfig.general.largeCounters && itemHandlerCompound.getInteger("Size") < 54) {
             itemHandlerCompound.setInteger("Size", 54);
         }
 

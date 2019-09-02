@@ -29,7 +29,7 @@ public class ItemIceUnit extends Item {
 
     public ItemIceUnit() {
         setUnlocalizedName(registryName.toString());
-        setCreativeTab(CookingForBlockheads.creativeTab);
+        setCreativeTab(CookingForBlockheads.itemGroup);
         setMaxStackSize(1);
     }
 

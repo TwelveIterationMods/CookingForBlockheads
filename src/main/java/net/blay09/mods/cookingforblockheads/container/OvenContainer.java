@@ -1,65 +1,59 @@
 package net.blay09.mods.cookingforblockheads.container;
 
-import com.google.common.collect.Maps;
-import invtweaks.api.container.ContainerSection;
-import invtweaks.api.container.ContainerSectionCallback;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.container.slot.*;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerListener;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.Optional;
 
-import java.util.List;
-import java.util.Map;
-
-public class ContainerOven extends Container implements IContainerWithDoor {
+public class OvenContainer extends Container implements IContainerWithDoor {
 
     private final TileOven tileEntity;
     private final int[] lastCookTime = new int[9];
     private int lastBurnTime;
     private int lastItemBurnTime;
 
-    public ContainerOven(EntityPlayer player, TileOven tileEntity) {
+    public OvenContainer(int windowId, PlayerInventory playerInventory, TileOven tileEntity) {
+        super(ModContainers.oven, windowId);
         this.tileEntity = tileEntity;
 
         int offsetX = tileEntity.hasPowerUpgrade() ? -5 : 0;
 
         for (int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotOvenInput(tileEntity.getItemHandler(), i, 84 + i * 18 + offsetX, 19));
+            addSlot(new SlotOvenInput(tileEntity.getItemHandler(), i, 84 + i * 18 + offsetX, 19));
         }
 
-        addSlotToContainer(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61 + offsetX, 59));
+        addSlot(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61 + offsetX, 59));
 
         for (int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotOvenResult(tileEntity.getItemHandler(), i + 4, 142 + offsetX, 41 + i * 18));
+            addSlot(new SlotOvenResult(tileEntity.getItemHandler(), i + 4, 142 + offsetX, 41 + i * 18));
         }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                addSlotToContainer(new SlotOven(tileEntity.getItemHandler(), 7 + j + i * 3, 84 + j * 18 + offsetX, 41 + i * 18));
+                addSlot(new SlotOven(tileEntity.getItemHandler(), 7 + j + i * 3, 84 + j * 18 + offsetX, 41 + i * 18));
             }
         }
 
         for (int i = 0; i < 4; i++) {
-            addSlotToContainer(new SlotOvenTool(tileEntity.getItemHandler(), 16 + i, 8, 19 + i * 18, i));
+            addSlot(new SlotOvenTool(tileEntity.getItemHandler(), 16 + i, 8, 19 + i * 18, i));
         }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 30 + j * 18, 111 + i * 18));
+                addSlot(new Slot(playerInventory, j + i * 9 + 9, 30 + j * 18, 111 + i * 18));
             }
         }
 
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(player.inventory, i, 30 + i * 18, 169));
+            addSlot(new Slot(playerInventory, i, 30 + i * 18, 169));
         }
 
-        tileEntity.getDoorAnimator().openContainer(player);
+        tileEntity.getDoorAnimator().openContainer(playerInventory.player);
     }
 
     @Override
@@ -73,7 +67,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer player) {
+    public void onContainerClosed(PlayerEntity player) {
         super.onContainerClosed(player);
         tileEntity.getDoorAnimator().closeContainer(player);
     }
@@ -82,7 +76,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (IContainerListener listener : listeners) {
+        for (IContainerListener listener : listeners) { // TODO at?
             if (this.lastBurnTime != tileEntity.furnaceBurnTime) {
                 listener.sendWindowProperty(this, 0, tileEntity.furnaceBurnTime);
             }
@@ -116,7 +110,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+    public ItemStack transferStackInSlot(PlayerEntity player, int slotIndex) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(slotIndex);
 
@@ -171,7 +165,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(PlayerEntity player) {
         return true;
     }
 
@@ -180,7 +174,7 @@ public class ContainerOven extends Container implements IContainerWithDoor {
         return this.tileEntity == tileEntity;
     }
 
-    @ContainerSectionCallback
+    /* TODO @ContainerSectionCallback
     @Optional.Method(modid = Compat.INVENTORY_TWEAKS)
     @SuppressWarnings("unchecked unused")
     public Map<ContainerSection, List<Slot>> getContainerSections() {
@@ -192,5 +186,5 @@ public class ContainerOven extends Container implements IContainerWithDoor {
         map.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(20, 48));
         map.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(47, 57));
         return map;
-    }
+    }*/
 }

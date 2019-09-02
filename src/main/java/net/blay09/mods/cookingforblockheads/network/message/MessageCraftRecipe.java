@@ -1,21 +1,22 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
-import io.netty.buffer.ByteBuf;
+import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageCraftRecipe implements IMessage {
+import java.util.function.Supplier;
 
-    private ItemStack outputItem;
-    private RecipeType recipeType;
-    private NonNullList<ItemStack> craftMatrix;
-    private boolean stack;
+public class MessageCraftRecipe {
 
-    public MessageCraftRecipe() {
-    }
+    private final ItemStack outputItem;
+    private final RecipeType recipeType;
+    private final NonNullList<ItemStack> craftMatrix;
+    private final boolean stack;
 
     public MessageCraftRecipe(ItemStack outputItem, RecipeType recipeType, NonNullList<ItemStack> craftMatrix, boolean stack) {
         this.outputItem = outputItem;
@@ -24,42 +25,42 @@ public class MessageCraftRecipe implements IMessage {
         this.stack = stack;
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        outputItem = ByteBufUtils.readItemStack(buf);
-        recipeType = RecipeType.fromId(buf.readByte());
+    public static void encode(MessageCraftRecipe message, PacketBuffer buf) {
+        buf.writeItemStack(message.outputItem);
+        buf.writeByte(message.recipeType.ordinal());
+        buf.writeByte(message.craftMatrix.size());
+        for (ItemStack itemstack : message.craftMatrix) {
+            buf.writeItemStack(itemstack);
+        }
+
+        buf.writeBoolean(message.stack);
+    }
+
+    public static MessageCraftRecipe decode(PacketBuffer buf) {
+        ItemStack outputItem = buf.readItemStack();
+        RecipeType recipeType = RecipeType.fromId(buf.readByte());
         int ingredientCount = buf.readByte();
-        craftMatrix = NonNullList.create();
+        NonNullList<ItemStack> craftMatrix = NonNullList.create();
         for (int i = 0; i < ingredientCount; i++) {
-            craftMatrix.add(ByteBufUtils.readItemStack(buf));
+            craftMatrix.add(buf.readItemStack());
         }
-        stack = buf.readBoolean();
+        boolean stack = buf.readBoolean();
+        return new MessageCraftRecipe(outputItem, recipeType, craftMatrix, stack);
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeItemStack(buf, outputItem);
-        buf.writeByte(recipeType.ordinal());
-        buf.writeByte(craftMatrix.size());
-        for (ItemStack itemstack : craftMatrix) {
-            ByteBufUtils.writeItemStack(buf, itemstack);
-        }
-        buf.writeBoolean(stack);
+    public static void handle(MessageCraftRecipe message, Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+        context.enqueueWork(() -> {
+            ServerPlayerEntity player = context.getSender();
+            if (player == null) {
+                return;
+            }
+
+            Container container = player.openContainer;
+            if (container instanceof RecipeBookContainer) {
+                ((RecipeBookContainer) container).tryCraft(message.outputItem, message.recipeType, message.craftMatrix, message.stack);
+            }
+        });
     }
 
-    public NonNullList<ItemStack> getCraftMatrix() {
-        return craftMatrix;
-    }
-
-    public boolean isStack() {
-        return stack;
-    }
-
-    public RecipeType getRecipeType() {
-        return recipeType;
-    }
-
-    public ItemStack getOutputItem() {
-        return outputItem;
-    }
 }

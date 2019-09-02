@@ -5,17 +5,17 @@ import com.google.common.collect.Sets;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import java.util.ArrayList;
@@ -35,30 +35,26 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
     }
 
     private void findNeighbourKitchenBlocks(World world, BlockPos pos, boolean extendedUpSearch) {
-        for (int i = 0; i <= 5; i++) {
-            EnumFacing dir = EnumFacing.getFront(i);
-            int upSearch = (extendedUpSearch && dir == EnumFacing.UP) ? 2 : 1;
+        for (Direction direction : Direction.values()) {
+            int upSearch = (extendedUpSearch && direction == Direction.UP) ? 2 : 1;
             for (int n = 1; n <= upSearch; n++) {
-                BlockPos position = pos.offset(dir, n);
+                BlockPos position = pos.offset(direction, n);
                 if (!checkedPos.contains(position)) {
                     checkedPos.add(position);
                     TileEntity tileEntity = world.getTileEntity(position);
                     if (tileEntity != null) {
-                        IKitchenItemProvider itemProvider = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY, null);
-                        if (itemProvider != null) {
-                            itemProviderList.add(itemProvider);
-                        }
+                        LazyOptional<IKitchenItemProvider> itemProviderCap = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY);
+                        itemProviderCap.ifPresent(itemProviderList::add);
 
-                        IKitchenSmeltingProvider smeltingProvider = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY, null);
-                        if (smeltingProvider != null) {
-                            smeltingProviderList.add(smeltingProvider);
-                        }
 
-                        if (itemProvider != null || smeltingProvider != null || tileEntity.hasCapability(CapabilityKitchenConnector.CAPABILITY, null)) {
+                        LazyOptional<IKitchenSmeltingProvider> smeltingProviderCap = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY);
+                        smeltingProviderCap.ifPresent(smeltingProviderList::add);
+
+                        if (itemProviderCap.isPresent() || smeltingProviderCap.isPresent() || tileEntity.getCapability(CapabilityKitchenConnector.CAPABILITY).isPresent()) {
                             findNeighbourKitchenBlocks(world, position, true);
                         }
                     } else {
-                        IBlockState state = world.getBlockState(position);
+                        BlockState state = world.getBlockState(position);
                         if (blockConnectors.contains(state.getBlock())) {
                             findNeighbourKitchenBlocks(world, position, false);
                         }
@@ -73,7 +69,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
     }
 
     @Override
-    public List<IKitchenItemProvider> getItemProviders(InventoryPlayer playerInventory) {
+    public List<IKitchenItemProvider> getItemProviders(PlayerInventory playerInventory) {
         List<IKitchenItemProvider> sourceInventories = Lists.newArrayList();
         sourceInventories.addAll(itemProviderList);
         sourceInventories.add(new KitchenItemProvider(new InvWrapper(playerInventory)));
@@ -82,7 +78,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 
     @Override
     public ItemStack smeltItem(ItemStack itemStack, int count) {
-        ItemStack restStack = itemStack.copy().splitStack(count);
+        ItemStack restStack = itemStack.copy().split(count);
         for (IKitchenSmeltingProvider provider : smeltingProviderList) {
             restStack = provider.smeltItem(restStack);
             if (restStack.isEmpty()) {
@@ -93,7 +89,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
         return restStack;
     }
 
-    public void trySmelt(ItemStack outputItem, ItemStack inputItem, EntityPlayer player, boolean stack) {
+    public void trySmelt(ItemStack outputItem, ItemStack inputItem, PlayerEntity player, boolean stack) {
         if (inputItem.isEmpty()) {
             return;
         }

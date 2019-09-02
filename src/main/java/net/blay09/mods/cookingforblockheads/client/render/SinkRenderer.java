@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.BlockSink;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileSink;
@@ -32,7 +32,7 @@ public class SinkRenderer extends TileEntitySpecialRenderer<TileSink> {
         GlStateManager.enableBlend();
         GlStateManager.disableCull();
 
-        if (!ModConfig.general.sinkRequiresWater) {
+        if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
             IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
             if (state.getBlock() == ModBlocks.sink) {
                 EnumFacing facing = state.getValue(BlockSink.FACING);

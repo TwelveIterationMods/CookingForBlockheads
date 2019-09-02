@@ -1,13 +1,15 @@
 package net.blay09.mods.cookingforblockheads.api;
 
-import java.util.List;
-
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 
+import java.util.List;
+
 public interface IKitchenMultiBlock {
-    List<IKitchenItemProvider> getItemProviders(InventoryPlayer playerInventory);
+    List<IKitchenItemProvider> getItemProviders(PlayerInventory playerInventory);
+
     ItemStack smeltItem(ItemStack itemStack, int count);
+
     boolean hasSmeltingProvider();
 }

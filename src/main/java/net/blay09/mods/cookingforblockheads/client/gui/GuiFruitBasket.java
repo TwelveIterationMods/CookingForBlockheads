@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.container.ContainerFruitBasket;
+import net.blay09.mods.cookingforblockheads.container.FruitBasketContainer;
 import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,7 +15,7 @@ public class GuiFruitBasket extends GuiContainer {
     private final int inventoryRows;
 
     public GuiFruitBasket(EntityPlayer player, TileFruitBasket tileFruitBasket) {
-        super(new ContainerFruitBasket(player, tileFruitBasket));
+        super(new FruitBasketContainer(player, tileFruitBasket));
         this.inventoryRows = tileFruitBasket.getItemHandler().getSlots() / 9;
         this.ySize = 114 + this.inventoryRows * 18;
     }

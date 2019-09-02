@@ -1,40 +1,47 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
-import io.netty.buffer.ByteBuf;
+import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageRequestRecipes implements IMessage {
+import java.util.function.Supplier;
+
+public class MessageRequestRecipes {
 
     private ItemStack outputItem;
     private boolean forceNoFilter;
-
-    public MessageRequestRecipes() {
-    }
 
     public MessageRequestRecipes(ItemStack outputItem, boolean forceNoFilter) {
         this.outputItem = outputItem;
         this.forceNoFilter = forceNoFilter;
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        outputItem = ByteBufUtils.readItemStack(buf);
-        forceNoFilter = buf.readBoolean();
+    public static MessageRequestRecipes decode(PacketBuffer buf) {
+        ItemStack outputItem = buf.readItemStack();
+        boolean forceNoFilter = buf.readBoolean();
+        return new MessageRequestRecipes(outputItem, forceNoFilter);
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeItemStack(buf, outputItem);
-        buf.writeBoolean(forceNoFilter);
+    public static void encode(MessageRequestRecipes message, PacketBuffer buf) {
+        buf.writeItemStack(message.outputItem);
+        buf.writeBoolean(message.forceNoFilter);
     }
 
-    public ItemStack getOutputItem() {
-        return outputItem;
-    }
+    public static void handle(MessageRequestRecipes message, Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+        context.enqueueWork(() -> {
+            ServerPlayerEntity player = context.getSender();
+            if (player == null) {
+                return;
+            }
 
-    public boolean isForceNoFilter() {
-        return forceNoFilter;
+            Container container = player.openContainer;
+            if (container instanceof RecipeBookContainer) {
+                ((RecipeBookContainer) container).findAndSendRecipes(message.outputItem, message.forceNoFilter);
+            }
+        });
     }
 }

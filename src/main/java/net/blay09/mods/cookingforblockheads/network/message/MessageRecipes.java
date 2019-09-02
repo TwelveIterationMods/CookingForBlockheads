@@ -1,52 +1,52 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
 import com.google.common.collect.Lists;
-import io.netty.buffer.ByteBuf;
+import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
+import net.minecraft.client.Minecraft;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-public class MessageRecipes implements IMessage {
+public class MessageRecipes {
 
     private ItemStack outputItem;
     private List<FoodRecipeWithIngredients> recipeList;
-
-    public MessageRecipes() {
-    }
 
     public MessageRecipes(ItemStack outputItem, List<FoodRecipeWithIngredients> recipeList) {
         this.outputItem = outputItem;
         this.recipeList = recipeList;
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        outputItem = ByteBufUtils.readItemStack(buf);
+    public static MessageRecipes decode(PacketBuffer buf) {
+        ItemStack outputItem = buf.readItemStack();
         int recipeCount = buf.readInt();
-        recipeList = Lists.newArrayListWithCapacity(recipeCount);
+        List<FoodRecipeWithIngredients> recipeList = Lists.newArrayListWithCapacity(recipeCount);
         for (int i = 0; i < recipeCount; i++) {
             recipeList.add(FoodRecipeWithIngredients.read(buf));
         }
+        return new MessageRecipes(outputItem, recipeList);
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeItemStack(buf, outputItem);
-        buf.writeInt(recipeList.size());
-        for (FoodRecipeWithIngredients recipe : recipeList) {
+    public static void encode(MessageRecipes message, PacketBuffer buf) {
+        buf.writeItemStack(message.outputItem);
+        buf.writeInt(message.recipeList.size());
+        for (FoodRecipeWithIngredients recipe : message.recipeList) {
             recipe.write(buf);
         }
     }
 
-    public ItemStack getOutputItem() {
-        return outputItem;
+    public static void handle(MessageRecipes message, Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+        context.enqueueWork(() -> {
+            Container container = Minecraft.getInstance().player.openContainer;
+            if (container instanceof RecipeBookContainer) {
+                ((RecipeBookContainer) container).setRecipeList(message.outputItem, message.recipeList);
+            }
+        });
     }
-
-    public List<FoodRecipeWithIngredients> getRecipeList() {
-        return recipeList;
-    }
-
 }

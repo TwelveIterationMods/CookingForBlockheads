@@ -22,20 +22,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy {
@@ -79,7 +75,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileMilkJar.class, new MilkJarRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileSpiceRack.class, new SpiceRackRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCabinet.class, new CabinetRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());

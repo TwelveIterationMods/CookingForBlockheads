@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,13 +15,8 @@ public class InternalMethods implements IInternalMethods {
     }
 
     @Override
-    public void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
-        CookingRegistry.addToastHandler(itemStack, toastHandler);
-    }
-
-    @Override
     public void addToasterHandler(ItemStack itemStack, ToasterHandler toastHandler) {
-        CookingRegistry.addToastHandler(itemStack, (ToastOutputHandler) toastHandler::getToasterOutput);
+        CookingRegistry.addToasterHandler(itemStack, toastHandler);
     }
 
     @Override
@@ -50,7 +45,7 @@ public class InternalMethods implements IInternalMethods {
     }
 
     @Override
-    public void addCowClass(Class<? extends EntityLivingBase> clazz) {
+    public void addCowClass(Class<? extends LivingEntity> clazz) {
         CowJarHandler.registerCowClass(clazz);
     }
 

@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.ModConfig;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
@@ -41,7 +41,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public FluidStack getFluid() {
-            if (!ModConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
                 return MAX_WATER;
             }
 
@@ -50,7 +50,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public int getFluidAmount() {
-            if (!ModConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
                 return Integer.MAX_VALUE;
             }
 
@@ -59,7 +59,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public int getCapacity() {
-            if (!ModConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
                 return Integer.MAX_VALUE;
             }
 
@@ -68,7 +68,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if (!ModConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
                 return resource.amount;
             }
 
@@ -77,7 +77,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if (!ModConfig.general.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
                 return resource.copy();
             }
 
@@ -86,7 +86,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
-            if (!ModConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
                 return new FluidStack(FluidRegistry.WATER, maxDrain);
             }
 
@@ -117,7 +117,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-            if (!ModConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
+            if (!CookingForBlockheadsConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
                 if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {
                     if (!CookingRegistry.consumeBucket(inventories, simulate)) {
                         return ItemStack.EMPTY;
@@ -153,7 +153,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         @Override
         @Nonnull
         public ItemStack getStackInSlot(int slot) {
-            if (ModConfig.general.sinkRequiresWater && fluidTank.getFluidAmount() - waterUsed < 1000) {
+            if (CookingForBlockheadsConfig.general.sinkRequiresWater && fluidTank.getFluidAmount() - waterUsed < 1000) {
                 return ItemStack.EMPTY;
             }
 

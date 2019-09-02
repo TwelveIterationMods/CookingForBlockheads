@@ -21,7 +21,7 @@ public class ItemRecipeBook extends Item {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public ItemRecipeBook() {
-        setCreativeTab(CookingForBlockheads.creativeTab);
+        setCreativeTab(CookingForBlockheads.itemGroup);
         setHasSubtypes(true);
         setMaxStackSize(1);
     }

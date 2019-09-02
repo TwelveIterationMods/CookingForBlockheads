@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.container.slot;
 
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
@@ -31,7 +32,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
                 if (!itemStack.isEmpty()) {
                     if (itemStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                         NonNullList<ItemStack> subItems = NonNullList.create();
-                        CreativeTabs tab = itemStack.getItem().getCreativeTab();
+                        ItemGroup tab = itemStack.getItem().getGroup();
                         if (tab != null) {
                             itemStack.getItem().getSubItems(tab, subItems);
                         }

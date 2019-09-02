@@ -6,8 +6,9 @@ import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
@@ -17,13 +18,13 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 
-public class InventoryCraftBook extends InventoryCrafting {
+public class InventoryCraftBook extends CraftingInventory {
 
     public InventoryCraftBook(Container container) {
         super(container, 3, 3);
     }
 
-    public ItemStack tryCraft(ItemStack outputItem, NonNullList<ItemStack> craftMatrix, EntityPlayer player, KitchenMultiBlock multiBlock) {
+    public ItemStack tryCraft(ItemStack outputItem, NonNullList<ItemStack> craftMatrix, PlayerEntity player, KitchenMultiBlock multiBlock) {
         boolean requireContainer = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
 
         // Reset the simulation before we start
@@ -100,8 +101,8 @@ public class InventoryCraftBook extends InventoryCrafting {
         return result;
     }
 
-    private void fireEventsAndHandleAchievements(EntityPlayer player, ItemStack result) {
-        FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
+    private void fireEventsAndHandleAchievements(PlayerEntity player, ItemStack result) {
+        // TODO FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
         result.onCrafting(player.world, player, 1);
     }
 
