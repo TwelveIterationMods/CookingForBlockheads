@@ -1,10 +1,13 @@
 package net.blay09.mods.cookingforblockheads.container;
 
+import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -69,18 +72,43 @@ public class ModContainers {
         })));
 
         registry.register(recipeBook = register("cooking_table", ((windowId, inv, data) -> {
+            World world = inv.player.world;
             BlockPos pos = data.readBlockPos();
-            TileEntity tileEntity = inv.player.world.getTileEntity(pos);
+            TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof TileCookingTable) {
-                RecipeBookContainer container = new RecipeBookContainer(inv.player);
-                container.setKitchenMultiBlock(null); // TODO See GuiHandler
-                return container;
+                if (((TileCookingTable) tileEntity).hasNoFilterBook()) {
+                    return new RecipeBookContainer(windowId, inv.player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                } else {
+                    return new RecipeBookContainer(windowId, inv.player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                }
             }
 
             return null;
         })));
 
-        registry.register(recipeBook = register("recipe_book", ((windowId, inv, data) -> new RecipeBookContainer(inv.player))));
+        registry.register(recipeBook = register("no_filter_book", ((windowId, inv, data) -> {
+            if (inv.player.getHeldItemMainhand().getItem() == ModItems.craftingBook || inv.player.getHeldItemOffhand().getItem() == ModItems.craftingBook) {
+                return new RecipeBookContainer(windowId, inv.player).setNoFilter();
+            }
+
+            return null;
+        })));
+
+        registry.register(recipeBook = register("recipe_book", ((windowId, inv, data) -> {
+            if (inv.player.getHeldItemMainhand().getItem() == ModItems.recipeBook || inv.player.getHeldItemOffhand().getItem() == ModItems.recipeBook) {
+                return new RecipeBookContainer(windowId, inv.player);
+            }
+
+            return null;
+        })));
+
+        registry.register(recipeBook = register("crafting_book", ((windowId, inv, data) -> {
+            if (inv.player.getHeldItemMainhand().getItem() == ModItems.noFilterBook || inv.player.getHeldItemOffhand().getItem() == ModItems.noFilterBook) {
+                return new RecipeBookContainer(windowId, inv.player).allowCrafting();
+            }
+
+            return null;
+        })));
     }
 
     @SuppressWarnings("unchecked")

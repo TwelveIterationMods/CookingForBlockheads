@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.container.IContainerWithDoor;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -49,7 +49,7 @@ public class DoorAnimator {
             // This is Mojang's bad fix for chests staying open. Because it makes so much more sense to do this than to ensure onContainerClosed is always called properly.
             numPlayersUsing = 0;
             float range = 5f;
-            for (EntityPlayer entityplayer : tileEntity.getWorld().getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(x - range, y - range, z - range, x + 1 + range, y + 1 + range, z + 1 + range))) {
+            for (PlayerEntity entityplayer : tileEntity.getWorld().getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - range, y - range, z - range, x + 1 + range, y + 1 + range, z + 1 + range))) {
                 if (entityplayer.openContainer instanceof IContainerWithDoor) {
                     if (((IContainerWithDoor) entityplayer.openContainer).isTileEntity(tileEntity)) {
                         numPlayersUsing++;
@@ -91,7 +91,7 @@ public class DoorAnimator {
 
     public void setForcedOpen(boolean isForcedOpen) {
         this.isForcedOpen = isForcedOpen;
-        tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), 2, isForcedOpen ? 1 : 0);
+        tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockState().getBlock(), 2, isForcedOpen ? 1 : 0);
     }
 
     public boolean receiveClientEvent(int id, int type) {
@@ -108,18 +108,20 @@ public class DoorAnimator {
     public void openContainer(PlayerEntity player) {
         if (!player.isSpectator()) {
             numPlayersUsing = Math.max(0, numPlayersUsing + 1);
-            tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), eventNumPlayers, numPlayersUsing);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), tileEntity.getBlockType(), true);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), tileEntity.getBlockType(), true);
+            Block block = tileEntity.getBlockState().getBlock();
+            tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), block, eventNumPlayers, numPlayersUsing);
+            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), block);
+            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), block);
         }
     }
 
     public void closeContainer(PlayerEntity player) {
         if (!player.isSpectator()) {
             numPlayersUsing--;
-            tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockType(), eventNumPlayers, numPlayersUsing);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), tileEntity.getBlockType(), true);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), tileEntity.getBlockType(), true);
+            Block block = tileEntity.getBlockState().getBlock();
+            tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), block, eventNumPlayers, numPlayersUsing);
+            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), block);
+            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), block);
         }
     }
 

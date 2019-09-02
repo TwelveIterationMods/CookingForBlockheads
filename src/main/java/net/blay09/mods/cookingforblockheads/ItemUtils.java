@@ -1,12 +1,10 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 

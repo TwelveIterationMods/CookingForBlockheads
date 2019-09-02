@@ -4,9 +4,7 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class GeneralFoodRecipe extends FoodRecipe {
 

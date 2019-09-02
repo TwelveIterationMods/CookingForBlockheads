@@ -66,7 +66,8 @@ public class RecipeBookContainer extends Container {
 
     private boolean isInNoFilterPreview;
 
-    public RecipeBookContainer(PlayerEntity player) {
+    public RecipeBookContainer(int windowId, PlayerEntity player) {
+        super(ModContainers.recipeBook, windowId);
         this.player = player;
 
         for (int i = 0; i < 4; i++) {

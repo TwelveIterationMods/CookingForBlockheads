@@ -18,13 +18,10 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.GeneralFoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -35,51 +32,20 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class CookingRegistry {
-    public static class ItemIdentifier {
-        ResourceLocation location;
-        int metadata;
-
-        public ItemIdentifier(ResourceLocation location, int metadata) {
-            this.location = location;
-            this.metadata = metadata;
-        }
-
-        public ItemIdentifier(ItemStack object) {
-            this.location = object.getItem().getRegistryName();
-            this.metadata = object.getItemDamage();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == this) return true;
-            if (!(o instanceof ItemIdentifier)) {
-                return false;
-            }
-            ItemIdentifier identifier = (ItemIdentifier) o;
-            return metadata == identifier.metadata && Objects.equals(location, identifier.location);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(location, metadata);
-        }
-
-        @Override
-        public String toString() {
-            return location.toString() + "@" + metadata;
-        }
-    }
 
     private static final List<IRecipe> recipeList = Lists.newArrayList();
-    private static final ArrayListMultimap<ItemIdentifier, FoodRecipe> foodItems = ArrayListMultimap.create();
+    private static final ArrayListMultimap<ResourceLocation, FoodRecipe> foodItems = ArrayListMultimap.create();
     private static final NonNullList<ItemStack> tools = NonNullList.create();
     private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
     private static final Map<ItemStack, ItemStack> ovenRecipes = Maps.newHashMap();
     private static final Map<ItemStack, SinkHandler> sinkHandlers = Maps.newHashMap();
-    private static final Map<ItemStack, ToastHandler> toastHandlers = Maps.newHashMap();
+    private static final Map<ItemStack, ToasterHandler> toastHandlers = Maps.newHashMap();
     private static final NonNullList<ItemStack> waterItems = NonNullList.create();
     private static final NonNullList<ItemStack> milkItems = NonNullList.create();
     private static final List<ISortButton> customSortButtons = Lists.newArrayList();
@@ -99,11 +65,10 @@ public class CookingRegistry {
         for (IRecipe recipe : CraftingManager.REGISTRY) {
             ItemStack output = recipe.getRecipeOutput();
             if (!output.isEmpty()) {
-                if (output.getItem() instanceof ItemFood) {
-                    if (HarvestCraftAddon.isWeirdConversionRecipe(recipe)) {
-                        continue;
+                if (output.getItem().isFood()) {
+                    if (!HarvestCraftAddon.isWeirdConversionRecipe(recipe)) {
+                        addFoodRecipe(recipe);
                     }
-                    addFoodRecipe(recipe);
                 } else {
                     for (ItemStack itemStack : nonFoodRecipes) {
                         if (ItemUtils.areItemStacksEqualWithWildcard(recipe.getRecipeOutput(), itemStack)) {
@@ -127,11 +92,11 @@ public class CookingRegistry {
                 sourceStack = (ItemStack) entry.getKey();
             }
             ItemStack resultStack = (ItemStack) entry.getValue();
-            if (resultStack.getItem() instanceof ItemFood) {
-                foodItems.put(new ItemIdentifier(resultStack), new SmeltingFood(resultStack, sourceStack));
+            if (resultStack.getItem().isFood()) {
+                foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
             } else {
                 if (isNonFoodRecipe(resultStack)) {
-                    foodItems.put(new ItemIdentifier(resultStack), new SmeltingFood(resultStack, sourceStack));
+                    foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
                 }
             }
         }
@@ -153,7 +118,7 @@ public class CookingRegistry {
         ItemStack output = recipe.getRecipeOutput();
         if (!output.isEmpty() && !recipe.getIngredients().isEmpty()) {
             recipeList.add(recipe);
-            foodItems.put(new ItemIdentifier(output), new GeneralFoodRecipe(recipe));
+            foodItems.put(output.getItem().getRegistryName(), new GeneralFoodRecipe(recipe));
 //			if (recipe instanceof ShapedRecipes) {
 //				foodItems.put(new ItemIdentifier(output), new ShapedCraftingFood((ShapedRecipes) recipe));
 //			} else if (recipe instanceof ShapelessRecipes) {
@@ -166,15 +131,15 @@ public class CookingRegistry {
         }
     }
 
-    public static Multimap<ItemIdentifier, FoodRecipe> getFoodRecipes() {
+    public static Multimap<ResourceLocation, FoodRecipe> getFoodRecipes() {
         return foodItems;
     }
 
     public static Collection<FoodRecipe> getFoodRecipes(ItemStack outputItem) {
-        return foodItems.get(new ItemIdentifier(outputItem));
+        return foodItems.get(outputItem.getItem().getRegistryName());
     }
 
-    public static Collection<FoodRecipe> getFoodRecipes(ItemIdentifier outputItem) {
+    public static Collection<FoodRecipe> getFoodRecipes(ResourceLocation outputItem) {
         return foodItems.get(outputItem);
     }
 
@@ -229,13 +194,13 @@ public class CookingRegistry {
         return ItemStack.EMPTY;
     }
 
-    public static void addToastHandler(ItemStack itemStack, ToastHandler toastHandler) {
+    public static void addToasterHandler(ItemStack itemStack, ToasterHandler toastHandler) {
         toastHandlers.put(itemStack, toastHandler);
     }
 
     @Nullable
     public static ToasterHandler getToasterHandler(ItemStack itemStack) {
-        for (Map.Entry<ItemStack, ToastHandler> entry : toastHandlers.entrySet()) {
+        for (Map.Entry<ItemStack, ToasterHandler> entry : toastHandlers.entrySet()) {
             if (ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
                 return entry.getValue();
             }
@@ -347,7 +312,7 @@ public class CookingRegistry {
         return missingTools ? RecipeStatus.MISSING_TOOLS : RecipeStatus.AVAILABLE;
     }
 
-    public static List<IKitchenItemProvider> getItemProviders(@Nullable KitchenMultiBlock multiBlock, InventoryPlayer inventory) {
+    public static List<IKitchenItemProvider> getItemProviders(@Nullable KitchenMultiBlock multiBlock, PlayerInventory inventory) {
         return multiBlock != null ? multiBlock.getItemProviders(inventory) : Lists.newArrayList(new KitchenItemProvider(new InvWrapper(inventory)));
     }
 
@@ -391,6 +356,6 @@ public class CookingRegistry {
             return true;
         }
         ResourceLocation registryName = outputItem.getItem().getRegistryName();
-        return registryName != null && registryName.getResourcePath().contains("bucket");
+        return registryName != null && registryName.getPath().contains("bucket");
     }
 }
