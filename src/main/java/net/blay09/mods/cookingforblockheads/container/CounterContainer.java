@@ -2,11 +2,8 @@ package net.blay09.mods.cookingforblockheads.container;
 
 import invtweaks.api.container.ChestContainer;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;

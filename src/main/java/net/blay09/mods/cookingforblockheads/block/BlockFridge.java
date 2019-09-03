@@ -57,7 +57,7 @@ public class BlockFridge extends BlockKitchen {
 
     @Override
     @SuppressWarnings("deprecation")
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
         if (world.getBlockState(pos.up()).getBlock() == this) {
             state = state.withProperty(TYPE, FridgeType.LARGE);
         } else if (world.getBlockState(pos.down()).getBlock() == this) {

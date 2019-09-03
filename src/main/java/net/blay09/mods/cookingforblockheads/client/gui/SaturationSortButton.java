@@ -3,13 +3,13 @@ package net.blay09.mods.cookingforblockheads.client.gui;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
-import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorHunger;
-import net.minecraft.entity.player.EntityPlayer;
+import net.blay09.mods.cookingforblockheads.container.comparator.ComparatorSaturation;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Comparator;
 
-public class SortButtonHunger implements ISortButton {
+public class SaturationSortButton implements ISortButton {
 
     private static final ResourceLocation icon = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
 
@@ -20,17 +20,17 @@ public class SortButtonHunger implements ISortButton {
 
     @Override
     public String getTooltip() {
-        return "tooltip.cookingforblockheads:sort_by_hunger";
+        return "tooltip.cookingforblockheads:sort_by_saturation";
     }
 
     @Override
-    public Comparator<FoodRecipeWithStatus> getComparator(EntityPlayer player) {
-        return new ComparatorHunger(player);
+    public Comparator<FoodRecipeWithStatus> getComparator(PlayerEntity player) {
+        return new ComparatorSaturation(player);
     }
 
     @Override
     public int getIconTextureX() {
-        return 216;
+        return 236;
     }
 
     @Override

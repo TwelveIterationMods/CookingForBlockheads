@@ -1,15 +1,15 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.ToolRackTileEntity;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
 
-public class ToolRackRenderer extends TileEntitySpecialRenderer<ToolRackTileEntity> {
+public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
 
     @Override
     public void render(ToolRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -17,21 +17,21 @@ public class ToolRackRenderer extends TileEntitySpecialRenderer<ToolRackTileEnti
             return;
         }
 
-        IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (state.getBlock() != ModBlocks.toolRack) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
 
-        RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
             GlStateManager.pushMatrix();
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            GlStateManager.translate(x + 0.5, y + 0.6, z + 0.5);
-            GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-            GlStateManager.translate(0, 0, 0.4);
-            GlStateManager.scale(0.5f, 0.5f, 0.5f);
+            GlStateManager.color4f(1f, 1f, 1f, 1f);
+            GlStateManager.translated(x + 0.5, y + 0.6, z + 0.5);
+            GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
+            GlStateManager.translatef(0, 0, 0.4);
+            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
             if (!leftStack.isEmpty()) {
                 RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
             }

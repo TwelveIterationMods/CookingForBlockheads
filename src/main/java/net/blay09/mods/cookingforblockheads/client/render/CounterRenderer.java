@@ -1,20 +1,25 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.init.Items;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
-public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity> {
+public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
 
     public static IBakedModel[][] models;
     public static IBakedModel[][] modelsFlipped;
@@ -33,11 +38,11 @@ public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity
             0.84375f
     };
 
-    protected float getDoorOriginX(EnumFacing facing) {
+    protected float getDoorOriginX(Direction facing) {
         return doorOriginsX[facing.getHorizontalIndex()];
     }
 
-    protected float getDoorOriginZ(EnumFacing facing) {
+    protected float getDoorOriginZ(Direction facing) {
         return doorOriginsZ[facing.getHorizontalIndex()];
     }
 
@@ -49,8 +54,8 @@ public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity
         return 0.35f;
     }
 
-    protected IBakedModel getDoorModel(EnumFacing facing, EnumDyeColor blockColor, boolean isFlipped) {
-        return isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getMetadata()] : models[facing.getHorizontalIndex()][blockColor.getMetadata()];
+    protected IBakedModel getDoorModel(Direction facing, DyeColor blockColor, boolean isFlipped) {
+        return isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getId()] : models[facing.getHorizontalIndex()][blockColor.getId()];
     }
 
     @Override
@@ -59,22 +64,22 @@ public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity
             return;
         }
 
-        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        EnumFacing facing = tileEntity.getFacing();
-        EnumDyeColor blockColor = tileEntity.getDyedColor();
+        Direction facing = tileEntity.getFacing();
+        DyeColor blockColor = tileEntity.getDyedColor();
         float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = tileEntity.isFlipped();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, z);
+        GlStateManager.translated(x, y, z);
         float doorOriginX = getDoorOriginX(facing);
         float doorOriginZ = getDoorOriginZ(facing);
         float doorDirection = -1f;
         if (isFlipped) {
-            if (facing.getAxis() == EnumFacing.Axis.X) {
+            if (facing.getAxis() == Direction.Axis.X) {
                 doorOriginZ = 1 - doorOriginZ;
             } else {
                 doorOriginX = 1 - doorOriginX;
@@ -88,9 +93,9 @@ public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity
         RenderUtils.renderItem(itemRenderer, new ItemStack(Items.APPLE), 0f, 0f, 0f, 0f, 0f, 1f, 0f);
         GlStateManager.popMatrix();*/
 
-        GlStateManager.translate(doorOriginX, 0f, doorOriginZ);
-        GlStateManager.rotate(doorDirection * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
-        GlStateManager.translate(-doorOriginX, 0f, -doorOriginZ);
+        GlStateManager.translatef(doorOriginX, 0f, doorOriginZ);
+        GlStateManager.rotatef(doorDirection * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
+        GlStateManager.translatef(-doorOriginX, 0f, -doorOriginZ);
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model = getDoorModel(facing, blockColor, isFlipped);
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
@@ -99,10 +104,10 @@ public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity
         // Render the content if the door is open
         if (doorAngle > 0f) {
             GlStateManager.pushMatrix();
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-            GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-            GlStateManager.scale(0.3f, 0.3f, 0.3f);
+            GlStateManager.color4f(1f, 1f, 1f, 1f);
+            GlStateManager.translated(x + 0.5, y + 0.5, z + 0.5);
+            GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
+            GlStateManager.scalef(0.3f, 0.3f, 0.3f);
             IItemHandler itemHandler = tileEntity.getItemHandler();
             int itemsPerShelf = itemHandler.getSlots() / 2;
             int itemsPerRow = itemsPerShelf / 2;

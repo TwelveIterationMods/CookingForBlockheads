@@ -8,7 +8,7 @@ import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.render.*;
 import net.blay09.mods.cookingforblockheads.tile.*;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -48,7 +48,7 @@ public class ClientProxy extends CommonProxy {
     public void registerModels() {
         ModelLoader.setCustomStateMapper(ModBlocks.fridge, new DefaultStateMapper() {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+            protected ModelResourceLocation getModelResourceLocation(BlockState state) {
                 if (state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.LARGE) {
                     return new ModelResourceLocation(CookingForBlockheads.MOD_ID + ":fridge_large", getPropertyString(state.getProperties()));
                 } else if (state.getValue(BlockFridge.TYPE) == BlockFridge.FridgeType.INVISIBLE) {
@@ -60,7 +60,7 @@ public class ClientProxy extends CommonProxy {
 
         DefaultStateMapper ignorePropertiesStateMapper = new DefaultStateMapper() {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+            protected ModelResourceLocation getModelResourceLocation(BlockState state) {
                 ResourceLocation location = state.getBlock().getRegistryName();
                 return new ModelResourceLocation(location != null ? location.toString() : "", "normal");
             }
@@ -68,25 +68,25 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomStateMapper(ModBlocks.cuttingBoard, ignorePropertiesStateMapper);
         ModelLoader.setCustomStateMapper(ModBlocks.fruitBasket, ignorePropertiesStateMapper);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(ToolRackTileEntity.class, new ToolRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileOven.class, new OvenRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFridge.class, new FridgeRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileMilkJar.class, new MilkJarRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(ToasterTileEntity.class, new ToasterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CounterTileEntity.class, new CounterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CabinetTileEntity.class, new CabinetRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(FruitBasketTileEntity.class, new FruitBasketRenderer());
+        ClientRegistry.bindTileEntityRenderer(ToolRackTileEntity.class, new ToolRackRenderer());
+        ClientRegistry.bindTileEntityRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileOven.class, new OvenRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileFridge.class, new FridgeRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileMilkJar.class, new MilkJarRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileCowJar.class, new CowJarRenderer());
+        ClientRegistry.bindTileEntityRenderer(ToasterTileEntity.class, new ToasterRenderer());
+        ClientRegistry.bindTileEntityRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
+        ClientRegistry.bindTileEntityRenderer(CounterTileEntity.class, new CounterRenderer());
+        ClientRegistry.bindTileEntityRenderer(CabinetTileEntity.class, new CabinetRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileSink.class, new SinkRenderer());
+        ClientRegistry.bindTileEntityRenderer(FruitBasketTileEntity.class, new FruitBasketRenderer());
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
+        Minecraft.getInstance().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
             if (world != null && pos != null) {
                 TileEntity tileEntity = world.getTileEntity(pos);
                 if (tileEntity instanceof TileFridge) {
@@ -158,9 +158,9 @@ public class ClientProxy extends CommonProxy {
         CounterRenderer.modelsFlipped = new IBakedModel[4][colors.length];
         CabinetRenderer.models = new IBakedModel[4][colors.length];
         CabinetRenderer.modelsFlipped = new IBakedModel[4][colors.length];
-        IBlockState defaultState = ModBlocks.counter.getDefaultState();
-        IBlockState state = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR);
-        IBlockState flippedState = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR_FLIPPED);
+        BlockState defaultState = ModBlocks.counter.getDefaultState();
+        BlockState state = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR);
+        BlockState flippedState = defaultState.withProperty(BlockCounter.PASS, BlockCounter.ModelPass.DOOR_FLIPPED);
         for (int i = 0; i < 4; i++) {
             EnumFacing facing = EnumFacing.getHorizontal(i);
             for (int j = 0; j < colors.length; j++) {

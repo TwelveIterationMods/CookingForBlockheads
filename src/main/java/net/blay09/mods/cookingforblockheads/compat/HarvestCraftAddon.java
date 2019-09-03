@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -81,14 +81,14 @@ public class HarvestCraftAddon {
 
         World world = event.getWorld();
         EntityPlayer player = event.getEntityPlayer();
-        IBlockState clickedBlock = world.getBlockState(event.getPos());
+        BlockState clickedBlock = world.getBlockState(event.getPos());
         if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.getBlock() == ModBlocks.cuttingBoard) {
             return;
         }
 
         BlockPos pos = event.getPos().offset(event.getFace());
         if (world.mayPlace(ModBlocks.cuttingBoard, pos, false, event.getFace(), player)) {
-            IBlockState placedState = ModBlocks.cuttingBoard.getStateForPlacement(world, pos, event.getFace(), 0.5f, 1f, 0.5f, 0, player, event.getHand());
+            BlockState placedState = ModBlocks.cuttingBoard.getStateForPlacement(world, pos, event.getFace(), 0.5f, 1f, 0.5f, 0, player, event.getHand());
             BlockEvent.PlaceEvent placeEvent = ForgeEventFactory.onPlayerBlockPlace(player, new BlockSnapshot(world, pos, placedState), event.getFace(), event.getHand());
             if (placeEvent.isCanceled()) {
                 return;

@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.client.Minecraft;
@@ -7,11 +8,12 @@ import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import org.lwjgl.opengl.GL11;
 
-public class MilkJarRenderer extends TileEntitySpecialRenderer<TileMilkJar> {
+public class MilkJarRenderer extends TileEntityRenderer<TileMilkJar> {
 
     protected static BlockRendererDispatcher blockRenderer;
 
@@ -24,7 +26,7 @@ public class MilkJarRenderer extends TileEntitySpecialRenderer<TileMilkJar> {
         }
 
         if (blockRenderer == null) {
-            blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+            blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
         }
 
         if (tileEntity.getMilkAmount() > 0) {
@@ -34,10 +36,10 @@ public class MilkJarRenderer extends TileEntitySpecialRenderer<TileMilkJar> {
             GlStateManager.disableCull();
             GlStateManager.pushMatrix();
 
-            GlStateManager.translate(x, y + (BlockKitchen.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z);
-            GlStateManager.scale(1f, tileEntity.getMilkAmount() / tileEntity.getMilkCapacity(), 1f);
+            GlStateManager.translated(x, y + (BlockKitchen.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z);
+            GlStateManager.scalef(1f, tileEntity.getMilkAmount() / tileEntity.getMilkCapacity(), 1f);
             bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            Minecraft.getMinecraft().getRenderItem().renderModel(modelMilkLiquid, 0xFFFFFFFF);
+            Minecraft.getInstance().getItemRenderer().renderModel(modelMilkLiquid, 0xFFFFFFFF);
             GlStateManager.popMatrix();
 
             RenderHelper.enableStandardItemLighting();

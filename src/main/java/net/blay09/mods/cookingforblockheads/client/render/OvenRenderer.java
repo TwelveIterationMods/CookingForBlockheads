@@ -1,17 +1,21 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 
-public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
+public class OvenRenderer extends TileEntityRenderer<TileOven> {
 
     public static IBakedModel modelDoor;
     public static IBakedModel modelDoorActive;
@@ -22,19 +26,19 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
             return;
         }
 
-        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        EnumFacing facing = tileEntity.getFacing();
+        Direction facing = tileEntity.getFacing();
         float blockAngle = RenderUtils.getFacingAngle(facing);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
         // Render the oven door
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 0.5f, y, z + 0.5f);
-        GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-        GlStateManager.translate(-0.5f, 0f, -0.5f);
-        GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
+        GlStateManager.translatef(x + 0.5f, y, z + 0.5f);
+        GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
+        GlStateManager.translatef(-0.5f, 0f, -0.5f);
+        GlStateManager.rotatef(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor;
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
@@ -42,10 +46,10 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
 
         // Render the oven tools
         GlStateManager.pushMatrix();
-        GlStateManager.color(1f, 1f, 1f, 1f);
-        GlStateManager.translate(x + 0.5, y + 1.05, z + 0.5);
-        GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-        GlStateManager.scale(0.4f, 0.4f, 0.4f);
+        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        GlStateManager.translated(x + 0.5, y + 1.05, z + 0.5);
+        GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
+        GlStateManager.scalef(0.4f, 0.4f, 0.4f);
         ItemStack itemStack = tileEntity.getToolItem(0);
         if (!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
@@ -67,9 +71,9 @@ public class OvenRenderer extends TileEntitySpecialRenderer<TileOven> {
         // Render the oven content when the door is open
         if (doorAngle > 0f) {
             GlStateManager.pushMatrix();
-            GlStateManager.translate(x + 0.5, y + 0.4, z + 0.5);
-            GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-            GlStateManager.scale(0.3f, 0.3f, 0.3f);
+            GlStateManager.translated(x + 0.5, y + 0.4, z + 0.5);
+            GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
+            GlStateManager.scalef(0.3f, 0.3f, 0.3f);
             float offsetX = 0.825f;
             float offsetZ = 0.8f;
             for (int i = 0; i < 9; i++) {

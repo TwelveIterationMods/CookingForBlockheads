@@ -1,24 +1,25 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class GuiButtonSort extends GuiButton {
+public class SortButton extends Button {
 
     private final ISortButton button;
 
     private final List<String> tooltipLines = Lists.newArrayList();
 
-    public GuiButtonSort(int buttonId, int x, int y, ISortButton button) {
+    public SortButton(int buttonId, int x, int y, ISortButton button) {
         super(buttonId, x, y, 20, 20, "");
         this.button = button;
         this.tooltipLines.add(I18n.format(this.button.getTooltip()));
@@ -34,6 +35,7 @@ public class GuiButtonSort extends GuiButton {
         } else if (hovered) {
             texY += 20;
         }
+
         GlStateManager.color(1f, 1f, 1f, 1f);
         mc.getTextureManager().bindTexture(this.button.getIcon());
         drawTexturedModalRect(x, y, button.getIconTextureX(), texY, width, height);
@@ -43,7 +45,7 @@ public class GuiButtonSort extends GuiButton {
         return tooltipLines;
     }
 
-    public Comparator<FoodRecipeWithStatus> getComparator(EntityPlayer player) {
+    public Comparator<FoodRecipeWithStatus> getComparator(PlayerEntity player) {
         return button.getComparator(player);
     }
 }

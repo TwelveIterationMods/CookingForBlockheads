@@ -3,9 +3,9 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.ClientProxy;
-import net.blay09.mods.cookingforblockheads.client.gui.SortButtonHunger;
-import net.blay09.mods.cookingforblockheads.client.gui.SortButtonName;
-import net.blay09.mods.cookingforblockheads.client.gui.SortButtonSaturation;
+import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
+import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
+import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.JsonCompatLoader;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
@@ -59,9 +59,9 @@ public class CookingForBlockheads {
 
         CookingForBlockheadsAPI.setupAPI(new InternalMethods());
 
-        CookingRegistry.addSortButton(new SortButtonName());
-        CookingRegistry.addSortButton(new SortButtonHunger());
-        CookingRegistry.addSortButton(new SortButtonSaturation());
+        CookingRegistry.addSortButton(new NameSortButton());
+        CookingRegistry.addSortButton(new HungerSortButton());
+        CookingRegistry.addSortButton(new SaturationSortButton());
 
         MinecraftForge.EVENT_BUS.register(new IMCHandler());
         MinecraftForge.EVENT_BUS.register(new CowJarHandler());

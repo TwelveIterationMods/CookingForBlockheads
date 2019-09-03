@@ -1,11 +1,13 @@
-package net.blay09.mods.cookingforblockheads.client.gui;
+package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
+import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotCraftMatrix;
 import net.blay09.mods.cookingforblockheads.container.slot.FakeSlotRecipe;
@@ -13,14 +15,17 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -33,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 
 @MouseTweaksIgnore
-public class GuiRecipeBook extends GuiContainer {
+public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
     private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
     private static final int SCROLLBAR_Y = 8;
@@ -54,18 +59,18 @@ public class GuiRecipeBook extends GuiContainer {
     private int indexWhenClicked;
     private int lastNumberOfMoves;
 
-    private GuiButton btnNextRecipe;
-    private GuiButton btnPrevRecipe;
+    private Button btnNextRecipe;
+    private Button btnPrevRecipe;
 
-    private GuiTextField searchBar;
+    private TextFieldWidget searchBar;
 
-    private final List<GuiButtonSort> sortButtons = Lists.newArrayList();
+    private final List<SortButton> sortButtons = Lists.newArrayList();
 
     private final String[] noIngredients;
     private final String[] noSelection;
 
-    public GuiRecipeBook(RecipeBookContainer container) {
-        super(container);
+    public RecipeBookScreen(RecipeBookContainer container, PlayerInventory playerInventory, ITextComponent displayName) {
+        super(container, playerInventory, displayName);
         this.container = container;
 
         noIngredients = I18n.format("gui." + CookingForBlockheads.MOD_ID + ":no_ingredients").split("\\\\n");
@@ -79,22 +84,22 @@ public class GuiRecipeBook extends GuiContainer {
 
         Keyboard.enableRepeatEvents(true);
 
-        btnPrevRecipe = new GuiButton(0, width / 2 - 79, height / 2 - 51, 13, 20, "<");
+        btnPrevRecipe = new Button(0, width / 2 - 79, height / 2 - 51, 13, 20, "<");
         btnPrevRecipe.visible = false;
-        buttonList.add(btnPrevRecipe);
+        addButton(btnPrevRecipe);
 
-        btnNextRecipe = new GuiButton(1, width / 2 - 9, height / 2 - 51, 13, 20, ">");
+        btnNextRecipe = new Button(1, width / 2 - 9, height / 2 - 51, 13, 20, ">");
         btnNextRecipe.visible = false;
-        buttonList.add(btnNextRecipe);
+        addButton(btnNextRecipe);
 
-        searchBar = new GuiTextField(2, fontRenderer, guiLeft + xSize - 78, guiTop - 5, 70, 10);
+        searchBar = new TextFieldWidget(2, fontRenderer, guiLeft + xSize - 78, guiTop - 5, 70, 10);
 //		searchBar.setFocused(true);
 
         int yOffset = -80;
         int id = 3;
 
         for (ISortButton button : CookingRegistry.getSortButtons()) {
-            GuiButtonSort sortButton = new GuiButtonSort(id++, width / 2 + 87, height / 2 + yOffset, button);
+            SortButton sortButton = new SortButton(id++, width / 2 + 87, height / 2 + yOffset, button);
             buttonList.add(sortButton);
             sortButtons.add(sortButton);
 
@@ -119,9 +124,9 @@ public class GuiRecipeBook extends GuiContainer {
             container.nextSubRecipe(1);
         }
 
-        for (GuiButton sortButton : this.sortButtons) {
-            if (sortButton instanceof GuiButtonSort && button == sortButton) {
-                container.setSortComparator(((GuiButtonSort) sortButton).getComparator(Minecraft.getMinecraft().player));
+        for (Button sortButton : this.sortButtons) {
+            if (sortButton instanceof SortButton && button == sortButton) {
+                container.setSortComparator(((SortButton) sortButton).getComparator(Minecraft.getInstance().player));
             }
         }
     }
@@ -210,9 +215,9 @@ public class GuiRecipeBook extends GuiContainer {
             container.setDirty(false);
         }
 
-        GlStateManager.color(1f, 1f, 1f, 1f);
-        mc.getTextureManager().bindTexture(guiTexture);
-        drawTexturedModalRect(guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
+        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        getMinecraft().getTextureManager().bindTexture(guiTexture);
+        blit(guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1, (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS);
@@ -226,37 +231,38 @@ public class GuiRecipeBook extends GuiContainer {
         }
 
         btnPrevRecipe.visible = container.hasVariants();
-        btnPrevRecipe.enabled = container.getSelectionIndex() > 0;
+        btnPrevRecipe.active = container.getSelectionIndex() > 0;
         btnNextRecipe.visible = container.hasVariants();
-        btnNextRecipe.enabled = container.getSelectionIndex() < container.getRecipeCount() - 1;
+        btnNextRecipe.active = container.getSelectionIndex() < container.getRecipeCount() - 1;
 
         boolean hasRecipes = container.getItemListCount() > 0;
 
-        for (GuiButton sortButton : sortButtons) {
-            sortButton.enabled = hasRecipes;
+        for (Button sortButton : sortButtons) {
+            sortButton.active = hasRecipes;
         }
 
-        GlStateManager.color(1f, 1f, 1f, 1f);
+        GlStateManager.color4f(1f, 1f, 1f, 1f);
 
-        if (CookingForBlockheadsConfig.client.showIngredientIcon) {
-            float prevZLevel = zLevel;
-            zLevel = 300f;
-            for (Slot slot : inventorySlots.inventorySlots) {
+        if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
+            int prevZLevel = blitOffset;
+            blitOffset = 300;
+            for (Slot slot : container.inventorySlots) {
                 if (slot instanceof FakeSlotRecipe) {
                     if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
-                        drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
+                        blit(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
                     }
 
                     FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
-                        drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 92, 16, 16);
+                        blit(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 92, 16, 16);
                     }
                 }
             }
 
-            zLevel = prevZLevel;
+            blitOffset = prevZLevel;
         }
 
+        FontRenderer fontRenderer = getMinecraft().fontRenderer;
         FoodRecipeWithIngredients selection = container.getSelection();
         if (selection == null) {
             int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRenderer.FONT_HEIGHT;
@@ -265,23 +271,23 @@ public class GuiRecipeBook extends GuiContainer {
                 curY += fontRenderer.FONT_HEIGHT + 5;
             }
         } else if (selection.getRecipeType() == RecipeType.SMELTING) {
-            drawTexturedModalRect(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
+            blit(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
         } else {
-            drawTexturedModalRect(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
+            blit(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
         }
 
         if (selection != null) {
             for (FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-                    drawTexturedModalRect(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
+                    blit(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
                 }
             }
         }
 
-        GuiContainer.drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
+        drawRect(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 
         if (container.getItemListCount() == 0) {
-            GuiContainer.drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
+            drawRect(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
             int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRenderer.FONT_HEIGHT;
             for (String s : noIngredients) {
                 fontRenderer.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
@@ -299,22 +305,22 @@ public class GuiRecipeBook extends GuiContainer {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        float prevZLevel = zLevel;
-        zLevel = 300f;
-        for (Slot slot : inventorySlots.inventorySlots) {
+        float prevZLevel = blitOffset;
+        blitOffset = 300f;
+        for (Slot slot : container.inventorySlots) {
             if (slot instanceof FakeSlotCraftMatrix) {
                 if (!((FakeSlotCraftMatrix) slot).isAvailable() && !slot.getStack().isEmpty()) {
                     drawGradientRect(guiLeft + slot.xPos, guiTop + slot.yPos, guiLeft + slot.xPos + 16, guiTop + slot.yPos + 16, 0x77FF4444, 0x77FF5555);
                 }
             }
         }
-        zLevel = prevZLevel;
+        blitOffset = prevZLevel;
 
         container.updateSlots(partialTicks);
 
-        for (GuiButton sortButton : this.sortButtons) {
-            if (sortButton instanceof GuiButtonSort && sortButton.isMouseOver() && sortButton.enabled) {
-                drawHoveringText(((GuiButtonSort) sortButton).getTooltipLines(), mouseX, mouseY);
+        for (Button sortButton : this.sortButtons) {
+            if (sortButton instanceof SortButton && sortButton.isMouseOver() && sortButton.active) {
+                drawHoveringText(((SortButton) sortButton).getTooltipLines(), mouseX, mouseY);
             }
         }
 
@@ -397,8 +403,8 @@ public class GuiRecipeBook extends GuiContainer {
         }
     }
 
-    public GuiButton[] getSortingButtons() {
-        return sortButtons.toArray(new GuiButton[0]);
+    public Button[] getSortingButtons() {
+        return sortButtons.toArray();
     }
 
 }

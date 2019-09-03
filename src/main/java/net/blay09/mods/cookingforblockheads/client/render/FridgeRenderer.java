@@ -1,25 +1,30 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockFridge;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.client.model.ModelFridgeDoor;
-import net.blay09.mods.cookingforblockheads.client.model.ModelFridgeLargeDoor;
+import net.blay09.mods.cookingforblockheads.client.model.FridgeDoorModel;
+import net.blay09.mods.cookingforblockheads.client.model.FridgeLargeDoorModel;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
 
-public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
+public class FridgeRenderer extends TileEntityRenderer<TileFridge> {
 
     public static IBakedModel modelDoor;
     public static IBakedModel modelDoorLarge;
@@ -28,8 +33,8 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
     public static IBakedModel modelHandle;
     public static IBakedModel modelHandleLarge;
 
-    private final ModelFridgeDoor modelFridgeDoor = new ModelFridgeDoor();
-    private final ModelFridgeLargeDoor modelFridgeLargeDoor = new ModelFridgeLargeDoor();
+    private final FridgeDoorModel modelFridgeDoor = new FridgeDoorModel();
+    private final FridgeLargeDoorModel modelFridgeLargeDoor = new FridgeLargeDoorModel();
     private final ResourceLocation textureFridgeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_door.png");
     private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_large_door.png");
 
@@ -39,28 +44,28 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             return;
         }
 
-        IBlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (state.getBlock() != ModBlocks.fridge) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }
 
         state = state.getBlock().getActualState(state, tileEntity.getWorld(), tileEntity.getPos());
-        BlockFridge.FridgeType fridgeType = state.getValue(BlockFridge.TYPE);
+        BlockFridge.FridgeType fridgeType = state.get(BlockFridge.TYPE);
         if (fridgeType == BlockFridge.FridgeType.INVISIBLE) {
             return;
         }
 
         // Render the oven door
-        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         float blockAngle = RenderUtils.getFacingAngle(state);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
-        boolean isFlipped = state.getValue(BlockFridge.FLIPPED);
+        boolean isFlipped = state.get(BlockFridge.FLIPPED);
         boolean isLarge = fridgeType == BlockFridge.FridgeType.LARGE;
-        boolean hasIceUnit = state.getValue(BlockFridge.ICE_UNIT);
+        boolean hasIceUnit = state.get(BlockFridge.ICE_UNIT);
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 0.5f, y, z + 0.5f);
-        GlStateManager.rotate(blockAngle, 0f, 1f, 0f);
-        GlStateManager.translate(-0.5f, 0f, -0.5f);
+        GlStateManager.translated(x + 0.5f, y, z + 0.5f);
+        GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
+        GlStateManager.translatef(-0.5f, 0f, -0.5f);
 
         float originX = 0.9375f;
         float originZ = 0.0625f;
@@ -69,9 +74,9 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
             doorAngle *= -1f;
         }
 
-        GlStateManager.translate(originX, 0f, originZ);
-        GlStateManager.rotate(-(float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
-        GlStateManager.translate(-originX, 0f, -originZ);
+        GlStateManager.translatef(originX, 0f, originZ);
+        GlStateManager.rotatef(-(float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
+        GlStateManager.translatef(-originX, 0f, -originZ);
 
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model;
@@ -82,11 +87,11 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
         }
 
         IBakedModel handleModel = isLarge ? modelHandleLarge : modelHandle;
-        EnumDyeColor fridgeColor = tileEntity.getFridgeColor();
+        DyeColor fridgeColor = tileEntity.getFridgeColor();
         int color = fridgeColor.getColorValue();
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, (float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f);
         if (isFlipped) {
-            GlStateManager.translate(isLarge ? 0.6875f : 0.625f, 0f, 0f);
+            GlStateManager.translatef(isLarge ? 0.6875f : 0.625f, 0f, 0f);
         }
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(handleModel, 1f, 1f, 1f, 1f);
         GlStateManager.popMatrix();
@@ -123,12 +128,12 @@ public class FridgeRenderer extends TileEntitySpecialRenderer<TileFridge> {
 
         // Render the fridge content if the door is open
         if (doorAngle != 0f) {
-            RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             GlStateManager.pushMatrix();
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-            GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-            GlStateManager.scale(0.3f, 0.3f, 0.3f);
+            GlStateManager.color4f(1f, 1f, 1f, 1f);
+            GlStateManager.translatef(x + 0.5, y + 0.5, z + 0.5);
+            GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
+            GlStateManager.scalef(0.3f, 0.3f, 0.3f);
             float topY = fridgeType == BlockFridge.FridgeType.LARGE ? 3.25f : 0.35f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
             for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {

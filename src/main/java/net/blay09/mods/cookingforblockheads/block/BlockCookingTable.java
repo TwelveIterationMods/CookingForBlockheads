@@ -8,7 +8,7 @@ import net.blay09.mods.cookingforblockheads.tile.CookingTableTileEntity;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +46,7 @@ public class BlockCookingTable extends BlockKitchen {
 
     @Override
     @SuppressWarnings("deprecation")
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof CookingTableTileEntity) {
             return state.withProperty(COLOR, ((CookingTableTileEntity) tileEntity).getDyedColor());
@@ -56,7 +56,7 @@ public class BlockCookingTable extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, BlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty()) {
             CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
@@ -94,7 +94,7 @@ public class BlockCookingTable extends BlockKitchen {
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    public void breakBlock(World world, BlockPos pos, BlockState state) {
         CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
         if (tileEntity != null) {
             ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());

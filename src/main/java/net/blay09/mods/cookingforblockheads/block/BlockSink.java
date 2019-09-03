@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -53,7 +53,7 @@ public class BlockSink extends BlockKitchen {
 
     @Override
     @SuppressWarnings("deprecation")
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileSink) {
             return state.with(COLOR, ((TileSink) tileEntity).getDyedColor());
@@ -69,7 +69,7 @@ public class BlockSink extends BlockKitchen {
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         EnumFacing facing;
         switch (meta & 7) {
             case 0:
@@ -91,7 +91,7 @@ public class BlockSink extends BlockKitchen {
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         int meta;
         switch (state.getValue(FACING)) {
             case EAST:
@@ -117,7 +117,7 @@ public class BlockSink extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, BlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
             if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
@@ -174,7 +174,7 @@ public class BlockSink extends BlockKitchen {
         return true;
     }
 
-    private void spawnParticles(World world, BlockPos pos, IBlockState state) {
+    private void spawnParticles(World world, BlockPos pos, BlockState state) {
         float dripWaterX = 0f;
         float dripWaterZ = 0f;
         switch (state.getValue(FACING)) {

@@ -1,35 +1,35 @@
 package net.blay09.mods.cookingforblockheads.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.Model;
 
-public class ModelFridgeDoor extends ModelBase {
+public class FridgeDoorModel extends Model {
 
-    public final ModelRenderer DoorMain;
-    public final ModelRenderer DoorHandle;
-    public final ModelRenderer DoorMainFlipped;
-    public final ModelRenderer DoorHandleFlipped;
+    public final RendererModel DoorMain;
+    public final RendererModel DoorHandle;
+    public final RendererModel DoorMainFlipped;
+    public final RendererModel DoorHandleFlipped;
 
-    public ModelFridgeDoor() {
+    public FridgeDoorModel() {
         textureWidth = 64;
         textureHeight = 16;
 
-        DoorMain = new ModelRenderer(this, 4, 0);
+        DoorMain = new RendererModel(this, 4, 0);
         DoorMain.addBox(0f, 0f, 0f, 14, 15, 1);
         DoorMain.setRotationPoint(-7f, 9f, -7f);
         DoorMain.setTextureSize(64, 16);
 
-        DoorMainFlipped = new ModelRenderer(this, 4, 0);
+        DoorMainFlipped = new RendererModel(this, 4, 0);
         DoorMainFlipped.addBox(-14f, 0f, 0f, 14, 15, 1);
         DoorMainFlipped.setRotationPoint(7f, 9f, -7f);
         DoorMainFlipped.setTextureSize(64, 16);
 
-        DoorHandle = new ModelRenderer(this, 0, 0);
+        DoorHandle = new RendererModel(this, 0, 0);
         DoorHandle.addBox(12f, 6f, -1f, 1, 2, 1);
         DoorHandle.setRotationPoint(-7f, 9f, -7f);
         DoorHandle.setTextureSize(64, 16);
 
-        DoorHandleFlipped = new ModelRenderer(this, 0, 0);
+        DoorHandleFlipped = new RendererModel(this, 0, 0);
         DoorHandleFlipped.addBox(-13f, 6f, -1f, 1, 2, 1);
         DoorHandleFlipped.setRotationPoint(7f, 9f, -7f);
         DoorHandleFlipped.setTextureSize(64, 16);

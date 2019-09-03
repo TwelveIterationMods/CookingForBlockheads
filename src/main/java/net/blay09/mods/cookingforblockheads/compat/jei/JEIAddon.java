@@ -9,7 +9,7 @@ import mezz.jei.api.gui.IAdvancedGuiHandler;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.client.gui.GuiRecipeBook;
+import net.blay09.mods.cookingforblockheads.client.gui.screen.RecipeBookScreen;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 
@@ -31,14 +31,14 @@ public class JEIAddon implements IModPlugin {
         }
 
         // Do not put JEI items behind the sorting buttons
-        registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiRecipeBook>() {
+        registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<RecipeBookScreen>() {
             @Override
-            public Class<GuiRecipeBook> getGuiContainerClass() {
-                return GuiRecipeBook.class;
+            public Class<RecipeBookScreen> getGuiContainerClass() {
+                return RecipeBookScreen.class;
             }
 
             @Override
-            public List<Rectangle> getGuiExtraAreas(GuiRecipeBook guiContainer) {
+            public List<Rectangle> getGuiExtraAreas(RecipeBookScreen guiContainer) {
                 List<Rectangle> list = Lists.newArrayList();
                 for (GuiButton button : guiContainer.getSortingButtons()) {
                     list.add(new Rectangle(button.x, button.y, button.width, button.height));
@@ -48,7 +48,7 @@ public class JEIAddon implements IModPlugin {
 
             @Nullable
             @Override
-            public Object getIngredientUnderMouse(GuiRecipeBook guiContainer, int mouseX, int mouseY) {
+            public Object getIngredientUnderMouse(RecipeBookScreen guiContainer, int mouseX, int mouseY) {
                 return null;
             }
         });

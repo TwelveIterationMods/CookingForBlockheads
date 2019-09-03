@@ -57,7 +57,7 @@ public abstract class BlockKitchen extends Block {
 
     @Override
     @SuppressWarnings("deprecation")
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
         if (state.getValue(FACING).getAxis() == EnumFacing.Axis.X) {
             return BOUNDING_BOX_X;
         } else {

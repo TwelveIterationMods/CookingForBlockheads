@@ -11,7 +11,7 @@ import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
 import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +38,7 @@ public class TheOneProbeAddon implements Function<ITheOneProbe, Void> {
         }
 
         @Override
-        public void addProbeInfo(ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, IBlockState state, IProbeHitData data) {
+        public void addProbeInfo(ProbeMode mode, IProbeInfo info, EntityPlayer player, World world, BlockState state, IProbeHitData data) {
             // NOTE no lang support in The One Probe atm...
             if (state.getBlock() instanceof BlockMilkJar) {
                 TileMilkJar tileEntity = tryGetTileEntity(world, data.getPos(), TileMilkJar.class);

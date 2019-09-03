@@ -2,13 +2,13 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -31,13 +31,13 @@ public class LowerableFacingOnDemandModel implements IBakedModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, long rand) {
         if (state != null) {
             String stateString = state.toString();
             IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
-                TRSRTransformation transform = TRSRTransformation.from(state.getValue(BlockKitchen.FACING));
-                if (state.getValue(BlockKitchen.LOWERED)) {
+                TRSRTransformation transform = TRSRTransformation.from(state.get(BlockKitchen.FACING));
+                if (state.get(BlockKitchen.LOWERED)) {
                     transform = transform.compose(new TRSRTransformation(new Vector3f(0f, -0.05f, 0f), null, null, null));
                 }
 
@@ -76,7 +76,7 @@ public class LowerableFacingOnDemandModel implements IBakedModel {
 
     @Override
     public ItemOverrideList getOverrides() {
-        return ItemOverrideList.NONE;
+        return ItemOverrideList.EMPTY;
     }
 
 }
