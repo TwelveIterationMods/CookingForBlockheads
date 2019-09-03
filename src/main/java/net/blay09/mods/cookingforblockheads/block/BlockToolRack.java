@@ -1,14 +1,12 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.TileToolRack;
+import net.blay09.mods.cookingforblockheads.tile.ToolRackTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
@@ -21,13 +19,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockToolRack extends BlockKitchen {
 
@@ -48,7 +44,7 @@ public class BlockToolRack extends BlockKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileToolRack();
+        return new ToolRackTileEntity();
     }
 
     @Override
@@ -105,7 +101,7 @@ public class BlockToolRack extends BlockKitchen {
             }
 
             int hitSlot = hit > 0.5f ? 0 : 1;
-            TileToolRack tileToolRack = (TileToolRack) world.getTileEntity(pos);
+            ToolRackTileEntity tileToolRack = (ToolRackTileEntity) world.getTileEntity(pos);
             if (tileToolRack != null) {
                 if (!heldItem.isEmpty()) {
                     ItemStack oldToolItem = tileToolRack.getItemHandler().getStackInSlot(hitSlot);

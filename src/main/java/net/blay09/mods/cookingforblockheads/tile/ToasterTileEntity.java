@@ -1,24 +1,23 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.ModSounds;
+import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileToaster extends TileEntity implements ITickable {
+public class ToasterTileEntity extends TileEntity implements ITickableTileEntity {
 
     private static final int TOAST_TICKS = 1200;
 
@@ -27,12 +26,16 @@ public class TileToaster extends TileEntity implements ITickable {
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
             markDirty();
-            VanillaPacketHandler.sendTileEntityUpdate(TileToaster.this);
+            VanillaPacketHandler.sendTileEntityUpdate(ToasterTileEntity.this);
         }
     };
 
     private boolean active;
     private int toastTicks;
+
+    public ToasterTileEntity() {
+        super(ModTileEntities.toaster);
+    }
 
     @Override
     public boolean receiveClientEvent(int id, int type) {
@@ -43,66 +46,64 @@ public class TileToaster extends TileEntity implements ITickable {
             world.playSound(null, pos, ModSounds.toasterStop, SoundCategory.BLOCKS, 1f, 1f);
             return true;
         } else if (id == 2) {
-            IBlockState state = world.getBlockState(pos);
-            world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+            BlockState state = world.getBlockState(pos);
+            world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
             return true;
         }
         return super.receiveClientEvent(id, type);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
-        itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
+    public void read(CompoundNBT tagCompound) {
+        super.read(tagCompound);
+        itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
         active = tagCompound.getBoolean("Active");
-        toastTicks = tagCompound.getInteger("ToastTicks");
+        toastTicks = tagCompound.getInt("ToastTicks");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-        tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
-        tagCompound.setBoolean("Active", active);
-        tagCompound.setInteger("ToastTicks", toastTicks);
+    public CompoundNBT write(CompoundNBT tagCompound) {
+        super.write(tagCompound);
+        tagCompound.put("ItemHandler", itemHandler.serializeNBT());
+        tagCompound.putBoolean("Active", active);
+        tagCompound.putInt("ToastTicks", toastTicks);
         return tagCompound;
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        readFromNBT(pkt.getNbtCompound());
+        read(pkt.getNbtCompound());
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 0, getUpdateTag());
     }
 
     @Override
-    public void update() {
+    public void tick() {
         if (active) {
             toastTicks--;
             if (toastTicks <= 0 && !world.isRemote) {
                 for (int i = 0; i < itemHandler.getSlots(); i++) {
                     ItemStack inputStack = itemHandler.getStackInSlot(i);
                     if (!inputStack.isEmpty()) {
-                        ToastHandler toastHandler = CookingRegistry.getToasterHandler(inputStack);
-                        ItemStack outputStack = toastHandler instanceof ToastOutputHandler ? ((ToastOutputHandler) toastHandler).getToasterOutput(inputStack) : ItemStack.EMPTY;
+                        ToasterHandler toastHandler = CookingRegistry.getToasterHandler(inputStack);
+                        ItemStack outputStack = toastHandler.getToasterOutput(inputStack);
                         if (outputStack.isEmpty()) {
                             outputStack = inputStack;
                         } else {
                             outputStack = outputStack.copy();
                         }
-                        EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
-                        entityItem.motionX = 0f;
-                        entityItem.motionY = 0.1f;
-                        entityItem.motionZ = 0f;
-                        world.spawnEntity(entityItem);
+                        ItemEntity itemEntity = new ItemEntity(world, pos.getX() + 0.5f, pos.getY() + 0.75f, pos.getZ() + 0.5f, outputStack);
+                        itemEntity.setMotion(0f, 0.1f, 0f);
+                        world.addEntity(itemEntity);
                         itemHandler.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
@@ -120,9 +121,10 @@ public class TileToaster extends TileEntity implements ITickable {
             toastTicks = 0;
             world.addBlockEvent(pos, ModBlocks.toaster, 1, 0);
         }
-        IBlockState state = world.getBlockState(pos);
+
+        BlockState state = world.getBlockState(pos);
         world.addBlockEvent(pos, ModBlocks.toaster, 2, 0);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, ModBlocks.toaster.getActualState(state, world, pos), 3);
+        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, ModBlocks.toaster.getActualState(state, world, pos), 3);
         markDirty();
     }
 
@@ -138,8 +140,4 @@ public class TileToaster extends TileEntity implements ITickable {
         return 1f - toastTicks / (float) TOAST_TICKS;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return oldState.getBlock() != newSate.getBlock();
-    }
 }

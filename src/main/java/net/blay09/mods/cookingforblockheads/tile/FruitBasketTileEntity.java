@@ -18,14 +18,17 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class SpiceRackTileEntity extends TileEntity {
+public class FruitBasketTileEntity extends TileEntity {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
         @Override
         protected void onContentsChanged(int slot) {
             markDirty();
-            BlockState blockState = world.getBlockState(pos);
-            world.markAndNotifyBlock(pos, world.getChunkAt(pos), blockState, blockState, 1 | 2);
+
+            if (world != null) {
+                BlockState blockState = world.getBlockState(pos);
+                world.markAndNotifyBlock(pos, world.getChunkAt(pos), blockState, blockState, 1 | 2);
+            }
         }
     };
 
@@ -34,8 +37,8 @@ public class SpiceRackTileEntity extends TileEntity {
     private final LazyOptional<IItemHandler> itemHandlerCap = LazyOptional.of(() -> itemHandler);
     private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
 
-    public SpiceRackTileEntity() {
-        super(ModTileEntities.spiceRack);
+    public FruitBasketTileEntity() {
+        super(ModTileEntities.fruitBasket);
     }
 
     @Override

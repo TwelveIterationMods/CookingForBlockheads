@@ -2,9 +2,9 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.ITickableTileEntity;
 
-public class TileCowJar extends TileMilkJar implements ITickable {
+public class TileCowJar extends TileMilkJar implements ITickableTileEntity {
 
     private static final int UPDATE_INTERVAL = 20;
 
@@ -12,9 +12,9 @@ public class TileCowJar extends TileMilkJar implements ITickable {
     protected int ticksSinceUpdate;
 
     @Override
-    public void update() {
+    public void tick() {
         if (milkAmount < MILK_CAPACITY) {
-            milkAmount += CookingForBlockheadsConfig.general.cowJarMilkPerTick;
+            milkAmount += CookingForBlockheadsConfig.COMMON.cowJarMilkPerTick.get();
             isDirty = true;
         }
         ticksSinceUpdate++;

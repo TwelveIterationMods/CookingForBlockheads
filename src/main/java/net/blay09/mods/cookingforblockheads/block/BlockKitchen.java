@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.ItemUtils;
-import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
+import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;

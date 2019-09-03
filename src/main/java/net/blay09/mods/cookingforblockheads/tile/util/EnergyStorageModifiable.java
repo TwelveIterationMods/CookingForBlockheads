@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.tile.util;
 
 import net.minecraftforge.energy.EnergyStorage;
 

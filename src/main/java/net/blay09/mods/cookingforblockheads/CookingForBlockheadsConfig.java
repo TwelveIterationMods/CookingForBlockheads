@@ -7,7 +7,7 @@ public class CookingForBlockheadsConfig {
 
     public static class Common {
         public final ForgeConfigSpec.BooleanValue cowJarEnabled;
-        public final Object cowJarMilkPerTick;
+        public final ForgeConfigSpec.DoubleValue cowJarMilkPerTick;
         public final ForgeConfigSpec.BooleanValue sinkRequiresWater;
         public final ForgeConfigSpec.BooleanValue largeCounters;
         public final ForgeConfigSpec.BooleanValue disallowOvenAutomation;

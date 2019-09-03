@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container;
 
 import invtweaks.api.container.ChestContainer;
-import net.blay09.mods.cookingforblockheads.tile.TileCounter;
+import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -16,10 +16,10 @@ import net.minecraftforge.items.SlotItemHandler;
 @ChestContainer
 public class CounterContainer extends Container implements IContainerWithDoor {
 
-    private final TileCounter tileCounter;
+    private final CounterTileEntity tileCounter;
     private final int numRows;
 
-    public CounterContainer(int windowId, PlayerInventory playerInventory, TileCounter tileCounter) {
+    public CounterContainer(int windowId, PlayerInventory playerInventory, CounterTileEntity tileCounter) {
         super(ModContainers.counter, windowId);
         this.tileCounter = tileCounter;
         this.numRows = tileCounter.getItemHandler().getSlots() / 9;

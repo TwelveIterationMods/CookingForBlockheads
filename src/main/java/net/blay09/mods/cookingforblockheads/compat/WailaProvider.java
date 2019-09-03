@@ -8,7 +8,7 @@ import net.blay09.mods.cookingforblockheads.block.BlockToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
-import net.blay09.mods.cookingforblockheads.tile.TileToaster;
+import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -79,8 +79,8 @@ public class WailaProvider implements IWailaPlugin {
         @Override
         public List<String> getWailaBody(ItemStack itemStack, List<String> list, IWailaDataAccessor accessor, IWailaConfigHandler config) {
             TileEntity tileEntity = accessor.getTileEntity();
-            if (tileEntity instanceof TileToaster) {
-                TileToaster tileToaster = (TileToaster) tileEntity;
+            if (tileEntity instanceof ToasterTileEntity) {
+                ToasterTileEntity tileToaster = (ToasterTileEntity) tileEntity;
                 if (tileToaster.isActive()) {
                     list.add(I18n.format("waila.cookingforblockheads:toast_progress", (int) (tileToaster.getToastProgress() * 100)) + "%");
                 }

@@ -10,15 +10,19 @@ import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -165,32 +169,32 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-        tagCompound.setFloat("MilkAmount", milkAmount);
+    public CompoundNBT write(CompoundNBT tagCompound) {
+        super.write(tagCompound);
+        tagCompound.putFloat("MilkAmount", milkAmount);
         return tagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
+    public void read(CompoundNBT tagCompound) {
+        super.read(tagCompound);
         milkAmount = tagCompound.getFloat("MilkAmount");
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        readFromNBT(pkt.getNbtCompound());
+        read(pkt.getNbtCompound());
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 0, getUpdateTag());
     }
 
     public float getMilkAmount() {
@@ -201,27 +205,19 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
         return MILK_CAPACITY;
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityKitchenItemProvider.CAPABILITY
-                || (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && Compat.getMilkFluid() != null)
-                || super.hasCapability(capability, facing);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
-        } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && Compat.getMilkFluid() != null) {
-            return (T) milkFluidHandler;
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+        LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
+        if (!result.isPresent() && Compat.getMilkFluid() != null) {
+            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, milkFluidHandlerCap);
         }
-        return super.getCapability(capability, facing);
-    }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return oldState.getBlock() != newSate.getBlock();
+        if (result.isPresent()) {
+            return result;
+        } else {
+            return super.getCapability(capability, facing);
+        }
     }
 
 }

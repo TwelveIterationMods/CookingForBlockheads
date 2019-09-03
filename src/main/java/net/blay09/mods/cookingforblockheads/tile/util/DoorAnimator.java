@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.tile.util;
 
 import net.blay09.mods.cookingforblockheads.container.IContainerWithDoor;
 import net.minecraft.block.Block;
@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 
 public class DoorAnimator {
 
@@ -91,7 +92,10 @@ public class DoorAnimator {
 
     public void setForcedOpen(boolean isForcedOpen) {
         this.isForcedOpen = isForcedOpen;
-        tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), tileEntity.getBlockState().getBlock(), 2, isForcedOpen ? 1 : 0);
+        World world = tileEntity.getWorld();
+        if (world != null) {
+            world.addBlockEvent(tileEntity.getPos(), tileEntity.getBlockState().getBlock(), 2, isForcedOpen ? 1 : 0);
+        }
     }
 
     public boolean receiveClientEvent(int id, int type) {
@@ -108,20 +112,24 @@ public class DoorAnimator {
     public void openContainer(PlayerEntity player) {
         if (!player.isSpectator()) {
             numPlayersUsing = Math.max(0, numPlayersUsing + 1);
-            Block block = tileEntity.getBlockState().getBlock();
-            tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), block, eventNumPlayers, numPlayersUsing);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), block);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), block);
+            fireBlockEvent();
         }
     }
 
     public void closeContainer(PlayerEntity player) {
         if (!player.isSpectator()) {
             numPlayersUsing--;
-            Block block = tileEntity.getBlockState().getBlock();
-            tileEntity.getWorld().addBlockEvent(tileEntity.getPos(), block, eventNumPlayers, numPlayersUsing);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), block);
-            tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().down(), block);
+            fireBlockEvent();
+        }
+    }
+
+    private void fireBlockEvent() {
+        World world = tileEntity.getWorld();
+        Block block = tileEntity.getBlockState().getBlock();
+        if (world != null) {
+            world.addBlockEvent(tileEntity.getPos(), block, eventNumPlayers, numPlayersUsing);
+            world.notifyNeighborsOfStateChange(tileEntity.getPos(), block);
+            world.notifyNeighborsOfStateChange(tileEntity.getPos().down(), block);
         }
     }
 

@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
+import net.blay09.mods.cookingforblockheads.tile.FruitBasketTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,10 +10,10 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 
-public class FruitBasketRenderer extends TileEntitySpecialRenderer<TileFruitBasket> {
+public class FruitBasketRenderer extends TileEntitySpecialRenderer<FruitBasketTileEntity> {
 
     @Override
-    public void render(TileFruitBasket tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(FruitBasketTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (!tileEntity.hasWorld()) {
             return;
         }

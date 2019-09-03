@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.tile.TileCuttingBoard;
+import net.blay09.mods.cookingforblockheads.tile.CuttingBoardTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -64,7 +64,7 @@ public class BlockCuttingBoard extends BlockKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileCuttingBoard();
+        return new CuttingBoardTileEntity();
     }
 
     @Override

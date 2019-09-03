@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.TileCorner;
+import net.blay09.mods.cookingforblockheads.tile.CornerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -49,8 +49,8 @@ public class BlockCorner extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileCorner) {
-            return state.withProperty(COLOR, ((TileCorner) tileEntity).getDyedColor());
+        if (tileEntity instanceof CornerTileEntity) {
+            return state.withProperty(COLOR, ((CornerTileEntity) tileEntity).getDyedColor());
         }
 
         return state;
@@ -77,7 +77,7 @@ public class BlockCorner extends BlockKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileCorner();
+        return new CornerTileEntity();
     }
 
 }

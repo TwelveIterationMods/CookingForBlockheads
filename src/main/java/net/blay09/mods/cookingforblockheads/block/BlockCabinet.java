@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.TileCabinet;
+import net.blay09.mods.cookingforblockheads.tile.CabinetTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -29,7 +29,7 @@ public class BlockCabinet extends BlockCounter {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileCabinet();
+        return new CabinetTileEntity();
     }
 
     @Override

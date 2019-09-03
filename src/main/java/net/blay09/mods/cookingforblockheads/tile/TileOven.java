@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
@@ -9,25 +8,20 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvi
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemFood;
+import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.tile.util.EnergyStorageModifiable;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -38,8 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 
-@Optional.Interface(iface = "blusunrize.immersiveengineering.api.tool.ExternalHeaterHandler$IExternalHeatable", modid = Compat.IMMERSIVE_ENGINEERING)
-public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingProvider, ExternalHeaterHandler.IExternalHeatable {
+public class TileOven extends TileEntity implements ITickableTileEntity, IKitchenSmeltingProvider {
 
     private static final int COOK_TIME = 200;
 
@@ -104,9 +97,10 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     private boolean isDirty;
 
     private boolean hasPowerUpgrade;
-    private EnumFacing facing;
+    private Direction facing;
 
     public TileOven() {
+        super(ModTileEntities.oven);
         doorAnimator.setSoundEventOpen(ModSounds.ovenOpen);
         doorAnimator.setSoundEventClose(ModSounds.ovenClose);
     }
@@ -117,11 +111,11 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    public void update() {
+    public void tick() {
         if (isFirstTick) {
-            IBlockState state = world.getBlockState(pos);
+            BlockState state = world.getBlockState(pos);
             if (state.getBlock() == ModBlocks.oven) {
-                facing = state.getValue(BlockOven.FACING);
+                facing = state.get(BlockOven.FACING);
                 isFirstTick = false;
             }
         }
@@ -150,7 +144,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 for (int i = 0; i < itemHandlerFuel.getSlots(); i++) {
                     ItemStack fuelItem = itemHandlerFuel.getStackInSlot(i);
                     if (!fuelItem.isEmpty()) {
-                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * CookingForBlockheadsConfig.general.ovenFuelTimeMultiplier);
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * CookingForBlockheadsConfig.COMMON.ovenFuelTimeMultiplier.get());
                         if (furnaceBurnTime != 0) {
                             fuelItem.shrink(1);
                             if (fuelItem.getCount() == 0) {
@@ -173,7 +167,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                         if (furnaceBurnTime > 0) {
                             slotCookTime[i]++;
                         }
-                        if (slotCookTime[i] >= COOK_TIME * CookingForBlockheadsConfig.general.ovenCookTimeMultiplier) {
+                        if (slotCookTime[i] >= COOK_TIME * CookingForBlockheadsConfig.COMMON.ovenCookTimeMultiplier.get()) {
                             ItemStack resultStack = getSmeltingResult(itemStack);
                             if (!resultStack.isEmpty()) {
                                 itemHandlerProcessing.setStackInSlot(i, resultStack.copy());
@@ -207,7 +201,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
                 for (int j = 0; j < itemHandlerInput.getSlots(); j++) {
                     ItemStack itemStack = itemHandlerInput.getStackInSlot(j);
                     if (!itemStack.isEmpty()) {
-                        itemHandlerProcessing.setStackInSlot(firstEmptySlot, itemStack.splitStack(1));
+                        itemHandlerProcessing.setStackInSlot(firstEmptySlot, itemStack.split(1));
                         if (itemStack.getCount() <= 0) {
                             itemHandlerInput.setStackInSlot(j, ItemStack.EMPTY);
                         }
@@ -254,7 +248,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
 
     public static int getItemBurnTime(ItemStack fuelItem) {
         int fuelTime = CookingRegistry.getOvenFuelTime(fuelItem);
-        if (fuelTime != 0 || CookingForBlockheadsConfig.compat.ovenRequiresCookingOil) {
+        if (fuelTime != 0 || CookingForBlockheadsConfig.COMMON.ovenRequiresCookingOil.get()) {
             return fuelTime;
         }
         return TileEntityFurnace.getItemBurnTime(fuelItem);
@@ -272,48 +266,48 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
-        itemHandler.deserializeNBT(tagCompound.getCompoundTag("ItemHandler"));
+    public void read(CompoundNBT tagCompound) {
+        super.read(tagCompound);
+        itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
         furnaceBurnTime = tagCompound.getShort("BurnTime");
         currentItemBurnTime = tagCompound.getShort("CurrentItemBurnTime");
         slotCookTime = tagCompound.getIntArray("CookTimes");
 
         hasPowerUpgrade = tagCompound.getBoolean("HasPowerUpgrade");
-        energyStorage.setEnergyStored(tagCompound.getInteger("EnergyStored"));
+        energyStorage.setEnergyStored(tagCompound.getInt("EnergyStored"));
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-        tagCompound.setTag("ItemHandler", itemHandler.serializeNBT());
-        tagCompound.setShort("BurnTime", (short) furnaceBurnTime);
-        tagCompound.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
-        tagCompound.setIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
+    public CompoundNBT write(CompoundNBT tagCompound) {
+        super.write(tagCompound);
+        tagCompound.put("ItemHandler", itemHandler.serializeNBT());
+        tagCompound.putShort("BurnTime", (short) furnaceBurnTime);
+        tagCompound.putShort("CurrentItemBurnTime", (short) currentItemBurnTime);
+        tagCompound.putIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
 
-        tagCompound.setBoolean("HasPowerUpgrade", hasPowerUpgrade);
-        tagCompound.setInteger("EnergyStored", energyStorage.getEnergyStored());
+        tagCompound.putBoolean("HasPowerUpgrade", hasPowerUpgrade);
+        tagCompound.putInt("EnergyStored", energyStorage.getEnergyStored());
         return tagCompound;
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        writeToNBT(tagCompound);
-        tagCompound.setBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
-        tagCompound.setByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT tagCompound = new CompoundNBT();
+        write(tagCompound);
+        tagCompound.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+        tagCompound.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
         return tagCompound;
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 0, getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        readFromNBT(pkt.getNbtCompound());
+        read(pkt.getNbtCompound());
         doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }
@@ -325,8 +319,8 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     public void setHasPowerUpgrade(boolean hasPowerUpgrade) {
         this.hasPowerUpgrade = hasPowerUpgrade;
         markDirty();
-        IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        BlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
     }
 
     public boolean isBurning() {
@@ -342,7 +336,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     public float getCookProgress(int i) {
-        return (float) slotCookTime[i] / ((float) COOK_TIME * CookingForBlockheadsConfig.general.ovenCookTimeMultiplier);
+        return (float) slotCookTime[i] / ((float) (COOK_TIME * CookingForBlockheadsConfig.COMMON.ovenCookTimeMultiplier.get()));
     }
 
     @Override
@@ -367,26 +361,14 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if (hasPowerUpgrade && capability == CapabilityEnergy.ENERGY) {
-            return true;
-        }
-
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || capability == CapabilityKitchenSmeltingProvider.CAPABILITY
-                || capability == CapabilityKitchenItemProvider.CAPABILITY
-                || super.hasCapability(capability, facing);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) {
                 return (T) itemHandler;
             }
 
-            if (!CookingForBlockheadsConfig.general.disallowOvenAutomation) {
+            if (!CookingForBlockheadsConfig.COMMON.disallowOvenAutomation.get()) {
                 switch (facing) {
                     case UP:
                         return (T) itemHandlerInput;
@@ -421,53 +403,7 @@ public class TileOven extends TileEntity implements ITickable, IKitchenSmeltingP
         return itemHandlerFuel;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        if (oldState.getBlock() == newState.getBlock()) {
-            facing = newState.getValue(BlockOven.FACING);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int doHeatTick(int energyAvailable, boolean redstone) {
-        int energyConsumed = 0;
-        boolean canCook = shouldConsumeFuel();
-        if (canCook || redstone) {
-            boolean burning = isBurning();
-            if (furnaceBurnTime < 200) {
-                int heatAttempt = 4;
-                int heatEnergyRatio = (int) Math.max(1, ExternalHeaterHandler.defaultFurnaceEnergyCost * CookingForBlockheadsConfig.general.ovenFuelTimeMultiplier);
-                int energyToUse = Math.min(energyAvailable, heatAttempt * heatEnergyRatio);
-                int heat = energyToUse / heatEnergyRatio;
-                if (heat > 0) {
-                    furnaceBurnTime += heat;
-                    energyConsumed += heat * heatEnergyRatio;
-                    if (!burning) {
-                        isDirty = true;
-                    }
-                }
-            }
-            if (canCook && furnaceBurnTime >= 200) {
-                int energyToUse = ExternalHeaterHandler.defaultFurnaceSpeedupCost * 9; // speed up affects nine items after all
-                if (energyAvailable - energyConsumed > energyToUse) {
-                    for (int i = 0; i < slotCookTime.length; i++) {
-                        if (slotCookTime[i] != -1) {
-                            slotCookTime[i]++;
-                        }
-                    }
-                    energyConsumed += energyToUse;
-                }
-            }
-        }
-        return energyConsumed;
-    }
-
-    public EnumFacing getFacing() {
-        if (facing == null) {
-            return EnumFacing.NORTH;
-        }
-        return facing;
+    public Direction getFacing() {
+        return facing == null ? Direction.NORTH : facing;
     }
 }

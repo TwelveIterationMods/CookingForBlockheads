@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.tile.TileToaster;
+import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -50,8 +50,8 @@ public class BlockToaster extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileToaster) {
-            return state.withProperty(ACTIVE, ((TileToaster) tileEntity).isActive());
+        if (tileEntity instanceof ToasterTileEntity) {
+            return state.withProperty(ACTIVE, ((ToasterTileEntity) tileEntity).isActive());
         }
         return state;
     }
@@ -64,8 +64,8 @@ public class BlockToaster extends BlockKitchen {
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileToaster) {
-            TileToaster tileToaster = (TileToaster) tileEntity;
+        if (tileEntity instanceof ToasterTileEntity) {
+            ToasterTileEntity tileToaster = (ToasterTileEntity) tileEntity;
             ItemStack heldItem = player.getHeldItem(hand);
             if (heldItem.isEmpty() || !tileToaster.getItemHandler().getStackInSlot(0).isEmpty() && !tileToaster.getItemHandler().getStackInSlot(1).isEmpty()) {
                 if (!tileToaster.isActive() && (!tileToaster.getItemHandler().getStackInSlot(0).isEmpty() || !tileToaster.getItemHandler().getStackInSlot(1).isEmpty())) {
@@ -95,12 +95,12 @@ public class BlockToaster extends BlockKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileToaster();
+        return new ToasterTileEntity();
     }
 
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-        TileToaster tileEntity = (TileToaster) world.getTileEntity(pos);
+        ToasterTileEntity tileEntity = (ToasterTileEntity) world.getTileEntity(pos);
         if (tileEntity != null && tileEntity.isActive()) {
             if (random.nextFloat() < tileEntity.getToastProgress()) {
                 double x = (float) pos.getX() + 0.5f + (random.nextFloat() - 0.5f) * 0.25f;

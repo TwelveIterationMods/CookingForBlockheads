@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import net.blay09.mods.cookingforblockheads.container.CounterContainer;
-import net.blay09.mods.cookingforblockheads.tile.TileCounter;
+import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -12,9 +12,9 @@ public class GuiCounter extends GuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation("textures/gui/container/generic_54.png");
     private final int inventoryRows;
-    private final TileCounter tileCounter;
+    private final CounterTileEntity tileCounter;
 
-    public GuiCounter(EntityPlayer player, TileCounter tileCounter) {
+    public GuiCounter(EntityPlayer player, CounterTileEntity tileCounter) {
         super(new CounterContainer(player, tileCounter));
         this.tileCounter = tileCounter;
         this.inventoryRows = tileCounter.getItemHandler().getSlots() / 9;

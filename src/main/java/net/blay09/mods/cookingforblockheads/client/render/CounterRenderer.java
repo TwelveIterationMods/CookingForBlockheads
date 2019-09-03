@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.blay09.mods.cookingforblockheads.tile.TileCounter;
+import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
-public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
+public class CounterRenderer extends TileEntitySpecialRenderer<CounterTileEntity> {
 
     public static IBakedModel[][] models;
     public static IBakedModel[][] modelsFlipped;
@@ -54,7 +54,7 @@ public class CounterRenderer extends TileEntitySpecialRenderer<TileCounter> {
     }
 
     @Override
-    public void render(TileCounter tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(CounterTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (!tileEntity.hasWorld()) {
             return;
         }

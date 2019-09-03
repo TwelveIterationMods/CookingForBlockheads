@@ -6,19 +6,18 @@ import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemPro
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileCuttingBoard extends TileEntity {
+public class CuttingBoardTileEntity extends TileEntity {
 
     private final IKitchenItemProvider itemProvider = new DefaultKitchenItemProvider() {
         private final ItemStack cuttingBoard = Compat.cuttingBoardItem != Items.AIR ? new ItemStack(Compat.cuttingBoardItem) : ItemStack.EMPTY;
@@ -43,24 +42,22 @@ public class TileCuttingBoard extends TileEntity {
         }
     };
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityKitchenItemProvider.CAPABILITY
-                || super.hasCapability(capability, facing);
+    private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
+
+    public CuttingBoardTileEntity() {
+        super(ModTileEntities.cuttingBoard);
     }
 
+    @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+        LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
+
+        if (result.isPresent()) {
+            return result;
+        } else {
+            return super.getCapability(capability, facing);
         }
-        return super.getCapability(capability, facing);
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return oldState.getBlock() != newSate.getBlock();
     }
 
 }

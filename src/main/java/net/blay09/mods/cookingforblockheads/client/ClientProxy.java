@@ -68,18 +68,18 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomStateMapper(ModBlocks.cuttingBoard, ignorePropertiesStateMapper);
         ModelLoader.setCustomStateMapper(ModBlocks.fruitBasket, ignorePropertiesStateMapper);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileToolRack.class, new ToolRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCookingTable.class, new CookingTableRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(ToolRackTileEntity.class, new ToolRackRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileOven.class, new OvenRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileFridge.class, new FridgeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileMilkJar.class, new MilkJarRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileToaster.class, new ToasterRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(ToasterTileEntity.class, new ToasterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCounter.class, new CounterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCabinet.class, new CabinetRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(CounterTileEntity.class, new CounterRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(CabinetTileEntity.class, new CabinetRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFruitBasket.class, new FruitBasketRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(FruitBasketTileEntity.class, new FruitBasketRenderer());
     }
 
     @Override

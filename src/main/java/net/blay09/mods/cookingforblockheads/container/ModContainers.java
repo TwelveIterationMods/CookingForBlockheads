@@ -24,8 +24,8 @@ public class ModContainers {
         registry.register(counter = register("counter", ((windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
             TileEntity tileEntity = inv.player.world.getTileEntity(pos);
-            if (tileEntity instanceof TileCounter) {
-                return new CounterContainer(windowId, inv, (TileCounter) tileEntity);
+            if (tileEntity instanceof CounterTileEntity) {
+                return new CounterContainer(windowId, inv, (CounterTileEntity) tileEntity);
             }
 
             return null;
@@ -44,8 +44,8 @@ public class ModContainers {
         registry.register(fruitBasket = register("fruit_basket", ((windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
             TileEntity tileEntity = inv.player.world.getTileEntity(pos);
-            if (tileEntity instanceof TileFruitBasket) {
-                return new FruitBasketContainer(windowId, inv, (TileFruitBasket) tileEntity);
+            if (tileEntity instanceof FruitBasketTileEntity) {
+                return new FruitBasketContainer(windowId, inv, (FruitBasketTileEntity) tileEntity);
             }
 
             return null;
@@ -75,8 +75,8 @@ public class ModContainers {
             World world = inv.player.world;
             BlockPos pos = data.readBlockPos();
             TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity instanceof TileCookingTable) {
-                if (((TileCookingTable) tileEntity).hasNoFilterBook()) {
+            if (tileEntity instanceof CookingTableTileEntity) {
+                if (((CookingTableTileEntity) tileEntity).hasNoFilterBook()) {
                     return new RecipeBookContainer(windowId, inv.player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
                 } else {
                     return new RecipeBookContainer(windowId, inv.player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));

@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container;
 
 import invtweaks.api.container.ChestContainer;
-import net.blay09.mods.cookingforblockheads.tile.TileFruitBasket;
+import net.blay09.mods.cookingforblockheads.tile.FruitBasketTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -14,7 +14,7 @@ public class FruitBasketContainer extends Container {
 
     private final int numRows;
 
-    public FruitBasketContainer(int windowId, PlayerInventory playerInventory, TileFruitBasket tileFruitBasket) {
+    public FruitBasketContainer(int windowId, PlayerInventory playerInventory, FruitBasketTileEntity tileFruitBasket) {
         super(ModContainers.fruitBasket, windowId);
         this.numRows = tileFruitBasket.getItemHandler().getSlots() / 9;
         int playerInventoryStart = numRows * 18;

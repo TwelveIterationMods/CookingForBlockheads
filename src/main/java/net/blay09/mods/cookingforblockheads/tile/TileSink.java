@@ -6,23 +6,28 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItem
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
@@ -41,7 +46,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public FluidStack getFluid() {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get()) {
                 return MAX_WATER;
             }
 
@@ -50,7 +55,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public int getFluidAmount() {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get()) {
                 return Integer.MAX_VALUE;
             }
 
@@ -59,7 +64,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public int getCapacity() {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get()) {
                 return Integer.MAX_VALUE;
             }
 
@@ -68,7 +73,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater || resource.getFluid() != FluidRegistry.WATER) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() || resource.getFluid() != FluidRegistry.WATER) {
                 return resource.amount;
             }
 
@@ -77,7 +82,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater && resource.getFluid() == FluidRegistry.WATER) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() && resource.getFluid() == FluidRegistry.WATER) {
                 return resource.copy();
             }
 
@@ -86,7 +91,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain) {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get()) {
                 return new FluidStack(FluidRegistry.WATER, maxDrain);
             }
 
@@ -153,7 +158,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         @Override
         @Nonnull
         public ItemStack getStackInSlot(int slot) {
-            if (CookingForBlockheadsConfig.general.sinkRequiresWater && fluidTank.getFluidAmount() - waterUsed < 1000) {
+            if (CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() && fluidTank.getFluidAmount() - waterUsed < 1000) {
                 return ItemStack.EMPTY;
             }
 
@@ -164,37 +169,37 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
     private final FluidTank waterTank = new WaterTank(16000);
     private final SinkItemProvider itemProvider = new SinkItemProvider(waterTank);
 
-    private EnumDyeColor color = EnumDyeColor.WHITE;
+    private DyeColor color = DyeColor.WHITE;
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 0, getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        readFromNBT(pkt.getNbtCompound());
+        read(pkt.getNbtCompound());
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-        waterTank.writeToNBT(tagCompound);
-        tagCompound.setByte("Color", (byte) color.getDyeDamage());
+    public CompoundNBT write(CompoundNBT tagCompound) {
+        super.write(tagCompound);
+        waterTank.write(tagCompound);
+        tagCompound.putByte("Color", (byte) color.getId());
         return tagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
-        waterTank.readFromNBT(tagCompound);
-        color = EnumDyeColor.byDyeDamage(tagCompound.getByte("Color"));
+    public void read(CompoundNBT tagCompound) {
+        super.read(tagCompound);
+        waterTank.read(tagCompound);
+        color = DyeColor.byId(tagCompound.getByte("Color"));
     }
 
     public int getWaterAmount() {
@@ -205,40 +210,31 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         return waterTank.getCapacity();
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityKitchenItemProvider.CAPABILITY
-                || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-                || super.hasCapability(capability, facing);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
-        } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) waterTank;
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+        LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
+        if (!result.isPresent()) {
+            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, waterTankCap);
         }
 
-        return super.getCapability(capability, facing);
+        if (result.isPresent()) {
+            return result;
+        } else {
+            return super.getCapability(capability, facing);
+        }
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return oldState.getBlock() != newSate.getBlock();
-    }
-
-    @Override
-    public EnumDyeColor getDyedColor() {
+    public DyeColor getDyedColor() {
         return color;
     }
 
     @Override
-    public void setDyedColor(EnumDyeColor color) {
+    public void setDyedColor(DyeColor color) {
         this.color = color;
-        IBlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), state, state, 3);
+        BlockState state = world.getBlockState(pos);
+        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
         markDirty();
     }
 }

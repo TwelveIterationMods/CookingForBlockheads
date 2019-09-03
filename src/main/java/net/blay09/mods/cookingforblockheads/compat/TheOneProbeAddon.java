@@ -10,7 +10,7 @@ import net.blay09.mods.cookingforblockheads.block.BlockToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.blay09.mods.cookingforblockheads.tile.TileOven;
-import net.blay09.mods.cookingforblockheads.tile.TileToaster;
+import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -46,7 +46,7 @@ public class TheOneProbeAddon implements Function<ITheOneProbe, Void> {
                     addMilkJarInfo(tileEntity, mode, info);
                 }
             } else if (state.getBlock() instanceof BlockToaster) {
-                TileToaster tileEntity = tryGetTileEntity(world, data.getPos(), TileToaster.class);
+                ToasterTileEntity tileEntity = tryGetTileEntity(world, data.getPos(), ToasterTileEntity.class);
                 if (tileEntity != null) {
                     addToasterInfo(tileEntity, mode, info);
                 }
@@ -71,7 +71,7 @@ public class TheOneProbeAddon implements Function<ITheOneProbe, Void> {
             info.text(String.format("Milk Stored: %d/%d", (int) tileEntity.getMilkAmount(), (int) tileEntity.getMilkCapacity()));
         }
 
-        private void addToasterInfo(TileToaster tileEntity, ProbeMode mode, IProbeInfo info) {
+        private void addToasterInfo(ToasterTileEntity tileEntity, ProbeMode mode, IProbeInfo info) {
             if (tileEntity.isActive()) {
                 info.text(String.format("Toasting... (%s)", (int) (tileEntity.getToastProgress() * 100)) + "%");
                 info.progress((int) (tileEntity.getToastProgress() * 100), 100);

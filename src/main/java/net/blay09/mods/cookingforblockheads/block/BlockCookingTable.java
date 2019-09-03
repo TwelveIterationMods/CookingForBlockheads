@@ -4,7 +4,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
-import net.blay09.mods.cookingforblockheads.tile.TileCookingTable;
+import net.blay09.mods.cookingforblockheads.tile.CookingTableTileEntity;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -48,8 +48,8 @@ public class BlockCookingTable extends BlockKitchen {
     @SuppressWarnings("deprecation")
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileCookingTable) {
-            return state.withProperty(COLOR, ((TileCookingTable) tileEntity).getDyedColor());
+        if (tileEntity instanceof CookingTableTileEntity) {
+            return state.withProperty(COLOR, ((CookingTableTileEntity) tileEntity).getDyedColor());
         }
 
         return state;
@@ -59,7 +59,7 @@ public class BlockCookingTable extends BlockKitchen {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty()) {
-            TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
+            CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
             if (tileEntity != null) {
                 if (heldItem.getItem() == Items.DYE) {
                     if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
@@ -73,7 +73,7 @@ public class BlockCookingTable extends BlockKitchen {
                 }
             }
         } else if (player.isSneaking()) {
-            TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
+            CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
             if (tileEntity != null) {
                 ItemStack noFilterBook = tileEntity.getNoFilterBook();
                 if (!noFilterBook.isEmpty()) {
@@ -95,7 +95,7 @@ public class BlockCookingTable extends BlockKitchen {
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
+        CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
         if (tileEntity != null) {
             ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());
         }
@@ -105,7 +105,7 @@ public class BlockCookingTable extends BlockKitchen {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileCookingTable();
+        return new CookingTableTileEntity();
     }
 
     @Override

@@ -3,8 +3,8 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
-import net.blay09.mods.cookingforblockheads.tile.IDyeableKitchen;
-import net.blay09.mods.cookingforblockheads.tile.TileCounter;
+import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
+import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -128,7 +128,7 @@ public class BlockCounter extends BlockKitchen {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileCounter();
+        return new CounterTileEntity();
     }
 
     @Override
@@ -142,7 +142,7 @@ public class BlockCounter extends BlockKitchen {
         }
 
         if (facing == state.getValue(FACING)) {
-            TileCounter tileCounter = (TileCounter) world.getTileEntity(pos);
+            CounterTileEntity tileCounter = (CounterTileEntity) world.getTileEntity(pos);
             if (tileCounter != null) {
                 if (player.isSneaking()) {
                     tileCounter.getDoorAnimator().toggleForcedOpen();
