@@ -1,17 +1,24 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.container.FridgeContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -22,6 +29,8 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -34,7 +43,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileFridge extends TileEntity implements ITickableTileEntity {
+public class TileFridge extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
         @Override
@@ -187,9 +196,9 @@ public class TileFridge extends TileEntity implements ITickableTileEntity {
 
     @Nullable
     public TileFridge findNeighbourFridge() {
-        if (world.getBlockState(pos.up()).getBlock() == ModBlocks.fridge) {
+        if (world.getBlockState(pos.up()).getBlock() instanceof FridgeBlock) {
             return (TileFridge) world.getTileEntity(pos.up());
-        } else if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
+        } else if (world.getBlockState(pos.down()).getBlock() instanceof FridgeBlock) {
             return (TileFridge) world.getTileEntity(pos.down());
         }
 
@@ -201,7 +210,7 @@ public class TileFridge extends TileEntity implements ITickableTileEntity {
             return this;
         }
 
-        if (world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge) {
+        if (world.getBlockState(pos.down()).getBlock() instanceof FridgeBlock) {
             TileFridge baseFridge = (TileFridge) world.getTileEntity(pos.down());
             if (baseFridge != null) {
                 return baseFridge;
@@ -269,4 +278,14 @@ public class TileFridge extends TileEntity implements ITickableTileEntity {
         markDirty();
     }
 
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".fridge");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new FridgeContainer(i, playerInventory, this);
+    }
 }

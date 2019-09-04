@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "cookingforblockheads:items/recipe_book_tier1"
-  }
-}

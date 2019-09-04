@@ -1,35 +1,33 @@
 {
-    "item.cookingforblockheads:recipe_book_tier0": "Cooking for Blockheads",
-    "item.cookingforblockheads:recipe_book_tier1": "Cooking for Blockheads I",
-    "item.cookingforblockheads:recipe_book_tier2": "Cooking for Blockheads II",
-    "item.cookingforblockheads:heating_unit": "Heating Unit",
-    "item.cookingforblockheads:ice_unit": "Ice Unit",
-    "item.cookingforblockheads:preservation_chamber": "Preservation Chamber",
+    "item.cookingforblockheads.no_filter_edition": "Cooking for Blockheads",
+    "item.cookingforblockheads.recipe_book": "Cooking for Blockheads I",
+    "item.cookingforblockheads.crafting_book": "Cooking for Blockheads II",
+    "item.cookingforblockheads.heating_unit": "Heating Unit",
+    "item.cookingforblockheads.ice_unit": "Ice Unit",
+    "item.cookingforblockheads.preservation_chamber": "Preservation Chamber",
 
-    "tooltip.cookingforblockheads:recipe_book_tier0": "#NoFilter Edition",
-    "tooltip.cookingforblockheads:recipe_book_tier0.description": "Shows all food recipes.",
-    "tooltip.cookingforblockheads:recipe_book_tier1": "Recipe Book",
-    "tooltip.cookingforblockheads:recipe_book_tier1.description": "Shows food you can make with the\\nthings you have in your inventory.",
-    "tooltip.cookingforblockheads:recipe_book_tier2": "Crafting Book",
-    "tooltip.cookingforblockheads:recipe_book_tier2.description": "Can craft food using the things\\nyou have in your inventory.",
+    "tooltip.cookingforblockheads:no_filter_edition": "#NoFilter Edition",
+    "tooltip.cookingforblockheads:no_filter_edition.description": "Shows all food recipes.",
+    "tooltip.cookingforblockheads:recipe_book": "Recipe Book",
+    "tooltip.cookingforblockheads:recipe_book.description": "Shows food you can make with the\\nthings you have in your inventory.",
+    "tooltip.cookingforblockheads:crafting_book": "Crafting Book",
+    "tooltip.cookingforblockheads:crafting_book.description": "Can craft food using the things\\nyou have in your inventory.",
 
-    "_comment": "##",
-
-    "block.cookingforblockheads:cooking_table": "Cooking Table",
-    "block.cookingforblockheads:oven": "Oven",
-    "block.cookingforblockheads:fruit_basket": "Fruit Basket",
-    "block.cookingforblockheads:fridge": "Fridge",
-    "block.cookingforblockheads:sink": "Sink",
-    "block.cookingforblockheads:tool_rack": "Tool Rack",
-    "block.cookingforblockheads:milk_jar": "Milk Jar",
-    "block.cookingforblockheads:cow_jar": "Cow in a Jar",
-    "block.cookingforblockheads:toaster": "Toaster",
-    "block.cookingforblockheads:spice_rack": "Spice Rack",
-    "block.cookingforblockheads:counter": "Kitchen Counter",
-    "block.cookingforblockheads:cabinet": "Kitchen Cabinet",
-    "block.cookingforblockheads:corner": "Kitchen Corner",
-    "block.cookingforblockheads:kitchen_floor": "Kitchen Floor",
-    "block.cookingforblockheads:cutting_board": "Cutting Board",
+    "block.cookingforblockheads.cooking_table": "Cooking Table",
+    "block.cookingforblockheads.fridge": "Fridge",
+    "block.cookingforblockheads.sink": "Sink",
+    "block.cookingforblockheads.counter": "Kitchen Counter",
+    "block.cookingforblockheads.cabinet": "Kitchen Cabinet",
+    "block.cookingforblockheads.corner": "Kitchen Corner",
+    "block.cookingforblockheads.oven": "Oven",
+    "block.cookingforblockheads.fruit_basket": "Fruit Basket",
+    "block.cookingforblockheads.tool_rack": "Tool Rack",
+    "block.cookingforblockheads.milk_jar": "Milk Jar",
+    "block.cookingforblockheads.cow_jar": "Cow in a Jar",
+    "block.cookingforblockheads.toaster": "Toaster",
+    "block.cookingforblockheads.spice_rack": "Spice Rack",
+    "block.cookingforblockheads.kitchen_floor": "Kitchen Floor",
+    "block.cookingforblockheads.cutting_board": "Cutting Board",
 
     "tooltip.cookingforblockheads:multiblock_kitchen": "Multiblock Kitchen",
     "tooltip.cookingforblockheads:dyeable": "Dyeable",
@@ -54,8 +52,6 @@
     "tooltip.cookingforblockheads:requires_pams": "Requires Pam's Harvestcraft",
     "tooltip.cookingforblockheads:cutting_board_deprecated": "This item is deprecated.\\nPam's Cutting board can be placed directly now.",
     "tooltip.cookingforblockheads:can_be_placed_in_world": "Can be placed in the world.",
-
-    "_comment": "##",
 
     "gui.cookingforblockheads:no_ingredients": "Not\\nenough\\ningredients",
     "gui.cookingforblockheads:no_selection": "Select an item\\non the right to\\nsee its recipe.",
@@ -90,15 +86,11 @@
 
     "itemGroup.cookingforblockheads": "Cooking for Blockheads",
 
-    "_comment": "##",
-
     "waila.cookingforblockheads:milk_stored": "Milk Stored: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Toasting... (%s)",
     "waila.cookingforblockheads:heating_unit": "Upgrade: Heating Unit",
     "waila.cookingforblockheads:ice_unit": "Upgrade: Ice Unit",
     "waila.cookingforblockheads:preservation_chamber": "Upgrade: Preservation Chamber",
-
-    "_comment": "##",
 
     "cookingforblockheads:subtitle.fridge_open": "Fridge opens",
     "cookingforblockheads:subtitle.fridge_close": "Fridge closes",
@@ -106,8 +98,6 @@
     "cookingforblockheads:subtitle.oven_close": "Oven closes",
     "cookingforblockheads:subtitle.toaster_start": "Toaster starts toasting",
     "cookingforblockheads:subtitle.toaster_stop": "Toaster finished toasting",
-
-    "_comment": "##",
 
     "jei.cookingforblockheads:cow_jar": "Cow in a Jar"
 }

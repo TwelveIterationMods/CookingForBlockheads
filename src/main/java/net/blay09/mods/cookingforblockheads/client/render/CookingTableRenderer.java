@@ -12,16 +12,12 @@ import net.minecraft.item.ItemStack;
 public class CookingTableRenderer extends TileEntityRenderer<CookingTableTileEntity> {
 
     @Override
-    public void render(CookingTableTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(CookingTableTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }
 
         BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        if (state.getBlock() != ModBlocks.cookingTable) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-            return;
-        }
-
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack itemStack = tileEntity.getNoFilterBook();
         if (!itemStack.isEmpty()) {

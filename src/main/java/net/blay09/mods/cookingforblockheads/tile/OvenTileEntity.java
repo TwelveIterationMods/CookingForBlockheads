@@ -1,38 +1,50 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.container.OvenContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
 import net.blay09.mods.cookingforblockheads.tile.util.EnergyStorageModifiable;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RangedWrapper;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 
-public class TileOven extends TileEntity implements ITickableTileEntity, IKitchenSmeltingProvider {
+public class OvenTileEntity extends TileEntity implements ITickableTileEntity, IKitchenSmeltingProvider, INamedContainerProvider {
 
     private static final int COOK_TIME = 200;
 
@@ -61,7 +73,7 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
         }
     };
 
-    private EnergyStorageModifiable energyStorage = new EnergyStorageModifiable(10000) {
+    private final EnergyStorageModifiable energyStorage = new EnergyStorageModifiable(10000) {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
             if (!simulate) {
@@ -89,6 +101,14 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
     private final KitchenItemProvider itemProvider = new KitchenItemProvider(new CombinedInvWrapper(itemHandlerTools, itemHandlerOutput));
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
+    private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
+    private final LazyOptional<IKitchenSmeltingProvider> smeltingProviderCap = LazyOptional.of(() -> this);
+    private final LazyOptional<IEnergyStorage> energyStorageCap = LazyOptional.of(() -> energyStorage);
+    private final LazyOptional<IItemHandler> itemHandlerCap = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<IItemHandler> itemHandlerInputCap = LazyOptional.of(() -> itemHandlerInput);
+    private final LazyOptional<IItemHandler> itemHandlerFuelCap = LazyOptional.of(() -> itemHandlerFuel);
+    private final LazyOptional<IItemHandler> itemHandlerOutputCap = LazyOptional.of(() -> itemHandlerOutput);
+
     private boolean isFirstTick = true;
 
     public int[] slotCookTime = new int[9];
@@ -99,7 +119,7 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
     private boolean hasPowerUpgrade;
     private Direction facing;
 
-    public TileOven() {
+    public OvenTileEntity() {
         super(ModTileEntities.oven);
         doorAnimator.setSoundEventOpen(ModSounds.ovenOpen);
         doorAnimator.setSoundEventClose(ModSounds.ovenClose);
@@ -144,7 +164,7 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
                 for (int i = 0; i < itemHandlerFuel.getSlots(); i++) {
                     ItemStack fuelItem = itemHandlerFuel.getStackInSlot(i);
                     if (!fuelItem.isEmpty()) {
-                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getItemBurnTime(fuelItem) * CookingForBlockheadsConfig.COMMON.ovenFuelTimeMultiplier.get());
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getBurnTime(fuelItem) * CookingForBlockheadsConfig.COMMON.ovenFuelTimeMultiplier.get());
                         if (furnaceBurnTime != 0) {
                             fuelItem.shrink(1);
                             if (fuelItem.getCount() == 0) {
@@ -224,15 +244,20 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
         return energyStorage.getMaxEnergyStored();
     }
 
-    public static ItemStack getSmeltingResult(ItemStack itemStack) {
+    public ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if (!result.isEmpty()) {
             return result;
         }
 
-        result = FurnaceRecipes.instance().getSmeltingResult(itemStack);
-        if (!result.isEmpty() && result.getItem() instanceof ItemFood) {
-            return result;
+        // TODO This uses inventory instead of the itemstack I passed in
+        RecipeWrapper recipeWrapper = new RecipeWrapper(itemHandlerInput);
+        IRecipe<?> recipe = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, recipeWrapper, this.world).orElse(null);
+        if (recipe != null) {
+            result = recipe.getRecipeOutput();
+            if (!result.isEmpty() && result.getItem().isFood()) {
+                return result;
+            }
         }
 
         if (!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
@@ -243,15 +268,17 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
     }
 
     public static boolean isItemFuel(ItemStack itemStack) {
-        return getItemBurnTime(itemStack) > 0;
+        return getBurnTime(itemStack) > 0;
     }
 
-    public static int getItemBurnTime(ItemStack fuelItem) {
-        int fuelTime = CookingRegistry.getOvenFuelTime(fuelItem);
-        if (fuelTime != 0 || CookingForBlockheadsConfig.COMMON.ovenRequiresCookingOil.get()) {
-            return fuelTime;
+    protected static int getBurnTime(ItemStack itemStack) {
+        if (itemStack.isEmpty()) {
+            return 0;
+        } else {
+            Item item = itemStack.getItem();
+            int ret = itemStack.getBurnTime();
+            return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(itemStack, ret == -1 ? AbstractFurnaceTileEntity.getBurnTimes().getOrDefault(item, 0) : ret);
         }
-        return TileEntityFurnace.getItemBurnTime(fuelItem);
     }
 
     private boolean shouldConsumeFuel() {
@@ -361,35 +388,34 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getCapability(Capability<T> capability, @Nullable Direction facing) {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == null) {
-                return (T) itemHandler;
+                return itemHandlerCap.cast();
             }
 
             if (!CookingForBlockheadsConfig.COMMON.disallowOvenAutomation.get()) {
                 switch (facing) {
                     case UP:
-                        return (T) itemHandlerInput;
+                        return itemHandlerInputCap.cast();
                     case DOWN:
-                        return (T) itemHandlerOutput;
+                        return itemHandlerOutputCap.cast();
                     default:
-                        return (T) itemHandlerFuel;
+                        return itemHandlerFuelCap.cast();
                 }
             }
         }
 
         if (hasPowerUpgrade && capability == CapabilityEnergy.ENERGY) {
-            return (T) energyStorage;
+            return energyStorageCap.cast();
         }
 
         if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return (T) itemProvider;
+            return itemProviderCap.cast();
         }
 
         if (capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
-            return (T) this;
+            return smeltingProviderCap.cast();
         }
 
         return super.getCapability(capability, facing);
@@ -405,5 +431,16 @@ public class TileOven extends TileEntity implements ITickableTileEntity, IKitche
 
     public Direction getFacing() {
         return facing == null ? Direction.NORTH : facing;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".oven");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new OvenContainer(i, playerInventory, this);
     }
 }

@@ -81,4 +81,7 @@ public class CounterContainer extends Container implements IContainerWithDoor {
         return tileCounter == tileEntity;
     }
 
+    public int getNumRows() {
+        return numRows;
+    }
 }

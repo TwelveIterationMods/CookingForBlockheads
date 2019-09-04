@@ -4,7 +4,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -17,13 +16,11 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.GeneralFoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.*;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -39,7 +36,7 @@ import java.util.Map;
 
 public class CookingRegistry {
 
-    private static final List<IRecipe> recipeList = Lists.newArrayList();
+    private static final List<IRecipe<IInventory>> recipeList = Lists.newArrayList();
     private static final ArrayListMultimap<ResourceLocation, FoodRecipe> foodItems = ArrayListMultimap.create();
     private static final NonNullList<ItemStack> tools = NonNullList.create();
     private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
@@ -52,7 +49,7 @@ public class CookingRegistry {
 
     private static Collection<ItemStack> nonFoodRecipes;
 
-    public static void initFoodRegistry() {
+    public static void initFoodRegistry(RecipeManager recipeManager) {
         recipeList.clear();
         foodItems.clear();
 
@@ -62,7 +59,7 @@ public class CookingRegistry {
         nonFoodRecipes = init.getNonFoodRecipes();
 
         // Crafting Recipes of Food Items
-        for (IRecipe recipe : CraftingManager.REGISTRY) {
+        for (IRecipe recipe : recipeManager.getRecipes()) {
             ItemStack output = recipe.getRecipeOutput();
             if (!output.isEmpty()) {
                 if (output.getItem().isFood()) {
@@ -71,32 +68,11 @@ public class CookingRegistry {
                     }
                 } else {
                     for (ItemStack itemStack : nonFoodRecipes) {
-                        if (ItemUtils.areItemStacksEqualWithWildcard(recipe.getRecipeOutput(), itemStack)) {
+                        if (recipe.getRecipeOutput().isItemEqual(itemStack)) {
                             addFoodRecipe(recipe);
                             break;
                         }
                     }
-                }
-            }
-        }
-
-        // Smelting Recipes of Food Items
-        for (Object obj : FurnaceRecipes.instance().getSmeltingList().entrySet()) {
-            Map.Entry entry = (Map.Entry) obj;
-            ItemStack sourceStack = ItemStack.EMPTY;
-            if (entry.getKey() instanceof Item) {
-                sourceStack = new ItemStack((Item) entry.getKey());
-            } else if (entry.getKey() instanceof Block) {
-                sourceStack = new ItemStack((Block) entry.getKey());
-            } else if (entry.getKey() instanceof ItemStack) {
-                sourceStack = (ItemStack) entry.getKey();
-            }
-            ItemStack resultStack = (ItemStack) entry.getValue();
-            if (resultStack.getItem().isFood()) {
-                foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
-            } else {
-                if (isNonFoodRecipe(resultStack)) {
-                    foodItems.put(resultStack.getItem().getRegistryName(), new SmeltingFood(resultStack, sourceStack));
                 }
             }
         }
@@ -107,27 +83,28 @@ public class CookingRegistry {
             return false;
         }
         for (ItemStack nonFoodStack : nonFoodRecipes) {
-            if (ItemUtils.areItemStacksEqualWithWildcard(itemStack, nonFoodStack)) {
+            if (itemStack.isItemEqual(nonFoodStack)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static void addFoodRecipe(IRecipe recipe) {
+    @SuppressWarnings("unchecked")
+    public static void addFoodRecipe(IRecipe<? extends IInventory> recipe) {
         ItemStack output = recipe.getRecipeOutput();
         if (!output.isEmpty() && !recipe.getIngredients().isEmpty()) {
-            recipeList.add(recipe);
-            foodItems.put(output.getItem().getRegistryName(), new GeneralFoodRecipe(recipe));
-//			if (recipe instanceof ShapedRecipes) {
-//				foodItems.put(new ItemIdentifier(output), new ShapedCraftingFood((ShapedRecipes) recipe));
-//			} else if (recipe instanceof ShapelessRecipes) {
-//				foodItems.put(new ItemIdentifier(output), new ShapelessCraftingFood((ShapelessRecipes) recipe));
-//			} else if (recipe instanceof ShapelessOreRecipe) {
-//				foodItems.put(new ItemIdentifier(output), new ShapelessOreCraftingFood((ShapelessOreRecipe) recipe));
-//			} else if (recipe instanceof ShapedOreRecipe) {
-//				foodItems.put(new ItemIdentifier(output), new ShapedOreCraftingFood((ShapedOreRecipe) recipe));
-//			}
+            recipeList.add((IRecipe<IInventory>) recipe);
+            FoodRecipe foodRecipe;
+            if (recipe instanceof AbstractCookingRecipe) {
+                foodRecipe = new SmeltingFood(recipe);
+            } else if (recipe instanceof ICraftingRecipe) {
+                foodRecipe = new GeneralFoodRecipe(recipe);
+            } else {
+                return;
+            }
+
+            foodItems.put(output.getItem().getRegistryName(), foodRecipe);
         }
     }
 
@@ -152,7 +129,7 @@ public class CookingRegistry {
             return false;
         }
         for (ItemStack toolItem : tools) {
-            if (ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(toolItem, itemStack)) {
+            if (toolItem.isItemEqualIgnoreDurability(itemStack)) {
                 return true;
             }
         }
@@ -174,7 +151,7 @@ public class CookingRegistry {
 
     public static int getOvenFuelTime(ItemStack itemStack) {
         for (Map.Entry<ItemStack, Integer> entry : ovenFuelItems.entrySet()) {
-            if (ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+            if (entry.getKey().isItemEqual(itemStack)) {
                 return entry.getValue();
             }
         }
@@ -187,7 +164,7 @@ public class CookingRegistry {
 
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         for (Map.Entry<ItemStack, ItemStack> entry : ovenRecipes.entrySet()) {
-            if (ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+            if (entry.getKey().isItemEqual(itemStack)) {
                 return entry.getValue();
             }
         }
@@ -201,7 +178,7 @@ public class CookingRegistry {
     @Nullable
     public static ToasterHandler getToasterHandler(ItemStack itemStack) {
         for (Map.Entry<ItemStack, ToasterHandler> entry : toastHandlers.entrySet()) {
-            if (ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+            if (entry.getKey().isItemEqual(itemStack)) {
                 return entry.getValue();
             }
         }
@@ -217,7 +194,7 @@ public class CookingRegistry {
             return ItemStack.EMPTY;
         }
         for (Map.Entry<ItemStack, SinkHandler> entry : sinkHandlers.entrySet()) {
-            if (ItemUtils.areItemStacksEqualWithWildcard(entry.getKey(), itemStack)) {
+            if (entry.getKey().isItemEqual(itemStack)) {
                 return entry.getValue().getSinkOutput(itemStack);
             }
         }
@@ -232,7 +209,7 @@ public class CookingRegistry {
 
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, checkStack) && count > 0;
+            IngredientPredicate predicate = (it, count) -> it.isItemEqualIgnoreDurability(checkStack) && count > 0;
             SourceItem found = itemProvider.findSource(predicate, 1, inventories, requireBucket, true);
             if (found != null) {
                 return found;
@@ -272,7 +249,7 @@ public class CookingRegistry {
         ItemStack bucketStack = new ItemStack(Items.BUCKET);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, bucketStack) && count > 0;
+            IngredientPredicate predicate = (it, count) -> it.isItemEqual(bucketStack) && count > 0;
             SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, 1, inventories, false, simulate);
             if (sourceItem != null) {
                 return true;
@@ -290,8 +267,7 @@ public class CookingRegistry {
 
         List<FoodIngredient> craftMatrix = recipe.getCraftMatrix();
         boolean missingTools = false;
-        for (int i = 0; i < craftMatrix.size(); i++) {
-            FoodIngredient ingredient = craftMatrix.get(i);
+        for (FoodIngredient ingredient : craftMatrix) {
             if (ingredient != null) {
                 List<SourceItem> sourceList = findSourceCandidates(ingredient, inventories, requireBucket, false);
                 if (sourceList.isEmpty()) {
@@ -318,7 +294,7 @@ public class CookingRegistry {
 
     @Nullable
     public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world) {
-        for (IRecipe recipe : recipeList) {
+        for (IRecipe<IInventory> recipe : recipeList) {
             if (recipe.matches(craftMatrix, world)) {
                 return recipe;
             }

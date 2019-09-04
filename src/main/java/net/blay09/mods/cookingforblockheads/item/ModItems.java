@@ -14,7 +14,9 @@ public class ModItems {
 
     public static void register(IForgeRegistry<Item> registry) {
         registry.registerAll(
-                recipeBook = new ItemRecipeBook().setRegistryName(ItemRecipeBook.name),
+                noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NOFILTER).setRegistryName("no_filter_edition"),
+                recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE).setRegistryName("recipe_book"),
+                craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING).setRegistryName("crafting_book"),
                 heatingUnit = new ItemHeatingUnit().setRegistryName(ItemHeatingUnit.name),
                 iceUnit = new ItemIceUnit().setRegistryName(ItemIceUnit.name),
                 preservationChamber = new ItemPreservationChamber().setRegistryName(ItemPreservationChamber.name)

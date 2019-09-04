@@ -1,11 +1,9 @@
 package net.blay09.mods.cookingforblockheads.container.inventory;
 
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.container.Container;
@@ -13,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
@@ -42,7 +39,7 @@ public class InventoryCraftBook extends CraftingInventory {
             if (!ingredient.isEmpty()) {
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
-                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed((it, count) -> ItemUtils.areItemStacksEqualWithWildcardIgnoreDurability(it, ingredient) && count > 0, 1, inventories, requireContainer, true);
+                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed((it, count) -> it.isItemEqualIgnoreDurability(ingredient) && count > 0, 1, inventories, requireContainer, true);
                     if (sourceItem != null) {
                         sourceItems[i] = sourceItem;
                         continue matrixLoop;

@@ -14,7 +14,7 @@ public class FoodIngredient {
     }
 
     public boolean isValidItem(ItemStack itemStack) {
-        return ingredient.apply(itemStack);
+        return ingredient.test(itemStack);
     }
 
     public ItemStack[] getItemStacks() {

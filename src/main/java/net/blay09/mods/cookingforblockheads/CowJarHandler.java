@@ -5,15 +5,13 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 
@@ -37,7 +35,7 @@ public class CowJarHandler {
             if (blockBelow.getBlock() == ModBlocks.milkJar) {
                 event.getEntity().getEntityWorld().setBlockState(pos, ModBlocks.cowJar.getDefaultState());
             }
-            NetworkHandler.instance.sendToAllAround(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.COW_IN_A_JAR), new NetworkRegistry.TargetPoint(event.getEntity().world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 32));
+            NetworkHandler.sendToAllTracking(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.COW_IN_A_JAR), event.getEntity());
             event.getEntity().remove();
             event.setCanceled(true);
         }
@@ -54,8 +52,8 @@ public class CowJarHandler {
             }
         }
 
-        String registryName = EntityList.getEntityString(entity);
-        return registryName != null && registryName.contains("cow");
+        ResourceLocation registryName = entity.getType().getRegistryName();
+        return registryName != null && registryName.getPath().contains("cow");
     }
 
 }

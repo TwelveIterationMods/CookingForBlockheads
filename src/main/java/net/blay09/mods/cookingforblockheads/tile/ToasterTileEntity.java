@@ -124,7 +124,7 @@ public class ToasterTileEntity extends TileEntity implements ITickableTileEntity
 
         BlockState state = world.getBlockState(pos);
         world.addBlockEvent(pos, ModBlocks.toaster, 2, 0);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, ModBlocks.toaster.getActualState(state, world, pos), 3);
+        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
         markDirty();
     }
 

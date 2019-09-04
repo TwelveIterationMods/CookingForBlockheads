@@ -66,4 +66,7 @@ public class FruitBasketContainer extends Container {
         return true;
     }
 
+    public int getNumRows() {
+        return numRows;
+    }
 }

@@ -4,19 +4,13 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.init.Items;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
 public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
@@ -59,7 +53,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
     }
 
     @Override
-    public void render(CounterTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(CounterTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -96,7 +90,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
         GlStateManager.translatef(doorOriginX, 0f, doorOriginZ);
         GlStateManager.rotatef(doorDirection * (float) Math.toDegrees(doorAngle), 0f, 1f, 0f);
         GlStateManager.translatef(-doorOriginX, 0f, -doorOriginZ);
-        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model = getDoorModel(facing, blockColor, isFlipped);
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
         GlStateManager.popMatrix();

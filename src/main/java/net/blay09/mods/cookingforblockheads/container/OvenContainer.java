@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container;
 
 import net.blay09.mods.cookingforblockheads.container.slot.*;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -9,22 +9,23 @@ import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class OvenContainer extends Container implements IContainerWithDoor {
 
-    private final TileOven tileEntity;
+    private final OvenTileEntity tileEntity;
     private final int[] lastCookTime = new int[9];
     private int lastBurnTime;
     private int lastItemBurnTime;
 
-    public OvenContainer(int windowId, PlayerInventory playerInventory, TileOven tileEntity) {
+    public OvenContainer(int windowId, PlayerInventory playerInventory, OvenTileEntity tileEntity) {
         super(ModContainers.oven, windowId);
         this.tileEntity = tileEntity;
 
         int offsetX = tileEntity.hasPowerUpgrade() ? -5 : 0;
 
         for (int i = 0; i < 3; i++) {
-            addSlot(new SlotOvenInput(tileEntity.getItemHandler(), i, 84 + i * 18 + offsetX, 19));
+            addSlot(new SlotItemHandler(tileEntity.getItemHandler(), i, 84 + i * 18 + offsetX, 19));
         }
 
         addSlot(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61 + offsetX, 59));
@@ -56,6 +57,10 @@ public class OvenContainer extends Container implements IContainerWithDoor {
         tileEntity.getDoorAnimator().openContainer(playerInventory.player);
     }
 
+    public OvenTileEntity getTileEntity() {
+        return tileEntity;
+    }
+
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
@@ -76,7 +81,7 @@ public class OvenContainer extends Container implements IContainerWithDoor {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (IContainerListener listener : listeners) { // TODO at?
+        for (IContainerListener listener : listeners) {
             if (this.lastBurnTime != tileEntity.furnaceBurnTime) {
                 listener.sendWindowProperty(this, 0, tileEntity.furnaceBurnTime);
             }
@@ -128,8 +133,8 @@ public class OvenContainer extends Container implements IContainerWithDoor {
                     return ItemStack.EMPTY;
                 }
             } else if (slotIndex >= 20) {
-                ItemStack smeltingResult = TileOven.getSmeltingResult(slotStack);
-                if (TileOven.isItemFuel(slotStack)) {
+                ItemStack smeltingResult = tileEntity.getSmeltingResult(slotStack);
+                if (OvenTileEntity.isItemFuel(slotStack)) {
                     if (!mergeItemStack(slotStack, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }

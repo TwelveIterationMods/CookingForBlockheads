@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
 
     @Override
-    public void render(ToolRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(ToolRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -30,7 +30,7 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
             GlStateManager.color4f(1f, 1f, 1f, 1f);
             GlStateManager.translated(x + 0.5, y + 0.6, z + 0.5);
             GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-            GlStateManager.translatef(0, 0, 0.4);
+            GlStateManager.translated(0, 0, 0.4);
             GlStateManager.scalef(0.5f, 0.5f, 0.5f);
             if (!leftStack.isEmpty()) {
                 RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);

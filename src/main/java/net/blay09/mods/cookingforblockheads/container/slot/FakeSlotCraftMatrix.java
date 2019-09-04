@@ -1,11 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
-import net.blay09.mods.cookingforblockheads.ItemUtils;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
@@ -30,17 +26,8 @@ public class FakeSlotCraftMatrix extends FakeSlot {
         if (ingredients != null) {
             for (ItemStack itemStack : ingredients) {
                 if (!itemStack.isEmpty()) {
-                    if (itemStack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                        NonNullList<ItemStack> subItems = NonNullList.create();
-                        ItemGroup tab = itemStack.getItem().getGroup();
-                        if (tab != null) {
-                            itemStack.getItem().getSubItems(tab, subItems);
-                        }
-                        visibleStacks.addAll(subItems);
-                    } else {
-                        itemStack.setCount(1);
-                        visibleStacks.add(itemStack);
-                    }
+                    itemStack.setCount(1);
+                    visibleStacks.add(itemStack);
                 }
             }
         }
@@ -51,7 +38,7 @@ public class FakeSlotCraftMatrix extends FakeSlot {
 
         if (!prevLockStack.isEmpty()) {
             for (int i = 0; i < visibleStacks.size(); i++) {
-                if (ItemUtils.areItemStacksEqualWithWildcard(visibleStacks.get(i), prevLockStack)) {
+                if (visibleStacks.get(i).isItemEqual(prevLockStack)) {
                     visibleItemIndex = i;
                     isLocked = true;
                 }

@@ -6,7 +6,6 @@ import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -19,26 +18,26 @@ public class SortButton extends Button {
 
     private final List<String> tooltipLines = Lists.newArrayList();
 
-    public SortButton(int buttonId, int x, int y, ISortButton button) {
-        super(buttonId, x, y, 20, 20, "");
+    public SortButton(int x, int y, ISortButton button, IPressable onPress) {
+        super(x, y, 20, 20, "", onPress);
         this.button = button;
         this.tooltipLines.add(I18n.format(this.button.getTooltip()));
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+    public void renderButton(int mouseX, int mouseY, float partialTicks) {
+        this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
         int texY = button.getIconTextureY();
-        if (!enabled) {
+        if (!active) {
             texY += 40;
-        } else if (hovered) {
+        } else if (isHovered) {
             texY += 20;
         }
 
-        GlStateManager.color(1f, 1f, 1f, 1f);
-        mc.getTextureManager().bindTexture(this.button.getIcon());
-        drawTexturedModalRect(x, y, button.getIconTextureX(), texY, width, height);
+        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        Minecraft.getInstance().getTextureManager().bindTexture(this.button.getIcon());
+        blit(x, y, button.getIconTextureX(), texY, width, height);
     }
 
     public List<String> getTooltipLines() {

@@ -1,9 +1,10 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import net.minecraft.init.Items;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
@@ -22,8 +23,9 @@ public class Compat {
     @Nullable
     public static Fluid getMilkFluid() {
         if (milkFluid == null) {
-            milkFluid = FluidRegistry.getFluid("milk");
+            milkFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation("minecraft", "milk"));
         }
+
         return milkFluid;
     }
 

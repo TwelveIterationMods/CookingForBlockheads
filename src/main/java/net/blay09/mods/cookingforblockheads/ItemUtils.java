@@ -27,27 +27,11 @@ public class ItemUtils {
         float offsetZ = rand.nextFloat() * 0.8F + 0.1F;
 
         while (!stack.isEmpty()) {
-            ItemEntity entityitem = new ItemEntity(world, x + (double) offsetX, y + (double) offsetY, z + (double) offsetZ, stack.split(rand.nextInt(21) + 10));
+            ItemEntity itemEntity = new ItemEntity(world, x + (double) offsetX, y + (double) offsetY, z + (double) offsetZ, stack.split(rand.nextInt(21) + 10));
             float motion = 0.05F;
-            entityitem.motionX = rand.nextGaussian() * motion;
-            entityitem.motionY = rand.nextGaussian() * motion + 0.2;
-            entityitem.motionZ = rand.nextGaussian() * motion;
-            world.addEntity(entityitem);
+            itemEntity.setMotion(rand.nextGaussian() * motion, rand.nextGaussian() * motion + 0.2, rand.nextGaussian() * motion);
+            world.addEntity(itemEntity);
         }
-    }
-
-    public static boolean areItemStacksEqualWithWildcard(ItemStack first, ItemStack second) {
-        return !(first.isEmpty() || second.isEmpty()) && first.getItem() == second.getItem() && (first.getItemDamage() == second.getItemDamage() || first.getItemDamage() == OreDictionary.WILDCARD_VALUE || second.getItemDamage() == OreDictionary.WILDCARD_VALUE);
-    }
-
-    public static boolean areItemStacksEqualWithWildcardIgnoreDurability(ItemStack first, ItemStack second) {
-        return !(first.isEmpty() || second.isEmpty())
-                && first.getItem() == second.getItem()
-                && (
-                first.getItemDamage() == second.getItemDamage()
-                        || first.getItemDamage() == OreDictionary.WILDCARD_VALUE
-                        || second.getItemDamage() == OreDictionary.WILDCARD_VALUE
-                        || (first.isItemStackDamageable() && second.isItemStackDamageable()));
     }
 
 }

@@ -3,14 +3,14 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -54,31 +55,25 @@ public class BlockOven extends BlockKitchen {
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        /*if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                heldItem.shrink(1);
-            }
-            return true;
-        }*/
 
-        if (facing == Direction.UP) {
+        if (rayTraceResult.getFace() == Direction.UP) {
             if (CookingRegistry.isToolItem(heldItem)) {
                 Direction stateFacing = state.get(FACING);
-                float hx = hitX;
-                float hz = hitZ;
+                double hx = rayTraceResult.getHitVec().x;
+                double hz = rayTraceResult.getHitVec().z;
                 switch (stateFacing) {
                     case NORTH:
-                        hx = 1f - hitX;
-                        hz = 1f - hitZ;
+                        hx = 1f - rayTraceResult.getHitVec().x;
+                        hz = 1f - rayTraceResult.getHitVec().z;
                         break;
 //                    case SOUTH: hx = hitX; hz = hitZ; break;
                     case WEST:
-                        hz = 1f - hitX;
-                        hx = hitZ;
+                        hz = 1f - rayTraceResult.getHitVec().x;
+                        hx = rayTraceResult.getHitVec().z;
                         break;
                     case EAST:
-                        hz = hitX;
-                        hx = 1f - hitZ;
+                        hz = rayTraceResult.getHitVec().x;
+                        hx = 1f - rayTraceResult.getHitVec().z;
                         break;
                 }
                 int index = -1;
@@ -92,7 +87,7 @@ public class BlockOven extends BlockKitchen {
                     index = 2;
                 }
                 if (index != -1) {
-                    TileOven tileOven = (TileOven) world.getTileEntity(pos);
+                    OvenTileEntity tileOven = (OvenTileEntity) world.getTileEntity(pos);
                     if (tileOven != null && tileOven.getToolItem(index).isEmpty()) {
                         ItemStack toolItem = heldItem.split(1);
                         tileOven.setToolItem(index, toolItem);
@@ -102,16 +97,16 @@ public class BlockOven extends BlockKitchen {
             }
         }
 
-        if (facing == state.get(FACING)) {
-            TileOven tileOven = (TileOven) world.getTileEntity(pos);
-            if (tileOven != null) {
+        OvenTileEntity tileEntity = (OvenTileEntity) world.getTileEntity(pos);
+        if (rayTraceResult.getFace() == state.get(FACING)) {
+            if (tileEntity != null) {
                 if (player.isSneaking()) {
-                    tileOven.getDoorAnimator().toggleForcedOpen();
+                    tileEntity.getDoorAnimator().toggleForcedOpen();
                     return true;
-                } else if (!heldItem.isEmpty() && tileOven.getDoorAnimator().isForcedOpen()) {
-                    heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getInputHandler(), heldItem, false);
+                } else if (!heldItem.isEmpty() && tileEntity.getDoorAnimator().isForcedOpen()) {
+                    heldItem = ItemHandlerHelper.insertItemStacked(tileEntity.getInputHandler(), heldItem, false);
                     if (!heldItem.isEmpty()) {
-                        heldItem = ItemHandlerHelper.insertItemStacked(tileOven.getItemHandlerFuel(), heldItem, false);
+                        heldItem = ItemHandlerHelper.insertItemStacked(tileEntity.getItemHandlerFuel(), heldItem, false);
                     }
                     player.setHeldItem(hand, heldItem);
                     return true;
@@ -120,28 +115,21 @@ public class BlockOven extends BlockKitchen {
         }
 
         if (!world.isRemote) {
-            player.openGui(CookingForBlockheads.instance, GuiHandler.COOKING_OVEN, world, pos.getX(), pos.getY(), pos.getZ());
+            NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
         }
 
         return true;
     }
 
-    @Override
-    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        boolean hasPowerUpgrade = tileEntity instanceof TileOven && ((TileOven) tileEntity).hasPowerUpgrade();
-        return state.withProperty(POWERED, hasPowerUpgrade);
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileOven();
+        return new OvenTileEntity();
     }
 
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-        TileOven tileEntity = (TileOven) world.getTileEntity(pos);
+        OvenTileEntity tileEntity = (OvenTileEntity) world.getTileEntity(pos);
         if (tileEntity != null && tileEntity.isBurning()) {
             Direction facing = state.get(FACING);
             float x = (float) pos.getX() + 0.5f;
@@ -165,8 +153,8 @@ public class BlockOven extends BlockKitchen {
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileOven) {
-            if (((TileOven) tileEntity).hasPowerUpgrade()) {
+        if (tileEntity instanceof OvenTileEntity) {
+            if (((OvenTileEntity) tileEntity).hasPowerUpgrade()) {
                 ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
             }
         }

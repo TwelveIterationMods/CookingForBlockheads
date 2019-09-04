@@ -6,23 +6,23 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockToolRack extends BlockKitchen {
@@ -30,11 +30,11 @@ public class BlockToolRack extends BlockKitchen {
     public static final String name = "tool_rack";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[]{
-            new AxisAlignedBB(0, 0.25, 1 - 0.125, 1, 1, 1),
-            new AxisAlignedBB(0, 0.25, 0, 1, 1, 0.125),
-            new AxisAlignedBB(1 - 0.125, 0.25, 0, 1, 1, 1),
-            new AxisAlignedBB(0, 0.25, 0, 0.125, 1, 1),
+    private static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
+            Block.makeCuboidShape(0, 0.25, 1 - 0.125, 1, 1, 1),
+            Block.makeCuboidShape(0, 0.25, 0, 1, 1, 0.125),
+            Block.makeCuboidShape(1 - 0.125, 0.25, 0, 1, 1, 1),
+            Block.makeCuboidShape(0, 0.25, 0, 0.125, 1, 1),
     };
 
     public BlockToolRack() {
@@ -48,18 +48,17 @@ public class BlockToolRack extends BlockKitchen {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
-        EnumFacing facing = state.getValue(FACING);
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        Direction facing = state.get(FACING);
         return BOUNDING_BOXES[facing.getIndex() - 2];
     }
 
-    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess world, BlockPos pos) {
-        return NULL_AABB;
+    public VoxelShape getCollisionShape(BlockState p_220071_1_, IBlockReader p_220071_2_, BlockPos p_220071_3_, ISelectionContext p_220071_4_) {
+        return VoxelShapes.empty();
     }
 
+    @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         Direction facing = context.getFace();
@@ -82,21 +81,21 @@ public class BlockToolRack extends BlockKitchen {
             return true;
         }
 
-        if (hitY > 0.25f) {
+        if (rayTraceResult.getHitVec().y > 0.25f) {
             Direction stateFacing = state.get(FACING);
-            float hit = hitX;
+            double hit = rayTraceResult.getHitVec().x;
             switch (stateFacing) {
                 case NORTH:
-                    hit = hitX;
+                    hit = rayTraceResult.getHitVec().x;
                     break;
                 case SOUTH:
-                    hit = 1f - hitX;
+                    hit = 1f - rayTraceResult.getHitVec().x;
                     break;
                 case WEST:
-                    hit = 1f - hitZ;
+                    hit = 1f - rayTraceResult.getHitVec().z;
                     break;
                 case EAST:
-                    hit = hitZ;
+                    hit = rayTraceResult.getHitVec().z;
                     break;
             }
 

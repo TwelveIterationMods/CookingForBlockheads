@@ -1,13 +1,13 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import mcp.mobius.waila.api.*;
-import net.blay09.mods.cookingforblockheads.block.BlockFridge;
+import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
 import net.blay09.mods.cookingforblockheads.block.BlockOven;
 import net.blay09.mods.cookingforblockheads.block.BlockToaster;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,7 +27,7 @@ public class WailaProvider implements IWailaPlugin {
         registrar.registerBodyProvider(new MilkJarDataProvider(), BlockMilkJar.class);
         registrar.registerBodyProvider(new ToasterDataProvider(), BlockToaster.class);
         registrar.registerBodyProvider(new OvenDataProvider(), BlockOven.class);
-        registrar.registerBodyProvider(new FridgeDataProvider(), BlockFridge.class);
+        registrar.registerBodyProvider(new FridgeDataProvider(), FridgeBlock.class);
     }
 
     public static class MilkJarDataProvider implements IWailaDataProvider {
@@ -116,8 +116,8 @@ public class WailaProvider implements IWailaPlugin {
         @Override
         public List<String> getWailaBody(ItemStack itemStack, List<String> list, IWailaDataAccessor accessor, IWailaConfigHandler config) {
             TileEntity tileEntity = accessor.getTileEntity();
-            if (tileEntity instanceof TileOven) {
-                TileOven tileOven = (TileOven) tileEntity;
+            if (tileEntity instanceof OvenTileEntity) {
+                OvenTileEntity tileOven = (OvenTileEntity) tileEntity;
                 if (tileOven.hasPowerUpgrade()) {
                     list.add(I18n.format("waila.cookingforblockheads:heating_unit"));
                 }

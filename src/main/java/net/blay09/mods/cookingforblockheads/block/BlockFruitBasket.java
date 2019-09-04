@@ -1,43 +1,45 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+
+import javax.annotation.Nullable;
 
 public class BlockFruitBasket extends BlockKitchen {
 
     public static final String name = "fruit_basket";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.1, 0.875);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.125, 0, 0.125, 0.875, 0.1, 0.875);
 
     public BlockFruitBasket() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         if (shouldBlockRenderLowered(world, pos)) {
-            return BOUNDING_BOX.expand(0, -0.05, 0);
+            return SHAPE.withOffset(0, -0.05, 0);
         }
 
-        return BOUNDING_BOX;
+        return SHAPE;
     }
 
     @Override
@@ -45,14 +47,9 @@ public class BlockFruitBasket extends BlockKitchen {
         builder.add(FACING, LOWERED);
     }
 
+    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-        return state.withProperty(LOWERED, shouldBlockRenderLowered(world, pos));
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new FruitBasketTileEntity();
     }
 
@@ -62,7 +59,8 @@ public class BlockFruitBasket extends BlockKitchen {
             return true;
         }
 
-        player.openGui(CookingForBlockheads.instance, GuiHandler.FRUIT_BASKET, world, pos.getX(), pos.getY(), pos.getZ());
+        FruitBasketTileEntity tileEntity = ((FruitBasketTileEntity) world.getTileEntity(pos));
+        NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
         return true;
     }
 

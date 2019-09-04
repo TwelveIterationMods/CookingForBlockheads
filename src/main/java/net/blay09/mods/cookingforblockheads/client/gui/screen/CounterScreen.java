@@ -16,7 +16,7 @@ public class CounterScreen extends ContainerScreen<CounterContainer> {
 
     public CounterScreen(CounterContainer container, PlayerInventory playerInventory, ITextComponent displayName) {
         super(container, playerInventory, displayName);
-        this.inventoryRows = container.getItemHandler().getSlots() / 9;
+        this.inventoryRows = container.getNumRows();
         this.ySize = 114 + this.inventoryRows * 18;
     }
 

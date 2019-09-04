@@ -23,13 +23,14 @@ import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -51,11 +52,11 @@ public class RecipeBookContainer extends Container {
 
     private ItemStack lastOutputItem = ItemStack.EMPTY;
 
-    private final Random random = new Random();
     private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
     private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
     private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
 
+    private boolean slotWasClicked;
     private String currentSearch;
     private boolean isDirtyClient;
     private boolean hasOven;
@@ -99,6 +100,8 @@ public class RecipeBookContainer extends Container {
 
     @Override
     public ItemStack slotClick(int slotNumber, int dragType, ClickType clickType, PlayerEntity player) {
+        slotWasClicked = true;
+
         if (slotNumber >= 0 && slotNumber < inventorySlots.size()) {
             Slot slot = inventorySlots.get(slotNumber);
             if (player.world.isRemote) {
@@ -125,6 +128,7 @@ public class RecipeBookContainer extends Container {
                 }
             }
         }
+
         return super.slotClick(slotNumber, dragType, clickType, player);
     }
 
@@ -132,7 +136,7 @@ public class RecipeBookContainer extends Container {
         selectedRecipe = recipe;
 
         if (selectedRecipe != null) {
-            NetworkHandler.instance.sendToServer(new MessageRequestRecipes(selectedRecipe.getOutputItem(), forceNoFilter));
+            NetworkHandler.channel.sendToServer(new MessageRequestRecipes(selectedRecipe.getOutputItem(), forceNoFilter));
         }
 
         this.isInNoFilterPreview = forceNoFilter;
@@ -143,12 +147,12 @@ public class RecipeBookContainer extends Container {
         super.detectAndSendChanges();
 
         if (!player.world.isRemote) {
-            if (isDirty || player.inventory.timesChanged > 0) {
+            if (isDirty || slotWasClicked) {
                 findAndSendItemList();
                 if (!lastOutputItem.isEmpty()) {
                     findAndSendRecipes(lastOutputItem, isInNoFilterPreview);
                 }
-                player.inventory.timesChanged = 0;
+                slotWasClicked = false;
                 isDirty = false;
             }
         }
@@ -206,10 +210,10 @@ public class RecipeBookContainer extends Container {
     }
 
     public void findAndSendItemList() {
-        Map<CookingRegistry.ItemIdentifier, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
+        Map<ResourceLocation, FoodRecipeWithStatus> statusMap = Maps.newHashMap();
         List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.inventory);
         keyLoop:
-        for (CookingRegistry.ItemIdentifier key : CookingRegistry.getFoodRecipes().keySet()) {
+        for (ResourceLocation key : CookingRegistry.getFoodRecipes().keySet()) {
             RecipeStatus bestStatus = null;
             for (FoodRecipe recipe : CookingRegistry.getFoodRecipes().get(key)) {
                 RecipeStatus thisStatus = CookingRegistry.getRecipeStatus(recipe, inventories, multiBlock != null && multiBlock.hasSmeltingProvider());
@@ -226,7 +230,8 @@ public class RecipeBookContainer extends Container {
                 }
             }
         }
-        NetworkHandler.channel.sendTo(new MessageItemList(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), (ServerPlayerEntity) player);
+
+        NetworkHandler.sendTo(new MessageItemList(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()), player);
     }
 
     public void findAndSendRecipes(ItemStack outputItem, boolean forceNoFilter) {
@@ -273,7 +278,7 @@ public class RecipeBookContainer extends Container {
 
         resultList.sort((o1, o2) -> o2.getRecipeStatus().ordinal() - o1.getRecipeStatus().ordinal());
 
-        NetworkHandler.channel.sendTo(new MessageRecipes(outputItem, resultList), (ServerPlayerEntity) player);
+        NetworkHandler.sendTo(new MessageRecipes(outputItem, resultList), player);
     }
 
     public void tryCraft(ItemStack outputItem, RecipeType recipeType, NonNullList<ItemStack> craftMatrix, boolean stack) {
@@ -327,7 +332,7 @@ public class RecipeBookContainer extends Container {
             FoodRecipeWithStatus found = null;
             while (it.hasNext()) {
                 FoodRecipeWithStatus recipe = it.next();
-                if (recipe.getOutputItem().getItem() == selectedRecipe.getOutputItem().getItem() && recipe.getOutputItem().getItemDamage() == selectedRecipe.getOutputItem().getItemDamage()) {
+                if (recipe.getOutputItem().isItemEqual(selectedRecipe.getOutputItem())) {
                     found = recipe;
                     it.remove();
                     break;
@@ -419,13 +424,12 @@ public class RecipeBookContainer extends Container {
             filteredItems.addAll(itemList);
         } else {
             for (FoodRecipeWithStatus recipe : itemList) {
-                // TODO toLowerCase without locale
-                if (recipe.getOutputItem().getDisplayName().toLowerCase().contains(term.toLowerCase())) {
+                if (recipe.getOutputItem().getDisplayName().getString().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase())) {
                     filteredItems.add(recipe);
                 } else {
-                    List<String> tooltips = CookingForBlockheads.proxy.getItemTooltip(recipe.getOutputItem(), player);
-                    for (String tooltip : tooltips) {
-                        if (tooltip.toLowerCase().contains(term.toLowerCase())) {
+                    List<ITextComponent> tooltips = CookingForBlockheads.proxy.getItemTooltip(recipe.getOutputItem(), player);
+                    for (ITextComponent tooltip : tooltips) {
+                        if (tooltip.getString().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase())) {
                             filteredItems.add(recipe);
                             break;
                         }

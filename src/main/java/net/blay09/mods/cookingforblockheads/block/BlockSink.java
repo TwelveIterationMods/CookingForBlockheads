@@ -7,131 +7,63 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BlockSink extends BlockKitchen {
+public class BlockSink extends BlockDyeableKitchen {
 
     public static final String name = "sink";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public BlockSink() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), registryName);
+    public BlockSink(DyeColor dyeColor, ResourceLocation registryName) {
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), dyeColor, registryName);
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, COLOR, FLIPPED)
+        builder.add(FACING, COLOR, FLIPPED);
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileSink) {
-            return state.with(COLOR, ((TileSink) tileEntity).getDyedColor());
-        }
-        return state;
-    }
-
-    @Nullable
+    @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = super.getStateForPlacement(context);
-        return state.with(FLIPPED, shouldBePlacedFlipped(context.getPos(), state.get(FACING), context.getPlayer()));
+        return state.with(FLIPPED, shouldBePlacedFlipped(context, state.get(FACING)));
     }
 
     @Override
-    public BlockState getStateFromMeta(int meta) {
-        EnumFacing facing;
-        switch (meta & 7) {
-            case 0:
-                facing = EnumFacing.EAST;
-                break;
-            case 1:
-                facing = EnumFacing.WEST;
-                break;
-            case 2:
-                facing = EnumFacing.SOUTH;
-                break;
-            case 3:
-            default:
-                facing = EnumFacing.NORTH;
-                break;
-        }
-
-        return getDefaultState().withProperty(FACING, facing).withProperty(FLIPPED, (meta & 8) != 0);
-    }
-
-    @Override
-    public int getMetaFromState(BlockState state) {
-        int meta;
-        switch (state.getValue(FACING)) {
-            case EAST:
-                meta = 0;
-                break;
-            case WEST:
-                meta = 1;
-                break;
-            case SOUTH:
-                meta = 2;
-                break;
-            case NORTH:
-            default:
-                meta = 3;
-                break;
-        }
-
-        if (state.getValue(FLIPPED)) {
-            meta |= 8;
-        }
-
-        return meta;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, BlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                heldItem.shrink(1);
-            }
+        if (tryRecolorBlock(heldItem, world, pos, player, rayTraceResult)) {
             return true;
         }
 
         ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
         if (!resultStack.isEmpty()) {
-            NBTTagCompound tagCompound = heldItem.getTagCompound();
+            CompoundNBT tagCompound = heldItem.getTag();
             ItemStack newItem = resultStack.copy();
             if (tagCompound != null) {
-                newItem.setTagCompound(tagCompound);
+                newItem.setTag(tagCompound);
             }
             if (heldItem.getCount() <= 1) {
                 player.setHeldItem(hand, newItem);
@@ -146,17 +78,18 @@ public class BlockSink extends BlockKitchen {
         } else {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity != null) {
-                IFluidHandler fluidHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-                if (fluidHandler == null) {
+                LazyOptional<IFluidHandler> fluidHandlerCap = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+                if (!fluidHandlerCap.isPresent()) {
                     spawnParticles(world, pos, state);
                 } else {
+                    IFluidHandler fluidHandler = fluidHandlerCap.orElseThrow(IllegalStateException::new);
                     if (!FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) {
                         // Special case for bottles, they can hold 1/3 of a bucket
                         if (heldItem.getItem() == Items.GLASS_BOTTLE) {
-                            FluidStack simulated = fluidHandler.drain(333, false);
-                            if (simulated != null && simulated.amount == 333) {
-                                fluidHandler.drain(333, true);
-                                if (player.addItemStackToInventory(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER))) {
+                            FluidStack simulated = fluidHandler.drain(333, IFluidHandler.FluidAction.SIMULATE);
+                            if (simulated.getAmount() == 333) {
+                                fluidHandler.drain(333, IFluidHandler.FluidAction.EXECUTE);
+                                if (player.addItemStackToInventory(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER))) {
                                     heldItem.shrink(1);
                                 }
                             } else {
@@ -167,7 +100,7 @@ public class BlockSink extends BlockKitchen {
                         }
                     }
                 }
-                return !heldItem.isEmpty() && !(heldItem.getItem() instanceof ItemBlock);
+                return !heldItem.isEmpty() && !(heldItem.getItem() instanceof BlockItem);
             }
         }
 
@@ -177,7 +110,7 @@ public class BlockSink extends BlockKitchen {
     private void spawnParticles(World world, BlockPos pos, BlockState state) {
         float dripWaterX = 0f;
         float dripWaterZ = 0f;
-        switch (state.getValue(FACING)) {
+        switch (state.get(FACING)) {
             case NORTH:
                 dripWaterZ = 0.25f;
                 dripWaterX = -0.05f;
@@ -197,30 +130,22 @@ public class BlockSink extends BlockKitchen {
         float particleX = (float) pos.getX() + 0.5f;
         float particleY = (float) pos.getY() + 1.25f;
         float particleZ = (float) pos.getZ() + 0.5f;
-        world.spawnParticle(EnumParticleTypes.WATER_SPLASH, (double) particleX + dripWaterX, (double) particleY - 0.45f, (double) particleZ + dripWaterZ, 0, 0, 0);
+        world.addParticle(ParticleTypes.SPLASH, (double) particleX + dripWaterX, (double) particleY - 0.45f, (double) particleZ + dripWaterZ, 0, 0, 0);
         for (int i = 0; i < 5; i++) {
-            world.spawnParticle(EnumParticleTypes.WATER_SPLASH, (double) particleX + Math.random() - 0.5f, (double) particleY + Math.random() - 0.5f, (double) particleZ + Math.random() - 0.5f, 0, 0, 0);
+            world.addParticle(ParticleTypes.SPLASH, (double) particleX + Math.random() - 0.5f, (double) particleY + Math.random() - 0.5f, (double) particleZ + Math.random() - 0.5f, 0, 0, 0);
         }
 
         world.playSound(null, pos, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, 0.1f, world.rand.nextFloat() + 0.5f);
     }
 
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new TileSink();
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, world, tooltip, advanced);
-
-        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
-        }
-    }
-
-    @Override
-    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+    public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileSink) {
             TileSink tileSink = (TileSink) tileEntity;

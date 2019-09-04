@@ -98,7 +98,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
         List<IKitchenItemProvider> inventories = getItemProviders(player.inventory);
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
-            IngredientPredicate predicate = (it, count) -> ItemUtils.areItemStacksEqualWithWildcard(it, inputItem) && count > 0;
+            IngredientPredicate predicate = (it, count) -> it.isItemEqual(inputItem) && count > 0;
             int count = stack ? inputItem.getMaxStackSize() : 1;
             SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, count, inventories, requireBucket, false);
             if (sourceItem != null) {

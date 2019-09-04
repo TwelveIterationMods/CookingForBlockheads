@@ -16,7 +16,7 @@ public class FridgeScreen extends ContainerScreen<FridgeContainer> {
 
     public FridgeScreen(FridgeContainer container, PlayerInventory playerInventory, ITextComponent displayName) {
         super(container, playerInventory, displayName);
-        this.inventoryRows = container.getCombinedItemHandler().getSlots() / 9;
+        this.inventoryRows = container.getNumRows();
         this.ySize = 114 + this.inventoryRows * 18;
     }
 

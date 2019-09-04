@@ -3,99 +3,84 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+
+import java.util.function.Supplier;
 
 public class IMCHandler {
 
     private static final NonNullList<ItemStack> imcNonFoodRecipes = NonNullList.create();
 
+    private static <T> T getMessageData(InterModComms.IMCMessage message) {
+        Supplier<T> supplier = message.getMessageSupplier();
+        return supplier.get();
+    }
+
     public static void handleIMCMessage(InterModProcessEvent event) {
         event.getIMCStream().forEach(message -> {
+            ItemStack itemStack;
+            ItemStack inputItem;
+            ItemStack outputItem;
+            CompoundNBT tagCompound;
             switch (message.getMethod()) {
                 case "RegisterTool":
-                    if (message.getMessageType() == ItemStack.class) {
-                        CookingForBlockheadsAPI.addToolItem(message.getItemStackValue());
-                    } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterTool expected message of type ItemStack");
-                    }
+                    itemStack = getMessageData(message);
+                    CookingForBlockheadsAPI.addToolItem(itemStack);
                     break;
                 case "RegisterWaterItem":
-                    if (message.getMessageType() == ItemStack.class) {
-                        CookingForBlockheadsAPI.addWaterItem(message.getItemStackValue());
-                    } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterWaterItem expected message of type ItemStack");
-                    }
+                    itemStack = getMessageData(message);
+                    CookingForBlockheadsAPI.addWaterItem(itemStack);
                     break;
                 case "RegisterMilkItem":
-                    if (message.getMessageType() == ItemStack.class) {
-                        CookingForBlockheadsAPI.addMilkItem(message.getItemStackValue());
-                    } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterMilkItem expected message of type ItemStack");
-                    }
+                    itemStack = getMessageData(message);
+                    CookingForBlockheadsAPI.addMilkItem(itemStack);
                     break;
                 case "RegisterToast":
-                    if (message.getMessageType() == NBTTagCompound.class) {
-                        ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
-                        final ItemStack outputItem = new ItemStack(message.getNBTValue().getCompoundTag("Output"));
-                        if (!inputItem.isEmpty() && !outputItem.isEmpty()) {
-                            CookingForBlockheadsAPI.addToastHandler(inputItem, (ToastOutputHandler) itemStack -> outputItem);
-                        } else {
-                            CookingForBlockheads.logger.error("IMC API Error: RegisterToast expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
-                        }
+                    tagCompound = getMessageData(message);
+                    inputItem = ItemStack.read(tagCompound.getCompound("Input"));
+                    final ItemStack toastOutputItem = ItemStack.read(tagCompound.getCompound("Output"));
+                    if (!inputItem.isEmpty() && !toastOutputItem.isEmpty()) {
+                        CookingForBlockheadsAPI.addToasterHandler(inputItem, it -> toastOutputItem);
                     } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterToast expected message of type NBT");
+                        CookingForBlockheads.logger.error("IMC API Error: RegisterToast expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
                     }
                     break;
-                case "RegisterToastError":
-                    CookingForBlockheads.logger.warn("IMC API Warning: RegisterToastError is no longer supported and will be ignored");
-                    break;
                 case "RegisterOvenFuel":
-                    if (message.getMessageType() == NBTTagCompound.class) {
-                        ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
-                        if (!inputItem.isEmpty() && message.getNBTValue().hasKey("FuelValue", Constants.NBT.TAG_ANY_NUMERIC)) {
-                            CookingForBlockheadsAPI.addOvenFuel(inputItem, message.getNBTValue().getInteger("FuelValue"));
-                        } else {
-                            CookingForBlockheads.logger.error("IMC API Error: RegisterOvenFuel expected message of type NBT with structure {Input : ItemStack, FuelValue : numeric}");
-                        }
+                    tagCompound = getMessageData(message);
+                    inputItem = ItemStack.read(tagCompound.getCompound("Input"));
+                    if (!inputItem.isEmpty() && tagCompound.contains("FuelValue", Constants.NBT.TAG_ANY_NUMERIC)) {
+                        CookingForBlockheadsAPI.addOvenFuel(inputItem, tagCompound.getInt("FuelValue"));
                     } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterOvenFuel expected message of type NBT");
+                        CookingForBlockheads.logger.error("IMC API Error: RegisterOvenFuel expected message of type NBT with structure {Input : ItemStack, FuelValue : numeric}");
                     }
                     break;
                 case "RegisterOvenRecipe":
-                    if (message.getMessageType() == NBTTagCompound.class) {
-                        ItemStack inputItem = new ItemStack(message.getNBTValue().getCompoundTag("Input"));
-                        ItemStack outputItem = new ItemStack(message.getNBTValue().getCompoundTag("Output"));
-                        if (!inputItem.isEmpty() && !outputItem.isEmpty()) {
-                            CookingForBlockheadsAPI.addOvenRecipe(inputItem, outputItem);
-                        } else {
-                            CookingForBlockheads.logger.error("IMC API Error: RegisterOvenRecipe expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
-                        }
+                    tagCompound = getMessageData(message);
+                    inputItem = ItemStack.read(tagCompound.getCompound("Input"));
+                    outputItem = ItemStack.read(tagCompound.getCompound("Output"));
+                    if (!inputItem.isEmpty() && !outputItem.isEmpty()) {
+                        CookingForBlockheadsAPI.addOvenRecipe(inputItem, outputItem);
                     } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterOvenRecipe expected message of type NBT");
+                        CookingForBlockheads.logger.error("IMC API Error: RegisterOvenRecipe expected message of type NBT with structure {Input : ItemStack, Output : ItemStack}");
                     }
                     break;
                 case "RegisterNonFoodRecipe":
-                    if (message.getMessageType() == ItemStack.class) {
-                        imcNonFoodRecipes.add(message.getItemStackValue());
-                    } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterNonFoodRecipe expected message of type ItemStack");
-                    }
+                    itemStack = getMessageData(message);
+                    imcNonFoodRecipes.add(itemStack);
                     break;
                 case "RegisterCowClass":
-                    if (message.getMessageType() == String.class) {
-                        try {
-                            Class<?> clazz = Class.forName(message.getStringValue());
-                            CowJarHandler.registerCowClass(clazz);
-                        } catch (ClassNotFoundException e) {
-                            CookingForBlockheads.logger.error("Could not register cow class " + message.getStringValue() + ": " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    } else {
-                        CookingForBlockheads.logger.error("IMC API Error: RegisterCowClass expected message of type String");
+                    String cowClassName = getMessageData(message);
+                    try {
+                        Class<?> clazz = Class.forName(cowClassName);
+                        CowJarHandler.registerCowClass(clazz);
+                    } catch (ClassNotFoundException e) {
+                        CookingForBlockheads.logger.error("Could not register cow class " + cowClassName + ": " + e.getMessage());
+                        e.printStackTrace();
                     }
                     break;
             }

@@ -3,52 +3,52 @@ package net.blay09.mods.cookingforblockheads.compat;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.api.SinkHandler;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemFood;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Food;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.item.Items;
+
+import java.util.Optional;
 
 public class VanillaAddon implements FoodStatsProvider {
 
     public VanillaAddon() {
-        SinkHandler simpleHandler = itemStack -> {
+        /*SinkHandler simpleHandler = itemStack -> {
             ItemStack result = itemStack.copy();
             result.setCount(1);
             result.setItemDamage(0);
             return result;
         };
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.CARPET, 1, OreDictionary.WILDCARD_VALUE), simpleHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.WOOL), simpleHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.CARPET), simpleHandler);*/
+
         SinkHandler armorHandler = itemStack -> {
-            if (itemStack.getItem() instanceof ItemArmor) {
-                ((ItemArmor) itemStack.getItem()).removeColor(itemStack);
+            if (itemStack.getItem() instanceof IDyeableArmorItem) {
+                ((IDyeableArmorItem) itemStack.getItem()).removeColor(itemStack);
             }
             return itemStack;
         };
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_BOOTS, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_CHESTPLATE, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_HELMET, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_LEGGINGS, 1, OreDictionary.WILDCARD_VALUE), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_BOOTS), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_CHESTPLATE), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_HELMET), armorHandler);
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.LEATHER_LEGGINGS), armorHandler);
 
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.MILK_BUCKET), itemStack -> new ItemStack(Items.BUCKET, 1));
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.MILK_BUCKET), itemStack -> new ItemStack(Items.BUCKET));
 
-        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.POTIONITEM, 1, OreDictionary.WILDCARD_VALUE), itemStack -> new ItemStack(Items.GLASS_BOTTLE, 1));
+        CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Items.POTION), itemStack -> new ItemStack(Items.GLASS_BOTTLE));
 
         CookingForBlockheadsAPI.setFoodStatsProvider(this);
     }
 
     @Override
-    public float getSaturation(ItemStack itemStack, EntityPlayer entityPlayer) {
-        ItemFood item = (ItemFood) itemStack.getItem();
-        return item.getSaturationModifier(itemStack);
+    public float getSaturation(ItemStack itemStack, PlayerEntity entityPlayer) {
+        return Optional.ofNullable(itemStack.getItem().getFood()).map(Food::getSaturation).orElse(0f);
     }
 
     @Override
-    public int getFoodLevel(ItemStack itemStack, EntityPlayer entityPlayer) {
-        ItemFood item = (ItemFood) itemStack.getItem();
-        return item.getHealAmount(itemStack);
+    public int getFoodLevel(ItemStack itemStack, PlayerEntity entityPlayer) {
+        return Optional.ofNullable(itemStack.getItem().getFood()).map(Food::getHealing).orElse(0);
     }
+
 }

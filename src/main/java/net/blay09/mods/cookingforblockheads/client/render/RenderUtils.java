@@ -4,22 +4,25 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraftforge.client.model.data.EmptyModelData;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class RenderUtils {
+
+    private static final Random random = new Random();
 
     @Deprecated
     public static float getFacingAngle(BlockState state) {
@@ -46,7 +49,7 @@ public class RenderUtils {
         return angle;
     }
 
-    public static void renderBlockAt(Minecraft mc, BlockState state, IBlockAccess world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
+    public static void renderBlockAt(Minecraft mc, BlockState state, IEnviromentBlockReader world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
         BlockRendererDispatcher dispatcher = mc.getBlockRendererDispatcher();
         try {
             BlockRenderType renderType = state.getRenderType();
@@ -54,13 +57,13 @@ public class RenderUtils {
                 if (modelOverride == null) {
                     modelOverride = dispatcher.getModelForState(state);
                 }
-                dispatcher.getBlockModelRenderer().renderModel(world, modelOverride, state, pos, renderer, false);
+                dispatcher.getBlockModelRenderer().renderModel(world, modelOverride, state, pos, renderer, false, random, 0, EmptyModelData.INSTANCE);
             }
         } catch (Throwable ignored) {
         }
     }
 
-    public static void renderBlockAt(Minecraft mc, BlockState state, IBlockAccess world, BlockPos pos, BufferBuilder renderer) {
+    public static void renderBlockAt(Minecraft mc, BlockState state, IEnviromentBlockReader world, BlockPos pos, BufferBuilder renderer) {
         renderBlockAt(mc, state, world, pos, renderer, null);
     }
 
@@ -71,11 +74,11 @@ public class RenderUtils {
         if (!itemRenderer.shouldRenderItemIn3D(itemStack)) {
             GlStateManager.rotatef(180f, 0f, 1f, 0f);
         }
-        GlStateManager.pushAttrib();
+        GlStateManager.pushLightingAttributes();
         RenderHelper.enableStandardItemLighting();
         itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED);
         RenderHelper.disableStandardItemLighting();
-        GlStateManager.popAttrib();
+        GlStateManager.popAttributes();
         GlStateManager.popMatrix();
     }
 

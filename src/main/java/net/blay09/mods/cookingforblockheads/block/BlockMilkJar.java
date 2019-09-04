@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,12 +14,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +28,7 @@ public class BlockMilkJar extends BlockKitchen {
 
     public static final String name = "milk_jar";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
-    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 0.5, 0.7);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.3, 0, 0.3, 0.7, 0.5, 0.7);
 
     public BlockMilkJar() {
         super(Block.Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(0.6f), registryName);
@@ -40,18 +40,12 @@ public class BlockMilkJar extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-        return state.withProperty(LOWERED, shouldBlockRenderLowered(world, pos));
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         if (shouldBlockRenderLowered(world, pos)) {
-            return BOUNDING_BOX.expand(0, -0.05, 0);
+            return SHAPE.withOffset(0, -0.05, 0);
         }
 
-        return BOUNDING_BOX;
+        return SHAPE;
     }
 
     @Override
@@ -61,7 +55,7 @@ public class BlockMilkJar extends BlockKitchen {
         if (!heldItem.isEmpty() && tileMilkJar != null) {
             if (heldItem.getItem() == Items.MILK_BUCKET) {
                 if (tileMilkJar.getMilkAmount() <= tileMilkJar.getMilkCapacity() - 1000) {
-                    tileMilkJar.fill(1000, true);
+                    tileMilkJar.fill(1000, IFluidHandler.FluidAction.EXECUTE);
                     if (!player.abilities.isCreativeMode) {
                         player.setHeldItem(hand, new ItemStack(Items.BUCKET));
                     }
@@ -70,13 +64,13 @@ public class BlockMilkJar extends BlockKitchen {
             } else if (heldItem.getItem() == Items.BUCKET) {
                 if (tileMilkJar.getMilkAmount() >= 1000) {
                     if (heldItem.getCount() == 1) {
-                        tileMilkJar.drain(1000, true);
+                        tileMilkJar.drain(1000, IFluidHandler.FluidAction.EXECUTE);
                         if (!player.abilities.isCreativeMode) {
                             player.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
                         }
                     } else {
                         if (player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) {
-                            tileMilkJar.drain(1000, true);
+                            tileMilkJar.drain(1000, IFluidHandler.FluidAction.EXECUTE);
                             if (!player.abilities.isCreativeMode) {
                                 heldItem.shrink(1);
                             }

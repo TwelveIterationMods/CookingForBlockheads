@@ -1,27 +1,23 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.blay09.mods.cookingforblockheads.tile.TileOven;
+import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 
-public class OvenRenderer extends TileEntityRenderer<TileOven> {
+public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
 
     public static IBakedModel modelDoor;
     public static IBakedModel modelDoorActive;
 
     @Override
-    public void render(TileOven tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(OvenTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -35,11 +31,11 @@ public class OvenRenderer extends TileEntityRenderer<TileOven> {
 
         // Render the oven door
         GlStateManager.pushMatrix();
-        GlStateManager.translatef(x + 0.5f, y, z + 0.5f);
+        GlStateManager.translated(x + 0.5f, y, z + 0.5f);
         GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
         GlStateManager.translatef(-0.5f, 0f, -0.5f);
         GlStateManager.rotatef(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
-        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor;
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
         GlStateManager.popMatrix();

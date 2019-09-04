@@ -5,18 +5,15 @@ import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketTileEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
 
 public class FruitBasketRenderer extends TileEntityRenderer<FruitBasketTileEntity> {
 
     @Override
-    public void render(FruitBasketTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(FruitBasketTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }

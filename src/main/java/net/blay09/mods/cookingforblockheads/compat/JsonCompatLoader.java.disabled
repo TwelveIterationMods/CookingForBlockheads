@@ -7,17 +7,20 @@ import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
@@ -110,7 +113,7 @@ public class JsonCompatLoader {
 
     private static void parse(JsonObject root) {
         String modId = JsonUtils.getString(root, "modid");
-        if (!modId.equals("minecraft") && !Loader.isModLoaded(modId)) {
+        if (!modId.equals("minecraft") && !ModList.get().isLoaded(modId)) {
             return;
         }
 
@@ -213,12 +216,15 @@ public class JsonCompatLoader {
             }
 
             final ResourceLocation blockLocation = new ResourceLocation(modId, element.getAsString());
-            if (!Block.REGISTRY.containsKey(blockLocation)) {
+            if (!ForgeRegistries.BLOCKS.containsKey(blockLocation)) {
                 CookingForBlockheads.logger.warn("Connector block '" + blockLocation + "' not found");
                 continue;
             }
 
-            KitchenMultiBlock.registerConnectorBlock(Block.REGISTRY.getObject(blockLocation));
+            Block connectorBlock = ForgeRegistries.BLOCKS.getValue(blockLocation);
+            if (connectorBlock != null) {
+                KitchenMultiBlock.registerConnectorBlock(connectorBlock);
+            }
         }
     }
 
@@ -263,7 +269,7 @@ public class JsonCompatLoader {
             modId = name.substring(0, colon);
             name = name.substring(colon + 1);
         }
-        Item item = Item.REGISTRY.getObject(new ResourceLocation(modId, name));
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modId, name));
         if (item == null || item == Items.AIR) {
             return ItemStack.EMPTY;
         }

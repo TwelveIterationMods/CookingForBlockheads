@@ -3,17 +3,16 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -21,12 +20,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.*;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockFridge extends BlockKitchen {
+public class FridgeBlock extends BlockDyeableKitchen {
 
     public static final String name = "fridge";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -46,34 +50,13 @@ public class BlockFridge extends BlockKitchen {
     public static final BooleanProperty PRESERVATION_CHAMBER = BooleanProperty.create("preservation_chamber");
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
-    public BlockFridge() {
-        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f));
+    public FridgeBlock(DyeColor dyeColor, ResourceLocation registryName) {
+        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), dyeColor, registryName);
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-        if (world.getBlockState(pos.up()).getBlock() == this) {
-            state = state.withProperty(TYPE, FridgeType.LARGE);
-        } else if (world.getBlockState(pos.down()).getBlock() == this) {
-            state = state.withProperty(TYPE, FridgeType.INVISIBLE);
-        } else {
-            state = state.withProperty(TYPE, FridgeType.SMALL);
-        }
-
-        TileEntity tileEntity = world.getTileEntity(pos);
-        boolean hasPreservationUpgrade = tileEntity instanceof TileFridge && ((TileFridge) tileEntity).hasPreservationUpgrade();
-        state = state.withProperty(PRESERVATION_CHAMBER, hasPreservationUpgrade);
-
-        boolean hasIceUpgrade = tileEntity instanceof TileFridge && ((TileFridge) tileEntity).hasIceUpgrade();
-        state = state.withProperty(ICE_UNIT, hasIceUpgrade);
-
-        return state;
     }
 
     @Override
@@ -90,16 +73,13 @@ public class BlockFridge extends BlockKitchen {
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, facing, DyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                heldItem.shrink(1);
-            }
+        if (tryRecolorBlock(heldItem, world, pos, player, rayTraceResult)) {
             return true;
         }
 
+        TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
         Direction frontFace = state.get(FACING);
-        if (facing == frontFace) {
-            TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
+        if (rayTraceResult.getFace() == frontFace) {
             if (tileFridge != null) {
                 if (player.isSneaking()) {
                     tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
@@ -113,11 +93,11 @@ public class BlockFridge extends BlockKitchen {
         }
 
         if (!world.isRemote) {
-            if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) == ModBlocks.fridge && facing != frontFace) {
+            if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) instanceof FridgeBlock && rayTraceResult.getFace() != frontFace) {
                 return false;
             }
 
-            player.openGui(CookingForBlockheads.instance, GuiHandler.FRIDGE, world, pos.getX(), pos.getY(), pos.getZ());
+            NetworkHooks.openGui((ServerPlayerEntity) player, tileFridge, pos);
         }
 
         return true;
@@ -125,14 +105,15 @@ public class BlockFridge extends BlockKitchen {
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-        boolean below = world.getBlockState(pos.down()).getBlock() == ModBlocks.fridge;
-        boolean above = world.getBlockState(pos.up()).getBlock() == ModBlocks.fridge;
+        boolean below = world.getBlockState(pos.down()).getBlock() instanceof FridgeBlock;
+        boolean above = world.getBlockState(pos.up()).getBlock() instanceof FridgeBlock;
         return !(below && above)
-                && !(below && world.getBlockState(pos.down(2)).getBlock() == ModBlocks.fridge)
-                && !(above && world.getBlockState(pos.up(2)).getBlock() == ModBlocks.fridge)
+                && !(below && world.getBlockState(pos.down(2)).getBlock() instanceof FridgeBlock)
+                && !(above && world.getBlockState(pos.up(2)).getBlock() instanceof FridgeBlock)
                 && super.isValidPosition(state, world, pos);
     }
 
+    @Nonnull
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = super.getStateForPlacement(context);

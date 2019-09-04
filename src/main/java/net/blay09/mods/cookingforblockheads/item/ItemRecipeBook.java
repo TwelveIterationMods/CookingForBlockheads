@@ -1,35 +1,67 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.network.handler.GuiHandler;
+import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
+import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemRecipeBook extends Item {
 
-    public static final String name = "recipe_book";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+    public enum RecipeBookEdition {
+        NOFILTER,
+        RECIPE,
+        CRAFTING
+    }
 
-    public ItemRecipeBook() {
+    private final RecipeBookEdition edition;
+
+    public ItemRecipeBook(RecipeBookEdition edition) {
         super(new Item.Properties().group(CookingForBlockheads.itemGroup).maxStackSize(1));
-        setHasSubtypes(true);
+        this.edition = edition;
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        player.openGui(CookingForBlockheads.instance, GuiHandler.ITEM_RECIPE_BOOK, world, hand.ordinal(), 0, 0);
+        if (world.isRemote) {
+            NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
+                @Override
+                public ITextComponent getDisplayName() {
+                    return new TranslationTextComponent(Objects.requireNonNull(getRegistryName()).toString());
+                }
+
+                @Override
+                public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                    RecipeBookContainer container = new RecipeBookContainer(i, playerEntity);
+                    if (edition == RecipeBookEdition.NOFILTER) {
+                        container.setNoFilter();
+                    } else if (edition == RecipeBookEdition.CRAFTING) {
+                        container.allowCrafting();
+                    }
+                    return container;
+                }
+            });
+        }
+
         return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
     }
 
@@ -37,9 +69,10 @@ public class ItemRecipeBook extends Item {
     public void addInformation(ItemStack itemStack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
         super.addInformation(itemStack, world, tooltip, flag);
 
-        tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.cookingforblockheads:recipe_book_tier" + itemStack.getItemDamage()));
-        for (String s : I18n.format("tooltip.cookingforblockheads:recipe_book_tier" + itemStack.getItemDamage() + ".description").split("\\\\n")) {
-            tooltip.add(TextFormatting.GRAY + s);
+        String registryName = Objects.requireNonNull(getRegistryName()).toString();
+        tooltip.add(TextUtils.coloredTextComponent("tooltip." + registryName, TextFormatting.YELLOW));
+        for (String s : I18n.format("tooltip." + registryName + ".description").split("\\\\n")) {
+            tooltip.add(TextUtils.coloredTextComponent(s, TextFormatting.GRAY));
         }
     }
 

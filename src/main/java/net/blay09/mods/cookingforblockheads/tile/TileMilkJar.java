@@ -7,35 +7,28 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.init.Items;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
+// TODO test milk fluid handler
+public class TileMilkJar extends TileEntity {
 
     protected static final int MILK_CAPACITY = 8000;
 
@@ -70,7 +63,7 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
                 if (simulate) {
                     milkUsed += amount * 1000;
                 } else {
-                    tileMilkJar.drain(amount * 1000, true);
+                    tileMilkJar.drain(amount * 1000, IFluidHandler.FluidAction.EXECUTE);
                 }
                 return ItemHandlerHelper.copyStackWithSize(itemStacks.get(slot), amount);
             }
@@ -81,7 +74,7 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
         public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
             for (ItemStack providedStack : itemStacks) {
                 if (ItemHandlerHelper.canItemStacksStackRelaxed(itemStack, providedStack)) {
-                    tileMilkJar.fill(1000, true);
+                    tileMilkJar.fill(1000, IFluidHandler.FluidAction.EXECUTE);
                     break;
                 }
             }
@@ -107,61 +100,79 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
 
-    private final IFluidHandler milkFluidHandler = new IFluidHandler() {
+    private final IFluidHandler fluidHandler = new IFluidHandler() {
         @Override
-        public IFluidTankProperties[] getTankProperties() {
+        public int getTanks() {
+            return 1;
+        }
+
+        @Nonnull
+        @Override
+        public FluidStack getFluidInTank(int tank) {
             Fluid milkFluid = Compat.getMilkFluid();
-            if (milkFluid != null) {
-                return new IFluidTankProperties[]{
-                        new FluidTankProperties(new FluidStack(milkFluid, (int) milkAmount), MILK_CAPACITY)
-                };
-            }
-            return new IFluidTankProperties[0];
+            return milkFluid != null ? new FluidStack(milkFluid, (int) milkAmount) : FluidStack.EMPTY;
         }
 
         @Override
-        public int fill(FluidStack resource, boolean doFill) {
+        public int getTankCapacity(int tank) {
+            return MILK_CAPACITY;
+        }
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
             if (resource.getFluid() == Compat.getMilkFluid()) {
-                return TileMilkJar.this.fill(resource.amount, doFill);
+                return TileMilkJar.this.fill(resource.getAmount(), action);
             }
             return 0;
         }
 
-        @Nullable
         @Override
-        public FluidStack drain(FluidStack resource, boolean doDrain) {
+        public FluidStack drain(FluidStack resource, FluidAction action) {
             Fluid milkFluid = Compat.getMilkFluid();
             if (milkFluid != null && resource.getFluid() == milkFluid) {
-                return new FluidStack(milkFluid, TileMilkJar.this.drain(resource.amount, doDrain));
+                return new FluidStack(milkFluid, TileMilkJar.this.drain(resource.getAmount(), action));
             }
-            return null;
+
+            return FluidStack.EMPTY;
         }
 
-        @Nullable
         @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
+        public FluidStack drain(int maxDrain, FluidAction action) {
             Fluid milkFluid = Compat.getMilkFluid();
             if (milkFluid != null) {
-                return new FluidStack(milkFluid, TileMilkJar.this.drain(maxDrain, doDrain));
+                return new FluidStack(milkFluid, TileMilkJar.this.drain(maxDrain, action));
             }
-            return null;
+
+            return FluidStack.EMPTY;
+        }
+
+        @Override
+        public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+            return stack.getFluid() == Compat.getMilkFluid();
         }
     };
 
+    private final LazyOptional<IFluidHandler> fluidHandlerCap = LazyOptional.of(() -> fluidHandler);
+    private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
+
     protected float milkAmount;
 
-    public int fill(int amount, boolean doFill) {
+    public TileMilkJar() {
+        super(ModTileEntities.milkJar);
+    }
+
+    public int fill(int amount, IFluidHandler.FluidAction action) {
         int filled = (int) Math.min(MILK_CAPACITY - milkAmount, amount);
-        if (doFill) {
+        if (action == IFluidHandler.FluidAction.EXECUTE) {
             milkAmount += filled;
             VanillaPacketHandler.sendTileEntityUpdate(this);
         }
         return filled;
     }
 
-    public int drain(int amount, boolean doDrain) {
+    public int drain(int amount, IFluidHandler.FluidAction action) {
         int drained = (int) Math.min(milkAmount, amount);
-        if (doDrain) {
+        if (action == IFluidHandler.FluidAction.EXECUTE) {
             milkAmount -= drained;
             VanillaPacketHandler.sendTileEntityUpdate(this);
         }
@@ -210,7 +221,7 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
         LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
         if (!result.isPresent() && Compat.getMilkFluid() != null) {
-            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, milkFluidHandlerCap);
+            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, fluidHandlerCap);
         }
 
         if (result.isPresent()) {

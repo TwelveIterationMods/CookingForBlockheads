@@ -54,8 +54,8 @@ public class ModContainers {
         registry.register(oven = register("oven", ((windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
             TileEntity tileEntity = inv.player.world.getTileEntity(pos);
-            if (tileEntity instanceof TileOven) {
-                return new OvenContainer(windowId, inv, (TileOven) tileEntity);
+            if (tileEntity instanceof OvenTileEntity) {
+                return new OvenContainer(windowId, inv, (OvenTileEntity) tileEntity);
             }
 
             return null;

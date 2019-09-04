@@ -8,26 +8,22 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.init.Items;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
@@ -42,7 +38,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
             super(capacity);
         }
 
-        private static final FluidStack MAX_WATER = new FluidStack(FluidRegistry.WATER, Integer.MAX_VALUE);
+        private static final FluidStack MAX_WATER = new FluidStack(Fluids.WATER, Integer.MAX_VALUE);
 
         @Override
         public FluidStack getFluid() {
@@ -72,30 +68,30 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         }
 
         @Override
-        public int fill(FluidStack resource, boolean doFill) {
-            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() || resource.getFluid() != FluidRegistry.WATER) {
-                return resource.amount;
+        public int fill(FluidStack resource, FluidAction action) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() || resource.getFluid() != Fluids.WATER) {
+                return resource.getAmount();
             }
 
-            return super.fill(resource, doFill);
+            return super.fill(resource, action);
         }
 
         @Override
-        public FluidStack drain(FluidStack resource, boolean doDrain) {
-            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() && resource.getFluid() == FluidRegistry.WATER) {
+        public FluidStack drain(FluidStack resource, FluidAction action) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() && resource.getFluid() == Fluids.WATER) {
                 return resource.copy();
             }
 
-            return super.drain(resource, doDrain);
+            return super.drain(resource, action);
         }
 
         @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
+        public FluidStack drain(int maxDrain, FluidAction action) {
             if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get()) {
-                return new FluidStack(FluidRegistry.WATER, maxDrain);
+                return new FluidStack(Fluids.WATER, maxDrain);
             }
 
-            return super.drain(maxDrain, doDrain);
+            return super.drain(maxDrain, action);
         }
 
     }
@@ -122,7 +118,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
         @Override
         public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-            if (!CookingForBlockheadsConfig.general.sinkRequiresWater || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() || fluidTank.getFluidAmount() - waterUsed > amount * 1000) {
                 if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {
                     if (!CookingRegistry.consumeBucket(inventories, simulate)) {
                         return ItemStack.EMPTY;
@@ -131,7 +127,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
                 if (simulate) {
                     waterUsed += amount * 1000;
                 } else {
-                    fluidTank.drain(amount * 1000, true);
+                    fluidTank.drain(amount * 1000, IFluidHandler.FluidAction.EXECUTE);
                 }
                 return ItemHandlerHelper.copyStackWithSize(itemStacks.get(slot), amount);
             }
@@ -142,7 +138,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
             for (ItemStack providedStack : itemStacks) {
                 if (ItemHandlerHelper.canItemStacksStackRelaxed(itemStack, providedStack)) {
-                    fluidTank.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
+                    fluidTank.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
                     break;
                 }
             }
@@ -166,10 +162,17 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
         }
     }
 
-    private final FluidTank waterTank = new WaterTank(16000);
-    private final SinkItemProvider itemProvider = new SinkItemProvider(waterTank);
+    private final FluidTank fluidHandler = new WaterTank(16000);
+    private final SinkItemProvider itemProvider = new SinkItemProvider(fluidHandler);
+
+    private final LazyOptional<IFluidHandler> fluidHandlerCap = LazyOptional.of(() -> fluidHandler);
+    private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
 
     private DyeColor color = DyeColor.WHITE;
+
+    public TileSink() {
+        super(ModTileEntities.sink);
+    }
 
     @Override
     public CompoundNBT getUpdateTag() {
@@ -190,7 +193,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
     @Override
     public CompoundNBT write(CompoundNBT tagCompound) {
         super.write(tagCompound);
-        waterTank.write(tagCompound);
+        fluidHandler.writeToNBT(tagCompound);
         tagCompound.putByte("Color", (byte) color.getId());
         return tagCompound;
     }
@@ -198,16 +201,16 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
     @Override
     public void read(CompoundNBT tagCompound) {
         super.read(tagCompound);
-        waterTank.read(tagCompound);
+        fluidHandler.readFromNBT(tagCompound);
         color = DyeColor.byId(tagCompound.getByte("Color"));
     }
 
     public int getWaterAmount() {
-        return waterTank.getFluidAmount();
+        return fluidHandler.getFluidAmount();
     }
 
     public int getWaterCapacity() {
-        return waterTank.getCapacity();
+        return fluidHandler.getCapacity();
     }
 
     @Nonnull
@@ -215,7 +218,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
         LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
         if (!result.isPresent()) {
-            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, waterTankCap);
+            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, fluidHandlerCap);
         }
 
         if (result.isPresent()) {

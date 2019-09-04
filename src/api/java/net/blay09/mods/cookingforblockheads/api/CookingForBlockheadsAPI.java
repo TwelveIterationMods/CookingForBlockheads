@@ -15,9 +15,6 @@ public class CookingForBlockheadsAPI {
 
     public static void setupAPI(IInternalMethods internalMethods) {
         CookingForBlockheadsAPI.internalMethods = internalMethods;
-        CapabilityKitchenConnector.register();
-        CapabilityKitchenItemProvider.register();
-        CapabilityKitchenSmeltingProvider.register();
     }
 
     public static void setFoodStatsProvider(FoodStatsProvider foodStatsProvider) {

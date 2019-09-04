@@ -82,4 +82,8 @@ public class FridgeContainer extends Container implements IContainerWithDoor {
     public boolean isTileEntity(TileEntity tileEntity) {
         return tileFridge == tileEntity || tileFridge.getBaseFridge() == tileEntity;
     }
+
+    public int getNumRows() {
+        return numRows;
+    }
 }

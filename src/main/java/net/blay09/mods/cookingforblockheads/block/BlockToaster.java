@@ -8,21 +8,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -34,7 +31,7 @@ public class BlockToaster extends BlockKitchen {
     public static final String name = "toaster";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.275, 0, 0.275, 0.725, 0.4, 0.725);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.275, 0, 0.275, 0.725, 0.4, 0.725);
     private static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public BlockToaster() {
@@ -47,18 +44,8 @@ public class BlockToaster extends BlockKitchen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof ToasterTileEntity) {
-            return state.withProperty(ACTIVE, ((ToasterTileEntity) tileEntity).isActive());
-        }
-        return state;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
-        return BOUNDING_BOX;
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -109,11 +96,6 @@ public class BlockToaster extends BlockKitchen {
                 world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
             }
         }
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.CENTER;
     }
 
 }

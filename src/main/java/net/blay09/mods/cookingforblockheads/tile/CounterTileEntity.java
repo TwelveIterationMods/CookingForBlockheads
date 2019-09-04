@@ -5,11 +5,16 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.block.BlockCounter;
+import net.blay09.mods.cookingforblockheads.block.KitchenCounterBlock;
+import net.blay09.mods.cookingforblockheads.container.CounterContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
 import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -19,6 +24,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -28,7 +35,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CounterTileEntity extends TileEntity implements ITickableTileEntity, IDyeableKitchen {
+public class CounterTileEntity extends TileEntity implements ITickableTileEntity, IDyeableKitchen, INamedContainerProvider {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(CookingForBlockheadsConfig.COMMON.largeCounters.get() ? 54 : 27) {
         @Override
@@ -68,9 +75,9 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
     public void tick() {
         if (isFirstTick) {
             BlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof BlockCounter) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
-                cachedFacing = state.get(BlockCounter.FACING);
-                cachedFlipped = state.get(BlockCounter.FLIPPED);
+            if (state.getBlock() instanceof KitchenCounterBlock) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
+                cachedFacing = state.get(KitchenCounterBlock.FACING);
+                cachedFlipped = state.get(KitchenCounterBlock.FLIPPED);
                 isFirstTick = false;
             }
         }
@@ -175,7 +182,14 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
         return cachedFlipped;
     }
 
-    public String getUnlocalizedName() {
-        return CookingForBlockheads.MOD_ID + ":counter";
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ":counter");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new CounterContainer(i, playerInventory, this);
     }
 }

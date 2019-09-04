@@ -4,18 +4,15 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.SpiceRackTileEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
 
 public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
 
     @Override
-    public void render(SpiceRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(SpiceRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -30,7 +27,7 @@ public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
         GlStateManager.color4f(1f, 1f, 1f, 1f);
         GlStateManager.translated(x + 0.5, y + 0.6, z + 0.5);
         GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-        GlStateManager.translatef(0, 0, 0.4);
+        GlStateManager.translated(0, 0, 0.4);
         GlStateManager.rotatef(90f, 0f, 1f, 0f);
         GlStateManager.scalef(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {
