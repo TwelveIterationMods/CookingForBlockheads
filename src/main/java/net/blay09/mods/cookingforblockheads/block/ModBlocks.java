@@ -41,14 +41,14 @@ public class ModBlocks {
                 counter = registerBlock(registry, "counter", KitchenCounterBlock::new),
                 cabinet = registerBlock(registry, "cabinet", BlockCabinet::new),
                 corner = registerBlock(registry, "corner", KitchenCornerBlock::new),
-                oven = new BlockOven().setRegistryName(BlockOven.name),
-                toolRack = new BlockToolRack().setRegistryName(BlockToolRack.name),
-                toaster = new BlockToaster().setRegistryName(BlockToaster.name),
-                milkJar = new BlockMilkJar().setRegistryName(BlockMilkJar.name),
-                cowJar = new BlockCowJar().setRegistryName(BlockCowJar.name),
-                spiceRack = new BlockSpiceRack().setRegistryName(BlockSpiceRack.name),
-                kitchenFloor = new BlockKitchenFloor().setRegistryName(BlockKitchenFloor.name),
-                fruitBasket = new BlockFruitBasket().setRegistryName(BlockFruitBasket.name),
+                oven = new OvenBlock().setRegistryName(OvenBlock.name),
+                toolRack = new ToolRackBlock().setRegistryName(ToolRackBlock.name),
+                toaster = new ToasterBlock().setRegistryName(ToasterBlock.name),
+                milkJar = new MilkJarBlock().setRegistryName(MilkJarBlock.name),
+                cowJar = new CowJarBlock().setRegistryName(CowJarBlock.name),
+                spiceRack = new SpiceRackBlock().setRegistryName(SpiceRackBlock.name),
+                kitchenFloor = new KitchenFloorBlock().setRegistryName(KitchenFloorBlock.name),
+                fruitBasket = new FruitBasketBlock().setRegistryName(FruitBasketBlock.name),
                 cuttingBoard = new BlockCuttingBoard().setRegistryName(BlockCuttingBoard.name)
         );
     }
@@ -77,14 +77,15 @@ public class ModBlocks {
         }
 
         registry.registerAll(
-                new BlockItem(ModBlocks.oven, createItemProperties()).setRegistryName(BlockOven.name),
-                new BlockItem(ModBlocks.toolRack, createItemProperties()).setRegistryName(BlockToolRack.name),
-                new BlockItem(ModBlocks.toaster, createItemProperties()).setRegistryName(BlockToaster.name),
-                new BlockItem(ModBlocks.milkJar, createItemProperties()).setRegistryName(BlockMilkJar.name),
-                new BlockItem(ModBlocks.cowJar, createItemProperties()).setRegistryName(BlockCowJar.name),
-                new BlockItem(ModBlocks.spiceRack, createItemProperties()).setRegistryName(BlockSpiceRack.name),
-                new BlockItem(ModBlocks.kitchenFloor, createItemProperties()).setRegistryName(BlockKitchenFloor.name),
-                new BlockItem(ModBlocks.fruitBasket, createItemProperties()).setRegistryName(BlockFruitBasket.name)
+                new BlockItem(ModBlocks.cookingTable, createItemProperties()).setRegistryName(CookingTableBlock.name),
+                new BlockItem(ModBlocks.oven, createItemProperties()).setRegistryName(OvenBlock.name),
+                new BlockItem(ModBlocks.toolRack, createItemProperties()).setRegistryName(ToolRackBlock.name),
+                new BlockItem(ModBlocks.toaster, createItemProperties()).setRegistryName(ToasterBlock.name),
+                new BlockItem(ModBlocks.milkJar, createItemProperties()).setRegistryName(MilkJarBlock.name),
+                new BlockItem(ModBlocks.cowJar, createItemProperties()).setRegistryName(CowJarBlock.name),
+                new BlockItem(ModBlocks.spiceRack, createItemProperties()).setRegistryName(SpiceRackBlock.name),
+                new BlockItem(ModBlocks.kitchenFloor, createItemProperties()).setRegistryName(KitchenFloorBlock.name),
+                new BlockItem(ModBlocks.fruitBasket, createItemProperties()).setRegistryName(FruitBasketBlock.name)
         );
     }
 

@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockKitchenFloor extends Block {
+public class KitchenFloorBlock extends Block {
 
     public static final String name = "kitchen_floor";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public BlockKitchenFloor() {
+    public KitchenFloorBlock() {
         super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f));
     }
 

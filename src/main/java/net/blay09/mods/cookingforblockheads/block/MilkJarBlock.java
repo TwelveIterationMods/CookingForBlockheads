@@ -24,13 +24,13 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockMilkJar extends BlockKitchen {
+public class MilkJarBlock extends BlockKitchen {
 
     public static final String name = "milk_jar";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.3, 0, 0.3, 0.7, 0.5, 0.7);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(4.8, 0, 4.8, 11.2, 8.0, 11.2);
 
-    public BlockMilkJar() {
+    public MilkJarBlock() {
         super(Block.Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(0.6f), registryName);
     }
 

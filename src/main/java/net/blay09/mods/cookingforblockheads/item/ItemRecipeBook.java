@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.container.ModContainers;
 import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.client.resources.I18n;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,13 +26,24 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class ItemRecipeBook extends Item {
 
     public enum RecipeBookEdition {
-        NOFILTER,
-        RECIPE,
-        CRAFTING
+        NOFILTER(() -> ModContainers.noFilterBook),
+        RECIPE(() -> ModContainers.recipeBook),
+        CRAFTING(() -> ModContainers.craftingBook);
+
+        private final Supplier<ContainerType<RecipeBookContainer>> containerTypeSupplier;
+
+        RecipeBookEdition(Supplier<ContainerType<RecipeBookContainer>> containerTypeSupplier) {
+            this.containerTypeSupplier = containerTypeSupplier;
+        }
+
+        public Supplier<ContainerType<RecipeBookContainer>> getContainerTypeSupplier() {
+            return containerTypeSupplier;
+        }
     }
 
     private final RecipeBookEdition edition;
@@ -51,7 +64,7 @@ public class ItemRecipeBook extends Item {
 
                 @Override
                 public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                    RecipeBookContainer container = new RecipeBookContainer(i, playerEntity);
+                    RecipeBookContainer container = new RecipeBookContainer(edition.getContainerTypeSupplier().get(), i, playerEntity);
                     if (edition == RecipeBookEdition.NOFILTER) {
                         container.setNoFilter();
                     } else if (edition == RecipeBookEdition.CRAFTING) {

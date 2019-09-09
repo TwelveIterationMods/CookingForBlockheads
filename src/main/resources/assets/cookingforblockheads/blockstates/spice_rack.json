@@ -1,27 +1,8 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "cookingforblockheads:spice_rack",
-    "custom": {
-      "flip-v": true
-    },
-    "transform": "forge:default-block"
-  },
   "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "facing": {
-      "west": {
-        "y": -90
-      },
-      "east": {
-        "y": 90
-      },
-      "north": {
-      },
-      "south": {
-        "y": 180
-      }
-    }
+    "facing=north": { "model": "cookingforblockheads:block/spice_rack" },
+    "facing=east":  { "model": "cookingforblockheads:block/spice_rack", "y": 90 },
+    "facing=south": { "model": "cookingforblockheads:block/spice_rack", "y": 180 },
+    "facing=west":  { "model": "cookingforblockheads:block/spice_rack", "y": 270 }
   }
 }

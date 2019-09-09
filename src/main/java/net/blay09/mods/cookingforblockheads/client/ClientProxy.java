@@ -2,7 +2,8 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
+import net.blay09.mods.cookingforblockheads.client.render.*;
+import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -53,20 +54,7 @@ public class ClientProxy extends CommonProxy {
             }
         };
         ModelLoader.setCustomStateMapper(ModBlocks.cuttingBoard, ignorePropertiesStateMapper);
-        ModelLoader.setCustomStateMapper(ModBlocks.fruitBasket, ignorePropertiesStateMapper);
-
-        ClientRegistry.bindTileEntityRenderer(ToolRackTileEntity.class, new ToolRackRenderer());
-        ClientRegistry.bindTileEntityRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
-        ClientRegistry.bindTileEntityRenderer(OvenTileEntity.class, new OvenRenderer());
-        ClientRegistry.bindTileEntityRenderer(TileFridge.class, new FridgeRenderer());
-        ClientRegistry.bindTileEntityRenderer(TileMilkJar.class, new MilkJarRenderer());
-        ClientRegistry.bindTileEntityRenderer(TileCowJar.class, new CowJarRenderer());
-        ClientRegistry.bindTileEntityRenderer(ToasterTileEntity.class, new ToasterRenderer());
-        ClientRegistry.bindTileEntityRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
-        ClientRegistry.bindTileEntityRenderer(CounterTileEntity.class, new CounterRenderer());
-        ClientRegistry.bindTileEntityRenderer(CabinetTileEntity.class, new CabinetRenderer());
-        ClientRegistry.bindTileEntityRenderer(TileSink.class, new SinkRenderer());
-        ClientRegistry.bindTileEntityRenderer(FruitBasketTileEntity.class, new FruitBasketRenderer());*/
+        ModelLoader.setCustomStateMapper(ModBlocks.fruitBasket, ignorePropertiesStateMapper);*/
     }
 
     @Override

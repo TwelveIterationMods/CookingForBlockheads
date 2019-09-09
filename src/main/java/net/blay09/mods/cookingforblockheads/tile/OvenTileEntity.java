@@ -4,7 +4,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
-import net.blay09.mods.cookingforblockheads.block.BlockOven;
+import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.container.OvenContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
@@ -135,7 +135,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
         if (isFirstTick) {
             BlockState state = world.getBlockState(pos);
             if (state.getBlock() == ModBlocks.oven) {
-                facing = state.get(BlockOven.FACING);
+                facing = state.get(OvenBlock.FACING);
                 isFirstTick = false;
             }
         }
@@ -435,7 +435,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".oven");
+        return new TranslationTextComponent("container.cookingforblockheads.oven");
     }
 
     @Nullable

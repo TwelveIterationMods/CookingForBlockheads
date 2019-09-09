@@ -25,19 +25,19 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockSpiceRack extends BlockKitchen {
+public class SpiceRackBlock extends BlockKitchen {
 
     public static final String name = "spice_rack";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     private static final VoxelShape[] SHAPES = new VoxelShape[]{
-            Block.makeCuboidShape(0, 0.25, 1 - 0.125, 1, 1, 1),
-            Block.makeCuboidShape(0, 0.25, 0, 1, 1, 0.125),
-            Block.makeCuboidShape(1 - 0.125, 0.25, 0, 1, 1, 1),
-            Block.makeCuboidShape(0, 0.25, 0, 0.125, 1, 1),
+            Block.makeCuboidShape(0, 4, 14, 16, 16, 16),
+            Block.makeCuboidShape(0, 4, 0, 16, 16, 2),
+            Block.makeCuboidShape(14, 4, 0, 16, 16, 16),
+            Block.makeCuboidShape(0, 4, 0, 2, 16, 16),
     };
 
-    public BlockSpiceRack() {
+    public SpiceRackBlock() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
 

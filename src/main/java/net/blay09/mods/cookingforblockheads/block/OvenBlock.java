@@ -30,7 +30,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockOven extends BlockKitchen {
+public class OvenBlock extends BlockKitchen {
 
     public static BooleanProperty POWERED = BooleanProperty.create("powered");
 
@@ -38,7 +38,7 @@ public class BlockOven extends BlockKitchen {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final Random random = new Random();
 
-    public BlockOven() {
+    public OvenBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), registryName);
     }
 
@@ -133,10 +133,10 @@ public class BlockOven extends BlockKitchen {
         if (tileEntity != null && tileEntity.isBurning()) {
             Direction facing = state.get(FACING);
             float x = (float) pos.getX() + 0.5f;
-            float y = (float) pos.getY() + 0f + BlockOven.random.nextFloat() * 6f / 16f;
+            float y = (float) pos.getY() + 0f + OvenBlock.random.nextFloat() * 6f / 16f;
             float z = (float) pos.getZ() + 0.5f;
             float f3 = 0.52f;
-            float f4 = BlockOven.random.nextFloat() * 0.6f - 0.3f;
+            float f4 = OvenBlock.random.nextFloat() * 0.6f - 0.3f;
 
             if (facing == Direction.WEST) {
                 world.addParticle(ParticleTypes.SMOKE, (double) (x - f3), (double) y, (double) (z + f4), 0, 0, 0);

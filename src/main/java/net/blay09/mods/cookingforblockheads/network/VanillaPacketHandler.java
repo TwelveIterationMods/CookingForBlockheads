@@ -11,9 +11,13 @@ import java.util.Objects;
 public class VanillaPacketHandler {
 
     public static void sendTileEntityUpdate(TileEntity tileEntity) {
+        World world = Objects.requireNonNull(tileEntity.getWorld());
+        if (world.isRemote) {
+            return;
+        }
+
         SUpdateTileEntityPacket updatePacket = tileEntity.getUpdatePacket();
         if (updatePacket != null) {
-            World world = Objects.requireNonNull(tileEntity.getWorld());
             ((ServerChunkProvider) world.getChunkProvider()).chunkManager.getTrackingPlayers(new ChunkPos(tileEntity.getPos()), false).forEach(player -> player.connection.sendPacket(updatePacket));
         }
     }

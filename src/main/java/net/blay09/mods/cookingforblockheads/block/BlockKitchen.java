@@ -42,8 +42,8 @@ public abstract class BlockKitchen extends Block {
     public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
 
-    private static final VoxelShape BOUNDING_BOX_X = Block.makeCuboidShape(0.5, 0, 0, 15.5, 15.0, 1);
-    private static final VoxelShape BOUNDING_BOX_Z = Block.makeCuboidShape(0, 0, 0.5, 1, 15.0, 15.5);
+    private static final VoxelShape BOUNDING_BOX_X = Block.makeCuboidShape(0.5, 0, 0, 15.5, 15.0, 16);
+    private static final VoxelShape BOUNDING_BOX_Z = Block.makeCuboidShape(0, 0, 0.5, 16, 15.0, 15.5);
 
     private final ResourceLocation registryName;
 
@@ -163,5 +163,10 @@ public abstract class BlockKitchen extends Block {
             return true;
         }*/
         return false;
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
     }
 }

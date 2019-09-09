@@ -6,22 +6,29 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItem
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.ClientProxy;
+import net.blay09.mods.cookingforblockheads.client.ModScreens;
 import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
+import net.blay09.mods.cookingforblockheads.container.ModContainers;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.ModTileEntities;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.play.ClientPlayNetHandler;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,11 +38,15 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 @Mod(CookingForBlockheads.MOD_ID)
@@ -65,6 +76,9 @@ public class CookingForBlockheads {
         DeferredWorkQueue.runLater(NetworkHandler::init);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStarted);
+        MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CookingForBlockheadsConfig.commonSpec);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CookingForBlockheadsConfig.clientSpec);
@@ -85,6 +99,21 @@ public class CookingForBlockheads {
         CapabilityKitchenConnector.register();
         CapabilityKitchenItemProvider.register();
         CapabilityKitchenSmeltingProvider.register();
+    }
+
+    private void setupClient(FMLClientSetupEvent event) {
+        ModScreens.register();
+    }
+
+    private void serverStarted(FMLServerStartedEvent event) {
+        RecipeManager recipeManager = event.getServer().getRecipeManager();
+        CookingRegistry.initFoodRegistry(recipeManager);
+    }
+
+    private void recipesUpdated(RecipesUpdatedEvent event) {
+        ClientPlayNetHandler connection = Minecraft.getInstance().getConnection();
+        RecipeManager recipeManager = Objects.requireNonNull(connection).getRecipeManager();
+        CookingRegistry.initFoodRegistry(recipeManager);
     }
 
     public void postInit() {
@@ -109,8 +138,6 @@ public class CookingForBlockheads {
         /* TODO if (!JsonCompatLoader.loadCompat()) {
             logger.error("Failed to load Cooking for Blockheads compatibility! Things may not work as expected.");
         }*/
-
-        // TODO Call on server start + after connect CookingRegistry.initFoodRegistry();
     }
 
     @SubscribeEvent
@@ -126,6 +153,11 @@ public class CookingForBlockheads {
     @SubscribeEvent
     public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event) {
         ModTileEntities.registerTileEntities(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public static void registerContainers(RegistryEvent.Register<ContainerType<?>> event) {
+        ModContainers.registerContainers(event.getRegistry());
     }
 
     @SubscribeEvent

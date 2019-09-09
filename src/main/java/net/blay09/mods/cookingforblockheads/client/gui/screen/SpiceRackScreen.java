@@ -22,7 +22,7 @@ public class SpiceRackScreen extends ContainerScreen<SpiceRackContainer> {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         Minecraft minecraft = getMinecraft();
-        minecraft.fontRenderer.drawString(I18n.format("container." + CookingForBlockheads.MOD_ID + ":spice_rack"), 8, 6, 4210752);
+        minecraft.fontRenderer.drawString(title.getFormattedText(), 8, 6, 4210752);
         minecraft.fontRenderer.drawString(I18n.format("container.inventory"), 8, 38, 4210752);
     }
 

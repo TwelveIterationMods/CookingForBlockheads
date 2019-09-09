@@ -99,7 +99,7 @@ public class FruitBasketTileEntity extends TileEntity implements INamedContainer
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".fruit_basket");
+        return new TranslationTextComponent("container.cookingforblockheads.fruit_basket");
     }
 
     @Nullable

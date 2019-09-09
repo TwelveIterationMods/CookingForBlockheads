@@ -51,7 +51,7 @@ public class InternalMethods implements IInternalMethods {
 
     @Override
     public IKitchenMultiBlock getKitchenMultiBlock(World world, BlockPos pos) {
-        return new KitchenMultiBlock(world, pos);
+        return KitchenMultiBlock.buildFromLocation(world, pos);
     }
 
     @Override

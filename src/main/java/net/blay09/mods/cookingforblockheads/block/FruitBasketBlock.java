@@ -22,14 +22,14 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockFruitBasket extends BlockKitchen {
+public class FruitBasketBlock extends BlockKitchen {
 
     public static final String name = "fruit_basket";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.125, 0, 0.125, 0.875, 0.1, 0.875);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(2, 0, 2, 14, 1.6, 14);
 
-    public BlockFruitBasket() {
+    public FruitBasketBlock() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
 
@@ -59,8 +59,10 @@ public class BlockFruitBasket extends BlockKitchen {
             return true;
         }
 
-        FruitBasketTileEntity tileEntity = ((FruitBasketTileEntity) world.getTileEntity(pos));
-        NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
+        if (!world.isRemote) {
+            FruitBasketTileEntity tileEntity = ((FruitBasketTileEntity) world.getTileEntity(pos));
+            NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
+        }
         return true;
     }
 

@@ -2,9 +2,9 @@ package net.blay09.mods.cookingforblockheads.compat;
 
 import mcp.mobius.waila.api.*;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
-import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
-import net.blay09.mods.cookingforblockheads.block.BlockOven;
-import net.blay09.mods.cookingforblockheads.block.BlockToaster;
+import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
+import net.blay09.mods.cookingforblockheads.block.OvenBlock;
+import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;

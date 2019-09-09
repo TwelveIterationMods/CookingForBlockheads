@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.blay09.mods.cookingforblockheads.block.BlockMilkJar;
+import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.block.BlockState;
@@ -38,7 +38,7 @@ public class CowJarRenderer extends MilkJarRenderer {
         bindTexture(COW_TEXTURES);
         if (entity != null) {
             GlStateManager.pushMatrix();
-            GlStateManager.translated(x + 0.5, y + 0.5 + (BlockMilkJar.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z + 0.5);
+            GlStateManager.translated(x + 0.5, y + 0.5 + (MilkJarBlock.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z + 0.5);
             GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
             GlStateManager.rotatef(180f, 0f, 0f, 1f);
             GlStateManager.scaled(0.02, 0.02, 0.02);

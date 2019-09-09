@@ -26,6 +26,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -67,8 +68,9 @@ public class RecipeBookContainer extends Container {
 
     private boolean isInNoFilterPreview;
 
-    public RecipeBookContainer(int windowId, PlayerEntity player) {
-        super(ModContainers.recipeBook, windowId);
+    public RecipeBookContainer(ContainerType<RecipeBookContainer> containerType, int windowId, PlayerEntity player) {
+        super(containerType, windowId);
+
         this.player = player;
 
         for (int i = 0; i < 4; i++) {

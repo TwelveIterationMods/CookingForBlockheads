@@ -26,15 +26,15 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockToaster extends BlockKitchen {
+public class ToasterBlock extends BlockKitchen {
 
     public static final String name = "toaster";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.275, 0, 0.275, 0.725, 0.4, 0.725);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(4.4, 0, 4.4, 11.6, 6.4, 11.6);
     private static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public BlockToaster() {
+    public ToasterBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.5f), registryName);
     }
 

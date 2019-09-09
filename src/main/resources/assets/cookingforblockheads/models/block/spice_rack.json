@@ -1,8 +1,9 @@
 {
   "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "parent": "block/block",
   "textures": {
-    "particle": "cookingforblockheads:blocks/spicerack",
-    "texture": "cookingforblockheads:blocks/spicerack"
+    "particle": "cookingforblockheads:block/spicerack",
+    "texture": "cookingforblockheads:block/spicerack"
   },
   "elements": [
     {

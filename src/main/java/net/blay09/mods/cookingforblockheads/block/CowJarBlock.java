@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BlockCowJar extends BlockMilkJar {
+public class CowJarBlock extends MilkJarBlock {
 
     public static final String name = "cow_jar";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

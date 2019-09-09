@@ -1,7 +1,8 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
+import net.blay09.mods.cookingforblockheads.container.ModContainers;
 import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
 import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.BlockState;
@@ -108,13 +109,17 @@ public class CookingTableTileEntity extends TileEntity implements IDyeableKitche
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".cooking_table");
+        return new TranslationTextComponent("container.cookingforblockheads.cooking_table");
     }
 
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        // TODO initialize container properly or clean your messy code
-        return new RecipeBookContainer(i, playerEntity);
+        RecipeBookContainer container = new RecipeBookContainer(ModContainers.cookingTable, i, playerEntity).allowCrafting();
+        if (!noFilterBook.isEmpty()) {
+            container.setNoFilter();
+        }
+        container.setKitchenMultiBlock(KitchenMultiBlock.buildFromLocation(world, pos));
+        return container;
     }
 }

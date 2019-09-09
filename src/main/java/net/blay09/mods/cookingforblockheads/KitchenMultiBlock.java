@@ -30,8 +30,12 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
     private final List<IKitchenItemProvider> itemProviderList = Lists.newArrayList();
     private final List<IKitchenSmeltingProvider> smeltingProviderList = Lists.newArrayList();
 
-    public KitchenMultiBlock(World world, BlockPos pos) {
+    private KitchenMultiBlock(World world, BlockPos pos) {
         findNeighbourKitchenBlocks(world, pos, true);
+    }
+
+    public static KitchenMultiBlock buildFromLocation(World world, BlockPos pos) {
+        return new KitchenMultiBlock(world, pos);
     }
 
     private void findNeighbourKitchenBlocks(World world, BlockPos pos, boolean extendedUpSearch) {

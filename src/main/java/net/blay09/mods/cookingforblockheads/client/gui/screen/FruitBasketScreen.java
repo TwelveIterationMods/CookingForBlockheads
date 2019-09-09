@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.container.FruitBasketContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -24,7 +23,7 @@ public class FruitBasketScreen extends ContainerScreen<FruitBasketContainer> {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         Minecraft minecraft = getMinecraft();
-        minecraft.fontRenderer.drawString(I18n.format("container." + CookingForBlockheads.MOD_ID + ":fruit_basket"), 8, 6, 4210752);
+        minecraft.fontRenderer.drawString(title.getFormattedText(), 8, 6, 4210752);
         minecraft.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 

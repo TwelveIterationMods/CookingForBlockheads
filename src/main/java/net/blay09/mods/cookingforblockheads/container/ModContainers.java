@@ -19,6 +19,9 @@ public class ModContainers {
     public static ContainerType<OvenContainer> oven;
     public static ContainerType<SpiceRackContainer> spiceRack;
     public static ContainerType<RecipeBookContainer> recipeBook;
+    public static ContainerType<RecipeBookContainer> cookingTable;
+    public static ContainerType<RecipeBookContainer> noFilterBook;
+    public static ContainerType<RecipeBookContainer> craftingBook;
 
     public static void registerContainers(IForgeRegistry<ContainerType<?>> registry) {
         registry.register(counter = register("counter", ((windowId, inv, data) -> {
@@ -71,24 +74,24 @@ public class ModContainers {
             return null;
         })));
 
-        registry.register(recipeBook = register("cooking_table", ((windowId, inv, data) -> {
+        registry.register(cookingTable = register("cooking_table", ((windowId, inv, data) -> {
             World world = inv.player.world;
             BlockPos pos = data.readBlockPos();
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof CookingTableTileEntity) {
                 if (((CookingTableTileEntity) tileEntity).hasNoFilterBook()) {
-                    return new RecipeBookContainer(windowId, inv.player).setNoFilter().allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                    return new RecipeBookContainer(cookingTable, windowId, inv.player).setNoFilter().allowCrafting().setKitchenMultiBlock(KitchenMultiBlock.buildFromLocation(world, pos));
                 } else {
-                    return new RecipeBookContainer(windowId, inv.player).allowCrafting().setKitchenMultiBlock(new KitchenMultiBlock(world, pos));
+                    return new RecipeBookContainer(cookingTable, windowId, inv.player).allowCrafting().setKitchenMultiBlock(KitchenMultiBlock.buildFromLocation(world, pos));
                 }
             }
 
             return null;
         })));
 
-        registry.register(recipeBook = register("no_filter_book", ((windowId, inv, data) -> {
+        registry.register(noFilterBook = register("no_filter_book", ((windowId, inv, data) -> {
             if (inv.player.getHeldItemMainhand().getItem() == ModItems.craftingBook || inv.player.getHeldItemOffhand().getItem() == ModItems.craftingBook) {
-                return new RecipeBookContainer(windowId, inv.player).setNoFilter();
+                return new RecipeBookContainer(noFilterBook, windowId, inv.player).setNoFilter();
             }
 
             return null;
@@ -96,15 +99,15 @@ public class ModContainers {
 
         registry.register(recipeBook = register("recipe_book", ((windowId, inv, data) -> {
             if (inv.player.getHeldItemMainhand().getItem() == ModItems.recipeBook || inv.player.getHeldItemOffhand().getItem() == ModItems.recipeBook) {
-                return new RecipeBookContainer(windowId, inv.player);
+                return new RecipeBookContainer(recipeBook, windowId, inv.player);
             }
 
             return null;
         })));
 
-        registry.register(recipeBook = register("crafting_book", ((windowId, inv, data) -> {
+        registry.register(craftingBook = register("crafting_book", ((windowId, inv, data) -> {
             if (inv.player.getHeldItemMainhand().getItem() == ModItems.noFilterBook || inv.player.getHeldItemOffhand().getItem() == ModItems.noFilterBook) {
-                return new RecipeBookContainer(windowId, inv.player).allowCrafting();
+                return new RecipeBookContainer(craftingBook, windowId, inv.player).allowCrafting();
             }
 
             return null;

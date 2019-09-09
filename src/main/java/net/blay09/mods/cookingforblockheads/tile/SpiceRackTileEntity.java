@@ -96,7 +96,7 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".spice_rack");
+        return new TranslationTextComponent("container.cookingforblockheads.spice_rack");
     }
 
     @Nullable

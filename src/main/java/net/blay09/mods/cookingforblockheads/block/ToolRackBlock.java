@@ -25,19 +25,19 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockToolRack extends BlockKitchen {
+public class ToolRackBlock extends BlockKitchen {
 
     public static final String name = "tool_rack";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
-            Block.makeCuboidShape(0, 0.25, 1 - 0.125, 1, 1, 1),
-            Block.makeCuboidShape(0, 0.25, 0, 1, 1, 0.125),
-            Block.makeCuboidShape(1 - 0.125, 0.25, 0, 1, 1, 1),
-            Block.makeCuboidShape(0, 0.25, 0, 0.125, 1, 1),
+    private static final VoxelShape[] SHAPES = new VoxelShape[]{
+            Block.makeCuboidShape(0, 4, 14, 16, 16, 16),
+            Block.makeCuboidShape(0, 4, 0, 16, 16, 2),
+            Block.makeCuboidShape(14, 4, 0, 16, 16, 16),
+            Block.makeCuboidShape(0, 4, 0, 2, 16, 16),
     };
 
-    public BlockToolRack() {
+    public ToolRackBlock() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
 
@@ -50,7 +50,7 @@ public class BlockToolRack extends BlockKitchen {
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         Direction facing = state.get(FACING);
-        return BOUNDING_BOXES[facing.getIndex() - 2];
+        return SHAPES[facing.getIndex() - 2];
     }
 
     @Override
@@ -83,19 +83,22 @@ public class BlockToolRack extends BlockKitchen {
 
         if (rayTraceResult.getHitVec().y > 0.25f) {
             Direction stateFacing = state.get(FACING);
-            double hit = rayTraceResult.getHitVec().x;
+
+            double hitX = rayTraceResult.getHitVec().x - pos.getX();
+            double hitZ = rayTraceResult.getHitVec().z - pos.getZ();
+            double hit = hitX;
             switch (stateFacing) {
                 case NORTH:
-                    hit = rayTraceResult.getHitVec().x;
+                    hit = hitX;
                     break;
                 case SOUTH:
-                    hit = 1f - rayTraceResult.getHitVec().x;
+                    hit = 1f - hitX;
                     break;
                 case WEST:
-                    hit = 1f - rayTraceResult.getHitVec().z;
+                    hit = 1f - hitZ;
                     break;
                 case EAST:
-                    hit = rayTraceResult.getHitVec().z;
+                    hit = hitZ;
                     break;
             }
 
