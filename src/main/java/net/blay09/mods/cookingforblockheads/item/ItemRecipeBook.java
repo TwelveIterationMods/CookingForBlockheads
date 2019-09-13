@@ -55,7 +55,7 @@ public class ItemRecipeBook extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        if (world.isRemote) {
+        if (!world.isRemote) {
             NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
                 @Override
                 public ITextComponent getDisplayName() {

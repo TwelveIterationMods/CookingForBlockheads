@@ -25,12 +25,12 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
 public class CompatCapabilityLoader {
 
-    private final static ResourceLocation itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenItemProvider.CAPABILITY.getName());
-    private final static ResourceLocation connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenConnector.CAPABILITY.getName());
-    private final static KitchenConnectorCapabilityProvider connectorCapabilityProvider = new KitchenConnectorCapabilityProvider();
+    private static KitchenConnectorCapabilityProvider connectorCapabilityProvider;
+    private static ResourceLocation itemProviderResourceKey;
+    private static ResourceLocation connectorResourceKey;
 
-    private final static Set<ResourceLocation> kitchenItemProviders = new HashSet<>();
-    private final static Set<ResourceLocation> kitchenConnectors = new HashSet<>();
+    private static final Set<ResourceLocation> kitchenItemProviders = new HashSet<>();
+    private static final Set<ResourceLocation> kitchenConnectors = new HashSet<>();
 
     public static void addKitchenItemProvider(ResourceLocation registryName) {
         kitchenItemProviders.add(registryName);
@@ -45,10 +45,22 @@ public class CompatCapabilityLoader {
         TileEntity tileEntity = event.getObject();
 
         if (kitchenItemProviders.contains(tileEntity.getType().getRegistryName())) {
+            if (itemProviderResourceKey == null) {
+                itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenItemProvider.CAPABILITY.getName());
+            }
+
             event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(tileEntity));
         }
 
         if (kitchenConnectors.contains(tileEntity.getType().getRegistryName())) {
+            if (connectorResourceKey == null) {
+                connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenConnector.CAPABILITY.getName());
+            }
+
+            if (connectorCapabilityProvider == null) {
+                connectorCapabilityProvider = new KitchenConnectorCapabilityProvider();
+            }
+
             event.addCapability(connectorResourceKey, connectorCapabilityProvider);
         }
     }
