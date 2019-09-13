@@ -2,26 +2,17 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CommonProxy;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.client.render.*;
-import net.blay09.mods.cookingforblockheads.tile.*;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy {
@@ -55,24 +46,6 @@ public class ClientProxy extends CommonProxy {
         };
         ModelLoader.setCustomStateMapper(ModBlocks.cuttingBoard, ignorePropertiesStateMapper);
         ModelLoader.setCustomStateMapper(ModBlocks.fruitBasket, ignorePropertiesStateMapper);*/
-    }
-
-    @Override
-    public void init() {
-        // TODO check how vanilla does this
-        Minecraft.getInstance().getBlockColors().register(new IBlockColor() {
-            @Override
-            public int getColor(BlockState blockState, @Nullable IEnviromentBlockReader world, @Nullable BlockPos pos, int i) {
-                if (world != null && pos != null) {
-                    TileEntity tileEntity = world.getTileEntity(pos);
-                    if (tileEntity instanceof TileFridge) {
-                        TileFridge baseFridge = ((TileFridge) tileEntity).getBaseFridge();
-                        return baseFridge.getFridgeColor().getFireworkColor();
-                    }
-                }
-                return 0xFFFFFFFF;
-            }
-        });
     }
 
     @Override

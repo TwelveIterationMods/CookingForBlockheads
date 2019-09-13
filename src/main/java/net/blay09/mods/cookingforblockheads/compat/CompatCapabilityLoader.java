@@ -8,80 +8,48 @@ import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
+@Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
 public class CompatCapabilityLoader {
-    private final static HashMap<Class<? extends TileEntity>, CapabilityType> tilesClasses = new HashMap<>();
-    private final static CompatCapabilityLoader instance = new CompatCapabilityLoader();
-    private static boolean registered = false;
 
-    private enum CapabilityType {
-        CONNECTOR, ITEM_PROVIDER
-    }
-
-    public static void register() {
-        if (!registered) {
-            MinecraftForge.EVENT_BUS.register(instance);
-            registered = true;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void addTileEntityClass(final String className, final CapabilityType type) {
-        try {
-            Class<?> c = Class.forName(className);
-            if (TileEntity.class.isAssignableFrom(c)) {
-                tilesClasses.put((Class<? extends TileEntity>) c, type);
-                register();
-            } else {
-                CookingForBlockheads.logger.warn("Incompatible TileEntity class: {}", className);
-            }
-        } catch (ClassNotFoundException e) {
-            CookingForBlockheads.logger.warn("TileEntity class not found: {}", className);
-        }
-    }
-
-    public static void addKitchenItemProviderClass(String className) {
-        addTileEntityClass(className, CapabilityType.ITEM_PROVIDER);
-    }
-
-    public static void addKitchenConnectorClass(String className) {
-        addTileEntityClass(className, CapabilityType.CONNECTOR);
-    }
-
-    private final static ResourceLocation itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID,
-            CapabilityKitchenItemProvider.CAPABILITY.getName());
-    private final static ResourceLocation connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID,
-            CapabilityKitchenConnector.CAPABILITY.getName());
+    private final static ResourceLocation itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenItemProvider.CAPABILITY.getName());
+    private final static ResourceLocation connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenConnector.CAPABILITY.getName());
     private final static KitchenConnectorCapabilityProvider connectorCapabilityProvider = new KitchenConnectorCapabilityProvider();
 
-    @SubscribeEvent
-    public void tileEntity(AttachCapabilitiesEvent<TileEntity> event) {
-        final TileEntity entity = event.getObject();
-        final Class<? extends TileEntity> entityClass = entity.getClass();
+    private final static Set<ResourceLocation> kitchenItemProviders = new HashSet<>();
+    private final static Set<ResourceLocation> kitchenConnectors = new HashSet<>();
 
-        final CapabilityType type = tilesClasses.get(entityClass);
-        if (type == null) {
-            return;
+    public static void addKitchenItemProvider(ResourceLocation registryName) {
+        kitchenItemProviders.add(registryName);
+    }
+
+    public static void addKitchenConnector(ResourceLocation registryName) {
+        kitchenConnectors.add(registryName);
+    }
+
+    @SubscribeEvent
+    public void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
+        TileEntity tileEntity = event.getObject();
+
+        if (kitchenItemProviders.contains(tileEntity.getType().getRegistryName())) {
+            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(tileEntity));
         }
-        switch (type) {
-            case CONNECTOR:
-                event.addCapability(connectorResourceKey, connectorCapabilityProvider);
-                break;
-            case ITEM_PROVIDER:
-                event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(entity));
-                break;
+
+        if (kitchenConnectors.contains(tileEntity.getType().getRegistryName())) {
+            event.addCapability(connectorResourceKey, connectorCapabilityProvider);
         }
     }
 

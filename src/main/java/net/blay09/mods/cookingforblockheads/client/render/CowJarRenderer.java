@@ -32,7 +32,6 @@ public class CowJarRenderer extends MilkJarRenderer {
 
         if (entity == null && tileEntity.hasWorld()) {
             entity = new CowEntity(EntityType.COW, tileEntity.getWorld());
-            // TODO entity.setScaleForAge(false);
         }
 
         bindTexture(COW_TEXTURES);

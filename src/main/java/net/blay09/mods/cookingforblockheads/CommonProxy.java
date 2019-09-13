@@ -9,9 +9,6 @@ import java.util.List;
 
 public class CommonProxy {
 
-    public void init() {
-    }
-
     public void registerModels() {
 
     }

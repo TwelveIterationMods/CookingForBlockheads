@@ -27,7 +27,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-// TODO test milk fluid handler
 public class TileMilkJar extends TileEntity {
 
     protected static final int MILK_CAPACITY = 8000;

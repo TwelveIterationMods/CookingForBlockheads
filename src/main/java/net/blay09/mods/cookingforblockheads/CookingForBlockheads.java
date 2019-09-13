@@ -12,6 +12,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
+import net.blay09.mods.cookingforblockheads.compat.json.JsonCompatLoader;
 import net.blay09.mods.cookingforblockheads.container.ModContainers;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
@@ -25,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
@@ -41,6 +43,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -77,6 +80,7 @@ public class CookingForBlockheads {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupServer);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
 
@@ -103,6 +107,11 @@ public class CookingForBlockheads {
 
     private void setupClient(FMLClientSetupEvent event) {
         ModScreens.register();
+    }
+
+    private void setupServer(FMLServerAboutToStartEvent event) {
+        IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
+        resourceManager.addReloadListener(new JsonCompatLoader());
     }
 
     private void serverStarted(FMLServerStartedEvent event) {
@@ -134,10 +143,6 @@ public class CookingForBlockheads {
                 e.printStackTrace();
             }
         }
-
-        /* TODO if (!JsonCompatLoader.loadCompat()) {
-            logger.error("Failed to load Cooking for Blockheads compatibility! Things may not work as expected.");
-        }*/
     }
 
     @SubscribeEvent
