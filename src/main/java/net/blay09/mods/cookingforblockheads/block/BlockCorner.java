@@ -21,9 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.DyeUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class BlockCorner extends BlockKitchen {
 
@@ -64,13 +66,16 @@ public class BlockCorner extends BlockKitchen {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                heldItem.shrink(1);
-            }
-            return true;
-        }
+		ItemStack heldItem = player.getHeldItem(hand);
+		if (!heldItem.isEmpty() && DyeUtils.isDye(heldItem)) {
+			Optional<EnumDyeColor> dyeColor = DyeUtils.colorFromStack(heldItem);
+			if (dyeColor.isPresent() && recolorBlock(world, pos, facing, dyeColor.get())) {
+				if (!player.isCreative()) {
+					heldItem.shrink(1);
+				}
+			}
+			return true;
+		}
 
         return false;
     }
