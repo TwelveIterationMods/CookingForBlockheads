@@ -148,7 +148,7 @@ public class BlockFridge extends BlockKitchen {
         if (!heldItem.isEmpty() && DyeUtils.isDye(heldItem)) {
             Optional<EnumDyeColor> dyeColor = DyeUtils.colorFromStack(heldItem);
             if (dyeColor.isPresent() && recolorBlock(world, pos, facing, dyeColor.get())) {
-                if (!player.isCreative()) {
+                if (!player.capabilities.isCreativeMode) {
                     heldItem.shrink(1);
                 }
             }
