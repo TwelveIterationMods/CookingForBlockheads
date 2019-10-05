@@ -23,9 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.DyeUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class BlockCookingTable extends BlockKitchen {
 
@@ -62,9 +64,12 @@ public class BlockCookingTable extends BlockKitchen {
         if (!heldItem.isEmpty()) {
             TileCookingTable tileEntity = (TileCookingTable) world.getTileEntity(pos);
             if (tileEntity != null) {
-                if (heldItem.getItem() == Items.DYE) {
-                    if (recolorBlock(world, pos, facing, EnumDyeColor.byDyeDamage(heldItem.getItemDamage()))) {
-                        heldItem.shrink(1);
+                if (DyeUtils.isDye(heldItem)) {
+                    Optional<EnumDyeColor> dyeColor = DyeUtils.colorFromStack(heldItem);
+                    if (dyeColor.isPresent() && recolorBlock(world, pos, facing, dyeColor.get())) {
+                        if (!player.capabilities.isCreativeMode) {
+                            heldItem.shrink(1);
+                        }
                     }
                     return true;
                 }
