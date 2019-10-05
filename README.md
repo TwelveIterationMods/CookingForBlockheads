@@ -4,7 +4,16 @@ Minecraft Mod. Adds a cooking book and multiblock kitchens that only shows recip
 
 [![Versions](http://cf.way2muchnoise.eu/versions/cooking-for-blockheads.svg)](https://minecraft.curseforge.com/projects/cooking-for-blockheads) [![Downloads](http://cf.way2muchnoise.eu/full_cooking-for-blockheads_downloads.svg)](https://minecraft.curseforge.com/projects/cooking-for-blockheads)
 
+## Contributing
+
+If you're interested in contributing to the mod, you can check out [issues labelled as "help wanted"](https://github.com/blay09/CookingForBlockheads/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22). These should be ready to be implemented as they are.
+
+In order to get a development environment set up, clone the repository and run `./gradlew setupDecompWorkspace` and `./gradlew idea` or `./gradlew eclipse` depending on what IDE you use.
+
+If you need help, feel free to join us on [Discord](https://discord.gg/scGAfXC).
+
 ## Development Builds
+
 Potentially unstable in-development releases built straight from the latest code in this repository are available [on my Jenkins](http://jenkins.blay09.net).
 They may contain unfinished and broken features and no support is provided for these builds.
 
