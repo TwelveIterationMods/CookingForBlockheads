@@ -9,10 +9,6 @@ import java.util.List;
 
 public class CommonProxy {
 
-    public void registerModels() {
-
-    }
-
     public List<ITextComponent> getItemTooltip(ItemStack itemStack, PlayerEntity player) {
         return Collections.emptyList();
     }

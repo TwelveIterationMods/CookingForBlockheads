@@ -1,8 +1,9 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"parent": "block/block",
 	"textures": {
-		"particle": "blocks/planks_oak",
-		"texture": "blocks/planks_oak"
+		"particle": "block/oak_planks",
+		"texture": "block/oak_planks"
 	},
 	"elements": [
 		{

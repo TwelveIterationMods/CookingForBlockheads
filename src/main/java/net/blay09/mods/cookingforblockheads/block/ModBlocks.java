@@ -37,7 +37,7 @@ public class ModBlocks {
         registry.registerAll(
                 cookingTable = registerBlock(registry, "cooking_table", CookingTableBlock::new),
                 fridge = registerBlock(registry, "fridge", FridgeBlock::new),
-                sink = registerBlock(registry, "sink", BlockSink::new),
+                sink = registerBlock(registry, "sink", SinkBlock::new),
                 counter = registerBlock(registry, "counter", KitchenCounterBlock::new),
                 cabinet = registerBlock(registry, "cabinet", BlockCabinet::new),
                 corner = registerBlock(registry, "corner", KitchenCornerBlock::new),
@@ -79,6 +79,7 @@ public class ModBlocks {
         registry.registerAll(
                 new BlockItem(ModBlocks.cookingTable, createItemProperties()).setRegistryName(CookingTableBlock.name),
                 new BlockItem(ModBlocks.oven, createItemProperties()).setRegistryName(OvenBlock.name),
+                new BlockItem(ModBlocks.sink, createItemProperties()).setRegistryName(SinkBlock.name),
                 new BlockItem(ModBlocks.toolRack, createItemProperties()).setRegistryName(ToolRackBlock.name),
                 new BlockItem(ModBlocks.toaster, createItemProperties()).setRegistryName(ToasterBlock.name),
                 new BlockItem(ModBlocks.milkJar, createItemProperties()).setRegistryName(MilkJarBlock.name),

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class LowerableFacingOnDemandModel implements IBakedModel {
+public class CachedDynamicModel implements IBakedModel {
 
     private final Map<String, IBakedModel> cache = Maps.newHashMap();
 
@@ -34,7 +34,7 @@ public class LowerableFacingOnDemandModel implements IBakedModel {
 
     private TextureAtlasSprite particleTexture;
 
-    public LowerableFacingOnDemandModel(ModelBakery modelBakery, IModel baseModel) {
+    public CachedDynamicModel(ModelBakery modelBakery, IModel baseModel) {
         this.modelBakery = modelBakery;
         this.baseModel = baseModel;
     }
