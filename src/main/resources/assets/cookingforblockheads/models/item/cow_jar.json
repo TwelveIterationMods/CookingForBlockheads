@@ -1,5 +1,13 @@
 {
 	"__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Static)",
+	"parent": "block/block",
+	"textures": {
+		"particle": "cookingforblockheads:block/milk_glass",
+		"milk_glass": "cookingforblockheads:block/milk_glass",
+		"milk_lid": "cookingforblockheads:block/milk_lid",
+		"milk_glass_top": "cookingforblockheads:block/milk_glass_top",
+		"cow": "cookingforblockheads:block/cow"
+	},
 	"elements": [
 		{
 			"__comment": "Cube3",

@@ -1,45 +1,5 @@
 {
-  "forge_marker": 1,
-  "defaults": { "model": "cookingforblockheads:oven_static",
-    "textures": {
-      "particle": "cookingforblockheads:blocks/oven_side",
-      "texture": "cookingforblockheads:blocks/oven_side",
-      "ovenfront": "cookingforblockheads:blocks/oven_front",
-      "ovenfront_active": "cookingforblockheads:blocks/oven_front_active",
-      "oventop": "cookingforblockheads:blocks/oven_top",
-      "ovenbottom": "cookingforblockheads:blocks/oven_bottom",
-      "ovengrid": "cookingforblockheads:blocks/oven_grid",
-      "backsplash": "cookingforblockheads:blocks/oven_side"
-    },
-    "transform": "forge:default-block"
-  },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "model": "cookingforblockheads:oven_inventory"
-    }],
-    "powered": {
-      "true": {
-        "textures": {
-          "ovenfront": "cookingforblockheads:blocks/oven_front_powered",
-          "ovenfront_active": "cookingforblockheads:blocks/oven_front_powered_active"
-        }
-      },
-      "false": {
-      }
-    },
-    "facing": {
-      "west": {
-        "y": -90
-      },
-      "east": {
-        "y": 90
-      },
-      "north": {
-      },
-      "south": {
-        "y": 180
-      }
-    }
+    "": { "model": "cookingforblockheads:block/oven" }
   }
 }

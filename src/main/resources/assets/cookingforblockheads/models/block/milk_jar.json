@@ -1,8 +1,16 @@
 {
-  "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Static)",
+  "parent": "block/block",
+  "textures": {
+    "particle": "cookingforblockheads:block/milk_glass",
+    "milk_glass": "cookingforblockheads:block/milk_glass",
+    "milk_lid": "cookingforblockheads:block/milk_lid",
+    "milk_glass_top": "cookingforblockheads:block/milk_glass_top",
+    "milk": "cookingforblockheads:block/milk"
+  },
   "elements": [
     {
-      "__comment": "Glass",
+      "__comment": "Static_Glass",
       "from": [
         5,
         0,
@@ -21,7 +29,8 @@
             16,
             16
           ],
-          "texture": "#milk_glass"
+          "texture": "#milk_glass",
+          "cullface": "down"
         },
         "up": {
           "uv": [
@@ -71,7 +80,7 @@
       }
     },
     {
-      "__comment": "GlassTop",
+      "__comment": "Static_GlassTop",
       "from": [
         6,
         7,
@@ -131,7 +140,7 @@
       }
     },
     {
-      "__comment": "Lid",
+      "__comment": "Static_Lid",
       "from": [
         7,
         6.5,

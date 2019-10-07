@@ -1,5 +1,13 @@
 {
 	"__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+	"parent": "block/block",
+	"textures": {
+		"particle": "cookingforblockheads:block/toaster",
+		"toaster_front": "cookingforblockheads:block/toaster_front",
+		"toaster_bottom": "cookingforblockheads:block/toaster_bottom",
+		"toaster_feet": "cookingforblockheads:block/toaster_feet",
+		"toaster_lever": "cookingforblockheads:block/toaster_lever"
+	},
 	"elements": [
 		{
 			"__comment": "WallNorth",

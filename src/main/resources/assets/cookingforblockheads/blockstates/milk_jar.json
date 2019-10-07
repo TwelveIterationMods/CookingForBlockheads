@@ -1,52 +1,5 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "cookingforblockheads:milk_jar_static",
-    "transform": "forge:default-block",
-    "textures": {
-      "particle": "cookingforblockheads:blocks/milk_glass",
-      "milk_glass": "cookingforblockheads:blocks/milk_glass",
-      "milk_lid": "cookingforblockheads:blocks/milk_lid",
-      "milk_glass_top": "cookingforblockheads:blocks/milk_glass_top"
-    }
-  },
   "variants": {
-    "normal": [
-      {}
-    ],
-    "inventory": [
-      {
-        "model": "cookingforblockheads:milk_jar_inventory",
-        "transform": {
-          "gui": {
-            "rotation": [
-              {"x": 30},
-              {"y": 225}
-            ],
-            "translation": [0, -0.05, 0]
-          },
-          "scale": 0.5
-        }
-      }
-    ],
-    "facing": {
-      "west": {
-      },
-      "east": {
-      },
-      "north": {
-      },
-      "south": {
-      }
-    },
-    "lowered": {
-      "true": {
-        "transform": {
-          "translation": [ 0, -0.05, 0]
-        }
-      },
-      "false": {
-      }
-    }
+    "": { "model": "cookingforblockheads:block/milk_jar" }
   }
 }
