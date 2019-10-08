@@ -2,11 +2,11 @@
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
 	"parent": "block/block",
 	"textures": {
-		"countertop": "minecraft:block/stone_andesite_smooth",
-		"texture": "minecraft:block/hardened_clay",
-		"particle": "minecraft:block/hardened_clay",
-		"foot": "minecraft:block/hardened_clay_stained_black",
-		"backsplash": "minecraft:block/hardened_clay_stained_black",
+		"countertop": "minecraft:block/polished_andesite",
+		"texture": "minecraft:block/terracotta",
+		"particle": "minecraft:block/terracotta",
+		"foot": "minecraft:block/black_terracotta",
+		"backsplash": "minecraft:block/black_terracotta",
 		"metal": "cookingforblockheads:block/sink_metal",
 		"handle": "cookingforblockheads:block/handle"
 	},

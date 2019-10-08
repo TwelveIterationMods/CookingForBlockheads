@@ -2,10 +2,10 @@
   "result": {
     "item": "cookingforblockheads:spice_rack"
   },
-  "type": "forge:ore_shapeless",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "#SLAB_WOOD"
+      "tag": "minecraft:wooden_slabs"
     }
   ]
 }

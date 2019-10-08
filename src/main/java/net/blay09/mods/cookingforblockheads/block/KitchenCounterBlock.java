@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.block.Block;
@@ -32,6 +33,9 @@ import java.util.Locale;
 
 public class KitchenCounterBlock extends BlockDyeableKitchen {
 
+    public static final String name = "counter";
+    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+
     public enum ModelPass implements IStringSerializable {
         STATIC,
         DOOR,
@@ -45,8 +49,12 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
 
     public static final EnumProperty<ModelPass> PASS = EnumProperty.create("pass", ModelPass.class);
 
-    public KitchenCounterBlock(DyeColor dyeColor, ResourceLocation registryName) {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), dyeColor, registryName);
+    public KitchenCounterBlock() {
+        this(registryName);
+    }
+
+    public KitchenCounterBlock(ResourceLocation registryName) {
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override

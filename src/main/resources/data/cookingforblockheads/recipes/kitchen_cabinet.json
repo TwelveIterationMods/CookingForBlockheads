@@ -2,17 +2,17 @@
   "result": {
     "item": "cookingforblockheads:cabinet"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "CCC",
     "CBC"
   ],
   "key": {
     "C": {
-      "item": "minecraft:hardened_clay"
+      "item": "minecraft:terracotta"
     },
     "B": {
-      "item": "#CHEST"
+      "tag": "forge:chests/wooden"
     }
   }
 }

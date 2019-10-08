@@ -1,5 +1,14 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"parent": "block/block",
+	"textures": {
+		"countertop": "minecraft:block/polished_andesite",
+		"texture": "minecraft:block/terracotta",
+		"particle": "minecraft:block/terracotta",
+		"foot": "minecraft:block/black_terracotta",
+		"backsplash": "minecraft:block/black_terracotta",
+		"handle": "cookingforblockheads:block/handle"
+	},
 	"elements": [
 		{
 			"__comment": "Bottom",
@@ -45,7 +54,7 @@
 			"from": [ 1, 2, 14.5 ],
 			"to": [ 15, 15, 15.5 ],
 			"faces": {
-				"down": { "uv": [ 1, 0.5, 15, 1.5 ], "texture": "#texture" },
+				"down": { "uv": [ 1, 0.5, 15, 1.5 ], "texture": "#backsplash" },
 				"north": { "uv": [ 0.999999, 2, 15, 15 ], "texture": "#texture" },
 				"south": { "uv": [ 1.000001, 2, 15, 15 ], "texture": "#texture" }
 			}
@@ -110,6 +119,31 @@
 				"south": { "uv": [ 1, 15, 15, 16 ], "texture": "#texture" },
 				"west": { "uv": [ 2.5, 15, 15.5, 16 ], "texture": "#texture", "cullface": "west" },
 				"east": { "uv": [ 0.5, 15, 13.5, 16 ], "texture": "#texture", "cullface": "east" }
+			}
+		},
+		{
+			"__comment": "Door",
+			"from": [ 2.5, 3.5, 2 ],
+			"to": [ 13.5, 14.5, 3 ],
+			"faces": {
+				"down": { "uv": [ 2.5, 14.5, 13.5, 15.5 ], "texture": "#texture" },
+				"up": { "uv": [ 2.5, 0.5, 13.5, 1.5 ], "texture": "#texture" },
+				"north": { "uv": [ 2.5, 3.5, 13.5, 13.5 ], "texture": "#texture" },
+				"south": { "uv": [ 2.5, 3.5, 13.5, 13.5 ], "texture": "#texture" },
+				"west": { "uv": [ 0.5, 3.5, 1.5, 13.5 ], "texture": "#texture" },
+				"east": { "uv": [ 14.5, 3.5, 15.5, 13.5 ], "texture": "#texture" }
+			}
+		},
+		{
+			"__comment": "Handle",
+			"from": [ 3.5, 7.5, 1.5 ],
+			"to": [ 4, 10.5, 2 ],
+			"faces": {
+				"down": { "uv": [ 3.5, 15.5, 4.5, 16 ], "texture": "#handle" },
+				"up": { "uv": [ 3.5, 0, 4.5, 0.5 ], "texture": "#handle" },
+				"north": { "uv": [ 11.5, 6, 12.5, 8 ], "texture": "#handle" },
+				"west": { "uv": [ 0, 6, 0.5, 8 ], "texture": "#handle" },
+				"east": { "uv": [ 15.5, 6, 16, 8 ], "texture": "#handle" }
 			}
 		}
 	]

@@ -29,8 +29,8 @@ public class CookingTableBlock extends BlockDyeableKitchen {
     public static final String name = "cooking_table";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public CookingTableBlock(DyeColor dyeColor, ResourceLocation registryName) {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.5f), dyeColor, registryName);
+    public CookingTableBlock() {
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(2.5f), registryName);
     }
 
     @Override

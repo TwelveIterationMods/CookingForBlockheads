@@ -2,7 +2,7 @@
   "result": {
     "item": "cookingforblockheads:ice_unit"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
     "ICI"
@@ -12,7 +12,7 @@
       "item": "minecraft:snowball"
     },
     "I": {
-      "item": "#IRON_INGOT"
+      "tag": "forge:ingots/iron"
     },
     "C": {
       "item": "minecraft:comparator"

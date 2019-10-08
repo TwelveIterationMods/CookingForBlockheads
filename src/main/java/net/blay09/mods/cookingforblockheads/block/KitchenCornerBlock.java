@@ -34,8 +34,8 @@ public class KitchenCornerBlock extends BlockDyeableKitchen {
             Block.makeCuboidShape(0.03125, 0, 0, 1, 0.9375, 0.96875)
     };
 
-    public KitchenCornerBlock(DyeColor dyeColor, ResourceLocation registryName) {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), dyeColor, registryName);
+    public KitchenCornerBlock() {
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override

@@ -35,8 +35,8 @@ public class SinkBlock extends BlockDyeableKitchen {
     public static final String name = "sink";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public SinkBlock(DyeColor dyeColor, ResourceLocation registryName) {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), dyeColor, registryName);
+    public SinkBlock() {
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override

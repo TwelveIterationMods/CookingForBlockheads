@@ -2,7 +2,7 @@
   "result": {
     "item": "cookingforblockheads:milk_jar"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "GPG",
     "GMG",
@@ -10,10 +10,10 @@
   ],
   "key": {
     "G": {
-      "item": "#GLASS"
+      "item": "minecraft:glass"
     },
     "P": {
-      "item": "#PLANKS"
+      "tag": "planks"
     },
     "M": {
       "item": "minecraft:milk_bucket"

@@ -50,8 +50,8 @@ public class FridgeBlock extends BlockDyeableKitchen {
     public static final BooleanProperty PRESERVATION_CHAMBER = BooleanProperty.create("preservation_chamber");
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
-    public FridgeBlock(DyeColor dyeColor, ResourceLocation registryName) {
-        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), dyeColor, registryName);
+    public FridgeBlock() {
+        super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), registryName);
     }
 
     @Override

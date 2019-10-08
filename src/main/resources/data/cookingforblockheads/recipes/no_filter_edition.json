@@ -1,13 +1,11 @@
 {
   "result": {
-    "item": "cookingforblockheads:recipe_book",
-    "data": 0
+    "item": "cookingforblockheads:no_filter_edition"
   },
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "cookingforblockheads:recipe_book",
-      "data": 1
+      "item": "cookingforblockheads:crafting_book"
     }
   ]
 }

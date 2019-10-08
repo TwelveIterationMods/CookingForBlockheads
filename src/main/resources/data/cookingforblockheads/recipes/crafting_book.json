@@ -1,9 +1,8 @@
 {
   "result": {
-    "item": "cookingforblockheads:recipe_book",
-    "data": 2
+    "item": "cookingforblockheads:crafting_book"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     " D ",
     "CBC",
@@ -11,14 +10,13 @@
   ],
   "key": {
     "C": {
-      "item": "#WORKBENCH"
+      "item": "minecraft:crafting_table"
     },
     "D": {
-      "item": "#DIAMOND"
+      "tag": "forge:gems/diamond"
     },
     "B": {
-      "item": "cookingforblockheads:recipe_book",
-      "data": 1
+      "item": "cookingforblockheads:recipe_book"
     }
   }
 }

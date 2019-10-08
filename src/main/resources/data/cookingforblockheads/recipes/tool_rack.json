@@ -2,17 +2,17 @@
   "result": {
     "item": "cookingforblockheads:tool_rack"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
     "I I"
   ],
   "key": {
     "S": {
-      "item": "#SLAB_WOOD"
+      "tag": "minecraft:wooden_slabs"
     },
     "I": {
-      "item": "#IRON_NUGGET"
+      "tag": "forge:nuggets/iron"
     }
   }
 }

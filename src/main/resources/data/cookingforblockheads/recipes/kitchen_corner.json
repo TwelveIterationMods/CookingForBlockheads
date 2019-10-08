@@ -2,7 +2,7 @@
   "result": {
     "item": "cookingforblockheads:corner"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
     "CCC",
@@ -10,10 +10,10 @@
   ],
   "key": {
     "S": {
-      "item": "#STONE"
+      "tag": "forge:stone"
     },
     "C": {
-      "item": "minecraft:hardened_clay"
+      "item": "minecraft:terracotta"
     }
   }
 }

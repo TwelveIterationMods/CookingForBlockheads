@@ -2,17 +2,17 @@
   "result": {
     "item": "cookingforblockheads:heating_unit"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "NNN",
     "ICI"
   ],
   "key": {
     "N": {
-      "item": "#IRON_NUGGET"
+      "tag": "forge:nuggets/iron"
     },
     "I": {
-      "item": "#IRON_INGOT"
+      "tag": "forge:ingots/iron"
     },
     "C": {
       "item": "minecraft:comparator"

@@ -2,7 +2,7 @@
   "result": {
     "item": "cookingforblockheads:sink"
   },
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "III",
     "CBC",
@@ -10,10 +10,10 @@
   ],
   "key": {
     "I": {
-      "item": "#IRON_INGOT"
+      "tag": "forge:ingots/iron"
     },
     "C": {
-      "item": "minecraft:hardened_clay"
+      "item": "minecraft:terracotta"
     },
     "B": {
       "item": "minecraft:water_bucket"

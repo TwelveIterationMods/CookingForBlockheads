@@ -2,10 +2,10 @@
   "result": {
     "item": "cookingforblockheads:fridge"
   },
-  "type": "forge:ore_shapeless",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "#CHEST"
+      "tag": "forge:chests/wooden"
     },
     {
       "item": "minecraft:iron_door"
