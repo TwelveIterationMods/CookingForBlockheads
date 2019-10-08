@@ -74,7 +74,11 @@ public abstract class BlockKitchen extends Block {
     @Override
     @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+        BlockState state = getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+        if (state.has(LOWERED)) {
+            state = state.with(LOWERED, shouldBeLoweredUpon(context.getWorld().getBlockState(context.getPos().down())));
+        }
+        return state;
     }
 
     @Override
@@ -163,6 +167,19 @@ public abstract class BlockKitchen extends Block {
             return true;
         }*/
         return false;
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (facing == Direction.DOWN && state.has(LOWERED)) {
+            return state.with(LOWERED, shouldBeLoweredUpon(facingState));
+        }
+
+        return state;
+    }
+
+    private boolean shouldBeLoweredUpon(BlockState facingState) {
+        return facingState.getBlock() == ModBlocks.counter;
     }
 
     @Override
