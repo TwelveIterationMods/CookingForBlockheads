@@ -46,6 +46,7 @@ public class ModModels {
             fridgeDoorLarge = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door"));
 
             overrideWithDynamicModel(event, "block/cutting_board", ModBlocks.cuttingBoard);
+            overrideWithDynamicModel(event, "block/toaster", ModBlocks.toaster);
             overrideWithDynamicModel(event, "block/fruit_basket", ModBlocks.fruitBasket);
             overrideWithDynamicModel(event, "block/milk_jar", ModBlocks.milkJar);
             overrideWithDynamicModel(event, "block/milk_jar", ModBlocks.cowJar);

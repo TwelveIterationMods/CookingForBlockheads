@@ -1,212 +1,79 @@
 {
-  "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Static)",
-  "parent": "block/block",
-  "textures": {
-    "particle": "cookingforblockheads:block/milk_glass",
-    "milk_glass": "cookingforblockheads:block/milk_glass",
-    "milk_lid": "cookingforblockheads:block/milk_lid",
-    "milk_glass_top": "cookingforblockheads:block/milk_glass_top",
-    "milk": "cookingforblockheads:block/milk"
-  },
-  "elements": [
-    {
-      "__comment": "Static_Glass",
-      "from": [
-        5,
-        0,
-        5
-      ],
-      "to": [
-        11,
-        7,
-        11
-      ],
-      "faces": {
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_glass",
-          "cullface": "down"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_glass"
-        },
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_glass"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_glass"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_glass"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_glass"
-        }
-      }
-    },
-    {
-      "__comment": "Static_GlassTop",
-      "from": [
-        6,
-        7,
-        6
-      ],
-      "to": [
-        10,
-        8,
-        10
-      ],
-      "faces": {
-        "up": {
-          "uv": [
-            0,
-            3,
-            13,
-            16
-          ],
-          "texture": "#milk_glass_top"
-        },
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            3
-          ],
-          "texture": "#milk_glass_top"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            3
-          ],
-          "texture": "#milk_glass_top"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            3
-          ],
-          "texture": "#milk_glass_top"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            3
-          ],
-          "texture": "#milk_glass_top"
-        }
-      }
-    },
-    {
-      "__comment": "Static_Lid",
-      "from": [
-        7,
-        6.5,
-        7
-      ],
-      "to": [
-        9,
-        9,
-        9
-      ],
-      "faces": {
-        "down": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_lid"
-        },
-        "up": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_lid"
-        },
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_lid"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_lid"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_lid"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#milk_lid"
-        }
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"milk_glass": "cookingforblockheads:block/milk_glass",
+		"particle": "cookingforblockheads:block/milk_glass",
+		"milk_lid": "cookingforblockheads:block/milk_lid",
+		"milk_glass_top": "cookingforblockheads:block/milk_glass_top"
+	},
+	"elements": [
+		{
+			"name": "Static_Glass",
+			"from": [5, 0, 5],
+			"to": [11, 7, 11],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#milk_glass", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Static_GlassTop",
+			"from": [6, 7, 6],
+			"to": [10, 8, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
+				"east": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
+				"south": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
+				"west": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
+				"up": {"uv": [0, 3, 13, 16], "texture": "#milk_glass_top"}
+			}
+		},
+		{
+			"name": "Static_Lid",
+			"from": [7, 6.5, 7],
+			"to": [9, 9, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 2.5, 0]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 2.5, 0]
+		},
+		"firstperson_righthand": {
+			"translation": [0, 2.5, -3]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 2.5, -3]
+		},
+		"ground": {
+			"translation": [0, 4.5, 0]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [0, 5, 0],
+			"scale": [1.25, 1.25, 1.25]
+		},
+		"head": {
+			"translation": [0, 11.75, 0],
+			"scale": [2.5, 2.5, 2.5]
+		},
+		"fixed": {
+			"translation": [0, 3.75, 0]
+		}
+	}
 }
