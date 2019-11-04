@@ -74,7 +74,7 @@ public abstract class BlockKitchen extends Block {
     @Override
     @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockState state = getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+        BlockState state = getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
         if (state.has(LOWERED)) {
             state = state.with(LOWERED, shouldBeLoweredUpon(context.getWorld().getBlockState(context.getPos().down())));
         }

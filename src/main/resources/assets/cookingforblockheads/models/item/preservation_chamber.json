@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "cookingforblockheads:items/preservation_chamber"
+    "layer0": "cookingforblockheads:item/preservation_chamber"
   }
 }

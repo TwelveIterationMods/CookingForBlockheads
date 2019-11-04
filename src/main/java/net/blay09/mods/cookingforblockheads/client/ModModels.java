@@ -46,6 +46,7 @@ public class ModModels {
             fridgeDoor = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_door"));
             fridgeDoorLarge = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door"));
 
+            overrideWithDynamicModel(event, "block/cooking_table", ModBlocks.cookingTable);
             overrideWithDynamicModel(event, "block/cutting_board", ModBlocks.cuttingBoard);
 
             IModel toasterModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster"));

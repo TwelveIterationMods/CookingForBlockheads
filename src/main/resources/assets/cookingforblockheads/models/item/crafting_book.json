@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cookingforblockheads:items/crafting_book"
+    "layer0": "cookingforblockheads:item/crafting_book"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "cookingforblockheads:items/heating_unit"
+    "layer0": "cookingforblockheads:item/heating_unit"
   }
 }
