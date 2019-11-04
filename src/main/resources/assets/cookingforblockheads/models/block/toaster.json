@@ -2,6 +2,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
+		"particle": "cookingforblockheads:block/toaster_front",
 		"toaster_front": "cookingforblockheads:block/toaster_front",
 		"toaster_bottom": "cookingforblockheads:block/toaster_bottom",
 		"toaster_feet": "cookingforblockheads:block/toaster_feet",

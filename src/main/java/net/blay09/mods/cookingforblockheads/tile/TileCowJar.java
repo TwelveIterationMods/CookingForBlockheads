@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 
 public class TileCowJar extends TileMilkJar implements ITickableTileEntity {
 
@@ -10,6 +11,10 @@ public class TileCowJar extends TileMilkJar implements ITickableTileEntity {
 
     protected boolean isDirty;
     protected int ticksSinceUpdate;
+
+    public TileCowJar() {
+        super(ModTileEntities.cowJar);
+    }
 
     @Override
     public void tick() {

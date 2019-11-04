@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
+import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -46,7 +47,17 @@ public class ModModels {
             fridgeDoorLarge = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door"));
 
             overrideWithDynamicModel(event, "block/cutting_board", ModBlocks.cuttingBoard);
-            overrideWithDynamicModel(event, "block/toaster", ModBlocks.toaster);
+
+            IModel toasterModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster"));
+            IModel toasterActiveModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster_active"));
+            overrideWithDynamicModel(event, blockState -> {
+                if (blockState.get(ToasterBlock.ACTIVE)) {
+                    return toasterActiveModel;
+                } else {
+                    return toasterModel;
+                }
+            }, ModBlocks.toaster, null, null);
+
             overrideWithDynamicModel(event, "block/fruit_basket", ModBlocks.fruitBasket);
             overrideWithDynamicModel(event, "block/milk_jar", ModBlocks.milkJar);
             overrideWithDynamicModel(event, "block/milk_jar", ModBlocks.cowJar);
@@ -69,7 +80,12 @@ public class ModModels {
 
     private static void overrideWithDynamicModel(ModelBakeEvent event, String modelPath, Block block, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
         IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
-        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), model, parts, textureMapFunction);
+        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), it -> model, parts, textureMapFunction);
+        overrideModelIgnoreState(block, dynamicModel, event);
+    }
+
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Function<BlockState, IModel> modelFunction, Block block, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
+        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, parts, textureMapFunction);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 

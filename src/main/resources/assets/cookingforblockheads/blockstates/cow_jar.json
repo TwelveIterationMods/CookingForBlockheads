@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "cookingforblockheads:block/milk_jar_static" }
+    "": { "model": "cookingforblockheads:block/milk_jar" }
   }
 }

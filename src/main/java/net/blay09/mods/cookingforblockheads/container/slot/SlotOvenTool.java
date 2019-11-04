@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
-import net.blay09.mods.cookingforblockheads.client.ClientProxy;
+import net.blay09.mods.cookingforblockheads.client.ModSprites;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -24,7 +24,7 @@ public class SlotOvenTool extends SlotItemHandler {
     @Override
     @Nonnull
     public TextureAtlasSprite getBackgroundSprite() {
-        return ClientProxy.ovenToolIcons[iconIndex];
+        return ModSprites.ovenToolIcons[iconIndex];
     }
 
 }

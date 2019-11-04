@@ -5,8 +5,6 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.util.Direction;
 
 public class CabinetRenderer extends CounterRenderer {
-    public static IBakedModel[][] models;
-    public static IBakedModel[][] modelsFlipped;
 
     private static final float[] doorOriginsX = new float[]{
             (1 - 0.84375f) - 0 / 16f, // South
@@ -42,8 +40,8 @@ public class CabinetRenderer extends CounterRenderer {
         return 0.9f;
     }
 
-    @Override
+    /*@Override TODO fixme
     protected IBakedModel getDoorModel(Direction facing, DyeColor blockColor, boolean isFlipped) {
         return isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getId()] : models[facing.getHorizontalIndex()][blockColor.getId()];
-    }
+    }*/
 }

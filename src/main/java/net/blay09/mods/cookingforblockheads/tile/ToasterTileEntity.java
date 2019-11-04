@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.BlockState;
@@ -116,15 +117,12 @@ public class ToasterTileEntity extends TileEntity implements ITickableTileEntity
         this.active = active;
         if (active) {
             toastTicks = TOAST_TICKS;
-            world.addBlockEvent(pos, ModBlocks.toaster, 0, 0);
         } else {
             toastTicks = 0;
-            world.addBlockEvent(pos, ModBlocks.toaster, 1, 0);
         }
 
         BlockState state = world.getBlockState(pos);
-        world.addBlockEvent(pos, ModBlocks.toaster, 2, 0);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
+        world.setBlockState(pos, state.with(ToasterBlock.ACTIVE, active));
         markDirty();
     }
 

@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "cookingforblockheads:block/toaster" }
+    "": { "model": "cookingforblockheads:block/toaster_active" }
   }
 }

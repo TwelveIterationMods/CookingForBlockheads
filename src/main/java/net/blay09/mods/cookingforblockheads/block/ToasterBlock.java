@@ -32,10 +32,11 @@ public class ToasterBlock extends BlockKitchen {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     private static final VoxelShape SHAPE = Block.makeCuboidShape(4.4, 0, 4.4, 11.6, 6.4, 11.6);
-    private static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public ToasterBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.5f), registryName);
+        setDefaultState(getStateContainer().getBaseState().with(ACTIVE, false));
     }
 
     @Override

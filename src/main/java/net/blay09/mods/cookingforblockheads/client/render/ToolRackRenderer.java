@@ -18,10 +18,6 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
         }
 
         BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        if (state.getBlock() != ModBlocks.toolRack) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-            return;
-        }
-
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);

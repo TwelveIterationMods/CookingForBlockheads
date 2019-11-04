@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -13,11 +14,11 @@ import net.minecraft.util.Direction;
 
 public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
 
-    public static IBakedModel modelDoor;
-    public static IBakedModel modelDoorActive;
-
     @Override
     public void render(OvenTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+        IBakedModel modelDoor = ModModels.milkJarLiquid; // TODO fixme
+        IBakedModel modelDoorActive = ModModels.milkJarLiquid; // TODO fixme
+
         if (!tileEntity.hasWorld()) {
             return;
         }

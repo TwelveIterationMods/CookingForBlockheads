@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
+import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -14,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 public class MilkJarRenderer extends TileEntityRenderer<TileMilkJar> {
 
     protected static BlockRendererDispatcher blockRenderer;
-
-    public static IBakedModel modelMilkLiquid;
 
     @Override
     public void render(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -37,7 +36,7 @@ public class MilkJarRenderer extends TileEntityRenderer<TileMilkJar> {
             GlStateManager.translated(x, y + (BlockKitchen.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), z);
             GlStateManager.scalef(1f, tileEntity.getMilkAmount() / tileEntity.getMilkCapacity(), 1f);
             bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-            Minecraft.getInstance().getItemRenderer().renderModel(modelMilkLiquid, 0xFFFFFFFF);
+            Minecraft.getInstance().getItemRenderer().renderModel(ModModels.milkJarLiquid, 0xFFFFFFFF);
             GlStateManager.popMatrix();
 
             RenderHelper.enableStandardItemLighting();

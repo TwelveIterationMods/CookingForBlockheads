@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
@@ -158,6 +159,10 @@ public class TileMilkJar extends TileEntity {
 
     public TileMilkJar() {
         super(ModTileEntities.milkJar);
+    }
+
+    protected TileMilkJar(TileEntityType<? extends TileMilkJar> type) {
+        super(type);
     }
 
     public int fill(int amount, IFluidHandler.FluidAction action) {

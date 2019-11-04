@@ -16,16 +16,11 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 
 import java.util.List;
 
 public class ClientProxy extends CommonProxy {
-
-    public static final TextureAtlasSprite[] ovenToolIcons = new TextureAtlasSprite[4];
-
-    public ClientProxy() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
     public void registerModels() {
         /*ModelLoader.setCustomStateMapper(ModBlocks.fridge, new DefaultStateMapper() {
@@ -54,22 +49,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public List<ITextComponent> getItemTooltip(ItemStack itemStack, PlayerEntity player) {
         return itemStack.getTooltip(player, ITooltipFlag.TooltipFlags.NORMAL);
-    }
-
-    @SubscribeEvent
-    public void registerIconsPre(TextureStitchEvent.Pre event) {
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_bakeware"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_pot"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_saucepan"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_skillet"));
-    }
-
-    @SubscribeEvent
-    public void registerIconsPost(TextureStitchEvent.Post event) {
-        ovenToolIcons[0] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_bakeware"));
-        ovenToolIcons[1] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_pot"));
-        ovenToolIcons[2] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_saucepan"));
-        ovenToolIcons[3] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "items/slot_skillet"));
     }
 
 }

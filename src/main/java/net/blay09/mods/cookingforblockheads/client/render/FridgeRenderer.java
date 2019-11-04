@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
+import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.client.model.FridgeDoorModel;
 import net.blay09.mods.cookingforblockheads.client.model.FridgeLargeDoorModel;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
@@ -20,13 +21,6 @@ import net.minecraftforge.items.IItemHandler;
 
 public class FridgeRenderer extends TileEntityRenderer<TileFridge> {
 
-    public static IBakedModel modelDoor;
-    public static IBakedModel modelDoorLarge;
-    public static IBakedModel modelDoorIceUnit;
-    public static IBakedModel modelDoorIceUnitLarge;
-    public static IBakedModel modelHandle;
-    public static IBakedModel modelHandleLarge;
-
     private final FridgeDoorModel modelFridgeDoor = new FridgeDoorModel();
     private final FridgeLargeDoorModel modelFridgeLargeDoor = new FridgeLargeDoorModel();
     private final ResourceLocation textureFridgeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_door.png");
@@ -34,6 +28,13 @@ public class FridgeRenderer extends TileEntityRenderer<TileFridge> {
 
     @Override
     public void render(TileFridge tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+        IBakedModel modelDoor = ModModels.milkJarLiquid; // TODO fixme
+        IBakedModel modelDoorLarge = ModModels.milkJarLiquid; // TODO fixme
+        IBakedModel modelDoorIceUnit = ModModels.milkJarLiquid; // TODO fixme
+        IBakedModel modelDoorIceUnitLarge = ModModels.milkJarLiquid; // TODO fixme
+        IBakedModel modelHandle = ModModels.milkJarLiquid; // TODO fixme
+        IBakedModel modelHandleLarge = ModModels.milkJarLiquid; // TODO fixme
+
         if (!tileEntity.hasWorld()) {
             return;
         }

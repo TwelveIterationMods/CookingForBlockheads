@@ -103,6 +103,8 @@ public class CookingForBlockheads {
         CapabilityKitchenConnector.register();
         CapabilityKitchenItemProvider.register();
         CapabilityKitchenSmeltingProvider.register();
+
+        initializeAddons();
     }
 
     private void setupClient(FMLClientSetupEvent event) {
@@ -125,7 +127,7 @@ public class CookingForBlockheads {
         CookingRegistry.initFoodRegistry(recipeManager);
     }
 
-    public void postInit() {
+    public void initializeAddons() {
         new VanillaAddon();
 
         if (ModList.get().isLoaded(Compat.PAMS_HARVESTCRAFT)) {

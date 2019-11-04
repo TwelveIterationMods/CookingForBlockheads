@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.TileSink;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
@@ -13,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 
 public class SinkRenderer extends TileEntityRenderer<TileSink> {
 
-    public static IBakedModel modelSinkLiquid;
     private ItemStack fish;
 
     @Override
@@ -39,7 +39,7 @@ public class SinkRenderer extends TileEntityRenderer<TileSink> {
             GlStateManager.scalef(1f, filledPercentage, 1f);
             GlStateManager.translatef(0f, -0.5f, 0f);
             bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-            Minecraft.getInstance().getItemRenderer().renderModel(modelSinkLiquid, 0xFFFFFFFF);
+            Minecraft.getInstance().getItemRenderer().renderModel(ModModels.sinkLiquid, 0xFFFFFFFF);
             GlStateManager.popMatrix();
         }
 

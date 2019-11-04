@@ -5,6 +5,7 @@
 		"milk_glass": "cookingforblockheads:block/milk_glass",
 		"particle": "cookingforblockheads:block/milk_glass",
 		"milk_lid": "cookingforblockheads:block/milk_lid",
+		"milk": "cookingforblockheads:block/milk",
 		"milk_glass_top": "cookingforblockheads:block/milk_glass_top"
 	},
 	"elements": [

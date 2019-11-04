@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -14,9 +15,6 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.items.IItemHandler;
 
 public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
-
-    public static IBakedModel[][] models;
-    public static IBakedModel[][] modelsFlipped;
 
     private static final float[] doorOriginsX = new float[]{
             1 - 0.84375f,
@@ -49,7 +47,8 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
     }
 
     protected IBakedModel getDoorModel(Direction facing, DyeColor blockColor, boolean isFlipped) {
-        return isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getId()] : models[facing.getHorizontalIndex()][blockColor.getId()];
+        return ModModels.milkJarLiquid; // TODO fixme
+        //return isFlipped ? modelsFlipped[facing.getHorizontalIndex()][blockColor.getId()] : models[facing.getHorizontalIndex()][blockColor.getId()];
     }
 
     @Override

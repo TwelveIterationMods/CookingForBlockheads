@@ -34,15 +34,15 @@ public class CachedDynamicModel implements IBakedModel {
     private final Map<String, IBakedModel> cache = Maps.newHashMap();
 
     private final ModelBakery modelBakery;
-    private final IModel baseModel;
+    private final Function<BlockState, IModel> baseModelFunction;
     private final List<Pair<Predicate<BlockState>, IBakedModel>> parts;
     private final Function<BlockState, ImmutableMap<String, String>> textureMapFunction;
 
     private TextureAtlasSprite particleTexture;
 
-    public CachedDynamicModel(ModelBakery modelBakery, IModel baseModel, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
+    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, IModel> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
         this.modelBakery = modelBakery;
-        this.baseModel = baseModel;
+        this.baseModelFunction = baseModelFunction;
         this.parts = parts;
         this.textureMapFunction = textureMapFunction;
     }
@@ -65,6 +65,7 @@ public class CachedDynamicModel implements IBakedModel {
                 }
 
                 BasicState modelState = new BasicState(transform, false);
+                IModel baseModel = baseModelFunction.apply(state);
                 IModel retexturedBaseModel = textureMapFunction != null ? baseModel.retexture(textureMapFunction.apply(state)) : baseModel;
                 bakedModel = retexturedBaseModel.bake(modelBakery, ModelLoader.defaultTextureGetter(), modelState, DefaultVertexFormats.BLOCK);
                 cache.put(stateString, bakedModel);
