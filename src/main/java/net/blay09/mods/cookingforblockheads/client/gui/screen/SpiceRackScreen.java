@@ -20,6 +20,13 @@ public class SpiceRackScreen extends ContainerScreen<SpiceRackContainer> {
     }
 
     @Override
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        renderBackground();
+        super.render(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         Minecraft minecraft = getMinecraft();
         minecraft.fontRenderer.drawString(title.getFormattedText(), 8, 6, 4210752);

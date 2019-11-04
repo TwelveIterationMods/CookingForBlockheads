@@ -16,7 +16,7 @@ public class ModTileEntities {
 
     public static TileEntityType<CookingTableTileEntity> cookingTable;
     public static TileEntityType<OvenTileEntity> oven;
-    public static TileEntityType<TileFridge> fridge;
+    public static TileEntityType<FridgeTileEntity> fridge;
     public static TileEntityType<TileSink> sink;
     public static TileEntityType<ToolRackTileEntity> toolRack;
     public static TileEntityType<ToasterTileEntity> toaster;
@@ -33,7 +33,7 @@ public class ModTileEntities {
         registry.registerAll(
                 cookingTable = build(CookingTableTileEntity::new, "cooking_table", ModBlocks.cookingTable),
                 oven = build(OvenTileEntity::new, ModBlocks.oven),
-                fridge = build(TileFridge::new, "fridge", ModBlocks.fridge),
+                fridge = build(FridgeTileEntity::new, "fridge", ModBlocks.fridge),
                 sink = build(TileSink::new, "sink", ModBlocks.sink),
                 toolRack = build(ToolRackTileEntity::new, ModBlocks.toolRack),
                 toaster = build(ToasterTileEntity::new, ModBlocks.toaster),

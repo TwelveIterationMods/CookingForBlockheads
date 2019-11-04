@@ -33,6 +33,7 @@ import java.util.Random;
 public class OvenBlock extends BlockKitchen {
 
     public static BooleanProperty POWERED = BooleanProperty.create("powered");
+    public static BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public static final String name = "oven";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -40,11 +41,12 @@ public class OvenBlock extends BlockKitchen {
 
     public OvenBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), registryName);
+        setDefaultState(getStateContainer().getBaseState().with(POWERED, false).with(ACTIVE, false));
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED);
+        builder.add(FACING, POWERED, ACTIVE);
     }
 
     @Override

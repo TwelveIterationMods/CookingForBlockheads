@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.container;
 
 import invtweaks.api.container.ChestContainer;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
+import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -14,10 +14,10 @@ import net.minecraftforge.items.SlotItemHandler;
 @ChestContainer
 public class FridgeContainer extends Container implements IContainerWithDoor {
 
-    private final TileFridge tileFridge;
+    private final FridgeTileEntity tileFridge;
     private final int numRows;
 
-    public FridgeContainer(int windowId, PlayerInventory playerInventory, TileFridge tileFridge) {
+    public FridgeContainer(int windowId, PlayerInventory playerInventory, FridgeTileEntity tileFridge) {
         super(ModContainers.fridge, windowId);
         this.tileFridge = tileFridge;
         IItemHandler itemHandler = tileFridge.getCombinedItemHandler();

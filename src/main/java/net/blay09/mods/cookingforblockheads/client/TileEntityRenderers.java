@@ -19,7 +19,7 @@ public class TileEntityRenderers {
         ClientRegistry.bindTileEntitySpecialRenderer(ToasterTileEntity.class, new ToasterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(OvenTileEntity.class, new OvenRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFridge.class, new FridgeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(FridgeTileEntity.class, new FridgeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CounterTileEntity.class, new CounterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CabinetTileEntity.class, new CabinetRenderer());

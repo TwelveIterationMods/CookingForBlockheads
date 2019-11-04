@@ -344,9 +344,9 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
 
     public void setHasPowerUpgrade(boolean hasPowerUpgrade) {
         this.hasPowerUpgrade = hasPowerUpgrade;
-        markDirty();
         BlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
+        world.setBlockState(pos, state.with(OvenBlock.POWERED, hasPowerUpgrade));
+        markDirty();
     }
 
     public boolean isBurning() {

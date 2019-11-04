@@ -64,10 +64,14 @@ public class ModModels {
             overrideWithDynamicModel(event, ModBlocks.cowJar, "block/milk_jar");
             overrideWithDynamicModel(event, ModBlocks.oven, "block/oven", null, state -> {
                 ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+                String normalTexture = "cookingforblockheads:block/oven_front";
+                String activeTexture = "cookingforblockheads:block/oven_front_active";
                 if (state.get(OvenBlock.POWERED)) {
-                    builder.put("ovenfront", "oven_front_powered");
-                    builder.put("ovenfront_active", "oven_front_powered_active");
+                    normalTexture = "cookingforblockheads:block/oven_front_powered";
+                    activeTexture = "cookingforblockheads:block/oven_front_powered_active";
                 }
+
+                builder.put("ovenfront", state.get(OvenBlock.ACTIVE) ? activeTexture : normalTexture);
                 return builder.build();
             });
         } catch (Exception e) {

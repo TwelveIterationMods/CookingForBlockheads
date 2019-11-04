@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.item;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
+import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -41,12 +41,12 @@ public class ItemIceUnit extends Item {
         }
 
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileFridge && !((TileFridge) tileEntity).getBaseFridge().hasIceUpgrade) {
+        if (tileEntity instanceof FridgeTileEntity && !((FridgeTileEntity) tileEntity).getBaseFridge().hasIceUpgrade) {
             if (!player.abilities.isCreativeMode) {
                 player.getHeldItem(context.getHand()).shrink(1);
             }
 
-            ((TileFridge) tileEntity).getBaseFridge().setHasIceUpgrade(true);
+            ((FridgeTileEntity) tileEntity).getBaseFridge().setHasIceUpgrade(true);
             if (!world.isRemote) {
                 NetworkHandler.sendToAllTracking(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.FRIDGE_UPGRADE), world, pos);
             }

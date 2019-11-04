@@ -117,9 +117,13 @@ public class ToasterTileEntity extends TileEntity implements ITickableTileEntity
         this.active = active;
         if (active) {
             toastTicks = TOAST_TICKS;
+            world.addBlockEvent(pos, ModBlocks.toaster, 0, 0);
         } else {
             toastTicks = 0;
+            world.addBlockEvent(pos, ModBlocks.toaster, 1, 0);
         }
+
+        world.addBlockEvent(pos, ModBlocks.toaster, 2, 0);
 
         BlockState state = world.getBlockState(pos);
         world.setBlockState(pos, state.with(ToasterBlock.ACTIVE, active));

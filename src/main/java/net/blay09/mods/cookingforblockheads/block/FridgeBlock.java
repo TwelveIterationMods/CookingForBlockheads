@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
+import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -67,7 +67,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileFridge();
+        return new FridgeTileEntity();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
             return true;
         }
 
-        TileFridge tileFridge = (TileFridge) world.getTileEntity(pos);
+        FridgeTileEntity tileFridge = (FridgeTileEntity) world.getTileEntity(pos);
         Direction frontFace = state.get(FACING);
         if (rayTraceResult.getFace() == frontFace) {
             if (tileFridge != null) {
@@ -128,12 +128,12 @@ public class FridgeBlock extends BlockDyeableKitchen {
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileFridge) {
-            if (((TileFridge) tileEntity).hasIceUpgrade()) {
+        if (tileEntity instanceof FridgeTileEntity) {
+            if (((FridgeTileEntity) tileEntity).hasIceUpgrade()) {
                 ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
             }
 
-            if (((TileFridge) tileEntity).hasPreservationUpgrade()) {
+            if (((FridgeTileEntity) tileEntity).hasPreservationUpgrade()) {
                 ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
             }
         }
@@ -144,14 +144,14 @@ public class FridgeBlock extends BlockDyeableKitchen {
     @Override
     public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileFridge) {
-            TileFridge tileFridge = (TileFridge) tileEntity;
+        if (tileEntity instanceof FridgeTileEntity) {
+            FridgeTileEntity tileFridge = (FridgeTileEntity) tileEntity;
             if (tileFridge.getFridgeColor() == color) {
                 return false;
             }
 
             tileFridge.setFridgeColor(color);
-            TileFridge neighbourFridge = tileFridge.findNeighbourFridge();
+            FridgeTileEntity neighbourFridge = tileFridge.findNeighbourFridge();
             if (neighbourFridge != null) {
                 neighbourFridge.setFridgeColor(color);
             }

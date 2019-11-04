@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,19 +16,26 @@ public class ModSprites {
 
     @SubscribeEvent
     public static void registerIconsPre(TextureStitchEvent.Pre event) {
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_bakeware"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_pot"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_saucepan"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_skillet"));
-        event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milk"));
+        if (event.getMap() == Minecraft.getInstance().getTextureMap()) {
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_bakeware"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_pot"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_saucepan"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_skillet"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/milk"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_active"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_powered"));
+            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_powered_active"));
+        }
     }
 
     @SubscribeEvent
     public static void registerIconsPost(TextureStitchEvent.Post event) {
-        ovenToolIcons[0] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_bakeware"));
-        ovenToolIcons[1] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_pot"));
-        ovenToolIcons[2] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_saucepan"));
-        ovenToolIcons[3] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_skillet"));
+        if (event.getMap() == Minecraft.getInstance().getTextureMap()) {
+            ovenToolIcons[0] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_bakeware"));
+            ovenToolIcons[1] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_pot"));
+            ovenToolIcons[2] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_saucepan"));
+            ovenToolIcons[3] = event.getMap().getSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_skillet"));
+        }
     }
 
 }

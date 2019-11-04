@@ -6,7 +6,7 @@ import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.client.model.FridgeDoorModel;
 import net.blay09.mods.cookingforblockheads.client.model.FridgeLargeDoorModel;
-import net.blay09.mods.cookingforblockheads.tile.TileFridge;
+import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
 
-public class FridgeRenderer extends TileEntityRenderer<TileFridge> {
+public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
 
     private final FridgeDoorModel modelFridgeDoor = new FridgeDoorModel();
     private final FridgeLargeDoorModel modelFridgeLargeDoor = new FridgeLargeDoorModel();
@@ -27,7 +27,7 @@ public class FridgeRenderer extends TileEntityRenderer<TileFridge> {
     private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_large_door.png");
 
     @Override
-    public void render(TileFridge tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(FridgeTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         IBakedModel modelDoor = ModModels.milkJarLiquid; // TODO fixme
         IBakedModel modelDoorLarge = ModModels.milkJarLiquid; // TODO fixme
         IBakedModel modelDoorIceUnit = ModModels.milkJarLiquid; // TODO fixme

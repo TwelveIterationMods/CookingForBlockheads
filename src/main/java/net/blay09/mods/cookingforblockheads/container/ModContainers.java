@@ -34,7 +34,7 @@ public class ModContainers {
         registry.register(fridge = register("fridge", ((windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
             TileEntity tileEntity = inv.player.world.getTileEntity(pos);
-            return new FridgeContainer(windowId, inv, (TileFridge) Objects.requireNonNull(tileEntity));
+            return new FridgeContainer(windowId, inv, (FridgeTileEntity) Objects.requireNonNull(tileEntity));
         })));
 
         registry.register(fruitBasket = register("fruit_basket", ((windowId, inv, data) -> {

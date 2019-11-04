@@ -8,7 +8,6 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.container.FridgeContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -43,7 +42,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileFridge extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public class FridgeTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(27) {
         @Override
@@ -108,7 +107,7 @@ public class TileFridge extends TileEntity implements ITickableTileEntity, IName
     public boolean hasIceUpgrade;
     public boolean hasPreservationUpgrade;
 
-    public TileFridge() {
+    public FridgeTileEntity() {
         super(ModTileEntities.fridge);
         doorAnimator.setOpenRadius(2);
         doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen);
@@ -195,23 +194,23 @@ public class TileFridge extends TileEntity implements ITickableTileEntity, IName
     }
 
     @Nullable
-    public TileFridge findNeighbourFridge() {
+    public FridgeTileEntity findNeighbourFridge() {
         if (world.getBlockState(pos.up()).getBlock() instanceof FridgeBlock) {
-            return (TileFridge) world.getTileEntity(pos.up());
+            return (FridgeTileEntity) world.getTileEntity(pos.up());
         } else if (world.getBlockState(pos.down()).getBlock() instanceof FridgeBlock) {
-            return (TileFridge) world.getTileEntity(pos.down());
+            return (FridgeTileEntity) world.getTileEntity(pos.down());
         }
 
         return null;
     }
 
-    public TileFridge getBaseFridge() {
+    public FridgeTileEntity getBaseFridge() {
         if (!hasWorld()) {
             return this;
         }
 
         if (world.getBlockState(pos.down()).getBlock() instanceof FridgeBlock) {
-            TileFridge baseFridge = (TileFridge) world.getTileEntity(pos.down());
+            FridgeTileEntity baseFridge = (FridgeTileEntity) world.getTileEntity(pos.down());
             if (baseFridge != null) {
                 return baseFridge;
             }
@@ -252,8 +251,8 @@ public class TileFridge extends TileEntity implements ITickableTileEntity, IName
     }
 
     public IItemHandler getCombinedItemHandler() {
-        TileFridge baseFridge = getBaseFridge();
-        TileFridge neighbourFridge;
+        FridgeTileEntity baseFridge = getBaseFridge();
+        FridgeTileEntity neighbourFridge;
         if (baseFridge == this) {
             neighbourFridge = findNeighbourFridge();
         } else {
@@ -280,7 +279,7 @@ public class TileFridge extends TileEntity implements ITickableTileEntity, IName
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ".fridge");
+        return new TranslationTextComponent("container.cookingforblockheads.fridge");
     }
 
     @Nullable
