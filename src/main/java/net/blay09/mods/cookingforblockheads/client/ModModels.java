@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
+import net.blay09.mods.cookingforblockheads.block.SinkBlock;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -46,23 +47,22 @@ public class ModModels {
             fridgeDoor = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_door"));
             fridgeDoorLarge = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door"));
 
-            overrideWithDynamicModel(event, "block/cooking_table", ModBlocks.cookingTable);
-            overrideWithDynamicModel(event, "block/cutting_board", ModBlocks.cuttingBoard);
+            overrideWithDynamicModel(event, ModBlocks.cookingTable, "block/cooking_table");
+
+            IModel sinkModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink"));
+            IModel sinkFlippedModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_flipped"));
+            overrideWithDynamicModel(event, ModBlocks.sink, it -> it.get(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel);
+
+            overrideWithDynamicModel(event, ModBlocks.cuttingBoard, "block/cutting_board");
 
             IModel toasterModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster"));
             IModel toasterActiveModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster_active"));
-            overrideWithDynamicModel(event, blockState -> {
-                if (blockState.get(ToasterBlock.ACTIVE)) {
-                    return toasterActiveModel;
-                } else {
-                    return toasterModel;
-                }
-            }, ModBlocks.toaster, null, null);
+            overrideWithDynamicModel(event, ModBlocks.toaster, it -> it.get(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel);
 
-            overrideWithDynamicModel(event, "block/fruit_basket", ModBlocks.fruitBasket);
-            overrideWithDynamicModel(event, "block/milk_jar", ModBlocks.milkJar);
-            overrideWithDynamicModel(event, "block/milk_jar", ModBlocks.cowJar);
-            overrideWithDynamicModel(event, "block/oven", ModBlocks.oven, null, state -> {
+            overrideWithDynamicModel(event, ModBlocks.fruitBasket, "block/fruit_basket");
+            overrideWithDynamicModel(event, ModBlocks.milkJar, "block/milk_jar");
+            overrideWithDynamicModel(event, ModBlocks.cowJar, "block/milk_jar");
+            overrideWithDynamicModel(event, ModBlocks.oven, "block/oven", null, state -> {
                 ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
                 if (state.get(OvenBlock.POWERED)) {
                     builder.put("ovenfront", "oven_front_powered");
@@ -75,17 +75,22 @@ public class ModModels {
         }
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, String modelPath, Block block) throws Exception {
-        overrideWithDynamicModel(event, modelPath, block, null, null);
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath) throws Exception {
+        overrideWithDynamicModel(event, block, modelPath, null, null);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, String modelPath, Block block, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
         IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
         CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), it -> model, parts, textureMapFunction);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, Function<BlockState, IModel> modelFunction, Block block, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IModel> modelFunction) throws Exception {
+        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, null, null);
+        overrideModelIgnoreState(block, dynamicModel, event);
+    }
+
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IModel> modelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
         CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, parts, textureMapFunction);
         overrideModelIgnoreState(block, dynamicModel, event);
     }

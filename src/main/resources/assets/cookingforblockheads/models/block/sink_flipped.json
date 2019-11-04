@@ -1,5 +1,15 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"parent": "block/block",
+	"textures": {
+		"countertop": "minecraft:block/polished_andesite",
+		"texture": "minecraft:block/terracotta",
+		"particle": "minecraft:block/terracotta",
+		"foot": "minecraft:block/black_terracotta",
+		"backsplash": "minecraft:block/black_terracotta",
+		"metal": "cookingforblockheads:block/sink_metal",
+		"handle": "cookingforblockheads:block/handle"
+	},
 	"elements": [
 		{
 			"__comment": "Backsplash",

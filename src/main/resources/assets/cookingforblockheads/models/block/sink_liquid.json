@@ -1,8 +1,8 @@
 {
   "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Liquid)",
   "textures": {
-    "particle": "blocks/water_still",
-    "milk": "blocks/water_still"
+    "particle": "block/water_still",
+    "milk": "block/water_still"
   },
   "elements": [
     {

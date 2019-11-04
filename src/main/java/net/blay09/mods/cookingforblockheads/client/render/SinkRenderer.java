@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import org.lwjgl.opengl.GL11;
@@ -37,9 +38,9 @@ public class SinkRenderer extends TileEntityRenderer<TileSink> {
             GlStateManager.translated(x, y + 0.5f, z);
             float filledPercentage = tileEntity.getWaterAmount() / (float) tileEntity.getWaterCapacity();
             GlStateManager.scalef(1f, filledPercentage, 1f);
-            GlStateManager.translatef(0f, -0.5f, 0f);
+            GlStateManager.translatef(0f, -0.51f, 0f);
             bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-            Minecraft.getInstance().getItemRenderer().renderModel(ModModels.sinkLiquid, 0xFFFFFFFF);
+            Minecraft.getInstance().getItemRenderer().renderModel(ModModels.sinkLiquid, Fluids.WATER.getAttributes().getColor());
             GlStateManager.popMatrix();
         }
 
