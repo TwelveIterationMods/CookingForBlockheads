@@ -4,7 +4,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.CabinetTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.DyeColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -19,10 +18,10 @@ public class CabinetBlock extends KitchenCounterBlock {
     public static final String name = "cabinet";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final VoxelShape BOUNDING_BOX_NORTH = Block.makeCuboidShape(0f, 0.125f, 0.125f, 1f, 1f, 1);
-    private static final VoxelShape BOUNDING_BOX_EAST = Block.makeCuboidShape(0f, 0.125f, 0, 0.875f, 1f, 1);
-    private static final VoxelShape BOUNDING_BOX_WEST = Block.makeCuboidShape(0.125f, 0.125f, 0, 1f, 1f, 1);
-    private static final VoxelShape BOUNDING_BOX_SOUTH = Block.makeCuboidShape(0f, 0.125f, 0f, 1f, 1f, 0.875f);
+    private static final VoxelShape BOUNDING_BOX_NORTH = Block.makeCuboidShape(0, 2, 2, 16, 16, 16);
+    private static final VoxelShape BOUNDING_BOX_EAST = Block.makeCuboidShape(0, 2, 0, 14, 16, 16);
+    private static final VoxelShape BOUNDING_BOX_WEST = Block.makeCuboidShape(2, 2, 0, 16, 16, 16);
+    private static final VoxelShape BOUNDING_BOX_SOUTH = Block.makeCuboidShape(0, 2, 0, 16, 16, 14);
 
     public CabinetBlock() {
         super(registryName);

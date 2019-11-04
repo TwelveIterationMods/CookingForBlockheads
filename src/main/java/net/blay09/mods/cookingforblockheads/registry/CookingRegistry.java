@@ -60,6 +60,11 @@ public class CookingRegistry {
 
         // Crafting Recipes of Food Items
         for (IRecipe recipe : recipeManager.getRecipes()) {
+            // Skip smoking and campfire cooking to prevent duplicate recipes
+            if (recipe.getType() == IRecipeType.SMOKING || recipe.getType() == IRecipeType.CAMPFIRE_COOKING) {
+                continue;
+            }
+
             ItemStack output = recipe.getRecipeOutput();
             if (!output.isEmpty()) {
                 if (output.getItem().isFood()) {

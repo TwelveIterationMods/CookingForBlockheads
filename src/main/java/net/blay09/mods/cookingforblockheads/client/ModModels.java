@@ -62,6 +62,10 @@ public class ModModels {
             overrideWithDynamicModel(event, ModBlocks.fruitBasket, "block/fruit_basket");
             overrideWithDynamicModel(event, ModBlocks.milkJar, "block/milk_jar");
             overrideWithDynamicModel(event, ModBlocks.cowJar, "block/milk_jar");
+            overrideWithDynamicModel(event, ModBlocks.fridge, "block/fridge");
+            overrideWithDynamicModel(event, ModBlocks.counter, "block/counter");
+            overrideWithDynamicModel(event, ModBlocks.corner, "block/corner");
+            overrideWithDynamicModel(event, ModBlocks.cabinet, "block/cabinet");
             overrideWithDynamicModel(event, ModBlocks.oven, "block/oven", null, state -> {
                 ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
                 String normalTexture = "cookingforblockheads:block/oven_front";

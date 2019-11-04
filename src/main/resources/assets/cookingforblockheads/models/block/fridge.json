@@ -1,11 +1,11 @@
 {
   "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Static)",
   "textures": {
-    "particle": "cookingforblockheads:blocks/fridge_side",
-    "fridge_side": "cookingforblockheads:blocks/fridge_side",
-    "fridge_top": "cookingforblockheads:blocks/fridge_top",
-    "fridge_back": "cookingforblockheads:blocks/fridge_back",
-    "fridge_inside": "cookingforblockheads:blocks/fridge_inside"
+    "particle": "cookingforblockheads:block/fridge_side",
+    "fridge_side": "cookingforblockheads:block/fridge_side",
+    "fridge_top": "cookingforblockheads:block/fridge_top",
+    "fridge_back": "cookingforblockheads:block/fridge_back",
+    "fridge_inside": "cookingforblockheads:block/fridge_inside"
   },
   "elements": [
     {

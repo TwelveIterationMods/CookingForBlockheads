@@ -7,7 +7,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -28,10 +27,10 @@ public class KitchenCornerBlock extends BlockDyeableKitchen {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     private static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
-            Block.makeCuboidShape(0, 0, 0, 0.96875, 0.9375, 0.96875),
-            Block.makeCuboidShape(0.03125, 0, 0.03125, 1, 0.9375, 1),
-            Block.makeCuboidShape(0, 0, 0.03125, 0.96875, 0.9375, 1),
-            Block.makeCuboidShape(0.03125, 0, 0, 1, 0.9375, 0.96875)
+            Block.makeCuboidShape(0, 0, 0, 15.5, 15, 15.5),
+            Block.makeCuboidShape(0.5, 0, 0.5, 16, 15, 16),
+            Block.makeCuboidShape(0, 0, 0.5, 15.5, 15, 16),
+            Block.makeCuboidShape(0.5, 0, 0, 16, 15, 15.5)
     };
 
     public KitchenCornerBlock() {
