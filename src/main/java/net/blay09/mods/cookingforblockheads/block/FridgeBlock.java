@@ -65,20 +65,6 @@ public class FridgeBlock extends BlockDyeableKitchen {
     }
 
     @Override
-    public boolean isNormalCube(BlockState p_220081_1_, IBlockReader p_220081_2_, BlockPos p_220081_3_) {
-        return false;
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        if (state.get(MODEL_TYPE) == FridgeModelType.INVISIBLE) {
-            return BlockRenderType.INVISIBLE;
-        }
-
-        return super.getRenderType(state);
-    }
-
-    @Override
     public boolean canRenderInLayer(BlockState state, BlockRenderLayer layer) {
         return state.get(MODEL_TYPE) != FridgeModelType.INVISIBLE && (layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT);
     }
@@ -171,6 +157,18 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
             if (((FridgeTileEntity) tileEntity).hasPreservationUpgrade()) {
                 ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            }
+        }
+
+        if(newState.getBlock() != ModBlocks.fridge) {
+            BlockPos posAbove = pos.up();
+            BlockState stateAbove = world.getBlockState(posAbove);
+            BlockPos posBelow = pos.down();
+            BlockState stateBelow = world.getBlockState(posBelow);
+            if(stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.INVISIBLE) {
+                world.setBlockState(posAbove, stateAbove.with(MODEL_TYPE, FridgeModelType.SMALL), 3);
+            } else if(stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.LARGE) {
+                world.setBlockState(posBelow, stateBelow.with(MODEL_TYPE, FridgeModelType.SMALL), 3);
             }
         }
 
