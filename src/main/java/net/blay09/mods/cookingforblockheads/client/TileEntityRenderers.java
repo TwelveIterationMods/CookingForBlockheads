@@ -23,7 +23,7 @@ public class TileEntityRenderers {
         ClientRegistry.bindTileEntitySpecialRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CounterTileEntity.class, new CounterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CabinetTileEntity.class, new CabinetRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileSink.class, new SinkRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(SinkTileEntity.class, new SinkRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(FruitBasketTileEntity.class, new FruitBasketRenderer());
     }
 

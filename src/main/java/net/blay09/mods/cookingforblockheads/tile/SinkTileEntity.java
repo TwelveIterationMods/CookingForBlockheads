@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileSink extends TileEntity implements IDyeableKitchen {
+public class SinkTileEntity extends TileEntity implements IDyeableKitchen {
 
     private static class WaterTank extends FluidTank {
 
@@ -65,15 +65,6 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
             }
 
             return super.getCapacity();
-        }
-
-        @Override
-        public int fill(FluidStack resource, FluidAction action) {
-            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get() || resource.getFluid() != Fluids.WATER) {
-                return resource.getAmount();
-            }
-
-            return super.fill(resource, action);
         }
 
         @Override
@@ -170,7 +161,7 @@ public class TileSink extends TileEntity implements IDyeableKitchen {
 
     private DyeColor color = DyeColor.WHITE;
 
-    public TileSink() {
+    public SinkTileEntity() {
         super(ModTileEntities.sink);
     }
 

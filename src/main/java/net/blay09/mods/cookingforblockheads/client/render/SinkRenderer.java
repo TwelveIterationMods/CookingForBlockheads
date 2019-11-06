@@ -2,10 +2,9 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
-import net.blay09.mods.cookingforblockheads.tile.TileSink;
+import net.blay09.mods.cookingforblockheads.tile.SinkTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.fluid.Fluids;
@@ -13,12 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import org.lwjgl.opengl.GL11;
 
-public class SinkRenderer extends TileEntityRenderer<TileSink> {
+public class SinkRenderer extends TileEntityRenderer<SinkTileEntity> {
 
     private ItemStack fish;
 
     @Override
-    public void render(TileSink tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(SinkTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }

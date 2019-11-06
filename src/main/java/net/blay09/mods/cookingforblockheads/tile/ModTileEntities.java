@@ -17,7 +17,7 @@ public class ModTileEntities {
     public static TileEntityType<CookingTableTileEntity> cookingTable;
     public static TileEntityType<OvenTileEntity> oven;
     public static TileEntityType<FridgeTileEntity> fridge;
-    public static TileEntityType<TileSink> sink;
+    public static TileEntityType<SinkTileEntity> sink;
     public static TileEntityType<ToolRackTileEntity> toolRack;
     public static TileEntityType<ToasterTileEntity> toaster;
     public static TileEntityType<TileMilkJar> milkJar;
@@ -34,7 +34,7 @@ public class ModTileEntities {
                 cookingTable = build(CookingTableTileEntity::new, "cooking_table", ModBlocks.cookingTable),
                 oven = build(OvenTileEntity::new, ModBlocks.oven),
                 fridge = build(FridgeTileEntity::new, "fridge", ModBlocks.fridge),
-                sink = build(TileSink::new, "sink", ModBlocks.sink),
+                sink = build(SinkTileEntity::new, "sink", ModBlocks.sink),
                 toolRack = build(ToolRackTileEntity::new, ModBlocks.toolRack),
                 toaster = build(ToasterTileEntity::new, ModBlocks.toaster),
                 milkJar = build(TileMilkJar::new, ModBlocks.milkJar),

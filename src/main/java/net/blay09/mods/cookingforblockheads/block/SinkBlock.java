@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.tile.TileSink;
+import net.blay09.mods.cookingforblockheads.tile.SinkTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -141,14 +141,14 @@ public class SinkBlock extends BlockDyeableKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileSink();
+        return new SinkTileEntity();
     }
 
     @Override
     public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileSink) {
-            TileSink tileSink = (TileSink) tileEntity;
+        if (tileEntity instanceof SinkTileEntity) {
+            SinkTileEntity tileSink = (SinkTileEntity) tileEntity;
             if (tileSink.getDyedColor() == color) {
                 return false;
             }
