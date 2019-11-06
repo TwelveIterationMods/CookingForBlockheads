@@ -36,6 +36,8 @@ public class ModModels {
     public static IBakedModel fridgeDoorLarge;
     public static IBakedModel[] counterDoors;
     public static IBakedModel[] counterDoorsFlipped;
+    public static IBakedModel[] cabinetDoors;
+    public static IBakedModel[] cabinetDoorsFlipped;
 
     @SubscribeEvent
     public static void onModelBake(ModelBakeEvent event) {
@@ -53,6 +55,13 @@ public class ModModels {
             for (DyeColor color : colors) {
                 counterDoors[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"));
                 counterDoorsFlipped[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door_flipped"));
+            }
+
+            cabinetDoors = new IBakedModel[colors.length];
+            cabinetDoorsFlipped = new IBakedModel[colors.length];
+            for (DyeColor color : colors) {
+                cabinetDoors[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door"));
+                cabinetDoorsFlipped[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door_flipped"));
             }
 
             overrideWithDynamicModel(event, ModBlocks.cookingTable, "block/cooking_table");
