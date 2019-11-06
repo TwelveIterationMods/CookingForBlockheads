@@ -6,16 +6,21 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.hooks.BasicEventHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class InventoryCraftBook extends CraftingInventory {
+public class InventoryCraftBook extends CraftingInventory implements IRecipeHolder {
+
+    private IRecipe<?> recipeUsed;
 
     public InventoryCraftBook(Container container) {
         super(container, 3, 3);
@@ -99,9 +104,20 @@ public class InventoryCraftBook extends CraftingInventory {
     }
 
     private void fireEventsAndHandleAchievements(PlayerEntity player, ItemStack result) {
-        // TODO FMLCommonHandler.instance().firePlayerCraftingEvent(player, result, this);
         result.onCrafting(player.world, player, 1);
+        BasicEventHooks.firePlayerCraftingEvent(player, result, this);
+
+        this.onCrafting(player);
     }
 
+    @Override
+    public void setRecipeUsed(@Nullable IRecipe<?> recipe) {
+        this.recipeUsed = recipe;
+    }
 
+    @Nullable
+    @Override
+    public IRecipe<?> getRecipeUsed() {
+        return recipeUsed;
+    }
 }
