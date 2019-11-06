@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"texture": "cookingforblockheads:blocks/oven_side",
-		"ovenfront": "cookingforblockheads:blocks/oven_front_active"
+		"texture": "cookingforblockheads:block/oven_side",
+		"ovenfront": "cookingforblockheads:block/oven_front_active"
 	},
 	"elements": [
 		{

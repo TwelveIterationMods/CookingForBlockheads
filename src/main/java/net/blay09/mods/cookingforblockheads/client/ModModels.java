@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -33,6 +34,8 @@ public class ModModels {
     public static IBakedModel ovenDoorActive;
     public static IBakedModel fridgeDoor;
     public static IBakedModel fridgeDoorLarge;
+    public static IBakedModel[] counterDoors;
+    public static IBakedModel[] counterDoorsFlipped;
 
     @SubscribeEvent
     public static void onModelBake(ModelBakeEvent event) {
@@ -43,6 +46,14 @@ public class ModModels {
             ovenDoorActive = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door_active"));
             fridgeDoor = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_door"));
             fridgeDoorLarge = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door"));
+
+            DyeColor[] colors = DyeColor.values();
+            counterDoors = new IBakedModel[colors.length];
+            counterDoorsFlipped = new IBakedModel[colors.length];
+            for (DyeColor color : colors) {
+                counterDoors[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"));
+                counterDoorsFlipped[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door_flipped"));
+            }
 
             overrideWithDynamicModel(event, ModBlocks.cookingTable, "block/cooking_table");
 
@@ -65,9 +76,12 @@ public class ModModels {
             overrideWithDynamicModel(event, ModBlocks.fridge, it -> {
                 FridgeBlock.FridgeModelType fridgeModelType = it.get(FridgeBlock.MODEL_TYPE);
                 switch (fridgeModelType) {
-                    case LARGE: return fridgeLargeModel;
-                    case INVISIBLE: return fridgeInvisibleModel;
-                    default: return fridgeSmallModel;
+                    case LARGE:
+                        return fridgeLargeModel;
+                    case INVISIBLE:
+                        return fridgeInvisibleModel;
+                    default:
+                        return fridgeSmallModel;
                 }
             });
             overrideWithDynamicModel(event, ModBlocks.counter, "block/counter");

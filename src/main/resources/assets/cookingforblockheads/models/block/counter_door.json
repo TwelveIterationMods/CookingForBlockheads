@@ -1,5 +1,9 @@
 {
 	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"texture": "minecraft:block/terracotta",
+		"handle": "cookingforblockheads:block/handle"
+	},
 	"elements": [
 		{
 			"__comment": "Door",

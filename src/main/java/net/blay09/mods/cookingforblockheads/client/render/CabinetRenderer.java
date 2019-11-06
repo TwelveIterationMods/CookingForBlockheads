@@ -1,33 +1,19 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.item.DyeColor;
-import net.minecraft.util.Direction;
-
 public class CabinetRenderer extends CounterRenderer {
 
-    private static final float[] doorOriginsX = new float[]{
-            (1 - 0.84375f) - 0 / 16f, // South
-            0.09375f + 1 / 16f + 1 / 32f, // West
-            0.84375f + 0 / 16f, // North
-            1 - (0.09375f + 1 / 16f + 1 / 32f) // East
-    };
+    private static final float doorOriginX = 0.84375f;
 
-    private static final float[] doorOriginsZ = new float[]{
-            (1 - 0.09375f) - 1 / 16f - 1 / 32f, // South
-            (1 - 0.84375f) + 0 / 16f, // West
-            0.09375f + 1 / 16f + 1 / 32f, // North
-            0.84375f + 0 / 16f // East
-    };
+    private static final float doorOriginZ = 0.1875f;
 
     @Override
-    protected float getDoorOriginX(Direction facing) {
-        return doorOriginsX[facing.getHorizontalIndex()];
+    protected float getDoorOriginX() {
+        return doorOriginX;
     }
 
     @Override
-    protected float getDoorOriginZ(Direction facing) {
-        return doorOriginsZ[facing.getHorizontalIndex()];
+    protected float getDoorOriginZ() {
+        return doorOriginZ;
     }
 
     @Override

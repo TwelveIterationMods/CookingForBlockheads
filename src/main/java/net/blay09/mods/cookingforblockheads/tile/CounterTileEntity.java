@@ -184,7 +184,7 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(CookingForBlockheads.MOD_ID + ":counter");
+        return new TranslationTextComponent("container.cookingforblockheads.counter");
     }
 
     @Nullable

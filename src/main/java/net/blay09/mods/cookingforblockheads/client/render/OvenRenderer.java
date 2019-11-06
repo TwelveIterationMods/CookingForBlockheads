@@ -16,9 +16,6 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
 
     @Override
     public void render(OvenTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-        IBakedModel modelDoor = ModModels.milkJarLiquid; // TODO fixme
-        IBakedModel modelDoorActive = ModModels.milkJarLiquid; // TODO fixme
-
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -37,7 +34,7 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         GlStateManager.translatef(-0.5f, 0f, -0.5f);
         GlStateManager.rotatef(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
         bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? modelDoorActive : modelDoor;
+        IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? ModModels.ovenDoorActive : ModModels.ovenDoor;
         dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
         GlStateManager.popMatrix();
 

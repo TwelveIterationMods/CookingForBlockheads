@@ -94,7 +94,7 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
                 return false;
             }
 
-            NetworkHooks.openGui((ServerPlayerEntity) player, tileCounter);
+            NetworkHooks.openGui((ServerPlayerEntity) player, tileCounter, pos);
         }
 
         return true;
