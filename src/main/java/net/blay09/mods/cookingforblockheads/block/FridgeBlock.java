@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -20,12 +21,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
+import sun.security.provider.SHA;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +40,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
     public static final String name = "fridge";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public enum FridgeType implements IStringSerializable {
+    public enum FridgeModelType implements IStringSerializable {
         SMALL,
         LARGE,
         INVISIBLE;
@@ -46,7 +51,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
         }
     }
 
-    public static final EnumProperty<FridgeType> TYPE = EnumProperty.create("type", FridgeType.class);
+    public static final EnumProperty<FridgeModelType> MODEL_TYPE = EnumProperty.create("model", FridgeModelType.class);
     public static final BooleanProperty PRESERVATION_CHAMBER = BooleanProperty.create("preservation_chamber");
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
@@ -56,12 +61,26 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT);
+        builder.add(FACING, MODEL_TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT);
+    }
+
+    @Override
+    public boolean isNormalCube(BlockState p_220081_1_, IBlockReader p_220081_2_, BlockPos p_220081_3_) {
+        return false;
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        if (state.get(MODEL_TYPE) == FridgeModelType.INVISIBLE) {
+            return BlockRenderType.INVISIBLE;
+        }
+
+        return super.getRenderType(state);
     }
 
     @Override
     public boolean canRenderInLayer(BlockState state, BlockRenderLayer layer) {
-        return (layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT);
+        return state.get(MODEL_TYPE) != FridgeModelType.INVISIBLE && (layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT);
     }
 
     @Nullable
@@ -118,6 +137,23 @@ public class FridgeBlock extends BlockDyeableKitchen {
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = super.getStateForPlacement(context);
         return state.with(FLIPPED, shouldBePlacedFlipped(context, state.get(FACING)));
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+        BlockPos posBelow = currentPos.down();
+        BlockState stateBelow = world.getBlockState(posBelow);
+        BlockPos posAbove = currentPos.up();
+        BlockState stateAbove = world.getBlockState(posAbove);
+        if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.SMALL) {
+            world.setBlockState(posBelow, stateBelow.with(MODEL_TYPE, FridgeModelType.LARGE), 3);
+            return state.with(MODEL_TYPE, FridgeModelType.INVISIBLE);
+        } else if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.SMALL) {
+            world.setBlockState(posAbove, stateAbove.with(MODEL_TYPE, FridgeModelType.INVISIBLE), 3);
+            return state.with(MODEL_TYPE, FridgeModelType.LARGE);
+        }
+
+        return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
     }
 
     @Override

@@ -2,10 +2,7 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.ImmutableMap;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.block.OvenBlock;
-import net.blay09.mods.cookingforblockheads.block.SinkBlock;
-import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
+import net.blay09.mods.cookingforblockheads.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -62,7 +59,17 @@ public class ModModels {
             overrideWithDynamicModel(event, ModBlocks.fruitBasket, "block/fruit_basket");
             overrideWithDynamicModel(event, ModBlocks.milkJar, "block/milk_jar");
             overrideWithDynamicModel(event, ModBlocks.cowJar, "block/milk_jar");
-            overrideWithDynamicModel(event, ModBlocks.fridge, "block/fridge");
+            IModel fridgeSmallModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge"));
+            IModel fridgeLargeModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large"));
+            IModel fridgeInvisibleModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_invisible"));
+            overrideWithDynamicModel(event, ModBlocks.fridge, it -> {
+                FridgeBlock.FridgeModelType fridgeModelType = it.get(FridgeBlock.MODEL_TYPE);
+                switch (fridgeModelType) {
+                    case LARGE: return fridgeLargeModel;
+                    case INVISIBLE: return fridgeInvisibleModel;
+                    default: return fridgeSmallModel;
+                }
+            });
             overrideWithDynamicModel(event, ModBlocks.counter, "block/counter");
             overrideWithDynamicModel(event, ModBlocks.corner, "block/corner");
             overrideWithDynamicModel(event, ModBlocks.cabinet, "block/cabinet");

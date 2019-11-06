@@ -40,8 +40,8 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         }
 
         BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        FridgeBlock.FridgeType fridgeType = state.get(FridgeBlock.TYPE);
-        if (fridgeType == FridgeBlock.FridgeType.INVISIBLE) {
+        FridgeBlock.FridgeModelType fridgeModelType = state.get(FridgeBlock.MODEL_TYPE);
+        if (fridgeModelType == FridgeBlock.FridgeModelType.INVISIBLE) {
             return;
         }
 
@@ -50,7 +50,7 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         float blockAngle = RenderUtils.getFacingAngle(state);
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = state.get(FridgeBlock.FLIPPED);
-        boolean isLarge = fridgeType == FridgeBlock.FridgeType.LARGE;
+        boolean isLarge = fridgeModelType == FridgeBlock.FridgeModelType.LARGE;
         boolean hasIceUnit = state.get(FridgeBlock.ICE_UNIT);
         GlStateManager.pushMatrix();
         GlStateManager.translated(x + 0.5f, y, z + 0.5f);
@@ -124,13 +124,13 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
             GlStateManager.translated(x + 0.5, y + 0.5, z + 0.5);
             GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
             GlStateManager.scalef(0.3f, 0.3f, 0.3f);
-            float topY = fridgeType == FridgeBlock.FridgeType.LARGE ? 3.25f : 0.35f;
+            float topY = fridgeModelType == FridgeBlock.FridgeModelType.LARGE ? 3.25f : 0.35f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
             for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);
                 if (!itemStack.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
-                    if (fridgeType == FridgeBlock.FridgeType.LARGE) {
+                    if (fridgeModelType == FridgeBlock.FridgeModelType.LARGE) {
                         int rowIndex = i % 18;
                         offsetX = 0.7f - (rowIndex % 9) * 0.175f;
                         offsetY = topY - i / 18 * 1.25f;

@@ -1,11 +1,11 @@
 {
   "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: Static)",
   "textures": {
-    "particle": "cookingforblockheads:blocks/fridge_side",
-    "fridge_side": "cookingforblockheads:blocks/fridge_side",
-    "fridge_top": "cookingforblockheads:blocks/fridge_top",
-    "fridge_back": "cookingforblockheads:blocks/fridge_back",
-    "fridgeLarge_inside": "cookingforblockheads:blocks/fridge_inside"
+    "particle": "cookingforblockheads:block/fridge_side",
+    "fridge_side": "cookingforblockheads:block/fridge_side",
+    "fridge_top": "cookingforblockheads:block/fridge_top",
+    "fridge_back": "cookingforblockheads:block/fridge_back",
+    "fridgeLarge_inside": "cookingforblockheads:block/fridge_inside"
   },
   "elements": [
     {
@@ -105,8 +105,7 @@
             15
           ],
           "texture": "#fridge_top",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "north": {
           "uv": [
@@ -116,8 +115,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "south": {
           "uv": [
@@ -127,8 +125,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "west": {
           "uv": [
@@ -138,8 +135,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "east": {
           "uv": [
@@ -149,8 +145,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         }
       }
     },
@@ -175,8 +170,7 @@
             15
           ],
           "texture": "#fridge_top",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "up": {
           "uv": [
@@ -186,8 +180,7 @@
             15
           ],
           "texture": "#fridge_top",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "north": {
           "uv": [
@@ -197,8 +190,7 @@
             3
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "south": {
           "uv": [
@@ -208,8 +200,7 @@
             3
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         }
       }
     },
@@ -234,8 +225,7 @@
             15
           ],
           "texture": "#fridge_top",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "north": {
           "uv": [
@@ -245,8 +235,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "south": {
           "uv": [
@@ -256,8 +245,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "west": {
           "uv": [
@@ -267,8 +255,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "east": {
           "uv": [
@@ -278,8 +265,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         }
       }
     },
@@ -304,8 +290,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         },
         "south": {
           "uv": [
@@ -315,8 +300,7 @@
             14
           ],
           "texture": "#fridge_back",
-          "tintindex": 0,
-          "cullface": "up"
+          "tintindex": 0
         }
       }
     },
@@ -340,8 +324,7 @@
             4.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "up": {
           "uv": [
@@ -350,8 +333,7 @@
             11.5,
             1.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "north": {
           "uv": [
@@ -360,8 +342,7 @@
             12.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "south": {
           "uv": [
@@ -370,8 +351,7 @@
             12.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "west": {
           "uv": [
@@ -380,8 +360,7 @@
             4.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "east": {
           "uv": [
@@ -390,8 +369,7 @@
             4.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         }
       }
     },
@@ -415,8 +393,7 @@
             4.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "up": {
           "uv": [
@@ -425,8 +402,7 @@
             12.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "north": {
           "uv": [
@@ -435,8 +411,7 @@
             4.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "south": {
           "uv": [
@@ -445,8 +420,7 @@
             4.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "west": {
           "uv": [
@@ -455,8 +429,7 @@
             12.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "east": {
           "uv": [
@@ -465,8 +438,7 @@
             12.5,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         }
       }
     },
@@ -490,8 +462,7 @@
             13,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "up": {
           "uv": [
@@ -500,8 +471,7 @@
             13,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "north": {
           "uv": [
@@ -510,8 +480,7 @@
             13,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "south": {
           "uv": [
@@ -520,8 +489,7 @@
             13,
             2.5
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         }
       }
     },
@@ -737,8 +705,7 @@
             13,
             12
           ],
-          "texture": "#fridgeLarge_inside",
-          "cullface": "up"
+          "texture": "#fridgeLarge_inside"
         },
         "up": {
           "uv": [
@@ -747,8 +714,7 @@
             13,
             12
           ],
-          "texture": "#fridgeLarge_inside",
-          "cullface": "up"
+          "texture": "#fridgeLarge_inside"
         },
         "north": {
           "uv": [
@@ -757,8 +723,7 @@
             13,
             4
           ],
-          "texture": "#fridgeLarge_inside",
-          "cullface": "up"
+          "texture": "#fridgeLarge_inside"
         }
       }
     },

@@ -32,7 +32,7 @@ public class BlockCuttingBoard extends BlockKitchen {
     public static final String name = "cutting_board";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.125, 0, 0.125, 0.875, 0.1, 0.875);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(2, 0, 2, 14, 1.6, 14);
 
     public BlockCuttingBoard() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
