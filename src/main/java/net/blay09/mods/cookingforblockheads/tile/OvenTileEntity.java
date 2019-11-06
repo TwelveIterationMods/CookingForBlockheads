@@ -243,15 +243,16 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
         return energyStorage.getMaxEnergyStored();
     }
 
+    private ItemStackHandler singleSlotItemHandler = new ItemStackHandler(1);
+    private RecipeWrapper singleSlotRecipeWrapper = new RecipeWrapper(singleSlotItemHandler);
     public ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if (!result.isEmpty()) {
             return result;
         }
 
-        // TODO This uses inventory instead of the itemstack I passed in
-        RecipeWrapper recipeWrapper = new RecipeWrapper(itemHandlerInput);
-        IRecipe<?> recipe = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, recipeWrapper, this.world).orElse(null);
+        singleSlotItemHandler.setStackInSlot(0, itemStack);
+        IRecipe<?> recipe = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, singleSlotRecipeWrapper, this.world).orElse(null);
         if (recipe != null) {
             result = recipe.getRecipeOutput();
             if (!result.isEmpty() && result.getItem().isFood()) {
