@@ -40,7 +40,7 @@ public class ModBlocks {
                 spiceRack = new SpiceRackBlock().setRegistryName(SpiceRackBlock.name),
                 kitchenFloor = new KitchenFloorBlock().setRegistryName(KitchenFloorBlock.name),
                 fruitBasket = new FruitBasketBlock().setRegistryName(FruitBasketBlock.name),
-                cuttingBoard = new BlockCuttingBoard().setRegistryName(BlockCuttingBoard.name)
+                cuttingBoard = new CuttingBoardBlock().setRegistryName(CuttingBoardBlock.name)
         );
     }
 

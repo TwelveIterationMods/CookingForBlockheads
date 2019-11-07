@@ -79,7 +79,7 @@ public abstract class BlockKitchen extends Block {
         if (state.has(LOWERED)) {
             state = state.with(LOWERED, shouldBeLoweredUpon(context.getWorld().getBlockState(context.getPos().down())));
         }
-        return state.with(HAS_COLOR, false);
+        return state.has(HAS_COLOR) ? state.with(HAS_COLOR, false) : state;
     }
 
     @Override

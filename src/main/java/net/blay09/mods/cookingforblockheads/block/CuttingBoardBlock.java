@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
@@ -21,20 +22,20 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-// TODO drop pam's cutting board
-public class BlockCuttingBoard extends BlockKitchen {
+public class CuttingBoardBlock extends BlockKitchen {
 
     public static final String name = "cutting_board";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     private static final VoxelShape SHAPE = Block.makeCuboidShape(2, 0, 2, 14, 1.6, 14);
 
-    public BlockCuttingBoard() {
+    public CuttingBoardBlock() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
 
@@ -72,4 +73,16 @@ public class BlockCuttingBoard extends BlockKitchen {
         }
     }
 
+    @Override
+    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+        // Drop cutting board manually as the loot table system doesn't allow easy dropping of an item that may not exist
+        // TODO this should be fixed once it's possible as it'll probably break other things
+        if (!isMoving && Compat.cuttingBoardItem != null) {
+            ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ());
+            itemEntity.setItem(new ItemStack(Compat.cuttingBoardItem));
+            world.addEntity(itemEntity);
+        }
+
+        super.onReplaced(state, world, pos, newState, isMoving);
+    }
 }

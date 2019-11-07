@@ -30,6 +30,7 @@ import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
