@@ -33,7 +33,9 @@ public class ModModels {
     public static IBakedModel ovenDoor;
     public static IBakedModel ovenDoorActive;
     public static IBakedModel fridgeDoor;
+    public static IBakedModel fridgeDoorFlipped;
     public static IBakedModel fridgeDoorLarge;
+    public static IBakedModel fridgeDoorLargeFlipped;
     public static IBakedModel[] counterDoors;
     public static IBakedModel[] counterDoorsFlipped;
     public static IBakedModel[] cabinetDoors;
@@ -47,7 +49,9 @@ public class ModModels {
             ovenDoor = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door"));
             ovenDoorActive = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_door_active"));
             fridgeDoor = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_door"));
+            fridgeDoorFlipped = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_door_flipped"));
             fridgeDoorLarge = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door"));
+            fridgeDoorLargeFlipped = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door_flipped"));
 
             DyeColor[] colors = DyeColor.values();
             counterDoors = new IBakedModel[colors.length];

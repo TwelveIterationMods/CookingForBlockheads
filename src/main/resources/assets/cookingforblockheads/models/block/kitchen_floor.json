@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"all": "cookingforblockheads:block/kitchen_floor",
-		"texture": "cookingforblockheads:block/kitchen_floor"
+		"particle": "cookingforblockheads:block/kitchen_floor"
 	},
 	"elements": [
 		{

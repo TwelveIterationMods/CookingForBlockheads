@@ -1,11 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
-import net.blay09.mods.cookingforblockheads.client.model.FridgeDoorModel;
-import net.blay09.mods.cookingforblockheads.client.model.FridgeLargeDoorModel;
 import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -14,27 +11,13 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
 
 public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
 
-    private final FridgeDoorModel modelFridgeDoor = new FridgeDoorModel();
-    private final FridgeLargeDoorModel modelFridgeLargeDoor = new FridgeLargeDoorModel();
-    private final ResourceLocation textureFridgeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_door.png");
-    private final ResourceLocation textureFridgeLargeDoor = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/entity/fridge_large_door.png");
-
     @Override
     public void render(FridgeTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-        IBakedModel modelDoor = ModModels.milkJarLiquid; // TODO fixme
-        IBakedModel modelDoorLarge = ModModels.milkJarLiquid; // TODO fixme
-        IBakedModel modelDoorIceUnit = ModModels.milkJarLiquid; // TODO fixme
-        IBakedModel modelDoorIceUnitLarge = ModModels.milkJarLiquid; // TODO fixme
-        IBakedModel modelHandle = ModModels.milkJarLiquid; // TODO fixme
-        IBakedModel modelHandleLarge = ModModels.milkJarLiquid; // TODO fixme
-
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -51,14 +34,13 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = state.get(FridgeBlock.FLIPPED);
         boolean isLarge = fridgeModelType == FridgeBlock.FridgeModelType.LARGE;
-        boolean hasIceUnit = state.get(FridgeBlock.ICE_UNIT);
         GlStateManager.pushMatrix();
         GlStateManager.translated(x + 0.5f, y, z + 0.5f);
         GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
         GlStateManager.translatef(-0.5f, 0f, -0.5f);
 
-        float originX = 0.9375f;
-        float originZ = 0.0625f;
+        float originX = 0.9375f - 0.5f / 16f;
+        float originZ = 0.0625f + 0.5f / 16f;
         if (isFlipped) {
             originX = 1f - originX;
             doorAngle *= -1f;
@@ -71,50 +53,13 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model;
         if (isLarge) {
-            model = hasIceUnit ? modelDoorIceUnitLarge : modelDoorLarge;
+            model = isFlipped ? ModModels.fridgeDoorLargeFlipped : ModModels.fridgeDoorLarge;
         } else {
-            model = hasIceUnit ? modelDoorIceUnit : modelDoor;
+            model = isFlipped ? ModModels.fridgeDoorFlipped : ModModels.fridgeDoor;
         }
 
-        IBakedModel handleModel = isLarge ? modelHandleLarge : modelHandle;
-        DyeColor fridgeColor = tileEntity.getFridgeColor();
-        int color = fridgeColor.getFireworkColor();
-        dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, (float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f);
-        if (isFlipped) {
-            GlStateManager.translatef(isLarge ? 0.6875f : 0.625f, 0f, 0f);
-        }
-        dispatcher.getBlockModelRenderer().renderModelBrightnessColor(handleModel, 1f, 1f, 1f, 1f);
+        dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
         GlStateManager.popMatrix();
-
-        /*GlStateManager.pushMatrix();
-        EnumDyeColor fridgeColor = tileEntity.getFridgeColor();
-        int color = fridgeColor.getColorValue();
-        GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, 1f);
-        GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
-        GlStateManager.rotate(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-        GlStateManager.rotate(180f, 0f, 0f, 1f);
-
-        boolean isFlipped = state.getValue(FridgeBlock.FLIPPED);
-        if (fridgeType == FridgeBlock.FridgeType.SMALL) {
-            bindTexture(textureFridgeDoor);
-            modelFridgeDoor.DoorMain.rotateAngleY = doorAngle;
-            modelFridgeDoor.DoorHandle.rotateAngleY = doorAngle;
-            modelFridgeDoor.DoorMainFlipped.rotateAngleY = -doorAngle;
-            modelFridgeDoor.DoorHandleFlipped.rotateAngleY = -doorAngle;
-            modelFridgeDoor.render(isFlipped);
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            modelFridgeDoor.renderNoTint(isFlipped);
-        } else if (fridgeType == FridgeBlock.FridgeType.LARGE) {
-            bindTexture(textureFridgeLargeDoor);
-            modelFridgeLargeDoor.DoorMain.rotateAngleY = doorAngle;
-            modelFridgeLargeDoor.DoorHandle.rotateAngleY = doorAngle;
-            modelFridgeLargeDoor.DoorMainFlipped.rotateAngleY = -doorAngle;
-            modelFridgeLargeDoor.DoorHandleFlipped.rotateAngleY = -doorAngle;
-            modelFridgeLargeDoor.render(isFlipped);
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            modelFridgeLargeDoor.renderNoTint(isFlipped);
-        }
-        GlStateManager.popMatrix();*/
 
         // Render the fridge content if the door is open
         if (doorAngle != 0f) {
