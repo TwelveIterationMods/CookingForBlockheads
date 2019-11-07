@@ -1,8 +1,10 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -11,8 +13,9 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraftforge.items.IItemHandler;
+
+import javax.annotation.Nullable;
 
 public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
 
@@ -36,8 +39,9 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
         return 0.35f;
     }
 
-    protected IBakedModel getDoorModel(DyeColor blockColor, boolean isFlipped) {
-        return isFlipped ? ModModels.counterDoorsFlipped[blockColor.getId()] : ModModels.counterDoors[blockColor.getId()];
+    protected IBakedModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
+        int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
+        return isFlipped ? ModModels.counterDoorsFlipped[colorIndex] : ModModels.counterDoors[colorIndex];
     }
 
     @Override
@@ -49,7 +53,9 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        DyeColor blockColor = tileEntity.getDyedColor();
+        BlockState state = tileEntity.getBlockState();
+        boolean hasColor = state.get(BlockKitchen.HAS_COLOR);
+        DyeColor blockColor = hasColor ? state.get(BlockKitchen.COLOR) : null;
         float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = tileEntity.isFlipped();

@@ -11,14 +11,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -29,25 +26,11 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Locale;
 
 public class KitchenCounterBlock extends BlockDyeableKitchen {
 
     public static final String name = "counter";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
-
-    public enum ModelPass implements IStringSerializable {
-        STATIC,
-        DOOR,
-        DOOR_FLIPPED;
-
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ENGLISH);
-        }
-    }
-
-    public static final EnumProperty<ModelPass> PASS = EnumProperty.create("pass", ModelPass.class);
 
     public KitchenCounterBlock() {
         this(registryName);
@@ -59,7 +42,7 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FLIPPED, PASS, COLOR);
+        builder.add(FACING, FLIPPED, COLOR, HAS_COLOR);
     }
 
     @Nullable
@@ -71,7 +54,7 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (tryRecolorBlock(heldItem, world, pos, player, rayTraceResult)) {
+        if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
             return true;
         }
 

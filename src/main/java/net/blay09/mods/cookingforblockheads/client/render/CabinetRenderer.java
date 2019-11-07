@@ -4,6 +4,8 @@ import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.item.DyeColor;
 
+import javax.annotation.Nullable;
+
 public class CabinetRenderer extends CounterRenderer {
 
     private static final float doorOriginX = 0.84375f;
@@ -31,7 +33,8 @@ public class CabinetRenderer extends CounterRenderer {
     }
 
     @Override
-    protected IBakedModel getDoorModel(DyeColor blockColor, boolean isFlipped) {
-        return isFlipped ? ModModels.cabinetDoorsFlipped[blockColor.getId()] : ModModels.cabinetDoors[blockColor.getId()];
+    protected IBakedModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
+        int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
+        return isFlipped ? ModModels.cabinetDoorsFlipped[colorIndex] : ModModels.cabinetDoors[colorIndex];
     }
 }

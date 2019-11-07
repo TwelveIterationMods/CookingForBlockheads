@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.ItemUtils;
-import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -12,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
@@ -40,6 +40,7 @@ public abstract class BlockKitchen extends Block {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LOWERED = BooleanProperty.create("lowered");
     public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
+    public static final BooleanProperty HAS_COLOR = BooleanProperty.create("has_color");
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
 
     private static final VoxelShape BOUNDING_BOX_X = Block.makeCuboidShape(0.5, 0, 0, 15.5, 15.0, 16);
@@ -78,7 +79,7 @@ public abstract class BlockKitchen extends Block {
         if (state.has(LOWERED)) {
             state = state.with(LOWERED, shouldBeLoweredUpon(context.getWorld().getBlockState(context.getPos().down())));
         }
-        return state;
+        return state.with(HAS_COLOR, false);
     }
 
     @Override
@@ -143,29 +144,52 @@ public abstract class BlockKitchen extends Block {
         super.onReplaced(state, world, pos, newState, isMoving);
     }
 
-    @Override
-    public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof IDyeableKitchen) {
-            IDyeableKitchen dyeable = (IDyeableKitchen) tileEntity;
-            if (dyeable.getDyedColor() == color) {
-                return false;
-            }
+    public boolean tryRecolorBlock(BlockState state, ItemStack heldItem, World world, BlockPos pos, PlayerEntity player, BlockRayTraceResult rayTraceResult) {
+        if (heldItem.getItem() == Items.BONE_MEAL) {
+            if (removeColor(state, world, pos, rayTraceResult.getFace())) {
+                if (!player.abilities.isCreativeMode) {
+                    heldItem.shrink(1);
+                }
 
-            dyeable.setDyedColor(color);
+                return true;
+            }
         }
 
-        return true;
+        DyeColor color = DyeColor.getColor(heldItem);
+        if (color != null) {
+            if (recolorBlock(state, world, pos, rayTraceResult.getFace(), color)) {
+                if (!player.abilities.isCreativeMode) {
+                    heldItem.shrink(1);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
-    public boolean tryRecolorBlock(ItemStack heldItem, World world, BlockPos pos, PlayerEntity player, BlockRayTraceResult rayTraceResult) {
-        // TODO recoloring
-        /*if (!heldItem.isEmpty() && heldItem.getItem() == Items.DYE) {
-            if (recolorBlock(world, pos, rayTraceResult.getFace(), DyeColor.byId(heldItem.getItemDamage()))) {
-                heldItem.shrink(1);
+    private boolean removeColor(BlockState state, IWorld world, BlockPos pos, Direction facing) {
+        if (state.has(COLOR) && state.has(HAS_COLOR)) {
+            if (state.get(HAS_COLOR)) {
+                world.setBlockState(pos, state.with(HAS_COLOR, false), 3);
+                return true;
             }
-            return true;
-        }*/
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
+        if (state.has(COLOR) && state.has(HAS_COLOR)) {
+            DyeColor current = state.get(COLOR);
+            if (current != color || !state.get(HAS_COLOR)) {
+                world.setBlockState(pos, state.with(COLOR, color).with(HAS_COLOR, true), 3);
+                return true;
+            }
+        }
+
         return false;
     }
 

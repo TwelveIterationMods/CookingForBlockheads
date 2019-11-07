@@ -39,13 +39,13 @@ public class KitchenCornerBlock extends BlockDyeableKitchen {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, COLOR);
+        builder.add(FACING, COLOR, HAS_COLOR);
     }
 
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (tryRecolorBlock(heldItem, world, pos, player, rayTraceResult)) {
+        if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
             return true;
         }
 

@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -9,7 +8,6 @@ import net.blay09.mods.cookingforblockheads.block.KitchenCounterBlock;
 import net.blay09.mods.cookingforblockheads.container.CounterContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
-import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -35,7 +33,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CounterTileEntity extends TileEntity implements ITickableTileEntity, IDyeableKitchen, INamedContainerProvider {
+public class CounterTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(CookingForBlockheadsConfig.COMMON.largeCounters.get() ? 54 : 27) {
         @Override
@@ -159,19 +157,6 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
 
     public DoorAnimator getDoorAnimator() {
         return doorAnimator;
-    }
-
-    @Override
-    public void setDyedColor(DyeColor color) {
-        this.color = color;
-        BlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
-        markDirty();
-    }
-
-    @Override
-    public DyeColor getDyedColor() {
-        return color;
     }
 
     public Direction getFacing() {

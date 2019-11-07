@@ -10,7 +10,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -35,7 +34,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, COLOR, HAS_COLOR);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
         CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
         if (!heldItem.isEmpty()) {
             if (tileEntity != null) {
-                if (tryRecolorBlock(heldItem, world, pos, player, rayTraceResult)) {
+                if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
                     return true;
                 }
 

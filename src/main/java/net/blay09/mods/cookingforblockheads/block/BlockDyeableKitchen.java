@@ -8,4 +8,8 @@ public abstract class BlockDyeableKitchen extends BlockKitchen {
         super(properties, registryName);
     }
 
+    @Override
+    protected boolean isDyeable() {
+        return true;
+    }
 }

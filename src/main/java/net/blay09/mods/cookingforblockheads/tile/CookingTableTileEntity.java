@@ -4,7 +4,6 @@ import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenConnector;
 import net.blay09.mods.cookingforblockheads.container.ModContainers;
 import net.blay09.mods.cookingforblockheads.container.RecipeBookContainer;
-import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -25,13 +24,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CookingTableTileEntity extends TileEntity implements IDyeableKitchen, INamedContainerProvider {
+public class CookingTableTileEntity extends TileEntity implements INamedContainerProvider {
 
     @SuppressWarnings("NullableProblems")
     private final LazyOptional<CapabilityKitchenConnector.IKitchenConnector> kitchenConnectorCap = LazyOptional.of(CapabilityKitchenConnector.CAPABILITY::getDefaultInstance);
 
     private ItemStack noFilterBook = ItemStack.EMPTY;
-    private DyeColor color = DyeColor.WHITE;
 
     public CookingTableTileEntity() {
         super(ModTileEntities.cookingTable);
@@ -59,7 +57,6 @@ public class CookingTableTileEntity extends TileEntity implements IDyeableKitche
         }
 
         tagCompound.put("NoFilterBook", itemCompound);
-        tagCompound.putByte("Color", (byte) color.getId());
         return tagCompound;
     }
 
@@ -69,7 +66,6 @@ public class CookingTableTileEntity extends TileEntity implements IDyeableKitche
         if (tagCompound.contains("NoFilterBook")) {
             setNoFilterBook(ItemStack.read(tagCompound.getCompound("NoFilterBook")));
         }
-        color = DyeColor.byId(tagCompound.getByte("Color"));
     }
 
     @Override
@@ -92,19 +88,6 @@ public class CookingTableTileEntity extends TileEntity implements IDyeableKitche
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         return CapabilityKitchenConnector.CAPABILITY.orEmpty(cap, kitchenConnectorCap);
-    }
-
-    @Override
-    public DyeColor getDyedColor() {
-        return color;
-    }
-
-    @Override
-    public void setDyedColor(DyeColor color) {
-        this.color = color;
-        BlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
-        markDirty();
     }
 
     @Override

@@ -41,7 +41,7 @@ public class SinkBlock extends BlockDyeableKitchen {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, COLOR, FLIPPED);
+        builder.add(FACING, COLOR, HAS_COLOR, FLIPPED);
     }
 
     @Nonnull
@@ -54,7 +54,7 @@ public class SinkBlock extends BlockDyeableKitchen {
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        if (tryRecolorBlock(heldItem, world, pos, player, rayTraceResult)) {
+        if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
             return true;
         }
 
@@ -142,20 +142,6 @@ public class SinkBlock extends BlockDyeableKitchen {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new SinkTileEntity();
-    }
-
-    @Override
-    public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof SinkTileEntity) {
-            SinkTileEntity tileSink = (SinkTileEntity) tileEntity;
-            if (tileSink.getDyedColor() == color) {
-                return false;
-            }
-
-            tileSink.setDyedColor(color);
-        }
-        return true;
     }
 
 }

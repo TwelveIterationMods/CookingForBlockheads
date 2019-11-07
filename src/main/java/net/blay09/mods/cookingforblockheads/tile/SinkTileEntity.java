@@ -6,7 +6,6 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItem
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.tile.util.IDyeableKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.DyeColor;
@@ -30,7 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SinkTileEntity extends TileEntity implements IDyeableKitchen {
+public class SinkTileEntity extends TileEntity {
 
     private static class WaterTank extends FluidTank {
 
@@ -219,16 +218,4 @@ public class SinkTileEntity extends TileEntity implements IDyeableKitchen {
         }
     }
 
-    @Override
-    public DyeColor getDyedColor() {
-        return color;
-    }
-
-    @Override
-    public void setDyedColor(DyeColor color) {
-        this.color = color;
-        BlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
-        markDirty();
-    }
 }

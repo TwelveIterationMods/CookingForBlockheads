@@ -23,6 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -54,25 +55,39 @@ public class ModModels {
             fridgeDoorLargeFlipped = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_door_flipped"));
 
             DyeColor[] colors = DyeColor.values();
-            counterDoors = new IBakedModel[colors.length];
-            counterDoorsFlipped = new IBakedModel[colors.length];
+            counterDoors = new IBakedModel[colors.length + 1];
+            counterDoors[0] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"));
+            counterDoorsFlipped = new IBakedModel[colors.length + 1];
+            counterDoorsFlipped[0] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door_flipped"));
             for (DyeColor color : colors) {
-                counterDoors[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"));
-                counterDoorsFlipped[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door_flipped"));
+                counterDoors[color.getId() + 1] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door"),
+                        it -> it.retexture(replaceTexture(getColoredTerracottaTexture(color))));
+                counterDoorsFlipped[color.getId() + 1] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter_door_flipped"),
+                        it -> it.retexture(replaceTexture(getColoredTerracottaTexture(color))));
             }
 
-            cabinetDoors = new IBakedModel[colors.length];
-            cabinetDoorsFlipped = new IBakedModel[colors.length];
+            cabinetDoors = new IBakedModel[colors.length + 1];
+            cabinetDoors[0] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door"));
+            cabinetDoorsFlipped = new IBakedModel[colors.length + 1];
+            cabinetDoorsFlipped[0] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door_flipped"));
             for (DyeColor color : colors) {
-                cabinetDoors[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door"));
-                cabinetDoorsFlipped[color.getId()] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door_flipped"));
+                cabinetDoors[color.getId() + 1] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door"),
+                        it -> it.retexture(replaceTexture(getColoredTerracottaTexture(color))));
+                cabinetDoorsFlipped[color.getId() + 1] = loadAndBakeModel(event, new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet_door_flipped"),
+                        it -> it.retexture(replaceTexture(getColoredTerracottaTexture(color))));
             }
 
-            overrideWithDynamicModel(event, ModBlocks.cookingTable, "block/cooking_table");
+            registerColoredKitchenBlock(event, "block/cooking_table", ModBlocks.cookingTable);
 
             IModel sinkModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink"));
             IModel sinkFlippedModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_flipped"));
-            overrideWithDynamicModel(event, ModBlocks.sink, it -> it.get(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel);
+            overrideWithDynamicModel(event, ModBlocks.sink, it -> {
+                IModel result = it.get(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel;
+                if (it.get(SinkBlock.HAS_COLOR)) {
+                    result = result.retexture(replaceTexture(getColoredTerracottaTexture(it.get(SinkBlock.COLOR))));
+                }
+                return result;
+            });
 
             overrideWithDynamicModel(event, ModBlocks.cuttingBoard, "block/cutting_board");
 
@@ -97,9 +112,11 @@ public class ModModels {
                         return fridgeSmallModel;
                 }
             });
-            overrideWithDynamicModel(event, ModBlocks.counter, "block/counter");
-            overrideWithDynamicModel(event, ModBlocks.corner, "block/corner");
-            overrideWithDynamicModel(event, ModBlocks.cabinet, "block/cabinet");
+
+            registerColoredKitchenBlock(event, "block/counter", ModBlocks.counter);
+            registerColoredKitchenBlock(event, "block/corner", ModBlocks.corner);
+            registerColoredKitchenBlock(event, "block/cabinet", ModBlocks.cabinet);
+
             overrideWithDynamicModel(event, ModBlocks.oven, "block/oven", null, state -> {
                 ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
                 String normalTexture = "cookingforblockheads:block/oven_front";
@@ -115,6 +132,25 @@ public class ModModels {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void registerColoredKitchenBlock(ModelBakeEvent event, String modelPath, Block block) throws Exception {
+        IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
+        overrideWithDynamicModel(event, block, it -> {
+            if (it.get(BlockKitchen.HAS_COLOR)) {
+                return model.retexture(replaceTexture(getColoredTerracottaTexture(it.get(BlockKitchen.COLOR))));
+            }
+
+            return model;
+        });
+    }
+
+    private static ImmutableMap<String, String> replaceTexture(String texturePath) {
+        return ImmutableMap.<String, String>builder().put("texture", texturePath).put("particle", texturePath).build();
+    }
+
+    private static String getColoredTerracottaTexture(DyeColor color) {
+        return "minecraft:block/" + color.getName().toLowerCase(Locale.ENGLISH) + "_terracotta";
     }
 
     private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath) throws Exception {
@@ -139,7 +175,16 @@ public class ModModels {
 
     @Nullable
     private static IBakedModel loadAndBakeModel(ModelBakeEvent event, ResourceLocation resourceLocation) throws Exception {
+        return loadAndBakeModel(event, resourceLocation, null);
+    }
+
+    @Nullable
+    private static IBakedModel loadAndBakeModel(ModelBakeEvent event, ResourceLocation resourceLocation, @Nullable Function<IModel, IModel> preprocessor) throws Exception {
         IModel model = ModelLoaderRegistry.getModel(resourceLocation);
+        if (preprocessor != null) {
+            model = preprocessor.apply(model);
+        }
+
         BasicState modelState = new BasicState(model.getDefaultState(), false);
         return model.bake(event.getModelLoader(), ModelLoader.defaultTextureGetter(), modelState, DefaultVertexFormats.BLOCK);
     }
