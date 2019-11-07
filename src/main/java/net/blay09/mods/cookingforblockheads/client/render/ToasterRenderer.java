@@ -17,7 +17,7 @@ public class ToasterRenderer extends TileEntityRenderer<ToasterTileEntity> {
             return;
         }
 
-        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getBlockState();
         if (state.getBlock() != ModBlocks.toaster) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }

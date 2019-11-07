@@ -17,7 +17,7 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
             return;
         }
 
-        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getBlockState();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);

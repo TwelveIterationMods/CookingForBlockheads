@@ -39,7 +39,7 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
             return;
         }
 
-        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getBlockState();
         FridgeBlock.FridgeModelType fridgeModelType = state.get(FridgeBlock.MODEL_TYPE);
         if (fridgeModelType == FridgeBlock.FridgeModelType.INVISIBLE) {
             return;

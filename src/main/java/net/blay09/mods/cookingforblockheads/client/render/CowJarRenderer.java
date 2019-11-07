@@ -26,7 +26,7 @@ public class CowJarRenderer extends MilkJarRenderer {
 
         super.render(tileEntity, x, y, z, partialTicks, destroyStage);
 
-        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getBlockState();
 
         if (entity == null && tileEntity.hasWorld()) {
             entity = new CowEntity(EntityType.COW, tileEntity.getWorld());

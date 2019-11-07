@@ -49,7 +49,6 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        Direction facing = tileEntity.getFacing();
         DyeColor blockColor = tileEntity.getDyedColor();
         float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);

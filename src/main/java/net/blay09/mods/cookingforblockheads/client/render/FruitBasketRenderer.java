@@ -18,7 +18,7 @@ public class FruitBasketRenderer extends TileEntityRenderer<FruitBasketTileEntit
             return;
         }
 
-        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getBlockState();
         if (state.getBlock() != ModBlocks.fruitBasket) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
             return;
         }

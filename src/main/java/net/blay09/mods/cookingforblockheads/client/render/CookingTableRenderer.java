@@ -17,7 +17,7 @@ public class CookingTableRenderer extends TileEntityRenderer<CookingTableTileEnt
             return;
         }
 
-        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState state = tileEntity.getBlockState();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack itemStack = tileEntity.getNoFilterBook();
         if (!itemStack.isEmpty()) {
