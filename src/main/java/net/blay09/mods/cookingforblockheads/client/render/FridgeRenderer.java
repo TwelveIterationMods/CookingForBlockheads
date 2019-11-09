@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
@@ -58,7 +59,8 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
             model = isFlipped ? ModModels.fridgeDoorFlipped : ModModels.fridgeDoor;
         }
 
-        dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
+        int color = tileEntity.getBlockState().get(BlockKitchen.COLOR).getColorValue();
+        dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, (float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f);
         GlStateManager.popMatrix();
 
         // Render the fridge content if the door is open

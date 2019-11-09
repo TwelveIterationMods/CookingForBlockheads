@@ -102,7 +102,6 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
 
     private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
 
-    private DyeColor fridgeColor = DyeColor.WHITE;
     private boolean isDirty;
     public boolean hasIceUpgrade;
     public boolean hasPreservationUpgrade;
@@ -132,11 +131,6 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
         markDirtyAndUpdate();
     }
 
-    public void setFridgeColor(DyeColor fridgeColor) {
-        this.fridgeColor = fridgeColor;
-        markDirtyAndUpdate();
-    }
-
     @Override
     public void tick() {
         doorAnimator.update();
@@ -156,7 +150,6 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
     public void read(CompoundNBT tagCompound) {
         super.read(tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
-        fridgeColor = DyeColor.byId(tagCompound.getByte("FridgeColor"));
         hasIceUpgrade = tagCompound.getBoolean("HasIceUpgrade");
         hasPreservationUpgrade = tagCompound.getBoolean("HasPreservationUpgrade");
     }
@@ -165,7 +158,6 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
     public CompoundNBT write(CompoundNBT tagCompound) {
         super.write(tagCompound);
         tagCompound.put("ItemHandler", itemHandler.serializeNBT());
-        tagCompound.putByte("FridgeColor", (byte) fridgeColor.getId());
         tagCompound.putBoolean("HasIceUpgrade", hasIceUpgrade);
         tagCompound.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
         return tagCompound;
@@ -236,10 +228,6 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
         } else {
             return super.getCapability(capability, facing);
         }
-    }
-
-    public DyeColor getFridgeColor() {
-        return fridgeColor;
     }
 
     public DoorAnimator getDoorAnimator() {

@@ -56,7 +56,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, MODEL_TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT);
+        builder.add(FACING, MODEL_TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT, COLOR, HAS_COLOR);
     }
 
     @Override
@@ -168,25 +168,6 @@ public class FridgeBlock extends BlockDyeableKitchen {
         }
 
         super.onReplaced(state, world, pos, newState, isMoving);
-    }
-
-    @Override
-    public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof FridgeTileEntity) {
-            FridgeTileEntity tileFridge = (FridgeTileEntity) tileEntity;
-            if (tileFridge.getFridgeColor() == color) {
-                return false;
-            }
-
-            tileFridge.setFridgeColor(color);
-            FridgeTileEntity neighbourFridge = tileFridge.findNeighbourFridge();
-            if (neighbourFridge != null) {
-                neighbourFridge.setFridgeColor(color);
-            }
-        }
-
-        return true;
     }
 
 }
