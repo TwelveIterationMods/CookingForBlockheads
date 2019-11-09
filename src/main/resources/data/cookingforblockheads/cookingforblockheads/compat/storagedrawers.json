@@ -1,16 +1,14 @@
 {
   "modid": "storagedrawers",
-  "tiles": {
-    "kitchenConnectors" : [
-      "storagedrawers:controller_slave",
-      "storagedrawers:controller",
-      "storagedrawers:trim"
-    ],
-    "kitchenItemProviders" : [
-      "storagedrawers:standard_drawers_1",
-      "storagedrawers:standard_drawers_2",
-      "storagedrawers:standard_drawers_4",
-      "storagedrawers:fractional_drawers_3"
-    ]
-  }
+  "kitchenConnectors": [
+    "storagedrawers:controller_slave",
+    "storagedrawers:controller",
+    "storagedrawers:trim"
+  ],
+  "kitchenItemProviders": [
+    "storagedrawers:standard_drawers_1",
+    "storagedrawers:standard_drawers_2",
+    "storagedrawers:standard_drawers_4",
+    "storagedrawers:fractional_drawers_3"
+  ]
 }
