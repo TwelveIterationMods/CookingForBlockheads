@@ -29,8 +29,7 @@
             14
           ],
           "texture": "#fridge_side",
-          "tintindex": 0,
-          "cullface": "down"
+          "tintindex": 0
         },
         "up": {
           "uv": [

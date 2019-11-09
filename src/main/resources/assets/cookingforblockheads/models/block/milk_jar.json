@@ -19,7 +19,7 @@
 				"south": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
 				"west": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#milk_glass", "cullface": "down"}
+				"down": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"}
 			}
 		},
 		{

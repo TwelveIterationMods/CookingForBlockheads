@@ -88,8 +88,7 @@
             14.75,
             3
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "up": {
           "uv": [
@@ -98,8 +97,7 @@
             14.75,
             3
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "north": {
           "uv": [
@@ -108,8 +106,7 @@
             14.75,
             2.25
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "west": {
           "uv": [
@@ -118,8 +115,7 @@
             3,
             2.25
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         },
         "east": {
           "uv": [
@@ -128,8 +124,7 @@
             3,
             2.25
           ],
-          "texture": "#fridge_top",
-          "cullface": "up"
+          "texture": "#fridge_top"
         }
       }
     }
