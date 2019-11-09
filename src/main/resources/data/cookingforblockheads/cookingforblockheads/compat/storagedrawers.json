@@ -2,18 +2,15 @@
   "modid": "storagedrawers",
   "tiles": {
     "kitchenConnectors" : [
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntitySlave",
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityController",
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityTrim"
+      "storagedrawers:controller_slave",
+      "storagedrawers:controller",
+      "storagedrawers:trim"
     ],
     "kitchenItemProviders" : [
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersStandard$Slot1",
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersStandard$Slot2",
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersStandard$Slot4",
-      "com.jaquadro.minecraft.storagedrawers.block.tile.TileEntityDrawersComp"
-    ],
-    "kitchenConnectorBlocks" : [
-      "trim"
+      "storagedrawers:standard_drawers_1",
+      "storagedrawers:standard_drawers_2",
+      "storagedrawers:standard_drawers_4",
+      "storagedrawers:fractional_drawers_3"
     ]
   }
 }

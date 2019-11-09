@@ -2,19 +2,19 @@
   "modid": "minecraft",
   "foods": {
     "GENERAL": [
-      "cake"
+      "minecraft:cake"
     ],
     "INGREDIENTS": [
-      "sugar"
+      "minecraft:sugar"
     ]
   },
   "tools": [
-    "bucket"
+    "minecraft:bucket"
   ],
   "water": [
-    "water_bucket"
+    "minecraft:water_bucket"
   ],
   "milk": [
-    "milk_bucket"
+    "minecraft:milk_bucket"
   ]
 }
