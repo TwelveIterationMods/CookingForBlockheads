@@ -81,8 +81,8 @@ public class CookingForBlockheads {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupServer);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStarted);
+        MinecraftForge.EVENT_BUS.addListener(this::setupServer);
+        MinecraftForge.EVENT_BUS.addListener(this::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CookingForBlockheadsConfig.commonSpec);
