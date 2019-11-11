@@ -21,6 +21,13 @@ public class CounterScreen extends ContainerScreen<CounterContainer> {
     }
 
     @Override
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        renderBackground();
+        super.render(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         Minecraft minecraft = getMinecraft();
         minecraft.fontRenderer.drawString(getTitle().getFormattedText(), 8, 6, 4210752);
