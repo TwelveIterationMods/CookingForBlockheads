@@ -24,14 +24,6 @@ public class VanillaAddon implements FoodStatsProvider {
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.WOOL), simpleHandler);
         CookingForBlockheadsAPI.addSinkHandler(new ItemStack(Blocks.CARPET), simpleHandler);*/
 
-        // TODO don't forget to remove me
-        CookingForBlockheadsAPI.addToasterHandler(new ItemStack(Items.BREAD), new ToasterHandler() {
-            @Override
-            public ItemStack getToasterOutput(ItemStack itemStack) {
-                return new ItemStack(Items.DIAMOND);
-            }
-        });
-
         SinkHandler armorHandler = itemStack -> {
             if (itemStack.getItem() instanceof IDyeableArmorItem) {
                 ((IDyeableArmorItem) itemStack.getItem()).removeColor(itemStack);
