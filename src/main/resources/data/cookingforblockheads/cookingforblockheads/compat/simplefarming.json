@@ -1,0 +1,12 @@
+{
+  "modid": "simplefarming",
+  "foods": {
+    "INGREDIENTS": [
+      "simplefarming:curry_powder",
+	    "simplefarming:jam",
+	    "simplefarming:olive_oil",
+	    "simplefarming:vinegar",
+	    "simplefarming:noodles"
+    ]
+  }
+}
