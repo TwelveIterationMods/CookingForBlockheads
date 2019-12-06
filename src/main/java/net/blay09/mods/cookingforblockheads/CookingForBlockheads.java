@@ -96,8 +96,6 @@ public class CookingForBlockheads {
 
         MinecraftForge.EVENT_BUS.register(new IMCHandler());
         MinecraftForge.EVENT_BUS.register(new CowJarHandler());
-
-        KitchenMultiBlock.registerConnectorBlock(ModBlocks.kitchenFloor);
     }
 
     private void setup(FMLCommonSetupEvent event) {

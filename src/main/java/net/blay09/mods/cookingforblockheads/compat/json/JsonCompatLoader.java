@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.compat.CompatCapabilityLoader;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -41,6 +42,8 @@ public class JsonCompatLoader implements IResourceManagerReloadListener {
                 CookingForBlockheads.logger.error("Parsing error loading CookingForBlockheads Data File at {}", resourceLocation, e);
             }
         }
+        
+        KitchenMultiBlock.registerConnectorBlock(ModBlocks.kitchenFloor);
     }
 
     @SubscribeEvent
