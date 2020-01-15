@@ -37,6 +37,13 @@ public class ToolRackBlock extends BlockKitchen {
             Block.makeCuboidShape(0, 4, 0, 2, 16, 16),
     };
 
+    private static final VoxelShape[] RENDER_SHAPES = new VoxelShape[]{
+            Block.makeCuboidShape(0, 11, 14, 16, 14, 16),
+            Block.makeCuboidShape(0, 11, 0, 16, 14, 2),
+            Block.makeCuboidShape(14, 11, 0, 16, 14, 16),
+            Block.makeCuboidShape(0, 11, 0, 2, 14, 16),
+    };
+
     public ToolRackBlock() {
         super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5f), registryName);
     }
@@ -52,6 +59,11 @@ public class ToolRackBlock extends BlockKitchen {
         Direction facing = state.get(FACING);
         return SHAPES[facing.getIndex() - 2];
     }
+
+    @Override
+    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        Direction facing = state.get(FACING);
+        return RENDER_SHAPES[facing.getIndex() - 2];    }
 
     @Override
     public VoxelShape getCollisionShape(BlockState p_220071_1_, IBlockReader p_220071_2_, BlockPos p_220071_3_, ISelectionContext p_220071_4_) {
