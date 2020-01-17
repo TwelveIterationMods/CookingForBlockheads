@@ -74,7 +74,12 @@ public class TileFridge extends TileEntity implements ITickable, IDropoffManager
                 return iceUnitResult;
             }
 
-            return super.findSource(predicate, maxAmount, inventories, requireBucket, simulate);
+            IngredientPredicate modifiedPredicate = predicate;
+            if (getBaseFridge().hasPreservationUpgrade) {
+                modifiedPredicate = (it, count) -> (count > 1 || !it.getItem().getContainerItem(it).isEmpty() || CookingRegistry.isToolItem(it)) && predicate.test(it, count);
+            }
+
+            return super.findSource(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
         }
 
         @Nullable
