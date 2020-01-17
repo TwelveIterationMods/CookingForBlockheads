@@ -99,6 +99,11 @@ public class TileMilkJar extends TileEntity { // TODO test milk fluid handler
 
             return itemStacks.get(slot);
         }
+
+        @Override
+        public int getCountInSlot(int slot) {
+            return (int) (tileMilkJar.getMilkAmount() / 1000);
+        }
     }
 
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);

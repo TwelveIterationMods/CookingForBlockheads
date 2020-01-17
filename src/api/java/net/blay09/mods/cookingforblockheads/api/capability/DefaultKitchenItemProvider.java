@@ -42,7 +42,7 @@ public abstract class DefaultKitchenItemProvider implements IKitchenItemProvider
     public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
         for (int j = 0; j < getSlots(); j++) {
             ItemStack itemStack = getStackInSlot(j);
-            if (!itemStack.isEmpty() && predicate.test(itemStack, itemStack.getCount() - getSimulatedUseCount(j))) {
+            if (!itemStack.isEmpty() && predicate.test(itemStack, getCountInSlot(j) - getSimulatedUseCount(j))) {
                 return new SourceItem(this, j, itemStack.copy());
             }
         }

@@ -15,7 +15,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -23,10 +22,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class BlockOven extends BlockKitchen {
@@ -59,6 +61,14 @@ public class BlockOven extends BlockKitchen {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
+        if (heldItem.getItem() == Items.BLAZE_ROD && player.capabilities.isCreativeMode) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity instanceof TileOven) {
+                IEnergyStorage energyStorage = tileEntity.getCapability(CapabilityEnergy.ENERGY, null);
+                Objects.requireNonNull(energyStorage).receiveEnergy(5000, false);
+            }
+            return true;
+        }
         /*if (!heldItem.isEmpty() && DyeUtils.isDye(heldItem)) {
             Optional<EnumDyeColor> dyeColor = DyeUtils.colorFromStack(heldItem);
             if (dyeColor.isPresent() && recolorBlock(world, pos, facing, dyeColor.get())) {
