@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
@@ -18,7 +17,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -78,7 +76,12 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
                 return iceUnitResult;
             }
 
-            return super.findSource(predicate, maxAmount, inventories, requireBucket, simulate);
+            IngredientPredicate modifiedPredicate = predicate;
+            if (getBaseFridge().hasPreservationUpgrade) {
+                modifiedPredicate = (it, count) -> (count > 1 || !it.getItem().getContainerItem(it).isEmpty() || CookingRegistry.isToolItem(it)) && predicate.test(it, count);
+            }
+
+            return super.findSource(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
         }
 
         @Nullable

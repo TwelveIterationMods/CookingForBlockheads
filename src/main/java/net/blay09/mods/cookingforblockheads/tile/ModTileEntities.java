@@ -20,8 +20,8 @@ public class ModTileEntities {
     public static TileEntityType<SinkTileEntity> sink;
     public static TileEntityType<ToolRackTileEntity> toolRack;
     public static TileEntityType<ToasterTileEntity> toaster;
-    public static TileEntityType<TileMilkJar> milkJar;
-    public static TileEntityType<TileCowJar> cowJar;
+    public static TileEntityType<MilkJarTileEntity> milkJar;
+    public static TileEntityType<CowJarTileEntity> cowJar;
     public static TileEntityType<SpiceRackTileEntity> spiceRack;
     public static TileEntityType<CounterTileEntity> counter;
     public static TileEntityType<CabinetTileEntity> cabinet;
@@ -37,8 +37,8 @@ public class ModTileEntities {
                 sink = build(SinkTileEntity::new, "sink", ModBlocks.sink),
                 toolRack = build(ToolRackTileEntity::new, ModBlocks.toolRack),
                 toaster = build(ToasterTileEntity::new, ModBlocks.toaster),
-                milkJar = build(TileMilkJar::new, ModBlocks.milkJar),
-                cowJar = build(TileCowJar::new, ModBlocks.cowJar),
+                milkJar = build(MilkJarTileEntity::new, ModBlocks.milkJar),
+                cowJar = build(CowJarTileEntity::new, ModBlocks.cowJar),
                 spiceRack = build(SpiceRackTileEntity::new, ModBlocks.spiceRack),
                 counter = build(CounterTileEntity::new, "counter", ModBlocks.counter),
                 cabinet = build(CabinetTileEntity::new, "cabinet", ModBlocks.cabinet),

@@ -3,8 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
+import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.entity.model.CowModel;
 import net.minecraft.entity.EntityType;
@@ -19,7 +18,7 @@ public class CowJarRenderer extends MilkJarRenderer {
     private static CowEntity entity;
 
     @Override
-    public void render(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(MilkJarTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }

@@ -3,21 +3,20 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
-import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
+import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import org.lwjgl.opengl.GL11;
 
-public class MilkJarRenderer extends TileEntityRenderer<TileMilkJar> {
+public class MilkJarRenderer extends TileEntityRenderer<MilkJarTileEntity> {
 
     protected static BlockRendererDispatcher blockRenderer;
 
     @Override
-    public void render(TileMilkJar tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(MilkJarTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (!tileEntity.hasWorld()) {
             return;
         }

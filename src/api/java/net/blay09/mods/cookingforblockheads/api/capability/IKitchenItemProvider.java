@@ -12,6 +12,10 @@ public interface IKitchenItemProvider {
 	@Deprecated
 	ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket);
 
+	default int getCountInSlot(int slot) {
+		return getStackInSlot(slot).getCount();
+	}
+
 	int getSimulatedUseCount(int slot);
 
 	@Deprecated

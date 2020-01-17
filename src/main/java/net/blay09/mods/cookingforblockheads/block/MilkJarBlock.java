@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
+import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -51,7 +51,7 @@ public class MilkJarBlock extends BlockKitchen {
     @Override
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
-        TileMilkJar tileMilkJar = (TileMilkJar) world.getTileEntity(pos);
+        MilkJarTileEntity tileMilkJar = (MilkJarTileEntity) world.getTileEntity(pos);
         if (!heldItem.isEmpty() && tileMilkJar != null) {
             if (heldItem.getItem() == Items.MILK_BUCKET) {
                 if (tileMilkJar.getMilkAmount() <= tileMilkJar.getMilkCapacity() - 1000) {
@@ -92,7 +92,7 @@ public class MilkJarBlock extends BlockKitchen {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileMilkJar();
+        return new MilkJarTileEntity();
     }
 
 }

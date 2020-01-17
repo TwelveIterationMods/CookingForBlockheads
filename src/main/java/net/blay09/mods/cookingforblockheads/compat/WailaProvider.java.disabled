@@ -6,7 +6,7 @@ import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.blay09.mods.cookingforblockheads.tile.TileFridge;
-import net.blay09.mods.cookingforblockheads.tile.TileMilkJar;
+import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
 import net.minecraft.client.resources.I18n;

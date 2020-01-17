@@ -18,8 +18,8 @@ public class TileEntityRenderers {
     @SubscribeEvent
     public static void registerRenderers(FMLClientSetupEvent event) {
         ClientRegistry.bindTileEntitySpecialRenderer(ToolRackTileEntity.class, new ToolRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileMilkJar.class, new MilkJarRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCowJar.class, new CowJarRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(MilkJarTileEntity.class, new MilkJarRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(CowJarTileEntity.class, new CowJarRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(ToasterTileEntity.class, new ToasterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(OvenTileEntity.class, new OvenRenderer());

@@ -28,16 +28,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileMilkJar extends TileEntity {
+public class MilkJarTileEntity extends TileEntity {
 
     protected static final int MILK_CAPACITY = 8000;
 
     private static class MilkJarItemProvider extends DefaultKitchenItemProvider {
         private final NonNullList<ItemStack> itemStacks = NonNullList.create();
-        private final TileMilkJar tileMilkJar;
+        private final MilkJarTileEntity tileMilkJar;
         private int milkUsed;
 
-        public MilkJarItemProvider(TileMilkJar tileMilkJar) {
+        public MilkJarItemProvider(MilkJarTileEntity tileMilkJar) {
             this.tileMilkJar = tileMilkJar;
             itemStacks.addAll(CookingRegistry.getMilkItems());
         }
@@ -96,6 +96,11 @@ public class TileMilkJar extends TileEntity {
 
             return itemStacks.get(slot);
         }
+
+        @Override
+        public int getCountInSlot(int slot) {
+            return (int) (tileMilkJar.getMilkAmount() / 1000);
+        }
     }
 
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
@@ -121,7 +126,7 @@ public class TileMilkJar extends TileEntity {
         @Override
         public int fill(FluidStack resource, FluidAction action) {
             if (resource.getFluid() == Compat.getMilkFluid()) {
-                return TileMilkJar.this.fill(resource.getAmount(), action);
+                return MilkJarTileEntity.this.fill(resource.getAmount(), action);
             }
             return 0;
         }
@@ -130,7 +135,7 @@ public class TileMilkJar extends TileEntity {
         public FluidStack drain(FluidStack resource, FluidAction action) {
             Fluid milkFluid = Compat.getMilkFluid();
             if (milkFluid != null && resource.getFluid() == milkFluid) {
-                return new FluidStack(milkFluid, TileMilkJar.this.drain(resource.getAmount(), action));
+                return new FluidStack(milkFluid, MilkJarTileEntity.this.drain(resource.getAmount(), action));
             }
 
             return FluidStack.EMPTY;
@@ -140,7 +145,7 @@ public class TileMilkJar extends TileEntity {
         public FluidStack drain(int maxDrain, FluidAction action) {
             Fluid milkFluid = Compat.getMilkFluid();
             if (milkFluid != null) {
-                return new FluidStack(milkFluid, TileMilkJar.this.drain(maxDrain, action));
+                return new FluidStack(milkFluid, MilkJarTileEntity.this.drain(maxDrain, action));
             }
 
             return FluidStack.EMPTY;
@@ -157,11 +162,11 @@ public class TileMilkJar extends TileEntity {
 
     protected float milkAmount;
 
-    public TileMilkJar() {
+    public MilkJarTileEntity() {
         super(ModTileEntities.milkJar);
     }
 
-    protected TileMilkJar(TileEntityType<? extends TileMilkJar> type) {
+    protected MilkJarTileEntity(TileEntityType<? extends MilkJarTileEntity> type) {
         super(type);
     }
 

@@ -3,16 +3,15 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
 
-public class TileCowJar extends TileMilkJar implements ITickableTileEntity {
+public class CowJarTileEntity extends MilkJarTileEntity implements ITickableTileEntity {
 
     private static final int UPDATE_INTERVAL = 20;
 
     protected boolean isDirty;
     protected int ticksSinceUpdate;
 
-    public TileCowJar() {
+    public CowJarTileEntity() {
         super(ModTileEntities.cowJar);
     }
 
