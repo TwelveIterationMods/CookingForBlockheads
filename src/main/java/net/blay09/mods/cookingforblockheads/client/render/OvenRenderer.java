@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
@@ -47,25 +47,25 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
 
         // Render the oven tools
         matrixStack.push();
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
         matrixStack.translate(0.5, 1.05, 0.5);
         matrixStack.rotate(new Quaternion(0f, blockAngle, 0f, true));
         matrixStack.scale(0.4f, 0.4f, 0.4f);
         ItemStack itemStack = tileEntity.getToolItem(0);
         if (!itemStack.isEmpty()) {
-            RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
+            // TODO RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
         }
         itemStack = tileEntity.getToolItem(1);
         if (!itemStack.isEmpty()) {
-            RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
+            // TODO RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
         }
         itemStack = tileEntity.getToolItem(2);
         if (!itemStack.isEmpty()) {
-            RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
+            // TODO RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
         }
         itemStack = tileEntity.getToolItem(3);
         if (!itemStack.isEmpty()) {
-            RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
+            // TODO RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
         }
         matrixStack.pop();
 
@@ -80,7 +80,7 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
             for (int i = 0; i < 9; i++) {
                 itemStack = tileEntity.getItemHandler().getStackInSlot(7 + i);
                 if (!itemStack.isEmpty()) {
-                    RenderUtils.renderItem(itemRenderer, itemStack, offsetX, 0f, offsetZ, 90f, 1f, 0f, 0f);
+                    // TODO RenderUtils.renderItem(itemRenderer, itemStack, offsetX, 0f, offsetZ, 90f, 1f, 0f, 0f);
                 }
                 offsetX -= 0.8f;
                 if (offsetX < -0.8f) {

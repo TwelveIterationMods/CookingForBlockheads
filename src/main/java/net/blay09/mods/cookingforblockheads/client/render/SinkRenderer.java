@@ -1,16 +1,11 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.SinkTileEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.fluid.Fluids;
-import org.lwjgl.opengl.GL11;
 
 public class SinkRenderer extends TileEntityRenderer<SinkTileEntity> {
 
@@ -25,12 +20,12 @@ public class SinkRenderer extends TileEntityRenderer<SinkTileEntity> {
         }
 
         RenderHelper.disableStandardItemLighting();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.enableBlend();
-        GlStateManager.disableCull();
+        // TODO GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        // TODO GlStateManager.enableBlend();
+        // TODO GlStateManager.disableCull();
 
         if (tileEntity.getWaterAmount() > 0) {
-            GlStateManager.enableBlend();
+            // TODO GlStateManager.enableBlend();
             matrixStack.push();
             matrixStack.translate(0, 0.5f, 0);
             float filledPercentage = tileEntity.getWaterAmount() / (float) tileEntity.getWaterCapacity();

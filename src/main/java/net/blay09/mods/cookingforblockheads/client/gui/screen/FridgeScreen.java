@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.container.FridgeContainer;
 import net.minecraft.client.Minecraft;

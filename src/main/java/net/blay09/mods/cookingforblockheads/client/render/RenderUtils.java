@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;

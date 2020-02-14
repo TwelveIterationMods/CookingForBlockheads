@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.client.Minecraft;
@@ -32,9 +31,9 @@ public class MilkJarRenderer extends TileEntityRenderer<MilkJarTileEntity> {
 
         if (tileEntity.getMilkAmount() > 0) {
             RenderHelper.disableStandardItemLighting();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.enableBlend();
-            GlStateManager.disableCull();
+            // TODO GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            // TODO GlStateManager.enableBlend();
+            // TODO GlStateManager.disableCull();
             matrixStack.push();
 
             matrixStack.translate(0, (BlockKitchen.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), 0);

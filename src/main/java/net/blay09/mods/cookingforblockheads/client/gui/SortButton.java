@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.Minecraft;
@@ -35,7 +35,7 @@ public class SortButton extends Button {
             texY += 20;
         }
 
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
         Minecraft.getInstance().getTextureManager().bindTexture(this.button.getIcon());
         blit(x, y, button.getIconTextureX(), texY, width, height);
     }

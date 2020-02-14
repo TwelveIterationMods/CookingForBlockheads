@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
@@ -203,7 +203,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
             container.setDirty(false);
         }
 
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(guiTexture);
         blit(guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
 
@@ -229,7 +229,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
             sortButton.active = hasRecipes;
         }
 
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
 
         if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
             int prevZLevel = getBlitOffset();
@@ -327,14 +327,14 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         }
     }
 
-    public void recalculateScrollBar() {
+    private void recalculateScrollBar() {
         int scrollBarTotalHeight = SCROLLBAR_HEIGHT - 1;
         this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.ceil(container.getItemListCount() / 3f)))));
         this.scrollBarXPos = guiLeft + xSize - SCROLLBAR_WIDTH - 9;
         this.scrollBarYPos = guiTop + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1, (int) Math.ceil((container.getItemListCount() / 3f)) - VISIBLE_ROWS));
     }
 
-    public void setCurrentOffset(int currentOffset) {
+    private void setCurrentOffset(int currentOffset) {
         this.currentOffset = Math.max(0, Math.min(currentOffset, (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS));
 
         container.setScrollOffset(this.currentOffset);

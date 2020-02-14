@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.CounterTileEntity;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.DyeColor;
@@ -94,7 +92,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
         // Render the content if the door is open
         if (doorAngle > 0f) {
             matrixStack.push();
-            matrixStack.translate(0.5, 0.5,  0.5);
+            matrixStack.translate(0.5, 0.5, 0.5);
             matrixStack.rotate(new Quaternion(0f, blockAngle, 0f, true));
             matrixStack.scale(0.3f, 0.3f, 0.3f);
             IItemHandler itemHandler = tileEntity.getItemHandler();
@@ -110,7 +108,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
                     offsetX = (rowIndex - itemsPerRow / 2f) * -spacing + (shelfIndex >= itemsPerRow ? -0.2f : 0f);
                     offsetY = i < itemsPerShelf ? getTopShelfOffsetY() : getBottomShelfOffsetY();
                     offsetZ = shelfIndex < itemsPerRow ? 0.5f : -0.5f;
-                    RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
+                    // TODO RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
                 }
             }
 
