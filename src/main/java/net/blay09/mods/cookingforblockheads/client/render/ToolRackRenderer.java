@@ -37,10 +37,10 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
             matrixStack.translate(0, 0, 0.4);
             matrixStack.scale(0.5f, 0.5f, 0.5f);
             if (!leftStack.isEmpty()) {
-                RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
+                // TODO RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
             }
             if (!rightStack.isEmpty()) {
-                RenderUtils.renderItem(itemRenderer, rightStack, -0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
+                // TODO RenderUtils.renderItem(itemRenderer, rightStack, -0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
             }
             matrixStack.pop();
         }

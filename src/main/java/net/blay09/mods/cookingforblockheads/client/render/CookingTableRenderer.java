@@ -35,7 +35,7 @@ public class CookingTableRenderer extends TileEntityRenderer<CookingTableTileEnt
             matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
             matrixStack.rotate(new Quaternion(90f, 0f, 0f, true));
             matrixStack.scale(0.5f, 0.5f, 0.5f);
-            RenderUtils.renderItem(itemRenderer, itemStack, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            // TODO RenderUtils.renderItem(itemRenderer, itemStack, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             matrixStack.pop();
         }
     }

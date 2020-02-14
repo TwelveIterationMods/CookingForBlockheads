@@ -81,7 +81,7 @@ public class HarvestCraftAddon {
         }
 
         World world = event.getWorld();
-        PlayerEntity player = event.getEntityPlayer();
+        PlayerEntity player = event.getPlayer();
         BlockState clickedBlock = world.getBlockState(event.getPos());
         if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.getBlock() == ModBlocks.cuttingBoard) {
             return;
@@ -109,7 +109,7 @@ public class HarvestCraftAddon {
 
     private boolean canPlace(PlayerEntity player, BlockState state, World world, BlockPos pos) {
         ISelectionContext context = ISelectionContext.forEntity(player);
-        return state.isValidPosition(world, pos) && world.func_217350_a(state, pos, context);
+        return state.isValidPosition(world, pos) && world.func_226663_a_(state, pos, context);
     }
 
 }

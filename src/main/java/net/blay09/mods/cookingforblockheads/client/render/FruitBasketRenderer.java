@@ -47,7 +47,7 @@ public class FruitBasketRenderer extends TileEntityRenderer<FruitBasketTileEntit
                 }
 
                 float curZ = -0.85f + colIndex * 0.35f + antiZFight;
-                RenderUtils.renderItem(itemRenderer, itemStack, curX, curY, curZ, -25f, 1f, 0f, 0f);
+                // TODO RenderUtils.renderItem(itemRenderer, itemStack, curX, curY, curZ, -25f, 1f, 0f, 0f);
             }
         }
 

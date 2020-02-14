@@ -99,7 +99,7 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
                         offsetY = topY - i / 13f * 1.25f;
                         offsetZ = 0.5f - (rowIndex / 9f) * 0.9f;
                     }
-                    RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
+                    // TODO RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
                 }
             }
             matrixStack.pop();

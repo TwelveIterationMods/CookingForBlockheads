@@ -2,11 +2,9 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -49,7 +47,7 @@ public class CachedDynamicModel implements IBakedModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (state != null) {
-            String stateString = state.toString();
+            /*String stateString = state.toString();
             IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
                 TRSRTransformation transform = TRSRTransformation.from(state.get(BlockKitchen.FACING));
@@ -68,7 +66,7 @@ public class CachedDynamicModel implements IBakedModel {
                 }
             }
 
-            return bakedModel.getQuads(state, side, rand);
+            return bakedModel.getQuads(state, side, rand);*/
         }
 
         return Collections.emptyList();
@@ -82,6 +80,11 @@ public class CachedDynamicModel implements IBakedModel {
     @Override
     public boolean isGui3d() {
         return true;
+    }
+
+    @Override
+    public boolean func_230044_c_() {
+        return false; // TODO ??
     }
 
     @Override

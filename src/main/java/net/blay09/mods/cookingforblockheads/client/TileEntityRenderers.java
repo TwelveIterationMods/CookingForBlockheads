@@ -17,18 +17,18 @@ public class TileEntityRenderers {
 
     @SubscribeEvent
     public static void registerRenderers(FMLClientSetupEvent event) {
-        ClientRegistry.bindTileEntitySpecialRenderer(ToolRackTileEntity.class, new ToolRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(MilkJarTileEntity.class, new MilkJarRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CowJarTileEntity.class, new CowJarRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(ToasterTileEntity.class, new ToasterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CookingTableTileEntity.class, new CookingTableRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(OvenTileEntity.class, new OvenRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(FridgeTileEntity.class, new FridgeRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(SpiceRackTileEntity.class, new SpiceRackRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CounterTileEntity.class, new CounterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(CabinetTileEntity.class, new CabinetRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(SinkTileEntity.class, new SinkRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(FruitBasketTileEntity.class, new FruitBasketRenderer());
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.toolRack, ToolRackRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.milkJar, MilkJarRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.cowJar, CowJarRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.toaster, ToasterRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.cookingTable, CookingTableRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.oven, OvenRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.fridge, FridgeRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.spiceRack, SpiceRackRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.counter, CounterRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.cabinet, CabinetRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.sink, SinkRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.fruitBasket, FruitBasketRenderer::new);
     }
 
     @SubscribeEvent
