@@ -2,11 +2,17 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.TransformationMatrix;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.SimpleModelTransform;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,14 +34,16 @@ public class CachedDynamicModel implements IBakedModel {
     private final Function<BlockState, IUnbakedModel> baseModelFunction;
     private final List<Pair<Predicate<BlockState>, IBakedModel>> parts;
     private final Function<BlockState, ImmutableMap<String, String>> textureMapFunction;
+    private final ResourceLocation location;
 
     private TextureAtlasSprite particleTexture;
 
-    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, IUnbakedModel> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
+    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, IUnbakedModel> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction, ResourceLocation location) {
         this.modelBakery = modelBakery;
         this.baseModelFunction = baseModelFunction;
         this.parts = parts;
         this.textureMapFunction = textureMapFunction;
+        this.location = location;
     }
 
     @Override
@@ -47,29 +55,33 @@ public class CachedDynamicModel implements IBakedModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (state != null) {
-            /*String stateString = state.toString();
+            String stateString = state.toString();
             IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
-                TRSRTransformation transform = TRSRTransformation.from(state.get(BlockKitchen.FACING));
+                Matrix4f transform = new Matrix4f();
                 if (state.has(BlockKitchen.LOWERED) && state.get(BlockKitchen.LOWERED)) {
-                    transform = transform.compose(new TRSRTransformation(new Vector3f(0f, -0.05f, 0f), null, null, null));
+                    transform.translate(new Vector3f(0, -0.05f, 0f));
                 }
 
-                BasicState modelState = new BasicState(transform, false);
-                IModel baseModel = baseModelFunction.apply(state);
-                IModel retexturedBaseModel = textureMapFunction != null ? baseModel.retexture(textureMapFunction.apply(state)) : baseModel;
-                bakedModel = retexturedBaseModel.bake(modelBakery, ModelLoader.defaultTextureGetter(), modelState, DefaultVertexFormats.BLOCK);
+                IUnbakedModel baseModel = baseModelFunction.apply(state);
+                IUnbakedModel retexturedBaseModel = textureMapFunction != null ? retexture(baseModel, textureMapFunction.apply(state)) : baseModel;
+                SimpleModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
+                bakedModel = retexturedBaseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, location);
                 cache.put(stateString, bakedModel);
 
-                if (particleTexture == null) {
-                    particleTexture = bakedModel.getParticleTexture();
+                if (particleTexture == null && bakedModel != null) {
+                    particleTexture = bakedModel.getParticleTexture(EmptyModelData.INSTANCE);
                 }
             }
 
-            return bakedModel.getQuads(state, side, rand);*/
+            return bakedModel != null ? bakedModel.getQuads(state, side, rand, EmptyModelData.INSTANCE) : Collections.emptyList();
         }
 
         return Collections.emptyList();
+    }
+
+    private IUnbakedModel retexture(IUnbakedModel baseModel, ImmutableMap<String, String> apply) {
+        return baseModel; // TODO
     }
 
     @Override

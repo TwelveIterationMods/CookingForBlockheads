@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItem
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.ClientProxy;
+import net.blay09.mods.cookingforblockheads.client.ModRenderers;
 import net.blay09.mods.cookingforblockheads.client.ModScreens;
 import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
@@ -108,6 +109,7 @@ public class CookingForBlockheads {
 
     private void setupClient(FMLClientSetupEvent event) {
         ModScreens.register();
+        ModRenderers.register();
     }
 
     private void setupServer(FMLServerAboutToStartEvent event) {

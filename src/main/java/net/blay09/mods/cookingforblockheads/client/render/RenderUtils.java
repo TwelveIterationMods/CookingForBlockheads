@@ -40,21 +40,6 @@ public class RenderUtils {
 
     public static void renderBlockAt(Minecraft mc, BlockState state, ILightReader world, BlockPos pos, BufferBuilder renderer) {
         renderBlockAt(mc, state, world, pos, renderer, null);
-    }
-
-    public static void renderItem(ItemRenderer itemRenderer, ItemStack itemStack, float x, float y, float z, float angle, float xr, float yr, float zr) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(x, y, z);
-        GlStateManager.rotatef(angle, xr, yr, zr);
-        if (!itemRenderer.shouldRenderItemIn3D(itemStack)) {
-            GlStateManager.rotatef(180f, 0f, 1f, 0f);
-        }
-        GlStateManager.pushLightingAttributes();
-        RenderHelper.enableStandardItemLighting();
-        itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED);
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.popAttributes();
-        GlStateManager.popMatrix();
     }*/
 
 }

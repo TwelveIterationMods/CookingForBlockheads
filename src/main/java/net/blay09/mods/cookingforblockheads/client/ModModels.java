@@ -9,13 +9,11 @@ import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.IUnbakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.SimpleModelTransform;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -79,29 +77,29 @@ public class ModModels {
 
             registerColoredKitchenBlock(event, "block/cooking_table", ModBlocks.cookingTable);
 
-            /*IModel sinkModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink"));
-            IModel sinkFlippedModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_flipped"));
-            overrideWithDynamicModel(event, ModBlocks.sink, it -> {
-                IModel result = it.get(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel;
+            IUnbakedModel sinkModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink"));
+            IUnbakedModel sinkFlippedModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_flipped"));
+            overrideWithDynamicModel(event, ModBlocks.sink, "block/sink", it -> {
+                IUnbakedModel result = it.get(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel;
                 if (it.get(SinkBlock.HAS_COLOR)) {
                     result = retexture(result, replaceTexture(getColoredTerracottaTexture(it.get(SinkBlock.COLOR))));
                 }
                 return result;
-            });*/
+            });
 
             overrideWithDynamicModel(event, ModBlocks.cuttingBoard, "block/cutting_board");
 
-            /*IModel toasterModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster"));
-            IModel toasterActiveModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster_active"));
-            overrideWithDynamicModel(event, ModBlocks.toaster, it -> it.get(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel);*/
+            IUnbakedModel toasterModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster"));
+            IUnbakedModel toasterActiveModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster_active"));
+            overrideWithDynamicModel(event, ModBlocks.toaster, "block/toaster", it -> it.get(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel);
 
             overrideWithDynamicModel(event, ModBlocks.fruitBasket, "block/fruit_basket");
             overrideWithDynamicModel(event, ModBlocks.milkJar, "block/milk_jar");
             overrideWithDynamicModel(event, ModBlocks.cowJar, "block/milk_jar");
-            /*IModel fridgeSmallModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge"));
-            IModel fridgeLargeModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large"));
-            IModel fridgeInvisibleModel = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_invisible"));
-            overrideWithDynamicModel(event, ModBlocks.fridge, it -> {
+            IUnbakedModel fridgeSmallModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge"));
+            IUnbakedModel fridgeLargeModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large"));
+            IUnbakedModel fridgeInvisibleModel = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_invisible"));
+            overrideWithDynamicModel(event, ModBlocks.fridge, "block/fridge", it -> {
                 FridgeBlock.FridgeModelType fridgeModelType = it.get(FridgeBlock.MODEL_TYPE);
                 switch (fridgeModelType) {
                     case LARGE:
@@ -111,7 +109,7 @@ public class ModModels {
                     default:
                         return fridgeSmallModel;
                 }
-            });*/
+            });
 
             registerColoredKitchenBlock(event, "block/counter", ModBlocks.counter);
             registerColoredKitchenBlock(event, "block/corner", ModBlocks.corner);
@@ -139,15 +137,15 @@ public class ModModels {
         return it;
     }
 
-    private static void registerColoredKitchenBlock(ModelBakeEvent event, String modelPath, Block block) throws Exception {
-        /*IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
-        overrideWithDynamicModel(event, block, it -> {
+    private static void registerColoredKitchenBlock(ModelBakeEvent event, String modelPath, Block block) {
+        IUnbakedModel model = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
+        overrideWithDynamicModel(event, block, modelPath, it -> {
             if (it.get(BlockKitchen.HAS_COLOR)) {
                 return retexture(model, replaceTexture(getColoredTerracottaTexture(it.get(BlockKitchen.COLOR))));
             }
 
             return model;
-        });*/
+        });
     }
 
     private static ImmutableMap<String, String> replaceTexture(String texturePath) {
@@ -162,24 +160,27 @@ public class ModModels {
         overrideWithDynamicModel(event, block, modelPath, null, null);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
-        IUnbakedModel model = event.getModelLoader().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
-        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), it -> model, parts, textureMapFunction);
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
+        ResourceLocation location = new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath);
+        IUnbakedModel model = event.getModelLoader().getModelOrMissing(location);
+        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), it -> model, parts, textureMapFunction, location);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IUnbakedModel> modelFunction) {
-        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, null, null);
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath, Function<BlockState, IUnbakedModel> modelFunction) {
+        ResourceLocation location = new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath);
+        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, null, null, location);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IUnbakedModel> modelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
-        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, parts, textureMapFunction);
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath, Function<BlockState, IUnbakedModel> modelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
+        ResourceLocation location = new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath);
+        CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, parts, textureMapFunction, location);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 
     @Nullable
-    private static IBakedModel loadAndBakeModel(ModelBakeEvent event, ResourceLocation resourceLocation) throws Exception {
+    private static IBakedModel loadAndBakeModel(ModelBakeEvent event, ResourceLocation resourceLocation) {
         return loadAndBakeModel(event, resourceLocation, null);
     }
 
