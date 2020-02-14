@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -12,11 +11,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.ILightReader;
-import net.minecraft.world.IWorld;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import javax.annotation.Nullable;
@@ -24,32 +20,7 @@ import java.util.Random;
 
 public class RenderUtils {
 
-    private static final Random random = new Random();
-
-    @Deprecated
-    public static float getFacingAngle(BlockState state) {
-        return getFacingAngle(state.get(BlockKitchen.FACING));
-    }
-
-    public static float getFacingAngle(Direction facing) {
-        float angle;
-        switch (facing) {
-            case NORTH:
-                angle = 0;
-                break;
-            case SOUTH:
-                angle = 180;
-                break;
-            case WEST:
-                angle = 90;
-                break;
-            case EAST:
-            default:
-                angle = -90;
-                break;
-        }
-        return angle;
-    }
+    /*private static final Random random = new Random();
 
     public static void renderBlockAt(Minecraft mc, BlockState state, ILightReader world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
         BlockRendererDispatcher dispatcher = mc.getBlockRendererDispatcher();
@@ -82,6 +53,6 @@ public class RenderUtils {
         RenderHelper.disableStandardItemLighting();
         GlStateManager.popAttributes();
         GlStateManager.popMatrix();
-    }
+    }*/
 
 }

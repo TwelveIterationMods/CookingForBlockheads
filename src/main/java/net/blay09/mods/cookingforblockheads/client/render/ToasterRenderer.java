@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.ToasterTileEntity;
 import net.minecraft.block.BlockState;
@@ -26,9 +27,7 @@ public class ToasterRenderer extends TileEntityRenderer<ToasterTileEntity> {
         }
 
         BlockState state = tileEntity.getBlockState();
-        if (state.getBlock() != ModBlocks.toaster) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-            return;
-        }
+        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
@@ -36,7 +35,7 @@ public class ToasterRenderer extends TileEntityRenderer<ToasterTileEntity> {
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
             matrixStack.push();
             matrixStack.translate( 0.5, 0.25 + (tileEntity.isActive() ? -0.075 : 0),  0.5);
-            matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state), 0f, true));
+            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
             matrixStack.scale(0.4f, 0.4f, 0.4f);
             if (!leftStack.isEmpty()) {
                 RenderUtils.renderItem(itemRenderer, leftStack, -0.025f, 0f, 0.15f, 0f, 0f, 0f, 0f);

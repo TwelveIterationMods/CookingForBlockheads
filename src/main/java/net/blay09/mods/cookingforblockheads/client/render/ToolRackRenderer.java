@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.ToolRackTileEntity;
 import net.minecraft.block.BlockState;
@@ -26,13 +27,15 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
         }
 
         BlockState state = tileEntity.getBlockState();
+        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
+
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
             matrixStack.push();
             matrixStack.translate( 0.5,  0.6,  0.5);
-            matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state), 0f, true));
+            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
             matrixStack.translate(0, 0, 0.4);
             matrixStack.scale(0.5f, 0.5f, 0.5f);
             if (!leftStack.isEmpty()) {

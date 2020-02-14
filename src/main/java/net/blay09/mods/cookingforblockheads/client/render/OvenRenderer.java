@@ -31,7 +31,7 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         Direction facing = tileEntity.getFacing();
-        float blockAngle = RenderUtils.getFacingAngle(facing);
+        float blockAngle = facing.getHorizontalAngle();
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
         // Render the oven door

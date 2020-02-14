@@ -26,14 +26,12 @@ public class FruitBasketRenderer extends TileEntityRenderer<FruitBasketTileEntit
         }
 
         BlockState state = tileEntity.getBlockState();
-        if (state.getBlock() != ModBlocks.fruitBasket) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-            return;
-        }
+        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         matrixStack.push();
         matrixStack.translate(0.5, 0.5, 0.5);
-        matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state) + 180f, 0f, true));
+        matrixStack.rotate(new Quaternion(0f, angle + 180f, 0f, true));
         matrixStack.scale(0.25f, 0.25f, 0.25f);
         int itemsPerRow = 7;
         for (int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {

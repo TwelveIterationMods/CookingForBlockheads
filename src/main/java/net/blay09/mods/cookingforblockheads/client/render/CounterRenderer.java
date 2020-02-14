@@ -64,7 +64,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
         BlockState state = tileEntity.getBlockState();
         boolean hasColor = state.get(BlockKitchen.HAS_COLOR);
         DyeColor blockColor = hasColor ? state.get(BlockKitchen.COLOR) : null;
-        float blockAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
+        float blockAngle = tileEntity.getFacing().getHorizontalAngle();
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = tileEntity.isFlipped();
 
@@ -77,7 +77,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
             doorDirection = 1f;
         }
 
-        float facingAngle = RenderUtils.getFacingAngle(tileEntity.getFacing());
+        float facingAngle = tileEntity.getFacing().getHorizontalAngle();
         matrixStack.translate(0.5f, 0f, 0.5f);
         matrixStack.rotate(new Quaternion(0f, facingAngle, 0f, true));
         matrixStack.translate(-0.5f, 0f, -0.5f);

@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.SpiceRackTileEntity;
 import net.minecraft.block.BlockState;
@@ -25,14 +26,12 @@ public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
         }
 
         BlockState state = tileEntity.getBlockState();
-        if (state.getBlock() != ModBlocks.spiceRack) { // I don't know. But it seems for some reason the renderer gets called for minecraft:air in certain cases.
-            return;
-        }
+        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         matrixStack.push();
         matrixStack.translate(0.5, 0.6, 0.5);
-        matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state), 0f, true));
+        matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
         matrixStack.translate(0, 0, 0.4);
         matrixStack.rotate(new Quaternion(0f, 90f, 0f, true));
         matrixStack.scale(0.5f, 0.5f, 0.5f);

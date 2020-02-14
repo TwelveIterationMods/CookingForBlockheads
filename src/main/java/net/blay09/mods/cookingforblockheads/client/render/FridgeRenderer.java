@@ -37,13 +37,13 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
 
         // Render the oven door
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        float blockAngle = RenderUtils.getFacingAngle(state);
+        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = state.get(FridgeBlock.FLIPPED);
         boolean isLarge = fridgeModelType == FridgeBlock.FridgeModelType.LARGE;
         matrixStack.push();
         matrixStack.translate(0.5f, 0, 0.5f);
-        matrixStack.rotate(new Quaternion(0f, blockAngle, 0f, true));
+        matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
         matrixStack.translate(-0.5f, 0f, -0.5f);
 
         float originX = 0.9375f - 0.5f / 16f;
@@ -74,7 +74,7 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             matrixStack.push();
             matrixStack.translate(0.5, 0.5, 0.5);
-            matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state), 0f, true));
+            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
             matrixStack.scale(0.3f, 0.3f, 0.3f);
             float topY = fridgeModelType == FridgeBlock.FridgeModelType.LARGE ? 3.25f : 0.35f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
