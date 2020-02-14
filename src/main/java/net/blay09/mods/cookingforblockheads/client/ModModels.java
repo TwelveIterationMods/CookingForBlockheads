@@ -136,7 +136,7 @@ public class ModModels {
 
     private static IUnbakedModel retexture(IUnbakedModel it, ImmutableMap<String, String> replaceTexture) {
         // TODO new blockmodel instance
-        return null;
+        return it;
     }
 
     private static void registerColoredKitchenBlock(ModelBakeEvent event, String modelPath, Block block) throws Exception {

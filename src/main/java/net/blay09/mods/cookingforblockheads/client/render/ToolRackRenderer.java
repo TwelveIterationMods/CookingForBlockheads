@@ -1,13 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.tile.ToolRackTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
@@ -24,24 +19,28 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
             return;
         }
 
-        BlockState state = tileEntity.getBlockState();
-        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
-
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
             matrixStack.push();
-            matrixStack.translate(0.5, 0.6, 0.5);
-            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
-            matrixStack.translate(0, 0, 0.4);
+            RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
+            matrixStack.translate(0f, 0.6f, -0.4f);
             matrixStack.scale(0.5f, 0.5f, 0.5f);
+
             if (!leftStack.isEmpty()) {
-                // TODO RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
+                matrixStack.push();
+                matrixStack.translate(-0.4, 0f, 0f);
+                RenderUtils.renderItem(leftStack, combinedLight, matrixStack, buffer);
+                matrixStack.pop();
             }
+
             if (!rightStack.isEmpty()) {
-                // TODO RenderUtils.renderItem(itemRenderer, rightStack, -0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
+                matrixStack.push();
+                matrixStack.translate(0.4, 0f, 0f);
+                RenderUtils.renderItem(rightStack, combinedLight, matrixStack, buffer);
+                matrixStack.pop();
             }
+
             matrixStack.pop();
         }
     }

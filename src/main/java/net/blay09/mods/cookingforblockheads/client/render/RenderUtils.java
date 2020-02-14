@@ -1,23 +1,26 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import net.minecraft.block.BlockRenderType;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ILightReader;
-import net.minecraftforge.client.model.data.EmptyModelData;
-
-import javax.annotation.Nullable;
-import java.util.Random;
 
 public class RenderUtils {
+
+    public static void applyBlockAngle(MatrixStack matrixStack, BlockState state) {
+        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
+        matrixStack.translate(0.5, 0, 0.5);
+        matrixStack.rotate(new Quaternion(0f, -angle, 0f, true));
+    }
+
+    public static void renderItem(ItemStack leftStack, int combinedLight, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
+        Minecraft.getInstance().getItemRenderer().renderItem(leftStack, ItemCameraTransforms.TransformType.FIXED, combinedLight, OverlayTexture.DEFAULT_LIGHT, matrixStack, buffer);
+    }
 
     /*private static final Random random = new Random();
 
