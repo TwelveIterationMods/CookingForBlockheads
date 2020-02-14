@@ -14,6 +14,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -52,35 +53,35 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         CounterTileEntity tileCounter = (CounterTileEntity) world.getTileEntity(pos);
         if (rayTraceResult.getFace() == state.get(FACING)) {
             if (tileCounter != null) {
-                if (player.isSneaking()) {
+                if (player.isShiftKeyDown()) {
                     tileCounter.getDoorAnimator().toggleForcedOpen();
-                    return true;
+                    return ActionResultType.SUCCESS;
                 } else if (!heldItem.isEmpty() && tileCounter.getDoorAnimator().isForcedOpen()) {
                     heldItem = ItemHandlerHelper.insertItemStacked(tileCounter.getItemHandler(), heldItem, false);
                     player.setHeldItem(hand, heldItem);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
 
         if (!world.isRemote) {
             if (rayTraceResult.getFace() == Direction.UP && !heldItem.isEmpty() && (heldItem.getItem() instanceof BlockItem || heldItem.getItem() == Compat.cuttingBoardItem)) {
-                return false;
+                return ActionResultType.FAIL;
             }
 
             NetworkHooks.openGui((ServerPlayerEntity) player, tileCounter, pos);
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Nonnull

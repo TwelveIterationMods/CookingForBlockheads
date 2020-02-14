@@ -1,18 +1,25 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.SpiceRackTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 
 public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
 
+    public SpiceRackRenderer(TileEntityRendererDispatcher dispatcher) {
+        super(dispatcher);
+    }
+
     @Override
-    public void render(SpiceRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(SpiceRackTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -23,13 +30,12 @@ public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
         }
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        GlStateManager.pushMatrix();
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
-        GlStateManager.translated(x + 0.5, y + 0.6, z + 0.5);
-        GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-        GlStateManager.translated(0, 0, 0.4);
-        GlStateManager.rotatef(90f, 0f, 1f, 0f);
-        GlStateManager.scalef(0.5f, 0.5f, 0.5f);
+        matrixStack.push();
+        matrixStack.translate(0.5, 0.6, 0.5);
+        matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state), 0f, true));
+        matrixStack.translate(0, 0, 0.4);
+        matrixStack.rotate(new Quaternion(0f, 90f, 0f, true));
+        matrixStack.scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {
             ItemStack itemStack = tileEntity.getItemHandler().getStackInSlot(i);
             if (!itemStack.isEmpty()) {
@@ -37,7 +43,7 @@ public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
             }
         }
 
-        GlStateManager.popMatrix();
+        matrixStack.pop();
     }
 
 }

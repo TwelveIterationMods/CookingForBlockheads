@@ -1,38 +1,21 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.container.OvenContainer;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import org.lwjgl.opengl.GL11;
-
-import java.util.List;
-import java.util.Random;
 
 public class OvenScreen extends ContainerScreen<OvenContainer> {
 
     private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/oven.png");
-
-    private final Random random = new Random();
 
     public OvenScreen(OvenContainer container, PlayerInventory playerInventory, ITextComponent displayName) {
         super(container, playerInventory, displayName);
@@ -56,7 +39,7 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         Minecraft minecraft = getMinecraft();
         String ovenTitle = getTitle().getFormattedText();
-        minecraft.fontRenderer.drawString(ovenTitle, (this.xSize + 22) / 2 - minecraft.fontRenderer.getStringWidth(ovenTitle) / 2, 6, 4210752);
+        minecraft.fontRenderer.drawString(ovenTitle, (this.xSize + 22) / 2f - minecraft.fontRenderer.getStringWidth(ovenTitle) / 2f, 6, 4210752);
         minecraft.fontRenderer.drawString(I18n.format("container.inventory"), 8 + 22, this.ySize - 96 + 2, 4210752);
 
         OvenTileEntity tileEntity = container.getTileEntity();
@@ -65,7 +48,7 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
             if (slot.getHasStack()) {
                 ItemStack itemStack = tileEntity.getSmeltingResult(slot.getStack());
                 if (!itemStack.isEmpty()) {
-                    renderItemWithTint(itemStack, slot.xPos, slot.yPos + 16, 0xFFFFFF + ((int) (tileEntity.getCookProgress(i) * 255) << 24));
+                    // TODO renderItemWithTint(itemStack, slot.xPos, slot.yPos + 16, 0xFFFFFF + ((int) (tileEntity.getCookProgress(i) * 255) << 24));
                 }
             }
         }
@@ -73,7 +56,7 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(texture);
 
         // Draw background
@@ -108,27 +91,27 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         }
     }
 
-    private void renderItemWithTint(ItemStack itemStack, int x, int y, int color) {
+    /*private void renderItemWithTint(ItemStack itemStack, int x, int y, int color) {
         Minecraft minecraft = getMinecraft();
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
         IBakedModel model = itemRenderer.getItemModelWithOverrides(itemStack, null, null);
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         minecraft.getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color4f(1f, 1f, 1f, 1f);
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1f);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
 
-        GlStateManager.translatef(x, y, 300f + blitOffset);
-        GlStateManager.scalef(1f, -1f, 1f);
-        GlStateManager.scalef(16f, 16f, 16f);
+        RenderSystem.translatef(x, y, 300f + getBlitOffset());
+        RenderSystem.scalef(1f, -1f, 1f);
+        RenderSystem.scalef(16f, 16f, 16f);
         if (model.isGui3d()) {
-            GlStateManager.enableLighting();
+            RenderSystem.enableLighting();
         } else {
-            GlStateManager.disableLighting();
+            RenderSystem.disableLighting();
         }
 
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GUI, false);
@@ -143,10 +126,10 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         renderQuads(vertexBuffer, model.getQuads(null, null, random, EmptyModelData.INSTANCE), color, itemStack);
         tessellator.draw();
 
-        GlStateManager.disableAlphaTest();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.disableLighting();
-        GlStateManager.popMatrix();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.disableLighting();
+        RenderSystem.popMatrix();
         minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         minecraft.getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
     }
@@ -163,6 +146,6 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
             }
             net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, quad, k);
         }
-    }
+    }*/
 
 }

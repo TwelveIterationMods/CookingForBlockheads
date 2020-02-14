@@ -1,21 +1,28 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 
 public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
 
+    public OvenRenderer(TileEntityRendererDispatcher dispatcher) {
+        super(dispatcher);
+    }
+
     @Override
-    public void render(OvenTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(OvenTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -28,22 +35,22 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
         // Render the oven door
-        GlStateManager.pushMatrix();
-        GlStateManager.translated(x + 0.5f, y, z + 0.5f);
-        GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
-        GlStateManager.translatef(-0.5f, 0f, -0.5f);
-        GlStateManager.rotatef(-(float) Math.toDegrees(doorAngle), 1f, 0f, 0f);
-        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        matrixStack.push();
+        matrixStack.translate(0.5f, 0, 0.5f);
+        matrixStack.rotate(new Quaternion(0f, blockAngle, 0f, true));
+        matrixStack.translate(-0.5f, 0f, -0.5f);
+        matrixStack.rotate(new Quaternion(-(float) Math.toDegrees(doorAngle), 0f, 0f, true));
+        // TODO bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? ModModels.ovenDoorActive : ModModels.ovenDoor;
-        dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
-        GlStateManager.popMatrix();
+        // TODO dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
+        matrixStack.pop();
 
         // Render the oven tools
-        GlStateManager.pushMatrix();
+        matrixStack.push();
         GlStateManager.color4f(1f, 1f, 1f, 1f);
-        GlStateManager.translated(x + 0.5, y + 1.05, z + 0.5);
-        GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
-        GlStateManager.scalef(0.4f, 0.4f, 0.4f);
+        matrixStack.translate(0.5, 1.05, 0.5);
+        matrixStack.rotate(new Quaternion(0f, blockAngle, 0f, true));
+        matrixStack.scale(0.4f, 0.4f, 0.4f);
         ItemStack itemStack = tileEntity.getToolItem(0);
         if (!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, -0.55f, 0f, 0.5f, 45f, 1f, 0f, 0f);
@@ -60,14 +67,14 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         if (!itemStack.isEmpty()) {
             RenderUtils.renderItem(itemRenderer, itemStack, 0.55f, 0f, -0.5f, 45f, 1f, 0f, 0f);
         }
-        GlStateManager.popMatrix();
+        matrixStack.pop();
 
         // Render the oven content when the door is open
         if (doorAngle > 0f) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translated(x + 0.5, y + 0.4, z + 0.5);
-            GlStateManager.rotatef(blockAngle, 0f, 1f, 0f);
-            GlStateManager.scalef(0.3f, 0.3f, 0.3f);
+            matrixStack.push();
+            matrixStack.translate(0.5, 0.4, 0.5);
+            matrixStack.rotate(new Quaternion(0, blockAngle, 0f, true));
+            matrixStack.scale(0.3f, 0.3f, 0.3f);
             float offsetX = 0.825f;
             float offsetZ = 0.8f;
             for (int i = 0; i < 9; i++) {
@@ -81,7 +88,7 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
                     offsetZ -= 0.8f;
                 }
             }
-            GlStateManager.popMatrix();
+            matrixStack.pop();
         }
     }
 

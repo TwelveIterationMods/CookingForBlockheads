@@ -18,7 +18,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle"
 
-def BUILD_NUMBER = System.getenv("BUILD_NUMBER") ?: "3"
+def BUILD_NUMBER = System.getenv("BUILD_NUMBER") ?: patch_version
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -51,7 +51,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                refinedrelocation {
+                cookingforblockheads {
                     source sourceSets.main
                     source sourceSets.api
                 }
@@ -63,7 +63,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                refinedrelocation {
+                cookingforblockheads {
                     source sourceSets.main
                     source sourceSets.api
                 }

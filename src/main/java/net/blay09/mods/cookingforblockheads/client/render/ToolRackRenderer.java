@@ -1,18 +1,26 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tile.ToolRackTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 
 public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
 
+    public ToolRackRenderer(TileEntityRendererDispatcher dispatcher) {
+        super(dispatcher);
+    }
+
     @Override
-    public void render(ToolRackTileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(ToolRackTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
         if (!tileEntity.hasWorld()) {
             return;
         }
@@ -22,19 +30,18 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.color4f(1f, 1f, 1f, 1f);
-            GlStateManager.translated(x + 0.5, y + 0.6, z + 0.5);
-            GlStateManager.rotatef(RenderUtils.getFacingAngle(state), 0f, 1f, 0f);
-            GlStateManager.translated(0, 0, 0.4);
-            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
+            matrixStack.push();
+            matrixStack.translate( 0.5,  0.6,  0.5);
+            matrixStack.rotate(new Quaternion(0f, RenderUtils.getFacingAngle(state), 0f, true));
+            matrixStack.translate(0, 0, 0.4);
+            matrixStack.scale(0.5f, 0.5f, 0.5f);
             if (!leftStack.isEmpty()) {
                 RenderUtils.renderItem(itemRenderer, leftStack, 0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
             }
             if (!rightStack.isEmpty()) {
                 RenderUtils.renderItem(itemRenderer, rightStack, -0.45f, 0f, 0f, 0f, 0f, 0f, 0f);
             }
-            GlStateManager.popMatrix();
+            matrixStack.pop();
         }
     }
 

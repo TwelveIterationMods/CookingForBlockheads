@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.container.SpiceRackContainer;
 import net.minecraft.client.Minecraft;
@@ -35,7 +35,7 @@ public class SpiceRackScreen extends ContainerScreen<SpiceRackContainer> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color3f(1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(texture);
         blit(guiLeft, guiTop, 0, 0, xSize, ySize);
     }

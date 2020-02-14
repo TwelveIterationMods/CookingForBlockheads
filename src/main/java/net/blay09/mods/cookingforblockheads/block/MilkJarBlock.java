@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -49,7 +49,7 @@ public class MilkJarBlock extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
         MilkJarTileEntity tileMilkJar = (MilkJarTileEntity) world.getTileEntity(pos);
         if (!heldItem.isEmpty() && tileMilkJar != null) {
@@ -60,7 +60,7 @@ public class MilkJarBlock extends BlockKitchen {
                         player.setHeldItem(hand, new ItemStack(Items.BUCKET));
                     }
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             } else if (heldItem.getItem() == Items.BUCKET) {
                 if (tileMilkJar.getMilkAmount() >= 1000) {
                     if (heldItem.getCount() == 1) {
@@ -77,16 +77,11 @@ public class MilkJarBlock extends BlockKitchen {
                         }
                     }
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return false;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
+        return ActionResultType.FAIL;
     }
 
     @Nullable

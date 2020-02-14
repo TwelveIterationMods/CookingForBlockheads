@@ -11,6 +11,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -83,14 +84,14 @@ public class ToolRackBlock extends BlockKitchen {
 
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         if (hand != Hand.MAIN_HAND) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         ItemStack heldItem = player.getHeldItem(hand);
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof BlockItem) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (rayTraceResult.getHitVec().y > 0.25f) {
@@ -135,11 +136,11 @@ public class ToolRackBlock extends BlockKitchen {
                         player.setHeldItem(hand, itemStack);
                     }
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
 }

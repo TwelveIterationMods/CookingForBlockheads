@@ -7,16 +7,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.IUnbakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.BasicState;
-import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.SimpleModelTransform;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.tuple.Pair;
@@ -158,17 +158,17 @@ public class ModModels {
     }
 
     private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, String modelPath, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
-        IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
+        IUnbakedModel model = ModelLoader.instance().getModelOrMissing(new ResourceLocation(CookingForBlockheads.MOD_ID, modelPath));
         CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), it -> model, parts, textureMapFunction);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IModel> modelFunction) throws Exception {
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IUnbakedModel> modelFunction) throws Exception {
         CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, null, null);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
 
-    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IModel> modelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
+    private static void overrideWithDynamicModel(ModelBakeEvent event, Block block, Function<BlockState, IUnbakedModel> modelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) throws Exception {
         CachedDynamicModel dynamicModel = new CachedDynamicModel(event.getModelLoader(), modelFunction, parts, textureMapFunction);
         overrideModelIgnoreState(block, dynamicModel, event);
     }
@@ -179,14 +179,13 @@ public class ModModels {
     }
 
     @Nullable
-    private static IBakedModel loadAndBakeModel(ModelBakeEvent event, ResourceLocation resourceLocation, @Nullable Function<IModel, IModel> preprocessor) throws Exception {
-        IModel model = ModelLoaderRegistry.getModel(resourceLocation);
+    private static IBakedModel loadAndBakeModel(ModelBakeEvent event, ResourceLocation resourceLocation, @Nullable Function<IUnbakedModel, IUnbakedModel> preprocessor) {
+        IUnbakedModel model = ModelLoader.instance().getModelOrMissing(resourceLocation);
         if (preprocessor != null) {
             model = preprocessor.apply(model);
         }
 
-        BasicState modelState = new BasicState(model.getDefaultState(), false);
-        return model.bake(event.getModelLoader(), ModelLoader.defaultTextureGetter(), modelState, DefaultVertexFormats.BLOCK);
+        return model.bakeModel(event.getModelLoader(), ModelLoader.defaultTextureGetter(), SimpleModelTransform.IDENTITY, DefaultVertexFormats.BLOCK);
     }
 
     private static void overrideModelIgnoreState(Block block, IBakedModel model, ModelBakeEvent event) {

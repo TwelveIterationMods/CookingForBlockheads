@@ -59,11 +59,6 @@ public class FridgeBlock extends BlockDyeableKitchen {
         builder.add(FACING, MODEL_TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT, COLOR, HAS_COLOR);
     }
 
-    @Override
-    public boolean canRenderInLayer(BlockState state, BlockRenderLayer layer) {
-        return state.get(MODEL_TYPE) != FridgeModelType.INVISIBLE && (layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT);
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
@@ -71,36 +66,36 @@ public class FridgeBlock extends BlockDyeableKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         FridgeTileEntity tileFridge = (FridgeTileEntity) world.getTileEntity(pos);
         Direction frontFace = state.get(FACING);
         if (rayTraceResult.getFace() == frontFace) {
             if (tileFridge != null) {
-                if (player.isSneaking()) {
+                if (player.isShiftKeyDown()) {
                     tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
-                    return true;
+                    return ActionResultType.SUCCESS;
                 } else if (!heldItem.isEmpty() && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
                     heldItem = ItemHandlerHelper.insertItemStacked(tileFridge.getCombinedItemHandler(), heldItem, false);
                     player.setHeldItem(hand, heldItem);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
 
         if (!world.isRemote) {
             if (!heldItem.isEmpty() && Block.getBlockFromItem(heldItem.getItem()) instanceof FridgeBlock && rayTraceResult.getFace() != frontFace) {
-                return false;
+                return ActionResultType.FAIL;
             }
 
             NetworkHooks.openGui((ServerPlayerEntity) player, tileFridge, pos);
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

@@ -1,19 +1,15 @@
 package net.blay09.mods.cookingforblockheads.container.slot;
 
 import net.blay09.mods.cookingforblockheads.client.ModSprites;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nonnull;
-
 public class SlotOvenTool extends SlotItemHandler {
-
-    private final int iconIndex;
 
     public SlotOvenTool(IItemHandler itemHandler, int id, int x, int y, int iconIndex) {
         super(itemHandler, id, x, y);
-        this.iconIndex = iconIndex;
+        setBackground(AtlasTexture.LOCATION_BLOCKS_TEXTURE, ModSprites.ovenToolIcons[iconIndex]);
     }
 
     @Override
@@ -21,10 +17,5 @@ public class SlotOvenTool extends SlotItemHandler {
         return 1;
     }
 
-    @Override
-    @Nonnull
-    public TextureAtlasSprite getBackgroundSprite() {
-        return ModSprites.ovenToolIcons[iconIndex];
-    }
-
 }
+

@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.container.CounterContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -36,7 +36,7 @@ public class CounterScreen extends ContainerScreen<CounterContainer> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color3f(1f, 1f, 1f);
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(texture);
         blit(guiLeft, guiTop, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
         blit(guiLeft, guiTop + this.inventoryRows * 18 + 17, 0, 126, this.xSize, 96);

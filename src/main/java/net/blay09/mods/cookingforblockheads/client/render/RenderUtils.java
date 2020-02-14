@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.ILightReader;
+import net.minecraft.world.IWorld;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import javax.annotation.Nullable;
@@ -49,7 +51,7 @@ public class RenderUtils {
         return angle;
     }
 
-    public static void renderBlockAt(Minecraft mc, BlockState state, IEnviromentBlockReader world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
+    public static void renderBlockAt(Minecraft mc, BlockState state, ILightReader world, BlockPos pos, BufferBuilder renderer, @Nullable IBakedModel modelOverride) {
         BlockRendererDispatcher dispatcher = mc.getBlockRendererDispatcher();
         try {
             BlockRenderType renderType = state.getRenderType();
@@ -63,7 +65,7 @@ public class RenderUtils {
         }
     }
 
-    public static void renderBlockAt(Minecraft mc, BlockState state, IEnviromentBlockReader world, BlockPos pos, BufferBuilder renderer) {
+    public static void renderBlockAt(Minecraft mc, BlockState state, ILightReader world, BlockPos pos, BufferBuilder renderer) {
         renderBlockAt(mc, state, world, pos, renderer, null);
     }
 

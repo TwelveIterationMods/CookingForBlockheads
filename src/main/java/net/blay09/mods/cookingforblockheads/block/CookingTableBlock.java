@@ -13,6 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -38,21 +39,21 @@ public class CookingTableBlock extends BlockDyeableKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
         CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
         if (!heldItem.isEmpty()) {
             if (tileEntity != null) {
                 if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
 
                 if (!tileEntity.hasNoFilterBook() && heldItem.getItem() == ModItems.noFilterBook) {
                     tileEntity.setNoFilterBook(heldItem.split(1));
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
-        } else if (player.isSneaking()) {
+        } else if (player.isShiftKeyDown()) {
             if (tileEntity != null) {
                 ItemStack noFilterBook = tileEntity.getNoFilterBook();
                 if (!noFilterBook.isEmpty()) {
@@ -60,7 +61,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
                         player.dropItem(noFilterBook, false);
                     }
                     tileEntity.setNoFilterBook(ItemStack.EMPTY);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
@@ -69,7 +70,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
             NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

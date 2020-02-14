@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -54,16 +55,16 @@ public class FruitBasketBlock extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         if (hand != Hand.MAIN_HAND) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (!world.isRemote) {
             FruitBasketTileEntity tileEntity = ((FruitBasketTileEntity) world.getTileEntity(pos));
             NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
         }
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
 }

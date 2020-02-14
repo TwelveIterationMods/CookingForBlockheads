@@ -19,7 +19,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,10 +51,10 @@ public class SinkBlock extends BlockDyeableKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (tryRecolorBlock(state, heldItem, world, pos, player, rayTraceResult)) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
@@ -74,7 +73,7 @@ public class SinkBlock extends BlockDyeableKitchen {
             }
             spawnParticles(world, pos, state);
             world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, world.rand.nextFloat() + 0.5f);
-            return true;
+            return ActionResultType.SUCCESS;
         } else {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity != null) {
@@ -100,11 +99,11 @@ public class SinkBlock extends BlockDyeableKitchen {
                         }
                     }
                 }
-                return !heldItem.isEmpty() && !(heldItem.getItem() instanceof BlockItem);
+                return !heldItem.isEmpty() && !(heldItem.getItem() instanceof BlockItem) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
             }
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     private void spawnParticles(World world, BlockPos pos, BlockState state) {

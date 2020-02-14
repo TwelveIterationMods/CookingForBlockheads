@@ -16,7 +16,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -50,12 +50,7 @@ public class OvenBlock extends BlockKitchen {
     }
 
     @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         ItemStack heldItem = player.getHeldItem(hand);
 
         if (rayTraceResult.getFace() == Direction.UP) {
@@ -95,23 +90,23 @@ public class OvenBlock extends BlockKitchen {
                         tileOven.setToolItem(index, toolItem);
                     }
                 }
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
         OvenTileEntity tileEntity = (OvenTileEntity) world.getTileEntity(pos);
         if (rayTraceResult.getFace() == state.get(FACING)) {
             if (tileEntity != null) {
-                if (player.isSneaking()) {
+                if (player.isShiftKeyDown()) {
                     tileEntity.getDoorAnimator().toggleForcedOpen();
-                    return true;
+                    return ActionResultType.SUCCESS;
                 } else if (!heldItem.isEmpty() && tileEntity.getDoorAnimator().isForcedOpen()) {
                     heldItem = ItemHandlerHelper.insertItemStacked(tileEntity.getInputHandler(), heldItem, false);
                     if (!heldItem.isEmpty()) {
                         heldItem = ItemHandlerHelper.insertItemStacked(tileEntity.getItemHandlerFuel(), heldItem, false);
                     }
                     player.setHeldItem(hand, heldItem);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
@@ -120,7 +115,7 @@ public class OvenBlock extends BlockKitchen {
             NetworkHooks.openGui((ServerPlayerEntity) player, tileEntity, pos);
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Nullable
@@ -141,13 +136,13 @@ public class OvenBlock extends BlockKitchen {
             float f4 = OvenBlock.random.nextFloat() * 0.6f - 0.3f;
 
             if (facing == Direction.WEST) {
-                world.addParticle(ParticleTypes.SMOKE, (double) (x - f3), (double) y, (double) (z + f4), 0, 0, 0);
+                world.addParticle(ParticleTypes.SMOKE, x - f3, y, z + f4, 0, 0, 0);
             } else if (facing == Direction.EAST) {
-                world.addParticle(ParticleTypes.SMOKE, (double) (x + f3), (double) y, (double) (z + f4), 0, 0, 0);
+                world.addParticle(ParticleTypes.SMOKE, x + f3, y, z + f4, 0, 0, 0);
             } else if (facing == Direction.NORTH) {
-                world.addParticle(ParticleTypes.SMOKE, (double) (x + f4), (double) y, (double) (z - f3), 0, 0, 0);
+                world.addParticle(ParticleTypes.SMOKE, x + f4, y, z - f3, 0, 0, 0);
             } else if (facing == Direction.SOUTH) {
-                world.addParticle(ParticleTypes.SMOKE, (double) (x + f4), (double) y, (double) (z + f3), 0, 0, 0);
+                world.addParticle(ParticleTypes.SMOKE, x + f4, y, z + f3, 0, 0, 0);
             }
         }
     }

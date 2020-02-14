@@ -14,6 +14,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -50,7 +51,7 @@ public class ToasterBlock extends BlockKitchen {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof ToasterTileEntity) {
             ToasterTileEntity tileToaster = (ToasterTileEntity) tileEntity;
@@ -67,17 +68,17 @@ public class ToasterBlock extends BlockKitchen {
                         for (int i = 0; i < tileToaster.getItemHandler().getSlots(); i++) {
                             if (tileToaster.getItemHandler().getStackInSlot(i).isEmpty()) {
                                 tileToaster.getItemHandler().setStackInSlot(i, heldItem.split(1));
-                                return true;
+                                return ActionResultType.SUCCESS;
                             }
                         }
 
-                        return true;
+                        return ActionResultType.SUCCESS;
                     }
                 }
             }
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Nullable

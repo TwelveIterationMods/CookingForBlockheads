@@ -120,10 +120,10 @@ public abstract class BlockKitchen extends Block {
         boolean flipped;
         double dir = 0;
         if (facing.getAxis() == Direction.Axis.Z) {
-            dir = pos.getX() + 0.5f - placer.posX;
+            dir = pos.getX() + 0.5f - placer.getPosX();
             dir *= -1;
         } else if (facing.getAxis() == Direction.Axis.X) {
-            dir = pos.getZ() + 0.5f - placer.posZ;
+            dir = pos.getZ() + 0.5f - placer.getPosZ();
         }
         if (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
             flipped = dir < 0;

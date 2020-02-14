@@ -4,24 +4,17 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.ModelBakery;
+import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
-import net.minecraftforge.client.model.BasicState;
-import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.vecmath.Vector3f;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +27,13 @@ public class CachedDynamicModel implements IBakedModel {
     private final Map<String, IBakedModel> cache = Maps.newHashMap();
 
     private final ModelBakery modelBakery;
-    private final Function<BlockState, IModel> baseModelFunction;
+    private final Function<BlockState, IUnbakedModel> baseModelFunction;
     private final List<Pair<Predicate<BlockState>, IBakedModel>> parts;
     private final Function<BlockState, ImmutableMap<String, String>> textureMapFunction;
 
     private TextureAtlasSprite particleTexture;
 
-    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, IModel> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
+    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, IUnbakedModel> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction) {
         this.modelBakery = modelBakery;
         this.baseModelFunction = baseModelFunction;
         this.parts = parts;
@@ -98,7 +91,7 @@ public class CachedDynamicModel implements IBakedModel {
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return particleTexture != null ? particleTexture : ModelLoader.White.INSTANCE;
+        return particleTexture != null ? particleTexture : ModelLoader.White.instance();
     }
 
     @Override

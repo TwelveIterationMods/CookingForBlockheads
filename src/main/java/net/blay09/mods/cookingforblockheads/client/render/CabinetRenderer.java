@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.DyeColor;
 
 import javax.annotation.Nullable;
@@ -11,6 +12,10 @@ public class CabinetRenderer extends CounterRenderer {
     private static final float doorOriginX = 0.84375f;
 
     private static final float doorOriginZ = 0.1875f;
+
+    public CabinetRenderer(TileEntityRendererDispatcher dispatcher) {
+        super(dispatcher);
+    }
 
     @Override
     protected float getDoorOriginX() {

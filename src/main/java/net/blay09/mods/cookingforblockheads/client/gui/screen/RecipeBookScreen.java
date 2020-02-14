@@ -232,8 +232,8 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         GlStateManager.color4f(1f, 1f, 1f, 1f);
 
         if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
-            int prevZLevel = blitOffset;
-            blitOffset = 300;
+            int prevZLevel = getBlitOffset();
+            setBlitOffset(300);
             for (Slot slot : container.inventorySlots) {
                 if (slot instanceof FakeSlotRecipe) {
                     if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
@@ -247,7 +247,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
                 }
             }
 
-            blitOffset = prevZLevel;
+            setBlitOffset(prevZLevel);
         }
 
         FontRenderer fontRenderer = getMinecraft().fontRenderer;
@@ -293,8 +293,8 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         super.render(mouseX, mouseY, partialTicks);
 
-        int prevZLevel = blitOffset;
-        blitOffset = 300;
+        int prevZLevel = getBlitOffset();
+        setBlitOffset(300);
         for (Slot slot : container.inventorySlots) {
             if (slot instanceof FakeSlotCraftMatrix) {
                 if (!((FakeSlotCraftMatrix) slot).isAvailable() && !slot.getStack().isEmpty()) {
@@ -302,7 +302,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
                 }
             }
         }
-        blitOffset = prevZLevel;
+        setBlitOffset(prevZLevel);
 
         container.updateSlots(partialTicks);
 
