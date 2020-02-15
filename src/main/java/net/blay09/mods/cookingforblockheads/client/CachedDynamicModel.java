@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
@@ -67,12 +68,15 @@ public class CachedDynamicModel implements IBakedModel {
                 IUnbakedModel retexturedBaseModel = textureMapFunction != null ? retexture(baseModel, textureMapFunction.apply(state)) : baseModel;
                 SimpleModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
                 bakedModel = retexturedBaseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, location);
-                cache.put(stateString, bakedModel);
+                // TODO reenable once rendering works cache.put(stateString, bakedModel);
 
                 if (particleTexture == null && bakedModel != null) {
                     particleTexture = bakedModel.getParticleTexture(EmptyModelData.INSTANCE);
                 }
             }
+
+            // Doing this renders the missing model correctly, so something must be weird with the model we baked?
+            // bakedModel = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("missing"));
 
             return bakedModel != null ? bakedModel.getQuads(state, side, rand, EmptyModelData.INSTANCE) : Collections.emptyList();
         }
