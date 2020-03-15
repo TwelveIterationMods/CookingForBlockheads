@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
@@ -56,27 +55,24 @@ public class CachedDynamicModel implements IBakedModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
         if (state != null) {
+            Matrix4f transform = ModelRotation.X0_Y0.getRotation().getMatrix();
             String stateString = state.toString();
             IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
-                Matrix4f transform = new Matrix4f();
                 if (state.has(BlockKitchen.LOWERED) && state.get(BlockKitchen.LOWERED)) {
                     transform.translate(new Vector3f(0, -0.05f, 0f));
                 }
 
                 IUnbakedModel baseModel = baseModelFunction.apply(state);
                 IUnbakedModel retexturedBaseModel = textureMapFunction != null ? retexture(baseModel, textureMapFunction.apply(state)) : baseModel;
-                SimpleModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
+                IModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
                 bakedModel = retexturedBaseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, location);
-                // TODO reenable once rendering works cache.put(stateString, bakedModel);
+                cache.put(stateString, bakedModel);
 
                 if (particleTexture == null && bakedModel != null) {
                     particleTexture = bakedModel.getParticleTexture(EmptyModelData.INSTANCE);
                 }
             }
-
-            // Doing this renders the missing model correctly, so something must be weird with the model we baked?
-            // bakedModel = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation("missing"));
 
             return bakedModel != null ? bakedModel.getQuads(state, side, rand, EmptyModelData.INSTANCE) : Collections.emptyList();
         }
