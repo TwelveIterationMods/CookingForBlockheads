@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.*;
@@ -63,11 +64,16 @@ public class CachedDynamicModel implements IBakedModel {
                     transform.translate(new Vector3f(0, -0.05f, 0f));
                 }
 
+                if (state.has(BlockKitchen.FACING)) {
+                    float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
+                    transform.multiply(new Quaternion(0f, 180 - angle, 0f, true));
+                }
+
                 IUnbakedModel baseModel = baseModelFunction.apply(state);
                 IUnbakedModel retexturedBaseModel = textureMapFunction != null ? retexture(baseModel, textureMapFunction.apply(state)) : baseModel;
                 IModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
                 bakedModel = retexturedBaseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, location);
-                cache.put(stateString, bakedModel);
+                // TODO cache.put(stateString, bakedModel);
 
                 if (particleTexture == null && bakedModel != null) {
                     particleTexture = bakedModel.getParticleTexture(EmptyModelData.INSTANCE);
@@ -96,7 +102,7 @@ public class CachedDynamicModel implements IBakedModel {
 
     @Override
     public boolean func_230044_c_() {
-        return false; // TODO ??
+        return false; // flat diffuse lighting = false
     }
 
     @Override
