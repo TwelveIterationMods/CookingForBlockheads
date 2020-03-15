@@ -15,11 +15,11 @@ public class RenderUtils {
     public static void applyBlockAngle(MatrixStack matrixStack, BlockState state) {
         float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
         matrixStack.translate(0.5, 0, 0.5);
-        matrixStack.rotate(new Quaternion(0f, -angle, 0f, true));
+        matrixStack.rotate(new Quaternion(0f, 180f - angle, 0f, true));
     }
 
-    public static void renderItem(ItemStack leftStack, int combinedLight, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
-        Minecraft.getInstance().getItemRenderer().renderItem(leftStack, ItemCameraTransforms.TransformType.FIXED, combinedLight, OverlayTexture.DEFAULT_LIGHT, matrixStack, buffer);
+    public static void renderItem(ItemStack itemStack, int combinedLight, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
+        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLight, OverlayTexture.DEFAULT_LIGHT, matrixStack, buffer);
     }
 
     /*private static final Random random = new Random();

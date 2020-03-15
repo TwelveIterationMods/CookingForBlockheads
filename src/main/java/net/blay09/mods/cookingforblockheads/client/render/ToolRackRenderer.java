@@ -24,19 +24,19 @@ public class ToolRackRenderer extends TileEntityRenderer<ToolRackTileEntity> {
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
             matrixStack.push();
             RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
-            matrixStack.translate(0f, 0.6f, -0.4f);
+            matrixStack.translate(0f, 0.6f, 0.4f);
             matrixStack.scale(0.5f, 0.5f, 0.5f);
 
             if (!leftStack.isEmpty()) {
                 matrixStack.push();
-                matrixStack.translate(-0.4, 0f, 0f);
+                matrixStack.translate(0.4, 0f, 0f);
                 RenderUtils.renderItem(leftStack, combinedLight, matrixStack, buffer);
                 matrixStack.pop();
             }
 
             if (!rightStack.isEmpty()) {
                 matrixStack.push();
-                matrixStack.translate(0.4, 0f, 0f);
+                matrixStack.translate(-0.4, 0f, 0f);
                 RenderUtils.renderItem(rightStack, combinedLight, matrixStack, buffer);
                 matrixStack.pop();
             }
