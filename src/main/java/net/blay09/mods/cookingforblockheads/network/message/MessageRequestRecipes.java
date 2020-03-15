@@ -43,5 +43,6 @@ public class MessageRequestRecipes {
                 ((RecipeBookContainer) container).findAndSendRecipes(message.outputItem, message.forceNoFilter);
             }
         });
+        context.setPacketHandled(true);
     }
 }

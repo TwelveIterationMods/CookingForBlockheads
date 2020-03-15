@@ -54,6 +54,7 @@ public class MessageItemList {
                 ((RecipeBookContainer) container).setHasOven(message.hasOven);
             }
         });
+        context.setPacketHandled(true);
     }
 
     private static FoodRecipeWithStatus readRecipe(PacketBuffer buf) {

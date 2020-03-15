@@ -76,6 +76,7 @@ public class MessageSyncedEffect {
                 Minecraft.getInstance().world.addParticle(particleType, true, message.pos.getX() + offsetX, message.pos.getY() + offsetY, message.pos.getZ() + offsetZ, 0f, 0f, 0f);
             }
         });
+        context.setPacketHandled(true);
     }
 
 }

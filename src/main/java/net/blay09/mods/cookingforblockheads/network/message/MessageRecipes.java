@@ -48,5 +48,6 @@ public class MessageRecipes {
                 ((RecipeBookContainer) container).setRecipeList(message.outputItem, message.recipeList);
             }
         });
+        context.setPacketHandled(true);
     }
 }

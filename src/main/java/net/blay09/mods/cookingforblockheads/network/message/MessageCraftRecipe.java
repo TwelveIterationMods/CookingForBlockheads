@@ -61,6 +61,7 @@ public class MessageCraftRecipe {
                 ((RecipeBookContainer) container).tryCraft(message.outputItem, message.recipeType, message.craftMatrix, message.stack);
             }
         });
+        context.setPacketHandled(true);
     }
 
 }
