@@ -41,7 +41,7 @@ public class FruitBasketRenderer extends TileEntityRenderer<FruitBasketTileEntit
                     curY -= 0.2f;
                 }
 
-                float curZ = -0.85f + colIndex * 0.35f + antiZFight;
+                float curZ = -0.75f + colIndex * 0.35f + antiZFight;
                 matrixStack.push();
                 matrixStack.translate(curX, curY, curZ);
                 matrixStack.rotate(new Quaternion(25f, 0f, 0f, true));

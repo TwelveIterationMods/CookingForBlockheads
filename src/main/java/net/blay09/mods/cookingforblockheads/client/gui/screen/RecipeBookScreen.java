@@ -30,6 +30,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         addButton(btnNextRecipe);
 
         searchBar = new TextFieldWidget(getMinecraft().fontRenderer, guiLeft + xSize - 78, guiTop - 5, 70, 10, searchBar, "searchbar");
-//		searchBar.setFocused(true);
+        setFocusedDefault(searchBar);
 
         int yOffset = -80;
 
@@ -185,8 +186,24 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
     }
 
     @Override
+    public boolean charTyped(char c, int keyCode) {
+        boolean result = super.charTyped(c, keyCode);
+
+        container.search(searchBar.getText());
+        container.populateRecipeSlots();
+        setCurrentOffset(currentOffset);
+
+        return result;
+    }
+
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (searchBar.keyPressed(keyCode, scanCode, modifiers)) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            getMinecraft().player.closeScreen();
+            return true;
+        }
+
+        if (searchBar.keyPressed(keyCode, scanCode, modifiers) || searchBar.isFocused()) {
             container.search(searchBar.getText());
             container.populateRecipeSlots();
             setCurrentOffset(currentOffset);
