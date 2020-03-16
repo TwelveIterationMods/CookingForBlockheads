@@ -22,7 +22,7 @@ public class SpiceRackRenderer extends TileEntityRenderer<SpiceRackTileEntity> {
 
         matrixStack.push();
         RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
-        matrixStack.translate(-0.4, 0.75, -0.3);
+        matrixStack.translate(-0.4, 0.75, 0.3);
         matrixStack.rotate(new Quaternion(0f, 90f, 0f, true));
         matrixStack.scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < tileEntity.getItemHandler().getSlots(); i++) {

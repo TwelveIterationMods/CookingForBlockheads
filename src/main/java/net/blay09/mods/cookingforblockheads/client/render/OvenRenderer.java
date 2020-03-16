@@ -32,7 +32,6 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 
         Direction facing = tileEntity.getFacing();
-        float blockAngle = facing.getHorizontalAngle();
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
 
         // Render the oven door
@@ -89,8 +88,8 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         // Render the oven content when the door is open
         if (doorAngle > 0f) {
             matrixStack.push();
-            matrixStack.translate(0.5, 0.4, 0.5);
-            matrixStack.rotate(new Quaternion(0, blockAngle, 0f, true));
+            matrixStack.translate(0, 0.4, 0);
+            RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
             matrixStack.scale(0.3f, 0.3f, 0.3f);
             float offsetX = 0.825f;
             float offsetZ = 0.8f;
