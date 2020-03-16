@@ -10,7 +10,7 @@ public class ModRenderers {
         RenderTypeLookup.setRenderLayer(ModBlocks.oven, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.milkJar, RenderType.cutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.cowJar, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.fridge, it -> it == RenderType.cutout() || it == RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.fridge, RenderType.cutout());
     }
 
 }

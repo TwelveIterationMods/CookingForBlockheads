@@ -26,6 +26,7 @@ import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -442,5 +443,10 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new OvenContainer(i, playerInventory, this);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 1, 2));
     }
 }

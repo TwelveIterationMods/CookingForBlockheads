@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModSprites {
+public class ModTextures {
 
     public static final ResourceLocation[] ovenToolIcons = new ResourceLocation[] {
         new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_bakeware"),
@@ -31,6 +32,8 @@ public class ModSprites {
             event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_active"));
             event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_powered"));
             event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_powered_active"));
+        } else if (event.getMap().getBasePath().equals(Atlases.SIGN_ATLAS)) {
+                event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "entity/cow/cow"));
         }
     }
 

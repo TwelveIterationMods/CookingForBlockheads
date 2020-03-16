@@ -149,10 +149,12 @@ public class OvenBlock extends BlockKitchen {
 
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof OvenTileEntity) {
-            if (((OvenTileEntity) tileEntity).hasPowerUpgrade()) {
-                ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
+        if (newState.getBlock() != state.getBlock()) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity instanceof OvenTileEntity) {
+                if (((OvenTileEntity) tileEntity).hasPowerUpgrade()) {
+                    ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
+                }
             }
         }
 

@@ -8,13 +8,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
@@ -52,12 +54,10 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
 
     @Override
     public void render(CounterTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-        if (!tileEntity.hasWorld()) {
+        World world = tileEntity.getWorld();
+        if (world == null) {
             return;
         }
-
-        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         BlockState state = tileEntity.getBlockState();
         boolean hasColor = state.get(BlockKitchen.HAS_COLOR);
@@ -75,25 +75,23 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
             doorDirection = 1f;
         }
 
-        float facingAngle = tileEntity.getFacing().getHorizontalAngle();
-        matrixStack.translate(0.5f, 0f, 0.5f);
-        matrixStack.rotate(new Quaternion(0f, facingAngle, 0f, true));
+        RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
         matrixStack.translate(-0.5f, 0f, -0.5f);
 
         matrixStack.translate(doorOriginX, 0f, doorOriginZ);
         matrixStack.rotate(new Quaternion(0f, doorDirection * (float) Math.toDegrees(doorAngle), 0f, true));
         matrixStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
-        // TODO bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IBakedModel model = getDoorModel(blockColor, isFlipped);
-        // TODO dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, 1f, 1f, 1f);
+        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         matrixStack.pop();
 
         // Render the content if the door is open
         if (doorAngle > 0f) {
             matrixStack.push();
-            matrixStack.translate(0.5, 0.5, 0.5);
-            matrixStack.rotate(new Quaternion(0f, blockAngle, 0f, true));
+            matrixStack.translate(0, 0.5, 0);
+            RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
             matrixStack.scale(0.3f, 0.3f, 0.3f);
             IItemHandler itemHandler = tileEntity.getItemHandler();
             int itemsPerShelf = itemHandler.getSlots() / 2;
@@ -108,7 +106,11 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
                     offsetX = (rowIndex - itemsPerRow / 2f) * -spacing + (shelfIndex >= itemsPerRow ? -0.2f : 0f);
                     offsetY = i < itemsPerShelf ? getTopShelfOffsetY() : getBottomShelfOffsetY();
                     offsetZ = shelfIndex < itemsPerRow ? 0.5f : -0.5f;
-                    // TODO RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
+                    matrixStack.push();
+                    matrixStack.translate(offsetX, offsetY, offsetZ);
+                    matrixStack.rotate(new Quaternion(0f, 45f, 0f, true));
+                    RenderUtils.renderItem(itemStack, combinedLight, matrixStack, buffer);
+                    matrixStack.pop();
                 }
             }
 

@@ -11,7 +11,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
@@ -52,6 +51,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
     public FridgeBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(5f, 10f), registryName);
+        setDefaultState(getStateContainer().getBaseState().with(PRESERVATION_CHAMBER, false).with(ICE_UNIT, false));
     }
 
     @Override
@@ -139,25 +139,25 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof FridgeTileEntity) {
-            if (((FridgeTileEntity) tileEntity).hasIceUpgrade()) {
-                ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
+        if (newState.getBlock() != state.getBlock()) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity instanceof FridgeTileEntity) {
+                if (((FridgeTileEntity) tileEntity).hasIceUpgrade()) {
+                    ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
+                }
+
+                if (((FridgeTileEntity) tileEntity).hasPreservationUpgrade()) {
+                    ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+                }
             }
 
-            if (((FridgeTileEntity) tileEntity).hasPreservationUpgrade()) {
-                ItemUtils.spawnItemStack(world, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
-            }
-        }
-
-        if(newState.getBlock() != ModBlocks.fridge) {
             BlockPos posAbove = pos.up();
             BlockState stateAbove = world.getBlockState(posAbove);
             BlockPos posBelow = pos.down();
             BlockState stateBelow = world.getBlockState(posBelow);
-            if(stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.INVISIBLE) {
+            if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.INVISIBLE) {
                 world.setBlockState(posAbove, stateAbove.with(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            } else if(stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.LARGE) {
+            } else if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.LARGE) {
                 world.setBlockState(posBelow, stateBelow.with(MODEL_TYPE, FridgeModelType.SMALL), 3);
             }
         }

@@ -13,9 +13,13 @@ import net.minecraft.item.ItemStack;
 public class RenderUtils {
 
     public static void applyBlockAngle(MatrixStack matrixStack, BlockState state) {
+        applyBlockAngle(matrixStack, state, 180f);
+    }
+
+    public static void applyBlockAngle(MatrixStack matrixStack, BlockState state, float angleOffset) {
         float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
         matrixStack.translate(0.5, 0, 0.5);
-        matrixStack.rotate(new Quaternion(0f, 180f - angle, 0f, true));
+        matrixStack.rotate(new Quaternion(0f, angleOffset - angle, 0f, true));
     }
 
     public static void renderItem(ItemStack itemStack, int combinedLight, MatrixStack matrixStack, IRenderTypeBuffer buffer) {

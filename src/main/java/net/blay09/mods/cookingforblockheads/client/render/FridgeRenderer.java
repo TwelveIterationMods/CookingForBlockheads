@@ -7,14 +7,13 @@ import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.IItemHandler;
 
 public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
@@ -25,7 +24,8 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
 
     @Override
     public void render(FridgeTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-        if (!tileEntity.hasWorld()) {
+        World world = tileEntity.getWorld();
+        if (world == null) {
             return;
         }
 
@@ -36,14 +36,54 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         }
 
         // Render the oven door
-        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
         float doorAngle = tileEntity.getDoorAnimator().getRenderAngle(partialTicks);
+        renderDoor(world, tileEntity, matrixStack, buffer, state, fridgeModelType, doorAngle);
+
+        // Render the fridge content if the door is open
+        if (doorAngle > 0f) {
+            matrixStack.push();
+            matrixStack.translate(0, 0.5, 0);
+            RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
+            matrixStack.scale(0.3f, 0.3f, 0.3f);
+            float topY = fridgeModelType == FridgeBlock.FridgeModelType.LARGE ? 3.25f : 0.45f;
+            IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
+            for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
+                ItemStack itemStack = itemHandler.getStackInSlot(i);
+                if (!itemStack.isEmpty()) {
+                    float offsetX, offsetY, offsetZ;
+                    if (fridgeModelType == FridgeBlock.FridgeModelType.LARGE) {
+                        int rowIndex = i % 18;
+                        offsetX = 0.7f - (rowIndex % 9) * 0.175f;
+                        offsetY = topY - (int) (i / 18f) * 1.25f;
+                        offsetZ = 0.5f - (int) (rowIndex / 9f) * 0.9f;
+                    } else {
+                        int rowIndex = i % 13;
+                        offsetX = 0.7f;
+                        float spacing = 0.175f;
+                        if (rowIndex / 9 > 0) {
+                            offsetX -= 0.2f;
+                            spacing *= 2;
+                        }
+                        offsetX -= (rowIndex % 9) * spacing;
+                        offsetY = topY - (int) (i / 14f) * 1.25f;
+                        offsetZ = 0.5f - (int) (rowIndex / 9f) * 0.9f;
+                    }
+                    matrixStack.push();
+                    matrixStack.translate(offsetX, offsetY, offsetZ);
+                    matrixStack.rotate(new Quaternion(0f, 45f, 0f, true));
+                    RenderUtils.renderItem(itemStack, combinedLight, matrixStack, buffer);
+                    matrixStack.pop();
+                }
+            }
+            matrixStack.pop();
+        }
+    }
+
+    private void renderDoor(World world, FridgeTileEntity tileEntity, MatrixStack matrixStack, IRenderTypeBuffer buffer, BlockState state, FridgeBlock.FridgeModelType fridgeModelType, float doorAngle) {
         boolean isFlipped = state.get(FridgeBlock.FLIPPED);
         boolean isLarge = fridgeModelType == FridgeBlock.FridgeModelType.LARGE;
         matrixStack.push();
-        matrixStack.translate(0.5f, 0, 0.5f);
-        matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
+        RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
         matrixStack.translate(-0.5f, 0f, -0.5f);
 
         float originX = 0.9375f - 0.5f / 16f;
@@ -57,7 +97,6 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         matrixStack.rotate(new Quaternion(0f, -(float) Math.toDegrees(doorAngle), 0f, true));
         matrixStack.translate(-originX, 0f, -originZ);
 
-        // TODO bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         IBakedModel model;
         if (isLarge) {
             model = isFlipped ? ModModels.fridgeDoorLargeFlipped : ModModels.fridgeDoorLarge;
@@ -65,45 +104,9 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
             model = isFlipped ? ModModels.fridgeDoorFlipped : ModModels.fridgeDoor;
         }
 
-        int color = tileEntity.getBlockState().get(BlockKitchen.COLOR).getColorValue();
-        // TODO dispatcher.getBlockModelRenderer().renderModelBrightnessColor(model, 1f, (float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f);
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         matrixStack.pop();
-
-        // Render the fridge content if the door is open
-        if (doorAngle != 0f) {
-            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            matrixStack.push();
-            matrixStack.translate(0.5, 0.5, 0.5);
-            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
-            matrixStack.scale(0.3f, 0.3f, 0.3f);
-            float topY = fridgeModelType == FridgeBlock.FridgeModelType.LARGE ? 3.25f : 0.35f;
-            IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
-            for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
-                ItemStack itemStack = itemHandler.getStackInSlot(i);
-                if (!itemStack.isEmpty()) {
-                    float offsetX, offsetY, offsetZ;
-                    if (fridgeModelType == FridgeBlock.FridgeModelType.LARGE) {
-                        int rowIndex = i % 18;
-                        offsetX = 0.7f - (rowIndex % 9) * 0.175f;
-                        offsetY = topY - i / 18f * 1.25f;
-                        offsetZ = 0.5f - (rowIndex / 9f) * 0.9f;
-                    } else {
-                        int rowIndex = i % 13;
-                        offsetX = 0.7f;
-                        float spacing = 0.175f;
-                        if (rowIndex / 9 > 0) {
-                            offsetX -= 0.2f;
-                            spacing *= 2;
-                        }
-                        offsetX -= (rowIndex % 9) * spacing;
-                        offsetY = topY - i / 13f * 1.25f;
-                        offsetZ = 0.5f - (rowIndex / 9f) * 0.9f;
-                    }
-                    // TODO RenderUtils.renderItem(itemRenderer, itemStack, offsetX, offsetY, offsetZ, 45f, 0f, 1f, 0f);
-                }
-            }
-            matrixStack.pop();
-        }
     }
 
 }

@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -176,5 +177,10 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new CounterContainer(i, playerInventory, this);
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 1, 2));
     }
 }

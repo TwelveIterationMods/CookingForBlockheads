@@ -23,7 +23,7 @@ public class KitchenFloorBlock extends Block {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public KitchenFloorBlock() {
-        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(5f, 10f));
+        super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(0.8f));
     }
 
     @Override

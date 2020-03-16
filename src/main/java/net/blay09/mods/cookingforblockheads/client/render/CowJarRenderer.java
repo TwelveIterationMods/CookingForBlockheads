@@ -1,21 +1,29 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.WoodType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.CowModel;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class CowJarRenderer extends MilkJarRenderer {
 
-    private static final ResourceLocation COW_TEXTURES = new ResourceLocation("textures/entity/cow/cow.png");
+    private static final Material MATERIAL = new Material(Atlases.SIGN_ATLAS, new ResourceLocation(CookingForBlockheads.MOD_ID, "entity/cow/cow"));
 
     private static final CowModel<CowEntity> model = new CowModel<>();
     private static CowEntity entity;
@@ -26,29 +34,25 @@ public class CowJarRenderer extends MilkJarRenderer {
 
     @Override
     public void render(MilkJarTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-        if (!tileEntity.hasWorld()) {
+        World world = tileEntity.getWorld();
+        if (world == null) {
             return;
         }
 
         super.render(tileEntity, partialTicks, matrixStack, buffer, combinedLight, combinedOverlay);
 
-        BlockState state = tileEntity.getBlockState();
-        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
-
-        if (entity == null && tileEntity.hasWorld()) {
-            entity = new CowEntity(EntityType.COW, tileEntity.getWorld());
+        if (entity == null) {
+            entity = new CowEntity(EntityType.COW, world);
         }
 
-        // TODO bindTexture(COW_TEXTURES);
-        if (entity != null) {
-            matrixStack.push();
-            matrixStack.translate(0.5, 0.5 + (MilkJarBlock.shouldBlockRenderLowered(tileEntity.getWorld(), tileEntity.getPos()) ? -0.05 : 0), 0.5);
-            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
-            matrixStack.rotate(new Quaternion(0f, 0f, 180f, true));
-            matrixStack.scale(0.02f, 0.02f, 0.02f);
-            // TODO model.render(entity, 0f, 0f, 0f, 0f, 0f, 1f);
-            matrixStack.pop();
-        }
+        float shrinkage = 0.2f;
+        matrixStack.push();
+        RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState(), 0f);
+        matrixStack.translate(0, 0 + (MilkJarBlock.shouldBlockRenderLowered(world, tileEntity.getPos()) ? -0.05 : 0), 0);
+        matrixStack.scale(shrinkage, shrinkage, shrinkage);
+
+        Minecraft.getInstance().getRenderManager().renderEntityStatic(entity, 0, 0, 0, 0f, 0f, matrixStack, buffer, combinedLight);
+        matrixStack.pop();
     }
 
 }

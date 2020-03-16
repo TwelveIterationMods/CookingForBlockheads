@@ -259,7 +259,7 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1);
+        return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
     }
 
     public void markDirtyAndUpdate() {
@@ -278,4 +278,5 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new FridgeContainer(i, playerInventory, this);
     }
+
 }

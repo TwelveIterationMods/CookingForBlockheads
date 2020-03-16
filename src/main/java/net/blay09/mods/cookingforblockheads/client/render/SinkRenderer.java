@@ -34,7 +34,7 @@ public class SinkRenderer extends TileEntityRenderer<SinkTileEntity> {
             float filledPercentage = waterAmount / (float) capacity;
             matrixStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             matrixStack.scale(1f, filledPercentage, 1f);
-            dispatcher.getBlockModelRenderer().renderModel(world, ModModels.sinkLiquid, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+            dispatcher.getBlockModelRenderer().renderModel(world, ModModels.sinkLiquid, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, Integer.MAX_VALUE, EmptyModelData.INSTANCE);
             matrixStack.pop();
         }
     }
