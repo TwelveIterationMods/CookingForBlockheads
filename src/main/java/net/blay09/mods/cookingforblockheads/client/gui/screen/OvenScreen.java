@@ -1,11 +1,19 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.container.OvenContainer;
 import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -48,10 +56,36 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
             if (slot.getHasStack()) {
                 ItemStack itemStack = tileEntity.getSmeltingResult(slot.getStack());
                 if (!itemStack.isEmpty()) {
-                    // TODO renderItemWithTint(itemStack, slot.xPos, slot.yPos + 16, 0xFFFFFF + ((int) (tileEntity.getCookProgress(i) * 255) << 24));
+                    // TODO At the moment, there seems to be no simple way of rendering an item transparently
+                    // renderItemOverlay(minecraft, slot, itemStack, tileEntity.getCookProgress(i));
                 }
             }
         }
+    }
+
+    private void renderItemOverlay(Minecraft minecraft, Slot slot, ItemStack itemStack, float alpha) {
+        RenderSystem.pushMatrix();
+        minecraft.textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        minecraft.textureManager.getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmapDirect(false, false);
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.defaultAlphaFunc();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.color4f(1f, 0f, 0f, alpha);
+        RenderSystem.translatef((float) slot.xPos, (float) slot.yPos, 250f + getBlitOffset());
+        RenderSystem.translatef(8f, 8f, 0f);
+        RenderSystem.scalef(1f, -1f, 1f);
+        RenderSystem.scalef(16f, 16f, 16f);
+        MatrixStack matrixStack = new MatrixStack();
+        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        ItemRenderer itemRenderer = minecraft.getItemRenderer();
+        itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.GUI, 15728880, OverlayTexture.DEFAULT_LIGHT, matrixStack, buffer);
+        buffer.finish();
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.popMatrix();
     }
 
     @Override
@@ -82,12 +116,9 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
 
         // Draw power bar
         if (tileEntity.hasPowerUpgrade()) {
-            //drawTexturedModalRect(guiLeft + 35, guiTop + 20, 205, 0, 18, 72);
-            //drawTexturedModalRect(guiLeft + xSize - 30, guiTop + 22, 205, 0, 18, 72);
             blit(guiLeft + xSize - 25, guiTop + 22, 205, 0, 18, 72);
             float energyPercentage = tileEntity.getEnergyStored() / (float) tileEntity.getEnergyCapacity();
             blit(guiLeft + xSize - 25 + 1, guiTop + 22 + 1 + 70 - (int) (energyPercentage * 70), 223, 0, 16, (int) (energyPercentage * 70));
-            //drawTexturedModalRect(guiLeft + 60, guiTop + 20, 205, 0, 18, 72);
         }
     }
 
