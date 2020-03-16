@@ -25,17 +25,15 @@ public class CookingTableRenderer extends TileEntityRenderer<CookingTableTileEnt
         }
 
         BlockState state = tileEntity.getBlockState();
-        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
 
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack itemStack = tileEntity.getNoFilterBook();
         if (!itemStack.isEmpty()) {
             matrixStack.push();
-            matrixStack.translate(0.5, 1, 0.5);
-            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
+            RenderUtils.applyBlockAngle(matrixStack, state);
+            matrixStack.translate(0, 1.01f, 0);
             matrixStack.rotate(new Quaternion(90f, 0f, 0f, true));
             matrixStack.scale(0.5f, 0.5f, 0.5f);
-            // TODO RenderUtils.renderItem(itemRenderer, itemStack, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            RenderUtils.renderItem(itemStack, combinedLightIn, matrixStack, bufferIn);
             matrixStack.pop();
         }
     }

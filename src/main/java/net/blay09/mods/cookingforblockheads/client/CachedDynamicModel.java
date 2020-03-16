@@ -32,14 +32,14 @@ public class CachedDynamicModel implements IBakedModel {
     private final Map<String, IBakedModel> cache = Maps.newHashMap();
 
     private final ModelBakery modelBakery;
-    private final Function<BlockState, IUnbakedModel> baseModelFunction;
+    private final Function<BlockState, ResourceLocation> baseModelFunction;
     private final List<Pair<Predicate<BlockState>, IBakedModel>> parts;
-    private final Function<BlockState, ImmutableMap<String, String>> textureMapFunction;
+    private final Function<BlockState, Map<String, String>> textureMapFunction;
     private final ResourceLocation location;
 
     private TextureAtlasSprite particleTexture;
 
-    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, IUnbakedModel> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, ImmutableMap<String, String>> textureMapFunction, ResourceLocation location) {
+    public CachedDynamicModel(ModelBakery modelBakery, Function<BlockState, ResourceLocation> baseModelFunction, @Nullable List<Pair<Predicate<BlockState>, IBakedModel>> parts, @Nullable Function<BlockState, Map<String, String>> textureMapFunction, ResourceLocation location) {
         this.modelBakery = modelBakery;
         this.baseModelFunction = baseModelFunction;
         this.parts = parts;
@@ -69,11 +69,11 @@ public class CachedDynamicModel implements IBakedModel {
                     transform.multiply(new Quaternion(0f, 180 - angle, 0f, true));
                 }
 
-                IUnbakedModel baseModel = baseModelFunction.apply(state);
-                IUnbakedModel retexturedBaseModel = textureMapFunction != null ? retexture(baseModel, textureMapFunction.apply(state)) : baseModel;
+                ResourceLocation baseModelLocation = baseModelFunction.apply(state);
+                IUnbakedModel retexturedBaseModel = textureMapFunction != null ? ModModels.retexture(modelBakery, baseModelLocation, textureMapFunction.apply(state)) : ModelLoader.instance().getModelOrMissing(baseModelLocation);
                 IModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
                 bakedModel = retexturedBaseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, location);
-                // TODO cache.put(stateString, bakedModel);
+                cache.put(stateString, bakedModel);
 
                 if (particleTexture == null && bakedModel != null) {
                     particleTexture = bakedModel.getParticleTexture(EmptyModelData.INSTANCE);
@@ -84,10 +84,6 @@ public class CachedDynamicModel implements IBakedModel {
         }
 
         return Collections.emptyList();
-    }
-
-    private IUnbakedModel retexture(IUnbakedModel baseModel, ImmutableMap<String, String> apply) {
-        return baseModel; // TODO
     }
 
     @Override
