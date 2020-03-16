@@ -19,27 +19,32 @@ public class ToasterRenderer extends TileEntityRenderer<ToasterTileEntity> {
     }
 
     @Override
-    public void render(ToasterTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(ToasterTileEntity tileEntity, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         if (!tileEntity.hasWorld()) {
             return;
         }
 
         BlockState state = tileEntity.getBlockState();
-        float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
 
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack leftStack = tileEntity.getItemHandler().getStackInSlot(0);
         ItemStack rightStack = tileEntity.getItemHandler().getStackInSlot(1);
         if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
             matrixStack.push();
-            matrixStack.translate(0.5, 0.25 + (tileEntity.isActive() ? -0.075 : 0), 0.5);
-            matrixStack.rotate(new Quaternion(0f, angle, 0f, true));
-            matrixStack.scale(0.4f, 0.4f, 0.4f);
+            RenderUtils.applyBlockAngle(matrixStack, state);
+            matrixStack.translate(0f, 0.25 + (tileEntity.isActive() ? -0.075 : 0), 0);
+            float shrinkage = 0.3f;
+            matrixStack.scale(shrinkage, shrinkage, shrinkage);
             if (!leftStack.isEmpty()) {
-                // TODO RenderUtils.renderItem(itemRenderer, leftStack, -0.025f, 0f, 0.15f, 0f, 0f, 0f, 0f);
+                matrixStack.push();
+                matrixStack.translate(0f, 0f, 0.2f);
+                RenderUtils.renderItem(leftStack, combinedLightIn, matrixStack, buffer);
+                matrixStack.pop();
             }
             if (!rightStack.isEmpty()) {
-                // TODO RenderUtils.renderItem(itemRenderer, rightStack, -0.025f, 0f, -0.15f, 0f, 0f, 0f, 0f);
+                matrixStack.push();
+                matrixStack.translate(0f, 0f, -0.2f);
+                RenderUtils.renderItem(rightStack, combinedLightIn, matrixStack, buffer);
+                matrixStack.pop();
             }
             matrixStack.pop();
         }

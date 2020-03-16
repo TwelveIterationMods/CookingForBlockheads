@@ -210,4 +210,14 @@ public abstract class BlockKitchen extends Block {
     public boolean hasTileEntity(BlockState state) {
         return true;
     }
+
+    @Override
+    public boolean eventReceived(BlockState p_189539_1_, World world, BlockPos pos, int id, int param) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity != null) {
+            return tileEntity.receiveClientEvent(id, param);
+        }
+
+        return false;
+    }
 }

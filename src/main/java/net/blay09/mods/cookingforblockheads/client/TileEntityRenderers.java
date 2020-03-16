@@ -34,6 +34,7 @@ public class TileEntityRenderers {
     @SubscribeEvent
     public static void initBlockColors(ColorHandlerEvent.Block event) {
         event.getBlockColors().register((state, world, pos, i) -> state.get(BlockKitchen.COLOR).getColorValue(), ModBlocks.fridge);
+        event.getBlockColors().register((state, world, pos, i) -> 4159204, ModBlocks.sink);
     }
 
 }

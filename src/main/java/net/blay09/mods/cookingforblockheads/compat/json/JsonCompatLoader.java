@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat.json;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
@@ -21,7 +22,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
@@ -29,21 +29,28 @@ import java.util.Optional;
 @Mod.EventBusSubscriber
 public class JsonCompatLoader implements IResourceManagerReloadListener {
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
+            .create();
+
     private static final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-        for (ResourceLocation resourceLocation : resourceManager.getAllResourceLocations("cookingforblockheads_compat", it -> it.endsWith(".json"))) {
-            try (IResource resource = resourceManager.getResource(resourceLocation)) {
-                InputStreamReader reader = new InputStreamReader(resource.getInputStream());
-                load(gson.fromJson(reader, JsonCompatData.class));
-            } catch (IOException e) {
-                CookingForBlockheads.logger.error("Parsing error loading CookingForBlockheads Data File at {}", resourceLocation, e);
+        try {
+            for (ResourceLocation resourceLocation : resourceManager.getAllResourceLocations("cookingforblockheads/compat", it -> it.endsWith(".json"))) {
+                try (IResource resource = resourceManager.getResource(resourceLocation)) {
+                    InputStreamReader reader = new InputStreamReader(resource.getInputStream());
+                    load(gson.fromJson(reader, JsonCompatData.class));
+                } catch (Exception e) {
+                    CookingForBlockheads.logger.error("Parsing error loading CookingForBlockheads data files at {}", resourceLocation, e);
+                }
             }
+
+            KitchenMultiBlock.registerConnectorBlock(ModBlocks.kitchenFloor);
+        } catch (Exception e) {
+            CookingForBlockheads.logger.error("Error loading CookingForBlockheads data files", e);
         }
-        
-        KitchenMultiBlock.registerConnectorBlock(ModBlocks.kitchenFloor);
     }
 
     @SubscribeEvent
@@ -59,54 +66,72 @@ public class JsonCompatLoader implements IResourceManagerReloadListener {
             return;
         }
 
-        for (List<ResourceLocation> list : data.getFoods().values()) {
-            for (ResourceLocation registryName : list) {
-                findItemStack(registryName).ifPresent(nonFoodRecipes::add);
+        if (data.getFoods() != null) {
+            for (List<ResourceLocation> list : data.getFoods().values()) {
+                for (ResourceLocation registryName : list) {
+                    findItemStack(registryName).ifPresent(nonFoodRecipes::add);
+                }
             }
         }
 
-        for (ResourceLocation registryName : data.getTools()) {
-            findItemStack(registryName).ifPresent(CookingForBlockheadsAPI::addToolItem);
-        }
-
-        for (ResourceLocation registryName : data.getWater()) {
-            findItemStack(registryName).ifPresent(CookingForBlockheadsAPI::addWaterItem);
-        }
-
-        for (ResourceLocation registryName : data.getMilk()) {
-            findItemStack(registryName).ifPresent(CookingForBlockheadsAPI::addMilkItem);
-        }
-
-        for (OvenFuelData ovenFuel : data.getOvenFuels()) {
-            findItemStack(ovenFuel.getItem()).ifPresent(itemStack -> CookingForBlockheadsAPI.addOvenFuel(itemStack, ovenFuel.getValue()));
-        }
-
-        for (OvenRecipeData ovenRecipe : data.getOvenRecipes()) {
-            ItemStack input = findItemStack(ovenRecipe.getInput()).orElse(ItemStack.EMPTY);
-            ItemStack output = findItemStack(ovenRecipe.getOutput()).orElse(ItemStack.EMPTY);
-            if (!input.isEmpty() && !output.isEmpty()) {
-                CookingForBlockheadsAPI.addOvenRecipe(input, output);
+        if (data.getTools() != null) {
+            for (ResourceLocation registryName : data.getTools()) {
+                findItemStack(registryName).ifPresent(CookingForBlockheadsAPI::addToolItem);
             }
         }
 
-        for (ToasterRecipeData toasterRecipe : data.getToasterRecipes()) {
-            ItemStack input = findItemStack(toasterRecipe.getInput()).orElse(ItemStack.EMPTY);
-            ItemStack output = findItemStack(toasterRecipe.getOutput()).orElse(ItemStack.EMPTY);
-            if (!input.isEmpty() && !output.isEmpty()) {
-                CookingForBlockheadsAPI.addToasterHandler(input, itemStack -> output);
+        if (data.getWater() != null) {
+            for (ResourceLocation registryName : data.getWater()) {
+                findItemStack(registryName).ifPresent(CookingForBlockheadsAPI::addWaterItem);
             }
         }
 
-        for (ResourceLocation kitchenItemProvider : data.getKitchenItemProviders()) {
-            CompatCapabilityLoader.addKitchenItemProvider(kitchenItemProvider);
+        if (data.getMilk() != null) {
+            for (ResourceLocation registryName : data.getMilk()) {
+                findItemStack(registryName).ifPresent(CookingForBlockheadsAPI::addMilkItem);
+            }
         }
 
-        for (ResourceLocation kitchenConnector : data.getKitchenConnectors()) {
-            CompatCapabilityLoader.addKitchenConnector(kitchenConnector);
+        if (data.getOvenFuels() != null) {
+            for (OvenFuelData ovenFuel : data.getOvenFuels()) {
+                findItemStack(ovenFuel.getItem()).ifPresent(itemStack -> CookingForBlockheadsAPI.addOvenFuel(itemStack, ovenFuel.getValue()));
+            }
+        }
 
-            Block connectorBlock = ForgeRegistries.BLOCKS.getValue(kitchenConnector);
-            if (connectorBlock != null) {
-                KitchenMultiBlock.registerConnectorBlock(connectorBlock);
+        if (data.getOvenRecipes() != null) {
+            for (OvenRecipeData ovenRecipe : data.getOvenRecipes()) {
+                ItemStack input = findItemStack(ovenRecipe.getInput()).orElse(ItemStack.EMPTY);
+                ItemStack output = findItemStack(ovenRecipe.getOutput()).orElse(ItemStack.EMPTY);
+                if (!input.isEmpty() && !output.isEmpty()) {
+                    CookingForBlockheadsAPI.addOvenRecipe(input, output);
+                }
+            }
+        }
+
+        if (data.getToasterRecipes() != null) {
+            for (ToasterRecipeData toasterRecipe : data.getToasterRecipes()) {
+                ItemStack input = findItemStack(toasterRecipe.getInput()).orElse(ItemStack.EMPTY);
+                ItemStack output = findItemStack(toasterRecipe.getOutput()).orElse(ItemStack.EMPTY);
+                if (!input.isEmpty() && !output.isEmpty()) {
+                    CookingForBlockheadsAPI.addToasterHandler(input, itemStack -> output);
+                }
+            }
+        }
+
+        if (data.getKitchenItemProviders() != null) {
+            for (ResourceLocation kitchenItemProvider : data.getKitchenItemProviders()) {
+                CompatCapabilityLoader.addKitchenItemProvider(kitchenItemProvider);
+            }
+        }
+
+        if (data.getKitchenConnectors() != null) {
+            for (ResourceLocation kitchenConnector : data.getKitchenConnectors()) {
+                CompatCapabilityLoader.addKitchenConnector(kitchenConnector);
+
+                Block connectorBlock = ForgeRegistries.BLOCKS.getValue(kitchenConnector);
+                if (connectorBlock != null) {
+                    KitchenMultiBlock.registerConnectorBlock(connectorBlock);
+                }
             }
         }
     }
