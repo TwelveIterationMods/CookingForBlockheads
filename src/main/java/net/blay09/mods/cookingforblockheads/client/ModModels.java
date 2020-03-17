@@ -27,11 +27,14 @@ public class ModModels {
     public static IBakedModel milkJarLiquid;
     public static IBakedModel sinkLiquid;
     public static IBakedModel ovenDoor;
+    public static IBakedModel ovenDoorHandle;
     public static IBakedModel ovenDoorActive;
     public static IBakedModel fridgeDoor;
     public static IBakedModel fridgeDoorFlipped;
-    public static IBakedModel fridgeDoorLarge;
-    public static IBakedModel fridgeDoorLargeFlipped;
+    public static IBakedModel fridgeDoorLargeLower;
+    public static IBakedModel fridgeDoorLargeUpper;
+    public static IBakedModel fridgeDoorLargeLowerFlipped;
+    public static IBakedModel fridgeDoorLargeUpperFlipped;
     public static IBakedModel[] counterDoors;
     public static IBakedModel[] counterDoorsFlipped;
     public static IBakedModel[] cabinetDoors;
@@ -44,11 +47,14 @@ public class ModModels {
             milkJarLiquid = loadAndBakeModel(event, location("block/milk_jar_liquid"));
             sinkLiquid = loadAndBakeModel(event, location("block/sink_liquid"));
             ovenDoor = loadAndBakeModel(event, location("block/oven_door"));
+            ovenDoorHandle = loadAndBakeModel(event, location("block/oven_door_handle"));
             ovenDoorActive = loadAndBakeModel(event, location("block/oven_door_active"));
             fridgeDoor = loadAndBakeModel(event, location("block/fridge_door"));
             fridgeDoorFlipped = loadAndBakeModel(event, location("block/fridge_door_flipped"));
-            fridgeDoorLarge = loadAndBakeModel(event, location("block/fridge_large_door"));
-            fridgeDoorLargeFlipped = loadAndBakeModel(event, location("block/fridge_large_door_flipped"));
+            fridgeDoorLargeLower = loadAndBakeModel(event, location("block/fridge_large_door_lower"));
+            fridgeDoorLargeLowerFlipped = loadAndBakeModel(event, location("block/fridge_large_door_lower_flipped"));
+            fridgeDoorLargeUpper = loadAndBakeModel(event, location("block/fridge_large_door_upper"));
+            fridgeDoorLargeUpperFlipped = loadAndBakeModel(event, location("block/fridge_large_door_upper_flipped"));
 
             DyeColor[] colors = DyeColor.values();
             counterDoors = new IBakedModel[colors.length + 1];
@@ -91,15 +97,15 @@ public class ModModels {
             loadAsDynamicModel(event, ModBlocks.milkJar, "block/milk_jar");
             loadAsDynamicModel(event, ModBlocks.cowJar, "block/milk_jar");
             ResourceLocation fridgeSmallModel = location("block/fridge");
-            ResourceLocation fridgeLargeModel = location("block/fridge_large");
-            ResourceLocation fridgeInvisibleModel = location("block/fridge_invisible");
+            ResourceLocation fridgeLargeLowerModel = location("block/fridge_large_lower");
+            ResourceLocation fridgeLargeUpperModel = location("block/fridge_large_upper");
             overrideWithDynamicModel(event, ModBlocks.fridge, "block/fridge", it -> {
                 FridgeBlock.FridgeModelType fridgeModelType = it.get(FridgeBlock.MODEL_TYPE);
                 switch (fridgeModelType) {
-                    case LARGE:
-                        return fridgeLargeModel;
-                    case INVISIBLE:
-                        return fridgeInvisibleModel;
+                    case LARGE_LOWER:
+                        return fridgeLargeLowerModel;
+                    case LARGE_UPPER:
+                        return fridgeLargeUpperModel;
                     default:
                         return fridgeSmallModel;
                 }

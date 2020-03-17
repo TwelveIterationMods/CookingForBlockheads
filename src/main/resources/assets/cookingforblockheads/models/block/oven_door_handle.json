@@ -1,28 +1,13 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"texture": "cookingforblockheads:block/oven_side",
-		"ovenfront": "cookingforblockheads:block/oven_front_active"
+		"ovenfront": "cookingforblockheads:block/oven_front"
 	},
 	"elements": [
 		{
-			"name": "Door",
-			"from": [1.0001, 0, 0.5],
-			"to": [15.0001, 11, 1.5],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
-			"faces": {
-				"north": {"uv": [1, 5, 15, 16], "texture": "#ovenfront"},
-				"east": {"uv": [14.5, 5, 15.5, 16], "texture": "#texture"},
-				"south": {"uv": [1, 5, 15, 16], "texture": "#ovenfront"},
-				"west": {"uv": [0.5, 5, 1.5, 16], "texture": "#texture"},
-				"up": {"uv": [1, 0.5, 15, 1.5], "texture": "#texture"},
-				"down": {"uv": [1, 14.5, 15, 15.5], "texture": "#texture"}
-			}
-		},
-		{
 			"name": "HandleLeft",
-			"from": [12, 10, 0],
-			"to": [13, 11, 0.5],
+			"from": [12, 10, 15.5],
+			"to": [13, 11, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
 				"east": {"uv": [14.5, 5, 15, 6], "texture": "#ovenfront"},
@@ -33,14 +18,28 @@
 		},
 		{
 			"name": "HandleRight",
-			"from": [3, 10, 0],
-			"to": [4, 11, 0.5],
+			"from": [3, 10, 15.5],
+			"to": [4, 11, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
 				"east": {"uv": [14.5, 5, 15, 6], "texture": "#ovenfront"},
 				"west": {"uv": [1, 5, 1.5, 6], "texture": "#ovenfront"},
 				"up": {"uv": [3, 5, 4, 5.5], "texture": "#ovenfront"},
 				"down": {"uv": [3, 5.5, 4, 6], "texture": "#ovenfront"}
+			}
+		},
+		{
+			"name": "Handle",
+			"from": [1, 10, 14.5],
+			"to": [15, 11, 15.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [2, 5, 14, 6], "texture": "#ovenfront"},
+				"east": {"uv": [1, 5, 2, 6], "texture": "#ovenfront"},
+				"south": {"uv": [2, 5, 14, 6], "texture": "#ovenfront"},
+				"west": {"uv": [14, 5, 15, 6], "texture": "#ovenfront"},
+				"up": {"uv": [2, 5, 14, 6], "texture": "#ovenfront"},
+				"down": {"uv": [2, 5, 14, 6], "texture": "#ovenfront"}
 			}
 		}
 	]

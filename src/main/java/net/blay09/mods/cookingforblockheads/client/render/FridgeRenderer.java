@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.FridgeTileEntity;
@@ -31,7 +30,7 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
 
         BlockState state = tileEntity.getBlockState();
         FridgeBlock.FridgeModelType fridgeModelType = state.get(FridgeBlock.MODEL_TYPE);
-        if (fridgeModelType == FridgeBlock.FridgeModelType.INVISIBLE) {
+        if (fridgeModelType == FridgeBlock.FridgeModelType.LARGE_UPPER) {
             return;
         }
 
@@ -45,13 +44,13 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
             matrixStack.translate(0, 0.5, 0);
             RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
             matrixStack.scale(0.3f, 0.3f, 0.3f);
-            float topY = fridgeModelType == FridgeBlock.FridgeModelType.LARGE ? 3.25f : 0.45f;
+            float topY = fridgeModelType == FridgeBlock.FridgeModelType.LARGE_LOWER ? 3.25f : 0.45f;
             IItemHandler itemHandler = tileEntity.getCombinedItemHandler();
             for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
                 ItemStack itemStack = itemHandler.getStackInSlot(i);
                 if (!itemStack.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
-                    if (fridgeModelType == FridgeBlock.FridgeModelType.LARGE) {
+                    if (fridgeModelType == FridgeBlock.FridgeModelType.LARGE_LOWER) {
                         int rowIndex = i % 18;
                         offsetX = 0.7f - (rowIndex % 9) * 0.175f;
                         offsetY = topY - (int) (i / 18f) * 1.25f;
@@ -81,7 +80,7 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
 
     private void renderDoor(World world, FridgeTileEntity tileEntity, MatrixStack matrixStack, IRenderTypeBuffer buffer, BlockState state, FridgeBlock.FridgeModelType fridgeModelType, float doorAngle) {
         boolean isFlipped = state.get(FridgeBlock.FLIPPED);
-        boolean isLarge = fridgeModelType == FridgeBlock.FridgeModelType.LARGE;
+        boolean isLarge = fridgeModelType == FridgeBlock.FridgeModelType.LARGE_LOWER;
         matrixStack.push();
         RenderUtils.applyBlockAngle(matrixStack, tileEntity.getBlockState());
         matrixStack.translate(-0.5f, 0f, -0.5f);
@@ -97,15 +96,22 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         matrixStack.rotate(new Quaternion(0f, -(float) Math.toDegrees(doorAngle), 0f, true));
         matrixStack.translate(-originX, 0f, -originZ);
 
-        IBakedModel model;
+        IBakedModel lowerModel;
+        IBakedModel upperModel = null;
         if (isLarge) {
-            model = isFlipped ? ModModels.fridgeDoorLargeFlipped : ModModels.fridgeDoorLarge;
+            lowerModel = isFlipped ? ModModels.fridgeDoorLargeLowerFlipped : ModModels.fridgeDoorLargeLower;
+            upperModel = isFlipped ? ModModels.fridgeDoorLargeUpperFlipped : ModModels.fridgeDoorLargeUpper;
         } else {
-            model = isFlipped ? ModModels.fridgeDoorFlipped : ModModels.fridgeDoor;
+            lowerModel = isFlipped ? ModModels.fridgeDoorFlipped : ModModels.fridgeDoor;
         }
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        dispatcher.getBlockModelRenderer().renderModel(world, lowerModel, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        if (upperModel != null) {
+            matrixStack.translate(0, 1, 0);
+            dispatcher.getBlockModelRenderer().renderModel(world, upperModel, tileEntity.getBlockState(), tileEntity.getPos().up(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        }
+
         matrixStack.pop();
     }
 

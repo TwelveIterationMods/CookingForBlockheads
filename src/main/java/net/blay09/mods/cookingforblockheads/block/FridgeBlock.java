@@ -36,8 +36,8 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
     public enum FridgeModelType implements IStringSerializable {
         SMALL,
-        LARGE,
-        INVISIBLE;
+        LARGE_LOWER,
+        LARGE_UPPER;
 
         @Override
         public String getName() {
@@ -122,11 +122,11 @@ public class FridgeBlock extends BlockDyeableKitchen {
         BlockPos posAbove = currentPos.up();
         BlockState stateAbove = world.getBlockState(posAbove);
         if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.SMALL) {
-            world.setBlockState(posBelow, stateBelow.with(MODEL_TYPE, FridgeModelType.LARGE), 3);
-            return state.with(MODEL_TYPE, FridgeModelType.INVISIBLE);
+            world.setBlockState(posBelow, stateBelow.with(MODEL_TYPE, FridgeModelType.LARGE_LOWER).with(FACING, state.get(FACING)), 3);
+            return state.with(MODEL_TYPE, FridgeModelType.LARGE_UPPER);
         } else if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.SMALL) {
-            world.setBlockState(posAbove, stateAbove.with(MODEL_TYPE, FridgeModelType.INVISIBLE), 3);
-            return state.with(MODEL_TYPE, FridgeModelType.LARGE);
+            world.setBlockState(posAbove, stateAbove.with(MODEL_TYPE, FridgeModelType.LARGE_UPPER).with(FACING, state.get(FACING)), 3);
+            return state.with(MODEL_TYPE, FridgeModelType.LARGE_LOWER);
         }
 
         return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
@@ -155,9 +155,9 @@ public class FridgeBlock extends BlockDyeableKitchen {
             BlockState stateAbove = world.getBlockState(posAbove);
             BlockPos posBelow = pos.down();
             BlockState stateBelow = world.getBlockState(posBelow);
-            if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.INVISIBLE) {
+            if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.get(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
                 world.setBlockState(posAbove, stateAbove.with(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            } else if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.LARGE) {
+            } else if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.get(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
                 world.setBlockState(posBelow, stateBelow.with(MODEL_TYPE, FridgeModelType.SMALL), 3);
             }
         }

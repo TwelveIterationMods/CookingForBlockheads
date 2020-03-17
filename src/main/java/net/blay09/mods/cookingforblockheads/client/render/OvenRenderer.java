@@ -41,6 +41,8 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         matrixStack.rotate(new Quaternion(-(float) Math.toDegrees(doorAngle), 0f, 0f, true));
         IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? ModModels.ovenDoorActive : ModModels.ovenDoor;
         dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        matrixStack.translate(0f, 0f, -1f);
+        dispatcher.getBlockModelRenderer().renderModel(world, ModModels.ovenDoorHandle, tileEntity.getBlockState(), tileEntity.getPos().offset(facing), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         matrixStack.pop();
 
         // Render the oven tools

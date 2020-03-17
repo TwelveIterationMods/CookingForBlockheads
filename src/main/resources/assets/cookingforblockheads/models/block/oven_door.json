@@ -1,61 +1,54 @@
 {
-	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"credit": "Made with Blockbench",
 	"textures": {
 		"texture": "cookingforblockheads:block/oven_side",
 		"ovenfront": "cookingforblockheads:block/oven_front"
 	},
 	"elements": [
 		{
-			"__comment": "Door",
-			"from": [ 1.0001, 0, 0.5 ],
-			"to": [ 15.0001, 11, 1.5 ],
-			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"name": "Door",
+			"from": [1.0001, 0, 0.5],
+			"to": [15.0001, 11, 1.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"down": { "uv": [ 1, 14.5, 15, 15.5 ], "texture": "#texture" },
-				"up": { "uv": [ 1, 0.5, 15, 1.5 ], "texture": "#texture" },
-				"north": { "uv": [ 1, 5, 15, 16 ], "texture": "#ovenfront" },
-				"south": { "uv": [ 1, 5, 15, 16 ], "texture": "#ovenfront" },
-				"west": { "uv": [ 0.5, 5, 1.5, 16 ], "texture": "#texture" },
-				"east": { "uv": [ 14.5, 5, 15.5, 16 ], "texture": "#texture" }
+				"north": {"uv": [1, 5, 15, 16], "texture": "#ovenfront"},
+				"east": {"uv": [14.5, 5, 15.5, 16], "texture": "#texture"},
+				"south": {"uv": [1, 5, 15, 16], "texture": "#ovenfront"},
+				"west": {"uv": [0.5, 5, 1.5, 16], "texture": "#texture"},
+				"up": {"uv": [1, 0.5, 15, 1.5], "texture": "#texture"},
+				"down": {"uv": [1, 14.5, 15, 15.5], "texture": "#texture"}
 			}
 		},
 		{
-			"__comment": "HandleLeft",
-			"from": [ 12, 10, -0.5 ],
-			"to": [ 13, 11, 0.5 ],
-			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"name": "HandleLeft",
+			"from": [12, 10, 0],
+			"to": [13, 11, 0.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"down": { "uv": [ 12, 5.5, 13, 6 ], "texture": "#ovenfront" },
-				"up": { "uv": [ 12, 5, 13, 5.5 ], "texture": "#ovenfront" },
-				"west": { "uv": [ 1, 5, 1.5, 6 ], "texture": "#ovenfront" },
-				"east": { "uv": [ 14.5, 5, 15, 6 ], "texture": "#ovenfront" }
+				"east": {"uv": [14.5, 5, 15, 6], "texture": "#ovenfront"},
+				"west": {"uv": [1, 5, 1.5, 6], "texture": "#ovenfront"},
+				"up": {"uv": [12, 5, 13, 5.5], "texture": "#ovenfront"},
+				"down": {"uv": [12, 5.5, 13, 6], "texture": "#ovenfront"}
 			}
 		},
 		{
-			"__comment": "HandleRight",
-			"from": [ 3, 10, -0.5 ],
-			"to": [ 4, 11, 0.5 ],
-			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
+			"name": "HandleRight",
+			"from": [3, 10, 0],
+			"to": [4, 11, 0.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"down": { "uv": [ 3, 5.5, 4, 6 ], "texture": "#ovenfront" },
-				"up": { "uv": [ 3, 5, 4, 5.5 ], "texture": "#ovenfront" },
-				"west": { "uv": [ 1, 5, 1.5, 6 ], "texture": "#ovenfront" },
-				"east": { "uv": [ 14.5, 5, 15, 6 ], "texture": "#ovenfront" }
+				"east": {"uv": [14.5, 5, 15, 6], "texture": "#ovenfront"},
+				"west": {"uv": [1, 5, 1.5, 6], "texture": "#ovenfront"},
+				"up": {"uv": [3, 5, 4, 5.5], "texture": "#ovenfront"},
+				"down": {"uv": [3, 5.5, 4, 6], "texture": "#ovenfront"}
 			}
-		},
+		}
+	],
+	"groups": [0,
 		{
-			"__comment": "Handle",
-			"from": [ 1, 10, -1.5 ],
-			"to": [ 15, 11, -0.5 ],
-			"rotation": { "origin": [ 8, 0, 8 ], "axis": "y", "angle": 0 },
-			"faces": {
-				"down": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront" },
-				"up": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront" },
-				"north": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront" },
-				"south": { "uv": [ 2, 5, 14, 6 ], "texture": "#ovenfront" },
-				"west": { "uv": [ 14, 5, 15, 6 ], "texture": "#ovenfront" },
-				"east": { "uv": [ 1, 5, 2, 6 ], "texture": "#ovenfront" }
-			}
+			"name": "oven_door_handle",
+			"origin": [8, 8, 8],
+			"children": [1, 2]
 		}
 	]
 }

@@ -185,7 +185,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
                 if (!itemStack.isEmpty()) {
                     if (slotCookTime[i] != -1) {
                         double maxCookTime = COOK_TIME * CookingForBlockheadsConfig.COMMON.ovenCookTimeMultiplier.get();
-                        if(slotCookTime[i] >= maxCookTime && firstTransferSlot == -1) {
+                        if (slotCookTime[i] >= maxCookTime && firstTransferSlot == -1) {
                             firstTransferSlot = i;
                             continue;
                         }
@@ -193,6 +193,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
                         if (furnaceBurnTime > 0) {
                             slotCookTime[i]++;
                         }
+
                         if (slotCookTime[i] >= maxCookTime) {
                             ItemStack resultStack = getSmeltingResult(itemStack);
                             if (!resultStack.isEmpty()) {
@@ -252,6 +253,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
 
     private ItemStackHandler singleSlotItemHandler = new ItemStackHandler(1);
     private RecipeWrapper singleSlotRecipeWrapper = new RecipeWrapper(singleSlotItemHandler);
+
     public ItemStack getSmeltingResult(ItemStack itemStack) {
         ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
         if (!result.isEmpty()) {
