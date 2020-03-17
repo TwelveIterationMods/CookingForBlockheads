@@ -30,7 +30,7 @@ import java.util.List;
 
 public class MilkJarTileEntity extends TileEntity {
 
-    protected static final int MILK_CAPACITY = 8000;
+    protected static final int MILK_CAPACITY = 32000;
 
     private static class MilkJarItemProvider extends DefaultKitchenItemProvider {
         private final NonNullList<ItemStack> itemStacks = NonNullList.create();
