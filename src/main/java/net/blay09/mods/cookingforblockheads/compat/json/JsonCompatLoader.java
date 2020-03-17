@@ -47,7 +47,9 @@ public class JsonCompatLoader implements IResourceManagerReloadListener {
                 }
             }
 
-            KitchenMultiBlock.registerConnectorBlock(ModBlocks.kitchenFloor);
+            for (Block kitchenFloor : ModBlocks.kitchenFloors) {
+                KitchenMultiBlock.registerConnectorBlock(kitchenFloor);
+            }
         } catch (Exception e) {
             CookingForBlockheads.logger.error("Error loading CookingForBlockheads data files", e);
         }

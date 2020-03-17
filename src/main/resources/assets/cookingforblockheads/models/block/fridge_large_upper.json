@@ -1,0 +1,103 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "cookingforblockheads:block/fridge_side",
+		"fridge_side": "cookingforblockheads:block/fridge_side",
+		"fridge_top": "cookingforblockheads:block/fridge_top",
+		"fridge_back": "cookingforblockheads:block/fridge_back",
+		"fridgeLarge_inside": "cookingforblockheads:block/fridge_inside"
+	},
+	"elements": [
+		{
+			"name": "Static_Right",
+			"from": [1, 0, 3],
+			"to": [3, 13, 15],
+			"faces": {
+				"north": {"uv": [1, 1, 3, 14], "texture": "#fridge_side", "tintindex": 0},
+				"east": {"uv": [3, 1, 15, 14], "texture": "#fridge_side", "tintindex": 0},
+				"south": {"uv": [1, 1, 3, 14], "texture": "#fridge_side", "tintindex": 0},
+				"west": {"uv": [3, 1, 15, 14], "texture": "#fridge_side", "tintindex": 0},
+				"up": {"uv": [1, 3, 3, 15], "texture": "#fridge_top", "tintindex": 0}
+			}
+		},
+		{
+			"name": "Static_Top",
+			"from": [3, 11, 3],
+			"to": [13, 13, 15],
+			"faces": {
+				"north": {"uv": [3, 1, 13, 3], "texture": "#fridge_side", "tintindex": 0},
+				"south": {"uv": [3, 1, 13, 3], "texture": "#fridge_side", "tintindex": 0},
+				"up": {"uv": [3, 3, 13, 15], "texture": "#fridge_top", "tintindex": 0},
+				"down": {"uv": [3, 3, 13, 15], "texture": "#fridge_top", "tintindex": 0}
+			}
+		},
+		{
+			"name": "Static_Left",
+			"from": [13, 0, 3],
+			"to": [15, 13, 15],
+			"faces": {
+				"north": {"uv": [13, 1, 15, 14], "texture": "#fridge_side", "tintindex": 0},
+				"east": {"uv": [3, 1, 15, 14], "texture": "#fridge_side", "tintindex": 0},
+				"south": {"uv": [13, 1, 15, 14], "texture": "#fridge_side", "tintindex": 0},
+				"west": {"uv": [3, 1, 15, 14], "texture": "#fridge_side", "tintindex": 0},
+				"up": {"uv": [13, 3, 15, 15], "texture": "#fridge_top", "tintindex": 0}
+			}
+		},
+		{
+			"name": "Static_Back",
+			"from": [3, 0, 12.5],
+			"to": [13, 11, 14.5],
+			"faces": {
+				"north": {"uv": [3, 3, 13, 14], "texture": "#fridge_side", "tintindex": 0},
+				"south": {"uv": [3, 3, 13, 11], "texture": "#fridge_back", "tintindex": 0}
+			}
+		},
+		{
+			"name": "Static_SealRight",
+			"from": [1.5, 0, 2],
+			"to": [2.5, 12.5, 3],
+			"faces": {
+				"north": {"uv": [11.5, 1.5, 12.5, 2.5], "texture": "#fridge_top"},
+				"east": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#fridge_top"},
+				"south": {"uv": [11.5, 1.5, 12.5, 2.5], "texture": "#fridge_top"},
+				"west": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#fridge_top"},
+				"up": {"uv": [12.5, 2.5, 11.5, 1.5], "texture": "#fridge_top"},
+				"down": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#fridge_top"}
+			}
+		},
+		{
+			"name": "Static_SealLeft",
+			"from": [13.5, 0, 2],
+			"to": [14.5, 12.5, 3],
+			"faces": {
+				"north": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#fridge_top"},
+				"east": {"uv": [11.5, 1.5, 12.5, 2.5], "texture": "#fridge_top"},
+				"south": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#fridge_top"},
+				"west": {"uv": [11.5, 1.5, 12.5, 2.5], "texture": "#fridge_top"},
+				"up": {"uv": [11.5, 1.5, 12.5, 2.5], "texture": "#fridge_top"},
+				"down": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#fridge_top"}
+			}
+		},
+		{
+			"name": "Static_SealTop",
+			"from": [2.5, 11.5, 2],
+			"to": [13.5, 12.5, 3],
+			"faces": {
+				"north": {"uv": [3, 1.5, 13, 2.5], "texture": "#fridge_top"},
+				"south": {"uv": [3, 1.5, 13, 2.5], "texture": "#fridge_top"},
+				"up": {"uv": [3, 1.5, 13, 2.5], "texture": "#fridge_top"},
+				"down": {"uv": [3, 1.5, 13, 2.5], "texture": "#fridge_top"}
+			}
+		},
+		{
+			"name": "Static_TopShelf",
+			"from": [3, 4.5, 3.5],
+			"to": [13, 5.5, 12.5],
+			"faces": {
+				"north": {"uv": [3, 3, 13, 4], "texture": "#fridgeLarge_inside"},
+				"up": {"uv": [3, 3, 13, 12], "texture": "#fridgeLarge_inside"},
+				"down": {"uv": [3, 3, 13, 12], "texture": "#fridgeLarge_inside"}
+			}
+		}
+	]
+}

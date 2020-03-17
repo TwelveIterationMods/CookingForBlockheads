@@ -1,11 +1,14 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import java.util.Locale;
+import java.util.Objects;
 
 public class ModBlocks {
 
@@ -15,7 +18,7 @@ public class ModBlocks {
     public static Block milkJar;
     public static Block cowJar;
     public static Block spiceRack;
-    public static Block kitchenFloor;
+    public static Block[] kitchenFloors;
     public static Block fruitBasket;
     public static Block cuttingBoard;
     public static Block cookingTable;
@@ -39,10 +42,15 @@ public class ModBlocks {
                 milkJar = new MilkJarBlock().setRegistryName(MilkJarBlock.name),
                 cowJar = new CowJarBlock().setRegistryName(CowJarBlock.name),
                 spiceRack = new SpiceRackBlock().setRegistryName(SpiceRackBlock.name),
-                kitchenFloor = new KitchenFloorBlock().setRegistryName(KitchenFloorBlock.name),
                 fruitBasket = new FruitBasketBlock().setRegistryName(FruitBasketBlock.name),
                 cuttingBoard = new CuttingBoardBlock().setRegistryName(CuttingBoardBlock.name)
         );
+
+        DyeColor[] colors = DyeColor.values();
+        kitchenFloors = new Block[colors.length];
+        for (DyeColor color : colors) {
+            registry.register(kitchenFloors[color.ordinal()] = new KitchenFloorBlock().setRegistryName(color.name().toLowerCase(Locale.ENGLISH) + "_" + KitchenFloorBlock.name));
+        }
     }
 
     public static void registerItemBlocks(IForgeRegistry<Item> registry) {
@@ -55,13 +63,16 @@ public class ModBlocks {
                 new BlockItem(ModBlocks.milkJar, createItemProperties()).setRegistryName(MilkJarBlock.name),
                 new BlockItem(ModBlocks.cowJar, createItemProperties()).setRegistryName(CowJarBlock.name),
                 new BlockItem(ModBlocks.spiceRack, createItemProperties()).setRegistryName(SpiceRackBlock.name),
-                new BlockItem(ModBlocks.kitchenFloor, createItemProperties()).setRegistryName(KitchenFloorBlock.name),
                 new BlockItem(ModBlocks.fruitBasket, createItemProperties()).setRegistryName(FruitBasketBlock.name),
                 new BlockItem(ModBlocks.counter, createItemProperties()).setRegistryName(KitchenCounterBlock.name),
                 new BlockItem(ModBlocks.corner, createItemProperties()).setRegistryName(KitchenCornerBlock.name),
                 new BlockItem(ModBlocks.cabinet, createItemProperties()).setRegistryName(CabinetBlock.name),
                 new BlockItem(ModBlocks.fridge, createItemProperties()).setRegistryName(FridgeBlock.name)
         );
+
+        for (Block kitchenFloor : kitchenFloors) {
+            registry.register(new BlockItem(kitchenFloor, createItemProperties()).setRegistryName(Objects.requireNonNull(kitchenFloor.getRegistryName())));
+        }
     }
 
     private static Item.Properties createItemProperties() {

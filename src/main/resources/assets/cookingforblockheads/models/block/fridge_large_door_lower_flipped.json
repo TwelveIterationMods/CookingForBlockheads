@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "cookingforblockheads:block/fridge_side",
+		"fridge_side": "cookingforblockheads:block/fridge_side",
+		"fridge_top": "cookingforblockheads:block/fridge_top"
+	},
+	"elements": [
+		{
+			"name": "Door_Main",
+			"from": [1, 0, 1],
+			"to": [15, 16, 2],
+			"faces": {
+				"north": {"uv": [1, 1, 15, 16], "texture": "#fridge_side", "tintindex": 0},
+				"east": {"uv": [1, 1, 2, 16], "texture": "#fridge_side", "tintindex": 0},
+				"south": {"uv": [1, 1, 15, 16], "texture": "#fridge_side", "tintindex": 0},
+				"west": {"uv": [1, 1, 2, 16], "texture": "#fridge_side", "tintindex": 0},
+				"up": {"uv": [1, 1, 15, 2], "texture": "#fridge_side", "tintindex": 0},
+				"down": {"uv": [1, 1, 15, 2], "texture": "#fridge_side", "tintindex": 0}
+			}
+		},
+		{
+			"name": "Door_Handle",
+			"from": [13, 3, 0],
+			"to": [14, 16, 1],
+			"faces": {
+				"north": {"uv": [3, 1, 4, 3], "texture": "#fridge_top"},
+				"east": {"uv": [3, 1, 4, 3], "texture": "#fridge_top"},
+				"west": {"uv": [3, 1, 4, 3], "texture": "#fridge_top"},
+				"up": {"uv": [3, 1, 4, 2], "texture": "#fridge_top"},
+				"down": {"uv": [3, 1, 4, 2], "texture": "#fridge_top"}
+			}
+		}
+	]
+}

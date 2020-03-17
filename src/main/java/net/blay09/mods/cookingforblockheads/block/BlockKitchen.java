@@ -106,7 +106,11 @@ public abstract class BlockKitchen extends Block {
     }
 
     public static boolean shouldBlockRenderLowered(IBlockReader world, BlockPos pos) {
-        Block blockBelow = world.getBlockState(pos.down()).getBlock();
+        return shouldBeLoweredUpon(world.getBlockState(pos.down()));
+    }
+
+    private static boolean shouldBeLoweredUpon(BlockState stateBelow) {
+        Block blockBelow = stateBelow.getBlock();
         return blockBelow instanceof KitchenCounterBlock || blockBelow instanceof KitchenCornerBlock;
     }
 
@@ -200,10 +204,6 @@ public abstract class BlockKitchen extends Block {
         }
 
         return state;
-    }
-
-    private boolean shouldBeLoweredUpon(BlockState facingState) {
-        return facingState.getBlock() == ModBlocks.counter;
     }
 
     @Override
