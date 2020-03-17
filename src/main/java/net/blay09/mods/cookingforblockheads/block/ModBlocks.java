@@ -27,6 +27,7 @@ public class ModBlocks {
     public static Block counter;
     public static Block cabinet;
     public static Block corner;
+    public static Block hangingCorner;
 
     public static void register(IForgeRegistry<Block> registry) {
         registry.registerAll(
@@ -43,7 +44,8 @@ public class ModBlocks {
                 cowJar = new CowJarBlock().setRegistryName(CowJarBlock.name),
                 spiceRack = new SpiceRackBlock().setRegistryName(SpiceRackBlock.name),
                 fruitBasket = new FruitBasketBlock().setRegistryName(FruitBasketBlock.name),
-                cuttingBoard = new CuttingBoardBlock().setRegistryName(CuttingBoardBlock.name)
+                cuttingBoard = new CuttingBoardBlock().setRegistryName(CuttingBoardBlock.name),
+                hangingCorner = new HangingCornerBlock().setRegistryName(HangingCornerBlock.name)
         );
 
         DyeColor[] colors = DyeColor.values();
@@ -67,7 +69,8 @@ public class ModBlocks {
                 new BlockItem(ModBlocks.counter, createItemProperties()).setRegistryName(KitchenCounterBlock.name),
                 new BlockItem(ModBlocks.corner, createItemProperties()).setRegistryName(KitchenCornerBlock.name),
                 new BlockItem(ModBlocks.cabinet, createItemProperties()).setRegistryName(CabinetBlock.name),
-                new BlockItem(ModBlocks.fridge, createItemProperties()).setRegistryName(FridgeBlock.name)
+                new BlockItem(ModBlocks.fridge, createItemProperties()).setRegistryName(FridgeBlock.name),
+                new BlockItem(ModBlocks.hangingCorner, createItemProperties()).setRegistryName(HangingCornerBlock.name)
         );
 
         for (Block kitchenFloor : kitchenFloors) {

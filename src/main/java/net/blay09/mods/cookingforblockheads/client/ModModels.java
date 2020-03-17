@@ -113,6 +113,7 @@ public class ModModels {
 
             registerColoredKitchenBlock(event, "block/counter", ModBlocks.counter);
             registerColoredKitchenBlock(event, "block/corner", ModBlocks.corner);
+            registerColoredKitchenBlock(event, "block/hanging_corner", ModBlocks.hangingCorner);
             registerColoredKitchenBlock(event, "block/cabinet", ModBlocks.cabinet);
 
             overrideWithDynamicModel(event, ModBlocks.oven, "block/oven", null, state -> {
