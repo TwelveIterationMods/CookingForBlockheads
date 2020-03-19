@@ -9,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.compat.CompatCapabilityLoader;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -131,7 +132,7 @@ public class JsonCompatLoader implements IResourceManagerReloadListener {
                 CompatCapabilityLoader.addKitchenConnector(kitchenConnector);
 
                 Block connectorBlock = ForgeRegistries.BLOCKS.getValue(kitchenConnector);
-                if (connectorBlock != null) {
+                if (connectorBlock != null && connectorBlock != Blocks.AIR) {
                     KitchenMultiBlock.registerConnectorBlock(connectorBlock);
                 }
             }

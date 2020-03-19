@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
                         }
                     } else {
                         BlockState state = world.getBlockState(position);
-                        if (blockConnectors.contains(state.getBlock())) {
+                        if (!state.isAir(world, position) && blockConnectors.contains(state.getBlock())) {
                             findNeighbourKitchenBlocks(world, position, false);
                         }
                     }
