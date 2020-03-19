@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -23,7 +24,7 @@ public class ModTextures {
 
     @SubscribeEvent
     public static void registerIconsPre(TextureStitchEvent.Pre event) {
-        if (event.getMap().getBasePath().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {
+        if (event.getMap().getBasePath().equals(PlayerContainer.LOCATION_BLOCKS_TEXTURE)) {
             for (ResourceLocation ovenToolIcon : ovenToolIcons) {
                 event.addSprite(ovenToolIcon);
             }
