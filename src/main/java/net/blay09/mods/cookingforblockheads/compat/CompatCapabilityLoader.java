@@ -41,12 +41,12 @@ public class CompatCapabilityLoader {
     }
 
     @SubscribeEvent
-    public void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
+    public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
         TileEntity tileEntity = event.getObject();
 
         if (kitchenItemProviders.contains(tileEntity.getType().getRegistryName())) {
             if (itemProviderResourceKey == null) {
-                itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenItemProvider.CAPABILITY.getName());
+                itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
             }
 
             event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(tileEntity));
@@ -54,7 +54,7 @@ public class CompatCapabilityLoader {
 
         if (kitchenConnectors.contains(tileEntity.getType().getRegistryName())) {
             if (connectorResourceKey == null) {
-                connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, CapabilityKitchenConnector.CAPABILITY.getName());
+                connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_connector");
             }
 
             if (connectorCapabilityProvider == null) {
