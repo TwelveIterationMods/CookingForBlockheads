@@ -71,7 +71,7 @@
     "tooltip.cookingforblockheads:can_be_placed_in_world": "可以放置.",
 
     "gui.cookingforblockheads:no_ingredients": "食材不足",
-    "gui.cookingforblockheads:no_selection": "在右边选定项目\n以查看食谱.",
+    "gui.cookingforblockheads:no_selection": "在右边选定项目\\n以查看食谱.",
 
     "tooltip.cookingforblockheads:click_to_see_recipe": "点击查看食谱",
     "tooltip.cookingforblockheads:click_to_craft_one": "点击合成食物",
