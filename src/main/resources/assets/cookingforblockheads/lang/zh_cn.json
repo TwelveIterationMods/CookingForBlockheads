@@ -1,5 +1,5 @@
 {
-    "item.cookingforblockheads.no_filter_edition": "傻瓜烹饪",
+    "item.cookingforblockheads.no_filter_edition": "傻瓜烹饪手册",
     "item.cookingforblockheads.recipe_book": "傻瓜烹饪手册I",
     "item.cookingforblockheads.crafting_book": "傻瓜烹饪手册II",
     "item.cookingforblockheads.heating_unit": "加热单元",
@@ -101,7 +101,7 @@
     "container.cookingforblockheads.cabinet": "厨房橱柜",
     "container.cookingforblockheads.fruit_basket": "水果篮",
 
-    "itemGroup.cookingforblockheads": "傻瓜烹饪手册",
+    "itemGroup.cookingforblockheads": "傻瓜烹饪",
 
     "waila.cookingforblockheads:milk_stored": "储存牛奶：%d/%d",
     "waila.cookingforblockheads:toast_progress": "烘烤中...（%s）",
