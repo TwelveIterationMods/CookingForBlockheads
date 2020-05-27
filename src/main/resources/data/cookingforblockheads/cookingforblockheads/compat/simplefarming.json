@@ -3,10 +3,14 @@
   "foods": {
     "INGREDIENTS": [
       "simplefarming:curry_powder",
-	    "simplefarming:jam",
-	    "simplefarming:olive_oil",
-	    "simplefarming:vinegar",
-	    "simplefarming:noodles"
+      "simplefarming:jam",
+      "simplefarming:olive_oil",
+      "simplefarming:vinegar",
+      "simplefarming:noodles",
+      "simplefarming:chocolate_cake",
+      "simplefarming:birthday_cake",
+      "simplefarming:cheese_block",
+      "simplefarming:sprinkles"
     ]
   }
 }
