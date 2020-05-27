@@ -1,0 +1,48 @@
+{
+  "modid": "pamhc2foodcore",
+  "foods": {
+    "INGREDIENTS": [
+      "pamhc2foodcore:flouritem",
+      "pamhc2foodcore:doughitem",
+      "pamhc2foodcore:freshwateritem",
+      "pamhc2foodcore:pastaitem",
+      "pamhc2foodcore:butteritem",
+      "pamhc2foodcore:saltitem",
+      "pamhc2foodcore:freshmilkitem",
+      "pamhc2foodcore:mayonaiseitem",
+      "pamhc2foodcore:cocoapowderitem",
+      "pamhc2foodcore:vinegaritem",
+      "pamhc2foodcore:batteritem",
+      "pamhc2foodcore:cookingoilitem",
+      "pamhc2foodcore:groundbeefitem",
+      "pamhc2foodcore:groundchickenitem",
+      "pamhc2foodcore:groundporkitem",
+      "pamhc2foodcore:groundfishitem",
+      "pamhc2foodcore:groundmuttonitem",
+      "pamhc2foodcore:groundrabbititem"
+    ]
+  },
+  "tools": [
+    "pamhc2foodcore:cuttingboarditem",
+    "pamhc2foodcore:potitem",
+    "pamhc2foodcore:skilletitem",
+    "pamhc2foodcore:saucepanitem",
+    "pamhc2foodcore:bakewareitem",
+    "pamhc2foodcore:mixingbowlitem",
+    "pamhc2foodcore:juiceritem",
+    "pamhc2foodcore:grinderitem",
+    "pamhc2foodcore:rolleritem"
+  ],
+  "water": [
+    "pamhc2foodcore:freshwateritem"
+  ],
+  "milk": [
+    "pamhc2foodcore:freshmilkitem"
+  ],
+  "toaster": [
+    {
+      "input": "minecraft:bread",
+      "output": "pamhc2foodcore:toastitem"
+    }
+  ]
+}
