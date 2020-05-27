@@ -99,7 +99,7 @@ public class SinkBlock extends BlockDyeableKitchen {
                         }
                     }
                 }
-                return !heldItem.isEmpty() && !(heldItem.getItem() instanceof BlockItem) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+                return ActionResultType.SUCCESS;
             }
         }
 
