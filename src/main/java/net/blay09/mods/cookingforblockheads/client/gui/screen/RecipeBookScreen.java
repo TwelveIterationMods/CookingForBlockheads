@@ -248,25 +248,6 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         RenderSystem.color4f(1f, 1f, 1f, 1f);
 
-        if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
-            int prevZLevel = getBlitOffset();
-            setBlitOffset(300);
-            for (Slot slot : container.inventorySlots) {
-                if (slot instanceof FakeSlotRecipe) {
-                    if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
-                        blit(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 76, 16, 16);
-                    }
-
-                    FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
-                    if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
-                        blit(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 92, 16, 16);
-                    }
-                }
-            }
-
-            setBlitOffset(prevZLevel);
-        }
-
         FontRenderer fontRenderer = getMinecraft().fontRenderer;
         FoodRecipeWithIngredients selection = container.getSelection();
         if (selection == null) {
@@ -302,6 +283,30 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
 
         searchBar.renderButton(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
+        getMinecraft().getTextureManager().bindTexture(guiTexture);
+        if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
+            int prevZLevel = getBlitOffset();
+            setBlitOffset(300);
+            for (Slot slot : container.inventorySlots) {
+                if (slot instanceof FakeSlotRecipe) {
+                    if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
+                        blit(slot.xPos, slot.yPos, 176, 76, 16, 16);
+                    }
+
+                    FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
+                    if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
+                        blit(slot.xPos, slot.yPos, 176, 92, 16, 16);
+                    }
+                }
+            }
+
+            setBlitOffset(prevZLevel);
+        }
     }
 
     @Override
