@@ -290,7 +290,7 @@ public class RecipeBookContainer extends Container {
 
         if (allowCrafting) {
             if (recipeType == RecipeType.CRAFTING) {
-                int craftCount = stack ? outputItem.getMaxStackSize() : 1;
+                int craftCount = stack ? outputItem.getMaxStackSize() / outputItem.getCount() : 1;
                 for (int i = 0; i < craftCount; i++) {
                     ItemStack itemStack = craftBook.tryCraft(outputItem, craftMatrix, player, multiBlock);
                     if (!itemStack.isEmpty()) {
