@@ -4,12 +4,14 @@ import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.RecipeType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.hooks.BasicEventHooks;
@@ -59,8 +61,8 @@ public class InventoryCraftBook extends CraftingInventory implements IRecipeHold
         }
 
         // Find the matching recipe and make sure it matches what the client expects
-        IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.world);
-        if (craftRecipe == null || craftRecipe.getRecipeOutput().isEmpty() || craftRecipe.getRecipeOutput().getItem() != outputItem.getItem()) {
+        IRecipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.world, IRecipeType.CRAFTING, outputItem.getItem());
+        if (craftRecipe == null || craftRecipe.getRecipeOutput().isEmpty()) {
             return ItemStack.EMPTY;
         }
 

@@ -18,6 +18,7 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.GeneralFoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.*;
@@ -301,12 +302,13 @@ public class CookingRegistry {
     }
 
     @Nullable
-    public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world) {
+    public static IRecipe findFoodRecipe(InventoryCraftBook craftMatrix, World world, IRecipeType<?> recipeType, Item expectedItem) {
         for (IRecipe<IInventory> recipe : recipeList) {
-            if (recipe.matches(craftMatrix, world)) {
+            if (recipe.getType() == recipeType && recipe.matches(craftMatrix, world) && recipe.getRecipeOutput().getItem() == expectedItem) {
                 return recipe;
             }
         }
+
         return null;
     }
 
