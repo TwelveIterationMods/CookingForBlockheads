@@ -262,7 +262,10 @@ public class RecipeBookContainer extends Container {
                     }
 
                     if (sourceList.stream().anyMatch(it -> it.getSourceProvider() != null)) {
-                        availabilityMap |= 1 << i;
+                        int origX = i % recipe.getRecipeWidth();
+                        int origY = i / recipe.getRecipeWidth();
+                        int targetIdx = origY * 3 + origX;
+                        availabilityMap |= 1 << targetIdx;
                     }
 
                     for (SourceItem source : sourceList) {
@@ -392,12 +395,11 @@ public class RecipeBookContainer extends Container {
                 int origY = i / recipe.getRecipeWidth();
                 int targetIdx = origY * 3 + origX;
                 matrix[targetIdx] = recipe.getCraftMatrix().get(i);
-
-                matrixSlots.get(i).setAvailable((recipe.getAvailabilityMap() & (1 << i)) == (1 << i));
             }
 
             for (int i = 0; i < matrix.length; i++) {
                 matrixSlots.get(i).setIngredient(matrix[i]);
+                matrixSlots.get(i).setAvailable((recipe.getAvailabilityMap() & (1 << i)) == (1 << i));
             }
         }
     }
