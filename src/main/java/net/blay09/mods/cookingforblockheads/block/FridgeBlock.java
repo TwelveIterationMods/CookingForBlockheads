@@ -40,7 +40,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
         LARGE_UPPER;
 
         @Override
-        public String getName() {
+        public String getString() {
             return name().toLowerCase();
         }
     }
@@ -76,7 +76,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
         Direction frontFace = state.get(FACING);
         if (rayTraceResult.getFace() == frontFace) {
             if (tileFridge != null) {
-                if (player.isShiftKeyDown()) {
+                if (player.isSneaking()) {
                     tileFridge.getBaseFridge().getDoorAnimator().toggleForcedOpen();
                     return ActionResultType.SUCCESS;
                 } else if (!heldItem.isEmpty() && tileFridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {

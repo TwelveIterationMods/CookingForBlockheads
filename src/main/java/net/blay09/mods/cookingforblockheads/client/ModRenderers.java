@@ -7,10 +7,10 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 public class ModRenderers {
 
     public static void register() {
-        RenderTypeLookup.setRenderLayer(ModBlocks.oven, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.milkJar, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.cowJar, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.fridge, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.oven, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.milkJar, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.cowJar, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.fridge, RenderType.getCutout());
     }
 
 }

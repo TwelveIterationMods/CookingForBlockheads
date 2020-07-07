@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat.jei;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -77,10 +78,10 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
     }
 
     @Override
-    public void draw(CowJarRecipe recipe, double mouseX, double mouseY) {
+    public void draw(CowJarRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableBlend();
-        overlay.draw(56, 20);
+        overlay.draw(matrixStack, 56, 20);
         RenderSystem.disableBlend();
         RenderSystem.disableAlphaTest();
     }

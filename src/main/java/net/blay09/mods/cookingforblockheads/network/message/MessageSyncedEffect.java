@@ -3,14 +3,12 @@ package net.blay09.mods.cookingforblockheads.network.message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -48,13 +46,13 @@ public class MessageSyncedEffect {
             BasicParticleType particleType = ParticleTypes.EXPLOSION;
             int particleCount = 1;
             float particleRandomOffset = 1f;
-            Vec3i particleOffset = Vec3i.NULL_VECTOR;
+            Vector3i particleOffset = Vector3i.NULL_VECTOR;
             SoundEvent soundEvent = null;
             float volume = 1f;
             switch (message.type) {
                 case COW_IN_A_JAR:
                     soundEvent = SoundEvents.ENTITY_CHICKEN_EGG;
-                    particleOffset = new Vec3i(0, 1, 0);
+                    particleOffset = new Vector3i(0, 1, 0);
                     break;
                 case OVEN_UPGRADE:
                 case FRIDGE_UPGRADE:

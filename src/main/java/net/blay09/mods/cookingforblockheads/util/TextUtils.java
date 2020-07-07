@@ -7,7 +7,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class TextUtils {
     public static ITextComponent coloredTextComponent(String i18n, TextFormatting color) {
         TranslationTextComponent textComponent = new TranslationTextComponent(i18n);
-        textComponent.getStyle().setColor(color);
+        textComponent.getStyle().setFormatting(color);
         return textComponent;
     }
 }

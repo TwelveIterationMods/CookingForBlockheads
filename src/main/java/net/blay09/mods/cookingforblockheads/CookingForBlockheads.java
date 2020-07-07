@@ -31,9 +31,9 @@ import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
@@ -82,7 +82,7 @@ public class CookingForBlockheads {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-        MinecraftForge.EVENT_BUS.addListener(this::setupServer);
+        MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
         MinecraftForge.EVENT_BUS.addListener(this::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
 
@@ -112,9 +112,8 @@ public class CookingForBlockheads {
         ModRenderers.register();
     }
 
-    private void setupServer(FMLServerAboutToStartEvent event) {
-        IReloadableResourceManager resourceManager = event.getServer().getResourceManager();
-        resourceManager.addReloadListener(new JsonCompatLoader());
+    private void addReloadListeners(AddReloadListenerEvent event) {
+        event.addListener(new JsonCompatLoader());
     }
 
     private void serverStarted(FMLServerStartedEvent event) {

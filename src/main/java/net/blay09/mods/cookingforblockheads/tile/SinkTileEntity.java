@@ -177,7 +177,7 @@ public class SinkTileEntity extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override
@@ -189,8 +189,8 @@ public class SinkTileEntity extends TileEntity {
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         fluidHandler.readFromNBT(tagCompound);
         color = DyeColor.byId(tagCompound.getByte("Color"));
     }

@@ -6,13 +6,13 @@ import net.blay09.mods.cookingforblockheads.tile.OvenTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
@@ -40,9 +40,9 @@ public class OvenRenderer extends TileEntityRenderer<OvenTileEntity> {
         matrixStack.translate(-0.5f, 0f, -0.5f);
         matrixStack.rotate(new Quaternion(-(float) Math.toDegrees(doorAngle), 0f, 0f, true));
         IBakedModel model = doorAngle < 0.3f && tileEntity.isBurning() ? ModModels.ovenDoorActive : ModModels.ovenDoor;
-        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         matrixStack.translate(0f, 0f, -1f);
-        dispatcher.getBlockModelRenderer().renderModel(world, ModModels.ovenDoorHandle, tileEntity.getBlockState(), tileEntity.getPos().offset(facing), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        dispatcher.getBlockModelRenderer().renderModel(world, ModModels.ovenDoorHandle, tileEntity.getBlockState(), tileEntity.getPos().offset(facing), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         matrixStack.pop();
 
         // Render the oven tools

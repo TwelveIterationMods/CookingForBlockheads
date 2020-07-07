@@ -62,7 +62,7 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
         CounterTileEntity tileCounter = (CounterTileEntity) world.getTileEntity(pos);
         if (rayTraceResult.getFace() == state.get(FACING)) {
             if (tileCounter != null) {
-                if (player.isShiftKeyDown()) {
+                if (player.isSneaking()) {
                     tileCounter.getDoorAnimator().toggleForcedOpen();
                     return ActionResultType.SUCCESS;
                 } else if (!heldItem.isEmpty() && tileCounter.getDoorAnimator().isForcedOpen()) {

@@ -48,15 +48,15 @@ public class ToasterTileEntity extends TileEntity implements ITickableTileEntity
             return true;
         } else if (id == 2) {
             BlockState state = world.getBlockState(pos);
-            world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
+            world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3, 512);
             return true;
         }
         return super.receiveClientEvent(id, type);
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
         active = tagCompound.getBoolean("Active");
         toastTicks = tagCompound.getInt("ToastTicks");
@@ -74,7 +74,7 @@ public class ToasterTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override

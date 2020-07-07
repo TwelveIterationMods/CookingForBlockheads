@@ -150,8 +150,8 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
         hasIceUpgrade = tagCompound.getBoolean("HasIceUpgrade");
         hasPreservationUpgrade = tagCompound.getBoolean("HasPreservationUpgrade");
@@ -169,7 +169,7 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
         doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }
@@ -264,7 +264,7 @@ public class FridgeTileEntity extends TileEntity implements ITickableTileEntity,
 
     public void markDirtyAndUpdate() {
         BlockState state = world.getBlockState(pos);
-        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3);
+        world.markAndNotifyBlock(pos, world.getChunkAt(pos), state, state, 3, 512);
         markDirty();
     }
 

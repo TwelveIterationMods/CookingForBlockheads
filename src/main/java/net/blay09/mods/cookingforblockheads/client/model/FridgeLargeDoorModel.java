@@ -12,7 +12,7 @@ public class FridgeLargeDoorModel extends Model {
     private final ModelRenderer handle;
 
     public FridgeLargeDoorModel(boolean flipped) {
-        super(RenderType::entitySolid);
+        super(RenderType::getEntitySolid);
 
         textureWidth = 64;
         textureHeight = 32;

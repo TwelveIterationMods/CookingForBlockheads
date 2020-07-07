@@ -97,7 +97,7 @@ public class OvenBlock extends BlockKitchen {
         OvenTileEntity tileEntity = (OvenTileEntity) world.getTileEntity(pos);
         if (rayTraceResult.getFace() == state.get(FACING)) {
             if (tileEntity != null) {
-                if (player.isShiftKeyDown()) {
+                if (player.isSneaking()) {
                     tileEntity.getDoorAnimator().toggleForcedOpen();
                     return ActionResultType.SUCCESS;
                 } else if (!heldItem.isEmpty() && tileEntity.getDoorAnimator().isForcedOpen()) {

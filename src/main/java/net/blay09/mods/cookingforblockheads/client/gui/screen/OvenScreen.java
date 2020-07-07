@@ -20,6 +20,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class OvenScreen extends ContainerScreen<OvenContainer> {
 
@@ -32,24 +33,19 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        renderBackground();
-        super.render(mouseX, mouseY, partialTicks);
-        renderHoveredToolTip(mouseX, mouseY);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        func_230459_a_(matrixStack, mouseX, mouseY); // renderHoveredTooltip
 
         OvenTileEntity tileEntity = container.getTileEntity();
         if (tileEntity.hasPowerUpgrade() && mouseX >= guiLeft + xSize - 25 && mouseY >= guiTop + 22 && mouseX < guiLeft + xSize - 25 + 35 + 18 && mouseY < guiTop + 22 + 72) {
-            renderTooltip(I18n.format("tooltip.cookingforblockheads:energy_stored", tileEntity.getEnergyStored(), tileEntity.getEnergyCapacity()), mouseX, mouseY);
+            renderTooltip(matrixStack, new TranslationTextComponent("tooltip.cookingforblockheads:energy_stored", tileEntity.getEnergyStored(), tileEntity.getEnergyCapacity()), mouseX, mouseY);
         }
     }
 
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        Minecraft minecraft = getMinecraft();
-        String ovenTitle = getTitle().getFormattedText();
-        minecraft.fontRenderer.drawString(ovenTitle, (this.xSize + 22) / 2f - minecraft.fontRenderer.getStringWidth(ovenTitle) / 2f, 6, 4210752);
-        minecraft.fontRenderer.drawString(I18n.format("container.inventory"), 8 + 22, this.ySize - 96 + 2, 4210752);
-
+    @Override // drawGuiContainerForegroundLayer
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
         OvenTileEntity tileEntity = container.getTileEntity();
         for (int i = 0; i < 9; i++) {
             Slot slot = container.inventorySlots.get(i + 7);
@@ -80,7 +76,7 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         MatrixStack matrixStack = new MatrixStack();
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
-        itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.GUI, 15728880, OverlayTexture.DEFAULT_LIGHT, matrixStack, buffer);
+        itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.GUI, 15728880, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
         buffer.finish();
         RenderSystem.enableDepthTest();
         RenderSystem.disableAlphaTest();
@@ -88,37 +84,37 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         RenderSystem.popMatrix();
     }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+    @Override // drawGuiContainerBackgroundLayer
+    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(texture);
 
         // Draw background
-        blit(guiLeft + 22, guiTop, 0, 0, xSize - 22, ySize);
+        blit(matrixStack, guiLeft + 22, guiTop, 0, 0, xSize - 22, ySize);
 
         // Draw tool slots
-        blit(guiLeft, guiTop + 10, 176, 30, 25, 87);
+        blit(matrixStack, guiLeft, guiTop + 10, 176, 30, 25, 87);
 
         OvenTileEntity tileEntity = container.getTileEntity();
         int offsetX = tileEntity.hasPowerUpgrade() ? -5 : 0;
 
         // Draw main slots
-        blit(guiLeft + 22 + 61 + offsetX, guiTop + 18, 176, 117, 76, 76);
+        blit(matrixStack, guiLeft + 22 + 61 + offsetX, guiTop + 18, 176, 117, 76, 76);
 
         // Draw fuel slot
-        blit(guiLeft + 22 + 38 + offsetX, guiTop + 43, 205, 84, 18, 33);
+        blit(matrixStack, guiLeft + 22 + 38 + offsetX, guiTop + 43, 205, 84, 18, 33);
 
         // Draw fuel bar
         if (tileEntity.isBurning()) {
             int burnTime = (int) (12 * tileEntity.getBurnTimeProgress());
-            blit(guiLeft + 22 + 40 + offsetX, guiTop + 43 + 12 - burnTime, 176, 12 - burnTime, 14, burnTime + 1);
+            blit(matrixStack, guiLeft + 22 + 40 + offsetX, guiTop + 43 + 12 - burnTime, 176, 12 - burnTime, 14, burnTime + 1);
         }
 
         // Draw power bar
         if (tileEntity.hasPowerUpgrade()) {
-            blit(guiLeft + xSize - 25, guiTop + 22, 205, 0, 18, 72);
+            blit(matrixStack, guiLeft + xSize - 25, guiTop + 22, 205, 0, 18, 72);
             float energyPercentage = tileEntity.getEnergyStored() / (float) tileEntity.getEnergyCapacity();
-            blit(guiLeft + xSize - 25 + 1, guiTop + 22 + 1 + 70 - (int) (energyPercentage * 70), 223, 0, 16, (int) (energyPercentage * 70));
+            blit(matrixStack, guiLeft + xSize - 25 + 1, guiTop + 22 + 1 + 70 - (int) (energyPercentage * 70), 223, 0, 16, (int) (energyPercentage * 70));
         }
     }
 

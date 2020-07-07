@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
@@ -26,6 +27,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -81,15 +83,15 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         getMinecraft().keyboardListener.enableRepeatEvents(true);
 
-        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, "<", it -> container.nextSubRecipe(-1));
+        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, new StringTextComponent(""), it -> container.nextSubRecipe(-1));
         btnPrevRecipe.visible = false;
         addButton(btnPrevRecipe);
 
-        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, ">", it -> container.nextSubRecipe(1));
+        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, new StringTextComponent(""), it -> container.nextSubRecipe(1));
         btnNextRecipe.visible = false;
         addButton(btnNextRecipe);
 
-        searchBar = new TextFieldWidget(getMinecraft().fontRenderer, guiLeft + xSize - 78, guiTop - 5, 70, 10, searchBar, "searchbar");
+        searchBar = new TextFieldWidget(getMinecraft().fontRenderer, guiLeft + xSize - 78, guiTop - 5, 70, 10, searchBar, new StringTextComponent(""));
         setFocusedDefault(searchBar);
 
         int yOffset = -80;
@@ -213,8 +215,8 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+    @Override // drawGuiContainerBackgroundLayer
+    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         if (container.isDirty()) {
             setCurrentOffset(currentOffset);
             container.setDirty(false);
@@ -222,7 +224,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(guiTexture);
-        blit(guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
+        blit(matrixStack, guiLeft, guiTop - 10, 0, 0, xSize, ySize + 10);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1, (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS);
@@ -253,40 +255,40 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         if (selection == null) {
             int curY = guiTop + 79 / 2 - noSelection.length / 2 * fontRenderer.FONT_HEIGHT;
             for (String s : noSelection) {
-                fontRenderer.drawStringWithShadow(s, guiLeft + 23 + 27 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
+                fontRenderer.drawStringWithShadow(matrixStack, s, guiLeft + 23 + 27 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
                 curY += fontRenderer.FONT_HEIGHT + 5;
             }
         } else if (selection.getRecipeType() == RecipeType.SMELTING) {
-            blit(guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
+            blit(matrixStack, guiLeft + 23, guiTop + 19, 54, 184, 54, 54);
         } else {
-            blit(guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
+            blit(matrixStack, guiLeft + 23, guiTop + 19, 0, 184, 54, 54);
         }
 
         if (selection != null) {
             for (FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-                    blit(guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
+                    blit(matrixStack, guiLeft + slot.xPos, guiTop + slot.yPos, 176, 60, 16, 16);
                 }
             }
         }
 
-        fill(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
+        fill(matrixStack, scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 
         if (container.getItemListCount() == 0) {
-            fill(guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
+            fill(matrixStack, guiLeft + 97, guiTop + 7, guiLeft + 168, guiTop + 85, 0xAA222222);
             int curY = guiTop + 79 / 2 - noIngredients.length / 2 * fontRenderer.FONT_HEIGHT;
             for (String s : noIngredients) {
-                fontRenderer.drawStringWithShadow(s, guiLeft + 97 + 36 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
+                fontRenderer.drawStringWithShadow(matrixStack, s, guiLeft + 97 + 36 - fontRenderer.getStringWidth(s) / 2f, curY, 0xFFFFFFFF);
                 curY += fontRenderer.FONT_HEIGHT + 5;
             }
         }
 
 
-        searchBar.renderButton(mouseX, mouseY, partialTicks);
+        searchBar.renderButton(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+    @Override // drawGuiContainerForegroundLayer
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(guiTexture);
         if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
@@ -295,12 +297,12 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
             for (Slot slot : container.inventorySlots) {
                 if (slot instanceof FakeSlotRecipe) {
                     if (CookingRegistry.isNonFoodRecipe(slot.getStack())) {
-                        blit(slot.xPos, slot.yPos, 176, 76, 16, 16);
+                        blit(matrixStack, slot.xPos, slot.yPos, 176, 76, 16, 16);
                     }
 
                     FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
-                        blit(slot.xPos, slot.yPos, 176, 92, 16, 16);
+                        blit(matrixStack, slot.xPos, slot.yPos, 176, 92, 16, 16);
                     }
                 }
             }
@@ -310,17 +312,17 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground();
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
 
-        super.render(mouseX, mouseY, partialTicks);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         int prevZLevel = getBlitOffset();
         setBlitOffset(300);
         for (Slot slot : container.inventorySlots) {
             if (slot instanceof FakeSlotCraftMatrix) {
                 if (!((FakeSlotCraftMatrix) slot).isAvailable() && !slot.getStack().isEmpty()) {
-                    fillGradient(guiLeft + slot.xPos, guiTop + slot.yPos, guiLeft + slot.xPos + 16, guiTop + slot.yPos + 16, 0x77FF4444, 0x77FF5555);
+                    fillGradient(matrixStack, guiLeft + slot.xPos, guiTop + slot.yPos, guiLeft + slot.xPos + 16, guiTop + slot.yPos + 16, 0x77FF4444, 0x77FF5555);
                 }
             }
         }
@@ -330,11 +332,11 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         for (Button sortButton : this.sortButtons) {
             if (sortButton instanceof SortButton && sortButton.isMouseOver(mouseX, mouseY) && sortButton.active) {
-                renderTooltip(((SortButton) sortButton).getTooltipLines(), mouseX, mouseY);
+                renderTooltip(matrixStack, ((SortButton) sortButton).getTooltipLines(), mouseX, mouseY);
             }
         }
 
-        this.renderHoveredToolTip(mouseX, mouseY);
+        this.func_230459_a_(matrixStack, mouseX, mouseY); // renderHoveredTooltip
     }
 
     @Override

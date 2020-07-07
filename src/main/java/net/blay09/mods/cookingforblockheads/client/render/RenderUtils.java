@@ -5,10 +5,10 @@ import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Quaternion;
 
 public class RenderUtils {
 
@@ -23,7 +23,7 @@ public class RenderUtils {
     }
 
     public static void renderItem(ItemStack itemStack, int combinedLight, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
-        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLight, OverlayTexture.DEFAULT_LIGHT, matrixStack, buffer);
+        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLight, OverlayTexture.NO_OVERLAY, matrixStack, buffer);
     }
 
     /*private static final Random random = new Random();

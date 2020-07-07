@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -196,15 +197,15 @@ public class MilkJarTileEntity extends TileEntity {
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         milkAmount = tagCompound.getFloat("MilkAmount");
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override

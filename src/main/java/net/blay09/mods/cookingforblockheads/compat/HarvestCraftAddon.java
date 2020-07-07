@@ -18,14 +18,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -89,12 +87,8 @@ public class HarvestCraftAddon {
 
         BlockPos pos = event.getPos().offset(event.getFace());
         if (canPlace(player, ModBlocks.cuttingBoard.getDefaultState(), world, pos)) {
-            BlockItemUseContext useContext = new BlockItemUseContext(new ItemUseContext(player, event.getHand(), new BlockRayTraceResult(new Vec3d(pos), event.getFace(), pos, true)));
+            BlockItemUseContext useContext = new BlockItemUseContext(new ItemUseContext(player, event.getHand(), new BlockRayTraceResult(Vector3d.func_237491_b_(pos), event.getFace(), pos, true)));
             BlockState placedState = ModBlocks.cuttingBoard.getStateForPlacement(useContext);
-            if (ForgeEventFactory.onBlockPlace(player, new BlockSnapshot(world, pos, placedState), event.getFace())) {
-                return;
-            }
-
             world.setBlockState(pos, placedState);
             if (!player.abilities.isCreativeMode) {
                 event.getItemStack().shrink(1);

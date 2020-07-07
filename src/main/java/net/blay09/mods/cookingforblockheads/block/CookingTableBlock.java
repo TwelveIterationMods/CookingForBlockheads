@@ -53,7 +53,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
                     return ActionResultType.SUCCESS;
                 }
             }
-        } else if (player.isShiftKeyDown()) {
+        } else if (player.isSneaking()) {
             if (tileEntity != null) {
                 ItemStack noFilterBook = tileEntity.getNoFilterBook();
                 if (!noFilterBook.isEmpty()) {

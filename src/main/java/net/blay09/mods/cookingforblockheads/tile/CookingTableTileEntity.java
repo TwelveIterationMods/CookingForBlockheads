@@ -9,7 +9,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -61,8 +60,8 @@ public class CookingTableTileEntity extends TileEntity implements INamedContaine
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         if (tagCompound.contains("NoFilterBook")) {
             setNoFilterBook(ItemStack.read(tagCompound.getCompound("NoFilterBook")));
         }
@@ -81,7 +80,7 @@ public class CookingTableTileEntity extends TileEntity implements INamedContaine
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Nonnull

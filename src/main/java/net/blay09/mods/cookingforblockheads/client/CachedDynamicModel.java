@@ -1,17 +1,16 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.TransformationMatrix;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.SimpleModelTransform;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -60,13 +59,13 @@ public class CachedDynamicModel implements IBakedModel {
             String stateString = state.toString();
             IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
-                if (state.has(BlockKitchen.LOWERED) && state.get(BlockKitchen.LOWERED)) {
+                if (state.func_235901_b_(BlockKitchen.LOWERED) && state.get(BlockKitchen.LOWERED)) { // has
                     transform.translate(new Vector3f(0, -0.05f, 0f));
                 }
 
-                if (state.has(BlockKitchen.FACING)) {
+                if (state.func_235901_b_(BlockKitchen.FACING)) { // has
                     float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
-                    transform.multiply(new Quaternion(0f, 180 - angle, 0f, true));
+                    transform.mul(new Quaternion(0f, 180 - angle, 0f, true));
                 }
 
                 ResourceLocation baseModelLocation = baseModelFunction.apply(state);

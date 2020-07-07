@@ -74,7 +74,7 @@ public class ItemRecipeBook extends Item {
             });
         }
 
-        return ActionResult.func_226248_a_(player.getHeldItem(hand));
+        return ActionResult.resultSuccess(player.getHeldItem(hand));
     }
 
     @Override

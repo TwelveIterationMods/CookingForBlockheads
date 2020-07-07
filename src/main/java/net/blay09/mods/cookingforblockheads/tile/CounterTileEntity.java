@@ -95,8 +95,8 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         CompoundNBT itemHandlerCompound = tagCompound.getCompound("ItemHandler");
         if (CookingForBlockheadsConfig.COMMON.largeCounters.get() && itemHandlerCompound.getInt("Size") < 54) {
             itemHandlerCompound.putInt("Size", 54);
@@ -118,7 +118,7 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
         doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }

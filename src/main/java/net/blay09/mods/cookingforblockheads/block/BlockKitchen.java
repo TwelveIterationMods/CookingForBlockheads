@@ -76,10 +76,10 @@ public abstract class BlockKitchen extends Block {
     @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-        if (state.has(LOWERED)) {
+        if (state.func_235901_b_(LOWERED)) { // has
             state = state.with(LOWERED, shouldBeLoweredUpon(context.getWorld().getBlockState(context.getPos().down())));
         }
-        return state.has(HAS_COLOR) ? state.with(HAS_COLOR, false) : state;
+        return state.func_235901_b_(HAS_COLOR) ? state.with(HAS_COLOR, false) : state;  // has
     }
 
     @Override
@@ -174,7 +174,7 @@ public abstract class BlockKitchen extends Block {
     }
 
     private boolean removeColor(BlockState state, IWorld world, BlockPos pos, Direction facing) {
-        if (state.has(COLOR) && state.has(HAS_COLOR)) {
+        if (state.func_235901_b_(COLOR) && state.func_235901_b_(HAS_COLOR)) { // has
             if (state.get(HAS_COLOR)) {
                 world.setBlockState(pos, state.with(HAS_COLOR, false), 3);
                 return true;
@@ -184,9 +184,8 @@ public abstract class BlockKitchen extends Block {
         return false;
     }
 
-    @Override
-    public boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
-        if (state.has(COLOR) && state.has(HAS_COLOR)) {
+    private boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
+        if (state.func_235901_b_(COLOR) && state.func_235901_b_(HAS_COLOR)) { // has
             DyeColor current = state.get(COLOR);
             if (current != color || !state.get(HAS_COLOR)) {
                 world.setBlockState(pos, state.with(COLOR, color).with(HAS_COLOR, true), 3);
@@ -199,7 +198,7 @@ public abstract class BlockKitchen extends Block {
 
     @Override
     public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (facing == Direction.DOWN && state.has(LOWERED)) {
+        if (facing == Direction.DOWN && state.func_235901_b_(LOWERED)) { // has
             return state.with(LOWERED, shouldBeLoweredUpon(facingState));
         }
 

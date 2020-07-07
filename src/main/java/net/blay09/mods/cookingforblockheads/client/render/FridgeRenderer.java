@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.IItemHandler;
@@ -106,10 +107,10 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         }
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        dispatcher.getBlockModelRenderer().renderModel(world, lowerModel, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        dispatcher.getBlockModelRenderer().renderModel(world, lowerModel, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         if (upperModel != null) {
             matrixStack.translate(0, 1, 0);
-            dispatcher.getBlockModelRenderer().renderModel(world, upperModel, tileEntity.getBlockState(), tileEntity.getPos().up(), matrixStack, buffer.getBuffer(RenderType.solid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+            dispatcher.getBlockModelRenderer().renderModel(world, upperModel, tileEntity.getBlockState(), tileEntity.getPos().up(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
         }
 
         matrixStack.pop();

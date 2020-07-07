@@ -302,8 +302,8 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
         furnaceBurnTime = tagCompound.getShort("BurnTime");
         currentItemBurnTime = tagCompound.getShort("CurrentItemBurnTime");
@@ -343,7 +343,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
         doorAnimator.setForcedOpen(pkt.getNbtCompound().getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(pkt.getNbtCompound().getByte("NumPlayersUsing"));
     }

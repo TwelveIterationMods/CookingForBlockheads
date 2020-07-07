@@ -12,7 +12,7 @@ public class CounterDoorModel extends Model {
     private final ModelRenderer handle;
 
     public CounterDoorModel(boolean flipped) {
-        super(RenderType::entitySolid);
+        super(RenderType::getEntitySolid);
 
         textureWidth = 64;
         textureHeight = 16;

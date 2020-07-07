@@ -33,7 +33,7 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
         protected void onContentsChanged(int slot) {
             markDirty();
             BlockState blockState = world.getBlockState(pos);
-            world.markAndNotifyBlock(pos, world.getChunkAt(pos), blockState, blockState, 1 | 2);
+            world.markAndNotifyBlock(pos, world.getChunkAt(pos), blockState, blockState, 1 | 2, 512);
         }
     };
 
@@ -47,8 +47,8 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void read(BlockState state, CompoundNBT tagCompound) {
+        super.read(state, tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
     }
 
@@ -62,7 +62,7 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         super.onDataPacket(net, pkt);
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override

@@ -143,9 +143,9 @@ public class ModModels {
     }
 
     public static IUnbakedModel retexture(ModelBakery bakery, ResourceLocation baseModel, Map<String, String> replacedTextures) {
-        Map<String, Either<Material, String>> replacedTexturesMapped = new HashMap<>();
+        Map<String, Either<RenderMaterial, String>> replacedTexturesMapped = new HashMap<>();
         for (Map.Entry<String, String> entry : replacedTextures.entrySet()) {
-            replacedTexturesMapped.put(entry.getKey(), Either.left(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(entry.getValue()))));
+            replacedTexturesMapped.put(entry.getKey(), Either.left(new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(entry.getValue()))));
         }
 
         BlockModel blockModel = new BlockModel(baseModel, Collections.emptyList(), replacedTexturesMapped, false, BlockModel.GuiLight.FRONT, ItemCameraTransforms.DEFAULT, Collections.emptyList());
@@ -171,7 +171,7 @@ public class ModModels {
     }
 
     private static String getColoredTerracottaTexture(DyeColor color) {
-        return "minecraft:block/" + color.getName().toLowerCase(Locale.ENGLISH) + "_terracotta";
+        return "minecraft:block/" + color.name().toLowerCase(Locale.ENGLISH) + "_terracotta";
     }
 
     private static void loadAsDynamicModel(ModelBakeEvent event, Block block, String modelPath) throws Exception {

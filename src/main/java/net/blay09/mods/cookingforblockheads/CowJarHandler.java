@@ -30,7 +30,7 @@ public class CowJarHandler {
             return;
         }
         if (event.getSource() == DamageSource.ANVIL && isCow(event.getEntityLiving())) {
-            BlockPos pos = event.getEntity().getPosition();
+            BlockPos pos = event.getEntity().func_233580_cy_();
             BlockState blockBelow = event.getEntity().getEntityWorld().getBlockState(pos);
             if (blockBelow.getBlock() == ModBlocks.milkJar) {
                 event.getEntity().getEntityWorld().setBlockState(pos, ModBlocks.cowJar.getDefaultState());
