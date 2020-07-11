@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItem
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -44,24 +45,26 @@ public class CompatCapabilityLoader {
     public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
         TileEntity tileEntity = event.getObject();
 
-        if (kitchenItemProviders.contains(tileEntity.getType().getRegistryName())) {
-            if (itemProviderResourceKey == null) {
-                itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
+        if (tileEntity.getType() != null) {
+            if (kitchenItemProviders.contains(tileEntity.getType().getRegistryName())) {
+                if (itemProviderResourceKey == null) {
+                    itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
+                }
+
+                event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(tileEntity));
             }
 
-            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(tileEntity));
-        }
+            if (kitchenConnectors.contains(tileEntity.getType().getRegistryName())) {
+                if (connectorResourceKey == null) {
+                    connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_connector");
+                }
 
-        if (kitchenConnectors.contains(tileEntity.getType().getRegistryName())) {
-            if (connectorResourceKey == null) {
-                connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_connector");
+                if (connectorCapabilityProvider == null) {
+                    connectorCapabilityProvider = new KitchenConnectorCapabilityProvider();
+                }
+
+                event.addCapability(connectorResourceKey, connectorCapabilityProvider);
             }
-
-            if (connectorCapabilityProvider == null) {
-                connectorCapabilityProvider = new KitchenConnectorCapabilityProvider();
-            }
-
-            event.addCapability(connectorResourceKey, connectorCapabilityProvider);
         }
     }
 
