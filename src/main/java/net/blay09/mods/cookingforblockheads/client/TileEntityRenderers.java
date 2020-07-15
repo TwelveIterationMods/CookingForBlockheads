@@ -35,12 +35,11 @@ public class TileEntityRenderers {
 
     @SubscribeEvent
     public static void initBlockColors(ColorHandlerEvent.Block event) {
-        if (ModBlocks.fridge == null) {
-            throw new RuntimeException("Something crashed the event bus earlier in the loading stage. This is NOT a Cooking for Blockheads issue! Scroll up in your latest.log to find the real crash log.");
+        // Guard against event bus crashes - this will prevent Cooking for Blockheads being falsely shown as reason for the crash if some other mod crashed the event bus earlier.
+        if (ModBlocks.fridge != null && ModBlocks.sink != null) {
+            event.getBlockColors().register((state, world, pos, i) -> state.get(BlockKitchen.COLOR).getColorValue(), ModBlocks.fridge);
+            event.getBlockColors().register((state, world, pos, i) -> 4159204, ModBlocks.sink);
         }
-
-        event.getBlockColors().register((state, world, pos, i) -> state.get(BlockKitchen.COLOR).getColorValue(), ModBlocks.fridge);
-        event.getBlockColors().register((state, world, pos, i) -> 4159204, ModBlocks.sink);
     }
 
 }
