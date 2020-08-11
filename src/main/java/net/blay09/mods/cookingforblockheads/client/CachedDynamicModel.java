@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import com.google.common.collect.Maps;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.*;
@@ -19,16 +18,14 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class CachedDynamicModel implements IBakedModel {
 
-    private final Map<String, IBakedModel> cache = Maps.newHashMap();
+    private final Map<String, IBakedModel> cache = new HashMap<>();
+    private final Map<ResourceLocation, IBakedModel> baseModelCache = new HashMap<>();
 
     private final ModelBakery modelBakery;
     private final Function<BlockState, ResourceLocation> baseModelFunction;
@@ -68,9 +65,18 @@ public class CachedDynamicModel implements IBakedModel {
                     transform.mul(new Quaternion(0f, 180 - angle, 0f, true));
                 }
 
-                ResourceLocation baseModelLocation = baseModelFunction.apply(state);
-                IUnbakedModel retexturedBaseModel = textureMapFunction != null ? ModModels.retexture(modelBakery, baseModelLocation, textureMapFunction.apply(state)) : ModelLoader.instance().getModelOrMissing(baseModelLocation);
                 IModelTransform modelTransform = new SimpleModelTransform(new TransformationMatrix(transform));
+
+                ResourceLocation baseModelLocation = baseModelFunction.apply(state);
+
+                // If we're going to retexture, we need to ensure the base model has already been baked to prevent circular parent references in the retextured model
+                if (textureMapFunction != null && !baseModelCache.containsKey(baseModelLocation)) {
+                    final IUnbakedModel baseModel = ModelLoader.instance().getModelOrMissing(baseModelLocation);
+                    final IBakedModel bakedBaseModel = baseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, baseModelLocation);
+                    baseModelCache.put(baseModelLocation, bakedBaseModel);
+                }
+
+                IUnbakedModel retexturedBaseModel = textureMapFunction != null ? ModModels.retexture(modelBakery, baseModelLocation, textureMapFunction.apply(state)) : ModelLoader.instance().getModelOrMissing(baseModelLocation);
                 bakedModel = retexturedBaseModel.bakeModel(modelBakery, ModelLoader.defaultTextureGetter(), modelTransform, location);
                 cache.put(stateString, bakedModel);
 
