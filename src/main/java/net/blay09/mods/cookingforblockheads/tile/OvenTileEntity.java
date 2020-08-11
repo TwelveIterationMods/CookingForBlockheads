@@ -243,6 +243,12 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
         }
     }
 
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        isDirty = true;
+    }
+
     public int getEnergyStored() {
         return energyStorage.getEnergyStored();
     }
