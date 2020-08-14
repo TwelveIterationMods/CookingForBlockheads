@@ -44,8 +44,8 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         }
     }
 
-    @Override // drawGuiContainerForegroundLayer
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+    @Override
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         OvenTileEntity tileEntity = container.getTileEntity();
         for (int i = 0; i < 9; i++) {
             Slot slot = container.inventorySlots.get(i + 7);
@@ -84,8 +84,8 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         RenderSystem.popMatrix();
     }
 
-    @Override // drawGuiContainerBackgroundLayer
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    @Override
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(texture);
 

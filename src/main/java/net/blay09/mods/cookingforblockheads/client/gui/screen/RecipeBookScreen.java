@@ -215,8 +215,8 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override // drawGuiContainerBackgroundLayer
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    @Override
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         if (container.isDirty()) {
             setCurrentOffset(currentOffset);
             container.setDirty(false);
@@ -287,8 +287,8 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
         searchBar.renderButton(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-    @Override // drawGuiContainerForegroundLayer
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+    @Override
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(guiTexture);
         if (CookingForBlockheadsConfig.CLIENT.showIngredientIcon.get()) {
@@ -332,7 +332,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         for (Button sortButton : this.sortButtons) {
             if (sortButton instanceof SortButton && sortButton.isMouseOver(mouseX, mouseY) && sortButton.active) {
-                renderTooltip(matrixStack, ((SortButton) sortButton).getTooltipLines(), mouseX, mouseY);
+                func_243308_b(matrixStack, ((SortButton) sortButton).getTooltipLines(), mouseX, mouseY);
             }
         }
 
@@ -340,8 +340,8 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
     }
 
     @Override
-    public void removed() {
-        super.removed();
+    public void onClose() {
+        super.onClose();
 
         getMinecraft().keyboardListener.enableRepeatEvents(false);
 

@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -19,7 +20,7 @@ public class SortButton extends Button {
 
     private final ISortButton button;
 
-    private final List<ITextProperties> tooltipLines = Lists.newArrayList();
+    private final List<ITextComponent> tooltipLines = Lists.newArrayList();
 
     public SortButton(int x, int y, ISortButton button, IPressable onPress) {
         super(x, y, 20, 20, new StringTextComponent(""), onPress);
@@ -43,7 +44,7 @@ public class SortButton extends Button {
         blit(matrixStack, x, y, button.getIconTextureX(), texY, width, height);
     }
 
-    public List<ITextProperties> getTooltipLines() {
+    public List<ITextComponent> getTooltipLines() {
         return tooltipLines;
     }
 

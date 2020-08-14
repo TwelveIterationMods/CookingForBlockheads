@@ -76,10 +76,10 @@ public abstract class BlockKitchen extends Block {
     @Nonnull
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState state = getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-        if (state.func_235901_b_(LOWERED)) { // has
+        if (state.hasProperty(LOWERED)) {
             state = state.with(LOWERED, shouldBeLoweredUpon(context.getWorld().getBlockState(context.getPos().down())));
         }
-        return state.func_235901_b_(HAS_COLOR) ? state.with(HAS_COLOR, false) : state;  // has
+        return state.hasProperty(HAS_COLOR) ? state.with(HAS_COLOR, false) : state;
     }
 
     @Override
@@ -174,7 +174,7 @@ public abstract class BlockKitchen extends Block {
     }
 
     private boolean removeColor(BlockState state, IWorld world, BlockPos pos, Direction facing) {
-        if (state.func_235901_b_(COLOR) && state.func_235901_b_(HAS_COLOR)) { // has
+        if (state.hasProperty(COLOR) && state.hasProperty(HAS_COLOR)) {
             if (state.get(HAS_COLOR)) {
                 world.setBlockState(pos, state.with(HAS_COLOR, false), 3);
                 return true;
@@ -185,7 +185,7 @@ public abstract class BlockKitchen extends Block {
     }
 
     private boolean recolorBlock(BlockState state, IWorld world, BlockPos pos, Direction facing, DyeColor color) {
-        if (state.func_235901_b_(COLOR) && state.func_235901_b_(HAS_COLOR)) { // has
+        if (state.hasProperty(COLOR) && state.hasProperty(HAS_COLOR)) {
             DyeColor current = state.get(COLOR);
             if (current != color || !state.get(HAS_COLOR)) {
                 world.setBlockState(pos, state.with(COLOR, color).with(HAS_COLOR, true), 3);
@@ -198,7 +198,7 @@ public abstract class BlockKitchen extends Block {
 
     @Override
     public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (facing == Direction.DOWN && state.func_235901_b_(LOWERED)) { // has
+        if (facing == Direction.DOWN && state.hasProperty(LOWERED)) {
             return state.with(LOWERED, shouldBeLoweredUpon(facingState));
         }
 

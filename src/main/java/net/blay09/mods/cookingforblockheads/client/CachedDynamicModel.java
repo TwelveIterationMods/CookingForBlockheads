@@ -56,11 +56,11 @@ public class CachedDynamicModel implements IBakedModel {
             String stateString = state.toString();
             IBakedModel bakedModel = cache.get(stateString);
             if (bakedModel == null) {
-                if (state.func_235901_b_(BlockKitchen.LOWERED) && state.get(BlockKitchen.LOWERED)) { // has
+                if (state.hasProperty(BlockKitchen.LOWERED) && state.get(BlockKitchen.LOWERED)) {
                     transform.translate(new Vector3f(0, -0.05f, 0f));
                 }
 
-                if (state.func_235901_b_(BlockKitchen.FACING)) { // has
+                if (state.hasProperty(BlockKitchen.FACING)) {
                     float angle = state.get(BlockKitchen.FACING).getHorizontalAngle();
                     transform.mul(new Quaternion(0f, 180 - angle, 0f, true));
                 }

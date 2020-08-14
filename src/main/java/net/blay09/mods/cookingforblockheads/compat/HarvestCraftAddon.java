@@ -87,7 +87,7 @@ public class HarvestCraftAddon {
 
         BlockPos pos = event.getPos().offset(event.getFace());
         if (canPlace(player, ModBlocks.cuttingBoard.getDefaultState(), world, pos)) {
-            BlockItemUseContext useContext = new BlockItemUseContext(new ItemUseContext(player, event.getHand(), new BlockRayTraceResult(Vector3d.func_237491_b_(pos), event.getFace(), pos, true)));
+            BlockItemUseContext useContext = new BlockItemUseContext(new ItemUseContext(player, event.getHand(), new BlockRayTraceResult(Vector3d.copy(pos), event.getFace(), pos, true)));
             BlockState placedState = ModBlocks.cuttingBoard.getStateForPlacement(useContext);
             world.setBlockState(pos, placedState);
             if (!player.abilities.isCreativeMode) {

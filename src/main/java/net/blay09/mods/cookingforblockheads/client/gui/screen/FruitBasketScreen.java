@@ -17,6 +17,7 @@ public class FruitBasketScreen extends ContainerScreen<FruitBasketContainer> {
         super(container, playerInventory, displayName);
         this.inventoryRows = container.getNumRows();
         this.ySize = 114 + this.inventoryRows * 18;
+        this.playerInventoryTitleY = this.ySize - 94;
     }
 
     @Override
@@ -26,8 +27,8 @@ public class FruitBasketScreen extends ContainerScreen<FruitBasketContainer> {
         func_230459_a_(matrixStack, mouseX, mouseY); // renderHoveredTooltip
     }
 
-    @Override // drawGuiContainerBackgroundLayer
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    @Override
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1f, 1f, 1f, 1f);
         getMinecraft().getTextureManager().bindTexture(texture);
         blit(matrixStack, guiLeft, guiTop, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
