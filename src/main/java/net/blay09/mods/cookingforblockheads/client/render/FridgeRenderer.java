@@ -16,7 +16,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.Random;
+
 public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
+
+    private static final Random random = new Random();
 
     public FridgeRenderer(TileEntityRendererDispatcher dispatcher) {
         super(dispatcher);
@@ -107,10 +111,10 @@ public class FridgeRenderer extends TileEntityRenderer<FridgeTileEntity> {
         }
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        dispatcher.getBlockModelRenderer().renderModel(world, lowerModel, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        dispatcher.getBlockModelRenderer().renderModel(world, lowerModel, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, random, 0, 0, EmptyModelData.INSTANCE);
         if (upperModel != null) {
             matrixStack.translate(0, 1, 0);
-            dispatcher.getBlockModelRenderer().renderModel(world, upperModel, tileEntity.getBlockState(), tileEntity.getPos().up(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+            dispatcher.getBlockModelRenderer().renderModel(world, upperModel, tileEntity.getBlockState(), tileEntity.getPos().up(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, random, 0, 0, EmptyModelData.INSTANCE);
         }
 
         matrixStack.pop();

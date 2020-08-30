@@ -20,8 +20,11 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
+
+    private static final Random random = new Random();
 
     private static final float doorOriginX = 0.84375f;
 
@@ -84,7 +87,7 @@ public class CounterRenderer extends TileEntityRenderer<CounterTileEntity> {
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IBakedModel model = getDoorModel(blockColor, isFlipped);
-        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+        dispatcher.getBlockModelRenderer().renderModel(world, model, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, random, 0, 0, EmptyModelData.INSTANCE);
         matrixStack.pop();
 
         // Render the content if the door is open

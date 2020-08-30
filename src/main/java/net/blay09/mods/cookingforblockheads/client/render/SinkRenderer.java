@@ -13,7 +13,11 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
+import java.util.Random;
+
 public class SinkRenderer extends TileEntityRenderer<SinkTileEntity> {
+
+    private static final Random random = new Random();
 
     public SinkRenderer(TileEntityRendererDispatcher dispatcher) {
         super(dispatcher);
@@ -34,7 +38,7 @@ public class SinkRenderer extends TileEntityRenderer<SinkTileEntity> {
             float filledPercentage = waterAmount / (float) capacity;
             matrixStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             matrixStack.scale(1f, filledPercentage, 1f);
-            dispatcher.getBlockModelRenderer().renderModel(world, ModModels.sinkLiquid, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getTranslucent()), false, world.rand, 0, Integer.MAX_VALUE, EmptyModelData.INSTANCE);
+            dispatcher.getBlockModelRenderer().renderModel(world, ModModels.sinkLiquid, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getTranslucent()), false, random, 0, Integer.MAX_VALUE, EmptyModelData.INSTANCE);
             matrixStack.pop();
         }
     }

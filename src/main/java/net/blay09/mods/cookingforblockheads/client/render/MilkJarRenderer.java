@@ -13,9 +13,11 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
+import java.util.Random;
+
 public class MilkJarRenderer extends TileEntityRenderer<MilkJarTileEntity> {
 
-    protected static BlockRendererDispatcher blockRenderer;
+    private static final Random random = new Random();
 
     public MilkJarRenderer(TileEntityRendererDispatcher dispatcher) {
         super(dispatcher);
@@ -34,7 +36,7 @@ public class MilkJarRenderer extends TileEntityRenderer<MilkJarTileEntity> {
             matrixStack.push();
             matrixStack.translate(0, (BlockKitchen.shouldBlockRenderLowered(world, tileEntity.getPos()) ? -0.05 : 0), 0);
             matrixStack.scale(1f, milkAmount / tileEntity.getMilkCapacity(), 1f);
-            dispatcher.getBlockModelRenderer().renderModel(world, ModModels.milkJarLiquid, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, world.rand, 0, 0, EmptyModelData.INSTANCE);
+            dispatcher.getBlockModelRenderer().renderModel(world, ModModels.milkJarLiquid, tileEntity.getBlockState(), tileEntity.getPos(), matrixStack, buffer.getBuffer(RenderType.getSolid()), false, random, 0, 0, EmptyModelData.INSTANCE);
             matrixStack.pop();
         }
     }
