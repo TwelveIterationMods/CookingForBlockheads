@@ -150,7 +150,7 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
 
-        if (button == 1 && mouseX >= searchBar.x && mouseX < searchBar.x + searchBar.getWidth() && mouseY >= searchBar.y && mouseY < searchBar.y + searchBar.getHeight()) {
+        if (button == 1 && mouseX >= searchBar.x && mouseX < searchBar.x + searchBar.getWidth() && mouseY >= searchBar.y && mouseY < searchBar.y + searchBar.getWidth_CLASH()) {
             searchBar.setText("");
             container.search(null);
             container.populateRecipeSlots();
