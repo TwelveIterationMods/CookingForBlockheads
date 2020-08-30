@@ -42,7 +42,7 @@ public class JEIAddon implements IModPlugin {
             public List<Rectangle2d> getGuiExtraAreas(RecipeBookScreen containerScreen) {
                 List<Rectangle2d> list = Lists.newArrayList();
                 for (Button button : containerScreen.getSortingButtons()) {
-                    list.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+                    list.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getWidth_CLASH()));
                 }
 
                 return list;
