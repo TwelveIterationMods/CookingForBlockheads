@@ -103,7 +103,7 @@ public class HarvestCraftAddon {
 
     private boolean canPlace(PlayerEntity player, BlockState state, World world, BlockPos pos) {
         ISelectionContext context = ISelectionContext.forEntity(player);
-        return state.isValidPosition(world, pos) && world.func_226663_a_(state, pos, context);
+        return state.isValidPosition(world, pos) && world.placedBlockCollides(state, pos, context);
     }
 
 }

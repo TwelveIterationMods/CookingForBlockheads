@@ -36,7 +36,7 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        func_230459_a_(matrixStack, mouseX, mouseY); // renderHoveredTooltip
+        renderHoveredTooltip(matrixStack, mouseX, mouseY);
 
         OvenTileEntity tileEntity = container.getTileEntity();
         if (tileEntity.hasPowerUpgrade() && mouseX >= guiLeft + xSize - 25 && mouseY >= guiTop + 22 && mouseX < guiLeft + xSize - 25 + 35 + 18 && mouseY < guiTop + 22 + 72) {

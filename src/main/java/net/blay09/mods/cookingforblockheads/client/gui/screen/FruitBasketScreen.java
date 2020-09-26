@@ -24,7 +24,7 @@ public class FruitBasketScreen extends ContainerScreen<FruitBasketContainer> {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        func_230459_a_(matrixStack, mouseX, mouseY); // renderHoveredTooltip
+        renderHoveredTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override

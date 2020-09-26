@@ -102,8 +102,8 @@ public class CachedDynamicModel implements IBakedModel {
     }
 
     @Override
-    public boolean func_230044_c_() {
-        return false; // flat diffuse lighting = false
+    public boolean isSideLit() {
+        return false;
     }
 
     @Override
