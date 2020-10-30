@@ -30,10 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CookingRegistry {
 
@@ -48,7 +45,7 @@ public class CookingRegistry {
     private static final NonNullList<ItemStack> milkItems = NonNullList.create();
     private static final List<ISortButton> customSortButtons = Lists.newArrayList();
 
-    private static Collection<ItemStack> nonFoodRecipes;
+    private static Collection<ItemStack> nonFoodRecipes = Collections.emptyList();
 
     public static void initFoodRegistry(RecipeManager recipeManager) {
         recipeList.clear();
