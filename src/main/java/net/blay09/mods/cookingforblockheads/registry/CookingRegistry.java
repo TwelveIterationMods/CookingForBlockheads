@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -64,6 +65,13 @@ public class CookingRegistry {
             }
 
             ItemStack output = recipe.getRecipeOutput();
+
+            //noinspection ConstantConditions
+            if (output == null) {
+                CookingForBlockheads.logger.warn("Recipe " + recipe.getId() + " returned a null ItemStack in getRecipeOutput - this is bad! Modder should return an empty ItemStack instead to avoid problems.");
+                continue;
+            }
+
             if (!output.isEmpty()) {
                 if (output.getItem().isFood()) {
                     if (!HarvestCraftAddon.isWeirdConversionRecipe(recipe)) {
