@@ -19,7 +19,8 @@
       "pamhc2foodcore:groundporkitem",
       "pamhc2foodcore:groundfishitem",
       "pamhc2foodcore:groundmuttonitem",
-      "pamhc2foodcore:groundrabbititem"
+      "pamhc2foodcore:groundrabbititem",
+      "pamhc2foodcore:creamitem"
     ]
   },
   "tools": [
