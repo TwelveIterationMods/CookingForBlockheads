@@ -28,7 +28,7 @@ public class ItemPreservationChamber extends Item {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public ItemPreservationChamber() {
-        super(new Item.Properties().group(CookingForBlockheads.itemGroup).maxStackSize(1));
+        super(new Item.Properties().group(CookingForBlockheads.itemGroup));
     }
 
     @Override
