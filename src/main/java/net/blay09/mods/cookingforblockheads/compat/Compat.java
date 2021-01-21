@@ -4,6 +4,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -18,12 +19,17 @@ public class Compat {
     public static final String INVENTORY_TWEAKS = "inventorytweaks";
     public static final String QUARK = "quark";
 
+    private static boolean milkFluidInitialized = false;
     private static Fluid milkFluid = null;
 
     @Nullable
     public static Fluid getMilkFluid() {
-        if (milkFluid == null) {
-            milkFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation("minecraft", "milk"));
+        if (!milkFluidInitialized) {
+            milkFluidInitialized = true;
+            ItemStack milkBucket = new ItemStack(Items.MILK_BUCKET);
+            if(FluidUtil.getFluidHandler(milkBucket).isPresent()) {
+                milkFluid = FluidUtil.getFluidContained(milkBucket).get().getFluid();
+            }
         }
 
         return milkFluid;
