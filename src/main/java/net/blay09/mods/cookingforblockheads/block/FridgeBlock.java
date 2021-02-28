@@ -139,7 +139,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
 
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (newState.getBlock() != state.getBlock()) {
+        if (!state.isIn(newState.getBlock())) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof FridgeTileEntity) {
                 if (((FridgeTileEntity) tileEntity).hasIceUpgrade()) {

@@ -77,7 +77,7 @@ public class CuttingBoardBlock extends BlockKitchen {
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
         // Drop cutting board manually as the loot table system doesn't allow easy dropping of an item that may not exist
         // TODO this should be fixed once it's possible as it'll probably break other things
-        if (!isMoving && Compat.cuttingBoardItem != null) {
+        if (!isMoving && Compat.cuttingBoardItem != null && !state.isIn(newState.getBlock())) {
             ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ());
             itemEntity.setItem(new ItemStack(Compat.cuttingBoardItem));
             world.addEntity(itemEntity);
