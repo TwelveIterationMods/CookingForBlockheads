@@ -76,7 +76,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
         CookingTableTileEntity tileEntity = (CookingTableTileEntity) world.getTileEntity(pos);
-        if (tileEntity != null) {
+        if (tileEntity != null && !state.isIn(newState.getBlock())) {
             ItemUtils.spawnItemStack(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());
         }
 

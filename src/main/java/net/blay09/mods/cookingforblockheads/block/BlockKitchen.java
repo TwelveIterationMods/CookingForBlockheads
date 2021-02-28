@@ -140,7 +140,7 @@ public abstract class BlockKitchen extends Block {
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity != null && state.getBlock() != newState.getBlock()) {
+        if (tileEntity != null && !state.isIn(newState.getBlock())) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                     .ifPresent(itemHandler -> ItemUtils.dropItemHandlerItems(world, pos, itemHandler));
         }
