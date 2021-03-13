@@ -50,7 +50,10 @@
     "vanillafoodpantry:fermenting_bucket",
     "vanillafoodpantry:flint_cutter",
     "vanillafoodpantry:whisk",
-    "vanillafoodpantry:weighted_plate"
+    "vanillafoodpantry:rolling_pin",
+    "vanillafoodpantry:weighted_plate",
+    "vanillafoodpantry:flint_cutter",
+    "vanillafoodpantry:flint_butcher_axe"
   ],
   "water": [
     "vanillafoodpantry:water_portion"

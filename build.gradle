@@ -125,6 +125,8 @@ dependencies {
     compile fg.deobf("curse.maven:immersive-engineering-231951:3233018")
     compile fg.deobf("curse.maven:hwyla-253449:3033593")
     compile fg.deobf("curse.maven:the-one-probe-245211:3108607")
+    compile fg.deobf("curse.maven:vanillafoodpantry-mod-238170:3232078")
+    compile fg.deobf("curse.maven:carrots-lib-311327:3231845")
 
     def obfModsDir = new File("run/obfmods")
     obfModsDir.eachFile { file ->
