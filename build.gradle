@@ -50,6 +50,8 @@ minecraft {
 //            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
 
+            property 'mixin.env.disableRefMap', 'true'
+
             mods {
                 cookingforblockheads {
                     source sourceSets.main
@@ -118,6 +120,7 @@ dependencies {
     compile fg.deobf("curse.maven:pams-harvestcraft-2-food-extended-402231:3117044")
     compile fg.deobf("curse.maven:pams-harvestcraft-2-crops-361385:3076451")
     compile fg.deobf("curse.maven:pams-harvestcraft-2-trees-365460:3117043")
+    compile fg.deobf("curse.maven:farmers-delight-398521:3188508")
 
     def obfModsDir = new File("run/obfmods")
     obfModsDir.eachFile { file ->

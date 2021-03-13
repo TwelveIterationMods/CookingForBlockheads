@@ -166,9 +166,10 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
                     if (!fuelItem.isEmpty()) {
                         currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getBurnTime(fuelItem) * CookingForBlockheadsConfig.COMMON.ovenFuelTimeMultiplier.get());
                         if (furnaceBurnTime != 0) {
+                            ItemStack containerItem = fuelItem.getItem().getContainerItem(fuelItem);
                             fuelItem.shrink(1);
-                            if (fuelItem.getCount() == 0) {
-                                itemHandlerFuel.setStackInSlot(i, fuelItem.getItem().getContainerItem(fuelItem));
+                            if (fuelItem.isEmpty()) {
+                                itemHandlerFuel.setStackInSlot(i, containerItem);
                             }
                             hasChanged = true;
                         }
