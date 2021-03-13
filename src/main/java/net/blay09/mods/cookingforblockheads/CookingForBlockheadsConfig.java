@@ -8,6 +8,7 @@ public class CookingForBlockheadsConfig {
     public static class Common {
         public final ForgeConfigSpec.BooleanValue cowJarEnabled;
         public final ForgeConfigSpec.DoubleValue cowJarMilkPerTick;
+        public final ForgeConfigSpec.DoubleValue compressedCowJarMilkMultiplier;
         public final ForgeConfigSpec.BooleanValue sinkRequiresWater;
         public final ForgeConfigSpec.BooleanValue largeCounters;
         public final ForgeConfigSpec.BooleanValue disallowOvenAutomation;
@@ -25,6 +26,11 @@ public class CookingForBlockheadsConfig {
                     .comment("The amount of milk the cow in a jar generates per tick.")
                     .translation("waystones.config.cowJarMilkPerTick")
                     .defineInRange("cowJarMilkPerTick", 0.5f, 0, Float.MAX_VALUE);
+
+            compressedCowJarMilkMultiplier = builder
+                    .comment("Ex Compressum compatibility. Multiplier applied to the milk per tick for Compressed Cow in a Jar.")
+                    .translation("waystones.config.compressedCowJarMilkMultiplier")
+                    .defineInRange("compressedCowJarMilkMultiplier", 9, 0, Float.MAX_VALUE);
 
             sinkRequiresWater = builder
                     .comment("Set this to true if you'd like the sink to require water to be piped in, instead of providing infinite of it.")

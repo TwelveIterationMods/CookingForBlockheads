@@ -127,6 +127,7 @@ dependencies {
     compile fg.deobf("curse.maven:the-one-probe-245211:3108607")
     compile fg.deobf("curse.maven:vanillafoodpantry-mod-238170:3232078")
     compile fg.deobf("curse.maven:carrots-lib-311327:3231845")
+    compile fg.deobf("curse.maven:ex-compressum-241967:3226248")
 
     def obfModsDir = new File("run/obfmods")
     obfModsDir.eachFile { file ->

@@ -17,6 +17,7 @@ public class CowJarTileEntity extends MilkJarTileEntity implements ITickableTile
     private int ticksSinceUpdate;
 
     private ITextComponent customName;
+    private boolean compressedCow;
 
     public CowJarTileEntity() {
         super(ModTileEntities.cowJar);
@@ -29,6 +30,8 @@ public class CowJarTileEntity extends MilkJarTileEntity implements ITickableTile
         if (tagCompound.contains("CustomName", Constants.NBT.TAG_STRING)) {
             customName = ITextComponent.Serializer.getComponentFromJson(tagCompound.getString("CustomName"));
         }
+
+        compressedCow = tagCompound.getBoolean("CompressedCow");
     }
 
     @Override
@@ -37,13 +40,20 @@ public class CowJarTileEntity extends MilkJarTileEntity implements ITickableTile
             tagCompound.putString("CustomName", ITextComponent.Serializer.toJson(customName));
         }
 
+        tagCompound.putBoolean("CompressedCow", compressedCow);
+
         return super.write(tagCompound);
     }
 
     @Override
     public void tick() {
         if (milkAmount < MILK_CAPACITY) {
-            milkAmount += CookingForBlockheadsConfig.COMMON.cowJarMilkPerTick.get();
+            double milkToAdd = CookingForBlockheadsConfig.COMMON.cowJarMilkPerTick.get();
+            if (compressedCow) {
+                milkToAdd *= CookingForBlockheadsConfig.COMMON.compressedCowJarMilkMultiplier.get();;
+            }
+
+            milkAmount += milkToAdd;
             isDirty = true;
         }
 
@@ -53,6 +63,14 @@ public class CowJarTileEntity extends MilkJarTileEntity implements ITickableTile
             ticksSinceUpdate = 0;
             isDirty = false;
         }
+    }
+
+    public boolean isCompressedCow() {
+        return compressedCow;
+    }
+
+    public void setCompressedCow(boolean compressedCow) {
+        this.compressedCow = compressedCow;
     }
 
     @Override
@@ -83,6 +101,10 @@ public class CowJarTileEntity extends MilkJarTileEntity implements ITickableTile
 
     @Override
     public ITextComponent getDefaultName() {
+        if (compressedCow) {
+            return new TranslationTextComponent("container.cookingforblockheads.cow_jar_compressed");
+        }
+
         return new TranslationTextComponent("container.cookingforblockheads.cow_jar");
     }
 }
