@@ -28,11 +28,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -46,7 +46,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -100,6 +99,8 @@ public class CookingForBlockheads {
 
         MinecraftForge.EVENT_BUS.register(new IMCHandler());
         MinecraftForge.EVENT_BUS.register(new CowJarHandler());
+
+        ForgeMod.enableMilkFluid();
     }
 
     private void setup(FMLCommonSetupEvent event) {
@@ -154,11 +155,6 @@ public class CookingForBlockheads {
                 e.printStackTrace();
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void enqueueIMC(InterModEnqueueEvent event) {
-        // TODO FMLInterModComms.sendFunctionMessage(Compat.THEONEPROBE, "getTheOneProbe", "net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon");
     }
 
     @SubscribeEvent
