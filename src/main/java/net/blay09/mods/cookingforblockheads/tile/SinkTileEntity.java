@@ -72,7 +72,13 @@ public class SinkTileEntity extends TileEntity {
                 return resource.copy();
             }
 
-            return super.drain(resource, action);
+            //Copied from FluidTank#drain as the parent's drain function needs to be called not the one from this class
+            if (resource.isEmpty() || !resource.isFluidEqual(fluid))
+            {
+                return FluidStack.EMPTY;
+            }
+
+            return super.drain(resource.getAmount(), action);
         }
 
         @Override
@@ -84,6 +90,14 @@ public class SinkTileEntity extends TileEntity {
             return super.drain(maxDrain, action);
         }
 
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
+            if (!CookingForBlockheadsConfig.COMMON.sinkRequiresWater.get()) {
+                return resource.getAmount();
+            }
+
+            return super.fill(resource, action);
+        }
     }
 
     private static class SinkItemProvider extends DefaultKitchenItemProvider {
