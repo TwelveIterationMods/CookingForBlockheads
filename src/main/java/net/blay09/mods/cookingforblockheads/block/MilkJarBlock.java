@@ -1,12 +1,16 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.state.StateContainer;
@@ -19,12 +23,14 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class MilkJarBlock extends BlockKitchen {
+public class MilkJarBlock extends BlockKitchen implements IBucketPickupHandler {
 
     public static final String name = "milk_jar";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -90,4 +96,13 @@ public class MilkJarBlock extends BlockKitchen {
         return new MilkJarTileEntity();
     }
 
+    @Override
+    public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof MilkJarTileEntity && ((MilkJarTileEntity) tileEntity).getMilkAmount() >= 1000) {
+            int drained = ((MilkJarTileEntity) tileEntity).drain(1000, IFluidHandler.FluidAction.EXECUTE);
+            return drained >= 1000 ? Compat.getMilkFluid() : Fluids.EMPTY;
+        }
+        return Fluids.EMPTY;
+    }
 }
