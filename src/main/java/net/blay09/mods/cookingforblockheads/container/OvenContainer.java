@@ -31,7 +31,7 @@ public class OvenContainer extends Container implements IContainerWithDoor {
         addSlot(new SlotOvenFuel(tileEntity.getItemHandler(), 3, 61 + offsetX, 59));
 
         for (int i = 0; i < 3; i++) {
-            addSlot(new SlotOvenResult(tileEntity.getItemHandler(), i + 4, 142 + offsetX, 41 + i * 18));
+            addSlot(new OvenResultSlot(playerInventory.player, tileEntity, tileEntity.getItemHandler(), i + 4, 142 + offsetX, 41 + i * 18));
         }
 
         for (int i = 0; i < 3; i++) {
@@ -127,11 +127,12 @@ public class OvenContainer extends Container implements IContainerWithDoor {
                 if (!mergeItemStack(slotStack, 20, 56, true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onSlotChange(slotStack, itemStack);
             } else if (slotIndex >= 4 && slotIndex <= 6) {
                 if (!this.mergeItemStack(slotStack, 20, 56, false)) {
                     return ItemStack.EMPTY;
                 }
+
+                slot.onSlotChange(slotStack, itemStack);
             } else if (slotIndex >= 20) {
                 ItemStack smeltingResult = tileEntity.getSmeltingResult(slotStack);
                 if (OvenTileEntity.isItemFuel(slotStack)) {

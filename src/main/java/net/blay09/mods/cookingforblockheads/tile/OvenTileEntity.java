@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.container.OvenContainer;
@@ -29,6 +30,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
@@ -199,9 +201,11 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
                         }
 
                         if (slotCookTime[i] >= maxCookTime) {
-                            ItemStack resultStack = getSmeltingResult(itemStack);
-                            if (!resultStack.isEmpty()) {
-                                itemHandlerProcessing.setStackInSlot(i, resultStack.copy());
+                            ItemStack smeltingResult = getSmeltingResult(itemStack);
+                            if (!smeltingResult.isEmpty()) {
+                                ItemStack resultStack = smeltingResult.copy();
+                                itemHandlerProcessing.setStackInSlot(i, resultStack);
+                                MinecraftForge.EVENT_BUS.post(new OvenCookedEvent(world, pos, resultStack));
                                 slotCookTime[i] = -1;
                                 if (firstTransferSlot == -1) {
                                     firstTransferSlot = i;
@@ -503,4 +507,5 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     public ITextComponent getDefaultName() {
         return new TranslationTextComponent("container.cookingforblockheads.oven");
     }
+
 }
