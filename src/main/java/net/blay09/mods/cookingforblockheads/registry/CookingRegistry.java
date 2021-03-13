@@ -68,7 +68,7 @@ public class CookingRegistry {
 
             //noinspection ConstantConditions
             if (output == null) {
-                CookingForBlockheads.logger.warn("Recipe " + recipe.getId() + " returned a null ItemStack in getRecipeOutput - this is bad! Modder should return an empty ItemStack instead to avoid problems.");
+                CookingForBlockheads.logger.warn("Recipe " + recipe.getId() + " returned a null ItemStack in getRecipeOutput - this is bad! The developer of " + recipe.getId().getNamespace() + " should return an empty ItemStack instead to avoid problems.");
                 continue;
             }
 
