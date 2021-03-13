@@ -12,6 +12,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.blay09.mods.cookingforblockheads.compat.VanillaAddon;
 import net.blay09.mods.cookingforblockheads.compat.json.JsonCompatLoader;
 import net.blay09.mods.cookingforblockheads.container.ModContainers;
@@ -82,6 +83,8 @@ public class CookingForBlockheads {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imc);
+
         MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
         MinecraftForge.EVENT_BUS.addListener(this::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
@@ -110,6 +113,12 @@ public class CookingForBlockheads {
     private void setupClient(FMLClientSetupEvent event) {
         ModScreens.register();
         ModRenderers.register();
+    }
+
+    private void imc(InterModEnqueueEvent event) {
+        if(ModList.get().isLoaded(Compat.THEONEPROBE)) {
+            TheOneProbeAddon.register();
+        }
     }
 
     private void addReloadListeners(AddReloadListenerEvent event) {

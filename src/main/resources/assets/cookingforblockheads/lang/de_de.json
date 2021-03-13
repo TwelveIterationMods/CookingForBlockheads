@@ -104,7 +104,7 @@
     "itemGroup.cookingforblockheads": "Cooking for Blockheads",
     
     "waila.cookingforblockheads:milk_stored": "Gelagerte Milch: %d/%d",
-    "waila.cookingforblockheads:toast_progress": "Toasten... (%s)",
+    "waila.cookingforblockheads:toast_progress": "Toasten... (%s %%)",
     "waila.cookingforblockheads:heating_unit": "Upgrade: Heizeinheit",
     "waila.cookingforblockheads:ice_unit": "Upgrade: Eis-Einheit",
     "waila.cookingforblockheads:preservation_chamber": "Upgrade: Konservierungs-Kammer",

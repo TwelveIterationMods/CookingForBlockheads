@@ -121,6 +121,10 @@ dependencies {
     compile fg.deobf("curse.maven:pams-harvestcraft-2-crops-361385:3076451")
     compile fg.deobf("curse.maven:pams-harvestcraft-2-trees-365460:3117043")
     compile fg.deobf("curse.maven:farmers-delight-398521:3188508")
+    compile fg.deobf("curse.maven:mekanism-268560:3206392")
+    compile fg.deobf("curse.maven:immersive-engineering-231951:3233018")
+    compile fg.deobf("curse.maven:hwyla-253449:3033593")
+    compile fg.deobf("curse.maven:the-one-probe-245211:3108607")
 
     def obfModsDir = new File("run/obfmods")
     obfModsDir.eachFile { file ->
