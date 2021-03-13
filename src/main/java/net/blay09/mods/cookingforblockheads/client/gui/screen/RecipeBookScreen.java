@@ -83,11 +83,11 @@ public class RecipeBookScreen extends ContainerScreen<RecipeBookContainer> {
 
         getMinecraft().keyboardListener.enableRepeatEvents(true);
 
-        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, new StringTextComponent(""), it -> container.nextSubRecipe(-1));
+        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, new StringTextComponent("<"), it -> container.nextSubRecipe(-1));
         btnPrevRecipe.visible = false;
         addButton(btnPrevRecipe);
 
-        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, new StringTextComponent(""), it -> container.nextSubRecipe(1));
+        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, new StringTextComponent(">"), it -> container.nextSubRecipe(1));
         btnNextRecipe.visible = false;
         addButton(btnNextRecipe);
 
