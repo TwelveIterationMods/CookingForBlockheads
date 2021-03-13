@@ -16,6 +16,7 @@ public class WailaAddon implements IWailaPlugin {
 
     @Override
     public void register(IRegistrar registrar) {
+        registrar.registerComponentProvider(new MilkJarDataProvider(), TooltipPosition.HEAD, MilkJarBlock.class);
         registrar.registerComponentProvider(new MilkJarDataProvider(), TooltipPosition.BODY, MilkJarBlock.class);
         registrar.registerComponentProvider(new ToasterDataProvider(), TooltipPosition.BODY, ToasterBlock.class);
         registrar.registerComponentProvider(new OvenDataProvider(), TooltipPosition.BODY, OvenBlock.class);
@@ -24,6 +25,15 @@ public class WailaAddon implements IWailaPlugin {
     }
 
     public static class MilkJarDataProvider implements IComponentProvider {
+
+        @Override
+        public void appendHead(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config) {
+            TileEntity tileEntity = accessor.getTileEntity();
+            if (tileEntity instanceof CowJarTileEntity && ((CowJarTileEntity) tileEntity).getCustomName() != null) {
+                tooltip.clear();
+                tooltip.add(((CowJarTileEntity) tileEntity).getCustomName());
+            }
+        }
 
         @Override
         public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config) {

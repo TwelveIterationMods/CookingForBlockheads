@@ -4,12 +4,19 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.network.NetworkHandler;
 import net.blay09.mods.cookingforblockheads.network.message.MessageSyncedEffect;
+import net.blay09.mods.cookingforblockheads.tile.CowJarTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -29,14 +36,22 @@ public class CowJarHandler {
         if (!CookingForBlockheadsConfig.COMMON.cowJarEnabled.get()) {
             return;
         }
+
         if (event.getSource() == DamageSource.ANVIL && isCow(event.getEntityLiving())) {
-            BlockPos pos = event.getEntity().getPosition();
-            BlockState blockBelow = event.getEntity().getEntityWorld().getBlockState(pos);
+            Entity entity = event.getEntity();
+            BlockPos pos = entity.getPosition();
+            World world = entity.getEntityWorld();
+            BlockState blockBelow = world.getBlockState(pos);
             if (blockBelow.getBlock() == ModBlocks.milkJar) {
-                event.getEntity().getEntityWorld().setBlockState(pos, ModBlocks.cowJar.getDefaultState());
+                world.setBlockState(pos, ModBlocks.cowJar.getDefaultState());
+                TileEntity tileEntity = world.getTileEntity(pos);
+                if (tileEntity instanceof CowJarTileEntity && entity.getCustomName() != null) {
+                    ITextComponent textComponent = new TranslationTextComponent("container.cookingforblockheads.cow_jar_custom", entity.getCustomName());
+                    ((CowJarTileEntity) tileEntity).setCustomName(textComponent);
+                }
             }
-            NetworkHandler.sendToAllTracking(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.COW_IN_A_JAR), event.getEntity());
-            event.getEntity().remove();
+            NetworkHandler.sendToAllTracking(new MessageSyncedEffect(pos, MessageSyncedEffect.Type.COW_IN_A_JAR), entity);
+            entity.remove();
             event.setCanceled(true);
         }
     }

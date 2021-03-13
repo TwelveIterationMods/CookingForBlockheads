@@ -119,6 +119,7 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
     @Override
     public void setCustomName(ITextComponent customName) {
         this.customName = customName;
+        markDirty();
     }
 
     @Override

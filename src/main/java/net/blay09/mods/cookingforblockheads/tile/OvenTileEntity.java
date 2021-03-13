@@ -480,6 +480,7 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     @Override
     public void setCustomName(ITextComponent customName) {
         this.customName = customName;
+        markDirty();
     }
 
     @Override

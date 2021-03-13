@@ -4,6 +4,6 @@ import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 
 public interface IMutableNameable extends INameable {
-    void setCustomName(ITextComponent textComponent);
+    void setCustomName(ITextComponent customName);
     ITextComponent getDefaultName();
 }

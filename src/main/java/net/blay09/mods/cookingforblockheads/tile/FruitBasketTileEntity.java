@@ -116,6 +116,7 @@ public class FruitBasketTileEntity extends TileEntity implements INamedContainer
     @Override
     public void setCustomName(ITextComponent customName) {
         this.customName = customName;
+        markDirty();
     }
 
     @Override

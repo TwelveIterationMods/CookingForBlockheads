@@ -199,6 +199,7 @@ public class CounterTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public void setCustomName(ITextComponent customName) {
         this.customName = customName;
+        markDirty();
     }
 
     @Override

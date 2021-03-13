@@ -100,6 +100,8 @@
     "container.cookingforblockheads.counter": "Kitchen Counter",
     "container.cookingforblockheads.cabinet": "Kitchen Cabinet",
     "container.cookingforblockheads.fruit_basket": "Fruit Basket",
+    "container.cookingforblockheads.cow_jar": "Cow in a Jar",
+    "container.cookingforblockheads.cow_jar_custom": "%s in a Jar",
 
     "itemGroup.cookingforblockheads": "Cooking for Blockheads",
 
