@@ -6,7 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cookingforblockheads:oven"
+          "name": "cookingforblockheads:oven",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            }
+          ]
         }
       ],
       "conditions": [

@@ -6,7 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cookingforblockheads:fridge"
+          "name": "cookingforblockheads:fridge",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            }
+          ]
         }
       ],
       "conditions": [

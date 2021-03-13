@@ -30,6 +30,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -44,7 +45,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 
-public class OvenTileEntity extends TileEntity implements ITickableTileEntity, IKitchenSmeltingProvider, INamedContainerProvider {
+public class OvenTileEntity extends TileEntity implements ITickableTileEntity, IKitchenSmeltingProvider, INamedContainerProvider, IMutableNameable {
 
     private static final int COOK_TIME = 200;
 
@@ -108,6 +109,8 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     private final LazyOptional<IItemHandler> itemHandlerInputCap = LazyOptional.of(() -> itemHandlerInput);
     private final LazyOptional<IItemHandler> itemHandlerFuelCap = LazyOptional.of(() -> itemHandlerFuel);
     private final LazyOptional<IItemHandler> itemHandlerOutputCap = LazyOptional.of(() -> itemHandlerOutput);
+
+    private ITextComponent customName;
 
     private boolean isFirstTick = true;
 
@@ -318,6 +321,10 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
 
         hasPowerUpgrade = tagCompound.getBoolean("HasPowerUpgrade");
         energyStorage.setEnergyStored(tagCompound.getInt("EnergyStored"));
+
+        if (tagCompound.contains("CustomName", Constants.NBT.TAG_STRING)) {
+            customName = ITextComponent.Serializer.getComponentFromJson(tagCompound.getString("CustomName"));
+        }
     }
 
     @Override
@@ -330,6 +337,11 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
 
         tagCompound.putBoolean("HasPowerUpgrade", hasPowerUpgrade);
         tagCompound.putInt("EnergyStored", energyStorage.getEnergyStored());
+
+        if (customName != null) {
+            tagCompound.putString("CustomName", ITextComponent.Serializer.toJson(customName));
+        }
+
         return tagCompound;
     }
 
@@ -449,11 +461,6 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
         return facing == null ? Direction.NORTH : facing;
     }
 
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("container.cookingforblockheads.oven");
-    }
-
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
@@ -463,5 +470,36 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 1, 2));
+    }
+
+    @Override
+    public ITextComponent getName() {
+        return customName != null ? customName : getDefaultName();
+    }
+
+    @Override
+    public void setCustomName(ITextComponent customName) {
+        this.customName = customName;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return customName != null;
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getCustomName() {
+        return customName;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return getName();
+    }
+
+    @Override
+    public ITextComponent getDefaultName() {
+        return new TranslationTextComponent("container.cookingforblockheads.oven");
     }
 }

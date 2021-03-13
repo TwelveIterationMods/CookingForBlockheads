@@ -6,7 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cookingforblockheads:counter"
+          "name": "cookingforblockheads:counter",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            }
+          ]
         }
       ],
       "conditions": [

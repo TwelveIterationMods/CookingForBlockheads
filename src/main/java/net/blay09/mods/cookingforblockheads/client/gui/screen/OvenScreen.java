@@ -30,6 +30,10 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
         super(container, playerInventory, displayName);
         this.xSize += 22;
         this.ySize = 193;
+
+        this.titleX += 22;
+        this.playerInventoryTitleX += 22;
+        this.playerInventoryTitleY = this.ySize - 94;
     }
 
     @Override
@@ -46,6 +50,8 @@ public class OvenScreen extends ContainerScreen<OvenContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+
         OvenTileEntity tileEntity = container.getTileEntity();
         for (int i = 0; i < 9; i++) {
             Slot slot = container.inventorySlots.get(i + 7);

@@ -6,7 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cookingforblockheads:spice_rack"
+          "name": "cookingforblockheads:spice_rack",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            }
+          ]
         }
       ],
       "conditions": [

@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.capability.CapabilityKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.KitchenItemProvider;
@@ -18,6 +17,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -26,7 +26,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class SpiceRackTileEntity extends TileEntity implements INamedContainerProvider {
+public class SpiceRackTileEntity extends TileEntity implements INamedContainerProvider, IMutableNameable {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
         @Override
@@ -42,6 +42,8 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
     private final LazyOptional<IItemHandler> itemHandlerCap = LazyOptional.of(() -> itemHandler);
     private final LazyOptional<IKitchenItemProvider> itemProviderCap = LazyOptional.of(() -> itemProvider);
 
+    private ITextComponent customName;
+
     public SpiceRackTileEntity() {
         super(ModTileEntities.spiceRack);
     }
@@ -50,12 +52,21 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
     public void read(BlockState state, CompoundNBT tagCompound) {
         super.read(state, tagCompound);
         itemHandler.deserializeNBT(tagCompound.getCompound("ItemHandler"));
+
+        if (tagCompound.contains("CustomName", Constants.NBT.TAG_STRING)) {
+            customName = ITextComponent.Serializer.getComponentFromJson(tagCompound.getString("CustomName"));
+        }
     }
 
     @Override
     public CompoundNBT write(CompoundNBT tagCompound) {
         super.write(tagCompound);
         tagCompound.put("ItemHandler", itemHandler.serializeNBT());
+
+        if (customName != null) {
+            tagCompound.putString("CustomName", ITextComponent.Serializer.toJson(customName));
+        }
+
         return tagCompound;
     }
 
@@ -94,14 +105,40 @@ public class SpiceRackTileEntity extends TileEntity implements INamedContainerPr
         }
     }
 
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("container.cookingforblockheads.spice_rack");
-    }
-
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new SpiceRackContainer(i, playerInventory, this);
+    }
+
+    @Override
+    public ITextComponent getName() {
+        return customName != null ? customName : getDefaultName();
+    }
+
+    @Override
+    public void setCustomName(ITextComponent customName) {
+        this.customName = customName;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return customName != null;
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getCustomName() {
+        return customName;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return getName();
+    }
+
+    @Override
+    public ITextComponent getDefaultName() {
+        return new TranslationTextComponent("container.cookingforblockheads.spice_rack");
     }
 }

@@ -10,7 +10,7 @@ public class CabinetTileEntity extends CounterTileEntity {
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getDefaultName() {
         return new TranslationTextComponent("container.cookingforblockheads.cabinet");
     }
 }
