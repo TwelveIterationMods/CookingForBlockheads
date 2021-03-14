@@ -28,6 +28,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.IResourceManagerReloadListener;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
@@ -36,6 +38,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
@@ -85,6 +88,7 @@ public class CookingForBlockheads {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imc);
 
         MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::addReloadListenersLate);
         MinecraftForge.EVENT_BUS.addListener(this::serverStarted);
         MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
 
@@ -124,6 +128,10 @@ public class CookingForBlockheads {
 
     private void addReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new JsonCompatLoader());
+    }
+
+    private void addReloadListenersLate(AddReloadListenerEvent event) {
+        event.addListener((IResourceManagerReloadListener) resourceManager -> CookingRegistry.initFoodRegistry(event.getDataPackRegistries().getRecipeManager()));
     }
 
     private void serverStarted(FMLServerStartedEvent event) {
