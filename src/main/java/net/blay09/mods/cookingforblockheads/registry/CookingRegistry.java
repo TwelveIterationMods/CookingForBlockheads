@@ -109,9 +109,7 @@ public class CookingRegistry {
             FoodRecipe foodRecipe;
             if (recipe instanceof AbstractCookingRecipe) {
                 foodRecipe = new SmeltingFood(recipe);
-            } else if (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe) {
-                // Limit to ShapedRecipe and ShapelessRecipe, to not also get custom mod recipes that may require
-                // special inventories
+            } else if (recipe instanceof ICraftingRecipe) {
                 foodRecipe = new GeneralFoodRecipe(recipe);
             } else {
                 return;

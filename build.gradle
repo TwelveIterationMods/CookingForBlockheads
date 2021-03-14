@@ -64,6 +64,8 @@ minecraft {
 //            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
 
+            property 'mixin.env.disableRefMap', 'true'
+
             mods {
                 cookingforblockheads {
                     source sourceSets.main
@@ -76,6 +78,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/')
+
+            property 'mixin.env.disableRefMap', 'true'
 
             mods {
                 cookingforblockheads {
@@ -116,6 +120,10 @@ dependencies {
     compileOnly "inventory-tweaks:InventoryTweaks:1.64+dev.146"
     compileOnly fg.deobf("mezz.jei:jei-1.16.3:7.6.0.49:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.3:7.6.0.49")
+    compile fg.deobf("curse.maven:hwyla-253449:3033593")
+    compile fg.deobf("curse.maven:the-one-probe-245211:3108607")
+    compile fg.deobf("curse.maven:ex-compressum-241967:3226248")
+
     compile fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3068560")
     compile fg.deobf("curse.maven:pams-harvestcraft-2-food-extended-402231:3117044")
     compile fg.deobf("curse.maven:pams-harvestcraft-2-crops-361385:3076451")
@@ -123,11 +131,9 @@ dependencies {
     compile fg.deobf("curse.maven:farmers-delight-398521:3188508")
     compile fg.deobf("curse.maven:mekanism-268560:3206392")
     compile fg.deobf("curse.maven:immersive-engineering-231951:3233018")
-    compile fg.deobf("curse.maven:hwyla-253449:3033593")
-    compile fg.deobf("curse.maven:the-one-probe-245211:3108607")
     compile fg.deobf("curse.maven:vanillafoodpantry-mod-238170:3232078")
     compile fg.deobf("curse.maven:carrots-lib-311327:3231845")
-    compile fg.deobf("curse.maven:ex-compressum-241967:3226248")
+    compile fg.deobf("curse.maven:crafttweaker-239197:3185109")
 
     def obfModsDir = new File("run/obfmods")
     obfModsDir.eachFile { file ->
