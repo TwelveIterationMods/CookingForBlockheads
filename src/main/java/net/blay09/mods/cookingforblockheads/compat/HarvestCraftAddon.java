@@ -23,6 +23,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -56,6 +58,7 @@ public class HarvestCraftAddon {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public void onItemTooltip(ItemTooltipEvent event) {
         if (!cuttingBoardFound) {
             return;
