@@ -35,13 +35,16 @@ public class HarvestCraftAddon {
 
     public HarvestCraftAddon() {
         MinecraftForge.EVENT_BUS.register(this);
-        Compat.cuttingBoardItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(Compat.PAMS_HARVESTCRAFT, "cuttingboarditem"));
+        Compat.cuttingBoardItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
         if (Compat.cuttingBoardItem != null && Compat.cuttingBoardItem != Items.AIR) {
             CookingForBlockheads.extraItemGroupItems.add(new ItemStack(Compat.cuttingBoardItem));
             cuttingBoardFound = true;
         }
     }
 
+    /**
+     * TODO DANGER! Referenced directly from CookingRegistry, so any hard references to HC code in this class will crash if HC is not installed - this should be moved elsewhere / might not be needed anymore
+     */
     public static boolean isWeirdConversionRecipe(IRecipe<?> recipe) {
         if (recipe.getIngredients().size() == 2 && recipe.getRecipeOutput().getCount() == 2) {
             Ingredient first = recipe.getIngredients().get(0);

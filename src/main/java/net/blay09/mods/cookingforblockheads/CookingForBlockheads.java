@@ -28,7 +28,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.IResourceManagerReloadListener;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
@@ -148,7 +147,7 @@ public class CookingForBlockheads {
     public void initializeAddons() {
         new VanillaAddon();
 
-        if (ModList.get().isLoaded(Compat.PAMS_HARVESTCRAFT)) {
+        if (ModList.get().isLoaded(Compat.HARVESTCRAFT_FOOD_CORE)) {
             try {
                 Class.forName("net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon").newInstance();
             } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {

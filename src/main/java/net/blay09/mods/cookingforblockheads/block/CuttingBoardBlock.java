@@ -68,7 +68,7 @@ public class CuttingBoardBlock extends BlockKitchen {
     public void addInformation(ItemStack itemStack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
         super.addInformation(itemStack, world, tooltip, flag);
 
-        if (!ModList.get().isLoaded(Compat.PAMS_HARVESTCRAFT)) {
+        if (!ModList.get().isLoaded(Compat.HARVESTCRAFT_FOOD_CORE)) {
             tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:requires_pams", TextFormatting.RED));
         }
     }
