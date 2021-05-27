@@ -30,8 +30,6 @@ public class ModTextures {
             event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_active"));
             event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_powered"));
             event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/oven_front_powered_active"));
-        } else if (event.getMap().getTextureLocation().equals(Atlases.SIGN_ATLAS)) {
-            event.addSprite(new ResourceLocation(CookingForBlockheads.MOD_ID, "entity/cow/cow"));
         }
     }
 

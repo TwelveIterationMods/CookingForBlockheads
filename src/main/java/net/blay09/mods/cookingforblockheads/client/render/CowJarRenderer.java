@@ -1,25 +1,17 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.tile.MilkJarTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.model.CowModel;
-import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class CowJarRenderer extends MilkJarRenderer {
 
-    private static final RenderMaterial MATERIAL = new RenderMaterial(Atlases.SIGN_ATLAS, new ResourceLocation(CookingForBlockheads.MOD_ID, "entity/cow/cow"));
-
-    private static final CowModel<CowEntity> model = new CowModel<>();
     private static CowEntity entity;
 
     public CowJarRenderer(TileEntityRendererDispatcher dispatcher) {
