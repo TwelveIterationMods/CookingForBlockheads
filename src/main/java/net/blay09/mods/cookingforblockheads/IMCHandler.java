@@ -14,14 +14,15 @@ import java.util.function.Supplier;
 
 public class IMCHandler {
 
-    private static final NonNullList<ItemStack> imcNonFoodRecipes = NonNullList.create();
+    private final NonNullList<ItemStack> imcNonFoodRecipes = NonNullList.create();
 
-    private static <T> T getMessageData(InterModComms.IMCMessage message) {
+    private <T> T getMessageData(InterModComms.IMCMessage message) {
         Supplier<T> supplier = message.getMessageSupplier();
         return supplier.get();
     }
 
-    public static void handleIMCMessage(InterModProcessEvent event) {
+    @SubscribeEvent
+    public void handleIMCMessage(InterModProcessEvent event) {
         event.getIMCStream().forEach(message -> {
             ItemStack itemStack;
             ItemStack inputItem;
