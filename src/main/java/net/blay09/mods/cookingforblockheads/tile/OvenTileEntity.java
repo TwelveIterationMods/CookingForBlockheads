@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.container.OvenContainer;
 import net.blay09.mods.cookingforblockheads.network.VanillaPacketHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -27,6 +28,7 @@ import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -291,17 +293,25 @@ public class OvenTileEntity extends TileEntity implements ITickableTileEntity, I
     }
 
     public static boolean isItemFuel(ItemStack itemStack) {
+        if (CookingForBlockheadsConfig.COMMON.ovenRequiresCookingOil.get()) {
+            return itemStack.getItem().getTags().contains(Compat.cookingOilTag);
+        }
+
         return getBurnTime(itemStack) > 0;
     }
 
     protected static int getBurnTime(ItemStack itemStack) {
         if (itemStack.isEmpty()) {
             return 0;
-        } else {
-            Item item = itemStack.getItem();
-            int ret = itemStack.getBurnTime();
-            return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(itemStack, ret == -1 ? AbstractFurnaceTileEntity.getBurnTimes().getOrDefault(item, 0) : ret);
         }
+
+        Item item = itemStack.getItem();
+        if (CookingForBlockheadsConfig.COMMON.ovenRequiresCookingOil.get() && itemStack.getItem().getTags().contains(Compat.cookingOilTag)) {
+            return 800;
+        }
+
+        int ret = itemStack.getBurnTime();
+        return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(itemStack, ret == -1 ? AbstractFurnaceTileEntity.getBurnTimes().getOrDefault(item, 0) : ret);
     }
 
     private boolean shouldConsumeFuel() {

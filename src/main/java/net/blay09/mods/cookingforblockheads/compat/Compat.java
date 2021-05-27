@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.compat;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeMod;
 
 public class Compat {
@@ -17,5 +18,6 @@ public class Compat {
     }
 
     public static Item cuttingBoardItem = Items.AIR;
+    public static ResourceLocation cookingOilTag = new ResourceLocation("forge", "cookingoil");
 
 }
