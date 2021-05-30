@@ -100,9 +100,13 @@
     "container.cookingforblockheads.counter": "Encimera de cocina",
     "container.cookingforblockheads.cabinet": "Armario de cocina",
     "container.cookingforblockheads.fruit_basket": "Cesta de fruta",
+    "container.cookingforblockheads.cow_jar_compressed": "Vaca comprimida en un frasco",
+    "container.cookingforblockheads.cow_jar": "Vaca en un frasco",
+    "container.cookingforblockheads.cow_jar_custom": "%s en un frasco",
 
     "itemGroup.cookingforblockheads": "Cooking for Blockheads",
 
+    "waila.cookingforblockheads:water_stored": "Agua almacenada: %d/%d",
     "waila.cookingforblockheads:milk_stored": "Leche almacenada: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Tostando... (%s)",
     "waila.cookingforblockheads:heating_unit": "Mejora: Unidad de calefacción",
@@ -116,5 +120,5 @@
     "cookingforblockheads:subtitle.toaster_start": "La tostadora empieza a tostar",
     "cookingforblockheads:subtitle.toaster_stop": "La tostadora ha terminado de tostar",
 
-    "jei.cookingforblockheads:cow_jar": "Vaca en un tarro"
+    "jei.cookingforblockheads:cow_jar": "Vaca en un frasco"
 }
