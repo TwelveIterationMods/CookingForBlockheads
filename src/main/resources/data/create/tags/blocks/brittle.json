@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "conditions": [
+    {
+      "modid": "create",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "values": ["cookingforblockheads:fridge"]
+}
