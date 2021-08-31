@@ -139,9 +139,7 @@ public class CookingForBlockheads {
     }
 
     private void recipesUpdated(RecipesUpdatedEvent event) {
-        ClientPlayNetHandler connection = Minecraft.getInstance().getConnection();
-        RecipeManager recipeManager = Objects.requireNonNull(connection).getRecipeManager();
-        CookingRegistry.initFoodRegistry(recipeManager);
+        CookingRegistry.initFoodRegistry(event.getRecipeManager());
     }
 
     public void initializeAddons() {
