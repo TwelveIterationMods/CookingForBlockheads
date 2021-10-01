@@ -1,29 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "craftingtweaks",
+  "id": "cookingforblockheads",
   "version": "${version}",
 
-  "name": "Crafting Tweaks",
-  "description": "Allows you to rotate, balance or clear the crafting matrix by the press of a button, in any (supported) crafting window.",
+  "name": "Cooking for Blockheads",
+  "description": "Adds a cooking book and multiblock kitchens that only shows recipes you can make with what you currently have in your inventory.",
   "authors": [
-    "BlayTheNinth"
+    "BlayTheNinth",
+    "ZerotS"
   ],
   "contact": {
-    "homepage": "https://blay09.net/",
-    "sources": "https://github.com/ModdingForBlockheads/CraftingTweaks",
-    "issues": "https://github.com/ModdingForBlockheads/CraftingTweaks/issues"
+    "homepage": "https://blay09.net/mods/cookingforblockheads",
+    "sources": "https://github.com/ModdingForBlockheads/CookingForBlockheads",
+    "issues": "https://github.com/ModdingForBlockheads/CookingForBlockheads/issues"
   },
 
   "license": "All Rights Reserved",
-  "icon": "craftingtweaks-icon.png",
+  "icon": "cookingforblockheads-icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.blay09.mods.craftingtweaks.FabricCraftingTweaks"
+      "net.blay09.mods.craftingtweaks.FabricCookingForBlockheads"
     ],
     "client": [
-      "net.blay09.mods.craftingtweaks.client.FabricCraftingTweaksClient"
+      "net.blay09.mods.craftingtweaks.client.FabricCookingForBlockheadsClient"
     ],
     "modmenu": [
       "net.blay09.mods.craftingtweaks.compat.ModMenuIntegration"
@@ -33,7 +34,7 @@
     ]
   },
   "mixins": [
-    "craftingtweaks.mixins.json"
+    "cookingforblockheads.mixins.json"
   ],
   "depends": {
     "cloth-config2": ">=5.0.34",
