@@ -27,7 +27,7 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-			arg "-mixin.config=craftingtweaks.mixins.json"
+			arg "-mixin.config=cookingforblockheads.mixins.json"
 
             property "mixin.env.disableRefMap", "true"
             property "mixin.debug.export", "true"
@@ -40,7 +40,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                craftingtweaks {
+                cookingforblockheads {
                     source sourceSets.main
                 }
             }
@@ -49,7 +49,7 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-			arg "-mixin.config=craftingtweaks.mixins.json"
+			arg "-mixin.config=cookingforblockheads.mixins.json"
 
             property "mixin.env.disableRefMap", "true"
             property "mixin.debug.export", "true"
@@ -62,7 +62,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                craftingtweaks {
+                cookingforblockheads {
                     source sourceSets.main
                 }
             }
@@ -73,7 +73,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-			arg "-mixin.config=craftingtweaks.mixins.json"
+			arg "-mixin.config=cookingforblockheads.mixins.json"
 
             property "mixin.env.disableRefMap", "true"
             property "mixin.debug.export", "true"
@@ -83,10 +83,10 @@ minecraft {
             property "mixin.checks", "true"
             property "mixin.hotSwap", "true"
 
-            args '--mod', 'craftingtweaks', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'cookingforblockheads', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                craftingtweaks {
+                cookingforblockheads {
                     source sourceSets.main
                 }
             }
@@ -115,7 +115,7 @@ sourceSets {
             srcDirs '../shared/src/resources/'
             srcDirs 'src/generated/resources'
         }
-		ext.refMap = "refmap.craftingtweaks.json"
+		ext.refMap = "refmap.cookingforblockheads.json"
 	}
 }
 
@@ -156,7 +156,7 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "BlayTheNinth",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-				"MixinConfigs": "craftingtweaks.mixins.json"
+				"MixinConfigs": "cookingforblockheads.mixins.json"
         ])
     }
 }
