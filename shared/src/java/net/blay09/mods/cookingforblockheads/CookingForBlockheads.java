@@ -50,29 +50,11 @@ public class CookingForBlockheads {
     }
 
     /*public CookingForBlockheads() { TODO
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imc);
-
         MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::addReloadListenersLate);
         MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
 
-        MinecraftForge.EVENT_BUS.register(new IMCHandler());
         MinecraftForge.EVENT_BUS.register(new CowJarHandler());
-
-        ForgeMod.enableMilkFluid();
-    }
-
-    private void setup(FMLCommonSetupEvent event) {
-        CapabilityKitchenConnector.register();
-        CapabilityKitchenItemProvider.register();
-        CapabilityKitchenSmeltingProvider.register();
-    }
-
-    private void imc(InterModEnqueueEvent event) {
-        if(Balm.isModLoaded(Compat.THEONEPROBE)) {
-            TheOneProbeAddon.register();
-        }
     }
 
     private void addReloadListeners(AddReloadListenerEvent event) {

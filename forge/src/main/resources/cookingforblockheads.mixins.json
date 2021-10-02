@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.blay09.mods.craftingtweaks.mixin",
+  "package": "net.blay09.mods.cookingforblockheads.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
