@@ -23,7 +23,7 @@ public class RenderUtils {
     }
 
     public static void renderItem(ItemStack itemStack, int combinedLight, PoseStack poseStack, MultiBufferSource buffer) {
-        Minecraft.getInstance().getItemRenderer().render(itemStack, ItemTransforms.TransformType.FIXED, combinedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer);
+        Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
     }
 
     /*private static final Random random = new Random();

@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.event.LivingDamageEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -14,6 +15,7 @@ import net.blay09.mods.cookingforblockheads.network.ModNetworking;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,15 +48,14 @@ public class CookingForBlockheads {
                 CookingRegistry.initFoodRegistry(recipeManager);
         });
 
+        Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
+
         Balm.initialize(MOD_ID);
     }
 
     /*public CookingForBlockheads() { TODO
         MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::addReloadListenersLate);
-        MinecraftForge.EVENT_BUS.addListener(this::recipesUpdated);
-
-        MinecraftForge.EVENT_BUS.register(new CowJarHandler());
     }
 
     private void addReloadListeners(AddReloadListenerEvent event) {
@@ -65,8 +66,6 @@ public class CookingForBlockheads {
         event.addListener((IResourceManagerReloadListener) resourceManager -> CookingRegistry.initFoodRegistry(event.getDataPackRegistries().getRecipeManager()));
     }
 
-    private void recipesUpdated(RecipesUpdatedEvent event) {
-        CookingRegistry.initFoodRegistry(event.getRecipeManager());
-    }*/
+    */
 
 }

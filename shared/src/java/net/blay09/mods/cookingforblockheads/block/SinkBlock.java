@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.fluid.FluidTank;
+import net.blay09.mods.balm.api.fluid.FluidUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.tile.SinkBlockEntity;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -80,7 +79,7 @@ public class SinkBlock extends BlockDyeableKitchen {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof SinkBlockEntity sink) {
                 FluidTank fluidTank = sink.getFluidTank();
-                if (!Balm.getFluids().useFluidTank(state, level, pos, player, hand, rayTraceResult)) {
+                if (!FluidUtils.useFluidTank(state, level, pos, player, hand, rayTraceResult)) {
                     // Special case for bottles, they can hold 1/3 of a bucket
                     if (heldItem.getItem() == Items.GLASS_BOTTLE) {
                         int simulated = fluidTank.drain(Fluids.WATER, 333, true);

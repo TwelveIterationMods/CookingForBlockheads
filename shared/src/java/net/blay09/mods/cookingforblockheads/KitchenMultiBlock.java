@@ -48,7 +48,6 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
                         LazyOptional<IKitchenItemProvider> itemProviderCap = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY);
                         itemProviderCap.ifPresent(itemProviderList::add);
 
-
                         LazyOptional<IKitchenSmeltingProvider> smeltingProviderCap = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY);
                         smeltingProviderCap.ifPresent(smeltingProviderList::add);
 
