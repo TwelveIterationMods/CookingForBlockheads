@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -93,7 +94,12 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
                         if (!containerItem.isEmpty()) {
                             ItemStack restStack = sourceProvider.returnItemStack(containerItem, sourceItems[i]);
                             if (!restStack.isEmpty()) {
-                                Balm.getInventories().giveItemToPlayer(player, restStack);
+                                if (!player.getInventory().add(restStack)) {
+                                    ItemEntity itemEntity = new ItemEntity(player.level, player.getX() + 0.5f, player.getY() + 0.5f, player.getZ() + 0.5f, restStack);
+                                    float motion = 0.05F;
+                                    itemEntity.setDeltaMovement(player.level.random.nextGaussian() * motion, player.level.random.nextGaussian() * motion + 0.2, player.level.random.nextGaussian() * motion);
+                                    player.level.addFreshEntity(itemEntity);
+                                }
                             }
                         }
                     }
@@ -105,9 +111,9 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
 
     private void fireEventsAndHandleAchievements(Player player, ItemStack result) {
         result.onCraftedBy(player.level, player, 1);
-        Balm.getHooks().playerCraftingEvent(player, result, this);
+        Balm.getHooks().firePlayerCraftingEvent(player, result, this);
 
-        this.awardUsedRecipes(player);
+        awardUsedRecipes(player);
     }
 
     @Override

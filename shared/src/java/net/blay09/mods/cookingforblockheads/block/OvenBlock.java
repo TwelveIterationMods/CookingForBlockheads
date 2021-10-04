@@ -1,11 +1,14 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.block.BalmContainerBlock;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
+import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -29,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class OvenBlock extends BlockKitchen {
+public class OvenBlock extends BlockKitchen implements BalmContainerBlock {
 
     public static BooleanProperty POWERED = BooleanProperty.create("powered");
     public static BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -158,6 +163,12 @@ public class OvenBlock extends BlockKitchen {
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::serverTick);
     }
 
 }

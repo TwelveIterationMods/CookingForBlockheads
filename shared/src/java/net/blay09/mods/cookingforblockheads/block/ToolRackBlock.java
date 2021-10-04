@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import net.blay09.mods.balm.api.block.BalmContainerBlock;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.ToolRackBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -25,7 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class ToolRackBlock extends BlockKitchen {
+public class ToolRackBlock extends BlockKitchen implements BalmContainerBlock {
 
     public static final String name = "tool_rack";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

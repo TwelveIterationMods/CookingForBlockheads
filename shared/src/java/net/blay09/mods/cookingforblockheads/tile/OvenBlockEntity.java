@@ -1,11 +1,13 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.BalmHooks;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.container.*;
+import net.blay09.mods.balm.api.energy.BalmEnergyStorageProvider;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
@@ -22,20 +24,23 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
-public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmeltingProvider, BalmMenuProvider, IMutableNameable, BalmContainerProvider {
+import java.util.List;
+
+public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmeltingProvider, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider {
 
     private static final int COOK_TIME = 200;
 
@@ -57,6 +62,34 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
             }
             isDirty = true;
             OvenBlockEntity.this.setChanged();
+        }
+    };
+
+    private final ContainerData dataAccess = new ContainerData() {
+        public int get(int id) {
+            if (id == 0) {
+                return OvenBlockEntity.this.furnaceBurnTime;
+            } else if (id == 1) {
+                return OvenBlockEntity.this.currentItemBurnTime;
+            } else if (id >= 2 && id <= 11) {
+                return OvenBlockEntity.this.slotCookTime[id - 2];
+            }
+            return 0;
+        }
+
+        public void set(int id, int value) {
+            if (id == 0) {
+                OvenBlockEntity.this.furnaceBurnTime = value;
+            } else if (id == 1) {
+                OvenBlockEntity.this.currentItemBurnTime = value;
+            } else if (id >= 2 && id <= 11) {
+                OvenBlockEntity.this.slotCookTime[id - 2] = value;
+            }
+
+        }
+
+        public int getCount() {
+            return 11;
         }
     };
 
@@ -111,9 +144,12 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         return doorAnimator.receiveClientEvent(id, type) || super.triggerEvent(id, type);
     }
 
-    public void tick() { // TODO
+    public static void serverTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isFirstTick) {
-            BlockState state = level.getBlockState(worldPosition);
             if (state.getBlock() == ModBlocks.oven) {
                 facing = state.getValue(OvenBlock.FACING);
                 isFirstTick = false;
@@ -224,10 +260,6 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         if (hasChanged) {
             setChanged();
         }
-    }
-
-    public EnergyStorage getEnergyStorage() {
-        return energyStorage;
     }
 
     private final Container singleSlotRecipeWrapper = new DefaultContainer(1);
@@ -389,34 +421,13 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         };
     }
 
-    /*@Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == null) {
-                return itemHandlerCap.cast();
-            }
-
-            if (!CookingForBlockheadsConfigData.COMMON.disallowOvenAutomation.get()) {
-                switch (facing) {
-                    // TODO
-                }
-            }
-        }
-
-        if (hasPowerUpgrade && capability == CapabilityEnergy.ENERGY) {
-            return energyStorageCap.cast();
-        }
-
-        if (capability == CapabilityKitchenItemProvider.CAPABILITY) {
-            return itemProviderCap.cast();
-        }
-
-        if (capability == CapabilityKitchenSmeltingProvider.CAPABILITY) {
-            return smeltingProviderCap.cast();
-        }
-
-        return super.getCapability(capability, facing);
-    }*/
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(
+                new BalmProvider<>(IKitchenItemProvider.class, itemProvider),
+                new BalmProvider<>(IKitchenSmeltingProvider.class, this)
+        );
+    }
 
     public Container getInputContainer() {
         return inputContainer;
@@ -476,5 +487,14 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     @Override
     public Container getContainer() {
         return container;
+    }
+
+    public ContainerData getContainerData() {
+        return dataAccess;
+    }
+
+    @Override
+    public EnergyStorage getEnergyStorage() {
+        return energyStorage;
     }
 }

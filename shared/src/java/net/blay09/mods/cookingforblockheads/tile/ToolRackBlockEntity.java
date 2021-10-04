@@ -1,12 +1,17 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.container.DefaultContainer;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
 
 public class ToolRackBlockEntity extends BalmBlockEntity {
 
@@ -40,18 +45,9 @@ public class ToolRackBlockEntity extends BalmBlockEntity {
         return container;
     }
 
-    /*@Override TODO
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        LazyOptional<T> result = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(capability, itemHandlerCap);
-        if (!result.isPresent()) {
-            result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
-        }
-
-        if (result.isPresent()) {
-            return result;
-        } else {
-            return super.getCapability(capability, facing);
-        }
-    }*/
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+    }
 
 }

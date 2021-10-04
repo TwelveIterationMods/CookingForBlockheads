@@ -6,7 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-// TODO on Forge, refire as PlayerItemSmeltedEvent
 public class OvenItemSmeltedEvent extends BalmEvent {
 
     private final Player player;

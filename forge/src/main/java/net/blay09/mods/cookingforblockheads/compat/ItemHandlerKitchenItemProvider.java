@@ -1,29 +1,31 @@
-package net.blay09.mods.cookingforblockheads.api.capability;
+package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.minecraft.world.Container;
+import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class DefaultKitchenItemProvider extends AbstractKitchenItemProvider {
-
-    private Container container;
+public class ItemHandlerKitchenItemProvider extends AbstractKitchenItemProvider {
+    private IItemHandler itemHandler;
     private int[] usedStackSize;
 
-    public DefaultKitchenItemProvider() {
+    public ItemHandlerKitchenItemProvider() {
     }
 
-    public DefaultKitchenItemProvider(Container container) {
-        this.container = container;
-        this.usedStackSize = new int[container.getContainerSize()];
+    public ItemHandlerKitchenItemProvider(IItemHandler itemHandler) {
+        this.itemHandler = itemHandler;
+        this.usedStackSize = new int[itemHandler.getSlots()];
     }
 
-    public void setContainer(Container container) {
-        this.container = container;
-        this.usedStackSize = new int[container.getContainerSize()];
+    public void setItemHandler(IItemHandler itemHandler) {
+        this.itemHandler = itemHandler;
+        this.usedStackSize = new int[itemHandler.getSlots()];
     }
 
     @Override
@@ -43,9 +45,9 @@ public class DefaultKitchenItemProvider extends AbstractKitchenItemProvider {
             return ItemStack.EMPTY;
         }
 
-        ItemStack itemStack = container.getItem(slot);
+        ItemStack itemStack = itemHandler.getStackInSlot(slot);
         if (itemStack.getCount() - (simulate ? usedStackSize[slot] : 0) >= amount) {
-            ItemStack result = ContainerUtils.extractItem(container, slot, amount, simulate);
+            ItemStack result = itemHandler.extractItem(slot, amount, simulate);
             if (simulate && !result.isEmpty()) {
                 usedStackSize[slot] += result.getCount();
             }
@@ -58,9 +60,9 @@ public class DefaultKitchenItemProvider extends AbstractKitchenItemProvider {
 
     @Override
     public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
-        ItemStack restStack = ContainerUtils.insertItem(container, sourceItem.getSourceSlot(), itemStack, false);
+        ItemStack restStack = itemHandler.insertItem(sourceItem.getSourceSlot(), itemStack, false);
         if (!restStack.isEmpty()) {
-            restStack = ContainerUtils.insertItemStacked(container, itemStack, false);
+            restStack = ItemHandlerHelper.insertItemStacked(itemHandler, itemStack, false);
         }
 
         return restStack;
@@ -68,12 +70,11 @@ public class DefaultKitchenItemProvider extends AbstractKitchenItemProvider {
 
     @Override
     public int getSlots() {
-        return container.getContainerSize();
+        return itemHandler.getSlots();
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return container.getItem(slot);
+        return itemHandler.getStackInSlot(slot);
     }
-
 }

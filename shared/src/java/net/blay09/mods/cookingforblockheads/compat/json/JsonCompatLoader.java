@@ -31,9 +31,13 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
             .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
             .create();
 
-    private static final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
-    private static final Set<ResourceLocation> kitchenItemProviders = new HashSet<>();
-    private static final Set<ResourceLocation> kitchenConnectors = new HashSet<>();
+    public static final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
+    public static final Set<ResourceLocation> kitchenItemProviders = new HashSet<>();
+    public static final Set<ResourceLocation> kitchenConnectors = new HashSet<>();
+
+    static {
+        Balm.getEvents().onEvent(FoodRegistryInitEvent.class, JsonCompatLoader::onCookingRegistry);
+    }
 
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
@@ -55,7 +59,6 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
         }
     }
 
-    // TODO @SubscribeEvent
     public static void onCookingRegistry(FoodRegistryInitEvent event) {
         for (ItemStack itemStack : nonFoodRecipes) {
             event.registerNonFoodRecipe(itemStack);

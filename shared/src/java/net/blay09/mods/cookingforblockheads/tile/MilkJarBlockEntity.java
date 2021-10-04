@@ -1,10 +1,12 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.FluidTank;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -149,18 +151,9 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         return milkTank;
     }
 
-    /*@Override TODO
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
-        if (!result.isPresent() && Compat.getMilkFluid() != null) {
-            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, fluidHandlerCap);
-        }
-
-        if (result.isPresent()) {
-            return result;
-        } else {
-            return super.getCapability(capability, facing);
-        }
-    }*/
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+    }
 
 }

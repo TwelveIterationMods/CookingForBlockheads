@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNameable {
@@ -44,7 +45,11 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
         return super.save(tagCompound);
     }
 
-    public void tick() { // TODO
+    public static void serverTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (milkAmount < MILK_CAPACITY) {
             double milkToAdd = CookingForBlockheadsConfig.getActive().cowJarMilkPerTick;
             if (compressedCow) {

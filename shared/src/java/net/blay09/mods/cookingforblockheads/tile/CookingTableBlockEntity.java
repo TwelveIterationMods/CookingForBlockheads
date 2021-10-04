@@ -1,8 +1,13 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.balm.api.provider.BalmProvider;
+import net.blay09.mods.balm.api.provider.BalmProviderHolder;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenConnector;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.minecraft.core.BlockPos;
@@ -17,6 +22,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenuProvider {
@@ -65,10 +72,10 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
         return save(new CompoundTag());
     }
 
-    /*@Override TODO
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        return CapabilityKitchenConnector.CAPABILITY.orEmpty(cap, kitchenConnectorCap);
-    }*/
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(IKitchenConnector.class, new DefaultKitchenConnector()));
+    }
 
     @Override
     public Component getDisplayName() {

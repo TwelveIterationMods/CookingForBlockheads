@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.block.BalmContainerBlock;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.SpiceRackBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -25,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 
-public class SpiceRackBlock extends BlockKitchen {
+public class SpiceRackBlock extends BlockKitchen implements BalmContainerBlock {
 
     public static final String name = "spice_rack";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

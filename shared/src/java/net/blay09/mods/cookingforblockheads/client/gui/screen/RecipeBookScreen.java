@@ -3,19 +3,16 @@ package net.blay09.mods.cookingforblockheads.client.gui.screen;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
-import net.blay09.mods.balm.mixin.ScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfigData;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.FakeSlotCraftMatrix;
-import net.blay09.mods.cookingforblockheads.menu.slot.FakeSlotRecipe;
+import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
@@ -287,12 +284,12 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
             int prevZLevel = getBlitOffset();
             setBlitOffset(300);
             for (Slot slot : container.slots) {
-                if (slot instanceof FakeSlotRecipe) {
+                if (slot instanceof RecipeFakeSlot) {
                     if (CookingRegistry.isNonFoodRecipe(slot.getItem())) {
                         blit(poseStack, slot.x, slot.y, 176, 76, 16, 16);
                     }
 
-                    FoodRecipeWithStatus recipe = ((FakeSlotRecipe) slot).getRecipe();
+                    FoodRecipeWithStatus recipe = ((RecipeFakeSlot) slot).getRecipe();
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
                         blit(poseStack, slot.x, slot.y, 176, 92, 16, 16);
                     }
@@ -352,54 +349,6 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         recalculateScrollBar();
     }
-
-    /* TODO public void onItemTooltip(ItemTooltipEvent event) {
-        Slot hoverSlot = getSlotUnderMouse();
-        if (hoverSlot instanceof FakeSlotRecipe && event.getItemStack() == hoverSlot.getStack()) {
-            FakeSlotRecipe slotRecipe = (FakeSlotRecipe) hoverSlot;
-            if (container.isSelectedSlot(slotRecipe) && container.isAllowCrafting()) {
-                FoodRecipeWithIngredients subRecipe = container.getSelection();
-                if (subRecipe == null) {
-                    return;
-                }
-
-                if (subRecipe.getRecipeType() == FoodRecipeType.SMELTING) {
-                    if (!container.hasOven()) {
-                        event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_oven", ChatFormatting.RED));
-                    } else {
-                        if (hasShiftDown()) {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_stack", ChatFormatting.GREEN));
-                        } else {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_one", ChatFormatting.GREEN));
-                        }
-                    }
-                } else {
-                    if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_TOOLS) {
-                        event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_tools", ChatFormatting.RED));
-                    } else if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_INGREDIENTS) {
-                        event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_ingredients", ChatFormatting.RED));
-                    } else {
-                        if (hasShiftDown()) {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_stack", ChatFormatting.GREEN));
-                        } else {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_one", ChatFormatting.GREEN));
-                        }
-                    }
-                }
-            } else {
-                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_see_recipe", ChatFormatting.YELLOW));
-            }
-        } else if (hoverSlot instanceof FakeSlotCraftMatrix && event.getItemStack() == hoverSlot.getStack()) {
-            if (((FakeSlotCraftMatrix) hoverSlot).getVisibleStacks().size() > 1) {
-                if (((FakeSlotCraftMatrix) hoverSlot).isLocked()) {
-                    event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_unlock", ChatFormatting.GREEN));
-                } else {
-                    event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_lock", ChatFormatting.GREEN));
-                }
-                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:scroll_to_switch", ChatFormatting.YELLOW));
-            }
-        }
-    }*/
 
     public Button[] getSortingButtons() {
         return sortButtons.toArray(new SortButton[0]);

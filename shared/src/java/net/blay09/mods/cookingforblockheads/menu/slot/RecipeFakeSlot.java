@@ -4,11 +4,11 @@ import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class FakeSlotRecipe extends FakeSlot {
+public class RecipeFakeSlot extends FakeSlot {
 
     private FoodRecipeWithStatus recipe;
 
-    public FakeSlotRecipe(int slotId, int x, int y) {
+    public RecipeFakeSlot(int slotId, int x, int y) {
         super(slotId, x, y);
     }
 

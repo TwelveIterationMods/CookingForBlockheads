@@ -15,12 +15,12 @@ public class Compat {
     public static final String EX_COMPRESSUM = "excompressum";
 
     public static Fluid getMilkFluid() {
-        return ForgeMod.MILK.get();
+        return Balm.getRegistries().getMilkFluid();
     }
 
     public static Item cuttingBoardItem = Items.AIR;
 
-    private static Tag<Item> cookingOilTag; // TODO add to balm
+    private static Tag<Item> cookingOilTag; // TODO port - add to balm
     public static Tag<Item> getCookingOilTag() {
         if(cookingOilTag == null) {
             cookingOilTag = Balm.getRegistries().getItemTag(new ResourceLocation("balm", "cooking_oil"));

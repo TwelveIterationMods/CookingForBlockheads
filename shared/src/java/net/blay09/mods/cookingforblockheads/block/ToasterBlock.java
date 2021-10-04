@@ -1,8 +1,11 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import net.blay09.mods.balm.api.block.BalmContainerBlock;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.tile.SinkBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.ToasterBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,6 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -28,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class ToasterBlock extends BlockKitchen {
+public class ToasterBlock extends BlockKitchen implements BalmContainerBlock {
 
     public static final String name = "toaster";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -99,6 +104,12 @@ public class ToasterBlock extends BlockKitchen {
                 world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.toaster.get(), ToasterBlockEntity::serverTick);
     }
 
 }

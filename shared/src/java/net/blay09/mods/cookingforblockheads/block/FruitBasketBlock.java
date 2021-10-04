@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.block.BalmContainerBlock;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class FruitBasketBlock extends BlockKitchen {
+public class FruitBasketBlock extends BlockKitchen implements BalmContainerBlock {
 
     public static final String name = "fruit_basket";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

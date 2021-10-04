@@ -1,9 +1,12 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.block.BalmContainerBlock;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
+import net.blay09.mods.cookingforblockheads.tile.CowJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -17,13 +20,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
-public class KitchenCounterBlock extends BlockDyeableKitchen {
+public class KitchenCounterBlock extends BlockDyeableKitchen implements BalmContainerBlock {
 
     public static final String name = "counter";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -84,4 +90,9 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
         return state.setValue(FLIPPED, shouldBePlacedFlipped(context, state.getValue(FACING)));
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::serverTick);
+    }
 }

@@ -1,10 +1,12 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.FluidTank;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
@@ -16,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -179,21 +182,16 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         color = DyeColor.byId(tagCompound.getByte("Color"));
     }
 
-    /*@Override TODO
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
-        if (!result.isPresent()) {
-            result = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.orEmpty(capability, fluidHandlerCap);
-        }
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+    }
 
-        if (result.isPresent()) {
-            return result;
-        } else {
-            return super.getCapability(capability, facing);
-        }
-    }*/
+    public static void serverTick(Level level, BlockPos pos, BlockState state, SinkBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
 
-    public void tick() { // TODO
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
         // Sync to clients
         ticksSinceSync++;
         if (ticksSinceSync >= SYNC_INTERVAL) {

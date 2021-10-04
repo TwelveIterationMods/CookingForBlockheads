@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ToasterBlockEntity extends BalmBlockEntity {
@@ -67,7 +68,11 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         return tagCompound;
     }
 
-    public void tick() { // TODO
+    public static void serverTick(Level level, BlockPos pos, BlockState state, ToasterBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (active) {
             toastTicks--;
             if (toastTicks <= 0 && !level.isClientSide) {

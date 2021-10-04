@@ -111,5 +111,4 @@ public class MilkJarBlock extends BlockKitchen implements BucketPickup {
     public Optional<SoundEvent> getPickupSound() {
         return Optional.empty();
     }
-
 }

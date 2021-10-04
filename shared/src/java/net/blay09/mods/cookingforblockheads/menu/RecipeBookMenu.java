@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
@@ -13,7 +12,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.menu.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.menu.slot.FakeSlotCraftMatrix;
-import net.blay09.mods.cookingforblockheads.menu.slot.FakeSlotRecipe;
+import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.network.message.CraftRecipeMessage;
 import net.blay09.mods.cookingforblockheads.network.message.ItemListMessage;
 import net.blay09.mods.cookingforblockheads.network.message.RecipesMessage;
@@ -42,7 +41,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     private final Player player;
 
-    private final List<FakeSlotRecipe> recipeSlots = Lists.newArrayList();
+    private final List<RecipeFakeSlot> recipeSlots = Lists.newArrayList();
     private final List<FakeSlotCraftMatrix> matrixSlots = Lists.newArrayList();
 
     private final InventoryCraftBook craftBook = new InventoryCraftBook(this);
@@ -76,7 +75,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
-                FakeSlotRecipe slot = new FakeSlotRecipe(j + i * 3, 102 + j * 18, 11 + i * 18);
+                RecipeFakeSlot slot = new RecipeFakeSlot(j + i * 3, 102 + j * 18, 11 + i * 18);
                 recipeSlots.add(slot);
                 addSlot(slot);
             }
@@ -108,8 +107,8 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             Slot slot = slots.get(slotNumber);
             if (player.level.isClientSide) {
-                if (slot instanceof FakeSlotRecipe) {
-                    FakeSlotRecipe slotRecipe = (FakeSlotRecipe) slot;
+                if (slot instanceof RecipeFakeSlot) {
+                    RecipeFakeSlot slotRecipe = (RecipeFakeSlot) slot;
                     if (selectedRecipe != null && slotRecipe.getRecipe() == selectedRecipe) {
                         if (allowCrafting && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP)) {
                             FoodRecipeWithIngredients recipe = getSelection();
@@ -357,7 +356,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     public void populateRecipeSlots() {
         int i = scrollOffset * 3;
-        for (FakeSlotRecipe slot : recipeSlots) {
+        for (RecipeFakeSlot slot : recipeSlots) {
             if (i < filteredItems.size()) {
                 slot.setFoodRecipe(filteredItems.get(i));
                 i++;
@@ -449,7 +448,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         return selectedRecipeList != null ? selectedRecipeList.get(selectedRecipeIndex) : null;
     }
 
-    public boolean isSelectedSlot(FakeSlotRecipe slot) {
+    public boolean isSelectedSlot(RecipeFakeSlot slot) {
         return slot.getRecipe() == selectedRecipe;
     }
 

@@ -14,9 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoor {
 
     private final OvenBlockEntity tileEntity;
-    private final int[] lastCookTime = new int[9];
-    private int lastBurnTime;
-    private int lastItemBurnTime;
 
     public OvenMenu(int windowId, Inventory playerInventory, OvenBlockEntity oven) {
         super(ModMenus.oven.get(), windowId);
@@ -57,6 +54,8 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
         }
 
         oven.getDoorAnimator().openContainer(playerInventory.player);
+
+        addDataSlots(oven.getContainerData());
     }
 
     public OvenBlockEntity getTileEntity() {
@@ -64,56 +63,9 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
     }
 
     @Override
-    public void addSlotListener(ContainerListener listener) {
-        super.addSlotListener(listener);
-        listener.dataChanged(this, 0, tileEntity.furnaceBurnTime);
-        listener.dataChanged(this, 1, tileEntity.currentItemBurnTime);
-        for (int i = 0; i < tileEntity.slotCookTime.length; i++) {
-            listener.dataChanged(this, 2 + i, tileEntity.slotCookTime[i]);
-        }
-    }
-
-    @Override
     public void removed(Player player) {
         super.removed(player);
         tileEntity.getDoorAnimator().closeContainer(player);
-    }
-
-    @Override
-    public void broadcastChanges() {
-        super.broadcastChanges();
-
-        for (ContainerListener listener : containerListeners) {
-            if (this.lastBurnTime != tileEntity.furnaceBurnTime) {
-                listener.dataChanged(this, 0, tileEntity.furnaceBurnTime);
-            }
-
-            if (this.lastItemBurnTime != tileEntity.currentItemBurnTime) {
-                listener.dataChanged(this, 1, tileEntity.currentItemBurnTime);
-            }
-
-            for (int i = 0; i < tileEntity.slotCookTime.length; i++) {
-                if (lastCookTime[i] != tileEntity.slotCookTime[i]) {
-                    listener.dataChanged(this, 2 + i, tileEntity.slotCookTime[i]);
-                }
-            }
-
-        }
-
-        this.lastBurnTime = this.tileEntity.furnaceBurnTime;
-        this.lastItemBurnTime = this.tileEntity.currentItemBurnTime;
-        System.arraycopy(tileEntity.slotCookTime, 0, lastCookTime, 0, tileEntity.slotCookTime.length);
-    }
-
-    @Override
-    public void updateProgressBar(int id, int value) {
-        if (id == 0) {
-            tileEntity.furnaceBurnTime = value;
-        } else if (id == 1) {
-            tileEntity.currentItemBurnTime = value;
-        } else if (id >= 2 && id <= tileEntity.slotCookTime.length + 2) {
-            tileEntity.slotCookTime[id - 2] = value;
-        }
     }
 
     @Override

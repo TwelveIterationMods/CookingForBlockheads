@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import net.blay09.mods.balm.api.provider.ProviderUtils;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
@@ -43,15 +44,19 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
                 BlockPos position = pos.relative(direction, n);
                 if (!checkedPos.contains(position)) {
                     checkedPos.add(position);
-                    BlockEntity tileEntity = level.getBlockEntity(position);
-                    if (tileEntity != null) {
-                        LazyOptional<IKitchenItemProvider> itemProviderCap = tileEntity.getCapability(CapabilityKitchenItemProvider.CAPABILITY);
-                        itemProviderCap.ifPresent(itemProviderList::add);
+                    BlockEntity blockEntity = level.getBlockEntity(position);
+                    if (blockEntity != null) {
+                        IKitchenItemProvider itemProvider = ProviderUtils.getProvider(blockEntity, IKitchenItemProvider.class);
+                        if (itemProvider != null) {
+                            itemProviderList.add(itemProvider);
+                        }
 
-                        LazyOptional<IKitchenSmeltingProvider> smeltingProviderCap = tileEntity.getCapability(CapabilityKitchenSmeltingProvider.CAPABILITY);
-                        smeltingProviderCap.ifPresent(smeltingProviderList::add);
+                        IKitchenSmeltingProvider smeltingProvider = ProviderUtils.getProvider(blockEntity, IKitchenSmeltingProvider.class);
+                        if (smeltingProvider != null) {
+                            smeltingProviderList.add(smeltingProvider);
+                        }
 
-                        if (itemProviderCap.isPresent() || smeltingProviderCap.isPresent() || tileEntity.getCapability(CapabilityKitchenConnector.CAPABILITY).isPresent()) {
+                        if (itemProvider != null || smeltingProvider != null || ProviderUtils.getProvider(blockEntity, IKitchenConnector.class) != null) {
                             findNeighbourKitchenBlocks(level, position, true);
                         }
                     } else {

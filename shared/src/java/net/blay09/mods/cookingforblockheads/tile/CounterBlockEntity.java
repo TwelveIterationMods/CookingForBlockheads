@@ -1,11 +1,17 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.balm.api.provider.BalmProvider;
+import net.blay09.mods.balm.api.provider.BalmProviderHolder;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
+import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.KitchenCounterBlock;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
@@ -21,10 +27,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider {
 
@@ -62,9 +71,12 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         doorAnimator.setSoundEventClose(SoundEvents.CHEST_CLOSE);
     }
 
-    public void serverTick() { // TODO
+    public static void serverTick(Level level, BlockPos pos, BlockState state, CounterBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isFirstTick) {
-            BlockState state = level.getBlockState(worldPosition);
             if (state.getBlock() instanceof KitchenCounterBlock) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
                 cachedFacing = state.getValue(KitchenCounterBlock.FACING);
                 cachedFlipped = state.getValue(KitchenCounterBlock.FLIPPED);
@@ -129,19 +141,10 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         return tag;
     }
 
-    /* TODO @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        LazyOptional<T> result = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(capability, itemHandlerCap);
-        if (!result.isPresent()) {
-            result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
-        }
-
-        if (result.isPresent()) {
-            return result;
-        } else {
-            return super.getCapability(capability, facing);
-        }
-    }*/
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+    }
 
     public DoorAnimator getDoorAnimator() {
         return doorAnimator;

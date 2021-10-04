@@ -4,21 +4,42 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
+import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.hooks.BasicEventHooks;
+import net.minecraftforge.items.IItemHandler;
 
 @Mod(CookingForBlockheads.MOD_ID)
 public class ForgeCookingForBlockheads {
+
+    @CapabilityInject(IKitchenConnector.class)
+    public static Capability<IKitchenConnector> KITCHEN_CONNECTOR_CAPABILITY = null;
+
+    @CapabilityInject(IKitchenItemProvider.class)
+    public static Capability<IKitchenItemProvider> KITCHEN_ITEM_PROVIDER_CAPABILITY = null;
+
+    @CapabilityInject(IKitchenSmeltingProvider.class)
+    public static Capability<IKitchenSmeltingProvider> KITCHEN_SMELTING_PROVIDER_CAPABILITY = null;
+
     public ForgeCookingForBlockheads() {
+        Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
+            PlayerEvent.ItemSmeltedEvent event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem());
+            MinecraftForge.EVENT_BUS.post(event);
+        });
+
         CookingForBlockheads.initialize();
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> CookingForBlockheadsClient::initialize);
 
@@ -31,7 +52,7 @@ public class ForgeCookingForBlockheads {
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {
-        if(Balm.isModLoaded(Compat.THEONEPROBE)) {
+        if (Balm.isModLoaded(Compat.THEONEPROBE)) {
             TheOneProbeAddon.register();
         }
     }
