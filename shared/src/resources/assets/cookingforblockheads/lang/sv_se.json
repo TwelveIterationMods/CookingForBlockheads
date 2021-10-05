@@ -87,7 +87,7 @@
     "container.cookingforblockheads:cabinet": "Kökslucka",
     "container.cookingforblockheads:fruit_basket": "Fruktkorg",
 
-    "itemGroup.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
     "_comment": "##",
 

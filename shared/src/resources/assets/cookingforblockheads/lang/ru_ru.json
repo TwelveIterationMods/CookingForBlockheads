@@ -101,7 +101,7 @@
     "container.cookingforblockheads.cabinet": "Кухонный шкаф",
     "container.cookingforblockheads.fruit_basket": "Корзина для фруктов",
 
-    "itemGroup.cookingforblockheads": "Готовка для чайников",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Готовка для чайников",
 
     "waila.cookingforblockheads:milk_stored": "Молока хранится: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Поджаривание... (%s)",

@@ -20,7 +20,7 @@ public class Compat {
 
     public static Item cuttingBoardItem = Items.AIR;
 
-    private static Tag<Item> cookingOilTag; // TODO port - add to balm
+    private static Tag<Item> cookingOilTag;
     public static Tag<Item> getCookingOilTag() {
         if(cookingOilTag == null) {
             cookingOilTag = Balm.getRegistries().getItemTag(new ResourceLocation("balm", "cooking_oil"));

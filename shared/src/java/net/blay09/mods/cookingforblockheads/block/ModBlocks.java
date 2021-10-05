@@ -46,6 +46,7 @@ public class ModBlocks {
         blocks.register(() -> spiceRack, () -> itemBlock(spiceRack), id("spice_rack"));
         blocks.register(() -> fruitBasket, () -> itemBlock(fruitBasket), id("fruit_basket"));
         blocks.register(() -> cuttingBoard, () -> itemBlock(cuttingBoard), id("cutting_board"));
+        blocks.registerBlock(() -> cuttingBoard, id("cutting_board"));
         blocks.register(() -> hangingCorner, () -> itemBlock(hangingCorner), id("hanging_corner"));
 
         DyeColor[] colors = DyeColor.values();

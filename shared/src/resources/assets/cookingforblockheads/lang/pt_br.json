@@ -101,7 +101,7 @@
     "container.cookingforblockheads.cabinet": "Armário de Cozinha",
     "container.cookingforblockheads.fruit_basket": "Cesto de Frutas",
 
-    "itemGroup.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
     "waila.cookingforblockheads:milk_stored": "Leite Armazenado: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Torrando... (%s)",

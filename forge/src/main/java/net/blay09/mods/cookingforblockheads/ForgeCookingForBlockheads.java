@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.provider.BalmProviders;
+import net.blay09.mods.balm.forge.provider.ForgeBalmProviders;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
@@ -13,6 +15,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -49,6 +52,14 @@ public class ForgeCookingForBlockheads {
         MinecraftForge.EVENT_BUS.addListener(IMCHandler::onFoodRegistryInit);
 
         ForgeMod.enableMilkFluid();
+
+        ForgeBalmProviders providers = (ForgeBalmProviders) Balm.getProviders();
+        providers.register(IKitchenItemProvider.class, new CapabilityToken<>() {
+        });
+        providers.register(IKitchenSmeltingProvider.class, new CapabilityToken<>() {
+        });
+        providers.register(IKitchenConnector.class, new CapabilityToken<>() {
+        });
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {

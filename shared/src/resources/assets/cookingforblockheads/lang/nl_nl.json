@@ -87,7 +87,7 @@
     "container.cookingforblockheads:cabinet": "Keukenkast",
     "container.cookingforblockheads:fruit_basket": "Fruitmand",
 
-    "itemGroup.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
     "_comment": "##",
 

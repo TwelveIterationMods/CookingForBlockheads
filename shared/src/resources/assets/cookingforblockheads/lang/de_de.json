@@ -101,7 +101,7 @@
     "container.cookingforblockheads.cabinet": "Küchenschrank",
     "container.cookingforblockheads.fruit_basket": "Fruchtkorb",
     
-    "itemGroup.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
     
     "waila.cookingforblockheads:milk_stored": "Gelagerte Milch: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Toasten... (%s %%)",

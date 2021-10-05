@@ -104,7 +104,7 @@
     "container.cookingforblockheads.cow_jar": "Cow in a Jar",
     "container.cookingforblockheads.cow_jar_custom": "%s in a Jar",
 
-    "itemGroup.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
     "waila.cookingforblockheads:water_stored": "Water Stored: %d/%d",
     "waila.cookingforblockheads:milk_stored": "Milk Stored: %d/%d",

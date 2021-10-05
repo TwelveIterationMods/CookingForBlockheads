@@ -101,7 +101,7 @@
     "container.cookingforblockheads.cabinet": "Meuble haut",
     "container.cookingforblockheads.fruit_basket": "Panier à Fruits",
 
-    "itemGroup.cookingforblockheads": "La Cuisine pour les Nuls",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "La Cuisine pour les Nuls",
 
     "waila.cookingforblockheads:milk_stored": "Lait stocké: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Grillage... (%s)",

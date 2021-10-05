@@ -101,7 +101,7 @@
     "container.cookingforblockheads.cabinet": "주방 캐비닛",
     "container.cookingforblockheads.fruit_basket": "과일 접시",
 
-    "itemGroup.cookingforblockheads": "멍청이도 가능한 요리",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "멍청이도 가능한 요리",
 
     "waila.cookingforblockheads:milk_stored": "저장된 우유: %d/%d",
     "waila.cookingforblockheads:toast_progress": "굽는중... (%s)",

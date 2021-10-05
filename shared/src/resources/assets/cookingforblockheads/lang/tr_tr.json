@@ -81,7 +81,7 @@
     "container.cookingforblockheads:cabinet": "Mutfak Dolabı",
     "container.cookingforblockheads:fruit_basket": "Meyve Sepeti",
 
-    "itemGroup.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
     "waila.cookingforblockheads:milk_stored": "Depolanan Süt: %d/%d",
     "waila.cookingforblockheads:toast_progress": "Kızartıyor... (%s)",

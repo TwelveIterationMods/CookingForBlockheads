@@ -81,7 +81,7 @@
   "container.cookingforblockheads:cabinet": "廚房櫥櫃",
   "container.cookingforblockheads:fruit_basket": "水果籃",
 
-  "itemGroup.cookingforblockheads": "傻瓜式烹飪",
+  "itemGroup.cookingforblockheads.cookingforblockheads": "傻瓜式烹飪",
 
   "waila.cookingforblockheads:milk_stored": "存儲牛奶： %d/%d",
   "waila.cookingforblockheads:toast_progress": "烘焙中…… (%s)",
