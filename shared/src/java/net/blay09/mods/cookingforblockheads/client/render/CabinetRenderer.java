@@ -41,6 +41,6 @@ public class CabinetRenderer extends CounterRenderer<CabinetBlockEntity> {
     @Override
     protected BakedModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
         int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
-        return isFlipped ? ModModels.cabinetDoorsFlipped[colorIndex] : ModModels.cabinetDoors[colorIndex];
+        return isFlipped ? ModModels.cabinetDoorsFlipped.get(colorIndex).get() : ModModels.cabinetDoors.get(colorIndex).get();
     }
 }

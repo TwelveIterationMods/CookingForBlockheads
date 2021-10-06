@@ -27,6 +27,7 @@ public class CookingForBlockheadsClient {
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
         ModTextures.initialize(BalmClient.getTextures());
+        ModModels.initialize(BalmClient.getModels());
 
         Balm.getEvents().onEvent(RecipesUpdatedEvent.class, event -> {
             CookingRegistry.initFoodRegistry(event.getRecipeManager());

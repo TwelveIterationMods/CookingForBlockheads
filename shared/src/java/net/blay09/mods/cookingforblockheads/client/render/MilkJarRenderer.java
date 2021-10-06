@@ -36,7 +36,7 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
             poseStack.pushPose();
             poseStack.translate(0, (BlockKitchen.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), 0);
             poseStack.scale(1f, milkAmount / fluidTank.getCapacity(), 1f);
-            dispatcher.getModelRenderer().tesselateBlock(level, ModModels.milkJarLiquid, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+            dispatcher.getModelRenderer().tesselateBlock(level, ModModels.milkJarLiquid.get(), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
             poseStack.popPose();
         }
     }

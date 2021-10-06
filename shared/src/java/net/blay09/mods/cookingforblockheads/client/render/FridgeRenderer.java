@@ -102,10 +102,10 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
         BakedModel lowerModel;
         BakedModel upperModel = null;
         if (isLarge) {
-            lowerModel = isFlipped ? ModModels.fridgeDoorLargeLowerFlipped : ModModels.fridgeDoorLargeLower;
-            upperModel = isFlipped ? ModModels.fridgeDoorLargeUpperFlipped : ModModels.fridgeDoorLargeUpper;
+            lowerModel = isFlipped ? ModModels.fridgeDoorLargeLowerFlipped.get() : ModModels.fridgeDoorLargeLower.get();
+            upperModel = isFlipped ? ModModels.fridgeDoorLargeUpperFlipped.get() : ModModels.fridgeDoorLargeUpper.get();
         } else {
-            lowerModel = isFlipped ? ModModels.fridgeDoorFlipped : ModModels.fridgeDoor;
+            lowerModel = isFlipped ? ModModels.fridgeDoorFlipped.get() : ModModels.fridgeDoor.get();
         }
 
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();

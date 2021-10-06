@@ -50,7 +50,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
 
     protected BakedModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
         int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
-        return isFlipped ? ModModels.counterDoorsFlipped[colorIndex] : ModModels.counterDoors[colorIndex];
+        return isFlipped ? ModModels.counterDoorsFlipped.get(colorIndex).get() : ModModels.counterDoors.get(colorIndex).get();
     }
 
     @Override

@@ -40,10 +40,10 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
         poseStack.translate(-0.5f, 0f, -0.5f);
         poseStack.mulPose(new Quaternion(-(float) Math.toDegrees(doorAngle), 0f, 0f, true));
-        BakedModel model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorActive : ModModels.ovenDoor;
+        BakedModel model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorActive.get() : ModModels.ovenDoor.get();
         dispatcher.getModelRenderer().tesselateBlock(level, model, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
         poseStack.translate(0f, 0f, -1f);
-        dispatcher.getModelRenderer().tesselateBlock(level, ModModels.ovenDoorHandle, blockEntity.getBlockState(), blockEntity.getBlockPos().relative(facing), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+        dispatcher.getModelRenderer().tesselateBlock(level, ModModels.ovenDoorHandle.get(), blockEntity.getBlockState(), blockEntity.getBlockPos().relative(facing), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
         poseStack.popPose();
 
         // Render the oven tools
