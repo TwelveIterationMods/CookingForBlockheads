@@ -100,8 +100,8 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
     private final FluidTank milkTank = new FluidTank(MILK_CAPACITY) {
         @Override
-        public boolean canReceive(Fluid fluid) {
-            return fluid.isSame(Compat.getMilkFluid()) && super.canReceive(fluid);
+        public boolean canFill(Fluid fluid) {
+            return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);
         }
     };
 

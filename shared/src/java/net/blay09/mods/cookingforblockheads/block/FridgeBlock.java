@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.block.BalmContainerBlock;
+
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -37,7 +37,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class FridgeBlock extends BlockDyeableKitchen implements BalmContainerBlock {
+public class FridgeBlock extends BlockDyeableKitchen {
 
     public static final String name = "fridge";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

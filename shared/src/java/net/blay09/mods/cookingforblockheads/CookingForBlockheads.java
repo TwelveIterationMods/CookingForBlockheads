@@ -41,7 +41,7 @@ public class CookingForBlockheads {
         ModMenus.initialize(Balm.getMenus());
         ModSounds.initialize(Balm.getSounds());
 
-        Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json"), it -> new JsonCompatLoader());
+        Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json"), new JsonCompatLoader());
 
         Balm.getEvents().onEvent(ServerReloadedEvent.class, (ServerReloadedEvent event) -> CookingRegistry.initFoodRegistry(event.getResources().getRecipeManager()));
 

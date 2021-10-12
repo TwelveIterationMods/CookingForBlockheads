@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.block.BalmContainerBlock;
+
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class OvenBlock extends BlockKitchen implements BalmContainerBlock {
+public class OvenBlock extends BlockKitchen {
 
     public static BooleanProperty POWERED = BooleanProperty.create("powered");
     public static BooleanProperty ACTIVE = BooleanProperty.create("active");

@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.block.BalmContainerBlock;
+
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class KitchenCounterBlock extends BlockDyeableKitchen implements BalmContainerBlock {
+public class KitchenCounterBlock extends BlockDyeableKitchen {
 
     public static final String name = "counter";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

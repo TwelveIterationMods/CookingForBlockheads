@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.balm.api.block.BalmContainerBlock;
+
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class ToasterBlock extends BlockKitchen implements BalmContainerBlock {
+public class ToasterBlock extends BlockKitchen {
 
     public static final String name = "toaster";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

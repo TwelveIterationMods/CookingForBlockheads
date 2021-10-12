@@ -13,10 +13,7 @@ import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -28,14 +25,14 @@ import net.minecraftforge.items.IItemHandler;
 @Mod(CookingForBlockheads.MOD_ID)
 public class ForgeCookingForBlockheads {
 
-    @CapabilityInject(IKitchenConnector.class)
-    public static Capability<IKitchenConnector> KITCHEN_CONNECTOR_CAPABILITY = null;
+    public static Capability<IKitchenConnector> KITCHEN_CONNECTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
-    @CapabilityInject(IKitchenItemProvider.class)
-    public static Capability<IKitchenItemProvider> KITCHEN_ITEM_PROVIDER_CAPABILITY = null;
+    public static Capability<IKitchenItemProvider> KITCHEN_ITEM_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
-    @CapabilityInject(IKitchenSmeltingProvider.class)
-    public static Capability<IKitchenSmeltingProvider> KITCHEN_SMELTING_PROVIDER_CAPABILITY = null;
+    public static Capability<IKitchenSmeltingProvider> KITCHEN_SMELTING_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     public ForgeCookingForBlockheads() {
         Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
