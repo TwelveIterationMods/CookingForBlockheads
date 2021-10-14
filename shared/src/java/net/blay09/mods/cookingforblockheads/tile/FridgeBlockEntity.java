@@ -129,13 +129,19 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         markDirtyAndUpdate();
     }
 
+    public static void clientTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
+        blockEntity.clientTick(level, pos, state);
+    }
+
+    public void clientTick(Level level, BlockPos pos, BlockState state) {
+        doorAnimator.update();
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
         blockEntity.serverTick(level, pos, state);
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
-        doorAnimator.update();
-
         if (isDirty) {
             balmSync();
             isDirty = false;

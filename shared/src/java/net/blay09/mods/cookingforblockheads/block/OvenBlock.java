@@ -171,7 +171,9 @@ public class OvenBlock extends BlockKitchen {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::serverTick);
+        return level.isClientSide
+                ? createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::serverTick);
     }
 
 }

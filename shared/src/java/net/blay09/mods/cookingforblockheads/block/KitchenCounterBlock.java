@@ -93,6 +93,8 @@ public class KitchenCounterBlock extends BlockDyeableKitchen {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::serverTick);
+        return level.isClientSide
+                ? createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::serverTick);
     }
 }

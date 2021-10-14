@@ -144,6 +144,14 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         return doorAnimator.receiveClientEvent(id, type) || super.triggerEvent(id, type);
     }
 
+    public static void clientTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
+        blockEntity.clientTick(level, pos, state);
+    }
+
+    public void clientTick(Level level, BlockPos pos, BlockState state) {
+        doorAnimator.update();
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
         blockEntity.serverTick(level, pos, state);
     }
@@ -155,8 +163,6 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
                 isFirstTick = false;
             }
         }
-
-        doorAnimator.update();
 
         if (isDirty) {
             balmSync();

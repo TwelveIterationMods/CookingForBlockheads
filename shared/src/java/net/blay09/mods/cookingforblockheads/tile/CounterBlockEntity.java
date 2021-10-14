@@ -6,11 +6,8 @@ import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
-import net.blay09.mods.balm.api.provider.BalmProviderHolder;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.KitchenCounterBlock;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
@@ -71,6 +68,14 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         doorAnimator.setSoundEventClose(SoundEvents.CHEST_CLOSE);
     }
 
+    public static void clientTick(Level level, BlockPos pos, BlockState state, CounterBlockEntity blockEntity) {
+        blockEntity.clientTick(level, pos, state);
+    }
+
+    public void clientTick(Level level, BlockPos pos, BlockState state) {
+        doorAnimator.update();
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, CounterBlockEntity blockEntity) {
         blockEntity.serverTick(level, pos, state);
     }
@@ -83,8 +88,6 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
                 isFirstTick = false;
             }
         }
-
-        doorAnimator.update();
 
         if (isDirty) {
             balmSync();

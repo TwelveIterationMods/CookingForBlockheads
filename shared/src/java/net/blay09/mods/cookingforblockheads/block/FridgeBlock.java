@@ -185,7 +185,9 @@ public class FridgeBlock extends BlockDyeableKitchen {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::serverTick);
+        return level.isClientSide
+                ? createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::serverTick);
     }
 
     @Override
