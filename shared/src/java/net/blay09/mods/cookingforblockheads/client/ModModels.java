@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.blay09.mods.balm.api.DeferredObject;
@@ -13,6 +14,7 @@ import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.*;
 
@@ -73,7 +75,7 @@ public class ModModels {
             }
 
             return Collections.emptyMap();
-        }, null)::get);
+        }, ModModels::lowerableFacingTransforms)::get);
 
         ResourceLocation toasterModel = id("block/toaster");
         ResourceLocation toasterActiveModel = id("block/toaster_active");
@@ -89,7 +91,7 @@ public class ModModels {
                 case LARGE_UPPER -> fridgeLargeUpperModel;
                 default -> fridgeSmallModel;
             };
-        }, null, null)::get);
+        }, null, ModModels::lowerableFacingTransforms)::get);
 
         models.overrideModel(ModBlocks.oven, models.loadDynamicModel(id("block/oven"), null, state -> {
             String normalTexture = "cookingforblockheads:block/oven_front";
@@ -107,7 +109,7 @@ public class ModModels {
             }
 
             return Collections.emptyMap();
-        }, null)::get);
+        }, ModModels::lowerableFacingTransforms)::get);
 
         models.overrideModel(ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
         models.overrideModel(ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
@@ -122,16 +124,7 @@ public class ModModels {
     }
 
     private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath) {
-        return BalmClient.getModels().loadDynamicModel(id(modelPath), null, null, (state, transform) -> {
-            if (state.hasProperty(BlockKitchen.LOWERED) && state.getValue(BlockKitchen.LOWERED)) {
-                transform.translate(new Vector3f(0, -0.05f, 0f));
-            }
-
-            if (state.hasProperty(BlockKitchen.FACING)) {
-                float angle = state.getValue(BlockKitchen.FACING).toYRot();
-                transform.multiply(new Quaternion(0f, 180 - angle, 0f, true));
-            }
-        });
+        return BalmClient.getModels().loadDynamicModel(id(modelPath), null, null, ModModels::lowerableFacingTransforms);
     }
 
     private static void registerColoredKitchenBlock(BalmModels models, Block block, String modelPath) {
@@ -141,7 +134,7 @@ public class ModModels {
             }
 
             return Collections.emptyMap();
-        }, null)::get);
+        }, ModModels::lowerableFacingTransforms)::get);
     }
 
     private static ResourceLocation id(String path) {
@@ -154,5 +147,16 @@ public class ModModels {
 
     private static String getColoredTerracottaTexture(DyeColor color) {
         return "minecraft:block/" + color.name().toLowerCase(Locale.ENGLISH) + "_terracotta";
+    }
+
+    private static void lowerableFacingTransforms(BlockState state, Matrix4f transform) {
+        if (state.hasProperty(BlockKitchen.LOWERED) && state.getValue(BlockKitchen.LOWERED)) {
+            transform.translate(new Vector3f(0, -0.05f, 0f));
+        }
+
+        if (state.hasProperty(BlockKitchen.FACING)) {
+            float angle = state.getValue(BlockKitchen.FACING).toYRot();
+            transform.multiply(new Quaternion(0f, 180 - angle, 0f, true));
+        }
     }
 }
