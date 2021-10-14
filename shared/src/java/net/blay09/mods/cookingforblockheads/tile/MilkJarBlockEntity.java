@@ -58,7 +58,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
                 if (simulate) {
                     milkUsed += amount * 1000;
                 } else {
-                    milkJar.drain(amount * 1000, false);
+                    milkJar.getFluidTank().drain(Compat.getMilkFluid(), amount * 1000, false);
                 }
                 return ContainerUtils.copyStackWithSize(itemStacks.get(slot), amount);
             }
@@ -69,7 +69,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
             for (ItemStack providedStack : itemStacks) {
                 if (Balm.getHooks().canItemsStack(itemStack, providedStack)) {
-                    milkJar.fill(1000, false);
+                    milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
                     break;
                 }
             }
@@ -93,19 +93,17 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
 
         @Override
         public int getCountInSlot(int slot) {
-            return (int) (milkJar.getFluidTank().getAmount() / 1000);
+            return milkJar.getFluidTank().getAmount() / 1000;
         }
     }
 
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
-    private final FluidTank milkTank = new FluidTank(MILK_CAPACITY) {
+    protected final FluidTank milkTank = new FluidTank(MILK_CAPACITY) {
         @Override
         public boolean canFill(Fluid fluid) {
             return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);
         }
     };
-
-    protected float milkAmount;
 
     public MilkJarBlockEntity(BlockPos pos, BlockState state) {
         this(ModBlockEntities.milkJar.get(), pos, state);
@@ -115,35 +113,17 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         super(type, pos, state);
     }
 
-    public int fill(int amount, boolean simulate) {
-        int filled = (int) Math.min(MILK_CAPACITY - milkAmount, amount);
-        if (!simulate) {
-            milkAmount += filled;
-            balmSync();
-        }
-        return filled;
-    }
-
-    public int drain(int amount, boolean simulate) {
-        int drained = (int) Math.min(milkAmount, amount);
-        if (!simulate) {
-            milkAmount -= drained;
-            balmSync();
-        }
-        return drained;
-    }
-
     @Override
     public CompoundTag save(CompoundTag tagCompound) {
         super.save(tagCompound);
-        tagCompound.putFloat("MilkAmount", milkAmount);
+        tagCompound.put("FluidTank", milkTank.serialize());
         return tagCompound;
     }
 
     @Override
     public void load(CompoundTag tagCompound) {
         super.load(tagCompound);
-        milkAmount = tagCompound.getFloat("MilkAmount");
+        milkTank.deserialize(tagCompound.getCompound("FluidTank"));
     }
 
     @Override

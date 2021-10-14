@@ -11,7 +11,7 @@ public class CookingForBlockheadsConfigData implements BalmConfigData {
     public boolean cowJarEnabled = true;
 
     @Comment("The amount of milk the cow in a jar generates per tick.")
-    public double cowJarMilkPerTick = 0.5f; // 0 - max
+    public int cowJarMilkPerTick = 1; // 1 - max
 
     @Comment("Ex Compressum compatibility. Multiplier applied to the milk per tick for Compressed Cow in a Jar.")
     public double compressedCowJarMilkMultiplier = 9; // 0 - max
