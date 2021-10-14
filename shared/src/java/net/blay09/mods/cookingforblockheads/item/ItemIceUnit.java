@@ -30,7 +30,7 @@ public class ItemIceUnit extends BalmItem {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public ItemIceUnit() {
-        super(new Item.Properties().tab(ModItems.creativeModeTab).stacksTo(1));
+        super(new Item.Properties().tab(ModItems.creativeModeTab));
     }
 
     @Override

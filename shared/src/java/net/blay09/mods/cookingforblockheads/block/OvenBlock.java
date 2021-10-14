@@ -56,6 +56,9 @@ public class OvenBlock extends BlockKitchen {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
         ItemStack heldItem = player.getItemInHand(hand);
+        if (heldItem.getItem() == ModItems.heatingUnit) {
+            return InteractionResult.PASS;
+        }
 
         if (rayTraceResult.getDirection() == Direction.UP) {
             if (CookingRegistry.isToolItem(heldItem)) {

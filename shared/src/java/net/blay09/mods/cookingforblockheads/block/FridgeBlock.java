@@ -76,6 +76,10 @@ public class FridgeBlock extends BlockDyeableKitchen {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
         ItemStack heldItem = player.getItemInHand(hand);
+        if (heldItem.getItem() == ModItems.preservationChamber || heldItem.getItem() == ModItems.iceUnit) {
+            return InteractionResult.PASS;
+        }
+
         if (tryRecolorBlock(state, heldItem, level, pos, player, rayTraceResult)) {
             return InteractionResult.SUCCESS;
         }
