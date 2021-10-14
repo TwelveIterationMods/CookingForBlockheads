@@ -79,7 +79,7 @@ public class ModModels {
 
         ResourceLocation toasterModel = id("block/toaster");
         ResourceLocation toasterActiveModel = id("block/toaster_active");
-        models.overrideModel(ModBlocks.toaster, models.loadDynamicModel(id("block/toaster"), it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel, null, null)::get);
+        models.overrideModel(ModBlocks.toaster, models.loadDynamicModel(id("block/toaster"), it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel, null, ModModels::lowerableFacingTransforms)::get);
 
         ResourceLocation fridgeSmallModel = id("block/fridge");
         ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
