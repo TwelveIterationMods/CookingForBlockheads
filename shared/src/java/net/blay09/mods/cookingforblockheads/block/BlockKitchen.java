@@ -187,7 +187,7 @@ public abstract class BlockKitchen extends BaseEntityBlock {
         return false;
     }
 
-    private boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
+    protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
         if (state.hasProperty(COLOR) && state.hasProperty(HAS_COLOR)) {
             DyeColor current = state.getValue(COLOR);
             if (current != color || !state.getValue(HAS_COLOR)) {

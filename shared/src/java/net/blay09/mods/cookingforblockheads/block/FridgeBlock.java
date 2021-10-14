@@ -16,6 +16,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -185,5 +186,17 @@ public class FridgeBlock extends BlockDyeableKitchen {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::serverTick);
+    }
+
+    @Override
+    protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof FridgeBlockEntity fridge) {
+            BlockPos bottomPos = fridge.getBaseFridge().getBlockPos();
+            BlockPos topPos = bottomPos.above();
+            return super.recolorBlock(world.getBlockState(bottomPos), world, bottomPos, facing, color) && super.recolorBlock(world.getBlockState(topPos), world, topPos, facing, color);
+        }
+
+        return false;
     }
 }
