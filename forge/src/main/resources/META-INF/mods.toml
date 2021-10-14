@@ -26,8 +26,8 @@ description='''
     ordering="NONE"
     side="BOTH"
 [[dependencies.cookingforblockheads]]
-modId="balm"
-mandatory=true
-versionRange="[1.5.2,)"
-ordering="NONE"
-side="BOTH"
+    modId="balm"
+    mandatory=true
+    versionRange="[1.6.0,)"
+    ordering="NONE"
+    side="BOTH"
