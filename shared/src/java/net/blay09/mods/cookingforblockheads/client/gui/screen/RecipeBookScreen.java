@@ -11,7 +11,7 @@ import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
-import net.blay09.mods.cookingforblockheads.menu.slot.FakeSlotCraftMatrix;
+import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
@@ -112,8 +112,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         if (container.getSelection() != null && mouseX >= leftPos + 7 && mouseY >= topPos + 17 && mouseX < leftPos + 92 && mouseY < topPos + 95) {
             Slot slot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
-            if (slot instanceof FakeSlotCraftMatrix && ((FakeSlotCraftMatrix) slot).getVisibleStacks().size() > 1) {
-                ((FakeSlotCraftMatrix) slot).scrollDisplayList(delta > 0 ? -1 : 1);
+            if (slot instanceof CraftMatrixFakeSlot && ((CraftMatrixFakeSlot) slot).getVisibleStacks().size() > 1) {
+                ((CraftMatrixFakeSlot) slot).scrollDisplayList(delta > 0 ? -1 : 1);
             }
         } else {
             setCurrentOffset(delta > 0 ? currentOffset - 1 : currentOffset + 1);
@@ -157,7 +157,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         }
 
         Slot mouseSlot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
-        if (mouseSlot instanceof FakeSlotCraftMatrix) {
+        if (mouseSlot instanceof CraftMatrixFakeSlot) {
             if (button == 0) {
                 ItemStack itemStack = mouseSlot.getItem();
                 FoodRecipeWithStatus recipe = container.findAvailableRecipe(itemStack);
@@ -168,7 +168,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                     container.setSelectedRecipe(new FoodRecipeWithStatus(itemStack, RecipeStatus.MISSING_INGREDIENTS), true);
                 }
             } else if (button == 1) {
-                ((FakeSlotCraftMatrix) mouseSlot).setLocked(!((FakeSlotCraftMatrix) mouseSlot).isLocked());
+                ((CraftMatrixFakeSlot) mouseSlot).setLocked(!((CraftMatrixFakeSlot) mouseSlot).isLocked());
             }
             return true;
         }
@@ -254,7 +254,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         }
 
         if (selection != null) {
-            for (FakeSlotCraftMatrix slot : container.getCraftingMatrixSlots()) {
+            for (CraftMatrixFakeSlot slot : container.getCraftingMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
                     blit(poseStack, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16);
                 }
@@ -309,8 +309,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         int prevZLevel = getBlitOffset();
         setBlitOffset(300);
         for (Slot slot : container.slots) {
-            if (slot instanceof FakeSlotCraftMatrix) {
-                if (!((FakeSlotCraftMatrix) slot).isAvailable() && !slot.getItem().isEmpty()) {
+            if (slot instanceof CraftMatrixFakeSlot) {
+                if (!((CraftMatrixFakeSlot) slot).isAvailable() && !slot.getItem().isEmpty()) {
                     fillGradient(poseStack, leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0x77FF4444, 0x77FF5555);
                 }
             }

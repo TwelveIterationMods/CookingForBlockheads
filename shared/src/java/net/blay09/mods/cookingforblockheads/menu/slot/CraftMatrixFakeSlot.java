@@ -1,10 +1,11 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class FakeSlotCraftMatrix extends FakeSlot {
+public class CraftMatrixFakeSlot extends FakeSlot {
 
     private static final float ITEM_SWITCH_TIME = 80f;
 
@@ -15,8 +16,8 @@ public class FakeSlotCraftMatrix extends FakeSlot {
     private boolean isLocked;
     private boolean available = true;
 
-    public FakeSlotCraftMatrix(int slotId, int x, int y) {
-        super(slotId, x, y);
+    public CraftMatrixFakeSlot(Container container, int slotId, int x, int y) {
+        super(container, slotId, x, y);
     }
 
     public void setIngredient(@Nullable NonNullList<ItemStack> ingredients) {

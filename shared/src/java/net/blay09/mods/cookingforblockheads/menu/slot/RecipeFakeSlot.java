@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,8 +9,8 @@ public class RecipeFakeSlot extends FakeSlot {
 
     private FoodRecipeWithStatus recipe;
 
-    public RecipeFakeSlot(int slotId, int x, int y) {
-        super(slotId, x, y);
+    public RecipeFakeSlot(Container container, int slotId, int x, int y) {
+        super(container, slotId, x, y);
     }
 
     @Override

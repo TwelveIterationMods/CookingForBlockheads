@@ -330,6 +330,9 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         furnaceBurnTime = tagCompound.getShort("BurnTime");
         currentItemBurnTime = tagCompound.getShort("CurrentItemBurnTime");
         slotCookTime = tagCompound.getIntArray("CookTimes");
+        if (slotCookTime.length != 9) {
+            slotCookTime = new int[9];
+        }
 
         hasPowerUpgrade = tagCompound.getBoolean("HasPowerUpgrade");
         energyStorage.setEnergy(tagCompound.getInt("EnergyStored"));

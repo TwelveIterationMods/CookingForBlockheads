@@ -9,7 +9,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.RecipeBookScreen;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
-import net.blay09.mods.cookingforblockheads.menu.slot.FakeSlotCraftMatrix;
+import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
@@ -73,9 +73,9 @@ public class CookingForBlockheadsClient {
                 } else {
                     event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_see_recipe", ChatFormatting.YELLOW));
                 }
-            } else if (hoverSlot instanceof FakeSlotCraftMatrix && event.getItemStack() == hoverSlot.getItem()) {
-                if (((FakeSlotCraftMatrix) hoverSlot).getVisibleStacks().size() > 1) {
-                    if (((FakeSlotCraftMatrix) hoverSlot).isLocked()) {
+            } else if (hoverSlot instanceof CraftMatrixFakeSlot && event.getItemStack() == hoverSlot.getItem()) {
+                if (((CraftMatrixFakeSlot) hoverSlot).getVisibleStacks().size() > 1) {
+                    if (((CraftMatrixFakeSlot) hoverSlot).isLocked()) {
                         event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_unlock", ChatFormatting.GREEN));
                     } else {
                         event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_lock", ChatFormatting.GREEN));
