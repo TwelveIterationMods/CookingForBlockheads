@@ -114,16 +114,26 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("FluidTank", milkTank.serialize());
-        return tagCompound;
+    public CompoundTag save(CompoundTag tag) {
+        super.save(tag);
+        tag.put("FluidTank", milkTank.serialize());
+        return tag;
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        milkTank.deserialize(tagCompound.getCompound("FluidTank"));
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        milkTank.deserialize(tag.getCompound("FluidTank"));
+    }
+
+    @Override
+    public CompoundTag balmToClientTag(CompoundTag tag) {
+        return save(tag);
+    }
+
+    @Override
+    public void balmFromClientTag(CompoundTag tag) {
+        load(tag);
     }
 
     @Override

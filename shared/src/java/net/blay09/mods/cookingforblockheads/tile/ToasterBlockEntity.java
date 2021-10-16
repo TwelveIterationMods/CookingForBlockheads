@@ -68,6 +68,16 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         return tagCompound;
     }
 
+    @Override
+    public CompoundTag balmToClientTag(CompoundTag tag) {
+        return save(tag);
+    }
+
+    @Override
+    public void balmFromClientTag(CompoundTag tag) {
+        load(tag);
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, ToasterBlockEntity blockEntity) {
         blockEntity.serverTick(level, pos, state);
     }

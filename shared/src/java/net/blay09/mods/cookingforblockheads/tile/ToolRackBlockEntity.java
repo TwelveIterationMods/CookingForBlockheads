@@ -41,6 +41,16 @@ public class ToolRackBlockEntity extends BalmBlockEntity {
         return tagCompound;
     }
 
+    @Override
+    public CompoundTag balmToClientTag(CompoundTag tag) {
+        return save(tag);
+    }
+
+    @Override
+    public void balmFromClientTag(CompoundTag tag) {
+        load(tag);
+    }
+
     public Container getContainer() {
         return container;
     }

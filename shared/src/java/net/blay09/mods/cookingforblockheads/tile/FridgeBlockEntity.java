@@ -181,7 +181,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     @Override
     public void balmFromClientTag(CompoundTag tag) {
-        super.balmFromClientTag(tag);
+        load(tag);
         doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
     }
@@ -190,7 +190,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     public CompoundTag balmToClientTag(CompoundTag tag) {
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return tag;
+        return save(tag);
     }
 
     @Nullable

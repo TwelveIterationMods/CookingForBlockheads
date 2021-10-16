@@ -68,8 +68,13 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return save(new CompoundTag());
+    public CompoundTag balmToClientTag(CompoundTag tag) {
+        return save(tag);
+    }
+
+    @Override
+    public void balmFromClientTag(CompoundTag tag) {
+        load(tag);
     }
 
     @Override

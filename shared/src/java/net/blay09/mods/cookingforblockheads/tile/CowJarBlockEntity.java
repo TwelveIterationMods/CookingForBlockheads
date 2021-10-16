@@ -26,25 +26,25 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"));
+        if (tag.contains("CustomName", Tag.TAG_STRING)) {
+            customName = Component.Serializer.fromJson(tag.getString("CustomName"));
         }
 
-        compressedCow = tagCompound.getBoolean("CompressedCow");
+        compressedCow = tag.getBoolean("CompressedCow");
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
+    public CompoundTag save(CompoundTag tag) {
         if (customName != null) {
-            tagCompound.putString("CustomName", Component.Serializer.toJson(customName));
+            tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
 
-        tagCompound.putBoolean("CompressedCow", compressedCow);
+        tag.putBoolean("CompressedCow", compressedCow);
 
-        return super.save(tagCompound);
+        return super.save(tag);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {

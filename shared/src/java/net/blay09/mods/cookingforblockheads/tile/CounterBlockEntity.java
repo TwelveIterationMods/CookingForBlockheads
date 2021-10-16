@@ -120,7 +120,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     @Override
     public void balmFromClientTag(CompoundTag tag) {
-        super.balmFromClientTag(tag);
+        load(tag);
         doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
     }
@@ -129,7 +129,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     public CompoundTag balmToClientTag(CompoundTag tag) {
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return tag;
+        return save(tag);
     }
 
     @Override

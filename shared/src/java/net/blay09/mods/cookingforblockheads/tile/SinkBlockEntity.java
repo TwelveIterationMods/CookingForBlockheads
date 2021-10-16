@@ -183,6 +183,16 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     }
 
     @Override
+    public CompoundTag balmToClientTag(CompoundTag tag) {
+        return save(tag);
+    }
+
+    @Override
+    public void balmFromClientTag(CompoundTag tag) {
+        load(tag);
+    }
+
+    @Override
     public List<BalmProvider<?>> getProviders() {
         return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
     }

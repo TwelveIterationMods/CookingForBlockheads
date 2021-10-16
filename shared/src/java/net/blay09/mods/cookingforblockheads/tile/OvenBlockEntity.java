@@ -362,6 +362,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
 
     @Override
     public void balmFromClientTag(CompoundTag tag) {
+        load(tag);
         doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
         doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
     }
@@ -370,7 +371,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     public CompoundTag balmToClientTag(CompoundTag tag) {
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return tag;
+        return save(tag);
     }
 
     public boolean hasPowerUpgrade() {
