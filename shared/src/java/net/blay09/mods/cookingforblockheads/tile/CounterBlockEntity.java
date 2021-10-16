@@ -9,7 +9,7 @@ import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.block.KitchenCounterBlock;
+import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
@@ -27,6 +27,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,14 +49,9 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     private Component customName;
 
-    private boolean isFirstTick = true;
-
     private boolean isDirty;
 
     private DyeColor color = DyeColor.WHITE;
-
-    private Direction cachedFacing;
-    private boolean cachedFlipped;
 
     public CounterBlockEntity(BlockPos pos, BlockState state) {
         this(ModBlockEntities.counter.get(), pos, state);
@@ -81,14 +77,6 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
-        if (isFirstTick) {
-            if (state.getBlock() instanceof KitchenCounterBlock) { // looks like there's an issue here similar to TESRs where the state doesn't match the tile
-                cachedFacing = state.getValue(KitchenCounterBlock.FACING);
-                cachedFlipped = state.getValue(KitchenCounterBlock.FLIPPED);
-                isFirstTick = false;
-            }
-        }
-
         if (isDirty) {
             balmSync();
             isDirty = false;
@@ -154,11 +142,13 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     public Direction getFacing() {
-        return cachedFacing == null ? Direction.NORTH : cachedFacing;
+        BlockState blockState = getBlockState();
+        return blockState.hasProperty(BlockStateProperties.FACING) ? blockState.getValue(BlockStateProperties.FACING) : Direction.NORTH;
     }
 
     public boolean isFlipped() {
-        return cachedFlipped;
+        BlockState blockState = getBlockState();
+        return blockState.hasProperty(CounterBlock.FLIPPED) && blockState.getValue(CounterBlock.FLIPPED);
     }
 
     @Nullable

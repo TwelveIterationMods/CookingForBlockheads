@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.tile.IMutableNameable;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -33,7 +32,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -115,7 +113,7 @@ public abstract class BlockKitchen extends BaseEntityBlock {
 
     private static boolean shouldBeLoweredUpon(BlockState stateBelow) {
         Block blockBelow = stateBelow.getBlock();
-        return blockBelow instanceof KitchenCounterBlock || blockBelow instanceof KitchenCornerBlock;
+        return blockBelow instanceof CounterBlock || blockBelow instanceof CornerBlock;
     }
 
     public boolean shouldBePlacedFlipped(BlockPlaceContext context, Direction facing) {

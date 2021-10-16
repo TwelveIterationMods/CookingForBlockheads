@@ -26,9 +26,9 @@ public class ModBlocks {
     public static Block cookingTable = new CookingTableBlock();
     public static Block fridge = new FridgeBlock();
     public static Block sink = new SinkBlock();
-    public static Block counter = new KitchenCounterBlock();
+    public static Block counter = new CounterBlock();
     public static Block cabinet = new CabinetBlock();
-    public static Block corner = new KitchenCornerBlock();
+    public static Block corner = new CornerBlock();
     public static Block hangingCorner = new HangingCornerBlock();
 
     public static void initialize(BalmBlocks blocks) {

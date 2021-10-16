@@ -5,7 +5,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
-import net.blay09.mods.cookingforblockheads.tile.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,16 +28,16 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class KitchenCounterBlock extends BlockDyeableKitchen {
+public class CounterBlock extends BlockDyeableKitchen {
 
     public static final String name = "counter";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
-    public KitchenCounterBlock() {
+    public CounterBlock() {
         this(registryName);
     }
 
-    public KitchenCounterBlock(ResourceLocation registryName) {
+    public CounterBlock(ResourceLocation registryName) {
         super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(5f, 10f), registryName);
     }
 

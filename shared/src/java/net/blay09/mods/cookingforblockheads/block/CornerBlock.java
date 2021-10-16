@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class KitchenCornerBlock extends BlockDyeableKitchen {
+public class CornerBlock extends BlockDyeableKitchen {
 
     public static final String name = "corner";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
@@ -34,7 +34,7 @@ public class KitchenCornerBlock extends BlockDyeableKitchen {
             Block.box(0.5, 0, 0, 16, 15, 15.5)
     };
 
-    public KitchenCornerBlock() {
+    public CornerBlock() {
         super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(5f, 10f), registryName);
     }
 
