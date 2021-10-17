@@ -1,7 +1,10 @@
 package net.blay09.mods.cookingforblockheads;
 
+import com.google.common.collect.Lists;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 public class CookingForBlockheadsConfig {
 
@@ -15,6 +18,7 @@ public class CookingForBlockheadsConfig {
         public final ForgeConfigSpec.DoubleValue ovenFuelTimeMultiplier;
         public final ForgeConfigSpec.DoubleValue ovenCookTimeMultiplier;
         public final ForgeConfigSpec.BooleanValue ovenRequiresCookingOil;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> modBlacklist;
 
         public Common(ForgeConfigSpec.Builder builder) {
             cowJarEnabled = builder
@@ -61,6 +65,11 @@ public class CookingForBlockheadsConfig {
                     .comment("Set this to true if you'd like the oven to only accept cooking oil as fuel (requires Pam's Harvestcraft)")
                     .translation("waystones.config.ovenRequiresCookingOil")
                     .define("ovenRequiresCookingOil", false);
+
+            modBlacklist = builder
+                    .comment("A list of mod namespaces from which you wouldn't like to see ingredients listed in the recipe book")
+                    .translation("waystones.config.modBlacklist")
+                    .defineList("modBlacklist", Lists.newArrayList(""), s -> s instanceof String);
         }
     }
 

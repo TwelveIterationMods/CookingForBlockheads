@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -32,6 +33,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CookingRegistry {
 
@@ -57,8 +59,11 @@ public class CookingRegistry {
 
         nonFoodRecipes = init.getNonFoodRecipes();
 
+        Collection<IRecipe<?>> recipes = recipeManager.getRecipes().stream()
+                .filter(recipe -> !CookingForBlockheadsConfig.COMMON.modBlacklist.get().contains(recipe.getId().getNamespace())).collect(Collectors.toSet());
+
         // Crafting Recipes of Food Items
-        for (IRecipe recipe : recipeManager.getRecipes()) {
+        for (IRecipe recipe : recipes) {
             // Skip smoking and campfire cooking to prevent duplicate recipes
             if (recipe.getType() == IRecipeType.SMOKING || recipe.getType() == IRecipeType.CAMPFIRE_COOKING) {
                 continue;
@@ -234,7 +239,8 @@ public class CookingRegistry {
     public static List<SourceItem> findSourceCandidates(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean isNoFilter) {
         List<SourceItem> sourceList = new ArrayList<>();
 
-        ItemStack[] variants = ingredient.getItemStacks();
+        List<ItemStack> variants = Arrays.stream(ingredient.getItemStacks())
+                .filter(i -> !CookingForBlockheadsConfig.COMMON.modBlacklist.get().contains(i.getItem().getRegistryName().getNamespace())).collect(Collectors.toList());
         for (ItemStack checkStack : variants) {
             SourceItem sourceItem = CookingRegistry.findAnyItemStack(checkStack, inventories, requireBucket);
             ItemStack foundStack = sourceItem != null ? sourceItem.getSourceStack() : ItemStack.EMPTY;
