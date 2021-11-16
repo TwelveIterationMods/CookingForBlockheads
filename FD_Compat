@@ -1,0 +1,17 @@
+{
+	"modid": "farmersdelight",
+	"kitchenConnectors": [
+		"farmersdelight:tatami"
+	],
+	"kitchenItemProviders": [
+		"farmersdelight:acacia_pantry",
+		"farmersdelight:birch_pantry",
+		"farmersdelight:oak_pantry",
+		"farmersdelight:spruce_pantry",
+		"farmersdelight:crimson_pantry",
+		"farmersdelight:dark_oak_pantry",
+		"farmersdelight:jungle_pantry",
+		"farmersdelight:warped_pantry",
+		"farmersdelight:basket"
+	]
+}
