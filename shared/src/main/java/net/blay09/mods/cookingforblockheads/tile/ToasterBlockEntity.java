@@ -45,7 +45,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
             return true;
         } else if (id == 2) {
             BlockState state = level.getBlockState(worldPosition);
-            level.markAndNotifyBlock(worldPosition, level.getChunkAt(worldPosition), state, state, 3, 512);
+            level.sendBlockUpdated(worldPosition, state, state, 3);
             return true;
         }
         return super.triggerEvent(id, type);

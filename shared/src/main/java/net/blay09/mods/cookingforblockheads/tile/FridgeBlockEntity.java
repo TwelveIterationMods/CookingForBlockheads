@@ -252,7 +252,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     public void markDirtyAndUpdate() {
         BlockState state = level.getBlockState(worldPosition);
-        level.markAndNotifyBlock(worldPosition, level.getChunkAt(worldPosition), state, state, 3, 512);
+        level.sendBlockUpdated(worldPosition, state, state, 3);
         setChanged();
     }
 

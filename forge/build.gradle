@@ -126,6 +126,9 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-1.17.1:8.2.0.37:api")
 //    runtimeOnly fg.deobf("mezz.jei:jei-1.17.1:8.2.0.37")
 
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
+    compileOnly fg.deobf("curse.maven:wthit-455982:3480293")
+
     implementation "org.jetbrains:annotations:22.0.0"
 }
 

@@ -316,7 +316,7 @@ public class CookingRegistry {
 
     @Nullable
     @SuppressWarnings("unchecked")
-    public static <T> T findFoodRecipe(InventoryCraftBook craftMatrix, Level level, RecipeType<T> recipeType, Item expectedItem) {
+    public static <T extends Recipe<?>> T findFoodRecipe(InventoryCraftBook craftMatrix, Level level, RecipeType<T> recipeType, Item expectedItem) {
         for (Recipe<Container> recipe : recipeList) {
             if (recipe.getType() == recipeType && recipe.matches(craftMatrix, level) && recipe.getResultItem().getItem() == expectedItem) {
                 return (T) recipe;
