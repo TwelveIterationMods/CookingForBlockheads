@@ -38,11 +38,11 @@
   ],
   "depends": {
     "cloth-config2": ">=5.0.34",
-    "balm-fabric": ">=1.1.0",
+    "balm-fabric": ">=2.1.0",
     "fabricloader": ">=0.11.3",
     "fabric": "*",
-    "minecraft": "1.17.x",
-    "java": ">=16"
+    "minecraft": "1.18.x",
+    "java": ">=17"
   },
   "suggests": {
     "modmenu": "*"

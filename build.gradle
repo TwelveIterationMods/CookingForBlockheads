@@ -1,157 +1,45 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
-        mavenCentral()
-    }
-    // This is only here while FG is under active development
-    configurations.classpath {
-        resolutionStrategy {
-            cacheDynamicVersionsFor 10, "seconds"
-            cacheChangingModulesFor 0, "seconds"
-        }
-    }
-    dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-    }
-}
+subprojects {
+    apply plugin: 'java'
 
-apply plugin: "net.minecraftforge.gradle"
+    java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
-def BUILD_NUMBER = System.getenv("BUILD_NUMBER") ?: patch_version
-
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
-
-version = major_version + "." + minor_version + "." + BUILD_NUMBER
-group = "net.blay09.mods"
-archivesBaseName = mod_name + "_" + minecraft_version
-
-sourceSets {
-    api {
-        compileClasspath += sourceSets.main.compileClasspath
-    }
-    main {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
-}
-
-minecraft {
-    mappings channel: mappings_channel, version: mappings_version
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-//            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                cookingforblockheads {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
-            }
-        }
-        server {
-            workingDirectory project.file('run')
-//            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                cookingforblockheads {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
-            }
-        }
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/')
-
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                cookingforblockheads {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
-
-repositories {
-    maven {
-        url "https://minecraft.curseforge.com/api/maven/"
-    }
-    maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        url "https://www.cursemaven.com"
-    }
-    flatDir {
-        dirs "run/obfmods"
-    }
-}
-
-dependencies {
-    minecraft([
-            group  : "${forge_group}",
-            name   : "forge",
-            version: "${minecraft_version}-${forge_version}"
-    ])
-
-    compileOnly "inventory-tweaks:InventoryTweaks:1.64+dev.146"
-    compileOnly fg.deobf("mezz.jei:jei-1.16.3:7.6.0.49:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.3:7.6.0.49")
-    compile fg.deobf("curse.maven:hwyla-253449:3033593")
-    compile fg.deobf("curse.maven:the-one-probe-245211:3108607")
-    compile fg.deobf("curse.maven:ex-compressum-241967:3226248")
-
-    compile fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3068560")
-    compile fg.deobf("curse.maven:pams-harvestcraft-2-food-extended-402231:3117044")
-    compile fg.deobf("curse.maven:pams-harvestcraft-2-crops-361385:3076451")
-    compile fg.deobf("curse.maven:pams-harvestcraft-2-trees-365460:3117043")
-    compile fg.deobf("curse.maven:farmers-delight-398521:3188508")
-    compile fg.deobf("curse.maven:mekanism-268560:3206392")
-    compile fg.deobf("curse.maven:immersive-engineering-231951:3233018")
-    compile fg.deobf("curse.maven:vanillafoodpantry-mod-238170:3232078")
-    compile fg.deobf("curse.maven:carrots-lib-311327:3231845")
-    compile fg.deobf("curse.maven:crafttweaker-239197:3441949")
-
-    def obfModsDir = new File("run/obfmods")
-    obfModsDir.eachFile { file ->
-        def parts = file.name.split('-', 2)
-        def dep = "ignored:" + parts[0] + ":" + parts[1].replace(".jar", "");
-        runtimeOnly fg.deobf(dep)
-    }
-}
-
-jar {
-    from sourceSets.main.output.classesDirs
-    from sourceSets.api.output.classesDirs
-    from sourceSets.main.output.resourcesDir
-    from sourceSets.api.output.resourcesDir
-
-    manifest {
-        attributes(["Specification-Title"     : mod_id,
+    jar {
+        manifest {
+            attributes([
+                    "Specification-Title"     : mod_id,
                     "Specification-Vendor"    : "BlayTheNinth",
                     "Specification-Version"   : "1",
                     "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${version}",
+                    "Implementation-Version"  : project.jar.archiveVersion,
                     "Implementation-Vendor"   : "BlayTheNinth",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    "MixinConfigs"            : mod_id + ".mixins.json"
+            ])
+        }
+    }
+
+    repositories {
+        mavenCentral()
+
+        maven { url "https://www.cursemaven.com" }
+
+        maven {
+            url "https://maven.pkg.github.com/ModdingForBlockheads/Balm"
+            credentials {
+                username project.findProperty("gpr.user") ?: System.getenv("GPR_USERNAME")
+                password project.findProperty("gpr.key") ?: System.getenv("GPR_TOKEN")
+            }
+        }
+
+        // For JEI
+        maven { url "https://dvs1.progwml6.com/files/maven/" }
+
+        // For Cloth Config
+        maven { url "https://maven.shedaniel.me/" }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = 'UTF-8'
+        it.options.release = java_version as int
     }
 }
