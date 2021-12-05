@@ -30,7 +30,9 @@ minecraft {
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName "Client"
 
-			arg "-mixin.config=${mod_id}.mixins.json"
+            if (forge_mixins.toBoolean()) {
+                arg "-mixin.config=${mod_id}.mixins.json"
+            }
 
             property "mixin.env.disableRefMap", "true"
             property "mixin.debug.export", "true"
@@ -55,7 +57,9 @@ minecraft {
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName "Server"
 
-			arg "-mixin.config=${mod_id}.mixins.json"
+            if (forge_mixins.toBoolean()) {
+                arg "-mixin.config=${mod_id}.mixins.json"
+            }
 
             property "mixin.env.disableRefMap", "true"
             property "mixin.debug.export", "true"
@@ -82,7 +86,9 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-			arg "-mixin.config=${mod_id}.mixins.json"
+            if (forge_mixins.toBoolean()) {
+                arg "-mixin.config=${mod_id}.mixins.json"
+            }
 
             property "mixin.env.disableRefMap", "true"
             property "mixin.debug.export", "true"
