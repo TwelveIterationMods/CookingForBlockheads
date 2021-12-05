@@ -168,28 +168,22 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("FluidTank", sinkTank.serialize());
-        tagCompound.putByte("Color", (byte) color.getId());
-        return tagCompound;
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.put("FluidTank", sinkTank.serialize());
+        tag.putByte("Color", (byte) color.getId());
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        sinkTank.deserialize(tagCompound.getCompound("FluidTank"));
-        color = DyeColor.byId(tagCompound.getByte("Color"));
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        sinkTank.deserialize(tag.getCompound("FluidTank"));
+        color = DyeColor.byId(tag.getByte("Color"));
     }
 
     @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
-        return save(tag);
-    }
-
-    @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
     }
 
     @Override
@@ -207,7 +201,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         if (ticksSinceSync >= SYNC_INTERVAL) {
             ticksSinceSync = 0;
             if (isDirty) {
-                balmSync();
+                sync();
                 isDirty = false;
             }
         }

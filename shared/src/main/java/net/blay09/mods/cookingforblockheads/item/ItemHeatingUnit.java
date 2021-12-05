@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.item.BalmItem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
 import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ItemHeatingUnit extends BalmItem {
+public class ItemHeatingUnit extends Item {
 
     public static final String name = "heating_unit";
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);

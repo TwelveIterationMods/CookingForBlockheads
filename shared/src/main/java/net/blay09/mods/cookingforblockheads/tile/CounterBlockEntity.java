@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
+import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider {
+public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -57,7 +58,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         this(ModBlockEntities.counter.get(), pos, state);
     }
 
-    public CounterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state){
+    public CounterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         doorAnimator.setOpenRadius(2);
         doorAnimator.setSoundEventOpen(SoundEvents.CHEST_OPEN);
@@ -78,7 +79,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isDirty) {
-            balmSync();
+            sync();
             isDirty = false;
         }
     }
@@ -89,47 +90,47 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        CompoundTag itemHandlerCompound = tagCompound.getCompound("ItemHandler");
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        CompoundTag itemHandlerCompound = tag.getCompound("ItemHandler");
         if (CookingForBlockheadsConfig.getActive().largeCounters && itemHandlerCompound.getInt("Size") < 54) {
             itemHandlerCompound.putInt("Size", 54);
         }
 
         container.deserialize(itemHandlerCompound);
 
-        color = DyeColor.byId(tagCompound.getByte("Color"));
+        color = DyeColor.byId(tag.getByte("Color"));
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"));
+        if (tag.contains("CustomName", Tag.TAG_STRING)) {
+            customName = Component.Serializer.fromJson(tag.getString("CustomName"));
+        }
+
+        if (tag.contains("IsForcedOpen", Tag.TAG_BYTE)) {
+            doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
+        }
+
+        if (tag.contains("NumPlayersUsing", Tag.TAG_BYTE)) {
+            doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
         }
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
-        tagCompound.putByte("Color", (byte) color.getId());
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
+        tag.put("ItemHandler", container.serialize());
+        tag.putByte("Color", (byte) color.getId());
 
         if (customName != null) {
-            tagCompound.putString("CustomName", Component.Serializer.toJson(customName));
+            tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
-
-        return tagCompound;
     }
 
     @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
-        doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
-        doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
-    }
-
-    @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return save(tag);
     }
 
     @Override
@@ -158,7 +159,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     @Override
-    public AABB balmGetRenderBoundingBox() {
+    public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(2, 1, 2));
     }
 

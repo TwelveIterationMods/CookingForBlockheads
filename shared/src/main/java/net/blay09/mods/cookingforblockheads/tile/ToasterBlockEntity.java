@@ -24,7 +24,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         @Override
         public void setChanged() {
             ToasterBlockEntity.this.setChanged();
-            balmSync();
+            sync();
         }
     };
 
@@ -60,22 +60,17 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
-        tagCompound.putBoolean("Active", active);
-        tagCompound.putInt("ToastTicks", toastTicks);
-        return tagCompound;
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
+        tag.put("ItemHandler", container.serialize());
+        tag.putBoolean("Active", active);
+        tag.putInt("ToastTicks", toastTicks);
     }
 
     @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
-        return save(tag);
-    }
-
-    @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ToasterBlockEntity blockEntity) {

@@ -40,35 +40,30 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        container.deserialize(tagCompound.getCompound("ItemHandler"));
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"));
+        container.deserialize(tag.getCompound("ItemHandler"));
+
+        if (tag.contains("CustomName", Tag.TAG_STRING)) {
+            customName = Component.Serializer.fromJson(tag.getString("CustomName"));
         }
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
+        tag.put("ItemHandler", container.serialize());
 
         if (customName != null) {
-            tagCompound.putString("CustomName", Component.Serializer.toJson(customName));
+            tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
-
-        return tagCompound;
     }
 
     @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
-        return save(tag);
-    }
-
-    @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
     }
 
     @Override

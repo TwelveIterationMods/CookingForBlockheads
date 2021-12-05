@@ -37,14 +37,14 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
         if (customName != null) {
             tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
 
         tag.putBoolean("CompressedCow", compressedCow);
-
-        return super.save(tag);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {
@@ -66,7 +66,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
 
         ticksSinceUpdate++;
         if (isDirty && ticksSinceUpdate > UPDATE_INTERVAL) {
-            balmSync();
+            sync();
             ticksSinceUpdate = 0;
             isDirty = false;
         }

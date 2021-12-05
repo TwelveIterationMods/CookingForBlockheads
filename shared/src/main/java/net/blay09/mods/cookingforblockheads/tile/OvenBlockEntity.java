@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
+import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.*;
 import net.blay09.mods.balm.api.energy.BalmEnergyStorageProvider;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
@@ -40,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmeltingProvider, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider {
+public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmeltingProvider, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox {
 
     private static final int COOK_TIME = 200;
 
@@ -165,7 +166,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         }
 
         if (isDirty) {
-            balmSync();
+            sync();
             isDirty = false;
         }
 
@@ -343,35 +344,35 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
-        tagCompound.putShort("BurnTime", (short) furnaceBurnTime);
-        tagCompound.putShort("CurrentItemBurnTime", (short) currentItemBurnTime);
-        tagCompound.putIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
-        tagCompound.putBoolean("HasPowerUpgrade", hasPowerUpgrade);
-        tagCompound.putInt("EnergyStored", energyStorage.getEnergy());
+        tag.put("ItemHandler", container.serialize());
+        tag.putShort("BurnTime", (short) furnaceBurnTime);
+        tag.putShort("CurrentItemBurnTime", (short) currentItemBurnTime);
+        tag.putIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
+
+        tag.putBoolean("HasPowerUpgrade", hasPowerUpgrade);
+        tag.putInt("EnergyStored", energyStorage.getEnergy());
 
         if (customName != null) {
-            tagCompound.putString("CustomName", Component.Serializer.toJson(customName));
+            tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
 
-        return tagCompound;
+        if (tag.contains("IsForcedOpen", Tag.TAG_BYTE)) {
+            doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
+        }
+
+        if (tag.contains("NumPlayersUsing", Tag.TAG_BYTE)) {
+            doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
+        }
     }
 
     @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
-        doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
-        doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
-    }
-
-    @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return save(tag);
     }
 
     public boolean hasPowerUpgrade() {
@@ -458,7 +459,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     }
 
     @Override
-    public AABB balmGetRenderBoundingBox() {
+    public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(2, 1, 2));
     }
 

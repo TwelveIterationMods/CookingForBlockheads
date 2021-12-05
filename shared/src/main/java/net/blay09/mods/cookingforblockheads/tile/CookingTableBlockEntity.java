@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
-import net.blay09.mods.balm.api.provider.BalmProviderHolder;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
@@ -48,33 +47,28 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
         CompoundTag itemCompound = new CompoundTag();
         if (!noFilterBook.isEmpty()) {
             noFilterBook.save(itemCompound);
         }
 
-        tagCompound.put("NoFilterBook", itemCompound);
-        return tagCompound;
+        tag.put("NoFilterBook", itemCompound);
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        if (tagCompound.contains("NoFilterBook")) {
-            setNoFilterBook(ItemStack.of(tagCompound.getCompound("NoFilterBook")));
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        if (tag.contains("NoFilterBook")) {
+            setNoFilterBook(ItemStack.of(tag.getCompound("NoFilterBook")));
         }
     }
 
     @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
-        return save(tag);
-    }
-
-    @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
     }
 
     @Override
@@ -89,8 +83,8 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-        RecipeBookMenu container = new RecipeBookMenu(ModMenus.cookingTable.get(), i, playerEntity).allowCrafting();
+    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        RecipeBookMenu container = new RecipeBookMenu(ModMenus.cookingTable.get(), i, player).allowCrafting();
         if (!noFilterBook.isEmpty()) {
             container.setNoFilter();
         }

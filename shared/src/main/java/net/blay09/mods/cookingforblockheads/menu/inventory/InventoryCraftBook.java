@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu.inventory;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -13,6 +12,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
@@ -60,18 +60,18 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
         }
 
         // Find the matching recipe and make sure it matches what the client expects
-        Recipe craftRecipe = CookingRegistry.findFoodRecipe(this, player.level, RecipeType.CRAFTING, outputItem.getItem());
-        if (craftRecipe == null || craftRecipe.getResultItem().isEmpty()) {
+        CraftingRecipe craftingRecipe = CookingRegistry.findFoodRecipe(this, player.level, RecipeType.CRAFTING, outputItem.getItem());
+        if (craftingRecipe == null || craftingRecipe.getResultItem().isEmpty()) {
             return ItemStack.EMPTY;
         }
 
         // Make sure the recipe actually matches to prevent illegal crafting
-        if (!craftRecipe.matches(this, player.level)) {
+        if (!craftingRecipe.matches(this, player.level)) {
             return ItemStack.EMPTY;
         }
 
         // Get the final result and remove ingredients
-        ItemStack result = craftRecipe.assemble(this);
+        ItemStack result = craftingRecipe.assemble(this);
         if (!result.isEmpty()) {
             fireEventsAndHandleAchievements(player, result);
             for (int i = 0; i < getContainerSize(); i++) {

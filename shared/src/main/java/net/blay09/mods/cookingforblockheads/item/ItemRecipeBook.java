@@ -1,9 +1,7 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.item.BalmItem;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
@@ -26,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ItemRecipeBook extends BalmItem {
+public class ItemRecipeBook extends Item {
 
     public enum RecipeBookEdition {
         NO_FILTER("no_filter_edition", () -> ModMenus.noFilterBook.get()),

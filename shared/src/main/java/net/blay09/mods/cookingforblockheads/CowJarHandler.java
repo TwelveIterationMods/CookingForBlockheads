@@ -49,7 +49,7 @@ public class CowJarHandler {
                 }
 
                 // Ex Compressum compat for compressed cows
-                boolean wasCompressed = event.getEntity().getPersistentData().getCompound(Compat.EX_COMPRESSUM).getBoolean("Compressed");
+                boolean wasCompressed = Balm.getHooks().getPersistentData(event.getEntity()).getCompound(Compat.EX_COMPRESSUM).getBoolean("Compressed");
                 if (wasCompressed && tileEntity instanceof CowJarBlockEntity) {
                     ((CowJarBlockEntity) tileEntity).setCompressedCow(true);
                 }
@@ -71,7 +71,7 @@ public class CowJarHandler {
             }
         }
 
-        ResourceLocation registryName = entity.getType().getRegistryName();
+        ResourceLocation registryName = Balm.getRegistries().getKey(entity.getType());
         return registryName != null && registryName.getPath().contains("cow");
     }
 

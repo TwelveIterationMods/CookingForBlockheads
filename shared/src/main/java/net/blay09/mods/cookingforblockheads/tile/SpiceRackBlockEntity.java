@@ -6,7 +6,6 @@ import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
-import net.blay09.mods.balm.api.provider.BalmProviderHolder;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.SpiceRackMenu;
@@ -52,15 +51,18 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.put("ItemHandler", container.serialize());
 
         if (customName != null) {
-            tagCompound.putString("CustomName", Component.Serializer.toJson(customName));
+            tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
+    }
 
-        return tagCompound;
+    @Override
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
     }
 
     @Override

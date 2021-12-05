@@ -29,26 +29,20 @@ public class ToolRackBlockEntity extends BalmBlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        container.deserialize(tagCompound.getCompound("ItemHandler"));
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        container.deserialize(tag.getCompound("ItemHandler"));
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
-        return tagCompound;
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.put("ItemHandler", container.serialize());
     }
 
     @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
-        return save(tag);
-    }
-
-    @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
     }
 
     public Container getContainer() {

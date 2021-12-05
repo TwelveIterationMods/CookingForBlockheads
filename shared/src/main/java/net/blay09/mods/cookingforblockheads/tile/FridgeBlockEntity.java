@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
+import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.CombinedContainer;
 import net.blay09.mods.balm.api.container.ContainerUtils;
@@ -35,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider {
+public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -143,7 +144,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isDirty) {
-            balmSync();
+            sync();
             isDirty = false;
         }
     }
@@ -154,43 +155,43 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        container.deserialize(tagCompound.getCompound("ItemHandler"));
-        hasIceUpgrade = tagCompound.getBoolean("HasIceUpgrade");
-        hasPreservationUpgrade = tagCompound.getBoolean("HasPreservationUpgrade");
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        container.deserialize(tag.getCompound("ItemHandler"));
+        hasIceUpgrade = tag.getBoolean("HasIceUpgrade");
+        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"));
+        if (tag.contains("CustomName", Tag.TAG_STRING)) {
+            customName = Component.Serializer.fromJson(tag.getString("CustomName"));
+        }
+
+        if (tag.contains("IsForcedOpen", Tag.TAG_BYTE)) {
+            doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
+        }
+
+        if (tag.contains("NumPlayersUsing", Tag.TAG_BYTE)) {
+            doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
         }
     }
 
     @Override
-    public CompoundTag save(CompoundTag tagCompound) {
-        super.save(tagCompound);
-        tagCompound.put("ItemHandler", container.serialize());
-        tagCompound.putBoolean("HasIceUpgrade", hasIceUpgrade);
-        tagCompound.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
+        tag.put("ItemHandler", container.serialize());
+        tag.putBoolean("HasIceUpgrade", hasIceUpgrade);
+        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {
-            tagCompound.putString("CustomName", Component.Serializer.toJson(customName));
+            tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
-
-        return tagCompound;
     }
 
     @Override
-    public void balmFromClientTag(CompoundTag tag) {
-        load(tag);
-        doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
-        doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
-    }
-
-    @Override
-    public CompoundTag balmToClientTag(CompoundTag tag) {
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag);
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-        return save(tag);
     }
 
     @Nullable
@@ -245,7 +246,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     @Override
-    public AABB balmGetRenderBoundingBox() {
+    public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(2, 2, 2));
     }
 
