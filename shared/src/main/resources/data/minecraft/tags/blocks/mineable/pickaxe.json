@@ -1,0 +1,32 @@
+{
+  "replace": false,
+  "values": [
+    "cookingforblockheads:cooking_table",
+    "cookingforblockheads:fridge",
+    "cookingforblockheads:sink",
+    "cookingforblockheads:counter",
+    "cookingforblockheads:cabinet",
+    "cookingforblockheads:corner",
+    "cookingforblockheads:oven",
+    "cookingforblockheads:toaster",
+    "cookingforblockheads:milk_jar",
+    "cookingforblockheads:cow_jar",
+    "cookingforblockheads:hanging_corner",
+    "cookingforblockheads:white_kitchen_floor",
+    "cookingforblockheads:orange_kitchen_floor",
+    "cookingforblockheads:magenta_kitchen_floor",
+    "cookingforblockheads:light_blue_kitchen_floor",
+    "cookingforblockheads:yellow_kitchen_floor",
+    "cookingforblockheads:lime_kitchen_floor",
+    "cookingforblockheads:pink_kitchen_floor",
+    "cookingforblockheads:gray_kitchen_floor",
+    "cookingforblockheads:light_gray_kitchen_floor",
+    "cookingforblockheads:cyan_kitchen_floor",
+    "cookingforblockheads:purple_kitchen_floor",
+    "cookingforblockheads:blue_kitchen_floor",
+    "cookingforblockheads:brown_kitchen_floor",
+    "cookingforblockheads:green_kitchen_floor",
+    "cookingforblockheads:red_kitchen_floor",
+    "cookingforblockheads:black_kitchen_floor"
+  ]
+}
