@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
+import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class ToolRackBlockEntity extends BalmBlockEntity {
+public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContainerProvider {
 
     private final DefaultContainer container = new DefaultContainer(2) {
         @Override
@@ -45,6 +46,7 @@ public class ToolRackBlockEntity extends BalmBlockEntity {
         saveAdditional(tag);
     }
 
+    @Override
     public Container getContainer() {
         return container;
     }
