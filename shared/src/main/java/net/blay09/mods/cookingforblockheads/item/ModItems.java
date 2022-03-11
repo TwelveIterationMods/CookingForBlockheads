@@ -12,20 +12,20 @@ public class ModItems {
 
     public static final CreativeModeTab creativeModeTab = Balm.getItems().createCreativeModeTab(id("cookingforblockheads"), () -> new ItemStack(ModItems.recipeBook));
 
-    public static Item recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE);
-    public static Item noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NO_FILTER);
-    public static Item craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING);
-    public static Item heatingUnit = new ItemHeatingUnit();
-    public static Item iceUnit = new ItemIceUnit();
-    public static Item preservationChamber = new ItemPreservationChamber();
+    public static Item recipeBook;
+    public static Item noFilterBook;
+    public static Item craftingBook;
+    public static Item heatingUnit;
+    public static Item iceUnit;
+    public static Item preservationChamber;
 
     public static void initialize(BalmItems items) {
-            items.registerItem(() -> noFilterBook, id("no_filter_edition"));
-            items.registerItem(() -> recipeBook, id("recipe_book"));
-            items.registerItem(() -> craftingBook, id("crafting_book"));
-            items.registerItem(() -> heatingUnit, id(ItemHeatingUnit.name));
-            items.registerItem(() -> iceUnit, id(ItemIceUnit.name));
-            items.registerItem(() -> preservationChamber, id(ItemPreservationChamber.name));
+        items.registerItem(() -> recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE), id("recipe_book"));
+        items.registerItem(() -> noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NO_FILTER), id("no_filter_edition"));
+        items.registerItem(() -> craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING), id("crafting_book"));
+        items.registerItem(() -> heatingUnit = new ItemHeatingUnit(), id(ItemHeatingUnit.name));
+        items.registerItem(() -> iceUnit = new ItemIceUnit(), id(ItemIceUnit.name));
+        items.registerItem(() -> preservationChamber = new ItemPreservationChamber(), id(ItemPreservationChamber.name));
     }
 
     private static ResourceLocation id(String name) {

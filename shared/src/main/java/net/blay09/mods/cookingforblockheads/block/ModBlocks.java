@@ -14,47 +14,47 @@ import net.minecraft.world.level.material.Material;
 
 public class ModBlocks {
 
-    public static Block oven = new OvenBlock();
-    public static Block toolRack = new ToolRackBlock();
-    public static Block toaster = new ToasterBlock();
-    public static Block milkJar = new MilkJarBlock();
-    public static Block cowJar = new CowJarBlock();
-    public static Block spiceRack = new SpiceRackBlock();
+    public static Block oven;
+    public static Block toolRack;
+    public static Block toaster;
+    public static Block milkJar;
+    public static Block cowJar;
+    public static Block spiceRack;
+    public static Block fruitBasket;
+    public static Block cuttingBoard;
+    public static Block cookingTable;
+    public static Block fridge;
+    public static Block sink;
+    public static Block counter;
+    public static Block cabinet;
+    public static Block corner;
+    public static Block hangingCorner;
     public static Block[] kitchenFloors = new Block[DyeColor.values().length];
-    public static Block fruitBasket = new FruitBasketBlock();
-    public static Block cuttingBoard = new CuttingBoardBlock();
-    public static Block cookingTable = new CookingTableBlock();
-    public static Block fridge = new FridgeBlock();
-    public static Block sink = new SinkBlock();
-    public static Block counter = new CounterBlock();
-    public static Block cabinet = new CabinetBlock();
-    public static Block corner = new CornerBlock();
-    public static Block hangingCorner = new HangingCornerBlock();
 
     public static void initialize(BalmBlocks blocks) {
-        blocks.register(() -> cookingTable, () -> itemBlock(cookingTable), id("cooking_table"));
-        blocks.register(() -> fridge, () -> itemBlock(fridge), id("fridge"));
-        blocks.register(() -> sink, () -> itemBlock(sink), id("sink"));
-        blocks.register(() -> counter, () -> itemBlock(counter), id("counter"));
-        blocks.register(() -> cabinet, () -> itemBlock(cabinet), id("cabinet"));
-        blocks.register(() -> corner, () -> itemBlock(corner), id("corner"));
-        blocks.register(() -> oven, () -> itemBlock(oven), id("oven"));
-        blocks.register(() -> toolRack, () -> itemBlock(toolRack), id("tool_rack"));
-        blocks.register(() -> toaster, () -> itemBlock(toaster), id("toaster"));
-        blocks.register(() -> milkJar, () -> itemBlock(milkJar), id("milk_jar"));
-        blocks.register(() -> cowJar, () -> itemBlock(cowJar), id("cow_jar"));
-        blocks.register(() -> spiceRack, () -> itemBlock(spiceRack), id("spice_rack"));
-        blocks.register(() -> fruitBasket, () -> itemBlock(fruitBasket), id("fruit_basket"));
-        blocks.registerBlock(() -> cuttingBoard, id("cutting_board"));
-        blocks.register(() -> hangingCorner, () -> itemBlock(hangingCorner), id("hanging_corner"));
+        blocks.register(() -> oven = new OvenBlock(), () -> itemBlock(oven), id("oven"));
+        blocks.register(() -> toolRack = new ToolRackBlock(), () -> itemBlock(toolRack), id("tool_rack"));
+        blocks.register(() -> toaster = new ToasterBlock(), () -> itemBlock(toaster), id("toaster"));
+        blocks.register(() -> milkJar = new MilkJarBlock(), () -> itemBlock(milkJar), id("milk_jar"));
+        blocks.register(() -> cowJar = new CowJarBlock(), () -> itemBlock(cowJar), id("cow_jar"));
+        blocks.register(() -> spiceRack = new SpiceRackBlock(), () -> itemBlock(spiceRack), id("spice_rack"));
+        blocks.register(() -> fruitBasket = new FruitBasketBlock(), () -> itemBlock(fruitBasket), id("fruit_basket"));
+        blocks.registerBlock(() -> cuttingBoard = new CuttingBoardBlock(), id("cutting_board"));
+        blocks.register(() -> cookingTable = new CookingTableBlock(), () -> itemBlock(cookingTable), id("cooking_table"));
+        blocks.register(() -> fridge = new FridgeBlock(), () -> itemBlock(fridge), id("fridge"));
+        blocks.register(() -> sink = new SinkBlock(), () -> itemBlock(sink), id("sink"));
+        blocks.register(() -> counter = new CounterBlock(), () -> itemBlock(counter), id("counter"));
+        blocks.register(() -> cabinet = new CabinetBlock(), () -> itemBlock(cabinet), id("cabinet"));
+        blocks.register(() -> corner = new CornerBlock(), () -> itemBlock(corner), id("corner"));
+        blocks.register(() -> hangingCorner = new HangingCornerBlock(), () -> itemBlock(hangingCorner), id("hanging_corner"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
         for (DyeColor color : colors) {
-            kitchenFloors[color.ordinal()] = new KitchenFloorBlock();
-            blocks.register(() -> kitchenFloors[color.ordinal()], () -> itemBlock(kitchenFloors[color.ordinal()]), id(color.getSerializedName() + "_kitchen_floor"));
+            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(), () -> itemBlock(kitchenFloors[color.ordinal()]), id(color.getSerializedName() + "_kitchen_floor"));
         }
     }
+
     private static BlockItem itemBlock(Block block) {
         return new BlockItem(block, Balm.getBlocks().itemProperties(ModItems.creativeModeTab));
     }

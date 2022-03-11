@@ -295,7 +295,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
 
     public static boolean isItemFuel(ItemStack itemStack) {
         if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil) {
-            return Compat.getCookingOilTag().contains(itemStack.getItem());
+            return itemStack.is(Compat.getCookingOilTag());
         }
 
         return getBurnTime(itemStack) > 0;
@@ -306,7 +306,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
             return 0;
         }
 
-        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil && Compat.getCookingOilTag().contains(itemStack.getItem())) {
+        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil && itemStack.is(Compat.getCookingOilTag())) {
             return 800;
         }
 
