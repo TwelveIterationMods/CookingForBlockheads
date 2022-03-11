@@ -1,3 +1,8 @@
+### Version 12.0.0 for Minecraft 1.18.2
+
+- Updated to Minecraft 1.18.2
+- Fixed tool rack not dropping content when broken
+
 ### Version 11.1.0 for Minecraft 1.18.x
 
 - Fixed blocks not having correct effective tools set
