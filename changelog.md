@@ -1,3 +1,8 @@
+### Version 12.0.1 for Minecraft 1.18.2
+
+- Fix tag issues in recipes (update Balm too)
+- Added Italian translation (by BlackShadow77)
+
 ### Version 12.0.0 for Minecraft 1.18.2
 
 - Updated to Minecraft 1.18.2
