@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
+import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerReloadedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
@@ -43,7 +44,7 @@ public class CookingForBlockheads {
 
         Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json"), new JsonCompatLoader());
 
-        Balm.getEvents().onEvent(ServerReloadedEvent.class, (ServerReloadedEvent event) -> CookingRegistry.initFoodRegistry(event.getResources().getRecipeManager()));
+        Balm.getEvents().onEvent(ServerReloadFinishedEvent.class, (ServerReloadFinishedEvent event) -> CookingRegistry.initFoodRegistry(event.getServer().getRecipeManager()));
 
         Balm.initializeIfLoaded("minecraft", "net.blay09.mods.cookingforblockheads.compat.VanillaAddon");
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");

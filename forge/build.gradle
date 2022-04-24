@@ -129,11 +129,13 @@ dependencies {
     compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:5.0.38")
     testCompileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:5.0.38")
 
-    compileOnly fg.deobf("mezz.jei:jei-1.17.1:8.2.0.37:api")
-//    runtimeOnly fg.deobf("mezz.jei:jei-1.17.1:8.2.0.37")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.153:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.153")
 
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
     compileOnly fg.deobf("curse.maven:wthit-455982:3480293")
+
+    runtimeOnly fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3695632")
 
     implementation "org.jetbrains:annotations:22.0.0"
 }
