@@ -94,41 +94,38 @@ public class ToolRackBlock extends BlockKitchen {
             return InteractionResult.SUCCESS;
         }
 
-        if (rayTraceResult.getLocation().y > 0.25f) {
-            Direction stateFacing = state.getValue(FACING);
+        Direction stateFacing = state.getValue(FACING);
 
-            double hitX = rayTraceResult.getLocation().x - pos.getX();
-            double hitZ = rayTraceResult.getLocation().z - pos.getZ();
-            double hit = switch (stateFacing) {
-                case NORTH -> hitX;
-                case SOUTH -> 1f - hitX;
-                case WEST -> 1f - hitZ;
-                case EAST -> hitZ;
-                default -> hitX;
-            };
+        double hitX = rayTraceResult.getLocation().x - pos.getX();
+        double hitZ = rayTraceResult.getLocation().z - pos.getZ();
+        double hit = switch (stateFacing) {
+            case NORTH -> hitX;
+            case SOUTH -> 1f - hitX;
+            case WEST -> 1f - hitZ;
+            case EAST -> hitZ;
+            default -> hitX;
+        };
 
-            int hitSlot = hit > 0.5f ? 0 : 1;
-            ToolRackBlockEntity toolRack = (ToolRackBlockEntity) level.getBlockEntity(pos);
-            if (toolRack != null) {
-                if (!heldItem.isEmpty()) {
-                    ItemStack oldToolItem = toolRack.getContainer().getItem(hitSlot);
-                    ItemStack toolItem = heldItem.split(1);
-                    if (!oldToolItem.isEmpty()) {
-                        if (!player.getInventory().add(oldToolItem)) {
-                            player.drop(oldToolItem, false);
-                        }
-                        toolRack.getContainer().setItem(hitSlot, toolItem);
-                    } else {
-                        toolRack.getContainer().setItem(hitSlot, toolItem);
+        int hitSlot = hit > 0.5f ? 0 : 1;
+        ToolRackBlockEntity toolRack = (ToolRackBlockEntity) level.getBlockEntity(pos);
+        if (toolRack != null) {
+            if (!heldItem.isEmpty()) {
+                ItemStack oldToolItem = toolRack.getContainer().getItem(hitSlot);
+                ItemStack toolItem = heldItem.split(1);
+                if (!oldToolItem.isEmpty()) {
+                    if (!player.getInventory().add(oldToolItem)) {
+                        player.drop(oldToolItem, false);
                     }
+                    toolRack.getContainer().setItem(hitSlot, toolItem);
                 } else {
-                    ItemStack itemStack = toolRack.getContainer().getItem(hitSlot);
-                    if (!itemStack.isEmpty()) {
-                        toolRack.getContainer().setItem(hitSlot, ItemStack.EMPTY);
-                        player.setItemInHand(hand, itemStack);
-                    }
+                    toolRack.getContainer().setItem(hitSlot, toolItem);
                 }
-                return InteractionResult.SUCCESS;
+            } else {
+                ItemStack itemStack = toolRack.getContainer().getItem(hitSlot);
+                if (!itemStack.isEmpty()) {
+                    toolRack.getContainer().setItem(hitSlot, ItemStack.EMPTY);
+                    player.setItemInHand(hand, itemStack);
+                }
             }
         }
 
