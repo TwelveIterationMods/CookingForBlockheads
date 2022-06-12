@@ -56,8 +56,8 @@ public class CookingRegistry {
 
         // Crafting Recipes of Food Items
         for (Recipe<?> recipe : recipeManager.getRecipes()) {
-            // Skip smoking and campfire cooking to prevent duplicate recipes
-            if (recipe.getType() == RecipeType.SMOKING || recipe.getType() == RecipeType.CAMPFIRE_COOKING) {
+            // Restrict the search to crafting and smelting recipes to prevent duplicates from smoking and campfire cooking, as well as issues with other mod custom recipes
+            if (!isValidRecipeType(recipe)) {
                 continue;
             }
 
@@ -85,6 +85,10 @@ public class CookingRegistry {
                 }
             }
         }
+    }
+
+    private static boolean isValidRecipeType(Recipe<?> recipe) {
+        return recipe.getType() == RecipeType.CRAFTING || recipe.getType() == RecipeType.SMELTING;
     }
 
     /**
