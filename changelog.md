@@ -1,3 +1,9 @@
+### Version 12.0.2 for Minecraft 1.18.2
+
+- Added Croptopia compatibility (by ugackMiner)
+- Fixed recipe lookup potentially resulting in issues with unsupported custom mod recipes
+- Fixed tool racks not working below y level 0
+
 ### Version 12.0.1 for Minecraft 1.18.2
 
 - Fix tag issues in recipes (update Balm too)

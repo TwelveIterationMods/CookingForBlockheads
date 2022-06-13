@@ -30,6 +30,6 @@ Adds a cooking book and multiblock kitchens that only shows recipes you can make
 [[dependencies.cookingforblockheads]]
     modId="balm"
     mandatory=true
-    versionRange="[3.0.3,)"
+    versionRange="[3.1.0,)"
     ordering="NONE"
     side="BOTH"
