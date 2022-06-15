@@ -15,6 +15,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public class CompatCapabilityLoader {
@@ -25,17 +26,18 @@ public class CompatCapabilityLoader {
 
     @SubscribeEvent
     public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
-        BlockEntity tileEntity = event.getObject();
+        BlockEntity blockEntity = event.getObject();
 
-        if (JsonCompatLoader.kitchenItemProviders.contains(tileEntity.getType().getRegistryName())) {
+        ResourceLocation blockEntityRegistryName = ForgeRegistries.BLOCK_ENTITIES.getKey(blockEntity.getType());
+        if (JsonCompatLoader.kitchenItemProviders.contains(blockEntityRegistryName)) {
             if (itemProviderResourceKey == null) {
                 itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
             }
 
-            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(tileEntity));
+            event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(blockEntity));
         }
 
-        if (JsonCompatLoader.kitchenConnectors.contains(tileEntity.getType().getRegistryName())) {
+        if (JsonCompatLoader.kitchenConnectors.contains(blockEntityRegistryName)) {
             if (connectorResourceKey == null) {
                 connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_connector");
             }

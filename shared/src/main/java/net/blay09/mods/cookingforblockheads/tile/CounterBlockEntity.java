@@ -18,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -192,7 +191,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     @Override
     public Component getDefaultName() {
-        return new TranslatableComponent("container.cookingforblockheads.counter");
+        return Component.translatable("container.cookingforblockheads.counter");
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
 
-    private static final Random random = new Random();
+    private static final RandomSource random = RandomSource.create();
 
     public OvenRenderer(BlockEntityRendererProvider.Context context) {}
 

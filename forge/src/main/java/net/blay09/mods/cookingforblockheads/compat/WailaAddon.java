@@ -6,7 +6,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.tile.*;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 @WailaPlugin(id = CookingForBlockheads.MOD_ID)
@@ -36,7 +36,7 @@ public class WailaAddon implements IWailaPlugin {
             BlockEntity blockEntity = accessor.getBlockEntity();
             if (blockEntity instanceof MilkJarBlockEntity milkJar) {
                 FluidTank fluidTank = milkJar.getFluidTank();
-                tooltip.add(new TranslatableComponent("waila.cookingforblockheads:milk_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
+                tooltip.add(Component.translatable("waila.cookingforblockheads:milk_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
             }
         }
 
@@ -49,7 +49,7 @@ public class WailaAddon implements IWailaPlugin {
             BlockEntity blockEntity = accessor.getBlockEntity();
             if (blockEntity instanceof ToasterBlockEntity toaster) {
                 if (toaster.isActive()) {
-                    tooltip.add(new TranslatableComponent("waila.cookingforblockheads:toast_progress", (int) (toaster.getToastProgress() * 100)));
+                    tooltip.add(Component.translatable("waila.cookingforblockheads:toast_progress", (int) (toaster.getToastProgress() * 100)));
                 }
             }
         }
@@ -63,7 +63,7 @@ public class WailaAddon implements IWailaPlugin {
             BlockEntity tileEntity = accessor.getBlockEntity();
             if (tileEntity instanceof OvenBlockEntity oven) {
                 if (oven.hasPowerUpgrade()) {
-                    tooltip.add(new TranslatableComponent("waila.cookingforblockheads:heating_unit"));
+                    tooltip.add(Component.translatable("waila.cookingforblockheads:heating_unit"));
                 }
             }
         }
@@ -77,11 +77,11 @@ public class WailaAddon implements IWailaPlugin {
             BlockEntity blockEntity = accessor.getBlockEntity();
             if (blockEntity instanceof FridgeBlockEntity fridge) {
                 if (fridge.hasIceUpgrade()) {
-                    tooltip.add(new TranslatableComponent("waila.cookingforblockheads:ice_unit"));
+                    tooltip.add(Component.translatable("waila.cookingforblockheads:ice_unit"));
                 }
 
                 if (fridge.hasPreservationUpgrade()) {
-                    tooltip.add(new TranslatableComponent("waila.cookingforblockheads:preservation_chamber"));
+                    tooltip.add(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
                 }
             }
         }
@@ -95,7 +95,7 @@ public class WailaAddon implements IWailaPlugin {
             BlockEntity blockEntity = accessor.getBlockEntity();
             if (blockEntity instanceof SinkBlockEntity sink && CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                 FluidTank fluidTank = sink.getFluidTank();
-                tooltip.add(new TranslatableComponent("waila.cookingforblockheads:water_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
+                tooltip.add(Component.translatable("waila.cookingforblockheads:water_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
             }
         }
 

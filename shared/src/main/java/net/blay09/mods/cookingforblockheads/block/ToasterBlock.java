@@ -10,6 +10,7 @@ import net.blay09.mods.cookingforblockheads.tile.ToasterBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -94,7 +95,7 @@ public class ToasterBlock extends BlockKitchen {
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         ToasterBlockEntity tileEntity = (ToasterBlockEntity) world.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isActive()) {
             if (random.nextFloat() < tileEntity.getToastProgress()) {

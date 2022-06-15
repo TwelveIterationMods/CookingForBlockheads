@@ -8,12 +8,14 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
 		classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
 		classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+        classpath "com.modrinth.minotaur:Minotaur:2.+"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: "org.spongepowered.mixin"
 apply plugin: 'maven-publish'
 apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: "com.modrinth.minotaur"
 
 def buildNumber = System.getenv("GPR_BUILD_NUMBER") ? "+" + System.getenv("GPR_BUILD_NUMBER") : ""
 version = mod_version + buildNumber
@@ -130,12 +132,12 @@ dependencies {
     testCompileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:5.0.38")
 
     compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.153:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.153")
+//    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.153")
 
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
     compileOnly fg.deobf("curse.maven:wthit-455982:3480293")
 
-    runtimeOnly fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3695632")
+//    runtimeOnly fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3695632")
 
     implementation "org.jetbrains:annotations:22.0.0"
 }
@@ -184,4 +186,18 @@ curseforge {
 			requiredLibrary 'balm'
 		}
 	}
+}
+
+modrinth {
+    token = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN") ?: "none"
+    projectId = project.modrinth_forge_project_id
+    versionType = project.modrinth_release_type
+    versionNumber = project.version + "+forge-" + project.minecraft_version
+    uploadFile = jar
+    changelog = rootProject.file("changelog.md").text
+    gameVersions = [project.minecraft_version]
+    syncBodyFrom = rootProject.file("modrinth.md").text
+    dependencies {
+        required.project "balm"
+    }
 }

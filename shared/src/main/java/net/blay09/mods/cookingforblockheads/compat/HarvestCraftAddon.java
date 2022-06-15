@@ -8,7 +8,7 @@ import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
@@ -41,7 +41,7 @@ public class HarvestCraftAddon {
 
             if (event.getItemStack().getItem() == Compat.cuttingBoardItem) {
                 event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:multiblock_kitchen", ChatFormatting.YELLOW));
-                event.getToolTip().add(new TranslatableComponent("tooltip.cookingforblockheads:can_be_placed_in_world"));
+                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads:can_be_placed_in_world"));
             }
         });
 

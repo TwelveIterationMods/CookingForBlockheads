@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -25,19 +26,19 @@ public class JEIAddon implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.UID);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.cowJar), CowJarRecipeCategory.TYPE);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         if (CookingForBlockheadsConfig.getActive().cowJarEnabled) {
-            registration.addRecipes(ImmutableList.of(new CowJarRecipe()), CowJarRecipeCategory.UID);
+            registration.addRecipes(CowJarRecipeCategory.TYPE, ImmutableList.of(new CowJarRecipe()));
         }
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addGuiContainerHandler(RecipeBookScreen.class, new IGuiContainerHandler<RecipeBookScreen>() {
+        registration.addGuiContainerHandler(RecipeBookScreen.class, new IGuiContainerHandler<>() {
             @Override
             public List<Rect2i> getGuiExtraAreas(RecipeBookScreen containerScreen) {
                 List<Rect2i> list = Lists.newArrayList();

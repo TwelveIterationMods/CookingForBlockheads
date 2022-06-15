@@ -23,7 +23,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -77,15 +76,15 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, new TextComponent("<"), it -> container.nextSubRecipe(-1));
+        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, Component.literal("<"), it -> container.nextSubRecipe(-1));
         btnPrevRecipe.visible = false;
         addWidget(btnPrevRecipe);
 
-        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, new TextComponent(">"), it -> container.nextSubRecipe(1));
+        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, Component.literal(">"), it -> container.nextSubRecipe(1));
         btnNextRecipe.visible = false;
         addWidget(btnNextRecipe);
 
-        searchBar = new EditBox(minecraft.font, leftPos + imageWidth - 78, topPos - 5, 70, 10, searchBar, new TextComponent(""));
+        searchBar = new EditBox(minecraft.font, leftPos + imageWidth - 78, topPos - 5, 70, 10, searchBar, Component.empty());
         setInitialFocus(searchBar);
 
         int yOffset = -80;

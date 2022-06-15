@@ -11,13 +11,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
 public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity> {
 
-    private static final Random random = new Random();
+    private static final RandomSource random = RandomSource.create();
 
     public SinkRenderer(BlockEntityRendererProvider.Context context) {
     }
