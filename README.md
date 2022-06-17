@@ -13,8 +13,8 @@ This mod is available for both Forge and Fabric (starting Minecraft 1.17).
 
 #### Fabric
 
-[![Versions](http://cf.way2muchnoise.eu/versions/_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/cooking-for-blockheads-fabric)
-[![Downloads](http://cf.way2muchnoise.eu/full__downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/cooking-for-blockheads-fabric)
+[![Versions](http://cf.way2muchnoise.eu/versions/634546_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/cooking-for-blockheads-fabric)
+[![Downloads](http://cf.way2muchnoise.eu/full_634546_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/cooking-for-blockheads-fabric)
 
 ## Contributing
 
