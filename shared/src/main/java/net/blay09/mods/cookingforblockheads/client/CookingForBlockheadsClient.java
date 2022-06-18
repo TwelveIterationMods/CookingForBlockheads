@@ -22,8 +22,6 @@ import net.minecraft.world.inventory.Slot;
 
 public class CookingForBlockheadsClient {
     public static void initialize() {
-        BalmClient.initialize(CookingForBlockheads.MOD_ID);
-
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
         ModTextures.initialize(BalmClient.getTextures());

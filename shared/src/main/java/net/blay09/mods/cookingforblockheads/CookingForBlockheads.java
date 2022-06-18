@@ -56,8 +56,6 @@ public class CookingForBlockheads {
         });
 
         Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
-
-        Balm.initialize(MOD_ID);
     }
 
 }

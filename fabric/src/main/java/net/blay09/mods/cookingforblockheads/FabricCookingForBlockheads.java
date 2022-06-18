@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public class FabricCookingForBlockheads implements ModInitializer {
     @Override
     public void onInitialize() {
-        CookingForBlockheads.initialize();
+        Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
 
         registerProvider("kitchen_item_provider", IKitchenItemProvider.class,
                 ModBlockEntities.counter.get(), ModBlockEntities.milkJar.get(), ModBlockEntities.fridge.get(),

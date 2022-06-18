@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.forge.provider.ForgeBalmProviders;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -37,8 +38,8 @@ public class ForgeCookingForBlockheads {
             MinecraftForge.EVENT_BUS.post(event);
         });
 
-        CookingForBlockheads.initialize();
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> CookingForBlockheadsClient::initialize);
+        Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheadsClient::initialize));
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(IMCHandler::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerCapabilities);
