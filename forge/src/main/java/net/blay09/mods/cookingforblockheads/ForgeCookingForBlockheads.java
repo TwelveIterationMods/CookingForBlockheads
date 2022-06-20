@@ -46,8 +46,6 @@ public class ForgeCookingForBlockheads {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         MinecraftForge.EVENT_BUS.addListener(IMCHandler::onFoodRegistryInit);
 
-        ForgeMod.enableMilkFluid();
-
         ForgeBalmProviders providers = (ForgeBalmProviders) Balm.getProviders();
         providers.register(IKitchenItemProvider.class, new CapabilityToken<>() {
         });

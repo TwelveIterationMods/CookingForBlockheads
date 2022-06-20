@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
 import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
-import net.blay09.mods.balm.api.event.server.ServerReloadedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -29,6 +28,7 @@ public class CookingForBlockheads {
 
     public static void initialize() {
         CookingForBlockheadsAPI.setupAPI(new InternalMethods());
+        Balm.getRegistries().enableMilkFluid();
 
         CookingRegistry.addSortButton(new NameSortButton());
         CookingRegistry.addSortButton(new HungerSortButton());
