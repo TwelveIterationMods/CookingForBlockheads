@@ -10,7 +10,7 @@
   ],
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "balm:iron_ingots"
     },
     "C": {
       "item": "minecraft:terracotta"

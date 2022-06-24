@@ -10,7 +10,7 @@
   ],
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "balm:iron_ingots"
     },
     "G": {
       "item": "minecraft:black_stained_glass"

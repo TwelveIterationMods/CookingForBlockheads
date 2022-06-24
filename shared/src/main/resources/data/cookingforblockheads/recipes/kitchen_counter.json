@@ -10,13 +10,13 @@
   ],
   "key": {
     "S": {
-      "tag": "forge:stone"
+      "tag": "balm:stones"
     },
     "C": {
       "item": "minecraft:terracotta"
     },
     "B": {
-      "tag": "forge:chests/wooden"
+      "tag": "balm:wooden_chests"
     }
   }
 }

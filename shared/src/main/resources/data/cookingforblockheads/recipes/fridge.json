@@ -5,7 +5,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "forge:chests/wooden"
+      "tag": "balm:wooden_chests"
     },
     {
       "item": "minecraft:iron_door"

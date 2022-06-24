@@ -9,10 +9,10 @@
   ],
   "key": {
     "N": {
-      "tag": "forge:nuggets/iron"
+      "tag": "balm:iron_nuggets"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "balm:iron_ingots"
     },
     "C": {
       "item": "minecraft:comparator"

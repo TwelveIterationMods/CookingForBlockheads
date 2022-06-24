@@ -12,7 +12,7 @@
       "tag": "minecraft:wooden_slabs"
     },
     "I": {
-      "tag": "forge:nuggets/iron"
+      "tag": "balm:iron_nuggets"
     }
   }
 }

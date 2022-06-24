@@ -12,7 +12,7 @@
       "item": "minecraft:terracotta"
     },
     "B": {
-      "tag": "forge:chests/wooden"
+      "tag": "balm:wooden_chests"
     }
   }
 }

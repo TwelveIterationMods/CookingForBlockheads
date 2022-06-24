@@ -12,7 +12,7 @@
       "item": "minecraft:redstone"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "balm:iron_ingots"
     },
     "C": {
       "item": "minecraft:comparator"
