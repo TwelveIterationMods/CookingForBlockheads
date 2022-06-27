@@ -2,6 +2,7 @@
     "modid": "croptopia",
     "foods": {
         "INGREDIENTS": [
+            "croptopia:flour",
             "croptopia:molasses",
             "croptopia:caramel",
             "croptopia:cinnamon",

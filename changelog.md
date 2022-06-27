@@ -1,6 +1,6 @@
 ### Version 13.1.2 for Minecraft 1.19.x
 
-- Added support for Croptopia Toast in toaster
+- Added support for Croptopia Toast in toaster, and crafting flour from Cooking Table
 - Fixed fruit basket and spice rack not visually updating on server-side changes
 - Fixed milk jar not saving on changes
 - Fixed cutting board not being treated as a kitchen block
