@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
+import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.fabric.provider.FabricBalmProviders;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -31,12 +32,19 @@ public class FabricCookingForBlockheads implements ModInitializer {
                 ModBlockEntities.sink.get(), ModBlockEntities.spiceRack.get(), ModBlockEntities.cabinet.get(),
                 ModBlockEntities.cowJar.get(), ModBlockEntities.cuttingBoard.get(),
                 ModBlockEntities.corner.get(), ModBlockEntities.cookingTable.get());
+
+        registerLookup(new ResourceLocation("balm", "fluid_tank"), FluidTank.class,
+                ModBlockEntities.sink.get(), ModBlockEntities.milkJar.get(), ModBlockEntities.cowJar.get());
     }
 
     private <T> void registerProvider(String name, Class<T> clazz, BlockEntityType<?>... blockEntities) {
         var providers = ((FabricBalmProviders) Balm.getProviders());
         ResourceLocation identifier = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
         providers.registerProvider(identifier, clazz);
+        registerLookup(identifier, clazz, blockEntities);
+    }
+
+    private <T> void registerLookup(ResourceLocation identifier, Class<T> clazz, BlockEntityType<?>... blockEntities) {
         var lookup = BlockApiLookup.get(identifier, clazz, Void.class);
         lookup.registerForBlockEntities((blockEntity, context) -> ((BalmBlockEntity) blockEntity).getProvider(clazz), blockEntities);
     }

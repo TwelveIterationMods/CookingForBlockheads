@@ -21,5 +21,11 @@
     ],
     "milk": [
         "croptopia:milk_bottle"
+    ],
+    "toaster": [
+        {
+            "input": "minecraft:bread",
+            "output": "croptopia:toast"
+        }
     ]
 }
