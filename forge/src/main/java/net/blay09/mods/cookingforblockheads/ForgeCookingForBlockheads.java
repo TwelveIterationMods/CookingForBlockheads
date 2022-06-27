@@ -39,7 +39,7 @@ public class ForgeCookingForBlockheads {
         });
 
         Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheadsClient::initialize));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheadsClient::initialize));
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(IMCHandler::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerCapabilities);

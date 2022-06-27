@@ -32,23 +32,13 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
     public CowJarRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(150, 110);
-        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.cowJar));
+        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.cowJar));
         this.overlay = guiHelper.createDrawable(texture, 0, 0, 64, 80);
     }
 
     @Override
     public RecipeType<CowJarRecipe> getRecipeType() {
         return TYPE;
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
-    @Override
-    public Class<? extends CowJarRecipe> getRecipeClass() {
-        return CowJarRecipe.class;
     }
 
     @Override
@@ -69,9 +59,9 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CowJarRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 65, 1)
-                .addIngredients(VanillaTypes.ITEM, ImmutableList.of(new ItemStack(Items.ANVIL), new ItemStack(ModBlocks.milkJar)));
+                .addIngredients(VanillaTypes.ITEM_STACK, ImmutableList.of(new ItemStack(Items.ANVIL), new ItemStack(ModBlocks.milkJar)));
         builder.addSlot(RecipeIngredientRole.INPUT, 65, 77)
-                .addIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.cowJar));
+                .addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.cowJar));
     }
 
     @Override

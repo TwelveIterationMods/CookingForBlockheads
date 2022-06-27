@@ -29,9 +29,9 @@ dependencies {
 	modImplementation "curse.maven:modmenu-308702:3348711"
 
 	// Roughly Enough Items
-	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:6.0.264-alpha"
-	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:6.0.264-alpha"
-	modCompileOnly "me.shedaniel:architectury:2.0.9"
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:9.0.493"
+	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:9.0.493"
+	modRuntimeOnly "dev.architectury:architectury-fabric:5.7.28"
 
 	implementation "org.jetbrains:annotations:22.0.0"
 }
