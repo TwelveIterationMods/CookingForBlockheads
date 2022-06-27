@@ -1,6 +1,8 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -43,15 +45,9 @@ public class CuttingBoardBlockEntity extends BalmBlockEntity {
         super(ModBlockEntities.cuttingBoard.get(), pos, state);
     }
 
-    /*@Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        LazyOptional<T> result = CapabilityKitchenItemProvider.CAPABILITY.orEmpty(capability, itemProviderCap);
-
-        if (result.isPresent()) {
-            return result;
-        } else {
-            return super.getCapability(capability, facing);
-        }
-    }*/
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+    }
 
 }

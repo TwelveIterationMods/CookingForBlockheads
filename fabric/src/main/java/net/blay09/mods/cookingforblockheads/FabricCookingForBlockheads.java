@@ -20,15 +20,17 @@ public class FabricCookingForBlockheads implements ModInitializer {
         registerProvider("kitchen_item_provider", IKitchenItemProvider.class,
                 ModBlockEntities.counter.get(), ModBlockEntities.milkJar.get(), ModBlockEntities.fridge.get(),
                 ModBlockEntities.toolRack.get(), ModBlockEntities.fruitBasket.get(), ModBlockEntities.oven.get(),
-                ModBlockEntities.sink.get(), ModBlockEntities.spiceRack.get(), ModBlockEntities.cabinet.get());
+                ModBlockEntities.sink.get(), ModBlockEntities.spiceRack.get(), ModBlockEntities.cabinet.get(),
+                ModBlockEntities.cowJar.get(), ModBlockEntities.cuttingBoard.get());
 
         registerProvider("kitchen_smelting_provider", IKitchenSmeltingProvider.class, ModBlockEntities.oven.get());
 
         registerProvider("kitchen_connector", IKitchenConnector.class,
                 ModBlockEntities.counter.get(), ModBlockEntities.milkJar.get(), ModBlockEntities.fridge.get(),
                 ModBlockEntities.toolRack.get(), ModBlockEntities.fruitBasket.get(), ModBlockEntities.oven.get(),
-                ModBlockEntities.sink.get(), ModBlockEntities.spiceRack.get(), ModBlockEntities.corner.get(),
-                ModBlockEntities.cookingTable.get(), ModBlockEntities.cabinet.get());
+                ModBlockEntities.sink.get(), ModBlockEntities.spiceRack.get(), ModBlockEntities.cabinet.get(),
+                ModBlockEntities.cowJar.get(), ModBlockEntities.cuttingBoard.get(),
+                ModBlockEntities.corner.get(), ModBlockEntities.cookingTable.get());
     }
 
     private <T> void registerProvider(String name, Class<T> clazz, BlockEntityType<?>... blockEntities) {
