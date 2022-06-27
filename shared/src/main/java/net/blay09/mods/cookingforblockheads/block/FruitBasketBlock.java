@@ -4,7 +4,9 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.N
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
+import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -15,6 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -67,4 +71,8 @@ public class FruitBasketBlock extends BlockKitchen {
         return InteractionResult.SUCCESS;
     }
 
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return !level.isClientSide ? createTickerHelper(type, ModBlockEntities.fruitBasket.get(), FruitBasketBlockEntity::serverTick) : null;
+    }
 }

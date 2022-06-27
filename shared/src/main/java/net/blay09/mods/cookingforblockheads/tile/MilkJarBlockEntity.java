@@ -103,6 +103,11 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         public boolean canFill(Fluid fluid) {
             return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);
         }
+
+        @Override
+        public void setChanged() {
+            MilkJarBlockEntity.this.setChanged();
+        }
     };
 
     public MilkJarBlockEntity(BlockPos pos, BlockState state) {

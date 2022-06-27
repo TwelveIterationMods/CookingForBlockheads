@@ -17,6 +17,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +34,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
 
     private Component customName;
+    private boolean isDirty;
 
     public FruitBasketBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.fruitBasket.get(), pos, state);
@@ -111,5 +113,22 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public Container getContainer() {
         return container;
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, FruitBasketBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
+        if (isDirty) {
+            sync();
+            isDirty = false;
+        }
+    }
+
+    @Override
+    public void setChanged() {
+        isDirty = true;
+        super.setChanged();
     }
 }
