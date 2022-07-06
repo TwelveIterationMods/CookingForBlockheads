@@ -37,4 +37,6 @@ public class CookingForBlockheadsConfigData implements BalmConfigData {
     @Comment("Set to false if you don't want ingredients to be marked with a special icon in the recipe book.")
     public boolean showIngredientIcon = true;
 
+    @Comment("Toasting toasted bread again will turn into charcoal (only if no other mod adding toast is present). Set to false to disable.")
+    public boolean allowVeryToastedBread = true;
 }

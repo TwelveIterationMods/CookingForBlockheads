@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
@@ -18,6 +19,7 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.GeneralFoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -47,9 +49,22 @@ public class CookingRegistry {
     private static Collection<ItemStack> nonFoodRecipes = Collections.emptyList();
 
     private static final ToasterHandler dummyBreadToasterHandler = itemStack -> {
-        ItemStack toasted = itemStack.copy();
-        toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:toasted", itemStack.getHoverName()));
-        return toasted;
+        CompoundTag tag = itemStack.getTag();
+        boolean alreadyToasted = tag != null && tag.getBoolean("CookingForBlockheadsToasted");
+        if (alreadyToasted) {
+            if (CookingForBlockheadsConfig.getActive().allowVeryToastedBread) {
+                ItemStack veryToasted = new ItemStack(Items.CHARCOAL);
+                veryToasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:very_toasted"));
+                return veryToasted;
+            } else {
+                return itemStack;
+            }
+        } else {
+            ItemStack toasted = itemStack.copy();
+            toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:toasted", itemStack.getHoverName()));
+            toasted.getOrCreateTag().putBoolean("CookingForBlockheadsToasted", true);
+            return toasted;
+        }
     };
 
     public static void initFoodRegistry(RecipeManager recipeManager) {

@@ -98,11 +98,24 @@ public class ToasterBlock extends BlockKitchen {
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         ToasterBlockEntity tileEntity = (ToasterBlockEntity) world.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isActive()) {
-            if (random.nextFloat() < tileEntity.getToastProgress()) {
-                double x = (float) pos.getX() + 0.5f + (random.nextFloat() - 0.5f) * 0.25f;
-                double y = (float) pos.getY() + 0.2f + random.nextFloat() * 6f / 16f;
-                double z = (float) pos.getZ() + 0.5f + (random.nextFloat() - 0.5f) * 0.25f;
-                world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
+            boolean burning = tileEntity.isBurningToast();
+            float particleChance = tileEntity.getToastProgress();
+            int particleCount = 1;
+            if (burning) {
+                particleChance *= 3;
+                particleCount = random.nextInt(1, Math.max(2, (int) Math.ceil(5 * tileEntity.getToastProgress())));
+            }
+            if (random.nextFloat() < particleChance) {
+                for (int i = 0; i < particleCount; i++) {
+                    double x = (float) pos.getX() + 0.5f + (random.nextFloat() - 0.5f) * 0.25f;
+                    double y = (float) pos.getY() + 0.2f + random.nextFloat() * 6f / 16f;
+                    double z = (float) pos.getZ() + 0.5f + (random.nextFloat() - 0.5f) * 0.25f;
+                    if (burning && Math.random() <= 0.5) {
+                        world.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
+                    } else {
+                        world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
+                    }
+                }
             }
         }
     }

@@ -92,6 +92,7 @@
     "tooltip.cookingforblockheads:oven_upgrade": "Oven Upgrade",
     "tooltip.cookingforblockheads:fridge_upgrade": "Fridge Upgrade",
     "tooltip.cookingforblockheads:toasted": "Toasted %s",
+    "tooltip.cookingforblockheads:very_toasted": "Very Toasted Bread (do not eat)",
 
     "container.cookingforblockheads.oven": "Cooking Oven",
     "container.cookingforblockheads.fridge": "Fridge",

@@ -142,4 +142,10 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     public Container getContainer() {
         return container;
     }
+
+    public boolean isBurningToast() {
+        CompoundTag firstTag = container.getItem(0).getTag();
+        CompoundTag secondTag = container.getItem(1).getTag();
+        return firstTag != null && firstTag.getBoolean("CookingForBlockheadsToasted") || secondTag != null && secondTag.getBoolean("CookingForBlockheadsToasted");
+    }
 }
