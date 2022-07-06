@@ -74,7 +74,7 @@ public class ToasterBlock extends BlockKitchen {
                     if (!output.isEmpty()) {
                         for (int i = 0; i < toaster.getContainer().getContainerSize(); i++) {
                             if (toaster.getContainer().getItem(i).isEmpty()) {
-                                toaster.getContainer().setItem(i, heldItem.split(1));
+                                toaster.getContainer().setItem(i, player.getAbilities().instabuild ? heldItem.copy().split(1) : heldItem.split(1));
                                 return InteractionResult.SUCCESS;
                             }
                         }
