@@ -62,7 +62,7 @@ public class DoorAnimator {
         prevAngle = angle;
 
         if ((isForcedOpen || numPlayersUsing > 0) && angle == 0f && soundEventOpen != null) {
-            blockEntity.getLevel().playSound(null, blockEntity.getBlockPos(), soundEventOpen, SoundSource.BLOCKS, 0.5f, blockEntity.getLevel().random.nextFloat() * 0.1f + 0.9f);
+            blockEntity.getLevel().playLocalSound(x, y, z, soundEventOpen, SoundSource.BLOCKS, 0.5f, blockEntity.getLevel().random.nextFloat() * 0.1f + 0.9f, false);
         }
 
         float angleSpeed = 0.1f;
@@ -76,7 +76,7 @@ public class DoorAnimator {
             angle = Math.min(angle, 1f);
             float playCloseSound = 0.5f;
             if (angle < playCloseSound && angleBefore >= playCloseSound && soundEventClose != null) {
-                blockEntity.getLevel().playSound(null, blockEntity.getBlockPos(), soundEventClose, SoundSource.BLOCKS, 0.5f, blockEntity.getLevel().random.nextFloat() * 0.1f + 0.9f);
+                blockEntity.getLevel().playLocalSound(x, y, z, soundEventClose, SoundSource.BLOCKS, 0.5f, blockEntity.getLevel().random.nextFloat() * 0.1f + 0.9f, false);
             }
             angle = Math.max(angle, 0f);
         }

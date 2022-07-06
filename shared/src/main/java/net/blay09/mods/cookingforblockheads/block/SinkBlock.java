@@ -75,7 +75,7 @@ public class SinkBlock extends BlockDyeableKitchen {
                     heldItem.shrink(1);
                 }
             }
-            spawnParticles(level, pos, state);
+            spawnParticlesAndPlaySound(level, pos, state);
             level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1f, level.random.nextFloat() + 0.5f);
             return InteractionResult.SUCCESS;
         } else {
@@ -88,14 +88,18 @@ public class SinkBlock extends BlockDyeableKitchen {
                         int simulated = fluidTank.drain(Fluids.WATER, 333, true);
                         if (simulated == 333) {
                             fluidTank.drain(Fluids.WATER, 333, false);
-                            if (player.addItem(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER))) {
+                            ItemStack filledBottle = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
+                            if (heldItem.getCount() == 1) {
+                                player.setItemInHand(hand, filledBottle);
+                            } else if (player.addItem(filledBottle)) {
                                 heldItem.shrink(1);
                             }
+                            level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1f, 1f);
                         } else {
-                            spawnParticles(level, pos, state);
+                            spawnParticlesAndPlaySound(level, pos, state);
                         }
                     } else {
-                        spawnParticles(level, pos, state);
+                        spawnParticlesAndPlaySound(level, pos, state);
                     }
                 }
                 return InteractionResult.SUCCESS;
@@ -105,7 +109,7 @@ public class SinkBlock extends BlockDyeableKitchen {
         return InteractionResult.SUCCESS;
     }
 
-    private void spawnParticles(Level level, BlockPos pos, BlockState state) {
+    private void spawnParticlesAndPlaySound(Level level, BlockPos pos, BlockState state) {
         float dripWaterX = 0f;
         float dripWaterZ = 0f;
         switch (state.getValue(FACING)) {
