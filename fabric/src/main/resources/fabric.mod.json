@@ -28,6 +28,9 @@
     ],
     "modmenu": [
       "net.blay09.mods.cookingforblockheads.compat.ModMenuIntegration"
+    ],
+    "jade": [
+      "net.blay09.mods.cookingforblockheads.compat.FabricJadeCookingForBlockheadsPlugin"
     ]
   },
   "mixins": [
@@ -48,6 +51,10 @@
       "links": {
         "modmenu.discord": "https://discord.gg/scGAfXC"
       }
+    },
+    "waila:plugins": {
+      "id": "cookingforblockheads:wthit",
+      "initializer": "net.blay09.mods.cookingforblockheads.compat.WTHITCookingForBlockheadsPlugin"
     }
   }
 }

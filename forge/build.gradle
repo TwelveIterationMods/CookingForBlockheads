@@ -136,7 +136,10 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-1.19-forge:11.0.0.206")
 
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
-    compileOnly fg.deobf("curse.maven:wthit-455982:3480293")
+
+    compileOnly fg.deobf("curse.maven:badpackets-615134:3773642")
+    compileOnly fg.deobf("curse.maven:wthit-455982:3856256")
+    implementation fg.deobf("curse.maven:jade-324717:3834997")
 
 //    runtimeOnly fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3695632")
 

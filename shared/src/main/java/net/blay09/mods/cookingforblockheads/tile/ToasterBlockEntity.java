@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ToasterBlockEntity extends BalmBlockEntity {
 
+    private static final int UPDATE_INTERVAL = 20;
     private static final int TOAST_TICKS = 1200;
 
     private final DefaultContainer container = new DefaultContainer(2) {
@@ -28,6 +29,8 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         }
     };
 
+    private boolean isDirty;
+    private int ticksSinceUpdate;
     private boolean active;
     private int toastTicks;
 
@@ -99,6 +102,14 @@ public class ToasterBlockEntity extends BalmBlockEntity {
                 }
                 setActive(false);
             }
+            isDirty = true;
+        }
+
+        ticksSinceUpdate++;
+        if (isDirty && ticksSinceUpdate > UPDATE_INTERVAL) {
+            sync();
+            ticksSinceUpdate = 0;
+            isDirty = false;
         }
     }
 
@@ -116,6 +127,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
 
         BlockState state = level.getBlockState(worldPosition);
         level.setBlockAndUpdate(worldPosition, state.setValue(ToasterBlock.ACTIVE, active));
+        isDirty = true;
         setChanged();
     }
 

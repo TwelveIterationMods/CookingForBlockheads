@@ -91,8 +91,7 @@
     "tooltip.cookingforblockheads:energy_stored": "Energy stored: %d/%d",
     "tooltip.cookingforblockheads:oven_upgrade": "Oven Upgrade",
     "tooltip.cookingforblockheads:fridge_upgrade": "Fridge Upgrade",
-
-    "_comment": "##",
+    "tooltip.cookingforblockheads:toasted": "Toasted %s",
 
     "container.cookingforblockheads.oven": "Cooking Oven",
     "container.cookingforblockheads.fridge": "Fridge",
@@ -120,5 +119,11 @@
     "cookingforblockheads:subtitle.toaster_start": "Toaster starts toasting",
     "cookingforblockheads:subtitle.toaster_stop": "Toaster finished toasting",
 
-    "jei.cookingforblockheads:cow_jar": "Cow in a Jar"
+    "jei.cookingforblockheads:cow_jar": "Cow in a Jar",
+
+    "config.jade.plugin_cookingforblockheads.oven": "Oven",
+    "config.jade.plugin_cookingforblockheads.milk_jar": "Milk Jar",
+    "config.jade.plugin_cookingforblockheads.toaster": "Toaster",
+    "config.jade.plugin_cookingforblockheads.fridge": "Fridge",
+    "config.jade.plugin_cookingforblockheads.sink": "Sink"
 }
