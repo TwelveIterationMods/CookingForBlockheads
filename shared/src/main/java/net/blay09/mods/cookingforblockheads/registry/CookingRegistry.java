@@ -18,6 +18,7 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.GeneralFoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -44,6 +45,12 @@ public class CookingRegistry {
     private static final List<ISortButton> customSortButtons = Lists.newArrayList();
 
     private static Collection<ItemStack> nonFoodRecipes = Collections.emptyList();
+
+    private static final ToasterHandler dummyBreadToasterHandler = itemStack -> {
+        ItemStack toasted = itemStack.copy();
+        toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:toasted", itemStack.getHoverName()));
+        return toasted;
+    };
 
     public static void initFoodRegistry(RecipeManager recipeManager) {
         recipeList.clear();
@@ -208,6 +215,11 @@ public class CookingRegistry {
                 return entry.getValue();
             }
         }
+
+        if (itemStack.getItem() == Items.BREAD) {
+            return dummyBreadToasterHandler;
+        }
+
         return null;
     }
 
