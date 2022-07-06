@@ -85,7 +85,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
                     ItemStack inputStack = container.getItem(i);
                     if (!inputStack.isEmpty()) {
                         ToasterHandler toastHandler = CookingRegistry.getToasterHandler(inputStack);
-                        ItemStack outputStack = toastHandler.getToasterOutput(inputStack);
+                        ItemStack outputStack = toastHandler != null ? toastHandler.getToasterOutput(inputStack) : ItemStack.EMPTY;
                         if (outputStack.isEmpty()) {
                             outputStack = inputStack;
                         } else {
