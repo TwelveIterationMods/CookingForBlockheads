@@ -1,4 +1,4 @@
-### Version 13.1.3 for Minecraft 1.19.x
+### Version 13.2.0 for Minecraft 1.19.x
 
 - Added a default for toasting bread if no other mods adding toast are installed
 - Fixed sounds not playing
