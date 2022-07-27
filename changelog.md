@@ -1,3 +1,11 @@
+### Version 13.1.3 for Minecraft 1.19.x
+
+- Added a default for toasting bread if no other mods adding toast are installed
+- Fixed sounds not playing
+- Fixed potential crash when changing installed mods or data packs while the toaster is toasting
+- Fixed toaster using up toastable items even while in creative mode
+- Fixed Jade / WTHIT compatibility
+
 ### Version 13.1.2 for Minecraft 1.19.x
 
 - Added support for Croptopia Toast in toaster, and crafting flour from Cooking Table
