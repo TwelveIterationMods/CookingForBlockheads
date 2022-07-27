@@ -5,6 +5,7 @@
 - Fixed potential crash when changing installed mods or data packs while the toaster is toasting
 - Fixed toaster using up toastable items even while in creative mode
 - Fixed Jade / WTHIT compatibility
+- Added Olive Oil, Dough and Noodles to Croptopia Compat (by Thonk)
 
 ### Version 13.1.2 for Minecraft 1.19.x
 
