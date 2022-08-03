@@ -1,36 +1,31 @@
-### Version 13.2.1 for Minecraft 1.19.x
+### Version 12.1.0 for Minecraft 1.18.2
 
-- Fixed cabinet door not opening nor playing sound
-- Fixed some issues in the German translation
+- Backported from 1.19
 
-### Version 13.2.0 for Minecraft 1.19.x
+### Version 12.0.2 for Minecraft 1.18.2
 
-- Added a default for toasting bread if no other mods adding toast are installed
-- Fixed sounds not playing
-- Fixed potential crash when changing installed mods or data packs while the toaster is toasting
-- Fixed toaster using up toastable items even while in creative mode
-- Fixed Jade / WTHIT compatibility
-- Added Olive Oil, Dough and Noodles to Croptopia Compat (by Thonk)
+- Added Croptopia compatibility (by ugackMiner)
+- Fixed recipe lookup potentially resulting in issues with unsupported custom mod recipes
+- Fixed tool racks not working below y level 0
 
-### Version 13.1.2 for Minecraft 1.19.x
+### Version 12.0.1 for Minecraft 1.18.2
 
-- Added support for Croptopia Toast in toaster, and crafting flour from Cooking Table
-- Fixed fruit basket and spice rack not visually updating on server-side changes
-- Fixed milk jar not saving on changes
-- Fixed cutting board not being treated as a kitchen block
-- Fixed sink not filling or emptying buckets on Fabric
-- Fixed hanging cabinet not being treated as a kitchen block on Fabric
-- Fixed recipes not working on Fabric
-- Fixed Cow in a Jar not providing milk to recipes on Fabric
+- Fix tag issues in recipes (update Balm too)
+- Added Italian translation (by BlackShadow77)
 
-### Version 13.1.1 for Minecraft 1.19.x
+### Version 12.0.0 for Minecraft 1.18.2
 
-- Fix crash on Cow in a Jar due to milk not being enabled
+- Updated to Minecraft 1.18.2
+- Fixed tool rack not dropping content when broken
 
-### Version 13.1.0 for Minecraft 1.19.x
+### Version 11.1.0 for Minecraft 1.18.x
 
-- Updated to latest version of Balm
+- Fixed blocks not having correct effective tools set
+- Fixed crash on corrupt configs (update Balm)
+- Added support for Builders Crafts & Additions (by Sixdd6)
+- Added support for Farmer's Delight (by Sixdd6)
+- Added support for MrCrayfish's More Furniture Mod (by Sixdd6)
 
-### Version 13.0.0 for Minecraft 1.19.x
+### Version 11.0.0 for Minecraft 1.18
 
-- Updated to Minecraft 1.19
+- Updated to Minecraft 1.18
