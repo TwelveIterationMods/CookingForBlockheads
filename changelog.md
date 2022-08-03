@@ -1,5 +1,6 @@
 ### Version 13.2.1 for Minecraft 1.19.x
 
+- Fixed cabinet door not opening nor playing sound
 - Fixed some issues in the German translation
 
 ### Version 13.2.0 for Minecraft 1.19.x
