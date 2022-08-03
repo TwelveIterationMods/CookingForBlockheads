@@ -21,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -290,7 +291,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     @Override
     public Component getDefaultName() {
-        return Component.translatable("container.cookingforblockheads.fridge");
+        return new TranslatableComponent("container.cookingforblockheads.fridge");
     }
 
     @Override

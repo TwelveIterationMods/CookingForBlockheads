@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -77,7 +78,7 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("container.cookingforblockheads.cooking_table");
+        return new TranslatableComponent("container.cookingforblockheads.cooking_table");
     }
 
     @Nullable

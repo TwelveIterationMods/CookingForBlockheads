@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class JsonCompatLoader implements ResourceManagerReloadListener {
@@ -39,11 +40,12 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
         try {
-            for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources("cookingforblockheads/compat", it -> it.getPath().endsWith(".json")).entrySet()) {
-                try (BufferedReader reader = entry.getValue().openAsReader()) {
+            for (ResourceLocation resourceLocation : resourceManager.listResources("cookingforblockheads/compat", it -> it.endsWith(".json"))) {
+                try (Resource resource = resourceManager.getResource(resourceLocation)) {
+                    InputStreamReader reader = new InputStreamReader(resource.getInputStream());
                     load(gson.fromJson(reader, JsonCompatData.class));
                 } catch (Exception e) {
-                    CookingForBlockheads.logger.error("Parsing error loading CookingForBlockheads data files at {}", entry.getKey(), e);
+                    CookingForBlockheads.logger.error("Parsing error loading CookingForBlockheads data files at {}", resourceLocation, e);
                 }
             }
 

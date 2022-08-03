@@ -7,6 +7,8 @@ import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
@@ -19,9 +21,9 @@ public class SortButton extends Button {
     private final List<Component> tooltipLines = Lists.newArrayList();
 
     public SortButton(int x, int y, ISortButton button, OnPress onPress) {
-        super(x, y, 20, 20, Component.empty(), onPress);
+        super(x, y, 20, 20, new TextComponent(""), onPress);
         this.button = button;
-        this.tooltipLines.add(Component.translatable(this.button.getTooltip()));
+        this.tooltipLines.add(new TranslatableComponent(this.button.getTooltip()));
     }
 
     @Override

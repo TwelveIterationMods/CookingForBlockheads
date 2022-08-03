@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[41,)"
+loaderVersion="[40,)"
 license="All rights reserved"
 issueTrackerURL="https://github.com/ModdingForBlockheads/CookingForBlockheads/issues"
 
@@ -16,20 +16,20 @@ Adds a cooking book and multiblock kitchens that only shows recipes you can make
 '''
 
 [[dependencies.cookingforblockheads]]
-    modId="forge"
-    mandatory=true
-    versionRange="[41,)"
-    ordering="NONE"
-    side="BOTH"
+modId="forge"
+mandatory=true
+versionRange="[40,)"
+ordering="NONE"
+side="BOTH"
 [[dependencies.cookingforblockheads]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.19,1.20)"
-    ordering="NONE"
-    side="BOTH"
+modId="minecraft"
+mandatory=true
+versionRange="[1.18,1.19)"
+ordering="NONE"
+side="BOTH"
 [[dependencies.cookingforblockheads]]
-    modId="balm"
-    mandatory=true
-    versionRange="[4.3.0,)"
-    ordering="NONE"
-    side="BOTH"
+modId="balm"
+mandatory=true
+versionRange="[3.2.0,)"
+ordering="NONE"
+side="BOTH"

@@ -21,6 +21,7 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -54,14 +55,14 @@ public class CookingRegistry {
         if (alreadyToasted) {
             if (CookingForBlockheadsConfig.getActive().allowVeryToastedBread) {
                 ItemStack veryToasted = new ItemStack(Items.CHARCOAL);
-                veryToasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:very_toasted"));
+                veryToasted.setHoverName(new TranslatableComponent("tooltip.cookingforblockheads:very_toasted"));
                 return veryToasted;
             } else {
                 return itemStack;
             }
         } else {
             ItemStack toasted = itemStack.copy();
-            toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:toasted", itemStack.getHoverName()));
+            toasted.setHoverName(new TranslatableComponent("tooltip.cookingforblockheads:toasted", itemStack.getHoverName()));
             toasted.getOrCreateTag().putBoolean("CookingForBlockheadsToasted", true);
             return toasted;
         }

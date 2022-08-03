@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.util.RandomSource;
+
 import net.minecraft.world.Container;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntityRenderer<T> {
 
-    private static final RandomSource random = RandomSource.create();
+    private static final Random random = new Random();
 
     private static final float doorOriginX = 0.84375f;
 

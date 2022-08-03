@@ -9,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
 import net.blay09.mods.cookingforblockheads.tile.CowJarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -43,7 +44,7 @@ public class CowJarHandler {
                 level.setBlockAndUpdate(pos, ModBlocks.cowJar.defaultBlockState());
                 BlockEntity tileEntity = level.getBlockEntity(pos);
                 if (tileEntity instanceof CowJarBlockEntity && entity.getCustomName() != null) {
-                    Component textComponent = Component.translatable("container.cookingforblockheads.cow_jar_custom", entity.getCustomName());
+                    Component textComponent = new TranslatableComponent("container.cookingforblockheads.cow_jar_custom", entity.getCustomName());
                     ((CowJarBlockEntity) tileEntity).setCustomName(textComponent);
                 }
 

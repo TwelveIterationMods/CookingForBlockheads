@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.tile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CabinetBlockEntity extends CounterBlockEntity {
@@ -12,6 +13,6 @@ public class CabinetBlockEntity extends CounterBlockEntity {
 
     @Override
     public Component getDefaultName() {
-        return Component.translatable("container.cookingforblockheads.cabinet");
+        return new TranslatableComponent("container.cookingforblockheads.cabinet");
     }
 }

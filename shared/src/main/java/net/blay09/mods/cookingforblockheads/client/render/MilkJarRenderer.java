@@ -11,14 +11,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.util.RandomSource;
+
 import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
 public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntityRenderer<T> {
 
-    private static final RandomSource random = RandomSource.create();
+    private static final Random random = new Random();
 
     public MilkJarRenderer(BlockEntityRendererProvider.Context context) {
     }

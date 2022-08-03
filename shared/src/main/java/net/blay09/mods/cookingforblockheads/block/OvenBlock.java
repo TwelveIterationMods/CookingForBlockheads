@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -135,7 +134,7 @@ public class OvenBlock extends BlockKitchen {
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
         OvenBlockEntity tileEntity = (OvenBlockEntity) level.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isBurning()) {
             Direction facing = state.getValue(FACING);

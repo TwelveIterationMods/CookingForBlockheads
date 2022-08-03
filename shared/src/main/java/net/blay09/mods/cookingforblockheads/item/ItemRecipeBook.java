@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Inventory;
@@ -60,7 +61,7 @@ public class ItemRecipeBook extends Item {
             Balm.getNetworking().openGui(player, new BalmMenuProvider() {
                 @Override
                 public Component getDisplayName() {
-                    return Component.translatable("cookingforblockheads:" + edition.getName());
+                    return new TranslatableComponent("cookingforblockheads:" + edition.getName());
                 }
 
                 @Override
