@@ -9,9 +9,9 @@
     "tooltip.cookingforblockheads:no_filter_edition": "#KeineFilter Edition",
     "tooltip.cookingforblockheads:no_filter_edition.description": "Zeigt alle Lebensmittelrezepte.",
     "tooltip.cookingforblockheads:recipe_book": "Rezeptbuch",
-    "tooltip.cookingforblockheads:recipe_book.description": "Zeigt Lebensmittel, die Du mit den\nSachen in Deinem Inventar zubereiten kannst.",
+    "tooltip.cookingforblockheads:recipe_book.description": "Zeigt Lebensmittel, die Du mit den\\nSachen in Deinem Inventar zubereiten kannst.",
     "tooltip.cookingforblockheads:crafting_book": "Crafting-Buch",
-    "tooltip.cookingforblockheads:crafting_book.description": "Kann mit Dingen, die Du in\ndeinem Inventar hast, Essen craften.",
+    "tooltip.cookingforblockheads:crafting_book.description": "Kann mit Dingen, die Du in\\ndeinem Inventar hast, Essen craften.",
     
     "block.cookingforblockheads.cooking_table": "Kochtisch",
     "block.cookingforblockheads.fridge": "Kühlschrank",
@@ -49,7 +49,7 @@
     "tooltip.cookingforblockheads:dyeable": "Färbbar",
     "tooltip.cookingforblockheads:cooking_table.description": "Ermöglicht Crafting-Fähigkeiten.",
     "tooltip.cookingforblockheads:oven.description": "Ermöglicht Schmelzfähigkeiten.",
-    "tooltip.cookingforblockheads:cooking_table.description": "Stellt Wasser für Rezepte bereit.",
+    "tooltip.cookingforblockheads:sink.description": "Stellt Wasser für Rezepte bereit.",
     "tooltip.cookingforblockheads:fridge.description": "Lagert Zutaten für Rezepte.",
     "tooltip.cookingforblockheads:fruit_basket.description": "Lagert Früchte für Rezepte.",
     "tooltip.cookingforblockheads:tool_rack.description": "Bietet Werkzeuge für Rezepte.",
@@ -67,13 +67,13 @@
     "tooltip.cookingforblockheads:preservation_chamber.description": "Verhindert, dass das letzte Item eines Slots aufgebraucht wird.",
     "tooltip.cookingforblockheads:cutting_board.description": "Stellt ein Schneidebrett für Rezepte bereit.",
     "tooltip.cookingforblockheads:requires_pams": "Braucht Pam's Harvestcraft",
-    "tooltip.cookingforblockheads:cutting_board_deprecated": "Dieser Artikel ist veraltet.\nPam's Schneidebrett kann jetzt direkt platziert werden.",
+    "tooltip.cookingforblockheads:cutting_board_deprecated": "Dieser Artikel ist veraltet.\\nPam's Schneidebrett kann jetzt direkt platziert werden.",
     "tooltip.cookingforblockheads:can_be_placed_in_world": "Kann in der Welt platziert werden.",
     
-    "gui.cookingforblockheads:no_ingredients": "Nicht\ngenug\nZutaten",
-    "gui.cookingforblockheads:no_selection": "Wähle rechts einen\nArtikel, um das\nRezept zu sehen.",
+    "gui.cookingforblockheads:no_ingredients": "Nicht\\ngenug\\nZutaten",
+    "gui.cookingforblockheads:no_selection": "Wähle rechts einen\\nArtikel, um das\\nRezept zu sehen.",
     
-    "tooltip.cookingforblockheads:click_to_see_recept": "Klicke, um das Rezept zu sehen",
+    "tooltip.cookingforblockheads:click_to_see_recipe": "Klicke, um das Rezept zu sehen",
     "tooltip.cookingforblockheads:click_to_craft_one": "Zum nochmal Craften klicken",
     "tooltip.cookingforblockheads:click_to_smelt_one": "Zum nochmal Kochen klicken",
     "tooltip.cookingforblockheads:click_to_craft_stack": "Shift-Klicken, um einen Stack zu craften",
@@ -92,8 +92,6 @@
     "tooltip.cookingforblockheads:oven_upgrade": "Ofen-Upgrade",
     "tooltip.cookingforblockheads:fridge_upgrade": "Kühlschrank-Upgrade",
 
-    "_comment": "##",
-    
     "container.cookingforblockheads.oven": "Kochofen",
     "container.cookingforblockheads.fridge": "Kühlschrank",
     "container.cookingforblockheads.spice_rack": "Gewürzregal",
