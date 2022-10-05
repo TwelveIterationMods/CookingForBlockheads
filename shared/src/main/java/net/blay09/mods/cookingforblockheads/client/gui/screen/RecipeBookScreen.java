@@ -78,11 +78,11 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, Component.literal("<"), it -> container.nextSubRecipe(-1));
         btnPrevRecipe.visible = false;
-        addWidget(btnPrevRecipe);
+        addRenderableWidget(btnPrevRecipe);
 
         btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, Component.literal(">"), it -> container.nextSubRecipe(1));
         btnNextRecipe.visible = false;
-        addWidget(btnNextRecipe);
+        addRenderableWidget(btnNextRecipe);
 
         searchBar = new EditBox(minecraft.font, leftPos + imageWidth - 78, topPos - 5, 70, 10, searchBar, Component.empty());
         setInitialFocus(searchBar);
@@ -93,7 +93,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
             SortButton sortButton = new SortButton(width / 2 + 87, height / 2 + yOffset, button, it -> {
                 container.setSortComparator(((SortButton) it).getComparator(Minecraft.getInstance().player));
             });
-            addWidget(sortButton);
+            addRenderableWidget(sortButton);
             sortButtons.add(sortButton);
 
             yOffset += 20;

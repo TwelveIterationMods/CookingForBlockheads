@@ -1,3 +1,8 @@
+### Version 13.2.2 for Minecraft 1.18.x
+
+- Fixed compat not being loaded properly
+- Fixed sorting and recipe switching buttons not showing up
+
 ### Version 13.2.1 for Minecraft 1.19.x
 
 - Fixed cabinet door not opening nor playing sound
