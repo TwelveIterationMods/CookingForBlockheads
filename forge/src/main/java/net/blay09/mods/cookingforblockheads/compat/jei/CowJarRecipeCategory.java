@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,6 +35,16 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
         this.background = guiHelper.createBlankDrawable(150, 110);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.cowJar));
         this.overlay = guiHelper.createDrawable(texture, 0, 0, 64, 80);
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return UID;
+    }
+
+    @Override
+    public Class<? extends CowJarRecipe> getRecipeClass() {
+        return CowJarRecipe.class;
     }
 
     @Override

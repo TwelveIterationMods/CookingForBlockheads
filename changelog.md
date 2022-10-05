@@ -1,3 +1,9 @@
+### Version 12.1.1 for Minecraft 1.18.2
+
+- Fixed compat not being loaded properly (by smolinacadena)
+- Fixed sorting and recipe switching buttons not showing up
+- Removed Jade and WTHIT support due to conflicting API, will return in 1.19.2
+
 ### Version 12.1.0 for Minecraft 1.18.2
 
 - Backported from 1.19
