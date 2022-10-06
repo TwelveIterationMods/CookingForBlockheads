@@ -1,7 +1,8 @@
-### Version 13.2.2 for Minecraft 1.18.x
+### Version 13.2.3 for Minecraft 1.19.x
 
 - Fixed compat not being loaded properly
 - Fixed sorting and recipe switching buttons not showing up
+- Fixed crash on 1.19.2
 
 ### Version 13.2.1 for Minecraft 1.19.x
 

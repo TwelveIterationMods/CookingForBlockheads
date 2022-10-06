@@ -8,12 +8,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,7 +30,7 @@ public class CompatCapabilityLoader {
     public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
         BlockEntity blockEntity = event.getObject();
 
-        ResourceLocation blockEntityRegistryName = ForgeRegistries.BLOCK_ENTITIES.getKey(blockEntity.getType());
+        ResourceLocation blockEntityRegistryName = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(blockEntity.getType());
         if (JsonCompatLoader.kitchenItemProviders.contains(blockEntityRegistryName)) {
             if (itemProviderResourceKey == null) {
                 itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
@@ -70,7 +70,7 @@ public class CompatCapabilityLoader {
 
         public KitchenItemCapabilityProvider(final BlockEntity entity) {
             itemProviderCap = LazyOptional.of(() -> {
-                LazyOptional<IItemHandler> itemHandlerCap = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+                LazyOptional<IItemHandler> itemHandlerCap = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
                 return new ItemHandlerKitchenItemProvider(itemHandlerCap.orElse(emptyItemHandler));
             });
         }
