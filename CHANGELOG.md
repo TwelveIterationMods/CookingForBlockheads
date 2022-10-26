@@ -1,4 +1,1 @@
-- Added IngredientPredicateWithCache to allow for more efficient lookups in cases where the potentially passing ItemStacks can already be limited to a known set of stacks
-- Added new GitHub Actions
-- Fixed WTHIT dependencies, for some reason it needs to be in testCompileOnly too for Forge
-- Updated WTHIT on Forge
+- Added IngredientPredicateWithCache to API to allow for more efficient lookups in cases where the potentially passing ItemStacks can already be limited to a known set of stacks
