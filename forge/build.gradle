@@ -129,7 +129,7 @@ dependencies {
     implementation fg.deobf("net.blay09.mods:balm:${balm_forge_version}")
 
     compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:5.0.38")
-    testCompileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:5.0.38")
+    testCompileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:5.0.38") // I don't know why this is necessary
 
     compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.262")
     compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.262")
@@ -138,7 +138,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
 
     compileOnly fg.deobf("curse.maven:badpackets-615134:3773642")
-    compileOnly fg.deobf("curse.maven:wthit-forge-455982:4044026")
+    compileOnly "mcp.mobius.waila:wthit-api:forge-5.13.3"
+    testCompileOnly "mcp.mobius.waila:wthit-api:forge-5.13.3" // I don't know why this is necessary
     implementation fg.deobf("curse.maven:jade-324717:4010505")
 
 //    runtimeOnly fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3695632")

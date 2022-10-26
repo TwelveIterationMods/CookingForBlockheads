@@ -40,6 +40,9 @@ subprojects {
 
         // For Cloth Config
         maven { url "https://maven.shedaniel.me/" }
+
+        // For WTHIT
+        maven { url "https://maven.bai.lol" }
     }
 
     tasks.withType(JavaCompile).configureEach {
