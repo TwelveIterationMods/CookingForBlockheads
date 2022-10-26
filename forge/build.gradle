@@ -138,7 +138,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
 
     compileOnly fg.deobf("curse.maven:badpackets-615134:3773642")
-    compileOnly "mcp.mobius.waila:wthit-api:forge-5.13.3"
+    compileOnly fg.deobf("mcp.mobius.waila:wthit-api:forge-5.13.3")
     testCompileOnly "mcp.mobius.waila:wthit-api:forge-5.13.3" // I don't know why this is necessary
     implementation fg.deobf("curse.maven:jade-324717:4010505")
 
