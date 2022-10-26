@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
@@ -102,9 +103,9 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 
         boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
         List<IKitchenItemProvider> inventories = getItemProviders(player.getInventory());
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(inputItem) && count > 0, inputItem);
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
-            IngredientPredicate predicate = (it, count) -> it.sameItem(inputItem) && count > 0;
             int count = stack ? inputItem.getMaxStackSize() : 1;
             SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, count, inventories, requireBucket, false);
             if (sourceItem != null) {

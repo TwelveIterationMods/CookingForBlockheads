@@ -16,6 +16,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -73,7 +74,8 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
             IngredientPredicate modifiedPredicate = predicate;
             if (getBaseFridge().hasPreservationUpgrade) {
-                modifiedPredicate = (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)) && predicate.test(it, count);
+                modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
+                        (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
             }
 
             return super.findSource(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
@@ -89,7 +91,8 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
             IngredientPredicate modifiedPredicate = predicate;
             if (getBaseFridge().hasPreservationUpgrade) {
-                modifiedPredicate = (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)) && predicate.test(it, count);
+                modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
+                        (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
             }
 
             return super.findSourceAndMarkAsUsed(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
