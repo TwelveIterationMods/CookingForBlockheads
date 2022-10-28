@@ -1,0 +1,1 @@
+- Added IngredientPredicateWithCache to API to allow for more efficient lookups in cases where the potentially passing ItemStacks can already be limited to a known set of stacks
