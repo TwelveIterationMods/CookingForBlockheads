@@ -4,7 +4,9 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,9 +45,10 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
         for (int i = 0; i < craftMatrix.size(); i++) {
             ItemStack ingredient = craftMatrix.get(i);
             if (!ingredient.isEmpty()) {
+                IngredientPredicate ingredientPredicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItemStackIgnoreDurability(ingredient) && count > 0, ingredient);
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
-                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed((it, count) -> it.sameItemStackIgnoreDurability(ingredient) && count > 0, 1, inventories, requireContainer, true);
+                    SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(ingredientPredicate, 1, inventories, requireContainer, true);
                     if (sourceItem != null) {
                         sourceItems[i] = sourceItem;
                         continue matrixLoop;
