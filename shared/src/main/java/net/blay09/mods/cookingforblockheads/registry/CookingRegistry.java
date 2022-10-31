@@ -261,9 +261,9 @@ public class CookingRegistry {
             return null;
         }
 
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItemStackIgnoreDurability(checkStack) && count > 0, checkStack);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            IngredientPredicate predicate = (it, count) -> it.sameItemStackIgnoreDurability(checkStack) && count > 0;
             SourceItem found = itemProvider.findSource(predicate, 1, inventories, requireBucket, true);
             if (found != null) {
                 return found;
@@ -301,9 +301,9 @@ public class CookingRegistry {
 
     public static boolean consumeBucket(List<IKitchenItemProvider> inventories, boolean simulate) {
         ItemStack bucketStack = new ItemStack(Items.BUCKET);
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(bucketStack) && count > 0, bucketStack);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
-            IngredientPredicate predicate = (it, count) -> it.sameItem(bucketStack) && count > 0;
             SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, 1, inventories, false, simulate);
             if (sourceItem != null) {
                 return true;
