@@ -177,19 +177,24 @@ publishing {
 }
 
 curseforge {
-	apiKey = project.findProperty("curseforge.api_key") ?: System.getenv("CF_API_KEY") ?: "none"
+	apiKey = project.findProperty("curseforge.api_key") ?: System.getenv("CURSEFORGE_TOKEN") ?: "none"
 	project {
 		id = curseforge_forge_project_id
 		releaseType = curseforge_release_type
 		changelogType = 'markdown'
-		changelog = file('../changelog.md')
-		addGameVersion minecraft_version
+		changelog = file('../CHANGELOG.md')
+        project.minecraft_versions.split(',').each {
+            addGameVersion minecraft_version
+        }
 		addGameVersion 'Forge'
 
 		relations {
 			requiredLibrary 'balm'
 		}
 	}
+}
+if (System.getenv("CURSEFORGE_TOKEN") != null) {
+    tasks.publish.dependsOn(tasks.curseforge)
 }
 
 modrinth {
@@ -198,10 +203,13 @@ modrinth {
     versionType = project.modrinth_release_type
     versionNumber = project.version + "+forge-" + project.minecraft_version
     uploadFile = jar
-    changelog = rootProject.file("changelog.md").text
-    gameVersions = [project.minecraft_version]
+    changelog = rootProject.file("CHANGELOG.md").text
+    gameVersions = project.minecraft_versions.split(',').toList()
     syncBodyFrom = rootProject.file("modrinth.md").text
     dependencies {
         required.project "balm"
     }
+}
+if (System.getenv("MODRINTH_TOKEN") != null) {
+    tasks.publish.dependsOn(tasks.modrinth)
 }
