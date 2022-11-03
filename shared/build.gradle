@@ -15,7 +15,6 @@ repositories {
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.4'
-    compileOnly "mcp.mobius.waila:wthit-api:mojmap-5.5.1"
     compileOnly("net.blay09.mods:balm-fabric:${balm_fabric_version}:dev") {
         exclude(group: "net.fabricmc", module: "fabric-loader")
         exclude(group: "net.fabricmc.fabric-api")

@@ -137,10 +137,6 @@ dependencies {
 
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
 
-    compileOnly fg.deobf("curse.maven:badpackets-615134:3765872")
-    compileOnly fg.deobf("curse.maven:wthit-455982:3947976")
-    implementation fg.deobf("curse.maven:jade-324717:3970956")
-
 //    runtimeOnly fg.deobf("curse.maven:pams-harvestcraft-2-food-core-372534:3695632")
 
     implementation "org.jetbrains:annotations:22.0.0"

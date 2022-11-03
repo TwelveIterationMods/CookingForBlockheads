@@ -28,10 +28,6 @@ dependencies {
 
 	modCompileOnly "curse.maven:modmenu-308702:3348711"
 
-	modCompileOnly "curse.maven:badpackets-615134:3773641"
-	modCompileOnly "curse.maven:wthit-440979:3856255"
-	modCompileOnly "curse.maven:jade-324717:3836188"
-
 	// Roughly Enough Items
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:9.0.493"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:9.0.493"
