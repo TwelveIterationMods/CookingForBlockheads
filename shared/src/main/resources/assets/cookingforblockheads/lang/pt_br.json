@@ -60,7 +60,7 @@
     "tooltip.cookingforblockheads:counter.description": "Guarda ingredientes para receitas.",
     "tooltip.cookingforblockheads:cabinet.description": "Pode ser colocado na parede acima de blocos de cozinha.",
     "tooltip.cookingforblockheads:corner.description": "Sem usos em particular.",
-    "tooltip.cookingforblockheads:hanging_corner.description": "Connect kitchen blocks over corners.",
+    "tooltip.cookingforblockheads:hanging_corner.description": "Conecte blocos de cozinha nos cantos.",
     "tooltip.cookingforblockheads:kitchen_floor.description": "Sem usos em particular.",
     "tooltip.cookingforblockheads:heating_unit.description": "Permite aquecer um forno com energia.",
     "tooltip.cookingforblockheads:ice_unit.description": "Provêm neve e gelo para receitas.",
@@ -87,34 +87,44 @@
     "tooltip.cookingforblockheads:click_to_lock": "Botão direito para travar o item",
     "tooltip.cookingforblockheads:click_to_unlock": "Botão direito para destravar o item",
     "tooltip.cookingforblockheads:scroll_to_switch": "Role para selecinar o item",
-    
-    "tooltip.cookingforblockheads:energy_stored": "Energia armazenada: %d/%d",
-    "tooltip.cookingforblockheads:oven_upgrade": "Aprimoramento de forno",
-    "tooltip.cookingforblockheads:fridge_upgrade": "Aprimoramento de Geladeira",
 
-    "_comment": "##",
-    
+    "tooltip.cookingforblockheads:energy_stored": "Energia armazenada: %d/%d",
+    "tooltip.cookingforblockheads:oven_upgrade": "Atualização do Forno",
+    "tooltip.cookingforblockheads:fridge_upgrade": "Upgrade de geladeira",
+    "tooltip.cookingforblockheads:toasted": "Torrado %s",
+    "tooltip.cookingforblockheads:very_toasted": "Pão muito torrado (não coma)",
+
     "container.cookingforblockheads.oven": "Forno de Cozinha",
     "container.cookingforblockheads.fridge": "Geladeira",
     "container.cookingforblockheads.spice_rack": "Prateleira de Temperos",
     "container.cookingforblockheads.counter": "Balcão de Cozinha",
     "container.cookingforblockheads.cabinet": "Armário de Cozinha",
     "container.cookingforblockheads.fruit_basket": "Cesto de Frutas",
+    "container.cookingforblockheads.cow_jar_compressed": "Vaca comprimida em uma jarra",
+    "container.cookingforblockheads.cow_jar": "Vaca em uma jarra",
+    "container.cookingforblockheads.cow_jar_custom": "%s em uma jarra",
 
-    "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
+    "itemGroup.cookingforblockheads.cookingforblockheads": "Cozinhar para Blockheads",
 
-    "waila.cookingforblockheads:milk_stored": "Leite Armazenado: %d/%d",
-    "waila.cookingforblockheads:toast_progress": "Torrando... (%s)",
-    "waila.cookingforblockheads:heating_unit": "Melhoria: Unidade de Aquecimento",
-    "waila.cookingforblockheads:ice_unit": "Melhoria: Unidade de Gelo",
-    "waila.cookingforblockheads:preservation_chamber": "Melhoria: Câmara de Preservação",
+    "waila.cookingforblockheads:water_stored": "Água armazenada: %d/%d",
+    "waila.cookingforblockheads:milk_stored": "Leite armazenado: %d/%d",
+    "waila.cookingforblockheads:toast_progress": "Tostando... (%s %%)",
+    "waila.cookingforblockheads:heating_unit": "Atualização: unidade de aquecimento",
+    "waila.cookingforblockheads:ice_unit": "Atualização: Unidade de Gelo",
+    "waila.cookingforblockheads:preservation_chamber": "Atualização: Câmara de Preservação",
 
-    "cookingforblockheads:subtitle.fridge_open": "Geladeira abrindo",
-    "cookingforblockheads:subtitle.fridge_close": "Geladeira fechando",
-    "cookingforblockheads:subtitle.oven_open": "Forno abrindo",
-    "cookingforblockheads:subtitle.oven_close": "Forno fechando",
+    "cookingforblockheads:subtitle.fridge_open": "A geladeira abre",
+    "cookingforblockheads:subtitle.fridge_close": "A geladeira fecha",
+    "cookingforblockheads:subtitle.oven_open": "Forno abre",
+    "cookingforblockheads:subtitle.oven_close": "Forno fecha",
     "cookingforblockheads:subtitle.toaster_start": "Torradeira começa a torrar",
-    "cookingforblockheads:subtitle.toaster_stop": "Torradeira termina de torrar",
+    "cookingforblockheads:subtitle.toaster_stop": "Torradeira acabada de torrar",
 
-    "jei.cookingforblockheads:cow_jar": "Vaca na Jarra"
+    "jei.cookingforblockheads:cow_jar": "Vaca em uma jarra",
+
+    "config.jade.plugin_cookingforblockheads.oven": "Forno",
+    "config.jade.plugin_cookingforblockheads.milk_jar": "Jarra de Leite",
+    "config.jade.plugin_cookingforblockheads.toaster": "Torradeira",
+    "config.jade.plugin_cookingforblockheads.fridge": "Geladeira",
+    "config.jade.plugin_cookingforblockheads.sink": "Pia"
 }
