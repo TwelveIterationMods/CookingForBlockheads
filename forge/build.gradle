@@ -194,9 +194,6 @@ curseforge {
 		}
 	}
 }
-if (System.getenv("CURSEFORGE_TOKEN") != null) {
-    tasks.publish.dependsOn(tasks.curseforge)
-}
 
 modrinth {
     token = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN") ?: "none"
@@ -210,7 +207,4 @@ modrinth {
     dependencies {
         required.project "balm"
     }
-}
-if (System.getenv("MODRINTH_TOKEN") != null) {
-    tasks.publish.dependsOn(tasks.modrinth)
 }

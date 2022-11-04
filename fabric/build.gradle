@@ -123,9 +123,6 @@ curseforge {
 		forgeGradleIntegration = false
 	}
 }
-if (System.getenv("CURSEFORGE_TOKEN") != null) {
-	tasks.publish.dependsOn(tasks.curseforge)
-}
 
 modrinth {
 	token = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN") ?: "none"
@@ -140,7 +137,4 @@ modrinth {
 		required.project "fabric-api"
 		required.project "balm"
 	}
-}
-if (System.getenv("MODRINTH_TOKEN") != null) {
-	tasks.publish.dependsOn(tasks.modrinth)
 }
