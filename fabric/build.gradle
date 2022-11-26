@@ -105,7 +105,7 @@ curseforge {
 		changelogType = 'markdown'
 		changelog = file('../CHANGELOG.md')
 		project.minecraft_versions.split(',').each {
-			addGameVersion minecraft_version
+			addGameVersion it
 		}
 		addGameVersion 'Fabric'
 
