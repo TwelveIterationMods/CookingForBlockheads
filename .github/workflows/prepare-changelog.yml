@@ -4,5 +4,5 @@ on:
 
 jobs:
   build:
-    uses: ModdingForBlockheads/Workflows/.github/workflows/prepare-changelog.yml@main
+    uses: TwelveIterationMods/Workflows/.github/workflows/prepare-changelog.yml@main
     secrets: inherit
