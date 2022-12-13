@@ -74,13 +74,13 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         imageHeight = 174;
         super.init();
 
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
-
-        btnPrevRecipe = new Button(width / 2 - 79, height / 2 - 51, 13, 20, Component.literal("<"), it -> container.nextSubRecipe(-1));
+        btnPrevRecipe = Button.builder(Component.literal("<"), it -> container.nextSubRecipe(-1))
+                .pos(width / 2 - 79, height / 2 - 51).size(13, 20).build();
         btnPrevRecipe.visible = false;
         addRenderableWidget(btnPrevRecipe);
 
-        btnNextRecipe = new Button(width / 2 - 9, height / 2 - 51, 13, 20, Component.literal(">"), it -> container.nextSubRecipe(1));
+        btnNextRecipe = Button.builder(Component.literal(">"), it -> container.nextSubRecipe(1))
+                .pos(width / 2 - 9, height / 2 - 51).size(13, 20).build();
         btnNextRecipe.visible = false;
         addRenderableWidget(btnNextRecipe);
 
@@ -138,7 +138,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
 
-        if (button == 1 && mouseX >= searchBar.x && mouseX < searchBar.x + searchBar.getWidth() && mouseY >= searchBar.y && mouseY < searchBar.y + searchBar.getHeight()) {
+        if (button == 1 && mouseX >= searchBar.getX() && mouseX < searchBar.getX() + searchBar.getWidth() && mouseY >= searchBar.getY() && mouseY < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             container.search(null);
             container.populateRecipeSlots();
@@ -215,7 +215,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         blit(poseStack, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10);
 
         if (mouseClickY != -1) {
-            float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1, (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS);
+            float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1,
+                    (int) Math.ceil(container.getItemListCount() / 3f) - VISIBLE_ROWS);
             if (pixelsPerFilter != 0) {
                 int numberOfFiltersMoved = (int) ((mouseY - mouseClickY) / pixelsPerFilter);
                 if (numberOfFiltersMoved != lastNumberOfMoves) {
@@ -327,18 +328,12 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         this.renderTooltip(poseStack, mouseX, mouseY);
     }
 
-    @Override
-    public void onClose() {
-        super.onClose();
-
-        minecraft.keyboardHandler.setSendRepeatsToGui(false);
-    }
-
     private void recalculateScrollBar() {
         int scrollBarTotalHeight = SCROLLBAR_HEIGHT - 1;
         this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.ceil(container.getItemListCount() / 3f)))));
         this.scrollBarXPos = leftPos + imageWidth - SCROLLBAR_WIDTH - 9;
-        this.scrollBarYPos = topPos + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1, (int) Math.ceil((container.getItemListCount() / 3f)) - VISIBLE_ROWS));
+        this.scrollBarYPos = topPos + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1,
+                (int) Math.ceil((container.getItemListCount() / 3f)) - VISIBLE_ROWS));
     }
 
     private void setCurrentOffset(int currentOffset) {

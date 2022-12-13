@@ -2,19 +2,20 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.blay09.mods.balm.api.DeferredObject;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.client.rendering.BalmModels;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.*;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -70,17 +71,22 @@ public class ModModels {
 
         ResourceLocation sinkModel = id("block/sink");
         ResourceLocation sinkFlippedModel = id("block/sink_flipped");
-        models.overrideModel(() -> ModBlocks.sink, models.loadDynamicModel(id("block/sink"), it -> it.getValue(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel, it -> {
-            if (it.getValue(SinkBlock.HAS_COLOR)) {
-                return replaceTexture(getColoredTerracottaTexture(it.getValue(SinkBlock.COLOR)));
-            }
+        models.overrideModel(() -> ModBlocks.sink,
+                models.loadDynamicModel(id("block/sink"), it -> it.getValue(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel, it -> {
+                    if (it.getValue(SinkBlock.HAS_COLOR)) {
+                        return replaceTexture(getColoredTerracottaTexture(it.getValue(SinkBlock.COLOR)));
+                    }
 
-            return Collections.emptyMap();
-        }, ModModels::lowerableFacingTransforms)::get);
+                    return Collections.emptyMap();
+                }, ModModels::lowerableFacingTransforms)::get);
 
         ResourceLocation toasterModel = id("block/toaster");
         ResourceLocation toasterActiveModel = id("block/toaster_active");
-        models.overrideModel(() -> ModBlocks.toaster, models.loadDynamicModel(id("block/toaster"), it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel, null, ModModels::lowerableFacingTransforms)::get);
+        models.overrideModel(() -> ModBlocks.toaster,
+                models.loadDynamicModel(id("block/toaster"),
+                        it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel,
+                        null,
+                        ModModels::lowerableFacingTransforms)::get);
 
         ResourceLocation fridgeSmallModel = id("block/fridge");
         ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
@@ -114,8 +120,8 @@ public class ModModels {
 
         models.overrideModel(() -> ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
         models.overrideModel(() -> ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
-        models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar")::get);
-        models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar")::get);
+        models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
+        models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
 
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.cookingTable, "block/cooking_table");
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.counter, "block/counter");
@@ -125,7 +131,11 @@ public class ModModels {
     }
 
     private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath) {
-        return BalmClient.getModels().loadDynamicModel(id(modelPath), null, null, ModModels::lowerableFacingTransforms);
+        return createLowerableFacingModel(modelPath, Collections.emptyList());
+    }
+
+    private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath, List<RenderType> renderTypes) {
+        return BalmClient.getModels().loadDynamicModel(id(modelPath), null, null, ModModels::lowerableFacingTransforms, renderTypes);
     }
 
     private static void registerColoredKitchenBlock(BalmModels models, Supplier<Block> blockSupplier, String modelPath) {
@@ -157,7 +167,7 @@ public class ModModels {
 
         if (state.hasProperty(BlockKitchen.FACING)) {
             float angle = state.getValue(BlockKitchen.FACING).toYRot();
-            transform.multiply(new Quaternion(0f, 180 - angle, 0f, true));
+            transform.rotate(Axis.YP.rotationDegrees(180 - angle));
         }
     }
 }

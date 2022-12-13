@@ -1,10 +1,12 @@
 dependencies {
     modCompileOnly "curse.maven:badpackets-615134:3773641"
     modCompileOnly "mcp.mobius.waila:wthit-api:fabric-5.13.3"
-    modImplementation "curse.maven:jade-324717:3836188"
+    modCompileOnly "curse.maven:jade-324717:3836188"
+
+    modImplementation "curse.maven:modmenu-308702:4159524"
 
     // Roughly Enough Items
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:9.0.493"
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:9.0.493"
-    modRuntimeOnly "dev.architectury:architectury-fabric:5.7.28"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:9.0.493"
+    modCompileOnly "dev.architectury:architectury-fabric:5.7.28"
 }

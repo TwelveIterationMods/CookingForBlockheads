@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.item;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.DeferredObject;
 import net.blay09.mods.balm.api.item.BalmItems;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModItems {
 
-    public static final CreativeModeTab creativeModeTab = Balm.getItems().createCreativeModeTab(id("cookingforblockheads"), () -> new ItemStack(ModItems.recipeBook));
+    public static DeferredObject<CreativeModeTab> creativeModeTab;
 
     public static Item recipeBook;
     public static Item noFilterBook;
@@ -26,6 +26,8 @@ public class ModItems {
         items.registerItem(() -> heatingUnit = new ItemHeatingUnit(), id(ItemHeatingUnit.name));
         items.registerItem(() -> iceUnit = new ItemIceUnit(), id(ItemIceUnit.name));
         items.registerItem(() -> preservationChamber = new ItemPreservationChamber(), id(ItemPreservationChamber.name));
+
+        creativeModeTab = items.registerCreativeModeTab(id("cookingforblockheads"), () -> new ItemStack(ModItems.recipeBook));
     }
 
     private static ResourceLocation id(String name) {

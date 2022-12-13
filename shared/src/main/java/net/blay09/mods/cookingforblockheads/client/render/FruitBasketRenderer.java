@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -42,7 +42,7 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
                 float curZ = -0.75f + colIndex * 0.35f + antiZFight;
                 poseStack.pushPose();
                 poseStack.translate(curX, curY, curZ);
-                poseStack.mulPose(new Quaternion(25f, 0f, 0f, true));
+                poseStack.mulPose(Axis.XP.rotationDegrees(25f));
                 RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
                 poseStack.popPose();
             }

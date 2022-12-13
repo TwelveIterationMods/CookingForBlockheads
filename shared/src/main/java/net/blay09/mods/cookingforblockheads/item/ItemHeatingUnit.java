@@ -29,7 +29,7 @@ public class ItemHeatingUnit extends Item {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public ItemHeatingUnit() {
-        super(new Item.Properties().tab(ModItems.creativeModeTab));
+        super(new Item.Properties());
     }
 
     @Override

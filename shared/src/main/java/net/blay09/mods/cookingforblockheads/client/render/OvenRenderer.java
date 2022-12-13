@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -15,8 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
-import java.util.Random;
 
 public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
 
@@ -40,7 +38,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         poseStack.pushPose();
         RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
         poseStack.translate(-0.5f, 0f, -0.5f);
-        poseStack.mulPose(new Quaternion(-(float) Math.toDegrees(doorAngle), 0f, 0f, true));
+        poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(doorAngle)));
         BakedModel model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorActive.get() : ModModels.ovenDoor.get();
         dispatcher.getModelRenderer().tesselateBlock(level, model, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
         poseStack.translate(0f, 0f, -1f);
@@ -56,7 +54,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, 0.5f);
-            poseStack.mulPose(new Quaternion(45f, 0f, 0f, true));
+            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
             RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
             poseStack.popPose();
         }
@@ -65,7 +63,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, 0.5f);
-            poseStack.mulPose(new Quaternion(45f, 0f, 0f, true));
+            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
             RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
             poseStack.popPose();
         }
@@ -74,7 +72,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, -0.5f);
-            poseStack.mulPose(new Quaternion(45f, 0f, 0f, true));
+            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
             RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
             poseStack.popPose();
         }
@@ -83,7 +81,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, -0.5f);
-            poseStack.mulPose(new Quaternion(45f, 0f, 0f, true));
+            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
             RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
             poseStack.popPose();
         }
@@ -102,7 +100,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
                 if (!itemStack.isEmpty()) {
                     poseStack.pushPose();
                     poseStack.translate(offsetX, 0f, offsetZ);
-                    poseStack.mulPose(new Quaternion(90f, 0f, 0f, true));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90f));
                     RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
                     poseStack.popPose();
                 }

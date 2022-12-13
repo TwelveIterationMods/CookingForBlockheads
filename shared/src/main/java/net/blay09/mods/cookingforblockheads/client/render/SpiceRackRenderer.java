@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.tile.SpiceRackBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -22,14 +22,14 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
         poseStack.pushPose();
         RenderUtils.applyBlockAngle(poseStack, tileEntity.getBlockState());
         poseStack.translate(-0.4, 0.75, 0.3);
-        poseStack.mulPose(new Quaternion(0f, 90f, 0f, true));
+        poseStack.mulPose(Axis.YP.rotationDegrees(90f));
         poseStack.scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < tileEntity.getContainer().getContainerSize(); i++) {
             ItemStack itemStack = tileEntity.getContainer().getItem(i);
             if (!itemStack.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, 0.2f * i);
-                poseStack.mulPose(new Quaternion(0f, -20f, 0f, true));
+                poseStack.mulPose(Axis.YN.rotationDegrees(20));
                 RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
                 poseStack.popPose();
             }

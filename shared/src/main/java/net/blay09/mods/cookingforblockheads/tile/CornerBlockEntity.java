@@ -1,9 +1,8 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.provider.BalmProvider;
-import net.blay09.mods.balm.api.provider.BalmProviderHolder;
+import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenConnector;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
 import net.minecraft.core.BlockPos;

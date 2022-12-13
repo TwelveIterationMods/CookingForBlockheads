@@ -1,11 +1,11 @@
 dependencies {
-    compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.262")
-    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.262")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.262")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.4.0.288")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.4.0.288")
+    //runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.4.0.288")
 
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:3430022")
 
     compileOnly fg.deobf("curse.maven:badpackets-615134:3773642")
     compileOnly fg.deobf("mcp.mobius.waila:wthit-api:forge-5.13.3")
-    implementation fg.deobf("curse.maven:jade-324717:4010505")
+    compileOnly fg.deobf("curse.maven:jade-324717:4010505")
 }
