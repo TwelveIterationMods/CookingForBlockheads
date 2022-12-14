@@ -9,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.event.FoodRegistryInitEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -28,6 +29,8 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
             .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
             .create();
 
+    private static final FileToIdConverter COMPAT_FILES = FileToIdConverter.json("cookingforblockheads/compat");
+
     public static final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();
     public static final Set<ResourceLocation> kitchenItemProviders = new HashSet<>();
     public static final Set<ResourceLocation> kitchenConnectors = new HashSet<>();
@@ -39,7 +42,7 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
         try {
-            for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources("cookingforblockheads/compat", it -> it.getPath().endsWith(".json")).entrySet()) {
+            for (Map.Entry<ResourceLocation, Resource> entry : COMPAT_FILES.listMatchingResources(resourceManager).entrySet()) {
                 try (BufferedReader reader = entry.getValue().openAsReader()) {
                     load(gson.fromJson(reader, JsonCompatData.class));
                 } catch (Exception e) {
