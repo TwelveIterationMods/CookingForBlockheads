@@ -2,6 +2,18 @@ subprojects {
     apply plugin: 'java'
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+    java.withSourcesJar()
+    java.withJavadocJar()
+
+    tasks.withType(GenerateModuleMetadata).tap {
+        configureEach {
+            enabled = false // Do not publish dependencies in pom
+        }
+    }
+
+    configurations {
+        testImplementation.extendsFrom compileOnly
+    }
 
     jar {
         manifest {
@@ -25,15 +37,21 @@ subprojects {
     repositories {
         mavenCentral()
 
-        maven { url "https://www.cursemaven.com" }
+        maven {
+            url "https://www.cursemaven.com"
+
+            content {
+                includeGroup 'curse.maven'
+            }
+        }
 
         maven { url "https://nexus.twelveiterations.com/repository/maven-public/" }
 
+        // For Cloth Config and REI
+        maven { url "https://maven.shedaniel.me/" }
+
         // For JEI
         maven { url "https://dvs1.progwml6.com/files/maven/" }
-
-        // For Cloth Config
-        maven { url "https://maven.shedaniel.me/" }
 
         // For WTHIT
         maven { url "https://maven.bai.lol" }
@@ -42,6 +60,12 @@ subprojects {
     tasks.withType(JavaCompile).configureEach {
         it.options.encoding = 'UTF-8'
         it.options.release = java_version as int
+    }
+
+    tasks.withType(Javadoc).tap {
+        configureEach {
+            failOnError false
+        }
     }
 
     if (balm_version.endsWith("SNAPSHOT")) {

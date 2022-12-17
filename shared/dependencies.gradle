@@ -1,7 +1,5 @@
 repositories {
-    maven { url "https://maven.bai.lol" }
 }
 
 dependencies {
-    compileOnly "mcp.mobius.waila:wthit-api:mojmap-5.5.1"
 }
