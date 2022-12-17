@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"render_type": "cutout",
 	"parent": "block/block",
 	"textures": {
 		"milk_glass": "cookingforblockheads:block/milk_glass",

@@ -34,7 +34,7 @@ public class CowJarHandler {
             return;
         }
 
-        if (event.getDamageSource() == DamageSource.ANVIL && isCow(event.getEntity())) {
+        if (event.getDamageSource().getMsgId().equals("anvil") && isCow(event.getEntity())) {
             Entity entity = event.getEntity();
             BlockPos pos = entity.blockPosition();
             Level level = entity.level;

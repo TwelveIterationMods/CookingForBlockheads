@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,7 +19,7 @@ public class RenderUtils {
     public static void applyBlockAngle(PoseStack poseStack, BlockState state, float angleOffset) {
         float angle = state.getValue(BlockKitchen.FACING).toYRot();
         poseStack.translate(0.5, 0, 0.5);
-        poseStack.mulPose(new Quaternion(0f, angleOffset - angle, 0f, true));
+        poseStack.mulPose(Axis.YP.rotationDegrees(angleOffset - angle));
     }
 
     public static void renderItem(ItemStack itemStack, int combinedLight, PoseStack poseStack, MultiBufferSource buffer) {

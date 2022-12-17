@@ -45,7 +45,7 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
         for (int i = 0; i < craftMatrix.size(); i++) {
             ItemStack ingredient = craftMatrix.get(i);
             if (!ingredient.isEmpty()) {
-                IngredientPredicate ingredientPredicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItemStackIgnoreDurability(ingredient) && count > 0, ingredient);
+                IngredientPredicate ingredientPredicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(ingredient) && count > 0, ingredient);
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
                     SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(ingredientPredicate, 1, inventories, requireContainer, true);

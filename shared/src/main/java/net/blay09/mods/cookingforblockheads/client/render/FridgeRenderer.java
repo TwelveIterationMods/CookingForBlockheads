@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
@@ -23,7 +23,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
 
     private static final RandomSource random = RandomSource.create();
 
-    public FridgeRenderer(BlockEntityRendererProvider.Context context) {}
+    public FridgeRenderer(BlockEntityRendererProvider.Context context) {
+    }
 
     @Override
     public void render(FridgeBlockEntity tileEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
@@ -73,7 +74,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
                     }
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
-                    poseStack.mulPose(new Quaternion(0f, 45f, 0f, true));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(45f));
                     RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
                     poseStack.popPose();
                 }
@@ -97,7 +98,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
         }
 
         poseStack.translate(originX, 0f, originZ);
-        poseStack.mulPose(new Quaternion(0f, -(float) Math.toDegrees(doorAngle), 0f, true));
+        poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(doorAngle)));
         poseStack.translate(-originX, 0f, -originZ);
 
         BakedModel lowerModel;
@@ -110,10 +111,30 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
         }
 
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-        dispatcher.getModelRenderer().tesselateBlock(level, lowerModel, tileEntity.getBlockState(), tileEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+        dispatcher.getModelRenderer()
+                .tesselateBlock(level,
+                        lowerModel,
+                        tileEntity.getBlockState(),
+                        tileEntity.getBlockPos(),
+                        poseStack,
+                        buffer.getBuffer(RenderType.solid()),
+                        false,
+                        random,
+                        0,
+                        0);
         if (upperModel != null) {
             poseStack.translate(0, 1, 0);
-            dispatcher.getModelRenderer().tesselateBlock(level, upperModel, tileEntity.getBlockState(), tileEntity.getBlockPos().above(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+            dispatcher.getModelRenderer()
+                    .tesselateBlock(level,
+                            upperModel,
+                            tileEntity.getBlockState(),
+                            tileEntity.getBlockPos().above(),
+                            poseStack,
+                            buffer.getBuffer(RenderType.solid()),
+                            false,
+                            random,
+                            0,
+                            0);
         }
 
         poseStack.popPose();

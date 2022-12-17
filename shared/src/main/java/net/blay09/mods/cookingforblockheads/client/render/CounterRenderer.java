@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
@@ -19,8 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntityRenderer<T> {
 
@@ -81,7 +79,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(doorOriginX, 0f, doorOriginZ);
-        poseStack.mulPose(new Quaternion(0f, doorDirection * (float) Math.toDegrees(doorAngle), 0f, true));
+        poseStack.mulPose(Axis.YP.rotationDegrees(doorDirection * (float) Math.toDegrees(doorAngle)));
         poseStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
@@ -110,7 +108,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
                     offsetZ = shelfIndex < itemsPerRow ? 0.5f : -0.5f;
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
-                    poseStack.mulPose(new Quaternion(0f, 45f, 0f, true));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(45f));
                     RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
                     poseStack.popPose();
                 }

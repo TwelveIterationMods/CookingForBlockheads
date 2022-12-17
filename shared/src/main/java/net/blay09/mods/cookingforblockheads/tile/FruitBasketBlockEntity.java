@@ -1,11 +1,11 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.block.entity.BalmBlockEntity;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
+import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;

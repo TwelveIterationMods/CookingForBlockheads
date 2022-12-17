@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.tile.CookingTableBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -27,7 +27,7 @@ public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlo
             poseStack.pushPose();
             RenderUtils.applyBlockAngle(poseStack, state);
             poseStack.translate(0, 1.01f, 0);
-            poseStack.mulPose(new Quaternion(90f, 0f, 0f, true));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90f));
             poseStack.scale(0.5f, 0.5f, 0.5f);
             RenderUtils.renderItem(itemStack, combinedLightIn, poseStack, bufferIn);
             poseStack.popPose();

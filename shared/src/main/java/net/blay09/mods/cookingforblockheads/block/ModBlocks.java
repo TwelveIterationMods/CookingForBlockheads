@@ -56,7 +56,7 @@ public class ModBlocks {
     }
 
     private static BlockItem itemBlock(Block block) {
-        return new BlockItem(block, Balm.getBlocks().itemProperties(ModItems.creativeModeTab));
+        return new BlockItem(block, Balm.getItems().itemProperties());
     }
 
     private static ResourceLocation id(String name) {

@@ -177,7 +177,7 @@ public class CookingRegistry {
             return false;
         }
         for (ItemStack toolItem : tools) {
-            if (toolItem.sameItemStackIgnoreDurability(itemStack)) {
+            if (toolItem.sameItem(itemStack)) {
                 return true;
             }
         }
@@ -260,7 +260,7 @@ public class CookingRegistry {
             return null;
         }
 
-        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItemStackIgnoreDurability(checkStack) && count > 0, checkStack);
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(checkStack) && count > 0, checkStack);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
             SourceItem found = itemProvider.findSource(predicate, 1, inventories, requireBucket, true);

@@ -11,8 +11,8 @@
   ],
   "contact": {
     "homepage": "https://blay09.net/mods/cookingforblockheads",
-    "sources": "https://github.com/ModdingForBlockheads/CookingForBlockheads",
-    "issues": "https://github.com/ModdingForBlockheads/CookingForBlockheads/issues"
+    "sources": "https://github.com/TwelveIterationMods/CookingForBlockheads",
+    "issues": "https://github.com/TwelveIterationMods/CookingForBlockheads/issues"
   },
 
   "license": "All Rights Reserved",
@@ -36,11 +36,11 @@
   "mixins": [
   ],
   "depends": {
-    "cloth-config2": ">=5.0.34",
-    "balm-fabric": ">=4.3.0",
+    "cloth-config": ">=9.0.0",
+    "balm-fabric": ">=5.0.0",
     "fabricloader": ">=0.14.7",
-    "fabric": "*",
-    "minecraft": "1.19.x",
+    "fabric-api": "*",
+    "minecraft": ">=1.19.3",
     "java": ">=17"
   },
   "suggests": {

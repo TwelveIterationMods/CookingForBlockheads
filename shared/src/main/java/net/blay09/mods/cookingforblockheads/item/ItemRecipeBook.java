@@ -50,7 +50,7 @@ public class ItemRecipeBook extends Item {
     private final RecipeBookEdition edition;
 
     public ItemRecipeBook(RecipeBookEdition edition) {
-        super(new Item.Properties().tab(ModItems.creativeModeTab).stacksTo(1));
+        super(new Item.Properties().stacksTo(1));
         this.edition = edition;
     }
 
