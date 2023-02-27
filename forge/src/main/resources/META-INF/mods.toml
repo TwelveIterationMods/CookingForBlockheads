@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[41,)"
 license="All rights reserved"
-issueTrackerURL="https://github.com/ModdingForBlockheads/CookingForBlockheads/issues"
+issueTrackerURL="https://github.com/TwelveIterationMods/CookingForBlockheads/issues"
 
 [[mods]]
 modId="cookingforblockheads"
