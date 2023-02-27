@@ -8,4 +8,6 @@ dependencies {
     compileOnly fg.deobf("curse.maven:badpackets-615134:3773642")
     compileOnly fg.deobf("mcp.mobius.waila:wthit-api:forge-5.13.3")
     implementation fg.deobf("curse.maven:jade-324717:4010505")
+
+    // runtimeOnly fg.deobf("curse.maven:croptopia-415438:4344754")
 }
