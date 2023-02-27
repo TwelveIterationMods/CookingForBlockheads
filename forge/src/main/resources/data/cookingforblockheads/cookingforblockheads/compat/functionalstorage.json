@@ -1,0 +1,39 @@
+{
+  "modid": "functionalstorage",
+  "kitchenConnectors": [
+    "functionalstorage:storage_controller",
+    "functionalstorage:storage_extension"
+  ],
+  "kitchenItemProviders": [
+    "functionalstorage:oak_1",
+    "functionalstorage:spruce_1",
+    "functionalstorage:birch_1",
+    "functionalstorage:jungle_1",
+    "functionalstorage:acacia_1",
+    "functionalstorage:dark_oak_1",
+    "functionalstorage:crimson_1",
+    "functionalstorage:warped_1",
+    "functionalstorage:mangrove_1",
+    "functionalstorage:framed_1",
+    "functionalstorage:oak_2",
+    "functionalstorage:spruce_2",
+    "functionalstorage:birch_2",
+    "functionalstorage:jungle_2",
+    "functionalstorage:acacia_2",
+    "functionalstorage:dark_oak_2",
+    "functionalstorage:crimson_2",
+    "functionalstorage:warped_2",
+    "functionalstorage:mangrove_2",
+    "functionalstorage:framed_2",
+    "functionalstorage:oak_4",
+    "functionalstorage:spruce_4",
+    "functionalstorage:birch_4",
+    "functionalstorage:jungle_4",
+    "functionalstorage:acacia_4",
+    "functionalstorage:dark_oak_4",
+    "functionalstorage:crimson_4",
+    "functionalstorage:warped_4",
+    "functionalstorage:mangrove_4",
+    "functionalstorage:framed_4"
+  ]
+}
