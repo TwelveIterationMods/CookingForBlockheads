@@ -52,6 +52,7 @@ subprojects {
 
         // For JEI
         maven { url "https://dvs1.progwml6.com/files/maven/" }
+        maven { url "https://modmaven.dev" }
 
         // For WTHIT
         maven { url "https://maven.bai.lol" }
