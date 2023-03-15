@@ -1,3 +1,1 @@
-- Fixed Croptopia Salt not being considered a food ingredient, and there not being cooked from water bottles
-- Fixed rotation and mirroring not being supported by kitchen blocks in structures
-- Fixed hanging corner not acting as a kitchen connector
+- Updated to Minecraft 1.19.4
