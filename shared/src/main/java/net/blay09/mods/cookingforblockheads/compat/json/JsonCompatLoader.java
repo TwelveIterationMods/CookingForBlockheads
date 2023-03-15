@@ -49,10 +49,6 @@ public class JsonCompatLoader implements ResourceManagerReloadListener {
                     CookingForBlockheads.logger.error("Parsing error loading CookingForBlockheads data files at {}", entry.getKey(), e);
                 }
             }
-
-            for (Block kitchenFloor : ModBlocks.kitchenFloors) {
-                KitchenMultiBlock.registerConnectorBlock(kitchenFloor);
-            }
         } catch (Exception e) {
             CookingForBlockheads.logger.error("Error loading CookingForBlockheads data files", e);
         }
