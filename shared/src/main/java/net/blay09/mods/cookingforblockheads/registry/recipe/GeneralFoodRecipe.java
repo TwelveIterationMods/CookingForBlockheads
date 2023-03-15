@@ -1,12 +1,13 @@
 package net.blay09.mods.cookingforblockheads.registry.recipe;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 public class GeneralFoodRecipe extends FoodRecipe {
 
-    public GeneralFoodRecipe(Recipe<?> recipe) {
-        this.outputItem = recipe.getResultItem();
+    public GeneralFoodRecipe(Recipe<?> recipe, ItemStack outputItem) {
+        this.outputItem = outputItem;
         if (recipe instanceof ShapedRecipe) {
             this.recipeWidth = ((ShapedRecipe) recipe).getWidth();
         } else {

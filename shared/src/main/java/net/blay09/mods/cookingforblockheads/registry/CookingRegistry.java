@@ -19,6 +19,7 @@ import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.GeneralFoodRecipe;
 import net.blay09.mods.cookingforblockheads.registry.recipe.SmeltingFood;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -67,7 +68,7 @@ public class CookingRegistry {
         }
     };
 
-    public static void initFoodRegistry(RecipeManager recipeManager) {
+    public static void initFoodRegistry(RecipeManager recipeManager, RegistryAccess registryAccess) {
         recipeList.clear();
         foodItems.clear();
 
@@ -83,7 +84,7 @@ public class CookingRegistry {
                 continue;
             }
 
-            ItemStack output = recipe.getResultItem();
+            ItemStack output = recipe.getResultItem(registryAccess);
 
             //noinspection ConstantConditions
             if (output == null) {
@@ -93,14 +94,14 @@ public class CookingRegistry {
 
             if (!output.isEmpty()) {
                 if (output.getItem().isEdible()) {
-                    if (!isWeirdConversionRecipe(recipe)) {
-                        addFoodRecipe(recipe);
+                    if (!isWeirdConversionRecipe(recipe, registryAccess)) {
+                        addFoodRecipe(recipe, registryAccess);
                     }
                 } else {
                     // TODO Make nonFoodRecipes a map to improve lookup performance
                     for (ItemStack itemStack : nonFoodRecipes) {
-                        if (recipe.getResultItem().sameItem(itemStack)) {
-                            addFoodRecipe(recipe);
+                        if (recipe.getResultItem(registryAccess).sameItem(itemStack)) {
+                            addFoodRecipe(recipe, registryAccess);
                             break;
                         }
                     }
@@ -116,11 +117,11 @@ public class CookingRegistry {
     /**
      * This was added to prevent Harvestcraft's old oredict conversion recipes from showing up, might not be needed anymore?
      */
-    public static boolean isWeirdConversionRecipe(Recipe<?> recipe) {
-        if (recipe.getIngredients().size() == 2 && recipe.getResultItem().getCount() == 2) {
+    public static boolean isWeirdConversionRecipe(Recipe<?> recipe, RegistryAccess registryAccess) {
+        if (recipe.getIngredients().size() == 2 && recipe.getResultItem(registryAccess).getCount() == 2) {
             Ingredient first = recipe.getIngredients().get(0);
             Ingredient second = recipe.getIngredients().get(1);
-            return first.test(recipe.getResultItem()) && second.test(recipe.getResultItem());
+            return first.test(recipe.getResultItem(registryAccess)) && second.test(recipe.getResultItem(registryAccess));
         }
 
         return false;
@@ -139,14 +140,14 @@ public class CookingRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public static void addFoodRecipe(Recipe<? extends Container> recipe) {
-        ItemStack output = recipe.getResultItem();
+    public static void addFoodRecipe(Recipe<? extends Container> recipe, RegistryAccess registryAccess) {
+        ItemStack output = recipe.getResultItem(registryAccess);
         if (!output.isEmpty() && !recipe.getIngredients().isEmpty()) {
             FoodRecipe foodRecipe;
             if (recipe instanceof AbstractCookingRecipe) {
-                foodRecipe = new SmeltingFood(recipe);
+                foodRecipe = new SmeltingFood(recipe, recipe.getResultItem(registryAccess));
             } else if (recipe instanceof CraftingRecipe) {
-                foodRecipe = new GeneralFoodRecipe(recipe);
+                foodRecipe = new GeneralFoodRecipe(recipe, recipe.getResultItem(registryAccess));
             } else {
                 return;
             }
@@ -349,7 +350,7 @@ public class CookingRegistry {
     @SuppressWarnings("unchecked")
     public static <T extends Recipe<?>> T findFoodRecipe(InventoryCraftBook craftMatrix, Level level, RecipeType<T> recipeType, Item expectedItem) {
         for (Recipe<Container> recipe : recipeList) {
-            if (recipe.getType() == recipeType && recipe.matches(craftMatrix, level) && recipe.getResultItem().getItem() == expectedItem) {
+            if (recipe.getType() == recipeType && recipe.matches(craftMatrix, level) && recipe.getResultItem(level.registryAccess()).getItem() == expectedItem) {
                 return (T) recipe;
             }
         }

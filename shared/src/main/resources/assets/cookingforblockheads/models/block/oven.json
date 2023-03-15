@@ -1,6 +1,7 @@
 {
   "__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
   "parent": "block/block",
+  "render_type": "cutout",
   "textures": {
     "particle": "cookingforblockheads:block/oven_side",
     "texture": "cookingforblockheads:block/oven_side",

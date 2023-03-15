@@ -64,7 +64,7 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
 
         // Find the matching recipe and make sure it matches what the client expects
         CraftingRecipe craftingRecipe = CookingRegistry.findFoodRecipe(this, player.level, RecipeType.CRAFTING, outputItem.getItem());
-        if (craftingRecipe == null || craftingRecipe.getResultItem().isEmpty()) {
+        if (craftingRecipe == null || craftingRecipe.getResultItem(player.level.registryAccess()).isEmpty()) {
             return ItemStack.EMPTY;
         }
 
@@ -74,7 +74,7 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
         }
 
         // Get the final result and remove ingredients
-        ItemStack result = craftingRecipe.assemble(this);
+        ItemStack result = craftingRecipe.assemble(this, player.level.registryAccess());
         if (!result.isEmpty()) {
             fireEventsAndHandleAchievements(player, result);
             for (int i = 0; i < getContainerSize(); i++) {

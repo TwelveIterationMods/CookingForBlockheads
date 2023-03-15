@@ -109,7 +109,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
                     poseStack.mulPose(Axis.YP.rotationDegrees(45f));
-                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
                     poseStack.popPose();
                 }
             }

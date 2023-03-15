@@ -22,6 +22,8 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
             return;
         }
 
+        Level level = blockEntity.getLevel();
+
         poseStack.pushPose();
         poseStack.translate(0, 0.5, 0);
         RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
@@ -43,7 +45,7 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
                 poseStack.pushPose();
                 poseStack.translate(curX, curY, curZ);
                 poseStack.mulPose(Axis.XP.rotationDegrees(25f));
-                RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+                RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
                 poseStack.popPose();
             }
         }

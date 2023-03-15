@@ -55,7 +55,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, 0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
             poseStack.popPose();
         }
 
@@ -64,7 +64,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, 0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
             poseStack.popPose();
         }
 
@@ -73,7 +73,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, -0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
             poseStack.popPose();
         }
 
@@ -82,7 +82,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, -0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
             poseStack.popPose();
         }
         poseStack.popPose();
@@ -101,7 +101,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
                     poseStack.pushPose();
                     poseStack.translate(offsetX, 0f, offsetZ);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90f));
-                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
                     poseStack.popPose();
                 }
                 offsetX -= 0.8f;

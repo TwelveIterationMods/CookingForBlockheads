@@ -279,7 +279,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         singleSlotRecipeWrapper.setItem(0, itemStack);
         Recipe<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, singleSlotRecipeWrapper, this.level).orElse(null);
         if (recipe != null) {
-            result = recipe.getResultItem();
+            result = recipe.getResultItem(level.registryAccess());
             if (!result.isEmpty() && result.getItem().isEdible()) {
                 return result;
             }

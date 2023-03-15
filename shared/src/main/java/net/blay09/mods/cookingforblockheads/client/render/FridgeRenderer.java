@@ -17,8 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Random;
-
 public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
 
     private static final RandomSource random = RandomSource.create();
@@ -75,7 +73,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
                     poseStack.mulPose(Axis.YP.rotationDegrees(45f));
-                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer);
+                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
                     poseStack.popPose();
                 }
             }

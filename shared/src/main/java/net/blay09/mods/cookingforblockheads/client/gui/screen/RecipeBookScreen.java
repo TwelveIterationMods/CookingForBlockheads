@@ -273,7 +273,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         }
 
 
-        searchBar.renderButton(poseStack, mouseX, mouseY, partialTicks);
+        searchBar.renderWidget(poseStack, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -281,8 +281,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, guiTexture);
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
-            int prevZLevel = getBlitOffset();
-            setBlitOffset(300);
+            poseStack.pushPose();
+            poseStack.translate(0, 0, 300);
             for (Slot slot : container.slots) {
                 if (slot instanceof RecipeFakeSlot) {
                     if (CookingRegistry.isNonFoodRecipe(slot.getItem())) {
@@ -296,7 +296,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                 }
             }
 
-            setBlitOffset(prevZLevel);
+            poseStack.popPose();
         }
     }
 
@@ -306,8 +306,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         super.render(poseStack, mouseX, mouseY, partialTicks);
 
-        int prevZLevel = getBlitOffset();
-        setBlitOffset(300);
+        poseStack.pushPose();
+        poseStack.translate(0, 0, 300);
         for (Slot slot : container.slots) {
             if (slot instanceof CraftMatrixFakeSlot) {
                 if (!((CraftMatrixFakeSlot) slot).isAvailable() && !slot.getItem().isEmpty()) {
@@ -315,7 +315,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                 }
             }
         }
-        setBlitOffset(prevZLevel);
+        poseStack.popPose();
 
         container.updateSlots(partialTicks);
 

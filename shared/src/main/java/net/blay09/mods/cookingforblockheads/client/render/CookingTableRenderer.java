@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlockEntity> {
@@ -20,6 +21,7 @@ public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlo
             return;
         }
 
+        Level level = blockEntity.getLevel();
         BlockState state = blockEntity.getBlockState();
 
         ItemStack itemStack = blockEntity.getNoFilterBook();
@@ -29,7 +31,7 @@ public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlo
             poseStack.translate(0, 1.01f, 0);
             poseStack.mulPose(Axis.XP.rotationDegrees(90f));
             poseStack.scale(0.5f, 0.5f, 0.5f);
-            RenderUtils.renderItem(itemStack, combinedLightIn, poseStack, bufferIn);
+            RenderUtils.renderItem(itemStack, combinedLightIn, poseStack, bufferIn, level);
             poseStack.popPose();
         }
     }

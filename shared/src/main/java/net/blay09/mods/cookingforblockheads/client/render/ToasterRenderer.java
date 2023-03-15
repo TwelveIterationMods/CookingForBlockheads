@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity> {
@@ -19,6 +20,7 @@ public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity> 
             return;
         }
 
+        Level level = blockEntity.getLevel();
         BlockState state = blockEntity.getBlockState();
 
         ItemStack leftStack = blockEntity.getContainer().getItem(0);
@@ -32,13 +34,13 @@ public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity> 
             if (!leftStack.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, 0.2f);
-                RenderUtils.renderItem(leftStack, combinedLightIn, poseStack, buffer);
+                RenderUtils.renderItem(leftStack, combinedLightIn, poseStack, buffer, level);
                 poseStack.popPose();
             }
             if (!rightStack.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, -0.2f);
-                RenderUtils.renderItem(rightStack, combinedLightIn, poseStack, buffer);
+                RenderUtils.renderItem(rightStack, combinedLightIn, poseStack, buffer, level);
                 poseStack.popPose();
             }
             poseStack.popPose();

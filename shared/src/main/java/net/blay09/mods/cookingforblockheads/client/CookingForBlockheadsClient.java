@@ -5,7 +5,6 @@ import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
 import net.blay09.mods.balm.api.event.client.RecipesUpdatedEvent;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.RecipeBookScreen;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
@@ -28,7 +27,7 @@ public class CookingForBlockheadsClient {
         ModModels.initialize(BalmClient.getModels());
 
         Balm.getEvents().onEvent(RecipesUpdatedEvent.class, event -> {
-            CookingRegistry.initFoodRegistry(event.getRecipeManager());
+            CookingRegistry.initFoodRegistry(event.getRecipeManager(), event.getRegistryAccess());
         });
 
         Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {

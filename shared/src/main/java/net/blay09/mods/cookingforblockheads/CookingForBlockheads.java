@@ -44,7 +44,7 @@ public class CookingForBlockheads {
 
         Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json"), new JsonCompatLoader());
 
-        Balm.getEvents().onEvent(ServerReloadFinishedEvent.class, (ServerReloadFinishedEvent event) -> CookingRegistry.initFoodRegistry(event.getServer().getRecipeManager()));
+        Balm.getEvents().onEvent(ServerReloadFinishedEvent.class, (ServerReloadFinishedEvent event) -> CookingRegistry.initFoodRegistry(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
 
         Balm.initializeIfLoaded("minecraft", "net.blay09.mods.cookingforblockheads.compat.VanillaAddon");
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
@@ -52,7 +52,7 @@ public class CookingForBlockheads {
 
         Balm.getEvents().onEvent(ServerStartedEvent.class, event -> {
                 RecipeManager recipeManager = event.getServer().getRecipeManager();
-                CookingRegistry.initFoodRegistry(recipeManager);
+                CookingRegistry.initFoodRegistry(recipeManager, event.getServer().registryAccess());
         });
 
         Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);

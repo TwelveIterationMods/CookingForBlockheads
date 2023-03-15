@@ -5,9 +5,10 @@ import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RenderUtils {
@@ -22,8 +23,8 @@ public class RenderUtils {
         poseStack.mulPose(Axis.YP.rotationDegrees(angleOffset - angle));
     }
 
-    public static void renderItem(ItemStack itemStack, int combinedLight, PoseStack poseStack, MultiBufferSource buffer) {
-        Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, combinedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
+    public static void renderItem(ItemStack itemStack, int combinedLight, PoseStack poseStack, MultiBufferSource buffer, Level level) {
+        Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED.FIXED, combinedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, level, 0);
     }
 
     /*private static final Random random = new Random();
