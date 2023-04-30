@@ -56,6 +56,9 @@ subprojects {
 
         // For WTHIT
         maven { url "https://maven.bai.lol" }
+
+        // For ModMenu
+        maven { url "https://maven.terraformersmc.com" }
     }
 
     tasks.withType(JavaCompile).configureEach {
