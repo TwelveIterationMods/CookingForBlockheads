@@ -8,7 +8,9 @@
     "storagedrawers:birch_trim",
     "storagedrawers:jungle_trim",
     "storagedrawers:acacia_trim",
-    "storagedrawers:dark_oak_trim"
+    "storagedrawers:dark_oak_trim",
+    "storagedrawers:warped_trim",
+    "storagedrawers:crimson_trim"
   ],
   "kitchenItemProviders": [
     "storagedrawers:standard_drawers_1",
