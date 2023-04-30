@@ -1,2 +1,3 @@
 - Added Create's dough as an ingredient item so it can be crafted in the cooking table
+- Added Crimson Trim and Warped Trim as kitchen connectors for Storage Drawers support
 - Fixed kitchen floors not specifying correct cullfaces
