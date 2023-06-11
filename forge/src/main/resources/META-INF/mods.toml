@@ -1,13 +1,13 @@
 modLoader="javafml"
-loaderVersion="[45,)"
+loaderVersion="${forge_loader_version_range}"
 license="All rights reserved"
 issueTrackerURL="https://github.com/TwelveIterationMods/CookingForBlockheads/issues"
 
 [[mods]]
 modId="cookingforblockheads"
-version="${file.jarVersion}"
+version="${mod_version}"
 displayName="CookingForBlockheads"
-displayURL="https://blay09.net/mods/cookingforblockheads"
+displayURL="https://mods.twelveiterations.com/mc/cookingforblockheads"
 logoFile="cookingforblockheads-icon.png"
 credits="BlayTheNinth"
 authors="BlayTheNinth"
@@ -18,18 +18,18 @@ Adds a cooking book and multiblock kitchens that only shows recipes you can make
 [[dependencies.cookingforblockheads]]
     modId="forge"
     mandatory=true
-    versionRange="[45,)"
+    versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.cookingforblockheads]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4,1.20)"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.cookingforblockheads]]
     modId="balm"
     mandatory=true
-    versionRange="[6.0.0,)"
+    versionRange="${balm_version_range}"
     ordering="NONE"
     side="BOTH"
