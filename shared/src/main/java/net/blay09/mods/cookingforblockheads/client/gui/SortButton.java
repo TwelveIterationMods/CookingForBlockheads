@@ -1,10 +1,9 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +24,7 @@ public class SortButton extends Button {
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
         int texY = button.getIconTextureY();
@@ -35,9 +34,8 @@ public class SortButton extends Button {
             texY += 20;
         }
 
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, button.getIcon());
-        blit(poseStack, getX(), getY(), button.getIconTextureX(), texY, width, height);
+        guiGraphics.setColor(1f, 1f, 1f, 1f);
+        guiGraphics.blit(button.getIcon(), getX(), getY(), button.getIconTextureX(), texY, width, height);
     }
 
     public List<Component> getTooltipLines() {

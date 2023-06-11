@@ -103,7 +103,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 
         boolean requireBucket = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
         List<IKitchenItemProvider> inventories = getItemProviders(player.getInventory());
-        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(inputItem) && count > 0, inputItem);
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> ItemStack.isSameItem(it, inputItem) && count > 0, inputItem);
         for (IKitchenItemProvider itemProvider : inventories) {
             itemProvider.resetSimulation();
             int count = stack ? inputItem.getMaxStackSize() : 1;

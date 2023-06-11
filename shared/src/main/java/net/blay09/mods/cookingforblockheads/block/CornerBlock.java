@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.tile.CornerBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,7 +33,7 @@ public class CornerBlock extends BlockDyeableKitchen {
     };
 
     public CornerBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(5f, 10f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(5f, 10f), registryName);
     }
 
     @Override
@@ -58,7 +56,6 @@ public class CornerBlock extends BlockDyeableKitchen {
         return BOUNDING_BOXES[state.getValue(FACING).get3DDataValue() - 2];
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CornerBlockEntity(pos, state);

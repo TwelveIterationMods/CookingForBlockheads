@@ -56,7 +56,7 @@ public class OvenResultSlot extends Slot {
 
     @Override
     protected void checkTakeAchievements(ItemStack stack) {
-        stack.onCraftedBy(player.level, player, removeCount);
+        stack.onCraftedBy(player.level(), player, removeCount);
 
         removeCount = 0;
         if (tileEntity.getLevel() != null && !stack.isEmpty()) {

@@ -29,36 +29,36 @@ public class ModMenus {
     public static void initialize(BalmMenus menus) {
         counter = menus.registerMenu(id("counter"), (windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
-            BlockEntity tileEntity = inv.player.level.getBlockEntity(pos);
+            BlockEntity tileEntity = inv.player.level().getBlockEntity(pos);
             return new CounterMenu(windowId, inv, (CounterBlockEntity) Objects.requireNonNull(tileEntity));
         });
 
         fridge = menus.registerMenu(id("fridge"), (windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
-            BlockEntity tileEntity = inv.player.level.getBlockEntity(pos);
+            BlockEntity tileEntity = inv.player.level().getBlockEntity(pos);
             return new FridgeMenu(windowId, inv, (FridgeBlockEntity) Objects.requireNonNull(tileEntity));
         });
 
         fruitBasket = menus.registerMenu(id("fruit_basket"), (windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
-            BlockEntity tileEntity = inv.player.level.getBlockEntity(pos);
+            BlockEntity tileEntity = inv.player.level().getBlockEntity(pos);
             return new FruitBasketMenu(windowId, inv, (FruitBasketBlockEntity) Objects.requireNonNull(tileEntity));
         });
 
         oven = menus.registerMenu(id("oven"), (windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
-            BlockEntity tileEntity = inv.player.level.getBlockEntity(pos);
+            BlockEntity tileEntity = inv.player.level().getBlockEntity(pos);
             return new OvenMenu(windowId, inv, (OvenBlockEntity) Objects.requireNonNull(tileEntity));
         });
 
         spiceRack = menus.registerMenu(id("spice_rack"), (windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
-            BlockEntity tileEntity = inv.player.level.getBlockEntity(pos);
+            BlockEntity tileEntity = inv.player.level().getBlockEntity(pos);
             return new SpiceRackMenu(windowId, inv, (SpiceRackBlockEntity) Objects.requireNonNull(tileEntity));
         });
 
         cookingTable = menus.registerMenu(id("cooking_table"), (windowId, inv, data) -> {
-            Level level = inv.player.level;
+            Level level = inv.player.level();
             BlockPos pos = data.readBlockPos();
             BlockEntity tileEntity = level.getBlockEntity(pos);
             if (((CookingTableBlockEntity) Objects.requireNonNull(tileEntity)).hasNoFilterBook()) {

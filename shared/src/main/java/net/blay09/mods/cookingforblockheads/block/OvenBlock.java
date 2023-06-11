@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +46,7 @@ public class OvenBlock extends BlockKitchen {
     private static final Random random = new Random();
 
     public OvenBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(5f, 10f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(5f, 10f), registryName);
         registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(ACTIVE, false));
     }
 

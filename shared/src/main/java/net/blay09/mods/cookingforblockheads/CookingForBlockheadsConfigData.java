@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads;
 
-import me.shedaniel.autoconfig.annotation.Config;
 import net.blay09.mods.balm.api.config.BalmConfigData;
 import net.blay09.mods.balm.api.config.Comment;
+import net.blay09.mods.balm.api.config.Config;
 
-@Config(name = CookingForBlockheads.MOD_ID)
+@Config(CookingForBlockheads.MOD_ID)
 public class CookingForBlockheadsConfigData implements BalmConfigData {
 
     @Comment("If true, a cow can be squished into a Milk Jar by dropping an anvil on top.")

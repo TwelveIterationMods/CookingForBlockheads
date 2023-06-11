@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -46,7 +45,7 @@ public class ToolRackBlock extends BlockKitchen {
     };
 
     public ToolRackBlock() {
-        super(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(2.5f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.WOOD).strength(2.5f), registryName);
     }
 
     @Nullable

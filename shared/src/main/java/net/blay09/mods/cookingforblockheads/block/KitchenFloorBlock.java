@@ -12,7 +12,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class KitchenFloorBlock extends Block {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public KitchenFloorBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(0.8f));
+        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(0.8f));
     }
 
     @Override

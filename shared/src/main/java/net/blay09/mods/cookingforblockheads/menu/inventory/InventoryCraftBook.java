@@ -11,17 +11,18 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class InventoryCraftBook extends CraftingContainer implements RecipeHolder {
+public class InventoryCraftBook extends TransientCraftingContainer implements RecipeHolder {
 
     private Recipe<?> recipeUsed;
 
@@ -45,7 +46,7 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
         for (int i = 0; i < craftMatrix.size(); i++) {
             ItemStack ingredient = craftMatrix.get(i);
             if (!ingredient.isEmpty()) {
-                IngredientPredicate ingredientPredicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(ingredient) && count > 0, ingredient);
+                IngredientPredicate ingredientPredicate = IngredientPredicateWithCacheImpl.of((it, count) -> ItemStack.isSameItem(it, ingredient) && count > 0, ingredient);
                 for (int j = 0; j < inventories.size(); j++) {
                     IKitchenItemProvider itemProvider = inventories.get(j);
                     SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(ingredientPredicate, 1, inventories, requireContainer, true);
@@ -63,18 +64,19 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
         }
 
         // Find the matching recipe and make sure it matches what the client expects
-        CraftingRecipe craftingRecipe = CookingRegistry.findFoodRecipe(this, player.level, RecipeType.CRAFTING, outputItem.getItem());
-        if (craftingRecipe == null || craftingRecipe.getResultItem(player.level.registryAccess()).isEmpty()) {
+        Level level = player.level();
+        CraftingRecipe craftingRecipe = CookingRegistry.findFoodRecipe(this, level, RecipeType.CRAFTING, outputItem.getItem());
+        if (craftingRecipe == null || craftingRecipe.getResultItem(level.registryAccess()).isEmpty()) {
             return ItemStack.EMPTY;
         }
 
         // Make sure the recipe actually matches to prevent illegal crafting
-        if (!craftingRecipe.matches(this, player.level)) {
+        if (!craftingRecipe.matches(this, level)) {
             return ItemStack.EMPTY;
         }
 
         // Get the final result and remove ingredients
-        ItemStack result = craftingRecipe.assemble(this, player.level.registryAccess());
+        ItemStack result = craftingRecipe.assemble(this, level.registryAccess());
         if (!result.isEmpty()) {
             fireEventsAndHandleAchievements(player, result);
             for (int i = 0; i < getContainerSize(); i++) {
@@ -98,10 +100,10 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
                             ItemStack restStack = sourceProvider.returnItemStack(containerItem, sourceItems[i]);
                             if (!restStack.isEmpty()) {
                                 if (!player.getInventory().add(restStack)) {
-                                    ItemEntity itemEntity = new ItemEntity(player.level, player.getX() + 0.5f, player.getY() + 0.5f, player.getZ() + 0.5f, restStack);
+                                    ItemEntity itemEntity = new ItemEntity(level, player.getX() + 0.5f, player.getY() + 0.5f, player.getZ() + 0.5f, restStack);
                                     float motion = 0.05F;
-                                    itemEntity.setDeltaMovement(player.level.random.nextGaussian() * motion, player.level.random.nextGaussian() * motion + 0.2, player.level.random.nextGaussian() * motion);
-                                    player.level.addFreshEntity(itemEntity);
+                                    itemEntity.setDeltaMovement(level.random.nextGaussian() * motion, level.random.nextGaussian() * motion + 0.2, level.random.nextGaussian() * motion);
+                                    level.addFreshEntity(itemEntity);
                                 }
                             }
                         }
@@ -113,10 +115,10 @@ public class InventoryCraftBook extends CraftingContainer implements RecipeHolde
     }
 
     private void fireEventsAndHandleAchievements(Player player, ItemStack result) {
-        result.onCraftedBy(player.level, player, 1);
+        result.onCraftedBy(player.level(), player, 1);
         Balm.getHooks().firePlayerCraftingEvent(player, result, this);
 
-        awardUsedRecipes(player);
+        awardUsedRecipes(player, getItems());
     }
 
     @Override

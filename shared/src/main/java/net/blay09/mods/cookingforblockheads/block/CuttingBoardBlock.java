@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +34,7 @@ public class CuttingBoardBlock extends BlockKitchen {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 1.6, 14);
 
     public CuttingBoardBlock() {
-        super(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(2.5f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.WOOD).strength(2.5f), registryName);
     }
 
     @Override

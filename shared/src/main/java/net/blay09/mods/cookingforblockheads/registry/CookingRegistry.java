@@ -100,7 +100,7 @@ public class CookingRegistry {
                 } else {
                     // TODO Make nonFoodRecipes a map to improve lookup performance
                     for (ItemStack itemStack : nonFoodRecipes) {
-                        if (recipe.getResultItem(registryAccess).sameItem(itemStack)) {
+                        if (ItemStack.isSameItem(recipe.getResultItem(registryAccess), itemStack)) {
                             addFoodRecipe(recipe, registryAccess);
                             break;
                         }
@@ -132,7 +132,7 @@ public class CookingRegistry {
             return false;
         }
         for (ItemStack nonFoodStack : nonFoodRecipes) {
-            if (itemStack.sameItem(nonFoodStack)) {
+            if (ItemStack.isSameItem(itemStack, nonFoodStack)) {
                 return true;
             }
         }
@@ -178,7 +178,7 @@ public class CookingRegistry {
             return false;
         }
         for (ItemStack toolItem : tools) {
-            if (toolItem.sameItem(itemStack)) {
+            if (ItemStack.isSameItem(toolItem, itemStack)) {
                 return true;
             }
         }
@@ -200,7 +200,7 @@ public class CookingRegistry {
 
     public static int getOvenFuelTime(ItemStack itemStack) {
         for (Map.Entry<ItemStack, Integer> entry : ovenFuelItems.entrySet()) {
-            if (entry.getKey().sameItem(itemStack)) {
+            if (ItemStack.isSameItem(entry.getKey(), itemStack)) {
                 return entry.getValue();
             }
         }
@@ -213,7 +213,7 @@ public class CookingRegistry {
 
     public static ItemStack getSmeltingResult(ItemStack itemStack) {
         for (Map.Entry<ItemStack, ItemStack> entry : ovenRecipes.entrySet()) {
-            if (entry.getKey().sameItem(itemStack)) {
+            if (ItemStack.isSameItem(entry.getKey(), itemStack)) {
                 return entry.getValue();
             }
         }
@@ -227,7 +227,7 @@ public class CookingRegistry {
     @Nullable
     public static ToasterHandler getToasterHandler(ItemStack itemStack) {
         for (Map.Entry<ItemStack, ToasterHandler> entry : toastHandlers.entrySet()) {
-            if (entry.getKey().sameItem(itemStack)) {
+            if (ItemStack.isSameItem(entry.getKey(), itemStack)) {
                 return entry.getValue();
             }
         }
@@ -248,7 +248,7 @@ public class CookingRegistry {
             return ItemStack.EMPTY;
         }
         for (Map.Entry<ItemStack, SinkHandler> entry : sinkHandlers.entrySet()) {
-            if (entry.getKey().sameItem(itemStack)) {
+            if (ItemStack.isSameItem(entry.getKey(), itemStack)) {
                 return entry.getValue().getSinkOutput(itemStack);
             }
         }
@@ -261,7 +261,7 @@ public class CookingRegistry {
             return null;
         }
 
-        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(checkStack) && count > 0, checkStack);
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> ItemStack.isSameItem(it, checkStack) && count > 0, checkStack);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
             SourceItem found = itemProvider.findSource(predicate, 1, inventories, requireBucket, true);
@@ -301,7 +301,7 @@ public class CookingRegistry {
 
     public static boolean consumeBucket(List<IKitchenItemProvider> inventories, boolean simulate) {
         ItemStack bucketStack = new ItemStack(Items.BUCKET);
-        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> it.sameItem(bucketStack) && count > 0, bucketStack);
+        IngredientPredicate predicate = IngredientPredicateWithCacheImpl.of((it, count) -> ItemStack.isSameItem(it, bucketStack) && count > 0, bucketStack);
         for (int i = 0; i < inventories.size(); i++) {
             IKitchenItemProvider itemProvider = inventories.get(i);
             SourceItem sourceItem = itemProvider.findSourceAndMarkAsUsed(predicate, 1, inventories, false, simulate);

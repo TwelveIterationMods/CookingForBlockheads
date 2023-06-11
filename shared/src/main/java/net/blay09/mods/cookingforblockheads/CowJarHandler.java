@@ -37,7 +37,7 @@ public class CowJarHandler {
         if (event.getDamageSource().getMsgId().equals("anvil") && isCow(event.getEntity())) {
             Entity entity = event.getEntity();
             BlockPos pos = entity.blockPosition();
-            Level level = entity.level;
+            Level level = entity.level();
             BlockState blockBelow = level.getBlockState(pos);
             if (blockBelow.getBlock() == ModBlocks.milkJar) {
                 level.setBlockAndUpdate(pos, ModBlocks.cowJar.defaultBlockState());

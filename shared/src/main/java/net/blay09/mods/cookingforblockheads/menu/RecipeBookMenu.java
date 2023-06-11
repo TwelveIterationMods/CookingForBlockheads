@@ -109,7 +109,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             Slot slot = slots.get(slotNumber);
-            if (player.level.isClientSide) {
+            if (player.level().isClientSide) {
                 if (slot instanceof RecipeFakeSlot recipeSlot) {
                     if (selectedRecipe != null && recipeSlot.getRecipe() == selectedRecipe) {
                         if (allowCrafting && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP)) {
@@ -150,7 +150,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
     public void broadcastChanges() {
         super.broadcastChanges();
 
-        if (!player.level.isClientSide) {
+        if (!player.level().isClientSide) {
             if (isDirty || slotWasClicked) {
                 findAndSendItemList();
                 if (!lastOutputItem.isEmpty()) {
@@ -339,7 +339,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
             FoodRecipeWithStatus found = null;
             while (it.hasNext()) {
                 FoodRecipeWithStatus recipe = it.next();
-                if (recipe.getOutputItem().sameItem(selectedRecipe.getOutputItem())) {
+                if (ItemStack.isSameItem(recipe.getOutputItem(), selectedRecipe.getOutputItem())) {
                     found = recipe;
                     it.remove();
                     break;
@@ -513,7 +513,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     @Nullable
     public FoodRecipeWithStatus findAvailableRecipe(ItemStack itemStack) {
-        return itemList.stream().filter(it -> ItemStack.isSame(it.getOutputItem(), itemStack)).findAny().orElse(null);
+        return itemList.stream().filter(it -> ItemStack.isSameItem(it.getOutputItem(), itemStack)).findAny().orElse(null);
     }
 
     public int getSelectedRecipeIndex() {

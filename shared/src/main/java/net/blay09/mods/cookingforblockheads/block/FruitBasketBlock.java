@@ -1,10 +1,8 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.annotation.Nullable;
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -22,7 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,7 +32,7 @@ public class FruitBasketBlock extends BlockKitchen {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 1.6, 14);
 
     public FruitBasketBlock() {
-        super(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(2.5f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.WOOD).strength(2.5f), registryName);
     }
 
     @Override
@@ -52,7 +49,6 @@ public class FruitBasketBlock extends BlockKitchen {
         builder.add(FACING, LOWERED);
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new FruitBasketBlockEntity(pos, state);

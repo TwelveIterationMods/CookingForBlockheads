@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +39,7 @@ public class SinkBlock extends BlockDyeableKitchen {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public SinkBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(5f, 10f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(5f, 10f), registryName);
     }
 
     @Override

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +27,7 @@ public class CookingTableBlock extends BlockDyeableKitchen {
     public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public CookingTableBlock() {
-        super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.5f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(2.5f), registryName);
     }
 
     @Override

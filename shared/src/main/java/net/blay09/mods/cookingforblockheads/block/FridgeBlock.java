@@ -5,13 +5,11 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -33,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +55,7 @@ public class FridgeBlock extends BlockDyeableKitchen {
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
     public FridgeBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(5f, 10f), registryName);
+        super(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).strength(5f, 10f), registryName);
         registerDefaultState(getStateDefinition().any().setValue(PRESERVATION_CHAMBER, false).setValue(ICE_UNIT, false));
     }
 
@@ -175,11 +171,6 @@ public class FridgeBlock extends BlockDyeableKitchen {
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.BLOCK;
     }
 
     @Nullable

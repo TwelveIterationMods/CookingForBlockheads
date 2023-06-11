@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
@@ -18,6 +17,7 @@ import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
@@ -204,15 +205,14 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
         if (container.isDirty()) {
             setCurrentOffset(currentOffset);
             container.setDirty(false);
         }
 
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, guiTexture);
-        blit(poseStack, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10);
+        guiGraphics.setColor(1f, 1f, 1f, 1f);
+        guiGraphics.blit(guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1,
@@ -239,59 +239,59 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        Font fontRenderer = minecraft.font;
+        Font font = minecraft.font;
         FoodRecipeWithIngredients selection = container.getSelection();
         if (selection == null) {
-            int curY = topPos + 79 / 2 - noSelection.length / 2 * fontRenderer.lineHeight;
+            int curY = topPos + 79 / 2 - noSelection.length / 2 * font.lineHeight;
             for (String s : noSelection) {
-                fontRenderer.drawShadow(poseStack, s, leftPos + 23 + 27 - fontRenderer.width(s) / 2f, curY, 0xFFFFFFFF);
-                curY += fontRenderer.lineHeight + 5;
+                guiGraphics.drawString(font, s, leftPos + 23 + 27 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
+                curY += font.lineHeight + 5;
             }
         } else if (selection.getRecipeType() == FoodRecipeType.SMELTING) {
-            blit(poseStack, leftPos + 23, topPos + 19, 54, 184, 54, 54);
+            guiGraphics.blit(guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54);
         } else {
-            blit(poseStack, leftPos + 23, topPos + 19, 0, 184, 54, 54);
+            guiGraphics.blit(guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54);
         }
 
         if (selection != null) {
             for (CraftMatrixFakeSlot slot : container.getCraftingMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-                    blit(poseStack, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16);
+                    guiGraphics.blit(guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16);
                 }
             }
         }
 
-        fill(poseStack, scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
+        guiGraphics.fill(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 
         if (container.getItemListCount() == 0) {
-            fill(poseStack, leftPos + 97, topPos + 7, leftPos + 168, topPos + 85, 0xAA222222);
-            int curY = topPos + 79 / 2 - noIngredients.length / 2 * fontRenderer.lineHeight;
+            guiGraphics.fill(leftPos + 97, topPos + 7, leftPos + 168, topPos + 85, 0xAA222222);
+            int curY = topPos + 79 / 2 - noIngredients.length / 2 * font.lineHeight;
             for (String s : noIngredients) {
-                fontRenderer.drawShadow(poseStack, s, leftPos + 97 + 36 - fontRenderer.width(s) / 2f, curY, 0xFFFFFFFF);
-                curY += fontRenderer.lineHeight + 5;
+                guiGraphics.drawString(font, s, leftPos + 97 + 36 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
+                curY += font.lineHeight + 5;
             }
         }
 
 
-        searchBar.renderWidget(poseStack, mouseX, mouseY, partialTicks);
+        searchBar.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, guiTexture);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        guiGraphics.setColor(1f, 1f, 1f, 1f);
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
+            var poseStack = guiGraphics.pose();
             poseStack.pushPose();
             poseStack.translate(0, 0, 300);
             for (Slot slot : container.slots) {
                 if (slot instanceof RecipeFakeSlot) {
                     if (CookingRegistry.isNonFoodRecipe(slot.getItem())) {
-                        blit(poseStack, slot.x, slot.y, 176, 76, 16, 16);
+                        guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 76, 16, 16);
                     }
 
                     FoodRecipeWithStatus recipe = ((RecipeFakeSlot) slot).getRecipe();
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
-                        blit(poseStack, slot.x, slot.y, 176, 92, 16, 16);
+                        guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 92, 16, 16);
                     }
                 }
             }
@@ -301,17 +301,18 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
+        var poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 300);
         for (Slot slot : container.slots) {
             if (slot instanceof CraftMatrixFakeSlot) {
                 if (!((CraftMatrixFakeSlot) slot).isAvailable() && !slot.getItem().isEmpty()) {
-                    fillGradient(poseStack, leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0x77FF4444, 0x77FF5555);
+                    guiGraphics.fillGradient(leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0x77FF4444, 0x77FF5555);
                 }
             }
         }
@@ -321,11 +322,11 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         for (Button sortButton : this.sortButtons) {
             if (sortButton instanceof SortButton && sortButton.isMouseOver(mouseX, mouseY) && sortButton.active) {
-                renderComponentTooltip(poseStack, ((SortButton) sortButton).getTooltipLines(), mouseX, mouseY);
+                guiGraphics.renderTooltip(font, ((SortButton) sortButton).getTooltipLines(), Optional.empty(), mouseX, mouseY);
             }
         }
 
-        this.renderTooltip(poseStack, mouseX, mouseY);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     private void recalculateScrollBar() {

@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +37,7 @@ public class CounterBlock extends BlockDyeableKitchen {
     }
 
     public CounterBlock(ResourceLocation registryName) {
-        super(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(5f, 10f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(5f, 10f), registryName);
     }
 
     @Override

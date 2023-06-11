@@ -38,7 +38,7 @@ public class CraftMatrixFakeSlot extends FakeSlot {
 
         if (!prevLockStack.isEmpty()) {
             for (int i = 0; i < visibleStacks.size(); i++) {
-                if (visibleStacks.get(i).sameItem(prevLockStack)) {
+                if (ItemStack.isSameItem(visibleStacks.get(i), prevLockStack)) {
                     visibleItemIndex = i;
                     isLocked = true;
                 }

@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -43,7 +42,7 @@ public class ToasterBlock extends BlockKitchen {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public ToasterBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(2.5f), registryName);
+        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(2.5f), registryName);
         registerDefaultState(getStateDefinition().any().setValue(ACTIVE, false));
     }
 
