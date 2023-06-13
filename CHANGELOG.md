@@ -1,1 +1,2 @@
 - Updated to Minecraft 1.20
+- Add Sophisticated Storage support (by Traehgniw)
