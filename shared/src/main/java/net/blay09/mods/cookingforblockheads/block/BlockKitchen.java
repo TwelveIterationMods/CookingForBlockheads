@@ -219,7 +219,7 @@ public abstract class BlockKitchen extends BaseEntityBlock {
         if (itemStack.hasCustomHoverName()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof IMutableNameable) {
-                ((IMutableNameable) blockEntity).setCustomName(itemStack.getDisplayName());
+                ((IMutableNameable) blockEntity).setCustomName(itemStack.getHoverName());
             }
         }
     }
