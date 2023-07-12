@@ -10,13 +10,13 @@
   ],
   "key": {
     "G": {
-      "tag": "forge:glass/colorless"
+      "item": "minecraft:glass"
     },
     "P": {
       "tag": "minecraft:planks"
     },
     "M": {
-      "tag": "forge:milk"
+      "item": "minecraft:milk_bucket"
     }
   }
 }
