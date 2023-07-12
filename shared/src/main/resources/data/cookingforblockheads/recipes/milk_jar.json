@@ -10,7 +10,7 @@
   ],
   "key": {
     "G": {
-      "item": "minecraft:glass"
+      "tag": "forge:glass/colorless"
     },
     "P": {
       "tag": "minecraft:planks"
