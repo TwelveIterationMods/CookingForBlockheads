@@ -16,7 +16,7 @@
       "tag": "minecraft:planks"
     },
     "M": {
-      "item": "minecraft:milk_bucket"
+      "tag": "forge:milk"
     }
   }
 }
