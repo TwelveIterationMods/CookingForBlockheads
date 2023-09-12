@@ -96,7 +96,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
             float offsetX = 0.825f;
             float offsetZ = 0.8f;
             for (int i = 0; i < 9; i++) {
-                itemStack = blockEntity.getContainer().getItem(7 + i);
+                itemStack = blockEntity.getInternalContainer().getItem(7 + i);
                 if (!itemStack.isEmpty()) {
                     poseStack.pushPose();
                     poseStack.translate(offsetX, 0f, offsetZ);

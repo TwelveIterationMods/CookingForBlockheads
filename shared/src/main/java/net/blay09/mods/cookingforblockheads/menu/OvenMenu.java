@@ -19,7 +19,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
         super(ModMenus.oven.get(), windowId);
         this.tileEntity = oven;
 
-        Container container = oven.getContainer();
+        Container container = oven.getInternalContainer();
 
         int offsetX = oven.hasPowerUpgrade() ? -5 : 0;
 
