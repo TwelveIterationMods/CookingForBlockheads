@@ -264,8 +264,8 @@ public class RecipeBookMenu extends AbstractContainerMenu {
                     }
 
                     if (sourceList.stream().anyMatch(it -> it.getSourceProvider() != null)) {
-                        int origX = i % recipe.getRecipeWidth();
-                        int origY = i / recipe.getRecipeWidth();
+                        int origX = i % 3;
+                        int origY = i / 3;
                         int targetIdx = origY * 3 + origX;
                         availabilityMap |= 1 << targetIdx;
                     }
@@ -393,8 +393,8 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         } else {
             NonNullList[] matrix = new NonNullList[9];
             for (int i = 0; i < recipe.getCraftMatrix().size(); i++) {
-                int origX = i % recipe.getRecipeWidth();
-                int origY = i / recipe.getRecipeWidth();
+                int origX = i % 3;
+                int origY = i / 3;
                 int targetIdx = origY * 3 + origX;
                 matrix[targetIdx] = recipe.getCraftMatrix().get(i);
             }
