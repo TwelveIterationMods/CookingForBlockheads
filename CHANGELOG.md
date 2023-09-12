@@ -1,2 +1,3 @@
 - Fixed crash when adding CraftTweaker shapeless recipes to the cooking table
 - Fixed disallowOvenAutomation option not working anymore
+- Fixed crash when repeatedly placing named kitchen blocks due to overflowing name (by KoromaruKoruko)
