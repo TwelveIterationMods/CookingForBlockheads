@@ -1,3 +1,4 @@
-- Added Create's dough as an ingredient item so it can be crafted in the cooking table
-- Added Crimson Trim and Warped Trim as kitchen connectors for Storage Drawers support
-- Fixed kitchen floors not specifying correct cullfaces
+- Fixed crash when adding CraftTweaker shapeless recipes to the cooking table
+- Fixed disallowOvenAutomation option not working anymore
+- Fixed ovenRequiresCookingOil option not working anymore
+- Fixed crash when repeatedly placing named kitchen blocks due to overflowing name (by KoromaruKoruko)
