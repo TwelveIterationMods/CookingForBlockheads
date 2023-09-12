@@ -186,7 +186,8 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
                 for (int i = 0; i < fuelContainer.getContainerSize(); i++) {
                     ItemStack fuelItem = fuelContainer.getItem(i);
                     if (!fuelItem.isEmpty()) {
-                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1, (float) getBurnTime(fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
+                        currentItemBurnTime = furnaceBurnTime = (int) Math.max(1,
+                                (float) getBurnTime(fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
                             ItemStack containerItem = Balm.getHooks().getCraftingRemainingItem(fuelItem);
                             fuelItem.shrink(1);
@@ -420,8 +421,12 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
 
     @Override
     public Container getContainer(Direction side) {
+        if (CookingForBlockheadsConfig.getActive().disallowOvenAutomation) {
+            return null;
+        }
+
         if (side == null) {
-            return getContainer();
+            return getInternalContainer();
         }
 
         return switch (side) {
@@ -494,8 +499,16 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         return Component.translatable("container.cookingforblockheads.oven");
     }
 
+    public Container getInternalContainer() {
+        return container;
+    }
+
     @Override
     public Container getContainer() {
+        if (CookingForBlockheadsConfig.getActive().disallowOvenAutomation) {
+            return null;
+        }
+
         return container;
     }
 
