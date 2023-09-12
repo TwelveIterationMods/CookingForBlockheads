@@ -1,2 +1,2 @@
-- Updated to Minecraft 1.20
-- Add Sophisticated Storage support (by Traehgniw)
+- Fixed crash when adding CraftTweaker shapeless recipes to the cooking table
+- Fixed disallowOvenAutomation option not working anymore
