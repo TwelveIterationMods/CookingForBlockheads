@@ -107,6 +107,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         @Override
         public void setChanged() {
             MilkJarBlockEntity.this.setChanged();
+            sync();
         }
     };
 
