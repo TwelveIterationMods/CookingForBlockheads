@@ -103,20 +103,19 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         recalculateScrollBar();
     }
 
-
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        if (delta == 0) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
+        if (deltaY == 0) {
             return false;
         }
 
         if (container.getSelection() != null && mouseX >= leftPos + 7 && mouseY >= topPos + 17 && mouseX < leftPos + 92 && mouseY < topPos + 95) {
             Slot slot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
             if (slot instanceof CraftMatrixFakeSlot && ((CraftMatrixFakeSlot) slot).getVisibleStacks().size() > 1) {
-                ((CraftMatrixFakeSlot) slot).scrollDisplayList(delta > 0 ? -1 : 1);
+                ((CraftMatrixFakeSlot) slot).scrollDisplayList(deltaY > 0 ? -1 : 1);
             }
         } else {
-            setCurrentOffset(delta > 0 ? currentOffset - 1 : currentOffset + 1);
+            setCurrentOffset(deltaY > 0 ? currentOffset - 1 : currentOffset + 1);
         }
 
         return true;
@@ -302,8 +301,6 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics);
-
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
         var poseStack = guiGraphics.pose();

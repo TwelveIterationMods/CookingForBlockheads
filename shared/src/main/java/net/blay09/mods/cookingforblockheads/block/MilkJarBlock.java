@@ -97,7 +97,7 @@ public class MilkJarBlock extends BlockKitchen implements BucketPickup {
     }
 
     @Override
-    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState blockState) {
+    public ItemStack pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState blockState) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof MilkJarBlockEntity milkJar && ((MilkJarBlockEntity) blockEntity).getFluidTank().getAmount() >= 1000) {
             int drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, false);

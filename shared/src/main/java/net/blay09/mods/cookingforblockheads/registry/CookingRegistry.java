@@ -78,7 +78,8 @@ public class CookingRegistry {
         nonFoodRecipes = init.getNonFoodRecipes();
 
         // Crafting Recipes of Food Items
-        for (Recipe<?> recipe : recipeManager.getRecipes()) {
+        for (RecipeHolder<?> recipeHolder : recipeManager.getRecipes()) {
+            var recipe = recipeHolder.value();
             // Restrict the search to crafting and smelting recipes to prevent duplicates from smoking and campfire cooking, as well as issues with other mod custom recipes
             if (!isValidRecipeType(recipe)) {
                 continue;
@@ -88,7 +89,7 @@ public class CookingRegistry {
 
             //noinspection ConstantConditions
             if (output == null) {
-                CookingForBlockheads.logger.warn("Recipe " + recipe.getId() + " returned a null ItemStack in getRecipeOutput - this is bad! The developer of " + recipe.getId().getNamespace() + " should return an empty ItemStack instead to avoid problems.");
+                CookingForBlockheads.logger.warn("Recipe " + recipeHolder.id() + " returned a null ItemStack in getRecipeOutput - this is bad! The developer of " + recipeHolder.id().getNamespace() + " should return an empty ItemStack instead to avoid problems.");
                 continue;
             }
 

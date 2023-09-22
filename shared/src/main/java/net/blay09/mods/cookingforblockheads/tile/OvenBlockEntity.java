@@ -31,6 +31,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -278,9 +279,9 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
         }
 
         singleSlotRecipeWrapper.setItem(0, itemStack);
-        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, singleSlotRecipeWrapper, this.level).orElse(null);
+        RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, singleSlotRecipeWrapper, this.level).orElse(null);
         if (recipe != null) {
-            result = recipe.getResultItem(level.registryAccess());
+            result = recipe.value().getResultItem(level.registryAccess());
             if (!result.isEmpty() && result.getItem().isEdible()) {
                 return result;
             }

@@ -11,20 +11,20 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class InventoryCraftBook extends TransientCraftingContainer implements RecipeHolder {
+public class InventoryCraftBook extends TransientCraftingContainer implements RecipeCraftingHolder {
 
-    private Recipe<?> recipeUsed;
+    private RecipeHolder<?> recipeUsed;
 
     public InventoryCraftBook(AbstractContainerMenu menu) {
         super(menu, 3, 3);
@@ -121,14 +121,16 @@ public class InventoryCraftBook extends TransientCraftingContainer implements Re
         awardUsedRecipes(player, getItems());
     }
 
+
+
     @Override
-    public void setRecipeUsed(@Nullable Recipe<?> recipe) {
+    public void setRecipeUsed(@Nullable RecipeHolder<?> recipe) {
         this.recipeUsed = recipe;
     }
 
     @Nullable
     @Override
-    public Recipe<?> getRecipeUsed() {
+    public RecipeHolder<?> getRecipeUsed() {
         return recipeUsed;
     }
 }
