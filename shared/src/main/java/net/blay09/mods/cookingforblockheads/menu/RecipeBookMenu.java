@@ -34,6 +34,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -391,19 +392,33 @@ public class RecipeBookMenu extends AbstractContainerMenu {
                 matrixSlots.get(i).setAvailable((recipe.getAvailabilityMap() & 1) == 1);
             }
         } else {
-            NonNullList[] matrix = new NonNullList[9];
-            for (int i = 0; i < recipe.getCraftMatrix().size(); i++) {
-                int origX = i % 3;
-                int origY = i / 3;
-                int targetIdx = origY * 3 + origX;
-                matrix[targetIdx] = recipe.getCraftMatrix().get(i);
+            final var ingredients = recipe.getCraftMatrix();
+            final var matrix = new NonNullList[9];
+            final var availableMatrix = new boolean[9];
+            for (int i = 0; i < ingredients.size(); i++) {
+                final var ingredient = ingredients.get(i);
+                final var matrixSlot = mapToMatrixSlot(recipe, i);
+                matrix[matrixSlot] = ingredient;
+                availableMatrix[matrixSlot] = (recipe.getAvailabilityMap() & (1 << i)) == (1 << i);
             }
 
-            for (int i = 0; i < matrix.length; i++) {
-                matrixSlots.get(i).setIngredient(matrix[i]);
-                matrixSlots.get(i).setAvailable((recipe.getAvailabilityMap() & (1 << i)) == (1 << i));
+            for (int i = 0; i < matrixSlots.size(); i++) {
+                final var matrixSlot = matrixSlots.get(i);
+                matrixSlot.setIngredient(matrix[i] != null ? matrix[i] : NonNullList.create());
+                matrixSlot.setAvailable(availableMatrix[i]);
             }
         }
+    }
+
+    private int mapToMatrixSlot(FoodRecipeWithIngredients recipe, int ingredientIndex) {
+        final int recipeWidth = recipe.getRecipeWidth();
+        final int origX = ingredientIndex % recipeWidth;
+        final int origY = ingredientIndex / recipeWidth;
+
+        // Offset to center the recipe if its width is 1
+        final int offsetX = recipeWidth == 1 ? 1 : 0;
+
+        return origY * 3 + origX + offsetX;
     }
 
     public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
