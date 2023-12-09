@@ -6,3 +6,7 @@ dependencies {
     // runtimeOnly fg.deobf("curse.maven:croptopia-415438:4344754")
     // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
 }
+
+configurations {
+    testCompileOnly.extendsFrom compileOnly // for some reason needed for some deps
+}
