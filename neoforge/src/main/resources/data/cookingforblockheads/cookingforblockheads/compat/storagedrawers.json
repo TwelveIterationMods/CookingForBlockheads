@@ -1,0 +1,21 @@
+{
+  "modid": "storagedrawers",
+  "kitchenConnectors": [
+    "storagedrawers:controller_slave",
+    "storagedrawers:controller",
+    "storagedrawers:oak_trim",
+    "storagedrawers:spruce_trim",
+    "storagedrawers:birch_trim",
+    "storagedrawers:jungle_trim",
+    "storagedrawers:acacia_trim",
+    "storagedrawers:dark_oak_trim",
+    "storagedrawers:warped_trim",
+    "storagedrawers:crimson_trim"
+  ],
+  "kitchenItemProviders": [
+    "storagedrawers:standard_drawers_1",
+    "storagedrawers:standard_drawers_2",
+    "storagedrawers:standard_drawers_4",
+    "storagedrawers:fractional_drawers_3"
+  ]
+}

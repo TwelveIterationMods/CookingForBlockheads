@@ -1,49 +1,51 @@
 {
   "schemaVersion": 1,
-  "id": "cookingforblockheads",
+  "id": "${mod_id}",
   "version": "${version}",
 
-  "name": "Cooking for Blockheads",
-  "description": "Adds a cooking book and multiblock kitchens that only shows recipes you can make with what you currently have in your inventory.",
+  "name": "${mod_name}",
+  "description": "${description}",
   "authors": [
     "BlayTheNinth",
     "ZerotS"
   ],
   "contact": {
-    "homepage": "https://mods.twelveiterations.com/mc/cookingforblockheads",
-    "sources": "https://github.com/TwelveIterationMods/CookingForBlockheads",
-    "issues": "https://github.com/TwelveIterationMods/CookingForBlockheads/issues"
+    "homepage": "${homepage}",
+    "sources": "${sources}",
+    "issues": "${issues}"
   },
 
-  "license": "All Rights Reserved",
-  "icon": "cookingforblockheads-icon.png",
+  "license": "${license}",
+  "icon": "${mod_id}.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.blay09.mods.cookingforblockheads.FabricCookingForBlockheads"
+      "net.blay09.mods.${mod_id}.fabric.Fabric${mod_main}"
     ],
     "client": [
-      "net.blay09.mods.cookingforblockheads.client.FabricCookingForBlockheadsClient"
+      "net.blay09.mods.${mod_id}.fabric.client.Fabric${mod_main}Client"
     ],
     "modmenu": [
-      "net.blay09.mods.cookingforblockheads.compat.ModMenuIntegration"
+      "net.blay09.mods.${mod_id}.fabric.compat.ModMenuIntegration"
     ],
     "jade": [
       "net.blay09.mods.cookingforblockheads.compat.FabricJadeCookingForBlockheadsPlugin"
     ]
   },
   "mixins": [
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
   ],
+
   "depends": {
-    "balm-fabric": ">=8.0.0",
-    "fabricloader": ">=0.14.22",
+    "fabricloader": ">=0.14",
     "fabric-api": "*",
+    "balm-fabric": "*",
     "minecraft": ">=1.20.2",
     "java": ">=17"
   },
   "suggests": {
-    "modmenu": "*"
   },
   "custom": {
     "modmenu": {

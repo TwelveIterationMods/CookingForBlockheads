@@ -1,4 +1,8 @@
 dependencies {
+    compileOnly fg.deobf("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
+    compileOnly fg.deobf("curse.maven:jade-324717:$jade_forge_version")
+    compileOnly fg.deobf("mcp.mobius.waila:wthit-api:forge-$wthit_version")
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:$theoneprobe_version")
     // runtimeOnly fg.deobf("curse.maven:croptopia-415438:4344754")
     // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
 }
