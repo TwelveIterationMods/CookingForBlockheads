@@ -6,7 +6,7 @@
     "item.cookingforblockheads.ice_unit": "Охлаждающий модуль",
     "item.cookingforblockheads.preservation_chamber": "Камера для сохранения",
 
-    "tooltip.cookingforblockheads:no_filter_edition": "Издание #Безфильтра",
+    "tooltip.cookingforblockheads:no_filter_edition": "Издание #БезФильтра",
     "tooltip.cookingforblockheads:no_filter_edition.description": "Показывает все кулинарные рецепты.",
     "tooltip.cookingforblockheads:recipe_book": "Книга рецептов",
     "tooltip.cookingforblockheads:recipe_book.description": "Показывает еду, которую можно приготовить с теми\\nвещами, что у Вас есть в Вашем инвентаре.",
@@ -127,4 +127,28 @@
     "config.jade.plugin_cookingforblockheads.toaster": "Тостер",
     "config.jade.plugin_cookingforblockheads.fridge": "Холодильник",
     "config.jade.plugin_cookingforblockheads.sink": "Кухонная раковина"
+
+    "config.cookingforblockheads": "Готовка для болванов",
+    "config.cookingforblockheads.cowJarEnabled": "Включить корову в банке",
+    "config.cookingforblockheads.cowJarEnabled.tooltip": "Если true, корову можно втиснуть в молочную банку, бросив сверху наковальню.",
+    "config.cookingforblockheads.cowJarMilkPerTick": "Производство молока за тик в банке",
+    "config.cookingforblockheads.cowJarMilkPerTick.tooltip": "Количество молока, которое производит корова в банке за тик.",
+    "config.cookingforblockheads.compressedCowJarMilkMultiplier": "Множитель спрессованного коровьего молока в банке",
+    "config.cookingforblockheads.compressedCowJarMilkMultiplier.tooltip": "Совместимость с Ex Compressum. Множитель применяется к количеству молока на тик для «Сжатой коровы в банке».",
+    "config.cookingforblockheads.sinkRequiresWater": "Раковина требует воды",
+    "config.cookingforblockheads.sinkRequiresWater.tooltip": "Установите для этого параметра значение true, если вы хотите, чтобы в раковину требовалась подача воды, а не подача в неё бесконечной.",
+    "config.cookingforblockheads.largeCounters": "Большие кухонные столы",
+    "config.cookingforblockheads.largeCounters.tooltip": "Включение этого параметра увеличит место для инвентаря на кухонных стойках в два раза.",
+    "config.cookingforblockheads.disallowOvenAutomation": "Запретить автоматизацию духовки",
+    "config.cookingforblockheads.disallowOvenAutomation.tooltip": "Установите значение true, если вы хотите запретить автоматизацию духовки (трубы и тому подобное нельзя будет вставлять/извлекать).",
+    "config.cookingforblockheads.ovenFuelTimeMultiplier": "Множитель времени подачи топлива в духовку",
+    "config.cookingforblockheads.ovenFuelTimeMultiplier.tooltip": "Множитель топлива для духовки. Более высокие значения означают, что топлива хватит дольше, 1,0 — значение печи по умолчанию.",
+    "config.cookingforblockheads.ovenCookTimeMultiplier": "Множитель времени приготовления в духовке",
+    "config.cookingforblockheads.ovenCookTimeMultiplier.tooltip": "Множитель времени приготовления для духовки. Более высокие значения означают, что это займет больше времени.",
+    "config.cookingforblockheads.ovenRequiresCookingOil": "Для духовки требуется растительное масло",
+    "config.cookingforblockheads.ovenRequiresCookingOil.tooltip": "Установите значение true, если вы хотите, чтобы духовка принимала в качестве топлива только растительное масло (требуется Pam's Harvestcraft).",
+    "config.cookingforblockheads.showIngredientIcon": "Показать значок ингредиента",
+    "config.cookingforblockheads.showIngredientIcon.tooltip": "Установите значение false, если вы не хотите, чтобы ингредиенты помечались специальным значком в книге рецептов.",
+    "config.cookingforblockheads.allowVeryToastedBread": "Разрешить очень поджаренный хлеб",
+    "config.cookingforblockheads.allowVeryToastedBread.tooltip": "Повторное поджаривание поджаренного хлеба превратится в уголь (только если нет другого мода, добавляющего тост). Установите значение false, чтобы отключить."
 }
