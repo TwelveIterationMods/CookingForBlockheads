@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:wooden_chests"
+    },
+    "C": {
+      "item": "minecraft:terracotta"
+    },
+    "S": {
+      "tag": "c:stones"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "item": "cookingforblockheads:counter"
+  }
+}

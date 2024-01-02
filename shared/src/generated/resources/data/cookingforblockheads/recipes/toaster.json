@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:stone_button"
+    },
+    "D": {
+      "item": "minecraft:iron_trapdoor"
+    },
+    "I": {
+      "tag": "c:iron_ingots"
+    },
+    "L": {
+      "item": "minecraft:lava_bucket"
+    }
+  },
+  "pattern": [
+    "  B",
+    "IDI",
+    "ILI"
+  ],
+  "result": {
+    "item": "cookingforblockheads:toaster"
+  }
+}

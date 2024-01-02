@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "c:gray_dyes"
+    },
+    "F": {
+      "item": "cookingforblockheads:white_kitchen_floor"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FDF",
+    "FFF"
+  ],
+  "result": {
+    "count": 8,
+    "item": "cookingforblockheads:gray_kitchen_floor"
+  }
+}

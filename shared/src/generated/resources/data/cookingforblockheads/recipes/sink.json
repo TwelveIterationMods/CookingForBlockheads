@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:water_bucket"
+    },
+    "C": {
+      "item": "minecraft:terracotta"
+    },
+    "I": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "pattern": [
+    "III",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "item": "cookingforblockheads:sink"
+  }
+}

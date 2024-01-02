@@ -26,6 +26,9 @@
     "client": [
       "net.blay09.mods.cookingforblockheads.fabric.client.FabricCookingForBlockheadsClient"
     ],
+    "fabric-datagen": [
+      "net.blay09.mods.cookingforblockheads.fabric.datagen.ModDataGenerator"
+    ],
     "modmenu": [
       "net.blay09.mods.cookingforblockheads.fabric.compat.ModMenuIntegration"
     ],

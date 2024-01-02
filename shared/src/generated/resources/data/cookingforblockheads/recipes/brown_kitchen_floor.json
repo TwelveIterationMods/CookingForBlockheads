@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "c:brown_dyes"
+    },
+    "F": {
+      "item": "cookingforblockheads:white_kitchen_floor"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FDF",
+    "FFF"
+  ],
+  "result": {
+    "count": 8,
+    "item": "cookingforblockheads:brown_kitchen_floor"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "cookingforblockheads:block/spice_rack" },
-    "facing=east":  { "model": "cookingforblockheads:block/spice_rack", "y": 90 },
-    "facing=south": { "model": "cookingforblockheads:block/spice_rack", "y": 180 },
-    "facing=west":  { "model": "cookingforblockheads:block/spice_rack", "y": 270 }
-  }
-}

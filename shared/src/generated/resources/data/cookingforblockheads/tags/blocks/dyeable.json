@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "cookingforblockheads:cooking_table",
+    "cookingforblockheads:fridge",
+    "cookingforblockheads:sink",
+    "cookingforblockheads:counter",
+    "cookingforblockheads:cabinet",
+    "cookingforblockheads:corner",
+    "cookingforblockheads:hanging_corner"
+  ]
+}

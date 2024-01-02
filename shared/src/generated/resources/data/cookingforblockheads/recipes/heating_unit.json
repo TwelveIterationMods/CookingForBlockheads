@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "I": {
+      "tag": "c:iron_ingots"
+    },
+    "N": {
+      "tag": "c:iron_nuggets"
+    }
+  },
+  "pattern": [
+    "NNN",
+    "ICI"
+  ],
+  "result": {
+    "item": "cookingforblockheads:heating_unit"
+  }
+}

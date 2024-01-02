@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:kitchen_floor_from_concrete"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_concrete": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:white_concrete"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_white_concrete"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:kitchen_floor_from_concrete"
+    ]
+  }
+}

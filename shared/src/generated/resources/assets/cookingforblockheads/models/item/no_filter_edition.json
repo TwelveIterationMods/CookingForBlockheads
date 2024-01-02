@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "cookingforblockheads:item/no_filter_edition"
+  }
+}

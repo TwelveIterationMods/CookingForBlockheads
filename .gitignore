@@ -22,3 +22,5 @@ eclipse
 run
 runs
 logs
+
+shared/src/generated/resources/.cache

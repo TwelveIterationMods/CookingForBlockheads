@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "I": {
+      "tag": "c:iron_ingots"
+    },
+    "S": {
+      "item": "minecraft:snowball"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "ICI"
+  ],
+  "result": {
+    "item": "cookingforblockheads:ice_unit"
+  }
+}
