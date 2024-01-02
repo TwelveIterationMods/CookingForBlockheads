@@ -1,15 +1,11 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
-import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
-import net.blay09.mods.cookingforblockheads.util.TextUtils;
+import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,9 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ItemHeatingUnit extends Item {
-
-    public static final String name = "heating_unit";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public ItemHeatingUnit() {
         super(new Item.Properties());
@@ -62,10 +55,8 @@ public class ItemHeatingUnit extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
 
-        tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:oven_upgrade", ChatFormatting.YELLOW));
-        for (String s : I18n.get("tooltip.cookingforblockheads:heating_unit.description").split("\\\\n")) {
-            tooltip.add(TextUtils.coloredTextComponent(s, ChatFormatting.GRAY));
-        }
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.oven_upgrade").withStyle(ChatFormatting.YELLOW));
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.heating_unit.description").withStyle(ChatFormatting.GRAY));
     }
 
 }

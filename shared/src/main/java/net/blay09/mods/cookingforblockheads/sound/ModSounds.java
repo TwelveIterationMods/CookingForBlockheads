@@ -1,7 +1,8 @@
-package net.blay09.mods.cookingforblockheads;
+package net.blay09.mods.cookingforblockheads.sound;
 
 import net.blay09.mods.balm.api.DeferredObject;
 import net.blay09.mods.balm.api.sound.BalmSounds;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 

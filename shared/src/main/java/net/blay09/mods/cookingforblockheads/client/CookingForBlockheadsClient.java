@@ -13,10 +13,10 @@ import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
-import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
 
 public class CookingForBlockheadsClient {
@@ -46,38 +46,42 @@ public class CookingForBlockheadsClient {
 
                     if (subRecipe.getRecipeType() == FoodRecipeType.SMELTING) {
                         if (!menu.hasOven()) {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_oven", ChatFormatting.RED));
+                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
                         } else {
                             if (Screen.hasShiftDown()) {
-                                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_stack", ChatFormatting.GREEN));
+                                event.getToolTip()
+                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
                             } else {
-                                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_one", ChatFormatting.GREEN));
+                                event.getToolTip()
+                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_one").withStyle(ChatFormatting.GREEN));
                             }
                         }
                     } else {
                         if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_TOOLS) {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_tools", ChatFormatting.RED));
+                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
                         } else if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_INGREDIENTS) {
-                            event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_ingredients", ChatFormatting.RED));
+                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
                         } else {
                             if (Screen.hasShiftDown()) {
-                                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_stack", ChatFormatting.GREEN));
+                                event.getToolTip()
+                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_stack").withStyle(ChatFormatting.GREEN));
                             } else {
-                                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_one", ChatFormatting.GREEN));
+                                event.getToolTip()
+                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_one").withStyle(ChatFormatting.GREEN));
                             }
                         }
                     }
                 } else {
-                    event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_see_recipe", ChatFormatting.YELLOW));
+                    event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
             } else if (hoverSlot instanceof CraftMatrixFakeSlot && event.getItemStack() == hoverSlot.getItem()) {
                 if (((CraftMatrixFakeSlot) hoverSlot).getVisibleStacks().size() > 1) {
                     if (((CraftMatrixFakeSlot) hoverSlot).isLocked()) {
-                        event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_unlock", ChatFormatting.GREEN));
+                        event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_unlock").withStyle(ChatFormatting.GREEN));
                     } else {
-                        event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_lock", ChatFormatting.GREEN));
+                        event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_lock").withStyle(ChatFormatting.GREEN));
                     }
-                    event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:scroll_to_switch", ChatFormatting.YELLOW));
+                    event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.scroll_to_switch").withStyle(ChatFormatting.YELLOW));
                 }
             }
         });

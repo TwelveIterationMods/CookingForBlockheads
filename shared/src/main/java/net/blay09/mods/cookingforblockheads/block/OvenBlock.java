@@ -1,52 +1,53 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
-import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
-import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
-import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
 
-public class OvenBlock extends BlockKitchen {
+public class OvenBlock extends BaseKitchenBlock {
+
+    public static final MapCodec<OvenBlock> CODEC = simpleCodec(OvenBlock::new);
 
     public static BooleanProperty POWERED = BooleanProperty.create("powered");
     public static BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public static final String name = "oven";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
     private static final Random random = new Random();
 
-    public OvenBlock() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(5f, 10f), registryName);
+    public OvenBlock(Properties properties) {
+        super(properties.sound(SoundType.METAL).strength(5f, 10f));
         registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(ACTIVE, false));
     }
 
@@ -178,4 +179,13 @@ public class OvenBlock extends BlockKitchen {
                 : createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::serverTick);
     }
 
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.oven.description").withStyle(ChatFormatting.GRAY));
+    }
 }

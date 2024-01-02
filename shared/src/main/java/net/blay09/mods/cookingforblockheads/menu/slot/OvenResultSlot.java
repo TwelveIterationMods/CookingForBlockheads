@@ -2,7 +2,7 @@ package net.blay09.mods.cookingforblockheads.menu.slot;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
-import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

@@ -2,9 +2,9 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
+import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
-import net.blay09.mods.cookingforblockheads.tile.MilkJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,8 +13,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-
-import java.util.Random;
 
 public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntityRenderer<T> {
 
@@ -35,7 +33,7 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
         float milkAmount = fluidTank.getAmount();
         if (milkAmount > 0) {
             poseStack.pushPose();
-            poseStack.translate(0, (BlockKitchen.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), 0);
+            poseStack.translate(0, (BaseKitchenBlock.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), 0);
             poseStack.scale(1f, milkAmount / fluidTank.getCapacity(), 1f);
             dispatcher.getModelRenderer().tesselateBlock(level, ModModels.milkJarLiquid.get(), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
             poseStack.popPose();

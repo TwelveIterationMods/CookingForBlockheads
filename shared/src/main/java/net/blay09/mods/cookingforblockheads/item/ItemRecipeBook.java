@@ -4,9 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
-import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -60,7 +58,7 @@ public class ItemRecipeBook extends Item {
             Balm.getNetworking().openGui(player, new BalmMenuProvider() {
                 @Override
                 public Component getDisplayName() {
-                    return Component.translatable("cookingforblockheads:" + edition.getName());
+                    return Component.translatable("container.cookingforblockheads." + edition.getName());
                 }
 
                 @Override
@@ -83,11 +81,9 @@ public class ItemRecipeBook extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
 
-        String editionName = edition.getName();
-        tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:" + editionName, ChatFormatting.YELLOW));
-        for (String s : I18n.get("tooltip.cookingforblockheads:" + editionName + ".description").split("\\\\n")) {
-            tooltip.add(TextUtils.coloredTextComponent(s, ChatFormatting.GRAY));
-        }
+        final var editionName = edition.getName();
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads." + editionName).withStyle(ChatFormatting.YELLOW));
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads." + editionName + ".description").withStyle(ChatFormatting.GRAY));
     }
 
 }

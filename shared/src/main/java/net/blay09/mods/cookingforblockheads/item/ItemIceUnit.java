@@ -1,15 +1,11 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
-import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
-import net.blay09.mods.cookingforblockheads.util.TextUtils;
+import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,9 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ItemIceUnit extends Item {
-
-    public static final String name = "ice_unit";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
 
     public ItemIceUnit() {
         super(new Item.Properties());
@@ -62,10 +55,8 @@ public class ItemIceUnit extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
 
-        tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:fridge_upgrade", ChatFormatting.YELLOW));
-        for (String s : I18n.get("tooltip.cookingforblockheads:ice_unit.description").split("\\\\n")) {
-            tooltip.add(TextUtils.coloredTextComponent(s, ChatFormatting.GRAY));
-        }
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.fridge_upgrade").withStyle(ChatFormatting.YELLOW));
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.ice_unit.description").withStyle(ChatFormatting.GRAY));
     }
 
 }

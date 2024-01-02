@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
@@ -12,7 +12,7 @@ import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemPro
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
-import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -159,7 +159,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     @Override
     public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(2, 1, 2));
+        return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 1, 2).getCenter());
     }
 
     @Override

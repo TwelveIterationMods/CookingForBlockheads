@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
-import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;

@@ -1,25 +1,27 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.tile.MilkJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
@@ -27,16 +29,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
-public class MilkJarBlock extends BlockKitchen implements BucketPickup {
+public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
 
-    public static final String name = "milk_jar";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+    public static final MapCodec<MilkJarBlock> CODEC = simpleCodec(MilkJarBlock::new);
+
     private static final VoxelShape SHAPE = Block.box(4.8, 0, 4.8, 11.2, 8.0, 11.2);
 
-    public MilkJarBlock() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.GLASS).strength(0.6f), registryName);
+    public MilkJarBlock(Properties properties) {
+        super(properties.sound(SoundType.GLASS).strength(0.6f));
     }
 
     @Override
@@ -109,5 +112,17 @@ public class MilkJarBlock extends BlockKitchen implements BucketPickup {
     @Override
     public Optional<SoundEvent> getPickupSound() {
         return Optional.empty();
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.milk_jar.description").withStyle(ChatFormatting.GRAY));
     }
 }

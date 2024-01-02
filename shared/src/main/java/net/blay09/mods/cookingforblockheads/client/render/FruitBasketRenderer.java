@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
-import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
+import net.blay09.mods.cookingforblockheads.block.entity.FruitBasketBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -37,7 +37,7 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
                 float antiZFight = ((rowIndex % 2 != 0) ? 0.1f : 0f) + i * 0.01f;
                 float curX = -0.75f + rowIndex * 0.25f + ((colIndex == 3) ? 0.15f : 0f);
                 float curY = -1.35f;
-                if (BlockKitchen.shouldBlockRenderLowered(world, blockEntity.getBlockPos())) {
+                if (BaseKitchenBlock.shouldBlockRenderLowered(world, blockEntity.getBlockPos())) {
                     curY -= 0.2f;
                 }
 

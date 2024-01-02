@@ -4,7 +4,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.UseBlockEvent;
 import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,8 +28,8 @@ public class HarvestCraftAddon {
     private boolean cuttingBoardFound;
 
     public HarvestCraftAddon() {
-        Compat.cuttingBoardItem = Balm.getRegistries().getItem(new ResourceLocation(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
-        if (Compat.cuttingBoardItem != null && Compat.cuttingBoardItem != Items.AIR) {
+        final var cuttingBoardItem = Balm.getRegistries().getItem(new ResourceLocation(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
+        if (cuttingBoardItem != null && cuttingBoardItem != Items.AIR) {
             cuttingBoardFound = true;
         }
 
@@ -39,9 +38,9 @@ public class HarvestCraftAddon {
                 return;
             }
 
-            if (event.getItemStack().getItem() == Compat.cuttingBoardItem) {
-                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:multiblock_kitchen", ChatFormatting.YELLOW));
-                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads:can_be_placed_in_world"));
+            if (event.getItemStack().getItem() == cuttingBoardItem) {
+                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.multiblock_kitchen").withStyle(ChatFormatting.YELLOW));
+                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.can_be_placed_in_world"));
             }
         });
 
@@ -51,7 +50,7 @@ public class HarvestCraftAddon {
             }
 
             ItemStack heldItem = event.getPlayer().getItemInHand(event.getHand());
-            if (heldItem.getItem() != Compat.cuttingBoardItem) {
+            if (heldItem.getItem() != cuttingBoardItem) {
                 return;
             }
 

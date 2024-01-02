@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
-import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

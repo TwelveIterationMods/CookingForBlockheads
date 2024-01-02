@@ -4,7 +4,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
-import net.blay09.mods.cookingforblockheads.tile.SinkBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.SinkBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,8 +13,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-
-import java.util.Random;
 
 public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity> {
 

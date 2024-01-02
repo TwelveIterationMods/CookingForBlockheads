@@ -4,7 +4,7 @@ import mcjty.theoneprobe.api.*;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.*;
-import net.blay09.mods.cookingforblockheads.tile.*;
+import net.blay09.mods.cookingforblockheads.block.entity.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -56,32 +56,32 @@ public class TheOneProbeAddon {
             } else if (state.getBlock() instanceof OvenBlock) {
                 OvenBlockEntity tileEntity = tryGetTileEntity(level, data.getPos(), OvenBlockEntity.class);
                 if (tileEntity != null && tileEntity.hasPowerUpgrade()) {
-                    info.text(Component.translatable("waila.cookingforblockheads:heating_unit"));
+                    info.text(Component.translatable("waila.cookingforblockheads.heating_unit"));
                 }
             } else if (state.getBlock() instanceof FridgeBlock) {
                 FridgeBlockEntity tileEntity = tryGetTileEntity(level, data.getPos(), FridgeBlockEntity.class);
                 if (tileEntity != null && tileEntity.getBaseFridge().hasIceUpgrade()) {
-                    info.text(Component.translatable("waila.cookingforblockheads:ice_unit"));
+                    info.text(Component.translatable("waila.cookingforblockheads.ice_unit"));
                 }
 
                 if (tileEntity != null && tileEntity.getBaseFridge().hasPreservationUpgrade()) {
-                    info.text(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
+                    info.text(Component.translatable("waila.cookingforblockheads.preservation_chamber"));
                 }
             } else if (state.getBlock() instanceof SinkBlock) {
                 SinkBlockEntity sink = tryGetTileEntity(level, data.getPos(), SinkBlockEntity.class);
                 if (sink != null && CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                    info.text(Component.translatable("waila.cookingforblockheads:water_stored", sink.getFluidTank().getAmount(), sink.getFluidTank().getCapacity()));
+                    info.text(Component.translatable("waila.cookingforblockheads.water_stored", sink.getFluidTank().getAmount(), sink.getFluidTank().getCapacity()));
                 }
             }
         }
 
         private void addMilkJarInfo(MilkJarBlockEntity milkJar, IProbeInfo info) {
-            info.text(Component.translatable("waila.cookingforblockheads:milk_stored", milkJar.getFluidTank().getAmount(), milkJar.getFluidTank().getCapacity()));
+            info.text(Component.translatable("waila.cookingforblockheads.milk_stored", milkJar.getFluidTank().getAmount(), milkJar.getFluidTank().getCapacity()));
         }
 
         private void addToasterInfo(ToasterBlockEntity tileEntity, IProbeInfo info) {
             if (tileEntity.isActive()) {
-                info.text(Component.translatable("waila.cookingforblockheads:toast_progress", (int) (tileEntity.getToastProgress() * 100)));
+                info.text(Component.translatable("waila.cookingforblockheads.toast_progress", (int) (tileEntity.getToastProgress() * 100)));
                 info.progress((int) (tileEntity.getToastProgress() * 100), 100);
             }
         }

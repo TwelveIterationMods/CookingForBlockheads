@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile.util;
+package net.blay09.mods.cookingforblockheads.block.entity.util;
 
 import net.blay09.mods.cookingforblockheads.menu.IContainerWithDoor;
 import net.minecraft.sounds.SoundEvent;

@@ -23,9 +23,9 @@ public class ModItems {
         items.registerItem(() -> recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE), id("recipe_book"));
         items.registerItem(() -> noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NO_FILTER), id("no_filter_edition"));
         items.registerItem(() -> craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING), id("crafting_book"));
-        items.registerItem(() -> heatingUnit = new ItemHeatingUnit(), id(ItemHeatingUnit.name));
-        items.registerItem(() -> iceUnit = new ItemIceUnit(), id(ItemIceUnit.name));
-        items.registerItem(() -> preservationChamber = new ItemPreservationChamber(), id(ItemPreservationChamber.name));
+        items.registerItem(() -> heatingUnit = new ItemHeatingUnit(), id("heating_unit"));
+        items.registerItem(() -> iceUnit = new ItemIceUnit(), id("ice_unit"));
+        items.registerItem(() -> preservationChamber = new ItemPreservationChamber(), id("preservation_chamber"));
 
         creativeModeTab = items.registerCreativeModeTab(id("cookingforblockheads"), () -> new ItemStack(ModItems.recipeBook));
     }

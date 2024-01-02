@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
-import net.blay09.mods.cookingforblockheads.tile.CowJarBlockEntity;
-import net.blay09.mods.cookingforblockheads.tile.MilkJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

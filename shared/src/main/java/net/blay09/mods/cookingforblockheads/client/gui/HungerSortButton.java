@@ -20,7 +20,7 @@ public class HungerSortButton implements ISortButton {
 
     @Override
     public String getTooltip() {
-        return "tooltip.cookingforblockheads:sort_by_hunger";
+        return "tooltip.cookingforblockheads.sort_by_hunger";
     }
 
     @Override

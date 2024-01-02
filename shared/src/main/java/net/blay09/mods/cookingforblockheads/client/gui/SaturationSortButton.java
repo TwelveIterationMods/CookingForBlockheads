@@ -20,7 +20,7 @@ public class SaturationSortButton implements ISortButton {
 
     @Override
     public String getTooltip() {
-        return "tooltip.cookingforblockheads:sort_by_saturation";
+        return "tooltip.cookingforblockheads.sort_by_saturation";
     }
 
     @Override

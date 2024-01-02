@@ -1,12 +1,11 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
 import net.blay09.mods.cookingforblockheads.menu.slot.*;
-import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;

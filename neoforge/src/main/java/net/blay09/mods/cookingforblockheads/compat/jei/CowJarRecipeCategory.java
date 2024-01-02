@@ -43,7 +43,7 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("jei.cookingforblockheads:cow_jar");
+        return Component.translatable("jei.cookingforblockheads.cow_jar");
     }
 
     @Override

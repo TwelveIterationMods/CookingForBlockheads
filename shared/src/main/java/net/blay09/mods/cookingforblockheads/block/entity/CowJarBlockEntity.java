@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfigData;

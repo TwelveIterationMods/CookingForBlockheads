@@ -1,31 +1,34 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.Balm;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
-import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -34,10 +37,11 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class FridgeBlock extends BlockDyeableKitchen {
+import java.util.List;
 
-    public static final String name = "fridge";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class FridgeBlock extends BaseKitchenBlock {
+
+    public static final MapCodec<FridgeBlock> CODEC = simpleCodec(FridgeBlock::new);
 
     public enum FridgeModelType implements StringRepresentable {
         SMALL,
@@ -54,8 +58,8 @@ public class FridgeBlock extends BlockDyeableKitchen {
     public static final BooleanProperty PRESERVATION_CHAMBER = BooleanProperty.create("preservation_chamber");
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
-    public FridgeBlock() {
-        super(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).strength(5f, 10f), registryName);
+    public FridgeBlock(Properties properties) {
+        super(properties.pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).strength(5f, 10f));
         registerDefaultState(getStateDefinition().any().setValue(PRESERVATION_CHAMBER, false).setValue(ICE_UNIT, false));
     }
 
@@ -141,11 +145,6 @@ public class FridgeBlock extends BlockDyeableKitchen {
     }
 
     @Override
-    protected boolean isDyeable() {
-        return true;
-    }
-
-    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
@@ -191,5 +190,15 @@ public class FridgeBlock extends BlockDyeableKitchen {
         }
 
         return false;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.fridge.description").withStyle(ChatFormatting.GRAY));
     }
 }

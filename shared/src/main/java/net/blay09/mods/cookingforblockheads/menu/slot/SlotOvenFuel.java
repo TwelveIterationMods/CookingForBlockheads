@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
-import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;

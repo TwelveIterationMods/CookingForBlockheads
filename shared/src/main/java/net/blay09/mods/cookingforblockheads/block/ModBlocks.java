@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
@@ -30,26 +29,26 @@ public class ModBlocks {
     public static Block[] kitchenFloors = new Block[DyeColor.values().length];
 
     public static void initialize(BalmBlocks blocks) {
-        blocks.register(() -> oven = new OvenBlock(), () -> itemBlock(oven), id("oven"));
-        blocks.register(() -> toolRack = new ToolRackBlock(), () -> itemBlock(toolRack), id("tool_rack"));
-        blocks.register(() -> toaster = new ToasterBlock(), () -> itemBlock(toaster), id("toaster"));
-        blocks.register(() -> milkJar = new MilkJarBlock(), () -> itemBlock(milkJar), id("milk_jar"));
-        blocks.register(() -> cowJar = new CowJarBlock(), () -> itemBlock(cowJar), id("cow_jar"));
-        blocks.register(() -> spiceRack = new SpiceRackBlock(), () -> itemBlock(spiceRack), id("spice_rack"));
-        blocks.register(() -> fruitBasket = new FruitBasketBlock(), () -> itemBlock(fruitBasket), id("fruit_basket"));
-        blocks.registerBlock(() -> cuttingBoard = new CuttingBoardBlock(), id("cutting_board"));
-        blocks.register(() -> cookingTable = new CookingTableBlock(), () -> itemBlock(cookingTable), id("cooking_table"));
-        blocks.register(() -> fridge = new FridgeBlock(), () -> itemBlock(fridge), id("fridge"));
-        blocks.register(() -> sink = new SinkBlock(), () -> itemBlock(sink), id("sink"));
-        blocks.register(() -> counter = new CounterBlock(), () -> itemBlock(counter), id("counter"));
-        blocks.register(() -> cabinet = new CabinetBlock(), () -> itemBlock(cabinet), id("cabinet"));
-        blocks.register(() -> corner = new CornerBlock(), () -> itemBlock(corner), id("corner"));
-        blocks.register(() -> hangingCorner = new HangingCornerBlock(), () -> itemBlock(hangingCorner), id("hanging_corner"));
+        blocks.register(() -> oven = new OvenBlock(defaultProperties()), () -> itemBlock(oven), id("oven"));
+        blocks.register(() -> toolRack = new ToolRackBlock(defaultProperties()), () -> itemBlock(toolRack), id("tool_rack"));
+        blocks.register(() -> toaster = new ToasterBlock(defaultProperties()), () -> itemBlock(toaster), id("toaster"));
+        blocks.register(() -> milkJar = new MilkJarBlock(defaultProperties()), () -> itemBlock(milkJar), id("milk_jar"));
+        blocks.register(() -> cowJar = new CowJarBlock(defaultProperties()), () -> itemBlock(cowJar), id("cow_jar"));
+        blocks.register(() -> spiceRack = new SpiceRackBlock(defaultProperties()), () -> itemBlock(spiceRack), id("spice_rack"));
+        blocks.register(() -> fruitBasket = new FruitBasketBlock(defaultProperties()), () -> itemBlock(fruitBasket), id("fruit_basket"));
+        blocks.registerBlock(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), id("cutting_board"));
+        blocks.register(() -> cookingTable = new CookingTableBlock(defaultProperties()), () -> itemBlock(cookingTable), id("cooking_table"));
+        blocks.register(() -> fridge = new FridgeBlock(defaultProperties()), () -> itemBlock(fridge), id("fridge"));
+        blocks.register(() -> sink = new SinkBlock(defaultProperties()), () -> itemBlock(sink), id("sink"));
+        blocks.register(() -> counter = new CounterBlock(defaultProperties()), () -> itemBlock(counter), id("counter"));
+        blocks.register(() -> cabinet = new CabinetBlock(defaultProperties()), () -> itemBlock(cabinet), id("cabinet"));
+        blocks.register(() -> corner = new CornerBlock(defaultProperties()), () -> itemBlock(corner), id("corner"));
+        blocks.register(() -> hangingCorner = new HangingCornerBlock(defaultProperties()), () -> itemBlock(hangingCorner), id("hanging_corner"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
         for (DyeColor color : colors) {
-            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(), () -> itemBlock(kitchenFloors[color.ordinal()]), id(color.getSerializedName() + "_kitchen_floor"));
+            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(defaultProperties()), () -> itemBlock(kitchenFloors[color.ordinal()]), id(color.getSerializedName() + "_kitchen_floor"));
         }
     }
 
@@ -62,7 +61,7 @@ public class ModBlocks {
     }
 
     private static BlockBehaviour.Properties defaultProperties() {
-        return Balm.getBlocks().blockProperties().sound(SoundType.STONE).strength(5f, 2000f);
+        return Balm.getBlocks().blockProperties();
     }
 
 }

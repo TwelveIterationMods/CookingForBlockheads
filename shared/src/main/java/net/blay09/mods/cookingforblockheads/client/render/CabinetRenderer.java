@@ -1,8 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.client.ModModels;
-import net.blay09.mods.cookingforblockheads.tile.CabinetBlockEntity;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.blay09.mods.cookingforblockheads.block.entity.CabinetBlockEntity;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.DyeColor;

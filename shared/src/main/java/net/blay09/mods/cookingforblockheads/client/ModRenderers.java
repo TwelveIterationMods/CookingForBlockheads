@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.balm.api.client.rendering.BalmRenderers;
-import net.blay09.mods.cookingforblockheads.block.BlockKitchen;
+import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.render.*;
-import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 
@@ -24,7 +24,7 @@ public class ModRenderers {
         renderers.registerBlockEntityRenderer(ModBlockEntities.sink::get, SinkRenderer::new);
         renderers.registerBlockEntityRenderer(ModBlockEntities.fruitBasket::get, FruitBasketRenderer::new);
 
-        renderers.registerBlockColorHandler((state, world, pos, i) -> state.getValue(BlockKitchen.COLOR).getTextColor(), () -> new Block[] { ModBlocks.fridge });
+        renderers.registerBlockColorHandler((state, world, pos, i) -> state.getValue(BaseKitchenBlock.COLOR).getTextColor(), () -> new Block[] { ModBlocks.fridge });
         renderers.registerBlockColorHandler((state, world, pos, i) -> 4159204, () -> new Block[] { ModBlocks.sink });
 
         renderers.setBlockRenderType(() -> ModBlocks.oven, RenderType.cutout());

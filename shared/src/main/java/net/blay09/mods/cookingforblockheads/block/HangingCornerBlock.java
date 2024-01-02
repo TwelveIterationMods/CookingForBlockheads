@@ -1,14 +1,19 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import com.mojang.serialization.MapCodec;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,10 +24,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class HangingCornerBlock extends BlockDyeableKitchen {
+import java.util.List;
 
-    public static final String name = "hanging_corner";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class HangingCornerBlock extends BaseKitchenBlock {
+
+    public static final MapCodec<HangingCornerBlock> CODEC = simpleCodec(HangingCornerBlock::new);
 
     private static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
             Block.box(0, 0, 0, 15.5, 15, 15.5),
@@ -31,8 +37,8 @@ public class HangingCornerBlock extends BlockDyeableKitchen {
             Block.box(0.5, 0, 0, 16, 15, 15.5)
     };
 
-    public HangingCornerBlock() {
-        super(Properties.of().sound(SoundType.STONE).strength(5f, 10f), registryName);
+    public HangingCornerBlock(Properties properties) {
+        super(properties.sound(SoundType.STONE).strength(5f, 10f));
     }
 
     @Override
@@ -59,5 +65,17 @@ public class HangingCornerBlock extends BlockDyeableKitchen {
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return null;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.hanging_corner.description").withStyle(ChatFormatting.GRAY));
     }
 }

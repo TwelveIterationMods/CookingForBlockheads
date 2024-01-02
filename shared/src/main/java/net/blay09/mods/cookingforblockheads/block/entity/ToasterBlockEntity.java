@@ -1,8 +1,8 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.common.BalmBlockEntity;
-import net.blay09.mods.cookingforblockheads.ModSounds;
+import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;

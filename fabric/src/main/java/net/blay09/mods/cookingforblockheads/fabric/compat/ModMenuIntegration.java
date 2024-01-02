@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.compat;
+package net.blay09.mods.cookingforblockheads.fabric.compat;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

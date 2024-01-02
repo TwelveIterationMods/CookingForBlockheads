@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.compat;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.tile.*;
+import net.blay09.mods.cookingforblockheads.block.entity.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -31,30 +31,30 @@ public class CookingForBlockheadsWailaUtils {
         }
         if (blockEntity instanceof MilkJarBlockEntity milkJar) {
             FluidTank fluidTank = milkJar.getFluidTank();
-            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:milk_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
+            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads.milk_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
         }
     }
 
     public static void appendToasterTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
         if (blockEntity instanceof ToasterBlockEntity toaster && toaster.isActive()) {
-            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:toast_progress", (int) (toaster.getToastProgress() * 100)));
+            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads.toast_progress", (int) (toaster.getToastProgress() * 100)));
         }
     }
 
     public static void appendOvenTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
         if (blockEntity instanceof OvenBlockEntity oven && oven.hasPowerUpgrade()) {
-            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:heating_unit"));
+            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads.heating_unit"));
         }
     }
 
     public static void appendFridgeTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
         if (blockEntity instanceof FridgeBlockEntity fridge) {
             if (fridge.hasIceUpgrade()) {
-                tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:ice_unit"));
+                tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads.ice_unit"));
             }
 
             if (fridge.hasPreservationUpgrade()) {
-                tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
+                tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads.preservation_chamber"));
             }
         }
     }
@@ -62,7 +62,7 @@ public class CookingForBlockheadsWailaUtils {
     public static void appendSinkTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
         if (blockEntity instanceof SinkBlockEntity sink && CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
             FluidTank fluidTank = sink.getFluidTank();
-            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:water_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
+            tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads.water_stored", fluidTank.getAmount(), fluidTank.getCapacity()));
         }
     }
 

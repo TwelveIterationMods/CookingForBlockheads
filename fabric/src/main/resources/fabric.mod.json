@@ -21,21 +21,21 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.blay09.mods.${mod_id}.fabric.Fabric${mod_main}"
+      "net.blay09.mods.cookingforblockheads.fabric.FabricCookingForBlockheads"
     ],
     "client": [
-      "net.blay09.mods.${mod_id}.fabric.client.Fabric${mod_main}Client"
+      "net.blay09.mods.cookingforblockheads.fabric.client.FabricCookingForBlockheadsClient"
     ],
     "modmenu": [
-      "net.blay09.mods.${mod_id}.fabric.compat.ModMenuIntegration"
+      "net.blay09.mods.cookingforblockheads.fabric.compat.ModMenuIntegration"
     ],
     "jade": [
-      "net.blay09.mods.cookingforblockheads.compat.FabricJadeCookingForBlockheadsPlugin"
+      "net.blay09.mods.cookingforblockheads.fabric.compat.FabricJadeCookingForBlockheadsPlugin"
     ]
   },
   "mixins": [
-    "${mod_id}.mixins.json",
-    "${mod_id}.fabric.mixins.json"
+    "cookingforblockheads.mixins.json",
+    "cookingforblockheads.fabric.mixins.json"
   ],
 
   "depends": {

@@ -1,23 +1,25 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.ToolRackBlockEntity;
+import com.mojang.serialization.MapCodec;
+import net.blay09.mods.cookingforblockheads.block.entity.ToolRackBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -25,10 +27,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class ToolRackBlock extends BlockKitchen {
+import java.util.List;
 
-    public static final String name = "tool_rack";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class ToolRackBlock extends BaseKitchenBlock {
+
+    public static final MapCodec<ToolRackBlock> CODEC = simpleCodec(ToolRackBlock::new);
 
     private static final VoxelShape[] SHAPES = new VoxelShape[]{
             Block.box(0, 4, 14, 16, 16, 16),
@@ -44,8 +47,8 @@ public class ToolRackBlock extends BlockKitchen {
             Block.box(0, 11, 0, 2, 14, 16),
     };
 
-    public ToolRackBlock() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.WOOD).strength(2.5f), registryName);
+    public ToolRackBlock(Properties properties) {
+        super(properties.sound(SoundType.WOOD).strength(2.5f));
     }
 
     @Nullable
@@ -131,4 +134,15 @@ public class ToolRackBlock extends BlockKitchen {
         return InteractionResult.SUCCESS;
     }
 
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.tool_rack.description").withStyle(ChatFormatting.GRAY));
+    }
 }

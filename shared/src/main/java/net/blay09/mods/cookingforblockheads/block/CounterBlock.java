@@ -1,43 +1,43 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.Balm;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
-import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class CounterBlock extends BlockDyeableKitchen {
+import java.util.List;
 
-    public static final String name = "counter";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class CounterBlock extends BaseKitchenBlock {
 
-    public CounterBlock() {
-        this(registryName);
-    }
+    public static final MapCodec<CounterBlock> CODEC = simpleCodec(CounterBlock::new);
 
-    public CounterBlock(ResourceLocation registryName) {
-        super(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(5f, 10f), registryName);
+    public CounterBlock(Properties properties) {
+        super(properties.sound(SoundType.STONE).strength(5f, 10f));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CounterBlock extends BlockDyeableKitchen {
         }
 
         if (!level.isClientSide) {
-            if (rayTraceResult.getDirection() == Direction.UP && !heldItem.isEmpty() && (heldItem.getItem() instanceof BlockItem || heldItem.getItem() == Compat.cuttingBoardItem)) {
+            if (rayTraceResult.getDirection() == Direction.UP && !heldItem.isEmpty() && heldItem.getItem() instanceof BlockItem) {
                 return InteractionResult.FAIL;
             }
 
@@ -94,5 +94,17 @@ public class CounterBlock extends BlockDyeableKitchen {
         return level.isClientSide
                 ? createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::serverTick);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.counter.description").withStyle(ChatFormatting.GRAY));
     }
 }

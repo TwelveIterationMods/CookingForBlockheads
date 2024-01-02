@@ -1,7 +1,8 @@
-package net.blay09.mods.cookingforblockheads.compat;
+package net.blay09.mods.cookingforblockheads.fabric.compat;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.*;
+import net.blay09.mods.cookingforblockheads.compat.CookingForBlockheadsWailaUtils;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;

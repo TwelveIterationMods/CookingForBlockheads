@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;

@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.gui.screen;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
-import net.blay09.mods.cookingforblockheads.tile.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -34,7 +34,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         OvenBlockEntity tileEntity = menu.getTileEntity();
         if (tileEntity.hasPowerUpgrade() && mouseX >= leftPos + imageWidth - 25 && mouseY >= topPos + 22 && mouseX < leftPos + imageWidth - 25 + 35 + 18 && mouseY < topPos + 22 + 72) {
             EnergyStorage energyStorage = tileEntity.getEnergyStorage();
-            guiGraphics.renderTooltip(font, Component.translatable("tooltip.cookingforblockheads:energy_stored", energyStorage.getEnergy(), energyStorage.getCapacity()), mouseX, mouseY);
+            guiGraphics.renderTooltip(font, Component.translatable("tooltip.cookingforblockheads.energy_stored", energyStorage.getEnergy(), energyStorage.getCapacity()), mouseX, mouseY);
         }
     }
 

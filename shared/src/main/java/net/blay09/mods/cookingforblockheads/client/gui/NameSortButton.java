@@ -20,7 +20,7 @@ public class NameSortButton implements ISortButton {
 
     @Override
     public String getTooltip() {
-        return "tooltip.cookingforblockheads:sort_by_name";
+        return "tooltip.cookingforblockheads.sort_by_name";
     }
 
     @Override

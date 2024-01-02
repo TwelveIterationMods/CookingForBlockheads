@@ -2,14 +2,12 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.cookingforblockheads.tile.IMutableNameable;
-import net.blay09.mods.cookingforblockheads.util.TextUtils;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
+import net.blay09.mods.cookingforblockheads.block.entity.IMutableNameable;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -36,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class BlockKitchen extends BaseEntityBlock {
+public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LOWERED = BooleanProperty.create("lowered");
@@ -47,11 +45,8 @@ public abstract class BlockKitchen extends BaseEntityBlock {
     private static final VoxelShape BOUNDING_BOX_X = Block.box(0.5, 0, 0, 15.5, 15.0, 16);
     private static final VoxelShape BOUNDING_BOX_Z = Block.box(0, 0, 0.5, 16, 15.0, 15.5);
 
-    private final ResourceLocation registryName;
-
-    protected BlockKitchen(BlockBehaviour.Properties properties, ResourceLocation registryName) {
+    protected BaseKitchenBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registryName = registryName;
     }
 
     @Override
@@ -84,25 +79,16 @@ public abstract class BlockKitchen extends BaseEntityBlock {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:multiblock_kitchen", ChatFormatting.YELLOW));
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.multiblock_kitchen").withStyle(ChatFormatting.YELLOW));
 
-        if (hasTooltipDescription()) {
-            for (String s : I18n.get("tooltip." + registryName + ".description").split("\\\\n")) {
-                tooltip.add(TextUtils.coloredTextComponent(s, ChatFormatting.GRAY));
-            }
-        }
+        appendHoverDescriptionText(itemStack, world, tooltip, flag);
 
-        if (isDyeable()) {
-            tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:dyeable", ChatFormatting.AQUA));
+        if (itemStack.is(ModItemTags.DYEABLE)) {
+            tooltip.add(Component.translatable("tooltip.cookingforblockheads.dyeable").withStyle(ChatFormatting.AQUA));
         }
     }
 
-    protected boolean hasTooltipDescription() {
-        return true;
-    }
-
-    protected boolean isDyeable() {
-        return false;
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
     }
 
     public static boolean shouldBlockRenderLowered(BlockGetter world, BlockPos pos) {

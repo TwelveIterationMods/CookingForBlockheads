@@ -1,26 +1,28 @@
 package net.blay09.mods.cookingforblockheads.block;
 
+import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.Balm;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
-import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
-import net.blay09.mods.cookingforblockheads.tile.SpiceRackBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.block.entity.SpiceRackBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -28,11 +30,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 
-public class SpiceRackBlock extends BlockKitchen {
 
-    public static final String name = "spice_rack";
-    public static final ResourceLocation registryName = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+public class SpiceRackBlock extends BaseKitchenBlock {
+
+    public static final MapCodec<SpiceRackBlock> CODEC = simpleCodec(SpiceRackBlock::new);
 
     private static final VoxelShape[] SHAPES = new VoxelShape[]{
             Block.box(0, 4, 14, 16, 16, 16),
@@ -48,8 +51,8 @@ public class SpiceRackBlock extends BlockKitchen {
             Block.box(0, 8, 0, 2, 9, 16),
     };
 
-    public SpiceRackBlock() {
-        super(BlockBehaviour.Properties.of().sound(SoundType.WOOD).strength(2.5f), registryName);
+    public SpiceRackBlock(Properties properties) {
+        super(properties.sound(SoundType.WOOD).strength(2.5f));
     }
 
     @Nullable
@@ -103,4 +106,14 @@ public class SpiceRackBlock extends BlockKitchen {
         return !level.isClientSide ? createTickerHelper(type, ModBlockEntities.spiceRack.get(), SpiceRackBlockEntity::serverTick) : null;
     }
 
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+
+    @Override
+    protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.spice_rack.description").withStyle(ChatFormatting.GRAY));
+    }
 }

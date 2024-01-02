@@ -66,8 +66,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         super(container, playerInventory, displayName);
         this.container = container;
 
-        noIngredients = I18n.get("gui.cookingforblockheads:no_ingredients").split("\\\\n");
-        noSelection = I18n.get("gui.cookingforblockheads:no_selection").split("\\\\n");
+        noIngredients = I18n.get("gui.cookingforblockheads.no_ingredients").split("\\\\n");
+        noSelection = I18n.get("gui.cookingforblockheads.no_selection").split("\\\\n");
     }
 
     @Override

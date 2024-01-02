@@ -55,14 +55,14 @@ public class CookingRegistry {
         if (alreadyToasted) {
             if (CookingForBlockheadsConfig.getActive().allowVeryToastedBread) {
                 ItemStack veryToasted = new ItemStack(Items.CHARCOAL);
-                veryToasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:very_toasted"));
+                veryToasted.setHoverName(Component.translatable("tooltip.cookingforblockheads.very_toasted"));
                 return veryToasted;
             } else {
                 return itemStack;
             }
         } else {
             ItemStack toasted = itemStack.copy();
-            toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads:toasted", itemStack.getHoverName()));
+            toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads.toasted", itemStack.getHoverName()));
             toasted.getOrCreateTag().putBoolean("CookingForBlockheadsToasted", true);
             return toasted;
         }

@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.tile;
+package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.provider.BalmProvider;
@@ -7,10 +7,9 @@ import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,11 +18,11 @@ import java.util.List;
 public class CuttingBoardBlockEntity extends BalmBlockEntity {
 
     private final IKitchenItemProvider itemProvider = new AbstractKitchenItemProvider() {
-        private final ItemStack cuttingBoard = Compat.cuttingBoardItem != Items.AIR ? new ItemStack(Compat.cuttingBoardItem) : ItemStack.EMPTY;
+        private final ItemStack cuttingBoard = new ItemStack(ModBlocks.cuttingBoard);
 
         @Override
         public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
-            if (itemStack.getItem() == Compat.cuttingBoardItem) {
+            if (itemStack.getItem() == cuttingBoard.getItem()) {
                 return ItemStack.EMPTY;
             }
 

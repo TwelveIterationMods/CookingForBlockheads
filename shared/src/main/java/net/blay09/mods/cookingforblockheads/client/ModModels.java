@@ -140,8 +140,8 @@ public class ModModels {
 
     private static void registerColoredKitchenBlock(BalmModels models, Supplier<Block> blockSupplier, String modelPath) {
         models.overrideModel(blockSupplier, models.loadDynamicModel(id(modelPath), null, it -> {
-            if (it.getValue(BlockKitchen.HAS_COLOR)) {
-                return replaceTexture(getColoredTerracottaTexture(it.getValue(BlockKitchen.COLOR)));
+            if (it.getValue(BaseKitchenBlock.HAS_COLOR)) {
+                return replaceTexture(getColoredTerracottaTexture(it.getValue(BaseKitchenBlock.COLOR)));
             }
 
             return Collections.emptyMap();
@@ -161,12 +161,12 @@ public class ModModels {
     }
 
     private static void lowerableFacingTransforms(BlockState state, Matrix4f transform) {
-        if (state.hasProperty(BlockKitchen.LOWERED) && state.getValue(BlockKitchen.LOWERED)) {
+        if (state.hasProperty(BaseKitchenBlock.LOWERED) && state.getValue(BaseKitchenBlock.LOWERED)) {
             transform.translate(new Vector3f(0, -0.05f, 0f));
         }
 
-        if (state.hasProperty(BlockKitchen.FACING)) {
-            float angle = state.getValue(BlockKitchen.FACING).toYRot();
+        if (state.hasProperty(BaseKitchenBlock.FACING)) {
+            float angle = state.getValue(BaseKitchenBlock.FACING).toYRot();
             transform.rotate(Axis.YP.rotationDegrees(180 - angle));
         }
     }

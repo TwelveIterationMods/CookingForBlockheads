@@ -18,9 +18,8 @@ public class Compat {
         return Balm.getRegistries().getMilkFluid();
     }
 
-    public static Item cuttingBoardItem = Items.AIR;
-
     private static TagKey<Item> cookingOilTag;
+    @Deprecated(forRemoval = true)
     public static TagKey<Item> getCookingOilTag() {
         if(cookingOilTag == null) {
             cookingOilTag = Balm.getRegistries().getItemTag(new ResourceLocation("balm", "cooking_oil"));
