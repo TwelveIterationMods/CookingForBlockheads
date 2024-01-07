@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.compat;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.ForgeCookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
-import net.blay09.mods.cookingforblockheads.compat.json.JsonCompatLoader;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;

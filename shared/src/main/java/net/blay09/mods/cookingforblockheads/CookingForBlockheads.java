@@ -2,23 +2,18 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
-import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
-import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.compat.json.JsonCompatLoader;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,12 +23,11 @@ public class CookingForBlockheads {
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 
     public static void initialize() {
-        CookingForBlockheadsAPI.setupAPI(new InternalMethods());
         Balm.getRegistries().enableMilkFluid();
 
-        CookingRegistry.addSortButton(new NameSortButton());
-        CookingRegistry.addSortButton(new HungerSortButton());
-        CookingRegistry.addSortButton(new SaturationSortButton());
+        CookingForBlockheadsAPI.addSortButton(new NameSortButton());
+        CookingForBlockheadsAPI.addSortButton(new HungerSortButton());
+        CookingForBlockheadsAPI.addSortButton(new SaturationSortButton());
 
         CookingForBlockheadsConfig.initialize();
         ModNetworking.initialize(Balm.getNetworking());
@@ -43,18 +37,10 @@ public class CookingForBlockheads {
         ModMenus.initialize(Balm.getMenus());
         ModSounds.initialize(Balm.getSounds());
 
-        Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json"), new JsonCompatLoader());
-
-        Balm.getEvents().onEvent(ServerReloadFinishedEvent.class, (ServerReloadFinishedEvent event) -> CookingRegistry.initFoodRegistry(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
-
         Balm.initializeIfLoaded("minecraft", "net.blay09.mods.cookingforblockheads.compat.VanillaAddon");
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
-        Balm.initializeIfLoaded(Compat.APPLECORE, "net.blay09.mods.cookingforblockheads.compat.AppleCoreAddon");
 
-        Balm.getEvents().onEvent(ServerStartedEvent.class, event -> {
-                RecipeManager recipeManager = event.getServer().getRecipeManager();
-                CookingRegistry.initFoodRegistry(recipeManager, event.getServer().registryAccess());
-        });
+        CookingForBlockheadsRegistry.initialize(Balm.getEvents());
 
         Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
     }

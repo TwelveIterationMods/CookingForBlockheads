@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.registry;
 
+@Deprecated(forRemoval = true)
 public enum FoodRecipeType {
     CRAFTING,
     SMELTING;

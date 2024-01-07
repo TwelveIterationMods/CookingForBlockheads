@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:water_bucket",
+    "croptopia:water_bottle",
+    "pamhc2foodcore:freshwateritem",
+    "vanillafoodpantry:water_portion"
+  ]
+}

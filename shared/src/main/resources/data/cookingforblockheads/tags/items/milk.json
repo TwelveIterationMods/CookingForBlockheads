@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:milk_bucket",
+    "croptopia:milk_bottle",
+    "pamhc2foodcore:freshmilkitem",
+    "vanillafoodpantry:milk_portion"
+  ]
+}

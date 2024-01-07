@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
-import net.blay09.mods.cookingforblockheads.api.SinkHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.DyeableLeatherItem;

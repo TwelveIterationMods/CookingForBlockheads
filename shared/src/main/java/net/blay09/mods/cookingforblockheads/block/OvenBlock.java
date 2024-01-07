@@ -4,9 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.cookingforblockheads.ItemUtils;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
+import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -64,7 +64,7 @@ public class OvenBlock extends BaseKitchenBlock {
         }
 
         if (rayTraceResult.getDirection() == Direction.UP) {
-            if (CookingRegistry.isToolItem(heldItem)) {
+            if (heldItem.is(ModItemTags.UTENSILS)) {
                 Direction stateFacing = state.getValue(FACING);
                 double hx = rayTraceResult.getLocation().x;
                 double hz = rayTraceResult.getLocation().z;

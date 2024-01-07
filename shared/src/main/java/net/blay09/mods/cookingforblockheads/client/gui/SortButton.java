@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client.gui;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
+import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -42,7 +42,7 @@ public class SortButton extends Button {
         return tooltipLines;
     }
 
-    public Comparator<FoodRecipeWithStatus> getComparator(Player player) {
+    public Comparator<RecipeWithStatus> getComparator(Player player) {
         return button.getComparator(player);
     }
 }

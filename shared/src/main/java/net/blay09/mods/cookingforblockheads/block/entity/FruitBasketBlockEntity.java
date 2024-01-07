@@ -6,8 +6,6 @@ import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
-import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +29,6 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
             FruitBasketBlockEntity.this.setChanged();
         }
     };
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
 
     private Component customName;
     private boolean isDirty;
@@ -65,11 +62,6 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public void writeUpdateTag(CompoundTag tag) {
         saveAdditional(tag);
-    }
-
-    @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
     }
 
     @Override

@@ -1,101 +1,78 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
+import java.util.Collection;
 import java.util.List;
 
 public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider {
 
     private static final int SYNC_INTERVAL = 10;
 
-    private class SinkItemProvider extends AbstractKitchenItemProvider {
-        private final NonNullList<ItemStack> itemStacks = NonNullList.create();
-        private final FluidTank fluidTank;
-        private int waterUsed;
-
-        public SinkItemProvider(FluidTank fluidTank) {
-            this.fluidTank = fluidTank;
-            itemStacks.addAll(CookingRegistry.getWaterItems());
+    private record SinkIngredientToken(SinkBlockEntity milkJar, ItemStack itemStack) implements IngredientToken {
+        @Override
+        public ItemStack peek() {
+            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, true);
+            return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
-        public void resetSimulation() {
-            waterUsed = 0;
+        public ItemStack consume() {
+            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, false);
+            return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
-        public int getSimulatedUseCount(int slot) {
-            return waterUsed / 1000;
-        }
-
-        @Override
-        public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-            int availableAmount = fluidTank.getAmount();
-            if(simulate) {
-                availableAmount -= waterUsed;
-            }
-            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater || availableAmount >= amount * 1000) {
-                if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {
-                    if (!CookingRegistry.consumeBucket(inventories, simulate)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                if (simulate) {
-                    waterUsed += amount * 1000;
-                } else {
-                    fluidTank.drain(Fluids.WATER, amount * 1000, false);
-                    setChanged();
-                }
-                return ContainerUtils.copyStackWithSize(itemStacks.get(slot), amount);
-            }
+        public ItemStack restore(ItemStack itemStack) {
+            milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
             return ItemStack.EMPTY;
         }
+    }
 
+    private record SinkItemProvider(SinkBlockEntity sink) implements KitchenItemProvider {
         @Override
-        public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
-            for (ItemStack providedStack : itemStacks) {
-                if (Balm.getHooks().canItemsStack(itemStack, providedStack)) {
-                    fluidTank.fill(Fluids.WATER, 1000, false);
-                    break;
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+            for (final var itemStack : ingredient.getItems()) {
+                final var found = findIngredient(itemStack, ingredientTokens);
+                if (found != null) {
+                    return found;
                 }
             }
 
-            return ItemStack.EMPTY;
+            return null;
         }
 
         @Override
-        public int getSlots() {
-            return itemStacks.size();
-        }
-
-        @Override
-        public ItemStack getStackInSlot(int slot) {
-            if (CookingForBlockheadsConfig.getActive().sinkRequiresWater && fluidTank.getAmount() - waterUsed < 1000) {
-                return ItemStack.EMPTY;
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+            if (!itemStack.is(ModItemTags.MILK)) {
+                return null;
             }
 
-            return itemStacks.get(slot);
+            final var milkUnitsUsed = ingredientTokens.size();
+            final var milkUnitsAvailable = sink.getFluidTank().getAmount() / 1000 - milkUnitsUsed;
+            if (milkUnitsAvailable > 1) {
+                return new SinkIngredientToken(sink, itemStack);
+            } else {
+                return null;
+            }
         }
     }
 
@@ -156,7 +133,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         }
     };
 
-    private final SinkItemProvider itemProvider = new SinkItemProvider(sinkTank);
+    private final SinkItemProvider itemProvider = new SinkItemProvider(this);
 
     private int ticksSinceSync;
     private boolean isDirty;
@@ -188,7 +165,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
 
     @Override
     public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SinkBlockEntity blockEntity) {

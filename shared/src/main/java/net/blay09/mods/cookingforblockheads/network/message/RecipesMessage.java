@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.network.message;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;

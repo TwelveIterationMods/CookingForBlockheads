@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
@@ -87,8 +86,8 @@ public class ToasterBlockEntity extends BalmBlockEntity {
                 for (int i = 0; i < container.getContainerSize(); i++) {
                     ItemStack inputStack = container.getItem(i);
                     if (!inputStack.isEmpty()) {
-                        ToasterHandler toastHandler = CookingRegistry.getToasterHandler(inputStack);
-                        ItemStack outputStack = toastHandler != null ? toastHandler.getToasterOutput(inputStack) : ItemStack.EMPTY;
+                        final var toastRecipe = CookingRegistry.getToasterHandler(inputStack);
+                        ItemStack outputStack = toastRecipe != null ? toastRecipe.getToasterOutput(inputStack) : ItemStack.EMPTY;
                         if (outputStack.isEmpty()) {
                             outputStack = inputStack;
                         } else {

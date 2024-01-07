@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.registry.recipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+@Deprecated(forRemoval = true)
 public class FoodIngredient {
 
     private final Ingredient ingredient;

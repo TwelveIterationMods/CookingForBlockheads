@@ -83,7 +83,7 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
         appendHoverDescriptionText(itemStack, world, tooltip, flag);
 
-        if (itemStack.is(ModItemTags.DYEABLE)) {
+        if (itemStack.is(ModItemTags.IS_DYEABLE)) {
             tooltip.add(Component.translatable("tooltip.cookingforblockheads.dyeable").withStyle(ChatFormatting.AQUA));
         }
     }

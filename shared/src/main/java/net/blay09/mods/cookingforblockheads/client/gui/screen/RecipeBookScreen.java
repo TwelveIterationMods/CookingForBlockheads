@@ -5,15 +5,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
-import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
+import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -90,12 +88,12 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         int yOffset = -80;
 
-        for (ISortButton button : CookingRegistry.getSortButtons()) {
-            SortButton sortButton = new SortButton(width / 2 + 87, height / 2 + yOffset, button, it -> {
-                container.setSortComparator(((SortButton) it).getComparator(Minecraft.getInstance().player));
+        for (final var sortButton : CookingForBlockheadsRegistry.getSortButtons()) {
+            SortButton button = new SortButton(width / 2 + 87, height / 2 + yOffset, sortButton, it -> {
+                container.setSortComparator(sortButton.getComparator(Minecraft.getInstance().player));
             });
-            addRenderableWidget(sortButton);
-            sortButtons.add(sortButton);
+            addRenderableWidget(button);
+            sortButtons.add(button);
 
             yOffset += 20;
         }
@@ -284,7 +282,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
             poseStack.translate(0, 0, 300);
             for (Slot slot : container.slots) {
                 if (slot instanceof RecipeFakeSlot) {
-                    if (CookingRegistry.isNonFoodRecipe(slot.getItem())) {
+                    if (!slot.getItem().isEdible()) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 76, 16, 16);
                     }
 

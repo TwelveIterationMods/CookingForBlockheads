@@ -2,11 +2,8 @@ package net.blay09.mods.cookingforblockheads.menu.inventory;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IngredientPredicate;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,9 +17,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class InventoryCraftBook extends TransientCraftingContainer implements RecipeCraftingHolder {
+public class InventoryCraftBook extends TransientCraftingContainer implements RecipeCraftingHolder { // TODO replace with CrFB one
 
     private RecipeHolder<?> recipeUsed;
 
@@ -31,8 +26,6 @@ public class InventoryCraftBook extends TransientCraftingContainer implements Re
     }
 
     public ItemStack tryCraft(ItemStack outputItem, NonNullList<ItemStack> craftMatrix, Player player, KitchenMultiBlock multiBlock) {
-        boolean requireContainer = CookingRegistry.doesItemRequireBucketForCrafting(outputItem);
-
         // Reset the simulation before we start
         List<IKitchenItemProvider> inventories = CookingRegistry.getItemProviders(multiBlock, player.getInventory());
         for (IKitchenItemProvider itemProvider : inventories) {

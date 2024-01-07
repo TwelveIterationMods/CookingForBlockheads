@@ -1,61 +1,48 @@
 package net.blay09.mods.cookingforblockheads.api;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class CookingForBlockheadsAPI {
 
-    private static IInternalMethods internalMethods;
-    private static FoodStatsProvider foodStatsProvider;
+    private static final InternalMethods internalMethods = loadInternalMethods();
 
-    public static void setupAPI(IInternalMethods internalMethods) {
-        CookingForBlockheadsAPI.internalMethods = internalMethods;
+    private static InternalMethods loadInternalMethods() {
+        try {
+            return (InternalMethods) Class.forName("net.blay09.mods.cookingforblockheads.InternalMethodsImpl").getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException |
+                 ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load Crafting for Blockheads API", e);
+        }
     }
 
     public static void setFoodStatsProvider(FoodStatsProvider foodStatsProvider) {
-        CookingForBlockheadsAPI.foodStatsProvider = foodStatsProvider;
+        internalMethods.setFoodStatsProvider(foodStatsProvider);
     }
 
     public static FoodStatsProvider getFoodStatsProvider() {
-        return foodStatsProvider;
-    }
-
-    public static void addSinkHandler(ItemStack itemStack, SinkHandler sinkHandler) {
-        internalMethods.addSinkHandler(itemStack, sinkHandler);
-    }
-
-    public static void addToasterHandler(ItemStack itemStack, ToasterHandler toastHandler) {
-        internalMethods.addToasterHandler(itemStack, toastHandler);
+        return internalMethods.getFoodStatsProvider();
     }
 
     public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {
         internalMethods.addOvenFuel(fuelItem, fuelTime);
     }
 
-    public static void addOvenRecipe(ItemStack sourceItem, ItemStack resultItem) {
-        internalMethods.addOvenRecipe(sourceItem, resultItem);
+    public static Kitchen createKitchen(Level level, BlockPos pos) {
+        return internalMethods.createKitchen(level, pos);
     }
 
-    public static void addToolItem(ItemStack toolItem) {
-        internalMethods.addToolItem(toolItem);
+    public static Kitchen createKitchen(ItemStack itemStack) {
+        return internalMethods.createKitchen(itemStack);
     }
 
-    public static void addWaterItem(ItemStack waterItem) {
-        internalMethods.addWaterItem(waterItem);
-    }
-
-    public static void addMilkItem(ItemStack milkItem) {
-        internalMethods.addMilkItem(milkItem);
-    }
-
-    public static void addCowClass(Class<? extends LivingEntity> clazz) {
-        internalMethods.addCowClass(clazz);
-    }
-
-    public static IKitchenMultiBlock getKitchenMultiBlock(Level level, BlockPos pos) {
-        return internalMethods.getKitchenMultiBlock(level, pos);
+    public static <C extends Container, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeClass, KitchenRecipeHandler<T> kitchenRecipeHandler) {
+        internalMethods.registerKitchenRecipeHandler(recipeClass, kitchenRecipeHandler);
     }
 
     public static void addSortButton(ISortButton button) {

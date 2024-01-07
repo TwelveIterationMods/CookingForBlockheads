@@ -6,7 +6,6 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.balm.fabric.provider.FabricBalmProviders;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenConnector;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenSmeltingProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.fabricmc.api.ModInitializer;

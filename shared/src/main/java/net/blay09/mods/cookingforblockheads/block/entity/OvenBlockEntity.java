@@ -6,7 +6,6 @@ import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.*;
 import net.blay09.mods.balm.api.energy.BalmEnergyStorageProvider;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
-import net.blay09.mods.balm.api.item.BalmItems;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.api.tag.BalmItemTags;
@@ -17,10 +16,10 @@ import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -288,7 +287,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
             }
         }
 
-        if (!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
+        if (!result.isEmpty() && result.is(ModItemTags.UTENSILS)) {
             return result;
         }
 

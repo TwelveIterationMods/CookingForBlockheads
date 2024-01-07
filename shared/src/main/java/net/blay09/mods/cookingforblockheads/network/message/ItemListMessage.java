@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.minecraft.network.FriendlyByteBuf;

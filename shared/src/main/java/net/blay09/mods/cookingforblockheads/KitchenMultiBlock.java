@@ -3,11 +3,9 @@ package net.blay09.mods.cookingforblockheads;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.blay09.mods.balm.api.provider.ProviderUtils;
-import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
+import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class KitchenMultiBlock implements IKitchenMultiBlock {
+public class KitchenMultiBlock implements Kitchen {
 
     private final static List<Block> blockConnectors = new ArrayList<>();
 
@@ -36,6 +34,10 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
 
     public static KitchenMultiBlock buildFromLocation(Level level, BlockPos pos) {
         return new KitchenMultiBlock(level, pos);
+    }
+
+    public static Kitchen buildFromItemStack(ItemStack itemStack) {
+        return null;
     }
 
     private void findNeighbourKitchenBlocks(Level level, BlockPos pos, boolean extendedUpSearch) {

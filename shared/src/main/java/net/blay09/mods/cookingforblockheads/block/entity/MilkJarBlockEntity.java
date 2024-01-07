@@ -1,99 +1,75 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
+import java.util.Collection;
 import java.util.List;
 
 public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider {
 
     protected static final int MILK_CAPACITY = 32000;
 
-    private static class MilkJarItemProvider extends AbstractKitchenItemProvider {
-        private final NonNullList<ItemStack> itemStacks = NonNullList.create();
-        private final MilkJarBlockEntity milkJar;
-        private int milkUsed;
-
-        public MilkJarItemProvider(MilkJarBlockEntity milkJar) {
-            this.milkJar = milkJar;
-            itemStacks.addAll(CookingRegistry.getMilkItems());
+    private record MilkJarIngredientToken(MilkJarBlockEntity milkJar, ItemStack itemStack) implements IngredientToken {
+        @Override
+        public ItemStack peek() {
+            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, true);
+            return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
-        public void resetSimulation() {
-            milkUsed = 0;
+        public ItemStack consume() {
+            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, false);
+            return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
-        public int getSimulatedUseCount(int slot) {
-            return milkUsed / 1000;
-        }
-
-        @Override
-        public ItemStack useItemStack(int slot, int amount, boolean simulate, List<IKitchenItemProvider> inventories, boolean requireBucket) {
-            if (milkJar.getFluidTank().getAmount() - milkUsed >= amount * 1000) {
-                if (requireBucket && itemStacks.get(slot).getItem() == Items.MILK_BUCKET) {
-                    if (!CookingRegistry.consumeBucket(inventories, simulate)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                if (simulate) {
-                    milkUsed += amount * 1000;
-                } else {
-                    milkJar.getFluidTank().drain(Compat.getMilkFluid(), amount * 1000, false);
-                }
-                return ContainerUtils.copyStackWithSize(itemStacks.get(slot), amount);
-            }
+        public ItemStack restore(ItemStack itemStack) {
+            milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
             return ItemStack.EMPTY;
         }
+    }
 
+    private record MilkJarItemProvider(MilkJarBlockEntity milkJar) implements KitchenItemProvider {
         @Override
-        public ItemStack returnItemStack(ItemStack itemStack, SourceItem sourceItem) {
-            for (ItemStack providedStack : itemStacks) {
-                if (Balm.getHooks().canItemsStack(itemStack, providedStack)) {
-                    milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
-                    break;
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+            for (final var itemStack : ingredient.getItems()) {
+                final var found = findIngredient(itemStack, ingredientTokens);
+                if (found != null) {
+                    return found;
                 }
             }
 
-            return ItemStack.EMPTY;
+            return null;
         }
 
         @Override
-        public int getSlots() {
-            return itemStacks.size();
-        }
-
-        @Override
-        public ItemStack getStackInSlot(int slot) {
-            if (milkJar.getFluidTank().getAmount() - milkUsed < 1000) {
-                return ItemStack.EMPTY;
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+            if (!itemStack.is(ModItemTags.MILK)) {
+                return null;
             }
 
-            return itemStacks.get(slot);
-        }
-
-        @Override
-        public int getCountInSlot(int slot) {
-            return milkJar.getFluidTank().getAmount() / 1000;
+            final var milkUnitsUsed = ingredientTokens.size();
+            final var milkUnitsAvailable = milkJar.getFluidTank().getAmount() / 1000 - milkUnitsUsed;
+            if (milkUnitsAvailable > 1) {
+                return new MilkJarIngredientToken(milkJar, itemStack);
+            } else {
+                return null;
+            }
         }
     }
 
@@ -145,7 +121,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
 
     @Override
     public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
     }
 
 }

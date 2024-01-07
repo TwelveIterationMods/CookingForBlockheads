@@ -12,7 +12,6 @@ import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -26,10 +25,6 @@ public class CookingForBlockheadsClient {
         ModTextures.initialize(BalmClient.getTextures());
         ModModels.initialize(BalmClient.getModels());
 
-        Balm.getEvents().onEvent(RecipesUpdatedEvent.class, event -> {
-            CookingRegistry.initFoodRegistry(event.getRecipeManager(), event.getRegistryAccess());
-        });
-
         Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
             if (!(Minecraft.getInstance().screen instanceof RecipeBookScreen screen)) {
                 return;
@@ -39,7 +34,7 @@ public class CookingForBlockheadsClient {
             Slot hoverSlot = ((AbstractContainerScreenAccessor) screen).getHoveredSlot();
             if (hoverSlot instanceof RecipeFakeSlot recipeSlot && event.getItemStack() == hoverSlot.getItem()) {
                 if (menu.isSelectedSlot(recipeSlot) && menu.isAllowCrafting()) {
-                    FoodRecipeWithIngredients subRecipe = menu.getSelection();
+                    final var subRecipe = menu.getSelection();
                     if (subRecipe == null) {
                         return;
                     }

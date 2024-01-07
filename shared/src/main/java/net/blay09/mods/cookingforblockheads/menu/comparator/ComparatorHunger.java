@@ -1,12 +1,12 @@
 package net.blay09.mods.cookingforblockheads.menu.comparator;
 
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
 
-public class ComparatorHunger implements Comparator<FoodRecipeWithStatus> {
+public class ComparatorHunger implements Comparator<RecipeWithStatus> {
 
     private final ComparatorName fallback = new ComparatorName();
     private final Player player;
@@ -16,7 +16,7 @@ public class ComparatorHunger implements Comparator<FoodRecipeWithStatus> {
     }
 
     @Override
-    public int compare(FoodRecipeWithStatus o1, FoodRecipeWithStatus o2) {
+    public int compare(RecipeWithStatus o1, RecipeWithStatus o2) {
         boolean isFirstFood = o1.getOutputItem().getItem().isEdible();
         boolean isSecondFood = o2.getOutputItem().getItem().isEdible();
         if (!isFirstFood && !isSecondFood) {

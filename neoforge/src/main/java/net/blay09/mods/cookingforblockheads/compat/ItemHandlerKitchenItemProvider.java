@@ -1,8 +1,5 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.AbstractKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;

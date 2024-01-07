@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;

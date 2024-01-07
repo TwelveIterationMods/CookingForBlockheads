@@ -8,8 +8,6 @@ import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
@@ -44,7 +42,6 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         }
     };
 
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private Component customName;
@@ -130,11 +127,6 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         saveAdditional(tag);
         tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
         tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
-    }
-
-    @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
     }
 
     public DoorAnimator getDoorAnimator() {

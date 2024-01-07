@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Collection;
 
+@Deprecated(forRemoval = true)
 public class FoodRegistryInitEvent extends BalmEvent {
 
     private final NonNullList<ItemStack> nonFoodRecipes = NonNullList.create();

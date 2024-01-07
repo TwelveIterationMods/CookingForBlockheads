@@ -1,8 +1,0 @@
-{
-    "modid": "create",
-    "foods": {
-        "INGREDIENTS": [
-            "create:dough"
-        ]
-    }
-}

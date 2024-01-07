@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cake",
+    "farmersdelight:milk_bottle",
+    "farmersdelight:hot_cocoa",
+    "farmersdelight:apple_pie",
+    "farmersdelight:sweet_berry_cheesecake",
+    "farmersdelight:chocolate_pie",
+    "farmersdelight:roast_chicken_block",
+    "farmersdelight:stuffed_pumpkin_block",
+    "farmersdelight:honey_glazed_ham_block",
+    "farmersdelight:shepherds_pie_block"
+  ]
+}

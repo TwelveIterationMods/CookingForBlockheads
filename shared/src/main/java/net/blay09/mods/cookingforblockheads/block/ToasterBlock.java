@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.block;
 
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.ToasterBlockEntity;
@@ -67,9 +66,9 @@ public class ToasterBlock extends BaseKitchenBlock {
                     toaster.setActive(!toaster.isActive());
                 }
             } else {
-                ToasterHandler toastHandler = CookingRegistry.getToasterHandler(heldItem);
-                if (toastHandler != null) {
-                    ItemStack output = toastHandler.getToasterOutput(heldItem);
+                final var toastRecipe = CookingRegistry.getToasterHandler(heldItem);
+                if (toastRecipe != null) {
+                    ItemStack output = toastRecipe.getToasterOutput(heldItem);
                     if (!output.isEmpty()) {
                         for (int i = 0; i < toaster.getContainer().getContainerSize(); i++) {
                             if (toaster.getContainer().getItem(i).isEmpty()) {
@@ -80,6 +79,8 @@ public class ToasterBlock extends BaseKitchenBlock {
 
                         return InteractionResult.SUCCESS;
                     }
+                } else {
+                    // TODO default fallback
                 }
             }
         }

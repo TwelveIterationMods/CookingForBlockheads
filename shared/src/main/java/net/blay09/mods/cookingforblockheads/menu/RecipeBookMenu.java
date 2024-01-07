@@ -6,10 +6,8 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
-import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.menu.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
@@ -19,10 +17,8 @@ import net.blay09.mods.cookingforblockheads.network.message.ItemListMessage;
 import net.blay09.mods.cookingforblockheads.network.message.RecipesMessage;
 import net.blay09.mods.cookingforblockheads.network.message.RequestRecipesMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
-import net.blay09.mods.cookingforblockheads.registry.recipe.FoodRecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +30,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -55,17 +50,17 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     private ItemStack lastOutputItem = ItemStack.EMPTY;
 
-    private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
-    private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
-    private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
+    private final List<RecipeWithStatus> itemList = Lists.newArrayList();
+    private Comparator<RecipeWithStatus> currentSorting = new ComparatorName();
+    private final List<RecipeWithStatus> filteredItems = Lists.newArrayList();
 
     private boolean slotWasClicked;
     private String currentSearch;
     private boolean isDirtyClient;
     private boolean hasOven;
     private int scrollOffset;
-    private FoodRecipeWithStatus selectedRecipe;
-    private List<FoodRecipeWithIngredients> selectedRecipeList;
+    private RecipeWithStatus selectedRecipe;
+    private List<RecipeWithStatus> selectedRecipeList;
     private int selectedRecipeIndex;
 
     private boolean isInNoFilterPreview;
@@ -421,7 +416,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         return origY * 3 + origX + offsetX;
     }
 
-    public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
+    public void setSortComparator(Comparator<RecipeWithStatus> comparator) {
         this.currentSorting = comparator;
         // When re-sorting, make sure to remove all null slots that were added to preserve layout
         filteredItems.removeIf(Objects::isNull);
