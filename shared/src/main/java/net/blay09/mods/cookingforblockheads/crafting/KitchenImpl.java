@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.provider.ProviderUtils;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

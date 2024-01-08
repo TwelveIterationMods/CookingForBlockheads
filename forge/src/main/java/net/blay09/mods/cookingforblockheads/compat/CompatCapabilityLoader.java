@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
 public class CompatCapabilityLoader {
 
-    private static KitchenConnectorCapabilityProvider connectorCapabilityProvider;
     private static ResourceLocation itemProviderResourceKey;
     private static ResourceLocation connectorResourceKey;
 
@@ -48,16 +47,6 @@ public class CompatCapabilityLoader {
             }
 
             event.addCapability(connectorResourceKey, connectorCapabilityProvider);
-        }
-    }
-
-    private static final class KitchenConnectorCapabilityProvider implements ICapabilityProvider {
-
-        private final LazyOptional<IKitchenConnector> kitchenConnectorCap = LazyOptional.of(DefaultKitchenConnector::new);
-
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-            return ForgeCookingForBlockheads.KITCHEN_CONNECTOR_CAPABILITY.orEmpty(capability, kitchenConnectorCap);
         }
     }
 

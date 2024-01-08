@@ -7,9 +7,9 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
-import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
+import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
-import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
+import net.blay09.mods.cookingforblockheads.menu.slot.RecipeListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
@@ -30,7 +30,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.List;
 import java.util.Optional;
 
-public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
+public class RecipeBookScreen extends AbstractContainerScreen<KitchenMenu> {
 
     private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
     private static final int SCROLLBAR_Y = 8;
@@ -40,7 +40,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     private static final ResourceLocation guiTexture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
     private static final int VISIBLE_ROWS = 4;
 
-    private final RecipeBookMenu container;
+    private final KitchenMenu container;
     private int scrollBarScaledHeight;
     private int scrollBarXPos;
     private int scrollBarYPos;
@@ -60,7 +60,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     private final String[] noIngredients;
     private final String[] noSelection;
 
-    public RecipeBookScreen(RecipeBookMenu container, Inventory playerInventory, Component displayName) {
+    public RecipeBookScreen(KitchenMenu container, Inventory playerInventory, Component displayName) {
         super(container, playerInventory, displayName);
         this.container = container;
 
@@ -281,12 +281,12 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
             poseStack.pushPose();
             poseStack.translate(0, 0, 300);
             for (Slot slot : container.slots) {
-                if (slot instanceof RecipeFakeSlot) {
+                if (slot instanceof RecipeListingFakeSlot) {
                     if (!slot.getItem().isEdible()) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 76, 16, 16);
                     }
 
-                    FoodRecipeWithStatus recipe = ((RecipeFakeSlot) slot).getRecipe();
+                    FoodRecipeWithStatus recipe = ((RecipeListingFakeSlot) slot).getRecipe();
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 92, 16, 16);
                     }

@@ -17,8 +17,8 @@ public class ComparatorHunger implements Comparator<RecipeWithStatus> {
 
     @Override
     public int compare(RecipeWithStatus o1, RecipeWithStatus o2) {
-        boolean isFirstFood = o1.getOutputItem().getItem().isEdible();
-        boolean isSecondFood = o2.getOutputItem().getItem().isEdible();
+        boolean isFirstFood = o1.resultItem().getItem().isEdible();
+        boolean isSecondFood = o2.resultItem().getItem().isEdible();
         if (!isFirstFood && !isSecondFood) {
             return fallback.compare(o1, o2);
         } else if (!isFirstFood) {
@@ -27,7 +27,7 @@ public class ComparatorHunger implements Comparator<RecipeWithStatus> {
             return -1;
         }
 
-        int result = CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o2.getOutputItem(), player) - CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o1.getOutputItem(), player);
+        int result = CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o2.resultItem(), player) - CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o1.resultItem(), player);
         if (result == 0) {
             return fallback.compare(o1, o2);
         }

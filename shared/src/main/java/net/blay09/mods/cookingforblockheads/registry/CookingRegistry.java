@@ -8,7 +8,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.*;
-import net.blay09.mods.cookingforblockheads.menu.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.RegistryAccess;
@@ -30,27 +29,6 @@ public class CookingRegistry {
 
     private static final List<Recipe<Container>> recipeList = Lists.newArrayList();
     private static final ArrayListMultimap<ResourceLocation, FoodRecipe> foodItems = ArrayListMultimap.create();
-    private static final Map<ItemStack, Integer> ovenFuelItems = Maps.newHashMap();
-    private static final List<ISortButton> customSortButtons = Lists.newArrayList();
-
-    private static ItemStack toast(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getTag();
-        boolean alreadyToasted = tag != null && tag.getBoolean("CookingForBlockheadsToasted");
-        if (alreadyToasted) {
-            if (CookingForBlockheadsConfig.getActive().allowVeryToastedBread) {
-                ItemStack veryToasted = new ItemStack(Items.CHARCOAL);
-                veryToasted.setHoverName(Component.translatable("tooltip.cookingforblockheads.very_toasted"));
-                return veryToasted;
-            } else {
-                return itemStack;
-            }
-        } else {
-            ItemStack toasted = itemStack.copy();
-            toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads.toasted", itemStack.getHoverName()));
-            toasted.getOrCreateTag().putBoolean("CookingForBlockheadsToasted", true);
-            return toasted;
-        }
-    }
 
     public static void initFoodRegistry(RecipeManager recipeManager, RegistryAccess registryAccess) {
         recipeList.clear();
@@ -107,31 +85,6 @@ public class CookingRegistry {
         }
     }
 
-    public static Multimap<ResourceLocation, FoodRecipe> getFoodRecipes() {
-        return foodItems;
-    }
-
-    public static Collection<FoodRecipe> getFoodRecipes(ItemStack outputItem) {
-        return foodItems.get(Balm.getRegistries().getKey(outputItem.getItem()));
-    }
-
-    public static Collection<FoodRecipe> getFoodRecipes(ResourceLocation outputItem) {
-        return foodItems.get(outputItem);
-    }
-
-    public static void addOvenFuel(ItemStack itemStack, int fuelTime) {
-        ovenFuelItems.put(itemStack, fuelTime);
-    }
-
-    public static int getOvenFuelTime(ItemStack itemStack) {
-        for (Map.Entry<ItemStack, Integer> entry : ovenFuelItems.entrySet()) {
-            if (ItemStack.isSameItem(entry.getKey(), itemStack)) {
-                return entry.getValue();
-            }
-        }
-        return 0;
-    }
-
     public static RecipeStatus getRecipeStatus(FoodRecipe recipe, List<IKitchenItemProvider> inventories, boolean hasOven) {
         boolean requireBucket = doesItemRequireBucketForCrafting(recipe.getOutputItem());
         for (IKitchenItemProvider itemProvider : inventories) {
@@ -159,26 +112,6 @@ public class CookingRegistry {
         }
 
         return missingTools ? RecipeStatus.MISSING_TOOLS : RecipeStatus.AVAILABLE;
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static <T extends Recipe<?>> T findFoodRecipe(InventoryCraftBook craftMatrix, Level level, RecipeType<T> recipeType, Item expectedItem) {
-        for (Recipe<Container> recipe : recipeList) {
-            if (recipe.getType() == recipeType && recipe.matches(craftMatrix, level) && recipe.getResultItem(level.registryAccess()).getItem() == expectedItem) {
-                return (T) recipe;
-            }
-        }
-
-        return null;
-    }
-
-    public static void addSortButton(ISortButton button) {
-        customSortButtons.add(button);
-    }
-
-    public static List<ISortButton> getSortButtons() {
-        return customSortButtons;
     }
 
 }

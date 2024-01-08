@@ -1,4 +1,4 @@
-package net.blay09.mods.cookingforblockheads.crafting;
+package net.blay09.mods.cookingforblockheads.kitchen;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;

@@ -3,12 +3,11 @@ package net.blay09.mods.cookingforblockheads.menu;
 import net.blay09.mods.balm.api.DeferredObject;
 import net.blay09.mods.balm.api.menu.BalmMenus;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.*;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,10 +20,10 @@ public class ModMenus {
     public static DeferredObject<MenuType<FruitBasketMenu>> fruitBasket;
     public static DeferredObject<MenuType<OvenMenu>> oven;
     public static DeferredObject<MenuType<SpiceRackMenu>> spiceRack;
-    public static DeferredObject<MenuType<RecipeBookMenu>> recipeBook;
-    public static DeferredObject<MenuType<RecipeBookMenu>> cookingTable;
-    public static DeferredObject<MenuType<RecipeBookMenu>> noFilterBook;
-    public static DeferredObject<MenuType<RecipeBookMenu>> craftingBook;
+    public static DeferredObject<MenuType<KitchenMenu>> recipeBook;
+    public static DeferredObject<MenuType<KitchenMenu>> cookingTable;
+    public static DeferredObject<MenuType<KitchenMenu>> noFilterBook;
+    public static DeferredObject<MenuType<KitchenMenu>> craftingBook;
 
     public static void initialize(BalmMenus menus) {
         counter = menus.registerMenu(id("counter"), (windowId, inv, data) -> {
@@ -58,18 +57,27 @@ public class ModMenus {
         });
 
         cookingTable = menus.registerMenu(id("cooking_table"), (windowId, inv, data) -> {
-            Level level = inv.player.level();
-            BlockPos pos = data.readBlockPos();
-            BlockEntity tileEntity = level.getBlockEntity(pos);
-            if (((CookingTableBlockEntity) Objects.requireNonNull(tileEntity)).hasNoFilterBook()) {
-                return new RecipeBookMenu(cookingTable.get(), windowId, inv.player).setNoFilter().allowCrafting().setKitchenMultiBlock(KitchenMultiBlock.buildFromLocation(level, pos));
-            }
-            return new RecipeBookMenu(cookingTable.get(), windowId, inv.player).allowCrafting().setKitchenMultiBlock(KitchenMultiBlock.buildFromLocation(level, pos));
+            final var level = inv.player.level();
+            final var pos = data.readBlockPos();
+            final var kitchen = new KitchenImpl(level, pos);
+            return new KitchenMenu(cookingTable.get(), windowId, inv.player, kitchen);
         });
 
-        noFilterBook = menus.registerMenu(id("no_filter_book"), ((windowId, inv, data) -> new RecipeBookMenu(noFilterBook.get(), windowId, inv.player).setNoFilter()));
-        recipeBook = menus.registerMenu(id("recipe_book"), ((windowId, inv, data) -> new RecipeBookMenu(recipeBook.get(), windowId, inv.player)));
-        craftingBook = menus.registerMenu(id("crafting_book"), ((windowId, inv, data) -> new RecipeBookMenu(craftingBook.get(), windowId, inv.player).allowCrafting()));
+        noFilterBook = menus.registerMenu(id("no_filter_book"), ((windowId, inv, data) -> {
+            final var itemStack = data.readItem();
+            final var kitchen = new KitchenImpl(itemStack);
+            return new KitchenMenu(noFilterBook.get(), windowId, inv.player, kitchen);
+        }));
+        recipeBook = menus.registerMenu(id("recipe_book"), ((windowId, inv, data) -> {
+            final var itemStack = data.readItem();
+            final var kitchen = new KitchenImpl(itemStack);
+            return new KitchenMenu(recipeBook.get(), windowId, inv.player, kitchen);
+        }));
+        craftingBook = menus.registerMenu(id("crafting_book"), ((windowId, inv, data) -> {
+            final var itemStack = data.readItem();
+            final var kitchen = new KitchenImpl(itemStack);
+            return new KitchenMenu(craftingBook.get(), windowId, inv.player, kitchen);
+        }));
     }
 
     @NotNull

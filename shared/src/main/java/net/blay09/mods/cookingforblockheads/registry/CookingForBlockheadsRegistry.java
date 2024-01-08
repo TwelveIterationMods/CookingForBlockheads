@@ -7,33 +7,29 @@ import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
-import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class CookingForBlockheadsRegistry {
 
     private static final List<ISortButton> sortButtons = new ArrayList<>();
+    private static final Map<ItemStack, Integer> ovenFuelItems = new HashMap<>();
 
     public static void initialize(BalmEvents events) {
-        Balm.getEvents().onEvent(RecipesUpdatedEvent.class, event -> {
-            CookingRegistry.initFoodRegistry(event.getRecipeManager(), event.getRegistryAccess());
-        });
+        events.onEvent(RecipesUpdatedEvent.class, event -> gatherFoodRecipes(event.getRecipeManager(), event.getRegistryAccess()));
 
-        Balm.getEvents()
-                .onEvent(ServerReloadFinishedEvent.class,
-                        (ServerReloadFinishedEvent event) -> CookingRegistry.initFoodRegistry(event.getServer().getRecipeManager(),
-                                event.getServer().registryAccess()));
+        events.onEvent(ServerReloadFinishedEvent.class,
+                (ServerReloadFinishedEvent event) -> gatherFoodRecipes(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
 
-        Balm.getEvents().onEvent(ServerStartedEvent.class, event -> {
-            RecipeManager recipeManager = event.getServer().getRecipeManager();
-            CookingRegistry.initFoodRegistry(recipeManager, event.getServer().registryAccess());
-        });
+        events.onEvent(ServerStartedEvent.class, event -> gatherFoodRecipes(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
+    }
+
+    private static void gatherFoodRecipes(RecipeManager recipeManager, RegistryAccess registryAccess) {
+        // TODO
     }
 
     public static <T extends Recipe<?>> KitchenRecipeHandler<T> getRecipeWorkshopHandler(T recipe) {
@@ -49,6 +45,15 @@ public class CookingForBlockheadsRegistry {
     }
 
     public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {
-// TODO
+        ovenFuelItems.put(fuelItem, fuelTime);
+    }
+
+    public static int getOvenFuelTime(ItemStack itemStack) {
+        for (final var entry : ovenFuelItems.entrySet()) {
+            if (ItemStack.isSameItem(entry.getKey(), itemStack)) {
+                return entry.getValue();
+            }
+        }
+        return 0;
     }
 }

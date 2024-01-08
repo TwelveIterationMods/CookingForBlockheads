@@ -2,9 +2,9 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
-import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
+import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
-import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -72,12 +72,7 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        RecipeBookMenu container = new RecipeBookMenu(ModMenus.cookingTable.get(), i, player).allowCrafting();
-        if (!noFilterBook.isEmpty()) {
-            container.setNoFilter();
-        }
-        container.setKitchenMultiBlock(KitchenMultiBlock.buildFromLocation(level, worldPosition));
-        return container;
+        return new KitchenMenu(ModMenus.cookingTable.get(), i, player, new KitchenImpl(level, worldPosition));
     }
 
     @Override

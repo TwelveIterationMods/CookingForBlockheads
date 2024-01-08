@@ -5,11 +5,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class FakeSlot extends Slot {
+public abstract class AbstractFakeSlot extends Slot {
 
     private ItemStack displayStack = ItemStack.EMPTY;
 
-    public FakeSlot(Container container, int slotId, int x, int y) {
+    public AbstractFakeSlot(Container container, int slotId, int x, int y) {
         super(container, slotId, x, y);
     }
 

@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.cookingforblockheads.api.*;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -19,12 +19,12 @@ public class InternalMethodsImpl implements InternalMethods {
 
     @Override
     public Kitchen createKitchen(Level level, BlockPos pos) {
-        return KitchenMultiBlock.buildFromLocation(level, pos);
+        return new KitchenImpl(level, pos);
     }
 
     @Override
     public Kitchen createKitchen(ItemStack itemStack) {
-        return KitchenMultiBlock.buildFromItemStack(itemStack);
+        return new KitchenImpl(itemStack);
     }
 
     @Override

@@ -5,17 +5,16 @@ import com.google.common.collect.Maps;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.cookingforblockheads.KitchenMultiBlock;
+import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
-import net.blay09.mods.cookingforblockheads.menu.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
-import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
+import net.blay09.mods.cookingforblockheads.menu.slot.RecipeListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.network.message.CraftRecipeMessage;
-import net.blay09.mods.cookingforblockheads.network.message.ItemListMessage;
-import net.blay09.mods.cookingforblockheads.network.message.RecipesMessage;
-import net.blay09.mods.cookingforblockheads.network.message.RequestRecipesMessage;
+import net.blay09.mods.cookingforblockheads.network.message.AvailableRecipeListMessage;
+import net.blay09.mods.cookingforblockheads.network.message.SelectedRecipeListMessage;
+import net.blay09.mods.cookingforblockheads.network.message.RequestSelectedRecipesMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
 import net.blay09.mods.cookingforblockheads.registry.recipe.FoodIngredient;
@@ -34,18 +33,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class RecipeBookMenu extends AbstractContainerMenu {
+public class KitchenMenu extends AbstractContainerMenu {
 
     private final Player player;
 
-    private final List<RecipeFakeSlot> recipeSlots = Lists.newArrayList();
+    private final List<RecipeListingFakeSlot> recipeSlots = Lists.newArrayList();
     private final List<CraftMatrixFakeSlot> matrixSlots = Lists.newArrayList();
-
-    private final InventoryCraftBook craftBook = new InventoryCraftBook(this);
 
     private boolean noFilter;
     private boolean allowCrafting;
-    private KitchenMultiBlock multiBlock;
     private boolean isDirty = true;
 
     private ItemStack lastOutputItem = ItemStack.EMPTY;
@@ -65,7 +61,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     private boolean isInNoFilterPreview;
 
-    public RecipeBookMenu(MenuType<RecipeBookMenu> containerType, int windowId, Player player) {
+    public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, Kitchen kitchen) {
         super(containerType, windowId);
 
         this.player = player;
@@ -74,7 +70,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
-                RecipeFakeSlot slot = new RecipeFakeSlot(fakeInventory, j + i * 3, 102 + j * 18, 11 + i * 18);
+                RecipeListingFakeSlot slot = new RecipeListingFakeSlot(fakeInventory, j + i * 3, 102 + j * 18, 11 + i * 18);
                 recipeSlots.add(slot);
                 addSlot(slot);
             }
@@ -106,7 +102,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             Slot slot = slots.get(slotNumber);
             if (player.level().isClientSide) {
-                if (slot instanceof RecipeFakeSlot recipeSlot) {
+                if (slot instanceof RecipeListingFakeSlot recipeSlot) {
                     if (selectedRecipe != null && recipeSlot.getRecipe() == selectedRecipe) {
                         if (allowCrafting && (clickType == ClickType.QUICK_MOVE || clickType == ClickType.PICKUP)) {
                             FoodRecipeWithIngredients recipe = getSelection();
@@ -132,11 +128,11 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         super.clicked(slotNumber, dragType, clickType, player);
     }
 
-    public void setSelectedRecipe(@Nullable FoodRecipeWithStatus recipe, boolean forceNoFilter) {
+    public void setSelectedRecipe(@Nullable RecipeWithStatus recipe, boolean forceNoFilter) {
         selectedRecipe = recipe;
 
         if (selectedRecipe != null) {
-            Balm.getNetworking().sendToServer(new RequestRecipesMessage(selectedRecipe.getOutputItem(), forceNoFilter));
+            Balm.getNetworking().sendToServer(new RequestSelectedRecipesMessage(selectedRecipe.resultItem(), forceNoFilter));
         }
 
         this.isInNoFilterPreview = forceNoFilter;
@@ -194,18 +190,13 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         return itemStack;
     }
 
-    public RecipeBookMenu setNoFilter() {
+    public KitchenMenu setNoFilter() {
         this.noFilter = true;
         return this;
     }
 
-    public RecipeBookMenu allowCrafting() {
+    public KitchenMenu allowCrafting() {
         this.allowCrafting = true;
-        return this;
-    }
-
-    public RecipeBookMenu setKitchenMultiBlock(KitchenMultiBlock kitchenMultiBlock) {
-        this.multiBlock = kitchenMultiBlock;
         return this;
     }
 
@@ -231,7 +222,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
             }
         }
 
-        Balm.getNetworking().sendTo(player, new ItemListMessage(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()));
+        Balm.getNetworking().sendTo(player, new AvailableRecipeListMessage(statusMap.values(), multiBlock != null && multiBlock.hasSmeltingProvider()));
     }
 
     public void findAndSendRecipes(ItemStack outputItem, boolean forceNoFilter) {
@@ -281,7 +272,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
         resultList.sort((o1, o2) -> o2.getRecipeStatus().ordinal() - o1.getRecipeStatus().ordinal());
 
-        Balm.getNetworking().sendTo(player, new RecipesMessage(outputItem, resultList));
+        Balm.getNetworking().sendTo(player, new SelectedRecipeListMessage(outputItem, resultList));
     }
 
     public void tryCraft(ItemStack outputItem, FoodRecipeType recipeType, NonNullList<ItemStack> craftMatrix, boolean stack) {
@@ -356,7 +347,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     public void populateRecipeSlots() {
         int i = scrollOffset * 3;
-        for (RecipeFakeSlot slot : recipeSlots) {
+        for (RecipeListingFakeSlot slot : recipeSlots) {
             if (i < filteredItems.size()) {
                 slot.setFoodRecipe(filteredItems.get(i));
                 i++;
@@ -462,7 +453,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         return selectedRecipeList != null ? selectedRecipeList.get(selectedRecipeIndex) : null;
     }
 
-    public boolean isSelectedSlot(RecipeFakeSlot slot) {
+    public boolean isSelectedSlot(RecipeListingFakeSlot slot) {
         return slot.getRecipe() == selectedRecipe;
     }
 
