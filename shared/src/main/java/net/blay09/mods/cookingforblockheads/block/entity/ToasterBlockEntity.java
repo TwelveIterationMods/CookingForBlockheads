@@ -183,7 +183,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     public boolean canToast(ItemStack itemStack) {
-        // TODO not sure how to do this one with the toaster event
+        // TODO not sure how to best do this one with the toaster event
         return level.getRecipeManager()
                 .getRecipeFor(ModRecipes.toasterRecipeType, new SimpleContainer(itemStack), level)
                 .map(it -> true)

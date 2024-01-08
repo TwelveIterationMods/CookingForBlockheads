@@ -4,16 +4,14 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
-import net.blay09.mods.cookingforblockheads.client.gui.screen.RecipeBookScreen;
+import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
-import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public class CookingForBlockheadsClient {
@@ -24,7 +22,7 @@ public class CookingForBlockheadsClient {
         ModModels.initialize(BalmClient.getModels());
 
         Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
-            if (!(Minecraft.getInstance().screen instanceof RecipeBookScreen screen)) {
+            if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
                 return;
             }
 
@@ -59,8 +57,7 @@ public class CookingForBlockheadsClient {
                         }
                     } else {
                         final var missingIngredients = selectedRecipeWithStatus.missingIngredients();
-                        final var missingAnyUtensils = missingIngredients.stream().anyMatch(it -> isUtensil(it));
-                        if (missingAnyUtensils) {
+                        if (selectedRecipeWithStatus.isMissingUtensils()) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
                         } else if (!missingIngredients.isEmpty()) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
@@ -89,15 +86,5 @@ public class CookingForBlockheadsClient {
             }
         });
 
-    }
-
-    private static boolean isUtensil(Ingredient ingredient) {
-        for (final var itemStack : ingredient.getItems()) {
-            if (itemStack.is(ModItemTags.UTENSILS)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

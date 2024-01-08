@@ -80,7 +80,7 @@ public class CookingForBlockheadsRegistry {
         return true;
     }
 
-    public static <C extends Container, T extends Recipe<C>> void registerRecipeWorkshopHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {
+    public static <C extends Container, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {
         kitchenRecipeHandlers.put(recipeType, handler);
     }
 

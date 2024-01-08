@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
@@ -43,7 +44,7 @@ public class InternalMethodsImpl implements InternalMethods {
     }
 
     @Override
-    public <T extends Recipe<?>> void registerKitchenRecipeHandler(Class<T> recipeClass, KitchenRecipeHandler<T> kitchenRecipeHandler) {
-        // TODO
+    public <C extends Container, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeClass, KitchenRecipeHandler<T> kitchenRecipeHandler) {
+        CookingForBlockheadsRegistry.registerKitchenRecipeHandler(recipeClass, kitchenRecipeHandler);
     }
 }

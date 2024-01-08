@@ -578,4 +578,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
     }
 
+    public int getRecipesForSelectionIndex() {
+        return filteredCraftables.indexOf(selectedCraftable);
+    }
 }

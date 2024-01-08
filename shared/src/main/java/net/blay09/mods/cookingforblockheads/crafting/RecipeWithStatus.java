@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -72,5 +73,19 @@ public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, 
 
     public boolean canCraft() {
         return missingIngredients.isEmpty();
+    }
+
+    public boolean isMissingUtensils() {
+        return missingIngredients.stream().anyMatch(RecipeWithStatus::isUtensil);
+    }
+
+    private static boolean isUtensil(Ingredient ingredient) {
+        for (final var itemStack : ingredient.getItems()) {
+            if (itemStack.is(ModItemTags.UTENSILS)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
