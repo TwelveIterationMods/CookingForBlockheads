@@ -247,7 +247,6 @@ public class KitchenMenu extends AbstractContainerMenu {
                 final var operation = context.createOperation(recipe).prepare();
                 final var recipeWithStatus = new RecipeWithStatus(recipe.id(),
                         resultItem,
-                        Set.of(),
                         operation.getMissingIngredients(),
                         operation.getMissingIngredientsMask(),
                         operation.getLockedInputs());
@@ -297,7 +296,6 @@ public class KitchenMenu extends AbstractContainerMenu {
 
             result.add(new RecipeWithStatus(recipe.id(),
                     recipeResultItem,
-                    Set.of(),
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
                     operation.getLockedInputs()));

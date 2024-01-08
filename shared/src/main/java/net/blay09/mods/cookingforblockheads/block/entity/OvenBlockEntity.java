@@ -14,10 +14,10 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenOperation;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OvenBlockEntity extends BalmBlockEntity implements KitchenProcessingProvider, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox {
+public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox {
 
     private static final int COOK_TIME = 200;
 
@@ -408,7 +408,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenProcessin
     }
 
     @Override
-    public boolean isSupportedRecipeType(RecipeType<?> recipeType) {
+    public boolean canProcess(RecipeType<?> recipeType) {
         return recipeType == RecipeType.SMELTING;
     }
 
@@ -457,7 +457,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenProcessin
     public List<BalmProvider<?>> getProviders() {
         return Lists.newArrayList(
                 new BalmProvider<>(KitchenItemProvider.class, itemProvider),
-                new BalmProvider<>(KitchenProcessingProvider.class, this)
+                new BalmProvider<>(KitchenItemProcessor.class, this)
         );
     }
 

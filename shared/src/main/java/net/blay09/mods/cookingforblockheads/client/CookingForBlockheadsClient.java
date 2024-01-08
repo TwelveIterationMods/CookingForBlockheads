@@ -4,17 +4,17 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
-import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.RecipeBookScreen;
-import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class CookingForBlockheadsClient {
     public static void initialize() {
@@ -28,17 +28,25 @@ public class CookingForBlockheadsClient {
                 return;
             }
 
-            KitchenMenu menu = screen.getMenu();
-            Slot hoverSlot = ((AbstractContainerScreenAccessor) screen).getHoveredSlot();
-            if (hoverSlot instanceof CraftableListingFakeSlot recipeSlot && event.getItemStack() == hoverSlot.getItem()) {
-                if (menu.isSelectedSlot(recipeSlot) && menu.isAllowCrafting()) {
-                    final var subRecipe = menu.getSelection();
-                    if (subRecipe == null) {
-                        return;
-                    }
+            final var player = event.getPlayer();
+            if (player == null) {
+                return;
+            }
 
-                    if (subRecipe.getRecipeType() == FoodRecipeType.SMELTING) {
-                        if (!menu.hasOven()) {
+            final var menu = screen.getMenu();
+            Slot hoverSlot = ((AbstractContainerScreenAccessor) screen).getHoveredSlot();
+            if (hoverSlot instanceof CraftableListingFakeSlot listingSlot && event.getItemStack() == hoverSlot.getItem()) {
+                final var kitchen = menu.getKitchen();
+                final var selectedRecipeWithStatus = menu.getSelectedRecipe();
+                if (selectedRecipeWithStatus == null) {
+                    return;
+                }
+
+                final var selectedRecipe = selectedRecipeWithStatus.recipe(player).value();
+
+                if (menu.isSelectedSlot(listingSlot) && kitchen.canProcess(selectedRecipe.getType())) {
+                    if (selectedRecipe.getType() == RecipeType.SMELTING) {
+                        if (!kitchen.canProcess(RecipeType.SMELTING)) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
                         } else {
                             if (Screen.hasShiftDown()) {
@@ -50,9 +58,11 @@ public class CookingForBlockheadsClient {
                             }
                         }
                     } else {
-                        if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_TOOLS) {
+                        final var missingIngredients = selectedRecipeWithStatus.missingIngredients();
+                        final var missingAnyUtensils = missingIngredients.stream().anyMatch(it -> isUtensil(it));
+                        if (missingAnyUtensils) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
-                        } else if (subRecipe.getRecipeStatus() == RecipeStatus.MISSING_INGREDIENTS) {
+                        } else if (!missingIngredients.isEmpty()) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
                         } else {
                             if (Screen.hasShiftDown()) {
@@ -79,5 +89,15 @@ public class CookingForBlockheadsClient {
             }
         });
 
+    }
+
+    private static boolean isUtensil(Ingredient ingredient) {
+        for (final var itemStack : ingredient.getItems()) {
+            if (itemStack.is(ModItemTags.UTENSILS)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

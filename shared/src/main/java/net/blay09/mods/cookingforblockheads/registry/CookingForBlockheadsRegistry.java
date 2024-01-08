@@ -43,7 +43,7 @@ public class CookingForBlockheadsRegistry {
         loadRecipesByType(recipeManager, registryAccess, RecipeType.SMELTING);
     }
 
-    private static <T extends Container> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<? extends Recipe<T>> recipeType) {
+    private static <C extends Container, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
         for (final var recipe : recipeManager.getAllRecipesFor(recipeType)) {
             if (!isEligibleRecipe(recipe)) {
                 continue;

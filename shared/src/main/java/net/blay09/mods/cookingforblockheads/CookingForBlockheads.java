@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
+import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
@@ -17,10 +18,15 @@ import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Optional;
 
 public class CookingForBlockheads {
 
@@ -28,6 +34,18 @@ public class CookingForBlockheads {
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 
     public static void initialize() {
+        CookingForBlockheadsAPI.setFoodStatsProvider(new FoodStatsProvider() {
+            @Override
+            public float getSaturationModifier(ItemStack itemStack, Player entityPlayer) {
+                return  Optional.ofNullable(itemStack.getItem().getFoodProperties()).map(FoodProperties::getSaturationModifier).orElse(0f);
+            }
+
+            @Override
+            public int getNutrition(ItemStack itemStack, Player entityPlayer) {
+                return Optional.ofNullable(itemStack.getItem().getFoodProperties()).map(FoodProperties::getNutrition).orElse(0);
+            }
+        });
+
         Balm.getRegistries().enableMilkFluid();
 
         CookingForBlockheadsAPI.addSortButton(new NameSortButton());
@@ -46,7 +64,6 @@ public class CookingForBlockheads {
         ModMenus.initialize(Balm.getMenus());
         ModSounds.initialize(Balm.getSounds());
 
-        Balm.initializeIfLoaded("minecraft", "net.blay09.mods.cookingforblockheads.compat.VanillaAddon");
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 
         CookingForBlockheadsRegistry.initialize(Balm.getEvents());

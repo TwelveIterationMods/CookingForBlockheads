@@ -27,7 +27,7 @@ public class ComparatorHunger implements Comparator<RecipeWithStatus> {
             return -1;
         }
 
-        int result = CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o2.resultItem(), player) - CookingForBlockheadsAPI.getFoodStatsProvider().getFoodLevel(o1.resultItem(), player);
+        int result = CookingForBlockheadsAPI.getFoodStatsProvider().getNutrition(o2.resultItem(), player) - CookingForBlockheadsAPI.getFoodStatsProvider().getNutrition(o1.resultItem(), player);
         if (result == 0) {
             return fallback.compare(o1, o2);
         }

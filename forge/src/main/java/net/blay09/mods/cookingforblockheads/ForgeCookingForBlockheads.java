@@ -4,7 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.forge.provider.ForgeBalmProviders;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.KitchenProcessingProvider;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -24,7 +24,7 @@ public class ForgeCookingForBlockheads {
     public static Capability<KitchenItemProvider> KITCHEN_ITEM_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public static Capability<KitchenProcessingProvider> KITCHEN_SMELTING_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    public static Capability<KitchenItemProcessor> KITCHEN_SMELTING_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
     public ForgeCookingForBlockheads() {
@@ -44,7 +44,7 @@ public class ForgeCookingForBlockheads {
         ForgeBalmProviders providers = (ForgeBalmProviders) Balm.getProviders();
         providers.register(KitchenItemProvider.class, new CapabilityToken<>() {
         });
-        providers.register(KitchenProcessingProvider.class, new CapabilityToken<>() {
+        providers.register(KitchenItemProcessor.class, new CapabilityToken<>() {
         });
     }
 
@@ -56,6 +56,6 @@ public class ForgeCookingForBlockheads {
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(KitchenItemProvider.class);
-        event.register(KitchenProcessingProvider.class);
+        event.register(KitchenItemProcessor.class);
     }
 }

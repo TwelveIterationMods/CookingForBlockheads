@@ -2,16 +2,18 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.balm.api.provider.ProviderUtils;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,8 +27,7 @@ public class KitchenImpl implements Kitchen {
     private final BlockState activatingBlockState;
     private final Set<BlockPos> checkedPos = new HashSet<>();
     private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
-    private final Set<Block> providedBlocks = new HashSet<>();
-    private final Set<TagKey<Block>> providedBlockTags = new HashSet<>();
+    private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();
 
     public KitchenImpl(ItemStack itemStack) {
         activatingItemStack = itemStack;
@@ -36,8 +37,6 @@ public class KitchenImpl implements Kitchen {
     public KitchenImpl(Level level, BlockPos pos) {
         activatingBlockState = level.getBlockState(pos);
         activatingItemStack = ItemStack.EMPTY;
-        providedBlocks.add(activatingBlockState.getBlock());
-        providedBlockTags.add(activatingBlockState.getTags().iterator().next());
         findNeighbourCraftingBlocks(level, pos, true);
     }
 
@@ -55,16 +54,17 @@ public class KitchenImpl implements Kitchen {
                         final var itemProvider = ProviderUtils.getProvider(blockEntity, KitchenItemProvider.class);
                         if (itemProvider != null) {
                             itemProviderList.add(itemProvider);
+                        }
 
-                            providedBlocks.add(state.getBlock());
-                            state.getTags().forEach(providedBlockTags::add);
+                        final var itemProcessor = ProviderUtils.getProvider(blockEntity, KitchenItemProcessor.class);
+                        if (itemProcessor != null) {
+                            itemProcessorList.add(itemProcessor);
+                        }
 
+                        if (itemProvider != null || itemProcessor != null) {
                             findNeighbourCraftingBlocks(level, position, true);
                         }
                     } else if (state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
-                        providedBlocks.add(state.getBlock());
-                        state.getTags().forEach(providedBlockTags::add);
-
                         findNeighbourCraftingBlocks(level, position, false);
                     }
                 }
@@ -74,12 +74,25 @@ public class KitchenImpl implements Kitchen {
 
     @Override
     public List<KitchenItemProvider> getItemProviders(@Nullable Player player) {
-        final var  sourceInventories = new ArrayList<KitchenItemProvider>();
-        sourceInventories.addAll(itemProviderList);
+        final var sourceInventories = new ArrayList<>(itemProviderList);
         if (player != null) {
             sourceInventories.add(new ContainerKitchenItemProvider(player.getInventory()));
         }
         return sourceInventories;
+    }
+
+    @Override
+    public List<KitchenItemProcessor> getItemProcessors() {
+        return itemProcessorList;
+    }
+
+    @Override
+    public boolean canProcess(RecipeType<?> recipeType) {
+        if (recipeType == RecipeType.CRAFTING) {
+            return activatingBlockState.is(ModBlocks.cookingTable) || activatingItemStack.is(ModItems.craftingBook);
+        }
+
+        return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
     }
 
 }

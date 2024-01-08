@@ -6,7 +6,7 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.balm.fabric.provider.FabricBalmProviders;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.api.capability.KitchenProcessingProvider;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
@@ -24,7 +24,7 @@ public class FabricCookingForBlockheads implements ModInitializer {
                 ModBlockEntities.sink.get(), ModBlockEntities.spiceRack.get(), ModBlockEntities.cabinet.get(),
                 ModBlockEntities.cowJar.get(), ModBlockEntities.cuttingBoard.get());
 
-        registerProvider("kitchen_smelting_provider", KitchenProcessingProvider.class, ModBlockEntities.oven.get());
+        registerProvider("kitchen_smelting_provider", KitchenItemProcessor.class, ModBlockEntities.oven.get());
 
         registerLookup(new ResourceLocation("balm", "fluid_tank"), FluidTank.class,
                 ModBlockEntities.sink.get(), ModBlockEntities.milkJar.get(), ModBlockEntities.cowJar.get());

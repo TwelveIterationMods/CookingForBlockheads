@@ -67,13 +67,7 @@ public class ItemRecipeBook extends Item {
 
                 @Override
                 public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                    KitchenMenu container = new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, new KitchenImpl(itemStack));
-                    if (edition == RecipeBookEdition.NO_FILTER) {
-                        container.setNoFilter();
-                    } else if (edition == RecipeBookEdition.CRAFTING) {
-                        container.allowCrafting();
-                    }
-                    return container;
+                    return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, new KitchenImpl(itemStack));
                 }
 
                 @Override
