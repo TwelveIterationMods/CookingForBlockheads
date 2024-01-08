@@ -189,7 +189,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         if (recipe != null) {
             if (player.level().isClientSide) {
                 lockedInputs.clear();
-                requestRecipes(recipe);
+                requestSelectionRecipes(recipe);
             }
         } else {
             resetSelectedRecipe();
@@ -211,11 +211,11 @@ public class KitchenMenu extends AbstractContainerMenu {
         craftablesDirty = true;
     }
 
-    public void requestRecipes(RecipeWithStatus craftable) {
-        Balm.getNetworking().sendToServer(new RequestSelectedRecipesMessage(craftable.resultItem(), lockedInputs));
+    public void requestSelectionRecipes(RecipeWithStatus craftable) {
+        Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.resultItem(), lockedInputs));
     }
 
-    public void handleRequestRecipes(ItemStack resultItem, NonNullList<ItemStack> lockedInputs) {
+    public void handleRequestSelectionRecipes(ItemStack resultItem, NonNullList<ItemStack> lockedInputs) {
         selectedCraftable = findRecipeForResultItem(resultItem);
         this.lockedInputs.clear();
         for (int i = 0; i < lockedInputs.size(); i++) {
@@ -283,7 +283,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void broadcastAvailableRecipes() {
         craftables = getAvailableCraftables();
-        Balm.getNetworking().sendTo(player, new AvailableRecipeListMessage(craftables));
+        Balm.getNetworking().sendTo(player, new AvailableCraftablesListMessage(craftables));
     }
 
     public void broadcastRecipesForResultItem(ItemStack resultItem) {
@@ -305,7 +305,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
         result.sort(currentSorting);
         this.recipesForSelection = result;
-        Balm.getNetworking().sendTo(player, new SelectedRecipeListMessage(result));
+        Balm.getNetworking().sendTo(player, new SelectionRecipesListMessage(result));
     }
 
     public void craft(ResourceLocation recipeId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
@@ -576,7 +576,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     public void setLockedInput(int i, ItemStack lockedInput) {
         lockedInputs.set(i, lockedInput);
         if (selectedCraftable != null) {
-            requestRecipes(selectedCraftable);
+            requestSelectionRecipes(selectedCraftable);
         }
     }
 
