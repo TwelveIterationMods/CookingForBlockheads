@@ -8,7 +8,7 @@ import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.RecipeBookScreen;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
-import net.blay09.mods.cookingforblockheads.menu.slot.RecipeListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -30,7 +30,7 @@ public class CookingForBlockheadsClient {
 
             KitchenMenu menu = screen.getMenu();
             Slot hoverSlot = ((AbstractContainerScreenAccessor) screen).getHoveredSlot();
-            if (hoverSlot instanceof RecipeListingFakeSlot recipeSlot && event.getItemStack() == hoverSlot.getItem()) {
+            if (hoverSlot instanceof CraftableListingFakeSlot recipeSlot && event.getItemStack() == hoverSlot.getItem()) {
                 if (menu.isSelectedSlot(recipeSlot) && menu.isAllowCrafting()) {
                     final var subRecipe = menu.getSelection();
                     if (subRecipe == null) {

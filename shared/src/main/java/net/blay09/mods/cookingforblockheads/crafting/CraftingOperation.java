@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.crafting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
@@ -14,6 +13,7 @@ import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -47,9 +47,9 @@ public class CraftingOperation {
     private NonNullList<ItemStack> lockedInputs;
     private int missingIngredientsMask;
 
-    public CraftingOperation(final CraftingContext context, Recipe<?> recipe) {
+    public CraftingOperation(final CraftingContext context, RecipeHolder<Recipe<?>> recipe) {
         this.context = context;
-        this.recipe = recipe;
+        this.recipe = recipe.value();
     }
 
     public CraftingOperation withLockedInputs(@Nullable NonNullList<ItemStack> lockedInputs) {

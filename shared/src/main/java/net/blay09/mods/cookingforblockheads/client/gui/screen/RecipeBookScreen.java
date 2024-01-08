@@ -9,7 +9,7 @@ import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
-import net.blay09.mods.cookingforblockheads.menu.slot.RecipeListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
@@ -160,7 +160,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<KitchenMenu> {
                 FoodRecipeWithStatus recipe = container.findAvailableRecipe(itemStack);
                 if (recipe != null) {
                     container.setSelectedRecipe(recipe, false);
-                    setCurrentOffset(container.getSelectedRecipeIndex());
+                    setCurrentOffset(container.getRecipesForSelectionIndex());
                 } else if (!CookingRegistry.getFoodRecipes(itemStack).isEmpty()) {
                     container.setSelectedRecipe(new FoodRecipeWithStatus(itemStack, RecipeStatus.MISSING_INGREDIENTS), true);
                 }
@@ -203,9 +203,9 @@ public class RecipeBookScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        if (container.isDirty()) {
+        if (container.isScrollOffsetDirty()) {
             setCurrentOffset(currentOffset);
-            container.setDirty(false);
+            container.setScrollOffsetDirty(false);
         }
 
         guiGraphics.setColor(1f, 1f, 1f, 1f);
@@ -281,12 +281,12 @@ public class RecipeBookScreen extends AbstractContainerScreen<KitchenMenu> {
             poseStack.pushPose();
             poseStack.translate(0, 0, 300);
             for (Slot slot : container.slots) {
-                if (slot instanceof RecipeListingFakeSlot) {
+                if (slot instanceof CraftableListingFakeSlot) {
                     if (!slot.getItem().isEdible()) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 76, 16, 16);
                     }
 
-                    FoodRecipeWithStatus recipe = ((RecipeListingFakeSlot) slot).getRecipe();
+                    FoodRecipeWithStatus recipe = ((CraftableListingFakeSlot) slot).getRecipe();
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 92, 16, 16);
                     }

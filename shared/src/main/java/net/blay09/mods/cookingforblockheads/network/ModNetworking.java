@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class ModNetworking {
 
     public static void initialize(BalmNetworking networking) {
-        networking.registerServerboundPacket(id("request_available_recipes"), RequestAvailableRecipesMessage.class, RequestAvailableRecipesMessage::encode, RequestAvailableRecipesMessage::decode, RequestAvailableRecipesMessage::handle);
+        networking.registerServerboundPacket(id("request_available_recipes"), RequestAvailableCraftablesMessage.class, RequestAvailableCraftablesMessage::encode, RequestAvailableCraftablesMessage::decode, RequestAvailableCraftablesMessage::handle);
         networking.registerServerboundPacket(id("request_selected_recipes"), RequestSelectedRecipesMessage.class, RequestSelectedRecipesMessage::encode, RequestSelectedRecipesMessage::decode, RequestSelectedRecipesMessage::handle);
         networking.registerServerboundPacket(id("craft_recipe"), CraftRecipeMessage.class, CraftRecipeMessage::encode, CraftRecipeMessage::decode, CraftRecipeMessage::handle);
 
