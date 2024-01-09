@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.menu.slot;
 
 import com.mojang.datafixers.util.Pair;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.client.ModTextures;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.InventoryMenu;

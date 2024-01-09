@@ -18,7 +18,6 @@ public class CookingForBlockheadsClient {
     public static void initialize() {
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
-        ModTextures.initialize(BalmClient.getTextures());
         ModModels.initialize(BalmClient.getModels());
 
         Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
