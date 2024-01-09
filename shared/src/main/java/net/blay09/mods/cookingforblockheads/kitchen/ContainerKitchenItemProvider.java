@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.kitchen;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.minecraft.world.Container;
@@ -18,7 +19,14 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
     }
 
     @Override
-    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        if (cacheHint instanceof ContainerIngredientToken containerIngredientToken) {
+            final var slotStack = container.getItem(containerIngredientToken.slot);
+            if (ingredient.test(slotStack) && hasUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens)) {
+                return containerIngredientToken;
+            }
+        }
+
         for (int i = 0; i < container.getContainerSize(); i++) {
             final var slotStack = container.getItem(i);
             if (ingredient.test(slotStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
@@ -29,7 +37,14 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
     }
 
     @Override
-    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        if (cacheHint instanceof ContainerIngredientToken containerIngredientToken) {
+            final var slotStack = container.getItem(containerIngredientToken.slot);
+            if (ItemStack.isSameItemSameTags(slotStack, itemStack) && hasUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens)) {
+                return containerIngredientToken;
+            }
+        }
+
         for (int i = 0; i < container.getContainerSize(); i++) {
             final var slotStack = container.getItem(i);
             if (ItemStack.isSameItemSameTags(slotStack, itemStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
@@ -52,11 +67,16 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
         return usesLeft;
     }
 
+    @Override
+    public CacheHint getCacheHint(IngredientToken ingredientToken) {
+        return ingredientToken instanceof ContainerIngredientToken containerIngredientToken ? containerIngredientToken : CacheHint.NONE;
+    }
+
     private boolean hasUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
         return getUsesLeft(slot, slotStack, ingredientTokens) > 0;
     }
 
-    public class ContainerIngredientToken implements IngredientToken {
+    public class ContainerIngredientToken implements IngredientToken, CacheHint {
         private final int slot;
 
         public ContainerIngredientToken(int slot) {

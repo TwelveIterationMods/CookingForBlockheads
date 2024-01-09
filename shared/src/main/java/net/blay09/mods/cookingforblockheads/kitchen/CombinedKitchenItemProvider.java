@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.kitchen;
 
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.minecraft.world.item.ItemStack;
@@ -27,12 +28,25 @@ public record CombinedKitchenItemProvider(List<KitchenItemProvider> providers) i
         }
     }
 
+    private record CacheHintWrapper(int providerIndex, CacheHint cacheHint) implements CacheHint {
+    }
+
     @Override
-    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        if (cacheHint instanceof CacheHintWrapper wrapper) {
+            final var provider = providers.get(wrapper.providerIndex);
+            final var token = provider.findIngredient(ingredient, ingredientTokens, wrapper.cacheHint);
+            if (token != null) {
+                return new IngredientTokenWrapper(wrapper.providerIndex, token);
+            }
+            return null;
+        }
+
         for (int i = 0; i < providers.size(); i++) {
             final var provider = providers.get(i);
             final var filteredIngredientTokens = getFilteredIngredientTokens(ingredientTokens, i);
-            final var token = provider.findIngredient(ingredient, filteredIngredientTokens);
+            final var unwrappedCacheHint = cacheHint instanceof CacheHintWrapper wrapper ? wrapper.cacheHint : cacheHint;
+            final var token = provider.findIngredient(ingredient, filteredIngredientTokens, unwrappedCacheHint);
             if (token != null) {
                 return new IngredientTokenWrapper(i, token);
             }
@@ -41,16 +55,37 @@ public record CombinedKitchenItemProvider(List<KitchenItemProvider> providers) i
     }
 
     @Override
-    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        if (cacheHint instanceof CacheHintWrapper wrapper) {
+            final var provider = providers.get(wrapper.providerIndex);
+            final var token = provider.findIngredient(itemStack, ingredientTokens, wrapper.cacheHint);
+            if (token != null) {
+                return new IngredientTokenWrapper(wrapper.providerIndex, token);
+            }
+            return null;
+        }
+
         for (int i = 0; i < providers.size(); i++) {
             final var provider = providers.get(i);
             final var filteredIngredientTokens = getFilteredIngredientTokens(ingredientTokens, i);
-            final var token = provider.findIngredient(itemStack, filteredIngredientTokens);
+            final var unwrappedCacheHint = cacheHint instanceof CacheHintWrapper wrapper ? wrapper.cacheHint : cacheHint;
+            final var token = provider.findIngredient(itemStack, filteredIngredientTokens, unwrappedCacheHint);
             if (token != null) {
                 return new IngredientTokenWrapper(i, token);
             }
         }
         return null;
+    }
+
+    @Override
+    public CacheHint getCacheHint(IngredientToken ingredientToken) {
+        if (ingredientToken instanceof IngredientTokenWrapper wrapper) {
+            final var provider = providers.get(wrapper.providerIndex);
+            final var cacheHint = provider.getCacheHint(wrapper.token);
+            return new CacheHintWrapper(wrapper.providerIndex, cacheHint);
+        }
+
+        return CacheHint.NONE;
     }
 
     private Collection<IngredientToken> getFilteredIngredientTokens(Collection<IngredientToken> ingredientTokens, int providerIndex) {

@@ -5,6 +5,7 @@ import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -46,9 +47,9 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
 
     private record MilkJarItemProvider(MilkJarBlockEntity milkJar) implements KitchenItemProvider {
         @Override
-        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var itemStack : ingredient.getItems()) {
-                final var found = findIngredient(itemStack, ingredientTokens);
+                final var found = findIngredient(itemStack, ingredientTokens, cacheHint);
                 if (found != null) {
                     return found;
                 }
@@ -58,7 +59,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         }
 
         @Override
-        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             if (!itemStack.is(ModItemTags.MILK)) {
                 return null;
             }
@@ -70,6 +71,11 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
             } else {
                 return null;
             }
+        }
+
+        @Override
+        public CacheHint getCacheHint(IngredientToken ingredientToken) {
+            return CacheHint.NONE;
         }
     }
 

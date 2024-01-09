@@ -6,6 +6,7 @@ import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -49,9 +50,9 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
 
     private record SinkItemProvider(SinkBlockEntity sink) implements KitchenItemProvider {
         @Override
-        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var itemStack : ingredient.getItems()) {
-                final var found = findIngredient(itemStack, ingredientTokens);
+                final var found = findIngredient(itemStack, ingredientTokens, cacheHint);
                 if (found != null) {
                     return found;
                 }
@@ -61,7 +62,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         }
 
         @Override
-        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             if (!itemStack.is(ModItemTags.WATER)) {
                 return null;
             }
@@ -73,6 +74,11 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
             } else {
                 return null;
             }
+        }
+
+        @Override
+        public CacheHint getCacheHint(IngredientToken ingredientToken) {
+            return CacheHint.NONE;
         }
     }
 

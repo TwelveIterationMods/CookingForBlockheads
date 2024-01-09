@@ -8,6 +8,7 @@ import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -70,7 +71,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
 
         @Override
-        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var providedItem : providedItems) {
                 if (ingredient.test(providedItem)) {
                     return new IceUnitIngredientToken(providedItem);
@@ -80,13 +81,18 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         }
 
         @Override
-        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var providedItem : providedItems) {
                 if (ItemStack.isSameItem(providedItem, itemStack)) {
                     return new IceUnitIngredientToken(providedItem);
                 }
             }
             return null;
+        }
+
+        @Override
+        public CacheHint getCacheHint(IngredientToken ingredientToken) {
+            return CacheHint.NONE;
         }
     };
 

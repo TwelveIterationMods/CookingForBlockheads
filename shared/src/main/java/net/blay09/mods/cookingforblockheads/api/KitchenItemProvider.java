@@ -16,16 +16,20 @@ import java.util.Collection;
  */
 public interface KitchenItemProvider {
     /**
-     * @param ingredient the ingredient to find
-     * @param ingredientTokens the ingredient tokens that have already been provided by this provider
+     * @param ingredient       the ingredient to find
+     * @param ingredientTokens the ingredient tokens that have already been provided for this type of ingredient by this provider
+     * @param cacheHint        a hint on where to start looking, based on {@link #getCacheHint(IngredientToken)} for the last returned token for this type of ingredient
      * @return an ingredient token that matches the given ingredient, or null if none was found
      */
-    IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens);
+    IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
 
     /**
-     * @param itemStack the item to find
-     * @param ingredientTokens the ingredient tokens that have already been provided by this provider
+     * @param itemStack        the item to find
+     * @param ingredientTokens the ingredient tokens that have already been provided for this type of ingredient by this provider
+     * @param cacheHint        a hint on where to start looking, based on {@link #getCacheHint(IngredientToken)} for the last returned token for this type of ingredient
      * @return an ingredient token that matches the given ingredient, or null if none was found
      */
-    IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens);
+    IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
+
+    CacheHint getCacheHint(IngredientToken ingredientToken);
 }

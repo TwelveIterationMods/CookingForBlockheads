@@ -3,24 +3,21 @@ package net.blay09.mods.cookingforblockheads.crafting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CraftingOperation {
 
@@ -74,38 +71,70 @@ public class CraftingOperation {
             }
 
             final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
-            final var stackingIds = ingredient.getStackingIds();
-            final var itemProviders = context.getItemProviders();
-            var found = false;
-            for (int j = 0; j < itemProviders.size(); j++) {
-                final var itemProvider = itemProviders.get(j);
-                IngredientToken ingredientToken;
-                final var ingredientTokenKey = new IngredientTokenKey(j, stackingIds);
-                if (lockedInput.isEmpty()) {
-                    ingredientToken = itemProvider.findIngredient(ingredient, tokensByIngredient.get(ingredientTokenKey));
-                } else {
-                    ingredientToken = itemProvider.findIngredient(lockedInput, tokensByIngredient.get(ingredientTokenKey));
-                }
-                if (ingredientToken != null) {
-                    tokensByIngredient.put(ingredientTokenKey, ingredientToken);
-                    if (ingredient.getItems().length > 1) {
-                        if (lockedInputs == null) {
-                            lockedInputs = NonNullList.withSize(ingredients.size(), ItemStack.EMPTY);
-                        }
-                        lockedInputs.set(i, ingredientToken.peek());
+            final var ingredientToken = accountForIngredient(ingredient, lockedInput);
+            if (ingredientToken != null) {
+                if (ingredient.getItems().length > 1) {
+                    if (lockedInputs == null) {
+                        lockedInputs = NonNullList.withSize(recipe.getIngredients().size(), ItemStack.EMPTY);
                     }
-                    ingredientTokens.add(ingredientToken);
-                    found = true;
-                    break;
+                    lockedInputs.set(i, ingredientToken.peek());
                 }
-            }
-            if (!found) {
+            } else {
                 missingIngredients.add(ingredient);
                 missingIngredientsMask |= 1 << i;
             }
         }
 
         return this;
+    }
+
+    @Nullable
+    private IngredientToken accountForIngredient(Ingredient ingredient, ItemStack lockedInput) {
+        final var itemProviders = context.getItemProviders();
+        final var cachedProviderIndex = context.getCachedItemProviderIndexFor(ingredient);
+        if (cachedProviderIndex != -1) {
+            final var itemProvider = itemProviders.get(cachedProviderIndex);
+            final var ingredientToken = accountForIngredient(cachedProviderIndex, itemProvider, ingredient, lockedInput, true);
+            if (ingredientToken != null) {
+                return ingredientToken;
+            }
+        }
+
+        for (int j = 0; j < itemProviders.size(); j++) {
+            final var itemProvider = itemProviders.get(j);
+            IngredientToken ingredientToken = accountForIngredient(j, itemProvider, ingredient, lockedInput, false);
+            if (ingredientToken != null) {
+                return ingredientToken;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private IngredientToken accountForIngredient(int itemProviderIndex, KitchenItemProvider itemProvider, Ingredient ingredient, ItemStack lockedInput, boolean useCache) {
+        final var ingredientTokenKey = new IngredientTokenKey(itemProviderIndex, ingredient.getStackingIds());
+        final var scopedIngredientTokens = tokensByIngredient.get(ingredientTokenKey);
+        final var cacheHint = useCache ? context.getCacheHintFor(ingredientTokenKey) : CacheHint.NONE;
+        final var ingredientToken = findIngredient(itemProvider, ingredient, lockedInput, scopedIngredientTokens, cacheHint);
+        if (ingredientToken != null) {
+            tokensByIngredient.put(ingredientTokenKey, ingredientToken);
+            context.cache(ingredientTokenKey, itemProviderIndex, itemProvider.getCacheHint(ingredientToken));
+            ingredientTokens.add(ingredientToken);
+            return ingredientToken;
+        }
+        return null;
+    }
+
+    @Nullable
+    private IngredientToken findIngredient(KitchenItemProvider itemProvider, Ingredient ingredient, ItemStack lockedInput, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        IngredientToken ingredientToken;
+        if (lockedInput.isEmpty()) {
+            ingredientToken = itemProvider.findIngredient(ingredient, ingredientTokens, cacheHint);
+        } else {
+            ingredientToken = itemProvider.findIngredient(lockedInput, ingredientTokens, cacheHint);
+        }
+        return ingredientToken;
     }
 
     public boolean canCraft() {
