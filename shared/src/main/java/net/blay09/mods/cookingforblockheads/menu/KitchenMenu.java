@@ -231,7 +231,9 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var selectedRecipe = getSelectedRecipe();
         if (selectedRecipe != null) {
             final var recipe = selectedRecipe.recipe(player);
-            Balm.getNetworking().sendToServer(new CraftRecipeMessage(recipe.id(), lockedInputs, craftFullStack, addToInventory));
+            if (kitchen.canProcess(recipe.value().getType())) {
+                Balm.getNetworking().sendToServer(new CraftRecipeMessage(recipe.id(), lockedInputs, craftFullStack, addToInventory));
+            }
         }
     }
 
