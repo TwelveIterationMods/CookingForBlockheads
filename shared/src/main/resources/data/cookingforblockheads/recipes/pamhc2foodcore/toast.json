@@ -1,0 +1,9 @@
+{
+  "type": "cookingforblockheads:toaster",
+  "ingredient": {
+    "item": "minecraft:bread"
+  },
+  "result": {
+    "item": "pamhc2foodcore:toastitem"
+  }
+}

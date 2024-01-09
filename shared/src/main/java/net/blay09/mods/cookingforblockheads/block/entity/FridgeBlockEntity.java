@@ -1,22 +1,24 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.CombinedContainer;
-import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.CacheHint;
+import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.SourceItem;
-import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -28,13 +30,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
 
@@ -46,58 +50,64 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         }
     };
 
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container) {
+    public record IceUnitIngredientToken(ItemStack itemStack) implements IngredientToken {
+        @Override
+        public ItemStack peek() {
+            return itemStack;
+        }
 
-        private final ItemStack snowStack = new ItemStack(Items.SNOWBALL);
-        private final ItemStack iceStack = new ItemStack(Blocks.ICE);
+        @Override
+        public ItemStack consume() {
+            return itemStack;
+        }
 
-        @Nullable
-        private SourceItem applyIceUnit(IngredientPredicate predicate, int maxAmount) {
-            if (getBaseFridge().hasIceUpgrade && predicate.test(snowStack, 64)) {
-                return new SourceItem(this, -1, ContainerUtils.copyStackWithSize(snowStack, maxAmount));
+        @Override
+        public ItemStack restore(ItemStack itemStack) {
+            return ItemStack.EMPTY;
+        }
+    }
+
+    private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
+        private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
+
+        @Override
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+            for (final var providedItem : providedItems) {
+                if (ingredient.test(providedItem)) {
+                    return new IceUnitIngredientToken(providedItem);
+                }
             }
-
-            if (getBaseFridge().hasIceUpgrade && predicate.test(iceStack, 64)) {
-                return new SourceItem(this, -1, ContainerUtils.copyStackWithSize(iceStack, maxAmount));
-            }
-
             return null;
         }
 
-        @Nullable
         @Override
-        public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
-            SourceItem iceUnitResult = applyIceUnit(predicate, maxAmount);
-            if (iceUnitResult != null) {
-                return iceUnitResult;
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+            for (final var providedItem : providedItems) {
+                if (ItemStack.isSameItem(providedItem, itemStack)) {
+                    return new IceUnitIngredientToken(providedItem);
+                }
             }
-
-            IngredientPredicate modifiedPredicate = predicate;
-            if (getBaseFridge().hasPreservationUpgrade) {
-                modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
-                        (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
-            }
-
-            return super.findSource(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+            return null;
         }
 
-        @Nullable
         @Override
-        public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
-            SourceItem iceUnitResult = applyIceUnit(predicate, maxAmount);
-            if (iceUnitResult != null) {
-                return iceUnitResult;
-            }
-
-            IngredientPredicate modifiedPredicate = predicate;
-            if (getBaseFridge().hasPreservationUpgrade) {
-                modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
-                        (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
-            }
-
-            return super.findSourceAndMarkAsUsed(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+        public CacheHint getCacheHint(IngredientToken ingredientToken) {
+            return CacheHint.NONE;
         }
     };
+
+    private final ContainerKitchenItemProvider conservingItemProvider = new ContainerKitchenItemProvider(container) {
+        @Override
+        protected int getUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
+            return super.getUsesLeft(slot, slotStack, ingredientTokens) - 1;
+        }
+    };
+
+    private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
+
+    private final KitchenItemProvider itemProvider = new CombinedKitchenItemProvider(List.of(
+            new ConditionalKitchenItemProvider(this::hasIceUpgrade, iceUnitItemProvider),
+            new ConditionalKitchenItemProvider(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider)));
 
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
@@ -224,7 +234,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     @Override
     public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(IKitchenItemProvider.class, itemProvider));
+        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
     }
 
     public DoorAnimator getDoorAnimator() {

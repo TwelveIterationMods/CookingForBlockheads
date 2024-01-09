@@ -3,6 +3,10 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.config.BalmConfigData;
 import net.blay09.mods.balm.api.config.Comment;
 import net.blay09.mods.balm.api.config.Config;
+import net.blay09.mods.balm.api.config.ExpectedType;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.Set;
 
 @Config(CookingForBlockheads.MOD_ID)
 public class CookingForBlockheadsConfigData implements BalmConfigData {
@@ -39,4 +43,8 @@ public class CookingForBlockheadsConfigData implements BalmConfigData {
 
     @Comment("Toasting toasted bread again will turn into charcoal (only if no other mod adding toast is present). Set to false to disable.")
     public boolean allowVeryToastedBread = true;
+
+    @Comment("List of recipe ids that should be excluded from the recipe book.")
+    @ExpectedType(ResourceLocation.class)
+    public Set<ResourceLocation> excludedRecipes = Set.of();
 }

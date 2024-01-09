@@ -1,0 +1,554 @@
+{
+  "replace": false,
+  "values": [
+    "cookingforblockheads:counter",
+    "cookingforblockheads:cabinet",
+    "cookingforblockheads:fruit_basket",
+    "cookingforblockheads:spice_rack",
+    "cookingforblockheads:tool_rack",
+    {
+      "id": "farmersdelight:basket",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:pantry",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:oak_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:spruce_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:birch_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:jungle_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:acacia_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:dark_oak_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:crimson_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:warped_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:mangrove_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:framed_1",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:oak_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:spruce_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:birch_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:jungle_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:acacia_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:dark_oak_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:crimson_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:warped_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:mangrove_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:framed_2",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:oak_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:spruce_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:birch_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:jungle_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:acacia_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:dark_oak_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:crimson_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:warped_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:mangrove_4",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:framed_4",
+      "required": false
+    },
+    {
+      "id": "morecfm:autumnity_maple_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_willow_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_cherry_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_wisteria_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_rosewood_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_morado_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_yucca_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_kousa_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_aspen_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_grimwood_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_driftwood_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_river_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:endergetic_poise_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:bayou_blues_cypress_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_jacaranda_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_redbud_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:autumnity_stripped_maple_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_willow_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_cherry_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_wisteria_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_rosewood_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_morado_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_yucca_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_kousa_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_aspen_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_grimwood_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_stripped_driftwood_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_stripped_river_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:endergetic_stripped_poise_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:bayou_blues_stripped_cypress_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_stripped_jacaranda_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_stripped_redbud_cabinet",
+      "required": false
+    },
+    {
+      "id": "morecfm:autumnity_maple_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_willow_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_cherry_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_wisteria_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_rosewood_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_morado_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_yucca_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_kousa_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_aspen_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_grimwood_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_driftwood_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_river_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:endergetic_poise_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:bayou_blues_cypress_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_jacaranda_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_redbud_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:autumnity_stripped_maple_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_willow_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_cherry_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_wisteria_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_rosewood_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_morado_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_yucca_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_kousa_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_aspen_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_grimwood_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_stripped_driftwood_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_stripped_river_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:endergetic_stripped_poise_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:bayou_blues_stripped_cypress_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_stripped_jacaranda_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_stripped_redbud_kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "cfm:kitchen_drawer",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:barrel",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:iron_barrel",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:gold_barrel",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:diamond_barrel",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:netherite_barrel",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_barrel_1",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_iron_barrel_1",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_gold_barrel_1",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_diamond_barrel_1",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_netherite_barrel_1",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_barrel_2",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_iron_barrel_2",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_gold_barrel_2",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_diamond_barrel_2",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_netherite_barrel_2",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_barrel_3",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_iron_barrel_3",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_gold_barrel_3",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_diamond_barrel_3",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_netherite_barrel_3",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_barrel_4",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_iron_barrel_4",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_gold_barrel_4",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_diamond_barrel_4",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:limited_netherite_barrel_4",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:chest",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:iron_chest",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:gold_chest",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:diamond_chest",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:netherite_chest",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:shulker_box",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:iron_shulker_box",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:gold_shulker_box",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:diamond_shulker_box",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:netherite_shulker_box",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:standard_drawers_1",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:standard_drawers_2",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:standard_drawers_4",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:fractional_drawers_3",
+      "required": false
+    }
+  ]
+}

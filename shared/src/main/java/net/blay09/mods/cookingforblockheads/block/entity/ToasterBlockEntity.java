@@ -2,17 +2,20 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -87,14 +90,12 @@ public class ToasterBlockEntity extends BalmBlockEntity {
                 for (int i = 0; i < container.getContainerSize(); i++) {
                     ItemStack inputStack = container.getItem(i);
                     if (!inputStack.isEmpty()) {
-                        ToasterHandler toastHandler = CookingRegistry.getToasterHandler(inputStack);
-                        ItemStack outputStack = toastHandler != null ? toastHandler.getToasterOutput(inputStack) : ItemStack.EMPTY;
-                        if (outputStack.isEmpty()) {
-                            outputStack = inputStack;
-                        } else {
-                            outputStack = outputStack.copy();
-                        }
-                        ItemEntity itemEntity = new ItemEntity(level, worldPosition.getX() + 0.5f, worldPosition.getY() + 0.75f, worldPosition.getZ() + 0.5f, outputStack);
+                        final var outputStack = toastItem(inputStack);
+                        final var itemEntity = new ItemEntity(level,
+                                worldPosition.getX() + 0.5f,
+                                worldPosition.getY() + 0.75f,
+                                worldPosition.getZ() + 0.5f,
+                                outputStack);
                         itemEntity.setDeltaMovement(0f, 0.1f, 0f);
                         level.addFreshEntity(itemEntity);
                         container.setItem(i, ItemStack.EMPTY);
@@ -147,5 +148,45 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         CompoundTag firstTag = container.getItem(0).getTag();
         CompoundTag secondTag = container.getItem(1).getTag();
         return firstTag != null && firstTag.getBoolean("CookingForBlockheadsToasted") || secondTag != null && secondTag.getBoolean("CookingForBlockheadsToasted");
+    }
+
+    private ItemStack toastItem(ItemStack itemStack) {
+        // TODO fire a toaster event so addons can add custom handling
+        final var craftingContainer = new SimpleContainer(itemStack);
+        final var toastRecipe = level.getRecipeManager().getRecipeFor(ModRecipes.toasterRecipeType, craftingContainer, level).orElse(null);
+        if (toastRecipe != null) {
+            return toastRecipe.value().assemble(craftingContainer, level.registryAccess());
+        } else if (itemStack.is(Items.BREAD)) {
+            return toastBread(itemStack);
+        } else {
+            return itemStack;
+        }
+    }
+
+    private ItemStack toastBread(ItemStack itemStack) {
+        CompoundTag tag = itemStack.getTag();
+        boolean alreadyToasted = tag != null && tag.getBoolean("CookingForBlockheadsToasted");
+        if (alreadyToasted) {
+            if (CookingForBlockheadsConfig.getActive().allowVeryToastedBread) {
+                ItemStack veryToasted = new ItemStack(Items.CHARCOAL);
+                veryToasted.setHoverName(Component.translatable("tooltip.cookingforblockheads.very_toasted"));
+                return veryToasted;
+            } else {
+                return itemStack;
+            }
+        } else {
+            ItemStack toasted = itemStack.copy();
+            toasted.setHoverName(Component.translatable("tooltip.cookingforblockheads.toasted", itemStack.getHoverName()));
+            toasted.getOrCreateTag().putBoolean("CookingForBlockheadsToasted", true);
+            return toasted;
+        }
+    }
+
+    public boolean canToast(ItemStack itemStack) {
+        // TODO not sure how to best do this one with the toaster event
+        return level.getRecipeManager()
+                .getRecipeFor(ModRecipes.toasterRecipeType, new SimpleContainer(itemStack), level)
+                .map(it -> true)
+                .orElseGet(() -> itemStack.is(Items.BREAD));
     }
 }

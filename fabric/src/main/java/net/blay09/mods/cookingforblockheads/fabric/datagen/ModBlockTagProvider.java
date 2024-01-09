@@ -47,6 +47,12 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.cabinet,
                 ModBlocks.corner,
                 ModBlocks.hangingCorner);
+
+        final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
+        kitchenConnectors.add(ModBlocks.corner, ModBlocks.hangingCorner);
+        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
+            kitchenConnectors.add(kitchenFloor);
+        }
     }
 
 }

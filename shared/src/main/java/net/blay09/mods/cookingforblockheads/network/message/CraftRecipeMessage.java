@@ -1,54 +1,59 @@
 package net.blay09.mods.cookingforblockheads.network.message;
 
-import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
-import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
+import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class CraftRecipeMessage {
 
-    private final ItemStack outputItem;
-    private final FoodRecipeType recipeType;
-    private final NonNullList<ItemStack> craftMatrix;
-    private final boolean stack;
+    private final ResourceLocation recipeId;
+    private final NonNullList<ItemStack> lockedInputs;
+    private final boolean craftFullStack;
+    private final boolean addToInventory;
 
-    public CraftRecipeMessage(ItemStack outputItem, FoodRecipeType recipeType, NonNullList<ItemStack> craftMatrix, boolean stack) {
-        this.outputItem = outputItem;
-        this.recipeType = recipeType;
-        this.craftMatrix = craftMatrix;
-        this.stack = stack;
+    public CraftRecipeMessage(ResourceLocation recipeId, @Nullable NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
+        this.recipeId = recipeId;
+        this.lockedInputs = lockedInputs;
+        this.craftFullStack = craftFullStack;
+        this.addToInventory = addToInventory;
     }
 
     public static void encode(CraftRecipeMessage message, FriendlyByteBuf buf) {
-        buf.writeItem(message.outputItem);
-        buf.writeByte(message.recipeType.ordinal());
-        buf.writeByte(message.craftMatrix.size());
-        for (ItemStack itemstack : message.craftMatrix) {
-            buf.writeItem(itemstack);
+        buf.writeResourceLocation(message.recipeId);
+        if (message.lockedInputs != null) {
+            buf.writeByte(message.lockedInputs.size());
+            for (ItemStack itemstack : message.lockedInputs) {
+                buf.writeItem(itemstack);
+            }
+        } else {
+            buf.writeByte(0);
         }
 
-        buf.writeBoolean(message.stack);
+        buf.writeBoolean(message.craftFullStack);
+        buf.writeBoolean(message.addToInventory);
     }
 
     public static CraftRecipeMessage decode(FriendlyByteBuf buf) {
-        ItemStack outputItem = buf.readItem();
-        FoodRecipeType recipeType = FoodRecipeType.fromId(buf.readByte());
-        int ingredientCount = buf.readByte();
-        NonNullList<ItemStack> craftMatrix = NonNullList.create();
-        for (int i = 0; i < ingredientCount; i++) {
-            craftMatrix.add(buf.readItem());
+        final var recipeId = buf.readResourceLocation();
+        final var lockedInputsCount = buf.readByte();
+        NonNullList<ItemStack> lockedInputs = NonNullList.createWithCapacity(lockedInputsCount);
+        for (int i = 0; i < lockedInputsCount; i++) {
+            lockedInputs.add(buf.readItem());
         }
-        boolean stack = buf.readBoolean();
-        return new CraftRecipeMessage(outputItem, recipeType, craftMatrix, stack);
+        final var craftFullStack = buf.readBoolean();
+        final var addToInventory = buf.readBoolean();
+        return new CraftRecipeMessage(recipeId, lockedInputs, craftFullStack, addToInventory);
     }
 
     public static void handle(ServerPlayer player, CraftRecipeMessage message) {
         AbstractContainerMenu container = player.containerMenu;
-        if (container instanceof RecipeBookMenu) {
-            ((RecipeBookMenu) container).tryCraft(message.outputItem, message.recipeType, message.craftMatrix, message.stack);
+        if (container instanceof KitchenMenu kitchenMenu) {
+            kitchenMenu.craft(message.recipeId, message.lockedInputs, message.craftFullStack, message.addToInventory);
         }
     }
 

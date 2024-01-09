@@ -2,8 +2,7 @@ package net.blay09.mods.cookingforblockheads.block;
 
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.cookingforblockheads.api.ToasterHandler;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.ToasterBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -13,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -59,27 +59,22 @@ public class ToasterBlock extends BaseKitchenBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof ToasterBlockEntity) {
-            ToasterBlockEntity toaster = (ToasterBlockEntity) blockEntity;
+        if (blockEntity instanceof ToasterBlockEntity toaster) {
             ItemStack heldItem = player.getItemInHand(hand);
             if (heldItem.isEmpty() || !toaster.getContainer().getItem(0).isEmpty() && !toaster.getContainer().getItem(1).isEmpty()) {
                 if (!toaster.isActive() && (!toaster.getContainer().getItem(0).isEmpty() || !toaster.getContainer().getItem(1).isEmpty())) {
                     toaster.setActive(!toaster.isActive());
                 }
             } else {
-                ToasterHandler toastHandler = CookingRegistry.getToasterHandler(heldItem);
-                if (toastHandler != null) {
-                    ItemStack output = toastHandler.getToasterOutput(heldItem);
-                    if (!output.isEmpty()) {
-                        for (int i = 0; i < toaster.getContainer().getContainerSize(); i++) {
-                            if (toaster.getContainer().getItem(i).isEmpty()) {
-                                toaster.getContainer().setItem(i, player.getAbilities().instabuild ? heldItem.copy().split(1) : heldItem.split(1));
-                                return InteractionResult.SUCCESS;
-                            }
+                if (toaster.canToast(heldItem)) {
+                    for (int i = 0; i < toaster.getContainer().getContainerSize(); i++) {
+                        if (toaster.getContainer().getItem(i).isEmpty()) {
+                            toaster.getContainer().setItem(i, player.getAbilities().instabuild ? heldItem.copy().split(1) : heldItem.split(1));
+                            return InteractionResult.SUCCESS;
                         }
-
-                        return InteractionResult.SUCCESS;
                     }
+
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
@@ -129,7 +124,6 @@ public class ToasterBlock extends BaseKitchenBlock {
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
-
 
 
     @Override

@@ -2,10 +2,13 @@ package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
+import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
-import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,9 +32,9 @@ public class ItemRecipeBook extends Item {
         CRAFTING("crafting_book", () -> ModMenus.craftingBook.get());
 
         private final String name;
-        private final Supplier<MenuType<RecipeBookMenu>> containerTypeSupplier;
+        private final Supplier<MenuType<KitchenMenu>> containerTypeSupplier;
 
-        RecipeBookEdition(String name, Supplier<MenuType<RecipeBookMenu>> containerTypeSupplier) {
+        RecipeBookEdition(String name, Supplier<MenuType<KitchenMenu>> containerTypeSupplier) {
             this.name = name;
             this.containerTypeSupplier = containerTypeSupplier;
         }
@@ -40,7 +43,7 @@ public class ItemRecipeBook extends Item {
             return name;
         }
 
-        public Supplier<MenuType<RecipeBookMenu>> getContainerTypeSupplier() {
+        public Supplier<MenuType<KitchenMenu>> getMenuTypeSupplier() {
             return containerTypeSupplier;
         }
     }
@@ -55,6 +58,7 @@ public class ItemRecipeBook extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
+            final var itemStack = player.getItemInHand(hand);
             Balm.getNetworking().openGui(player, new BalmMenuProvider() {
                 @Override
                 public Component getDisplayName() {
@@ -63,13 +67,12 @@ public class ItemRecipeBook extends Item {
 
                 @Override
                 public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                    RecipeBookMenu container = new RecipeBookMenu(edition.getContainerTypeSupplier().get(), i, playerEntity);
-                    if (edition == RecipeBookEdition.NO_FILTER) {
-                        container.setNoFilter();
-                    } else if (edition == RecipeBookEdition.CRAFTING) {
-                        container.allowCrafting();
-                    }
-                    return container;
+                    return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, new KitchenImpl(itemStack));
+                }
+
+                @Override
+                public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+                    buf.writeItem(itemStack);
                 }
             });
         }

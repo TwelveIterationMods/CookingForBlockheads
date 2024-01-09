@@ -17,7 +17,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
-        getOrCreateTagBuilder(ModItemTags.DYEABLE).add(ModBlocks.cookingTable.asItem(),
+        getOrCreateTagBuilder(ModItemTags.IS_DYEABLE).add(ModBlocks.cookingTable.asItem(),
                 ModBlocks.fridge.asItem(),
                 ModBlocks.sink.asItem(),
                 ModBlocks.counter.asItem(),

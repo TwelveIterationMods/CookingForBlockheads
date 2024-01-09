@@ -11,9 +11,9 @@ public class ModScreens {
         screens.registerScreen(ModMenus.counter::get, CounterScreen::new);
         screens.registerScreen(ModMenus.fridge::get, FridgeScreen::new);
         screens.registerScreen(ModMenus.fruitBasket::get, FruitBasketScreen::new);
-        screens.registerScreen(ModMenus.noFilterBook::get, RecipeBookScreen::new);
-        screens.registerScreen(ModMenus.recipeBook::get, RecipeBookScreen::new);
-        screens.registerScreen(ModMenus.craftingBook::get, RecipeBookScreen::new);
-        screens.registerScreen(ModMenus.cookingTable::get, RecipeBookScreen::new);
+        screens.registerScreen(ModMenus.noFilterBook::get, KitchenScreen::new);
+        screens.registerScreen(ModMenus.recipeBook::get, KitchenScreen::new);
+        screens.registerScreen(ModMenus.craftingBook::get, KitchenScreen::new);
+        screens.registerScreen(ModMenus.cookingTable::get, KitchenScreen::new);
     }
 }

@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.SinkBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -16,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
@@ -64,7 +64,7 @@ public class SinkBlock extends BaseKitchenBlock {
             return InteractionResult.SUCCESS;
         }
 
-        ItemStack resultStack = CookingRegistry.getSinkOutput(heldItem);
+        ItemStack resultStack = cleanItem(heldItem);
         if (!resultStack.isEmpty()) {
             CompoundTag tagCompound = heldItem.getTag();
             ItemStack newItem = resultStack.copy();
@@ -133,7 +133,13 @@ public class SinkBlock extends BaseKitchenBlock {
         float particleZ = (float) pos.getZ() + 0.5f;
         level.addParticle(ParticleTypes.SPLASH, (double) particleX + dripWaterX, (double) particleY - 0.45f, (double) particleZ + dripWaterZ, 0, 0, 0);
         for (int i = 0; i < 5; i++) {
-            level.addParticle(ParticleTypes.SPLASH, (double) particleX + Math.random() - 0.5f, (double) particleY + Math.random() - 0.5f, (double) particleZ + Math.random() - 0.5f, 0, 0, 0);
+            level.addParticle(ParticleTypes.SPLASH,
+                    (double) particleX + Math.random() - 0.5f,
+                    (double) particleY + Math.random() - 0.5f,
+                    (double) particleZ + Math.random() - 0.5f,
+                    0,
+                    0,
+                    0);
         }
 
         level.playSound(null, pos, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 0.1f, level.random.nextFloat() + 0.5f);
@@ -156,9 +162,15 @@ public class SinkBlock extends BaseKitchenBlock {
         return CODEC;
     }
 
-
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.sink.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    public ItemStack cleanItem(ItemStack itemStack) {
+        if (itemStack.getItem() instanceof DyeableLeatherItem dyeableLeatherItem) {
+            dyeableLeatherItem.clearColor(itemStack);
+        }
+        return itemStack;
     }
 }

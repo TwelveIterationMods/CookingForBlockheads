@@ -6,20 +6,22 @@ import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.*;
 import net.blay09.mods.balm.api.energy.BalmEnergyStorageProvider;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
-import net.blay09.mods.balm.api.item.BalmItems;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.api.tag.BalmItemTags;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.KitchenOperation;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
+import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,6 +34,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -42,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmeltingProvider, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox {
+public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox {
 
     private static final int COOK_TIME = 200;
 
@@ -120,7 +123,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     private final SubContainer outputContainer = new SubContainer(container, 4, 7);
     private final SubContainer processingContainer = new SubContainer(container, 7, 16);
     private final SubContainer toolsContainer = new SubContainer(container, 16, 20);
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(new CombinedContainer(toolsContainer, outputContainer));
+    private final KitchenItemProvider itemProvider = new ContainerKitchenItemProvider(new CombinedContainer(toolsContainer, outputContainer));
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private Component customName;
@@ -274,22 +277,22 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     private final Container singleSlotRecipeWrapper = new DefaultContainer(1);
 
     public ItemStack getSmeltingResult(ItemStack itemStack) {
-        ItemStack result = CookingRegistry.getSmeltingResult(itemStack);
-        if (!result.isEmpty()) {
-            return result;
+        singleSlotRecipeWrapper.setItem(0, itemStack);
+        final var ovenRecipeResult = getSmeltingResult(ModRecipes.ovenRecipeType, singleSlotRecipeWrapper);
+        if (!ovenRecipeResult.isEmpty()) {
+            return ovenRecipeResult;
         }
 
-        singleSlotRecipeWrapper.setItem(0, itemStack);
-        RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, singleSlotRecipeWrapper, this.level).orElse(null);
+        return getSmeltingResult(RecipeType.SMELTING, singleSlotRecipeWrapper);
+    }
+
+    public <T extends Container> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T container) {
+        RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(recipeType, container, this.level).orElse(null);
         if (recipe != null) {
-            result = recipe.value().getResultItem(level.registryAccess());
+            final var result = recipe.value().getResultItem(level.registryAccess());
             if (!result.isEmpty() && result.getItem().isEdible()) {
                 return result;
             }
-        }
-
-        if (!result.isEmpty() && CookingRegistry.isNonFoodRecipe(result)) {
-            return result;
         }
 
         return ItemStack.EMPTY;
@@ -405,8 +408,20 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     }
 
     @Override
-    public ItemStack smeltItem(ItemStack itemStack) {
-        return ContainerUtils.insertItemStacked(inputContainer, itemStack, false);
+    public boolean canProcess(RecipeType<?> recipeType) {
+        return recipeType == RecipeType.SMELTING;
+    }
+
+    @Override
+    public KitchenOperation processRecipe(Recipe<?> recipe, List<IngredientToken> ingredientTokens) {
+        for (final var ingredientToken : ingredientTokens) {
+            final var itemStack = ingredientToken.consume();
+            final var restStack = ContainerUtils.insertItemStacked(inputContainer, itemStack, false);
+            if (!restStack.isEmpty()) {
+                ingredientToken.restore(restStack);
+            }
+        }
+        return KitchenOperation.EMPTY;
     }
 
     public DoorAnimator getDoorAnimator() {
@@ -441,8 +456,8 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     @Override
     public List<BalmProvider<?>> getProviders() {
         return Lists.newArrayList(
-                new BalmProvider<>(IKitchenItemProvider.class, itemProvider),
-                new BalmProvider<>(IKitchenSmeltingProvider.class, this)
+                new BalmProvider<>(KitchenItemProvider.class, itemProvider),
+                new BalmProvider<>(KitchenItemProcessor.class, this)
         );
     }
 
