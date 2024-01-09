@@ -7,6 +7,7 @@ import net.blay09.mods.balm.api.event.BalmEvents;
 import net.blay09.mods.balm.api.event.client.RecipesUpdatedEvent;
 import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeGroup;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
@@ -73,11 +74,15 @@ public class CookingForBlockheadsRegistry {
     }
 
     private static boolean isEligibleResultItem(ItemStack itemStack) {
+        if (itemStack.is(ModItemTags.EXCLUDED)) {
+            return false;
+        }
+
         return itemStack.isEdible() || itemStack.is(ModItemTags.FOODS) || itemStack.is(ModItemTags.INGREDIENTS);
     }
 
     private static <T extends Container> boolean isEligibleRecipe(RecipeHolder<? extends Recipe<T>> recipe) {
-        return true;
+        return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id());
     }
 
     public static <C extends Container, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {

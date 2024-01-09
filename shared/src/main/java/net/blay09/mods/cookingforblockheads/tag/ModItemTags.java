@@ -13,4 +13,5 @@ public class ModItemTags {
     public static final TagKey<Item> INGREDIENTS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "ingredients"));
     public static final TagKey<Item> MILK = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "milk"));
     public static final TagKey<Item> WATER = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "water"));
+    public static final TagKey<Item> EXCLUDED = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "excluded"));
 }

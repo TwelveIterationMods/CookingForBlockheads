@@ -146,5 +146,8 @@
     "config.cookingforblockheads.showIngredientIcon": "Show Ingredient Icon",
     "config.cookingforblockheads.showIngredientIcon.tooltip": "Set to false if you don't want ingredients to be marked with a special icon in the recipe book.",
     "config.cookingforblockheads.allowVeryToastedBread": "Allow Very Toasted Bread",
-    "config.cookingforblockheads.allowVeryToastedBread.tooltip": "Toasting toasted bread again will turn into charcoal (only if no other mod adding toast is present). Set to false to disable."
+    "config.cookingforblockheads.allowVeryToastedBread.tooltip": "Toasting toasted bread again will turn into charcoal (only if no other mod adding toast is present). Set to false to disable.",
+    "config.cookingforblockheads.excludedRecipes": "Excluded Recipes",
+    "config.cookingforblockheads.excludedRecipes.tooltip": "List of recipe ids that should be excluded from the recipe book."
+
 }
