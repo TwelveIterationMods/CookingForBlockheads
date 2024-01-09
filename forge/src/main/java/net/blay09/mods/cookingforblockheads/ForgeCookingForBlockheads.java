@@ -24,7 +24,7 @@ public class ForgeCookingForBlockheads {
     public static Capability<KitchenItemProvider> KITCHEN_ITEM_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public static Capability<KitchenItemProcessor> KITCHEN_SMELTING_PROVIDER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    public static Capability<KitchenItemProcessor> KITCHEN_ITEM_PROCESSOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
     public ForgeCookingForBlockheads() {
@@ -36,10 +36,8 @@ public class ForgeCookingForBlockheads {
         Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheadsClient::initialize));
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(IMCHandler::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerCapabilities);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        MinecraftForge.EVENT_BUS.addListener(IMCHandler::onFoodRegistryInit);
 
         ForgeBalmProviders providers = (ForgeBalmProviders) Balm.getProviders();
         providers.register(KitchenItemProvider.class, new CapabilityToken<>() {

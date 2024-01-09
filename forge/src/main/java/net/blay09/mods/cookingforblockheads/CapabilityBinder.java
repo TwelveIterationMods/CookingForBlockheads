@@ -1,8 +1,7 @@
-package net.blay09.mods.cookingforblockheads.compat;
+package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.ForgeCookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,38 +14,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
-public class CompatCapabilityLoader {
+public class CapabilityBinder {
 
-    private static ResourceLocation itemProviderResourceKey;
-    private static ResourceLocation connectorResourceKey;
+    private static final ResourceLocation itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
 
     @SubscribeEvent
     public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
         BlockEntity blockEntity = event.getObject();
 
-        ResourceLocation blockEntityRegistryName = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(blockEntity.getType());
-        if (JsonCompatLoader.kitchenItemProviders.contains(blockEntityRegistryName)) {
-            if (itemProviderResourceKey == null) {
-                itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
-            }
-
+        if (blockEntity.getBlockState().is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
             event.addCapability(itemProviderResourceKey, new KitchenItemCapabilityProvider(blockEntity));
-        }
-
-        if (JsonCompatLoader.kitchenConnectors.contains(blockEntityRegistryName)) {
-            if (connectorResourceKey == null) {
-                connectorResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_connector");
-            }
-
-            if (connectorCapabilityProvider == null) {
-                connectorCapabilityProvider = new KitchenConnectorCapabilityProvider();
-            }
-
-            event.addCapability(connectorResourceKey, connectorCapabilityProvider);
         }
     }
 
@@ -54,7 +34,7 @@ public class CompatCapabilityLoader {
 
     private final static class KitchenItemCapabilityProvider implements ICapabilityProvider {
 
-        private final LazyOptional<IKitchenItemProvider> itemProviderCap;
+        private final LazyOptional<KitchenItemProvider> itemProviderCap;
 
         public KitchenItemCapabilityProvider(final BlockEntity entity) {
             itemProviderCap = LazyOptional.of(() -> {

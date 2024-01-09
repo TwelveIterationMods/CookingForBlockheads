@@ -26,9 +26,7 @@ public class NeoForgeCookingForBlockheads {
         Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheadsClient::initialize));
 
-        eventBus.addListener(IMCHandler::processIMC);
         eventBus.addListener(this::enqueueIMC);
-        NeoForge.EVENT_BUS.addListener(IMCHandler::onFoodRegistryInit);
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {
