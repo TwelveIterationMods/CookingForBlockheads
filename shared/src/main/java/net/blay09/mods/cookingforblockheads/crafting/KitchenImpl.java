@@ -4,7 +4,9 @@ import net.blay09.mods.balm.api.provider.ProviderUtils;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.CookingTableBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
@@ -12,6 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -25,6 +29,7 @@ public class KitchenImpl implements Kitchen {
 
     private final ItemStack activatingItemStack;
     private final BlockState activatingBlockState;
+    private final BlockEntity activatingBlockEntity;
     private final Set<BlockPos> checkedPos = new HashSet<>();
     private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
     private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();
@@ -32,11 +37,13 @@ public class KitchenImpl implements Kitchen {
     public KitchenImpl(ItemStack itemStack) {
         activatingItemStack = itemStack;
         activatingBlockState = Blocks.AIR.defaultBlockState();
+        activatingBlockEntity = null;
     }
 
     public KitchenImpl(Level level, BlockPos pos) {
         activatingBlockState = level.getBlockState(pos);
         activatingItemStack = ItemStack.EMPTY;
+        activatingBlockEntity = level.getBlockEntity(pos);
         findNeighbourCraftingBlocks(level, pos, true);
     }
 
@@ -95,4 +102,12 @@ public class KitchenImpl implements Kitchen {
         return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
     }
 
+    public boolean isRecipeAvailable(RecipeHolder<Recipe<?>> recipe, CraftingOperation operation) {
+        final var isNoFilter = activatingItemStack.is(ModItems.noFilterBook) || (activatingBlockEntity instanceof CookingTableBlockEntity cookingTable && cookingTable.hasNoFilterBook());
+        if (isNoFilter) {
+            return true;
+        }
+
+        return operation.canCraft();
+    }
 }

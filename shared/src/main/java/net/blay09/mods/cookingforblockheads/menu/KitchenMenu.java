@@ -4,7 +4,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
@@ -27,7 +26,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -249,6 +247,10 @@ public class KitchenMenu extends AbstractContainerMenu {
                 }
 
                 final var operation = context.createOperation(recipe).prepare();
+                if (!kitchen.isRecipeAvailable(recipe, operation)) {
+                    continue;
+                }
+
                 final var recipeWithStatus = new RecipeWithStatus(recipe.id(),
                         resultItem,
                         operation.getMissingIngredients(),

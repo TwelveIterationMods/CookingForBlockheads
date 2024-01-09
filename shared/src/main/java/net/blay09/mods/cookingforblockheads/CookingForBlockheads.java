@@ -32,8 +32,7 @@ import java.util.Optional;
 
 public class CookingForBlockheads {
 
-    // TODO everything is nofilter right now
-    // TODO Received invalid craft request, unprocessable recipe minecraft:bread should be blocked clientside
+    // TODO preservation upgrade and ice unit for fridge
 
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);
