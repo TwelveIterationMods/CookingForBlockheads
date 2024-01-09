@@ -62,7 +62,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
 
         @Override
         public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
-            if (!itemStack.is(ModItemTags.MILK)) {
+            if (!itemStack.is(ModItemTags.WATER)) {
                 return null;
             }
 

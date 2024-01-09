@@ -1,6 +1,11 @@
 {
   "replace": false,
   "values": [
+    "cookingforblockheads:counter",
+    "cookingforblockheads:cabinet",
+    "cookingforblockheads:fruit_basket",
+    "cookingforblockheads:spice_rack",
+    "cookingforblockheads:tool_rack",
     "farmersdelight:basket",
     "farmersdelight:pantry",
     "functionalstorage:oak_1",

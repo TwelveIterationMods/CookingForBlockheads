@@ -55,7 +55,8 @@ public record CombinedKitchenItemProvider(List<KitchenItemProvider> providers) i
 
     private Collection<IngredientToken> getFilteredIngredientTokens(Collection<IngredientToken> ingredientTokens, int providerIndex) {
         return ingredientTokens.stream()
-                .filter(ingredientToken -> !(ingredientToken instanceof IngredientTokenWrapper wrapper && wrapper.providerIndex == providerIndex))
+                .filter(ingredientToken -> (ingredientToken instanceof IngredientTokenWrapper wrapper && wrapper.providerIndex == providerIndex))
+                .map(ingredientToken -> ((IngredientTokenWrapper) ingredientToken).token)
                 .toList();
     }
 }

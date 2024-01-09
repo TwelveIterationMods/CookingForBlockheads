@@ -8,7 +8,12 @@ import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
@@ -22,12 +27,17 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
 
@@ -39,9 +49,59 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         }
     };
 
-    private final ContainerKitchenItemProvider itemProvider = new ContainerKitchenItemProvider(container) {
-        // TODO preservation upgrade, and provide snow and ice
+    public record IceUnitIngredientToken(ItemStack itemStack) implements IngredientToken {
+        @Override
+        public ItemStack peek() {
+            return itemStack;
+        }
+
+        @Override
+        public ItemStack consume() {
+            return itemStack;
+        }
+
+        @Override
+        public ItemStack restore(ItemStack itemStack) {
+            return ItemStack.EMPTY;
+        }
+    }
+
+    private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
+        private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOW), new ItemStack(Items.ICE));
+
+        @Override
+        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {
+            for (final var providedItem : providedItems) {
+                if (ingredient.test(providedItem)) {
+                    return new IceUnitIngredientToken(providedItem);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens) {
+            for (final var providedItem : providedItems) {
+                if (ItemStack.isSameItem(providedItem, itemStack)) {
+                    return new IceUnitIngredientToken(providedItem);
+                }
+            }
+            return null;
+        }
     };
+
+    private final ContainerKitchenItemProvider conservingItemProvider = new ContainerKitchenItemProvider(container) {
+        @Override
+        protected int getUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
+            return super.getUsesLeft(slot, slotStack, ingredientTokens) - 1;
+        }
+    };
+
+    private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
+
+    private final KitchenItemProvider itemProvider = new CombinedKitchenItemProvider(List.of(
+            new ConditionalKitchenItemProvider(this::hasIceUpgrade, iceUnitItemProvider),
+            new ConditionalKitchenItemProvider(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider)));
 
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 

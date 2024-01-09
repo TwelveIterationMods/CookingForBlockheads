@@ -39,7 +39,7 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
         return null;
     }
 
-    private boolean hasUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
+    protected int getUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
         var usesLeft = slotStack.getCount();
         for (IngredientToken ingredientToken : ingredientTokens) {
             if (ingredientToken instanceof ContainerIngredientToken containerIngredientToken) {
@@ -49,7 +49,11 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
             }
         }
 
-        return usesLeft > 0;
+        return usesLeft;
+    }
+
+    private boolean hasUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
+        return getUsesLeft(slot, slotStack, ingredientTokens) > 0;
     }
 
     public class ContainerIngredientToken implements IngredientToken {

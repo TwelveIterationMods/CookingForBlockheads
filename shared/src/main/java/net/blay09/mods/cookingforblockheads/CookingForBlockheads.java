@@ -32,7 +32,8 @@ import java.util.Optional;
 
 public class CookingForBlockheads {
 
-    // TODO preservation upgrade and ice unit for fridge
+    // TODO search doesn't do anything
+    // TODO tags are failing to load
 
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);

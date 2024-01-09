@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:sugar",
+    "minecraft:snow_block",
     "croptopia:olive_oil",
     "croptopia:dough",
     "croptopia:noodle",
