@@ -487,7 +487,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void search(@Nullable String term) {
         this.currentSearch = term;
-        updateCraftableSlots();
+        updateFilteredRecipes();
         setScrollOffset(0);
     }
 

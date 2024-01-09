@@ -32,8 +32,6 @@ import java.util.Optional;
 
 public class CookingForBlockheads {
 
-    // TODO search doesn't do anything
-
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 

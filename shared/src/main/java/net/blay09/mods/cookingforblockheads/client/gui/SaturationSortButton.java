@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorSaturation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -19,8 +20,8 @@ public class SaturationSortButton implements ISortButton {
     }
 
     @Override
-    public String getTooltip() {
-        return "tooltip.cookingforblockheads.sort_by_saturation";
+    public Component getTooltip() {
+        return Component.translatable("tooltip.cookingforblockheads.sort_by_saturation");
     }
 
     @Override

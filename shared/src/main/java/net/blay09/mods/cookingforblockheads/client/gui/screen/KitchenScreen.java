@@ -315,12 +315,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             matrixSlot.updateSlot(partialTicks);
         }
 
-        for (Button sortButton : this.sortButtons) {
-            if (sortButton instanceof SortButton && sortButton.isMouseOver(mouseX, mouseY) && sortButton.active) {
-                guiGraphics.renderTooltip(font, ((SortButton) sortButton).getTooltipLines(), Optional.empty(), mouseX, mouseY);
-            }
-        }
-
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
