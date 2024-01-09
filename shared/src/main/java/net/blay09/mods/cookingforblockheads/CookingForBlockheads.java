@@ -11,6 +11,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenSmeltingRecipeHandler;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
@@ -23,12 +24,16 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
 public class CookingForBlockheads {
+
+    // TODO everything is nofilter right now
+    // TODO Received invalid craft request, unprocessable recipe minecraft:bread should be blocked clientside
 
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);
@@ -54,6 +59,7 @@ public class CookingForBlockheads {
 
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(ShapedRecipe.class, new KitchenShapedRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(ShapelessRecipe.class, new KitchenShapelessRecipeHandler());
+        CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
         ModNetworking.initialize(Balm.getNetworking());

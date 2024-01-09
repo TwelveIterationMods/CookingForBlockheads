@@ -413,12 +413,12 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     @Override
-    public KitchenOperation processRecipe(RecipeType<?> recipeType, List<IngredientToken> ingredients) {
-        for (final var ingredient : ingredients) {
-            final var itemStack = ingredient.consume();
+    public KitchenOperation processRecipe(Recipe<?> recipe, List<IngredientToken> ingredientTokens) {
+        for (final var ingredientToken : ingredientTokens) {
+            final var itemStack = ingredientToken.consume();
             final var restStack = ContainerUtils.insertItemStacked(inputContainer, itemStack, false);
             if (!restStack.isEmpty()) {
-                ingredient.restore(restStack);
+                ingredientToken.restore(restStack);
             }
         }
         return KitchenOperation.EMPTY;

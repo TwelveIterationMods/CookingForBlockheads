@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -115,19 +117,12 @@ public class CraftingOperation {
     }
 
     private <C extends Container, T extends Recipe<C>> ItemStack craft(AbstractContainerMenu menu, RegistryAccess registryAccess, T recipe) {
-        final var craftingContainer = new TransientCraftingContainer(menu, 3, 3);
         final var recipeTypeHandler = CookingForBlockheadsRegistry.getRecipeWorkshopHandler(recipe);
         if (recipeTypeHandler == null) {
             return ItemStack.EMPTY;
         }
 
-        for (int i = 0; i < ingredientTokens.size(); i++) {
-            final var ingredientToken = ingredientTokens.get(i);
-            final var matrixSlot = recipeTypeHandler.mapToMatrixSlot(recipe, i);
-            craftingContainer.setItem(matrixSlot, ingredientToken.consume());
-        }
-
-        return recipeTypeHandler.assemble(recipe, craftingContainer, registryAccess);
+        return recipeTypeHandler.assemble(context, recipe, ingredientTokens, registryAccess);
     }
 
     public NonNullList<ItemStack> getLockedInputs() {

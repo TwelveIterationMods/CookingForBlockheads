@@ -42,7 +42,7 @@ public class CookingForBlockheadsClient {
 
                 final var selectedRecipe = selectedRecipeWithStatus.recipe(player).value();
 
-                if (menu.isSelectedSlot(listingSlot) && kitchen.canProcess(selectedRecipe.getType())) {
+                if (menu.isSelectedSlot(listingSlot) && kitchen.canProcess(RecipeType.CRAFTING)) {
                     if (selectedRecipe.getType() == RecipeType.SMELTING) {
                         if (!kitchen.canProcess(RecipeType.SMELTING)) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));

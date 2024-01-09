@@ -4,6 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -311,6 +313,11 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var recipe = (RecipeHolder<Recipe<?>>) level.getRecipeManager().byKey(recipeId).orElse(null);
         if (recipe == null) {
             CookingForBlockheads.logger.error("Received invalid recipe from client: {}", recipeId);
+            return;
+        }
+
+        if (!kitchen.canProcess(recipe.value().getType())) {
+            CookingForBlockheads.logger.error("Received invalid craft request, unprocessable recipe {}", recipeId);
             return;
         }
 

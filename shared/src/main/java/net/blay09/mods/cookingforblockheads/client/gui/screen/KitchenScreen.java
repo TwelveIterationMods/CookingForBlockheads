@@ -10,6 +10,7 @@ import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -133,8 +134,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        super.mouseClicked(mouseX, mouseY, button);
-
         if (button == 1 && mouseX >= searchBar.getX() && mouseX < searchBar.getX() + searchBar.getWidth() && mouseY >= searchBar.getY() && mouseY < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.search(null);
@@ -143,6 +142,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         } else {
             if (searchBar.mouseClicked(mouseX, mouseY, button)) {
+                searchBar.setFocused(true);
                 return true;
             }
         }
@@ -168,7 +168,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         }
 
-        return false;
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
@@ -280,7 +280,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             poseStack.translate(0, 0, 300);
             for (Slot slot : menu.slots) {
                 if (slot instanceof CraftableListingFakeSlot fakeSlot) {
-                    if (!slot.getItem().isEdible()) {
+                    if (slot.getItem().is(ModItemTags.INGREDIENTS)) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 76, 16, 16);
                     }
 
