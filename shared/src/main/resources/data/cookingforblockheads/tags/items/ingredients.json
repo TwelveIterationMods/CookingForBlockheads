@@ -2,125 +2,481 @@
   "replace": false,
   "values": [
     "minecraft:sugar",
-    "minecraft:snow_block",
-    "croptopia:olive_oil",
-    "croptopia:dough",
-    "croptopia:noodle",
-    "croptopia:flour",
-    "croptopia:molasses",
-    "croptopia:caramel",
-    "croptopia:cinnamon",
-    "croptopia:corn_husk",
-    "croptopia:whipping_cream",
-    "croptopia:salt",
-    "create:dough",
-    "farmersdelight:rice_panicle",
-    "farmersdelight:rice",
-    "farmersdelight:milk_bottle",
-    "pamhc2foodcore:flouritem",
-    "pamhc2foodcore:doughitem",
-    "pamhc2foodcore:freshwateritem",
-    "pamhc2foodcore:pastaitem",
-    "pamhc2foodcore:butteritem",
-    "pamhc2foodcore:saltitem",
-    "pamhc2foodcore:freshmilkitem",
-    "pamhc2foodcore:mayonaiseitem",
-    "pamhc2foodcore:cocoapowderitem",
-    "pamhc2foodcore:vinegaritem",
-    "pamhc2foodcore:batteritem",
-    "pamhc2foodcore:cookingoilitem",
-    "pamhc2foodcore:groundbeefitem",
-    "pamhc2foodcore:groundchickenitem",
-    "pamhc2foodcore:groundporkitem",
-    "pamhc2foodcore:groundfishitem",
-    "pamhc2foodcore:groundmuttonitem",
-    "pamhc2foodcore:groundrabbititem",
-    "pamhc2foodcore:creamitem",
-    "pamhc2foodextended:hotsauceitem",
-    "pamhc2foodextended:relishitem",
-    "pamhc2foodextended:ketchupitem",
-    "pamhc2foodextended:mustarditem",
-    "pamhc2foodextended:sesameoilitem",
-    "pamhc2foodextended:soysauceitem",
-    "pamhc2foodextended:silkentofuitem",
-    "pamhc2foodextended:firmtofuitem",
-    "pamhc2foodextended:blackpepperitem",
-    "pamhc2foodextended:saltandpepperitem",
-    "pamhc2foodextended:mushroomoilitem",
-    "simplefarming:curry_powder",
-    "simplefarming:jam",
-    "simplefarming:olive_oil",
-    "simplefarming:vinegar",
-    "simplefarming:noodles",
-    "simplefarming:chocolate_cake",
-    "simplefarming:birthday_cake",
-    "simplefarming:cheese_block",
-    "simplefarming:sprinkles",
-    "vanillafoodpantry:acornmeal_portion",
-    "vanillafoodpantry:baking_soda",
-    "vanillafoodpantry:broth_jar",
-    "vanillafoodpantry:bucket_condensed_milk",
-    "vanillafoodpantry:fizzing_agent",
-    "vanillafoodpantry:cloth_bag",
-    "vanillafoodpantry:condensed_milk_jar",
-    "vanillafoodpantry:dark_empty_jar",
-    "vanillafoodpantry:dried_seeds",
-    "vanillafoodpantry:drying_agent",
-    "vanillafoodpantry:drying_agent_unprocessed",
-    "vanillafoodpantry:drying_agent_unprocessed_ball",
-    "vanillafoodpantry:drying_agent_ball",
-    "vanillafoodpantry:egg_white",
-    "vanillafoodpantry:empty_bottle",
-    "vanillafoodpantry:empty_jar",
-    "vanillafoodpantry:enzyme_extractor_agent",
-    "vanillafoodpantry:fermented_feather",
-    "vanillafoodpantry:fizzing_agent",
-    "vanillafoodpantry:flesh_meal",
-    "vanillafoodpantry:flour_portion",
-    "vanillafoodpantry:fudge_portion",
-    "vanillafoodpantry:gelatin_ball",
-    "vanillafoodpantry:jungle_juice_jar",
-    "vanillafoodpantry:leavening_agent",
-    "vanillafoodpantry:leavening_agent_ball",
-    "vanillafoodpantry:luminesce_jar",
-    "vanillafoodpantry:molasses_ball",
-    "vanillafoodpantry:portion_mayonnaise",
-    "vanillafoodpantry:portion_butter",
-    "vanillafoodpantry:portion_salt",
-    "vanillafoodpantry:portion_sugar",
-    "vanillafoodpantry:raw_caffeine",
-    "vanillafoodpantry:rennet",
-    "vanillafoodpantry:sand_jar",
-    "vanillafoodpantry:seedmush",
-    "vanillafoodpantry:seedoil_jar",
-    "vanillafoodpantry:small_bone",
-    "vanillafoodpantry:sticky_paste",
-    "vanillafoodpantry:salt",
-    "vanillafoodpantry:skewers_wood",
-    "veggie_way:fresh_tofu",
-    "veggie_way:cooked_tofu",
-    "veggie_way:flour",
-    "veggie_way:dough",
-    "veggie_way:pumpkin_chunk",
-    "veggie_way:cactus_chunk",
-    "veggie_way:melon_chunk",
-    "veggie_way:super_petals",
-    "veggie_way:quinoa",
-    "veggie_way:quinoa_seeds",
-    "veggie_way:corn",
-    "veggie_way:corn_seeds",
-    "veggie_way:soybean",
-    "veggie_way:soybean_seeds",
-    "veggie_way:lentil",
-    "veggie_way:lentil_seeds",
-    "veggie_way:drying_agent",
-    "veggie_way:carbs",
-    "veggie_way:fructose",
-    "veggie_way:proteins",
-    "veggie_way:vitamins",
-    "veggie_way:caffeine",
-    "veggie_way:wheatgerm",
-    "veggie_way:energy_powder",
-    "veggie_way:superfood_powder"
+    {
+      "id": "croptopia:olive_oil",
+      "required": false
+    },
+    {
+      "id": "croptopia:dough",
+      "required": false
+    },
+    {
+      "id": "croptopia:noodle",
+      "required": false
+    },
+    {
+      "id": "croptopia:flour",
+      "required": false
+    },
+    {
+      "id": "croptopia:molasses",
+      "required": false
+    },
+    {
+      "id": "croptopia:caramel",
+      "required": false
+    },
+    {
+      "id": "croptopia:cinnamon",
+      "required": false
+    },
+    {
+      "id": "croptopia:corn_husk",
+      "required": false
+    },
+    {
+      "id": "croptopia:whipping_cream",
+      "required": false
+    },
+    {
+      "id": "croptopia:salt",
+      "required": false
+    },
+    {
+      "id": "create:dough",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:rice_panicle",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:rice",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:milk_bottle",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:flouritem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:doughitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:freshwateritem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:pastaitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:butteritem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:saltitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:freshmilkitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:mayonaiseitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:cocoapowderitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:vinegaritem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:batteritem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:cookingoilitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:groundbeefitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:groundchickenitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:groundporkitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:groundfishitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:groundmuttonitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:groundrabbititem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:creamitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:hotsauceitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:relishitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:ketchupitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:mustarditem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:sesameoilitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:soysauceitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:silkentofuitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:firmtofuitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:blackpepperitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:saltandpepperitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodextended:mushroomoilitem",
+      "required": false
+    },
+    {
+      "id": "simplefarming:curry_powder",
+      "required": false
+    },
+    {
+      "id": "simplefarming:jam",
+      "required": false
+    },
+    {
+      "id": "simplefarming:olive_oil",
+      "required": false
+    },
+    {
+      "id": "simplefarming:vinegar",
+      "required": false
+    },
+    {
+      "id": "simplefarming:noodles",
+      "required": false
+    },
+    {
+      "id": "simplefarming:chocolate_cake",
+      "required": false
+    },
+    {
+      "id": "simplefarming:birthday_cake",
+      "required": false
+    },
+    {
+      "id": "simplefarming:cheese_block",
+      "required": false
+    },
+    {
+      "id": "simplefarming:sprinkles",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:acornmeal_portion",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:baking_soda",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:broth_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:bucket_condensed_milk",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:fizzing_agent",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:cloth_bag",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:condensed_milk_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:dark_empty_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:dried_seeds",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:drying_agent",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:drying_agent_unprocessed",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:drying_agent_unprocessed_ball",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:drying_agent_ball",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:egg_white",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:empty_bottle",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:empty_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:enzyme_extractor_agent",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:fermented_feather",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:fizzing_agent",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:flesh_meal",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:flour_portion",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:fudge_portion",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:gelatin_ball",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:jungle_juice_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:leavening_agent",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:leavening_agent_ball",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:luminesce_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:molasses_ball",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:portion_mayonnaise",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:portion_butter",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:portion_salt",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:portion_sugar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:raw_caffeine",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:rennet",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:sand_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:seedmush",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:seedoil_jar",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:small_bone",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:sticky_paste",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:salt",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:skewers_wood",
+      "required": false
+    },
+    {
+      "id": "veggie_way:fresh_tofu",
+      "required": false
+    },
+    {
+      "id": "veggie_way:cooked_tofu",
+      "required": false
+    },
+    {
+      "id": "veggie_way:flour",
+      "required": false
+    },
+    {
+      "id": "veggie_way:dough",
+      "required": false
+    },
+    {
+      "id": "veggie_way:pumpkin_chunk",
+      "required": false
+    },
+    {
+      "id": "veggie_way:cactus_chunk",
+      "required": false
+    },
+    {
+      "id": "veggie_way:melon_chunk",
+      "required": false
+    },
+    {
+      "id": "veggie_way:super_petals",
+      "required": false
+    },
+    {
+      "id": "veggie_way:quinoa",
+      "required": false
+    },
+    {
+      "id": "veggie_way:quinoa_seeds",
+      "required": false
+    },
+    {
+      "id": "veggie_way:corn",
+      "required": false
+    },
+    {
+      "id": "veggie_way:corn_seeds",
+      "required": false
+    },
+    {
+      "id": "veggie_way:soybean",
+      "required": false
+    },
+    {
+      "id": "veggie_way:soybean_seeds",
+      "required": false
+    },
+    {
+      "id": "veggie_way:lentil",
+      "required": false
+    },
+    {
+      "id": "veggie_way:lentil_seeds",
+      "required": false
+    },
+    {
+      "id": "veggie_way:drying_agent",
+      "required": false
+    },
+    {
+      "id": "veggie_way:carbs",
+      "required": false
+    },
+    {
+      "id": "veggie_way:fructose",
+      "required": false
+    },
+    {
+      "id": "veggie_way:proteins",
+      "required": false
+    },
+    {
+      "id": "veggie_way:vitamins",
+      "required": false
+    },
+    {
+      "id": "veggie_way:caffeine",
+      "required": false
+    },
+    {
+      "id": "veggie_way:wheatgerm",
+      "required": false
+    },
+    {
+      "id": "veggie_way:energy_powder",
+      "required": false
+    },
+    {
+      "id": "veggie_way:superfood_powder",
+      "required": false
+    }
   ]
 }

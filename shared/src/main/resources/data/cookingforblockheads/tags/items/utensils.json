@@ -2,37 +2,133 @@
   "replace": false,
   "values": [
     "minecraft:bucket",
-    "croptopia:cooking_pot",
-    "croptopia:food_press",
-    "croptopia:frying_pan",
-    "croptopia:knife",
-    "croptopia:mortar_and_pestle",
-    "farmersdelight:cutting_board",
-    "farmersdelight:flint_knife",
-    "farmersdelight:iron_knife",
-    "farmersdelight:golden_knife",
-    "farmersdelight:diamond_knife",
-    "farmersdelight:netherite_knife",
-    "pamhc2foodcore:cuttingboarditem",
-    "pamhc2foodcore:potitem",
-    "pamhc2foodcore:skilletitem",
-    "pamhc2foodcore:saucepanitem",
-    "pamhc2foodcore:bakewareitem",
-    "pamhc2foodcore:mixingbowlitem",
-    "pamhc2foodcore:juiceritem",
-    "pamhc2foodcore:grinderitem",
-    "pamhc2foodcore:rolleritem",
-    "vanillafoodpantry:bit_pipette",
-    "vanillafoodpantry:fermenting_bucket",
-    "vanillafoodpantry:flint_cutter",
-    "vanillafoodpantry:whisk",
-    "vanillafoodpantry:rolling_pin",
-    "vanillafoodpantry:weighted_plate",
-    "vanillafoodpantry:flint_cutter",
-    "vanillafoodpantry:flint_butcher_axe",
-    "veggie_way:knife",
-    "veggie_way:hand_rake",
-    "veggie_way:hand_scraper",
-    "veggie_way:mill"
+    {
+      "id": "croptopia:cooking_pot",
+      "required": false
+    },
+    {
+      "id": "croptopia:food_press",
+      "required": false
+    },
+    {
+      "id": "croptopia:frying_pan",
+      "required": false
+    },
+    {
+      "id": "croptopia:knife",
+      "required": false
+    },
+    {
+      "id": "croptopia:mortar_and_pestle",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:cutting_board",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:flint_knife",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:iron_knife",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:golden_knife",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:diamond_knife",
+      "required": false
+    },
+    {
+      "id": "farmersdelight:netherite_knife",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:cuttingboarditem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:potitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:skilletitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:saucepanitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:bakewareitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:mixingbowlitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:juiceritem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:grinderitem",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:rolleritem",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:bit_pipette",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:fermenting_bucket",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:flint_cutter",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:whisk",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:rolling_pin",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:weighted_plate",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:flint_cutter",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:flint_butcher_axe",
+      "required": false
+    },
+    {
+      "id": "veggie_way:knife",
+      "required": false
+    },
+    {
+      "id": "veggie_way:hand_rake",
+      "required": false
+    },
+    {
+      "id": "veggie_way:hand_scraper",
+      "required": false
+    },
+    {
+      "id": "veggie_way:mill",
+      "required": false
+    }
   ]
 }

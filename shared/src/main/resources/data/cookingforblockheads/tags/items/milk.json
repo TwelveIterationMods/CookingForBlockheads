@@ -2,8 +2,17 @@
   "replace": false,
   "values": [
     "minecraft:milk_bucket",
-    "croptopia:milk_bottle",
-    "pamhc2foodcore:freshmilkitem",
-    "vanillafoodpantry:milk_portion"
+    {
+      "id": "croptopia:milk_bottle",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:freshmilkitem",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:milk_portion",
+      "required": false
+    }
   ]
 }

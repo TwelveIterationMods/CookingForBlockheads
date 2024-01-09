@@ -67,7 +67,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
-        private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOW), new ItemStack(Items.ICE));
+        private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
 
         @Override
         public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens) {

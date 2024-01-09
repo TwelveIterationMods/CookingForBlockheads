@@ -2,8 +2,17 @@
   "replace": false,
   "values": [
     "minecraft:water_bucket",
-    "croptopia:water_bottle",
-    "pamhc2foodcore:freshwateritem",
-    "vanillafoodpantry:water_portion"
+    {
+      "id": "croptopia:water_bottle",
+      "required": false
+    },
+    {
+      "id": "pamhc2foodcore:freshwateritem",
+      "required": false
+    },
+    {
+      "id": "vanillafoodpantry:water_portion",
+      "required": false
+    }
   ]
 }

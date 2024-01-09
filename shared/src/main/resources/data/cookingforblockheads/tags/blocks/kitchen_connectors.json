@@ -19,136 +19,529 @@
     "cookingforblockheads:green_kitchen_floor",
     "cookingforblockheads:red_kitchen_floor",
     "cookingforblockheads:black_kitchen_floor",
-    "buildersaddition:counter_oak_andesite",
-    "buildersaddition:counter_oak_diorite",
-    "buildersaddition:counter_oak_granite",
-    "buildersaddition:counter_oak_blackstone",
-    "buildersaddition:counter_spruce_andesite",
-    "buildersaddition:counter_spruce_diorite",
-    "buildersaddition:counter_spruce_granite",
-    "buildersaddition:counter_spruce_blackstone",
-    "buildersaddition:counter_birch_andesite",
-    "buildersaddition:counter_birch_diorite",
-    "buildersaddition:counter_birch_granite",
-    "buildersaddition:counter_birch_blackstone",
-    "buildersaddition:counter_jungle_andesite",
-    "buildersaddition:counter_jungle_diorite",
-    "buildersaddition:counter_jungle_granite",
-    "buildersaddition:counter_jungle_blackstone",
-    "buildersaddition:counter_acacia_andesite",
-    "buildersaddition:counter_acacia_diorite",
-    "buildersaddition:counter_acacia_granite",
-    "buildersaddition:counter_acacia_blackstone",
-    "buildersaddition:counter_dark_oak_andesite",
-    "buildersaddition:counter_dark_oak_diorite",
-    "buildersaddition:counter_dark_oak_granite",
-    "buildersaddition:counter_dark_oak_blackstone",
-    "buildersaddition:counter_warped_andesite",
-    "buildersaddition:counter_warped_diorite",
-    "buildersaddition:counter_warped_granite",
-    "buildersaddition:counter_warped_blackstone",
-    "buildersaddition:counter_crimson_andesite",
-    "buildersaddition:counter_crimson_diorite",
-    "buildersaddition:counter_crimson_granite",
-    "buildersaddition:counter_crimson_blackstone",
-    "buildersaddition:cupboard_oak",
-    "buildersaddition:cupboard_spruce",
-    "buildersaddition:cupboard_birch",
-    "buildersaddition:cupboard_jungle",
-    "buildersaddition:cupboard_acacia",
-    "buildersaddition:cupboard_dark_oak",
-    "buildersaddition:cupboard_warped",
-    "buildersaddition:cupboard_crimson",
-    "buildersaddition:cabinet_oak",
-    "buildersaddition:cabinet_birch",
-    "buildersaddition:cabinet_spruce",
-    "buildersaddition:cabinet_jungle",
-    "buildersaddition:cabinet_acacia",
-    "buildersaddition:cabinet_dark_oak",
-    "buildersaddition:cabinet_warped",
-    "buildersaddition:cabinet_crimson",
-    "buildersaddition:shelf_oak",
-    "buildersaddition:shelf_birch",
-    "buildersaddition:shelf_spruce",
-    "buildersaddition:shelf_jungle",
-    "buildersaddition:shelf_acacia",
-    "buildersaddition:shelf_dark_oak",
-    "buildersaddition:shelf_crimson",
-    "buildersaddition:shelf_warped",
-    "functionalstorage:storage_controller",
-    "functionalstorage:storage_extension",
-    "morecfm:autumnity_maple_kitchen_counter",
-    "morecfm:environmental_willow_kitchen_counter",
-    "morecfm:environmental_cherry_kitchen_counter",
-    "morecfm:environmental_wisteria_kitchen_counter",
-    "morecfm:atmospheric_rosewood_kitchen_counter",
-    "morecfm:atmospheric_morado_kitchen_counter",
-    "morecfm:atmospheric_yucca_kitchen_counter",
-    "morecfm:atmospheric_kousa_kitchen_counter",
-    "morecfm:atmospheric_aspen_kitchen_counter",
-    "morecfm:atmospheric_grimwood_kitchen_counter",
-    "morecfm:upgrade_aquatic_driftwood_kitchen_counter",
-    "morecfm:upgrade_aquatic_river_kitchen_counter",
-    "morecfm:endergetic_poise_kitchen_counter",
-    "morecfm:bayou_blues_cypress_kitchen_counter",
-    "morecfm:abundance_jacaranda_kitchen_counter",
-    "morecfm:abundance_redbud_kitchen_counter",
-    "morecfm:autumnity_stripped_maple_kitchen_counter",
-    "morecfm:environmental_stripped_willow_kitchen_counter",
-    "morecfm:environmental_stripped_cherry_kitchen_counter",
-    "morecfm:environmental_stripped_wisteria_kitchen_counter",
-    "morecfm:atmospheric_stripped_rosewood_kitchen_counter",
-    "morecfm:atmospheric_stripped_morado_kitchen_counter",
-    "morecfm:atmospheric_stripped_yucca_kitchen_counter",
-    "morecfm:atmospheric_stripped_kousa_kitchen_counter",
-    "morecfm:atmospheric_stripped_aspen_kitchen_counter",
-    "morecfm:atmospheric_stripped_grimwood_kitchen_counter",
-    "morecfm:upgrade_aquatic_stripped_driftwood_kitchen_counter",
-    "morecfm:upgrade_aquatic_stripped_river_kitchen_counter",
-    "morecfm:endergetic_stripped_poise_kitchen_counter",
-    "morecfm:bayou_blues_stripped_cypress_kitchen_counter",
-    "morecfm:abundance_stripped_jacaranda_kitchen_counter",
-    "morecfm:abundance_stripped_redbud_kitchen_counter",
-    "cfm:kitchen_sink",
-    "cfm:oak_kitchen_counter",
-    "cfm:spruce_kitchen_counter",
-    "cfm:birch_kitchen_counter",
-    "cfm:jungle_kitchen_counter",
-    "cfm:acacia_kitchen_counter",
-    "cfm:dark_oak_kitchen_counter",
-    "cfm:stripped_oak_kitchen_counter",
-    "cfm:stripped_spruce_kitchen_counter",
-    "cfm:stripped_birch_kitchen_counter",
-    "cfm:stripped_jungle_kitchen_counter",
-    "cfm:stripped_acacia_kitchen_counter",
-    "cfm:stripped_dark_oak_kitchen_counter",
-    "cfm:white_kitchen_counter",
-    "cfm:orange_kitchen_counter",
-    "cfm:magenta_kitchen_counter",
-    "cfm:light_blue_kitchen_counter",
-    "cfm:yellow_kitchen_counter",
-    "cfm:lime_kitchen_counter",
-    "cfm:pink_kitchen_counter",
-    "cfm:gray_kitchen_counter",
-    "cfm:light_gray_kitchen_counter",
-    "cfm:cyan_kitchen_counter",
-    "cfm:purple_kitchen_counter",
-    "cfm:blue_kitchen_counter",
-    "cfm:brown_kitchen_counter",
-    "cfm:green_kitchen_counter",
-    "cfm:red_kitchen_counter",
-    "cfm:black_kitchen_counter",
-    "sophisticatedstorage:controller",
-    "sophisticatedstorage:storage_link",
-    "storagedrawers:controller_slave",
-    "storagedrawers:controller",
-    "storagedrawers:oak_trim",
-    "storagedrawers:spruce_trim",
-    "storagedrawers:birch_trim",
-    "storagedrawers:jungle_trim",
-    "storagedrawers:acacia_trim",
-    "storagedrawers:dark_oak_trim",
-    "storagedrawers:warped_trim",
-    "storagedrawers:crimson_trim"
+    {
+      "id": "buildersaddition:counter_oak_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_oak_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_oak_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_oak_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_spruce_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_spruce_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_spruce_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_spruce_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_birch_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_birch_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_birch_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_birch_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_jungle_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_jungle_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_jungle_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_jungle_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_acacia_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_acacia_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_acacia_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_acacia_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_dark_oak_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_dark_oak_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_dark_oak_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_dark_oak_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_warped_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_warped_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_warped_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_warped_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_crimson_andesite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_crimson_diorite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_crimson_granite",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:counter_crimson_blackstone",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_oak",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_spruce",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_birch",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_jungle",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_acacia",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_dark_oak",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_warped",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cupboard_crimson",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_oak",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_birch",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_spruce",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_jungle",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_acacia",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_dark_oak",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_warped",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:cabinet_crimson",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_oak",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_birch",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_spruce",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_jungle",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_acacia",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_dark_oak",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_crimson",
+      "required": false
+    },
+    {
+      "id": "buildersaddition:shelf_warped",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:storage_controller",
+      "required": false
+    },
+    {
+      "id": "functionalstorage:storage_extension",
+      "required": false
+    },
+    {
+      "id": "morecfm:autumnity_maple_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_willow_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_cherry_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_wisteria_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_rosewood_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_morado_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_yucca_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_kousa_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_aspen_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_grimwood_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_driftwood_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_river_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:endergetic_poise_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:bayou_blues_cypress_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_jacaranda_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_redbud_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:autumnity_stripped_maple_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_willow_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_cherry_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:environmental_stripped_wisteria_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_rosewood_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_morado_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_yucca_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_kousa_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_aspen_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:atmospheric_stripped_grimwood_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_stripped_driftwood_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:upgrade_aquatic_stripped_river_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:endergetic_stripped_poise_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:bayou_blues_stripped_cypress_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_stripped_jacaranda_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "morecfm:abundance_stripped_redbud_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:kitchen_sink",
+      "required": false
+    },
+    {
+      "id": "cfm:oak_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:spruce_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:birch_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:jungle_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:acacia_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:dark_oak_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:stripped_oak_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:stripped_spruce_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:stripped_birch_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:stripped_jungle_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:stripped_acacia_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:stripped_dark_oak_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:white_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:orange_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:magenta_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:light_blue_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:yellow_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:lime_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:pink_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:gray_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:light_gray_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:cyan_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:purple_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:blue_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:brown_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:green_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:red_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "cfm:black_kitchen_counter",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:controller",
+      "required": false
+    },
+    {
+      "id": "sophisticatedstorage:storage_link",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:controller_slave",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:controller",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:oak_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:spruce_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:birch_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:jungle_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:acacia_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:dark_oak_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:warped_trim",
+      "required": false
+    },
+    {
+      "id": "storagedrawers:crimson_trim",
+      "required": false
+    }
   ]
 }
