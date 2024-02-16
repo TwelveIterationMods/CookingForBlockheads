@@ -8,6 +8,8 @@ import net.minecraft.world.item.Item;
 
 public class ModItemTags {
     public static final TagKey<Item> IS_DYEABLE = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "is_dyeable"));
+    public static final TagKey<Item> OVENS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "ovens"));
+    public static final TagKey<Item> DYED_OVENS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_ovens"));
     public static final TagKey<Item> UTENSILS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "utentsils"));
     public static final TagKey<Item> FOODS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "foods"));
     public static final TagKey<Item> INGREDIENTS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "ingredients"));

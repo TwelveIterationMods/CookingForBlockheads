@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -18,16 +19,17 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
-        FabricTagProvider<Item>.FabricTagBuilder isDyeable = getOrCreateTagBuilder(ModItemTags.IS_DYEABLE);
-        isDyeable.add(ModBlocks.cookingTable.asItem(),
+        getOrCreateTagBuilder(ModItemTags.IS_DYEABLE).add(ModBlocks.cookingTable.asItem(),
                 ModBlocks.fridge.asItem(),
                 ModBlocks.sink.asItem(),
                 ModBlocks.counter.asItem(),
                 ModBlocks.cabinet.asItem(),
                 ModBlocks.corner.asItem(),
                 ModBlocks.hangingCorner.asItem());
+
+        final var ovens = getOrCreateTagBuilder(ModItemTags.OVENS);
         for (final var oven : ModBlocks.ovens) {
-            isDyeable.add(oven.asItem());
+            ovens.add(oven.asItem());
         }
     }
 }

@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -50,9 +51,8 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.cabinet,
                 ModBlocks.corner,
                 ModBlocks.hangingCorner);
-        for (final var oven : ModBlocks.ovens) {
-            isDyeable.add(oven);
-        }
+
+        getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
 
         final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         kitchenConnectors.add(ModBlocks.corner, ModBlocks.hangingCorner);

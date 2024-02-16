@@ -2,7 +2,10 @@ package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.balm.api.tag.BalmItemTags;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -54,6 +57,34 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .define('F', Blocks.FURNACE)
                 .unlockedBy("has_furnace", has(Blocks.FURNACE))
                 .save(exporter);
+
+        @SuppressWarnings("unchecked") final TagKey<Item>[] dyeItemTags = new TagKey[]{
+                BalmItemTags.WHITE_DYES,
+                BalmItemTags.ORANGE_DYES,
+                BalmItemTags.MAGENTA_DYES,
+                BalmItemTags.LIGHT_BLUE_DYES,
+                BalmItemTags.YELLOW_DYES,
+                BalmItemTags.LIME_DYES,
+                BalmItemTags.PINK_DYES,
+                BalmItemTags.GRAY_DYES,
+                BalmItemTags.LIGHT_GRAY_DYES,
+                BalmItemTags.CYAN_DYES,
+                BalmItemTags.PURPLE_DYES,
+                BalmItemTags.BLUE_DYES,
+                BalmItemTags.BROWN_DYES,
+                BalmItemTags.GREEN_DYES,
+                BalmItemTags.RED_DYES,
+                BalmItemTags.BLACK_DYES
+        };
+
+        for (final var oven : ModBlocks.ovens) {
+            final var color = oven.getColor();
+            shapeless(RecipeCategory.DECORATIONS, oven)
+                    .requires(ModItemTags.DYED_OVENS)
+                    .requires(dyeItemTags[color.ordinal()])
+                    .unlockedBy("has_oven", has(ModBlocks.ovens[DyeColor.WHITE.ordinal()]))
+                    .save(exporter);
+        }
 
         shapeless(RecipeCategory.DECORATIONS, ModBlocks.fridge)
                 .requires(BalmItemTags.WOODEN_CHESTS)

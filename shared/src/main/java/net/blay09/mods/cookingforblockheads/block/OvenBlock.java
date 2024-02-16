@@ -203,9 +203,4 @@ public class OvenBlock extends BaseKitchenBlock {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.oven.description").withStyle(ChatFormatting.GRAY));
     }
 
-    @Override
-    protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
-        // TODO map to the correct block since it's not a state anymore for the oven
-        return super.recolorBlock(state, world, pos, facing, color);
-    }
 }
