@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -30,6 +31,13 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         final var ovens = getOrCreateTagBuilder(ModItemTags.OVENS);
         for (final var oven : ModBlocks.ovens) {
             ovens.add(oven.asItem());
+        }
+
+        final var dyedOvens = getOrCreateTagBuilder(ModItemTags.DYED_OVENS);
+        for (final var oven : ModBlocks.ovens) {
+            if (oven.getColor() != DyeColor.WHITE) {
+                dyedOvens.add(oven.asItem());
+            }
         }
     }
 }

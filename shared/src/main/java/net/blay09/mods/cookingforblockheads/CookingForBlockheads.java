@@ -32,11 +32,6 @@ import java.util.Optional;
 
 public class CookingForBlockheads {
 
-    // TODO fix balm model loading on fabric using modelloadingplugin
-    // TODO split electric oven into its own block and fix heating unit upgrade stuff
-    // TODO consider a new creative tab for the dyed blocks
-    // TODO consider JEI grouping support for the dyed blocks
-
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 

@@ -81,7 +81,8 @@ public class ModModelProvider extends FabricModelProvider {
         final var textureMapping = getOvenTextures(block);
         final var ovenModel = ovenTemplate.create(block, textureMapping, blockStateModelGenerator.modelOutput);
         final var activeTextureMapping = getOvenTextures(block);
-        activeTextureMapping.putForced(TextureSlot.create("ovenfront"), new ResourceLocation("cookingforblockheads", "block/" + block.getColor().getName() + "_oven_front_active"));
+        activeTextureMapping.putForced(TextureSlot.create("ovenfront"),
+                new ResourceLocation("cookingforblockheads", "block/" + block.getColor().getName() + "_oven_front_active"));
         final var activeOvenModel = ovenTemplate.createWithSuffix(block, "_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
         blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
                 .with(createBooleanModelDispatch(OvenBlock.ACTIVE, ovenModel, activeOvenModel))
@@ -90,7 +91,8 @@ public class ModModelProvider extends FabricModelProvider {
 
         final var ovenDoorTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven_door")), Optional.empty());
         ovenDoorTemplate.createWithSuffix(block, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-        final var ovenDoorActiveTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven_door_active")), Optional.empty());
+        final var ovenDoorActiveTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven_door_active")),
+                Optional.empty());
         ovenDoorActiveTemplate.createWithSuffix(block, "_door_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
     }
 

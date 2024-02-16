@@ -9,6 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
@@ -53,6 +54,12 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.hangingCorner);
 
         getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
+        final var dyedOvens = getOrCreateTagBuilder(ModBlockTags.DYED_OVENS);
+        for (final var oven : ModBlocks.ovens) {
+            if (oven.getColor() != DyeColor.WHITE) {
+                dyedOvens.add(oven);
+            }
+        }
 
         final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         kitchenConnectors.add(ModBlocks.corner, ModBlocks.hangingCorner);

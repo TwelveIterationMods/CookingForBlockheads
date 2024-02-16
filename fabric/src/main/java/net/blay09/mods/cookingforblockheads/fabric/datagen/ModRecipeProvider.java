@@ -83,7 +83,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     .requires(ModItemTags.DYED_OVENS)
                     .requires(dyeItemTags[color.ordinal()])
                     .unlockedBy("has_oven", has(ModBlocks.ovens[DyeColor.WHITE.ordinal()]))
-                    .save(exporter);
+                    .save(exporter, "dye_" + color.getSerializedName() + "_oven");
         }
 
         shapeless(RecipeCategory.DECORATIONS, ModBlocks.fridge)
