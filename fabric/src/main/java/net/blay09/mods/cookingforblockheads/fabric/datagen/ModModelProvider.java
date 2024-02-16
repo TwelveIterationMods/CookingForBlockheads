@@ -83,7 +83,8 @@ public class ModModelProvider extends FabricModelProvider {
         final var activeTextureMapping = getOvenTextures(block);
         activeTextureMapping.putForced(TextureSlot.create("ovenfront"),
                 new ResourceLocation("cookingforblockheads", "block/" + block.getColor().getName() + "_oven_front_active"));
-        final var activeOvenModel = ovenTemplate.createWithSuffix(block, "_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
+        final var activeOvenTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven")), Optional.empty());
+        final var activeOvenModel = activeOvenTemplate.createWithSuffix(block, "_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
         blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
                 .with(createBooleanModelDispatch(OvenBlock.ACTIVE, ovenModel, activeOvenModel))
                 .with(createHorizontalFacingDispatch()));

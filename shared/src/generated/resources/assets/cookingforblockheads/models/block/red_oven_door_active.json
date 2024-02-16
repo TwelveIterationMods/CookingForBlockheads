@@ -3,7 +3,7 @@
   "textures": {
     "backsplash": "cookingforblockheads:block/red_oven_side",
     "ovenbottom": "cookingforblockheads:block/red_oven_bottom",
-    "ovenfront": "cookingforblockheads:block/red_oven_front",
+    "ovenfront": "cookingforblockheads:block/red_oven_front_active",
     "ovenfront_active": "cookingforblockheads:block/red_oven_front_active",
     "oventop": "cookingforblockheads:block/red_oven_top",
     "particle": "cookingforblockheads:block/red_oven_side",
