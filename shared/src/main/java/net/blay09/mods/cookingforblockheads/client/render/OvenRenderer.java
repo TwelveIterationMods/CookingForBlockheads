@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
+import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -44,7 +45,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
         poseStack.translate(-0.5f, 0f, -0.5f);
         poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(doorAngle)));
-        DyeColor blockColor = state.hasProperty(BaseKitchenBlock.COLOR) ? state.getValue(BaseKitchenBlock.COLOR) : DyeColor.WHITE;
+        DyeColor blockColor = state.getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
         int colorIndex = blockColor.getId();
         BakedModel model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex)
                 .get();

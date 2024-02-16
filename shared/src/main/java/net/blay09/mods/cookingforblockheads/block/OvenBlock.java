@@ -46,7 +46,6 @@ public class OvenBlock extends BaseKitchenBlock {
     public static final MapCodec<OvenBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color").forGetter(OvenBlock::getColor),
             propertiesCodec()).apply(it, OvenBlock::new));
 
-    public static BooleanProperty POWERED = BooleanProperty.create("powered");
     public static BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     private static final Random random = new Random();
@@ -55,7 +54,7 @@ public class OvenBlock extends BaseKitchenBlock {
     public OvenBlock(DyeColor color, Properties properties) {
         super(properties.sound(SoundType.METAL).strength(5f, 10f));
         this.color = color;
-        registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(ACTIVE, false));
+        registerDefaultState(getStateDefinition().any().setValue(ACTIVE, false));
     }
 
     public DyeColor getColor() {
@@ -64,7 +63,7 @@ public class OvenBlock extends BaseKitchenBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED, ACTIVE);
+        builder.add(FACING, ACTIVE);
     }
 
     @Override

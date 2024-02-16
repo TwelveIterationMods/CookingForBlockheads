@@ -16,10 +16,12 @@ import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+import static net.minecraft.data.models.BlockModelGenerators.createBooleanModelDispatch;
 import static net.minecraft.data.models.BlockModelGenerators.createHorizontalFacingDispatch;
 
 public class ModModelProvider extends FabricModelProvider {
@@ -75,29 +77,21 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, OvenBlock block) {
-        final var dispatch = PropertyDispatch.properties(OvenBlock.ACTIVE, OvenBlock.POWERED);
-        for (var active = 0; active <= 1; active++) {
-            for (var powered = 0; powered <= 1; powered++) {
-                var suffix = "";
-                if (powered == 1) {
-                    suffix += "_powered";
-                }
-                if (active == 1) {
-                    suffix += "_active";
-                }
-                final var modelLocation = ModelLocationUtils.getModelLocation(block, suffix);
-                dispatch.select(active == 1, powered == 1, Variant.variant().with(VariantProperties.MODEL, modelLocation));
-            }
-        }
-        final var generator = MultiVariantGenerator.multiVariant(block)
-                .with(createHorizontalFacingDispatch())
-                .with(dispatch);
-        blockStateModelGenerator.blockStateOutput.accept(generator);
-        blockStateModelGenerator.skipAutoItemBlock(block);
-
         final var ovenTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven")), Optional.empty());
         final var textureMapping = getOvenTextures(block);
-        ovenTemplate.create(block, textureMapping, blockStateModelGenerator.modelOutput);
+        final var ovenModel = ovenTemplate.create(block, textureMapping, blockStateModelGenerator.modelOutput);
+        final var activeTextureMapping = getOvenTextures(block);
+        activeTextureMapping.putForced(TextureSlot.create("ovenfront"), new ResourceLocation("cookingforblockheads", "block/" + block.getColor().getName() + "_oven_front_active"));
+        final var activeOvenModel = ovenTemplate.createWithSuffix(block, "_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+                .with(createBooleanModelDispatch(OvenBlock.ACTIVE, ovenModel, activeOvenModel))
+                .with(createHorizontalFacingDispatch()));
+        blockStateModelGenerator.skipAutoItemBlock(block);
+
+        final var ovenDoorTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven_door")), Optional.empty());
+        ovenDoorTemplate.createWithSuffix(block, "_door", textureMapping, blockStateModelGenerator.modelOutput);
+        final var ovenDoorActiveTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven_door_active")), Optional.empty());
+        ovenDoorActiveTemplate.createWithSuffix(block, "_door_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
     }
 
     @NotNull

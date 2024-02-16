@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"ovenfront": "cookingforblockheads:block/oven_front"
+		"ovenfront": "cookingforblockheads:block/white_oven_front"
 	},
 	"elements": [
 		{

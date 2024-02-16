@@ -45,10 +45,13 @@ public class ModModels {
         ovenDoors = new ArrayList<>(colors.length);
         ovenDoorHandles = new ArrayList<>(colors.length);
         ovenDoorsActive = new ArrayList<>(colors.length);
+        models.loadModel(id("block/dyed_oven_door_active"));
         for (DyeColor color : colors) {
-            ovenDoors.add(color.getId(), models.retexture(id("block/oven_door"), replaceTexture(getColoredOvenTexture(color, "front"))));
-            ovenDoorHandles.add(color.getId(), models.retexture(id("block/oven_door_handle"), replaceTexture(getColoredOvenTexture(color, "front"))));
-            ovenDoorsActive.add(color.getId(), models.retexture(id("block/oven_door_active"), replaceTexture(getColoredOvenTexture(color, "front_active"))));
+            final var colorPrefix = color.getSerializedName() + "_";
+            final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
+            ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefixExceptWhite + "oven_door")));
+            ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefixExceptWhite + "oven_door_active")));
+            ovenDoorHandles.add(color.getId(), models.loadModel(id("block/oven_door_handle")));
         }
         fridgeDoor = models.loadModel(id("block/fridge_door"));
         fridgeDoorFlipped = models.loadModel(id("block/fridge_door_flipped"));

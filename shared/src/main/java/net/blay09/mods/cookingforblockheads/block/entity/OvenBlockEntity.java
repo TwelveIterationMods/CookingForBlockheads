@@ -387,7 +387,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     public void setHasPowerUpgrade(boolean hasPowerUpgrade) {
         this.hasPowerUpgrade = hasPowerUpgrade;
         BlockState state = level.getBlockState(worldPosition);
-        level.setBlockAndUpdate(worldPosition, state.setValue(OvenBlock.POWERED, hasPowerUpgrade));
+        // TODO level.setBlockAndUpdate(worldPosition, state.setValue(OvenBlock.POWERED, hasPowerUpgrade));
         setChanged();
     }
 

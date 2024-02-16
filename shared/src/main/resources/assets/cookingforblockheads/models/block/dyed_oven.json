@@ -3,12 +3,12 @@
 	"parent": "block/block",
 	"render_type": "cutout",
 	"textures": {
-		"ovenfront": "cookingforblockheads:block/oven_front",
-		"oventop": "cookingforblockheads:block/oven_top",
-		"ovenbottom": "cookingforblockheads:block/oven_bottom",
+		"ovenfront": "cookingforblockheads:block/white_oven_front",
+		"oventop": "cookingforblockheads:block/white_oven_top",
+		"ovenbottom": "cookingforblockheads:block/white_oven_bottom",
 		"ovengrid": "cookingforblockheads:block/oven_grid",
-		"particle": "cookingforblockheads:block/oven_side",
-		"backsplash": "cookingforblockheads:block/oven_side"
+		"particle": "cookingforblockheads:block/white_oven_side",
+		"backsplash": "cookingforblockheads:block/white_oven_side"
 	},
 	"elements": [
 		{
