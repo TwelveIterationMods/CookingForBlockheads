@@ -27,7 +27,9 @@ public class ModRenderers {
         renderers.registerBlockColorHandler((state, world, pos, i) -> state.getValue(BaseKitchenBlock.COLOR).getTextColor(), () -> new Block[] { ModBlocks.fridge });
         renderers.registerBlockColorHandler((state, world, pos, i) -> 4159204, () -> new Block[] { ModBlocks.sink });
 
-        renderers.setBlockRenderType(() -> ModBlocks.oven, RenderType.cutout());
+        for (final var oven : ModBlocks.ovens) {
+            renderers.setBlockRenderType(() -> oven, RenderType.cutout());
+        }
         renderers.setBlockRenderType(() -> ModBlocks.milkJar, RenderType.cutout());
         renderers.setBlockRenderType(() -> ModBlocks.cowJar, RenderType.cutout());
         renderers.setBlockRenderType(() -> ModBlocks.fridge, RenderType.cutout());

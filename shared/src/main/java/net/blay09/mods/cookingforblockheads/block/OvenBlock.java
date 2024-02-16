@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
@@ -18,13 +19,16 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,16 +43,23 @@ import java.util.Random;
 
 public class OvenBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<OvenBlock> CODEC = simpleCodec(OvenBlock::new);
+    public static final MapCodec<OvenBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color").forGetter(OvenBlock::getColor),
+            propertiesCodec()).apply(it, OvenBlock::new));
 
     public static BooleanProperty POWERED = BooleanProperty.create("powered");
     public static BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     private static final Random random = new Random();
+    private final DyeColor color;
 
-    public OvenBlock(Properties properties) {
+    public OvenBlock(DyeColor color, Properties properties) {
         super(properties.sound(SoundType.METAL).strength(5f, 10f));
+        this.color = color;
         registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(ACTIVE, false));
+    }
+
+    public DyeColor getColor() {
+        return color;
     }
 
     @Override
@@ -61,6 +72,10 @@ public class OvenBlock extends BaseKitchenBlock {
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem.getItem() == ModItems.heatingUnit) {
             return InteractionResult.PASS;
+        }
+
+        if (tryRecolorBlock(state, heldItem, level, pos, player, rayTraceResult)) {
+            return InteractionResult.SUCCESS;
         }
 
         if (rayTraceResult.getDirection() == Direction.UP) {
@@ -187,5 +202,11 @@ public class OvenBlock extends BaseKitchenBlock {
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.oven.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
+        // TODO map to the correct block since it's not a state anymore for the oven
+        return super.recolorBlock(state, world, pos, facing, color);
     }
 }

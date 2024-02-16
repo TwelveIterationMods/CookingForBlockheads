@@ -101,8 +101,6 @@ public class CounterBlock extends BaseKitchenBlock {
         return CODEC;
     }
 
-
-
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.counter.description").withStyle(ChatFormatting.GRAY));

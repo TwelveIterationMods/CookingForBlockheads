@@ -8,8 +8,6 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -47,7 +45,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_planks", has(ItemTags.PLANKS))
                 .save(exporter);
 
-        shaped(RecipeCategory.DECORATIONS, ModBlocks.oven)
+        shaped(RecipeCategory.DECORATIONS, ModBlocks.ovens[DyeColor.WHITE.ordinal()])
                 .pattern("GGG")
                 .pattern("IFI")
                 .pattern("III")

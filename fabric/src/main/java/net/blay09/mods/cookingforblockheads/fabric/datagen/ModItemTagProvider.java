@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,12 +18,16 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
-        getOrCreateTagBuilder(ModItemTags.IS_DYEABLE).add(ModBlocks.cookingTable.asItem(),
+        FabricTagProvider<Item>.FabricTagBuilder isDyeable = getOrCreateTagBuilder(ModItemTags.IS_DYEABLE);
+        isDyeable.add(ModBlocks.cookingTable.asItem(),
                 ModBlocks.fridge.asItem(),
                 ModBlocks.sink.asItem(),
                 ModBlocks.counter.asItem(),
                 ModBlocks.cabinet.asItem(),
                 ModBlocks.corner.asItem(),
                 ModBlocks.hangingCorner.asItem());
+        for (final var oven : ModBlocks.ovens) {
+            isDyeable.add(oven.asItem());
+        }
     }
 }

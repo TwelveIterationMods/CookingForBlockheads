@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "active=false,facing=east,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven",
+      "y": 90
+    },
+    "active=false,facing=east,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered",
+      "y": 90
+    },
+    "active=false,facing=north,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven"
+    },
+    "active=false,facing=north,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered"
+    },
+    "active=false,facing=south,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven",
+      "y": 180
+    },
+    "active=false,facing=south,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered",
+      "y": 180
+    },
+    "active=false,facing=west,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven",
+      "y": 270
+    },
+    "active=false,facing=west,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered",
+      "y": 270
+    },
+    "active=true,facing=east,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven_active",
+      "y": 90
+    },
+    "active=true,facing=east,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered_active",
+      "y": 90
+    },
+    "active=true,facing=north,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven_active"
+    },
+    "active=true,facing=north,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered_active"
+    },
+    "active=true,facing=south,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven_active",
+      "y": 180
+    },
+    "active=true,facing=south,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered_active",
+      "y": 180
+    },
+    "active=true,facing=west,powered=false": {
+      "model": "cookingforblockheads:block/purple_oven_active",
+      "y": 270
+    },
+    "active=true,facing=west,powered=true": {
+      "model": "cookingforblockheads:block/purple_oven_powered_active",
+      "y": 270
+    }
+  }
+}

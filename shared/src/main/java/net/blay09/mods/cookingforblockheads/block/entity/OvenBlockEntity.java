@@ -163,7 +163,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isFirstTick) {
-            if (state.getBlock() == ModBlocks.oven) {
+            if (state.hasProperty(OvenBlock.FACING)) {
                 facing = state.getValue(OvenBlock.FACING);
                 isFirstTick = false;
             }

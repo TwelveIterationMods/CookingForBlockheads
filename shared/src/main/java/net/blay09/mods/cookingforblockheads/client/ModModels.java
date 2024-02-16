@@ -23,9 +23,9 @@ import java.util.function.Supplier;
 public class ModModels {
     public static DeferredObject<BakedModel> milkJarLiquid;
     public static DeferredObject<BakedModel> sinkLiquid;
-    public static DeferredObject<BakedModel> ovenDoor;
-    public static DeferredObject<BakedModel> ovenDoorHandle;
-    public static DeferredObject<BakedModel> ovenDoorActive;
+    public static List<DeferredObject<BakedModel>> ovenDoors;
+    public static List<DeferredObject<BakedModel>> ovenDoorHandles;
+    public static List<DeferredObject<BakedModel>> ovenDoorsActive;
     public static DeferredObject<BakedModel> fridgeDoor;
     public static DeferredObject<BakedModel> fridgeDoorFlipped;
     public static DeferredObject<BakedModel> fridgeDoorLargeLower;
@@ -38,11 +38,18 @@ public class ModModels {
     public static List<DeferredObject<BakedModel>> cabinetDoorsFlipped;
 
     public static void initialize(BalmModels models) {
+        DyeColor[] colors = DyeColor.values();
+
         milkJarLiquid = models.loadModel(id("block/milk_jar_liquid"));
         sinkLiquid = models.loadModel(id("block/sink_liquid"));
-        ovenDoor = models.loadModel(id("block/oven_door"));
-        ovenDoorHandle = models.loadModel(id("block/oven_door_handle"));
-        ovenDoorActive = models.loadModel(id("block/oven_door_active"));
+        ovenDoors = new ArrayList<>(colors.length);
+        ovenDoorHandles = new ArrayList<>(colors.length);
+        ovenDoorsActive = new ArrayList<>(colors.length);
+        for (DyeColor color : colors) {
+            ovenDoors.add(color.getId(), models.retexture(id("block/oven_door"), replaceTexture(getColoredOvenTexture(color, "front"))));
+            ovenDoorHandles.add(color.getId(), models.retexture(id("block/oven_door_handle"), replaceTexture(getColoredOvenTexture(color, "front"))));
+            ovenDoorsActive.add(color.getId(), models.retexture(id("block/oven_door_active"), replaceTexture(getColoredOvenTexture(color, "front_active"))));
+        }
         fridgeDoor = models.loadModel(id("block/fridge_door"));
         fridgeDoorFlipped = models.loadModel(id("block/fridge_door_flipped"));
         fridgeDoorLargeLower = models.loadModel(id("block/fridge_large_door_lower"));
@@ -50,10 +57,9 @@ public class ModModels {
         fridgeDoorLargeUpper = models.loadModel(id("block/fridge_large_door_upper"));
         fridgeDoorLargeUpperFlipped = models.loadModel(id("block/fridge_large_door_upper_flipped"));
 
-        DyeColor[] colors = DyeColor.values();
-        counterDoors = Lists.newArrayListWithCapacity(colors.length + 1);
+        counterDoors = new ArrayList<>(colors.length + 1);
         counterDoors.add(0, models.loadModel(id("block/counter_door")));
-        counterDoorsFlipped = Lists.newArrayListWithCapacity(colors.length + 1);
+        counterDoorsFlipped = new ArrayList<>(colors.length + 1);
         counterDoorsFlipped.add(0, models.loadModel(id("block/counter_door_flipped")));
         for (DyeColor color : colors) {
             counterDoors.add(color.getId() + 1, models.retexture(id("block/counter_door"), replaceTexture(getColoredTerracottaTexture(color))));
@@ -100,24 +106,6 @@ public class ModModels {
             };
         }, null, ModModels::lowerableFacingTransforms)::get);
 
-        models.overrideModel(() -> ModBlocks.oven, models.loadDynamicModel(id("block/oven"), null, state -> {
-            String normalTexture = "cookingforblockheads:block/oven_front";
-            String activeTexture = "cookingforblockheads:block/oven_front_active";
-
-            boolean isPowered = state.getValue(OvenBlock.POWERED);
-            if (isPowered) {
-                normalTexture = "cookingforblockheads:block/oven_front_powered";
-                activeTexture = "cookingforblockheads:block/oven_front_powered_active";
-            }
-
-            boolean isActive = state.getValue(OvenBlock.ACTIVE);
-            if (isActive || isPowered) {
-                return ImmutableMap.of("ovenfront", isActive ? activeTexture : normalTexture);
-            }
-
-            return Collections.emptyMap();
-        }, ModModels::lowerableFacingTransforms)::get);
-
         models.overrideModel(() -> ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
         models.overrideModel(() -> ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
         models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
@@ -154,6 +142,10 @@ public class ModModels {
 
     private static ImmutableMap<String, String> replaceTexture(String texturePath) {
         return ImmutableMap.<String, String>builder().put("texture", texturePath).put("particle", texturePath).build();
+    }
+
+    private static String getColoredOvenTexture(DyeColor color, String variant) {
+        return "cookingforblockheads:block/" + color.name().toLowerCase(Locale.ENGLISH) + "_oven_" + variant;
     }
 
     private static String getColoredTerracottaTexture(DyeColor color) {

@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
 
-    public static Block oven;
+    public static OvenBlock[] ovens = new OvenBlock[DyeColor.values().length];
     public static Block toolRack;
     public static Block toaster;
     public static Block milkJar;
@@ -29,7 +29,6 @@ public class ModBlocks {
     public static Block[] kitchenFloors = new Block[DyeColor.values().length];
 
     public static void initialize(BalmBlocks blocks) {
-        blocks.register(() -> oven = new OvenBlock(defaultProperties()), () -> itemBlock(oven), id("oven"));
         blocks.register(() -> toolRack = new ToolRackBlock(defaultProperties()), () -> itemBlock(toolRack), id("tool_rack"));
         blocks.register(() -> toaster = new ToasterBlock(defaultProperties()), () -> itemBlock(toaster), id("toaster"));
         blocks.register(() -> milkJar = new MilkJarBlock(defaultProperties()), () -> itemBlock(milkJar), id("milk_jar"));
@@ -47,8 +46,12 @@ public class ModBlocks {
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
+        ovens = new OvenBlock[colors.length];
         for (DyeColor color : colors) {
-            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(defaultProperties()), () -> itemBlock(kitchenFloors[color.ordinal()]), id(color.getSerializedName() + "_kitchen_floor"));
+            final var colorPrefix = color.getSerializedName() + "_";
+            final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
+            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(defaultProperties()), () -> itemBlock(kitchenFloors[color.ordinal()]), id(colorPrefix + "kitchen_floor"));
+            blocks.register(() -> ovens[color.ordinal()] = new OvenBlock(color, defaultProperties()), () -> itemBlock(ovens[color.ordinal()]), id(colorPrefixExceptWhite + "oven"));
         }
     }
 

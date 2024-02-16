@@ -1,7 +1,6 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"texture": "cookingforblockheads:block/oven_side",
 		"ovenfront": "cookingforblockheads:block/oven_front"
 	},
 	"elements": [
@@ -12,11 +11,11 @@
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
 				"north": {"uv": [1, 5, 15, 16], "texture": "#ovenfront"},
-				"east": {"uv": [14.5, 5, 15.5, 16], "texture": "#texture"},
+				"east": {"uv": [14.5, 5, 15.5, 16], "texture": "#ovenfront"},
 				"south": {"uv": [1, 5, 15, 16], "texture": "#ovenfront"},
-				"west": {"uv": [0.5, 5, 1.5, 16], "texture": "#texture"},
-				"up": {"uv": [1, 0.5, 15, 1.5], "texture": "#texture"},
-				"down": {"uv": [1, 14.5, 15, 15.5], "texture": "#texture"}
+				"west": {"uv": [0.5, 5, 1.5, 16], "texture": "#ovenfront"},
+				"up": {"uv": [1, 1, 15, 2], "texture": "#ovenfront"},
+				"down": {"uv": [1, 15, 15, 16], "texture": "#ovenfront"}
 			}
 		},
 		{
@@ -44,10 +43,12 @@
 			}
 		}
 	],
-	"groups": [0,
+	"groups": [
+		0,
 		{
 			"name": "oven_door_handle",
 			"origin": [8, 8, 8],
+			"color": 0,
 			"children": [1, 2]
 		}
 	]
