@@ -16,6 +16,7 @@ import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -68,21 +69,12 @@ public class ModModelProvider extends FabricModelProvider {
         final var ovenTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/dyed_oven")), Optional.empty());
         for (final var oven : ModBlocks.ovens) {
             final var modelLocation = ModelLocationUtils.getModelLocation(oven.asItem());
-            final var textureMapping = new TextureMapping();
-            final var colorName = oven.getColor().getName();
-            textureMapping.putForced(TextureSlot.PARTICLE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
-            textureMapping.putForced(TextureSlot.TEXTURE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
-            textureMapping.putForced(TextureSlot.create("ovenfront"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_front"));
-            textureMapping.putForced(TextureSlot.create("ovenfront_active"),
-                    new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_front_active"));
-            textureMapping.putForced(TextureSlot.create("oventop"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_top"));
-            textureMapping.putForced(TextureSlot.create("ovenbottom"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_bottom"));
-            textureMapping.putForced(TextureSlot.create("backsplash"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
+            final var textureMapping = getOvenTextures(oven);
             ovenTemplate.create(modelLocation, textureMapping, itemModelGenerator.output);
         }
     }
 
-    private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, Block block) {
+    private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, OvenBlock block) {
         final var dispatch = PropertyDispatch.properties(OvenBlock.ACTIVE, OvenBlock.POWERED);
         for (var active = 0; active <= 1; active++) {
             for (var powered = 0; powered <= 1; powered++) {
@@ -102,6 +94,25 @@ public class ModModelProvider extends FabricModelProvider {
                 .with(dispatch);
         blockStateModelGenerator.blockStateOutput.accept(generator);
         blockStateModelGenerator.skipAutoItemBlock(block);
+
+        final var ovenTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/dyed_oven")), Optional.empty());
+        final var textureMapping = getOvenTextures(block);
+        ovenTemplate.create(block, textureMapping, blockStateModelGenerator.modelOutput);
+    }
+
+    @NotNull
+    private static TextureMapping getOvenTextures(OvenBlock oven) {
+        final var textureMapping = new TextureMapping();
+        final var colorName = oven.getColor().getName();
+        textureMapping.putForced(TextureSlot.PARTICLE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
+        textureMapping.putForced(TextureSlot.TEXTURE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
+        textureMapping.putForced(TextureSlot.create("ovenfront"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_front"));
+        textureMapping.putForced(TextureSlot.create("ovenfront_active"),
+                new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_front_active"));
+        textureMapping.putForced(TextureSlot.create("oventop"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_top"));
+        textureMapping.putForced(TextureSlot.create("ovenbottom"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_bottom"));
+        textureMapping.putForced(TextureSlot.create("backsplash"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
+        return textureMapping;
     }
 
 }
