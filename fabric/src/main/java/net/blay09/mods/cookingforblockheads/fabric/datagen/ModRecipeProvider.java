@@ -128,6 +128,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                 .save(exporter);
 
+        shaped(RecipeCategory.DECORATIONS, ModBlocks.cuttingBoard)
+                .pattern("A")
+                .pattern("S")
+                .define('A', Items.IRON_AXE)
+                .define('S', ItemTags.WOODEN_SLABS)
+                .unlockedBy("has_axe", has(Items.IRON_AXE))
+                .save(exporter);
+
         shaped(RecipeCategory.DECORATIONS, ModBlocks.sink)
                 .pattern("III")
                 .pattern("CBC")

@@ -35,7 +35,7 @@ public class ModBlocks {
         blocks.register(() -> cowJar = new CowJarBlock(defaultProperties()), () -> itemBlock(cowJar), id("cow_jar"));
         blocks.register(() -> spiceRack = new SpiceRackBlock(defaultProperties()), () -> itemBlock(spiceRack), id("spice_rack"));
         blocks.register(() -> fruitBasket = new FruitBasketBlock(defaultProperties()), () -> itemBlock(fruitBasket), id("fruit_basket"));
-        blocks.registerBlock(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), id("cutting_board"));
+        blocks.register(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), () -> itemBlock(cuttingBoard), id("cutting_board"));
         blocks.register(() -> cookingTable = new CookingTableBlock(defaultProperties()), () -> itemBlock(cookingTable), id("cooking_table"));
         blocks.register(() -> fridge = new FridgeBlock(defaultProperties()), () -> itemBlock(fridge), id("fridge"));
         blocks.register(() -> sink = new SinkBlock(defaultProperties()), () -> itemBlock(sink), id("sink"));

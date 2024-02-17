@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "cookingforblockheads:cutting_board"
         }
       ],
       "rolls": 1.0
