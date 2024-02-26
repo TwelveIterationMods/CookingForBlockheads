@@ -17,8 +17,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
         dropSelf(ModBlocks.cowJar);
         dropSelf(ModBlocks.cuttingBoard);
         dropSelf(ModBlocks.sink);
-        dropSelf(ModBlocks.corner);
-        dropSelf(ModBlocks.hangingCorner);
+        dropSelf(ModBlocks.connector);
         for (final var oven : ModBlocks.ovens) {
             add(oven, this::createNameableBlockEntityTable);
         }

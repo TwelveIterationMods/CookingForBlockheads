@@ -1,8 +1,7 @@
 {
   "replace": false,
   "values": [
-    "cookingforblockheads:corner",
-    "cookingforblockheads:hanging_corner",
+    "cookingforblockheads:connector",
     "cookingforblockheads:white_kitchen_floor",
     "cookingforblockheads:orange_kitchen_floor",
     "cookingforblockheads:magenta_kitchen_floor",

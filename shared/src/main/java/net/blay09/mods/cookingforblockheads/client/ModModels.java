@@ -116,8 +116,6 @@ public class ModModels {
 
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.cookingTable, "block/cooking_table");
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.counter, "block/counter");
-        registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.corner, "block/corner");
-        registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.hangingCorner, "block/hanging_corner");
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.cabinet, "block/cabinet");
     }
 
@@ -145,10 +143,6 @@ public class ModModels {
 
     private static ImmutableMap<String, String> replaceTexture(String texturePath) {
         return ImmutableMap.<String, String>builder().put("texture", texturePath).put("particle", texturePath).build();
-    }
-
-    private static String getColoredOvenTexture(DyeColor color, String variant) {
-        return "cookingforblockheads:block/" + color.name().toLowerCase(Locale.ENGLISH) + "_oven_" + variant;
     }
 
     private static String getColoredTerracottaTexture(DyeColor color) {

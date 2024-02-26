@@ -28,11 +28,10 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.sink,
                 ModBlocks.counter,
                 ModBlocks.cabinet,
-                ModBlocks.corner,
+                ModBlocks.connector,
                 ModBlocks.toaster,
                 ModBlocks.milkJar,
-                ModBlocks.cowJar,
-                ModBlocks.hangingCorner);
+                ModBlocks.cowJar);
         for (final var oven : ModBlocks.ovens) {
             mineablePickaxeBuilder.add(oven);
         }
@@ -50,8 +49,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.sink,
                 ModBlocks.counter,
                 ModBlocks.cabinet,
-                ModBlocks.corner,
-                ModBlocks.hangingCorner);
+                ModBlocks.connector);
 
         getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
         final var dyedOvens = getOrCreateTagBuilder(ModBlockTags.DYED_OVENS);
@@ -62,7 +60,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         }
 
         final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
-        kitchenConnectors.add(ModBlocks.corner, ModBlocks.hangingCorner);
+        kitchenConnectors.add(ModBlocks.connector);
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             kitchenConnectors.add(kitchenFloor);
         }

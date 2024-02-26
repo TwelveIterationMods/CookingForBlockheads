@@ -1,0 +1,71 @@
+{
+	"credit": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"parent": "block/block",
+	"textures": {
+		"countertop": "block/polished_andesite",
+		"particle": "block/terracotta",
+		"texture": "block/terracotta",
+		"backsplash": "block/black_terracotta"
+	},
+	"elements": [
+		{
+			"name": "Backsplash",
+			"from": [0, 15, 14.5],
+			"to": [16, 17, 15.5],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 1], "texture": "#backsplash"},
+				"east": {"uv": [0.5, 0, 1.5, 1], "texture": "#backsplash"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#backsplash"},
+				"west": {"uv": [14.5, 0, 15.5, 1], "texture": "#backsplash"},
+				"up": {"uv": [0, 14.5, 16, 15.5], "texture": "#backsplash"}
+			}
+		},
+		{
+			"name": "Top",
+			"from": [0, 14, 0.5],
+			"to": [16, 15, 15.5],
+			"faces": {
+				"north": {"uv": [0, 1, 16, 2], "texture": "#countertop"},
+				"east": {"uv": [0.5, 1, 15.5, 2], "texture": "#countertop"},
+				"south": {"uv": [0, 1, 16, 2], "texture": "#countertop"},
+				"west": {"uv": [0.5, 1, 15.5, 2], "texture": "#countertop"},
+				"up": {"uv": [0, 0.5, 16, 15.5], "texture": "#countertop"},
+				"down": {"uv": [1.5, 1, 14.5, 15], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Right",
+			"from": [0, 0, 1.5],
+			"to": [1, 14, 15.5],
+			"faces": {
+				"north": {"uv": [15, 2, 16, 16], "texture": "#texture"},
+				"east": {"uv": [0.5, 2, 14.5, 16], "texture": "#texture"},
+				"south": {"uv": [0, 2, 1, 16], "texture": "#texture"},
+				"west": {"uv": [1.5, 2, 15.5, 16], "texture": "#texture"},
+				"down": {"uv": [0, 0.5, 1, 14.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Left",
+			"from": [15, 0, 1.5],
+			"to": [16, 14, 15.5],
+			"faces": {
+				"north": {"uv": [0, 2, 1, 16], "texture": "#texture"},
+				"east": {"uv": [0.5, 2, 14.5, 16], "texture": "#texture"},
+				"south": {"uv": [15, 2, 16, 16], "texture": "#texture"},
+				"west": {"uv": [1.5, 2, 15.5, 16], "texture": "#texture"},
+				"down": {"uv": [15, 0.5, 16, 14.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Back",
+			"from": [1, 0, 1.5],
+			"to": [15, 14, 15.5],
+			"faces": {
+				"north": {"uv": [1, 2, 15, 15], "texture": "#texture"},
+				"south": {"uv": [1, 2, 15, 15], "texture": "#texture"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#texture"}
+			}
+		}
+	]
+}

@@ -25,8 +25,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 ModBlocks.sink.asItem(),
                 ModBlocks.counter.asItem(),
                 ModBlocks.cabinet.asItem(),
-                ModBlocks.corner.asItem(),
-                ModBlocks.hangingCorner.asItem());
+                ModBlocks.connector.asItem());
 
         final var ovens = getOrCreateTagBuilder(ModItemTags.OVENS);
         for (final var oven : ModBlocks.ovens) {

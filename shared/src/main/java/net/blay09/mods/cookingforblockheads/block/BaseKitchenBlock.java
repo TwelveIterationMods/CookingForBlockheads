@@ -97,7 +97,7 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
     private static boolean shouldBeLoweredUpon(BlockState stateBelow) {
         Block blockBelow = stateBelow.getBlock();
-        return blockBelow instanceof CounterBlock || blockBelow instanceof CornerBlock;
+        return blockBelow instanceof CounterBlock || blockBelow instanceof ConnectorBlock;
     }
 
     public boolean shouldBePlacedFlipped(BlockPlaceContext context, Direction facing) {

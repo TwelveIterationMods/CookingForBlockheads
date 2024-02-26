@@ -27,7 +27,7 @@ public class ModItems {
         items.registerItem(() -> iceUnit = new ItemIceUnit(), id("ice_unit"));
         items.registerItem(() -> preservationChamber = new ItemPreservationChamber(), id("preservation_chamber"));
 
-        creativeModeTab = items.registerCreativeModeTab(id("cookingforblockheads"), () -> new ItemStack(ModItems.recipeBook));
+        creativeModeTab = items.registerCreativeModeTab(() -> new ItemStack(ModItems.recipeBook), id("cookingforblockheads"));
     }
 
     private static ResourceLocation id(String name) {

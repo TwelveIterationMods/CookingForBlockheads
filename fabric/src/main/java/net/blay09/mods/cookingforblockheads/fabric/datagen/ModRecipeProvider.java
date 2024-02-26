@@ -102,14 +102,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_milk_bucket", has(Items.MILK_BUCKET))
                 .save(exporter);
 
-        shaped(RecipeCategory.DECORATIONS, ModBlocks.hangingCorner)
-                .pattern("CCC")
-                .pattern("C C")
-                .define('C', Blocks.TERRACOTTA)
-                .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
-                .save(exporter);
-
-        shaped(RecipeCategory.DECORATIONS, ModBlocks.corner)
+        shaped(RecipeCategory.DECORATIONS, ModBlocks.connector)
                 .pattern("SSS")
                 .pattern("CCC")
                 .pattern("CCC")

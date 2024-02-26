@@ -24,8 +24,7 @@ public class ModBlocks {
     public static Block sink;
     public static Block counter;
     public static Block cabinet;
-    public static Block corner;
-    public static Block hangingCorner;
+    public static Block connector;
     public static Block[] kitchenFloors = new Block[DyeColor.values().length];
 
     public static void initialize(BalmBlocks blocks) {
@@ -41,8 +40,7 @@ public class ModBlocks {
         blocks.register(() -> sink = new SinkBlock(defaultProperties()), () -> itemBlock(sink), id("sink"));
         blocks.register(() -> counter = new CounterBlock(defaultProperties()), () -> itemBlock(counter), id("counter"));
         blocks.register(() -> cabinet = new CabinetBlock(defaultProperties()), () -> itemBlock(cabinet), id("cabinet"));
-        blocks.register(() -> corner = new CornerBlock(defaultProperties()), () -> itemBlock(corner), id("corner"));
-        blocks.register(() -> hangingCorner = new HangingCornerBlock(defaultProperties()), () -> itemBlock(hangingCorner), id("hanging_corner"));
+        blocks.register(() -> connector = new ConnectorBlock(defaultProperties()), () -> itemBlock(connector), id("connector"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
@@ -50,8 +48,11 @@ public class ModBlocks {
         for (DyeColor color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
-            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(defaultProperties()), () -> itemBlock(kitchenFloors[color.ordinal()]), id(colorPrefix + "kitchen_floor"));
             blocks.register(() -> ovens[color.ordinal()] = new OvenBlock(color, defaultProperties()), () -> itemBlock(ovens[color.ordinal()]), id(colorPrefixExceptWhite + "oven"));
+        }
+        for (DyeColor color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(defaultProperties()), () -> itemBlock(kitchenFloors[color.ordinal()]), id(colorPrefix + "kitchen_floor"));
         }
     }
 

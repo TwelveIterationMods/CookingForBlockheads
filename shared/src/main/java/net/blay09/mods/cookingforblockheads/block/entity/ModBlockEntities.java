@@ -21,7 +21,6 @@ public class ModBlockEntities {
     public static DeferredObject<BlockEntityType<SpiceRackBlockEntity>> spiceRack;
     public static DeferredObject<BlockEntityType<CounterBlockEntity>> counter;
     public static DeferredObject<BlockEntityType<CabinetBlockEntity>> cabinet;
-    public static DeferredObject<BlockEntityType<CornerBlockEntity>> corner;
     public static DeferredObject<BlockEntityType<FruitBasketBlockEntity>> fruitBasket;
     public static DeferredObject<BlockEntityType<CuttingBoardBlockEntity>> cuttingBoard;
 
@@ -37,7 +36,6 @@ public class ModBlockEntities {
         spiceRack = blockEntities.registerBlockEntity(id("spice_rack"), SpiceRackBlockEntity::new, () -> new Block[] {ModBlocks.spiceRack});
         counter = blockEntities.registerBlockEntity(id("counter"), CounterBlockEntity::new, () ->new Block[] {ModBlocks.counter});
         cabinet = blockEntities.registerBlockEntity(id("cabinet"), CabinetBlockEntity::new, () ->new Block[] {ModBlocks.cabinet});
-        corner = blockEntities.registerBlockEntity(id("corner"), CornerBlockEntity::new, () -> new Block[] {ModBlocks.corner});
         fruitBasket = blockEntities.registerBlockEntity(id("fruit_basket"), FruitBasketBlockEntity::new, () -> new Block[] {ModBlocks.fruitBasket});
         cuttingBoard = blockEntities.registerBlockEntity(id("cutting_board"), CuttingBoardBlockEntity::new, () -> new Block[] {ModBlocks.cuttingBoard});
     }

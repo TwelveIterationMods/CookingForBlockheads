@@ -1,0 +1,87 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "block/terracotta",
+		"texture": "block/terracotta"
+	},
+	"elements": [
+		{
+			"name": "Bottom",
+			"from": [3, 3, 3],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [4.5, 4.5, 16, 16], "texture": "#texture"},
+				"east": {"uv": [1, 15, 15, 16], "texture": "#texture"},
+				"south": {"uv": [2.5, 15, 15.5, 16], "texture": "#texture"},
+				"west": {"uv": [4.5, 4.5, 16, 16], "texture": "#texture"},
+				"up": {"uv": [1, 2.5, 15, 15.5], "rotation": 270, "texture": "#texture"},
+				"down": {"uv": [1, 0.5, 15, 13.5], "rotation": 90, "texture": "#texture"}
+			}
+		},
+		{
+			"from": [3, 2, 3],
+			"to": [4, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"east": {"uv": [0, 0, 13, 1], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"west": {"uv": [0, 0, 13, 1], "texture": "#texture"},
+				"down": {"uv": [0, 0, 1, 13], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [15, 2, 3],
+			"to": [16, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"east": {"uv": [0, 0, 13, 1], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"west": {"uv": [0, 0, 13, 1], "texture": "#texture"},
+				"down": {"uv": [0, 0, 1, 13], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [4, 2, 3],
+			"to": [15, 3, 4],
+			"faces": {
+				"north": {"uv": [0, 0, 11, 1], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"south": {"uv": [0, 0, 11, 1], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"down": {"uv": [0, 0, 11, 1], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [4, 2, 15],
+			"to": [15, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 11, 1], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"south": {"uv": [0, 0, 11, 1], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1], "texture": "#texture"},
+				"down": {"uv": [0, 0, 11, 1], "texture": "#texture"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [30, -45, 0],
+			"scale": [0.625, 0.625, 0.625]
+		}
+	},
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4]
+		}
+	]
+}
