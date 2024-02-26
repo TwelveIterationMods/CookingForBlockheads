@@ -24,8 +24,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
                 ModBlocks.fridge.asItem(),
                 ModBlocks.sink.asItem(),
                 ModBlocks.counter.asItem(),
-                ModBlocks.cabinet.asItem(),
-                ModBlocks.connector.asItem());
+                ModBlocks.cabinet.asItem());
 
         final var ovens = getOrCreateTagBuilder(ModItemTags.OVENS);
         for (final var oven : ModBlocks.ovens) {
@@ -37,6 +36,17 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
             if (oven.getColor() != DyeColor.WHITE) {
                 dyedOvens.add(oven.asItem());
             }
+        }
+
+        final var connectors = getOrCreateTagBuilder(ModItemTags.CONNECTORS);
+        connectors.add(ModBlocks.connector.asItem());
+        for (final var connector : ModBlocks.connectors) {
+            connectors.add(connector.asItem());
+        }
+
+        final var dyedConnectors = getOrCreateTagBuilder(ModItemTags.DYED_CONNECTORS);
+        for (final var connector : ModBlocks.connectors) {
+            dyedConnectors.add(connector.asItem());
         }
     }
 }

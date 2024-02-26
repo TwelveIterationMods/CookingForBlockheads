@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/connector_straight_bottom_template",
+  "textures": {
+    "particle": "minecraft:block/orange_terracotta",
+    "texture": "minecraft:block/orange_terracotta"
+  }
+}

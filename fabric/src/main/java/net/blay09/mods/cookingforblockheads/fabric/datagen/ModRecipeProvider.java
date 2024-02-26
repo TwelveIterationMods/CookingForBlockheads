@@ -111,6 +111,21 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                 .save(exporter);
 
+        shapeless(RecipeCategory.DECORATIONS, ModBlocks.connector)
+                .requires(ModItemTags.DYED_CONNECTORS)
+                .requires(Items.BONE_MEAL)
+                .unlockedBy("has_dyed_connector", has(ModItemTags.DYED_CONNECTORS))
+                .save(exporter, "remove_dye_from_connector");
+
+        for (final var connector : ModBlocks.connectors) {
+            final var color = connector.getColor();
+            shapeless(RecipeCategory.DECORATIONS, connector)
+                    .requires(ModItemTags.CONNECTORS)
+                    .requires(dyeItemTags[color.ordinal()])
+                    .unlockedBy("has_oven", has(ModBlocks.connectors[DyeColor.WHITE.ordinal()]))
+                    .save(exporter, "dye_" + color.getSerializedName() + "_connector");
+        }
+
         shaped(RecipeCategory.DECORATIONS, ModBlocks.counter)
                 .pattern("SSS")
                 .pattern("CBC")

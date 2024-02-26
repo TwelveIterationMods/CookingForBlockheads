@@ -12,4 +12,7 @@ public class ModBlockTags {
     public static final TagKey<Block> IS_DYEABLE = TagKey.create(Registries.BLOCK, new ResourceLocation(CookingForBlockheads.MOD_ID, "is_dyeable"));
     public static final TagKey<Block> OVENS = TagKey.create(Registries.BLOCK, new ResourceLocation(CookingForBlockheads.MOD_ID, "ovens"));
     public static final TagKey<Block> DYED_OVENS = TagKey.create(Registries.BLOCK, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_ovens"));
+    public static final TagKey<Block> CONNECTORS = TagKey.create(Registries.BLOCK, new ResourceLocation(CookingForBlockheads.MOD_ID, "connectors"));
+    public static final TagKey<Block> DYED_CONNECTORS = TagKey.create(Registries.BLOCK, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_connectors"));
+
 }

@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "cookingforblockheads:white_connector",
+    "cookingforblockheads:orange_connector",
+    "cookingforblockheads:magenta_connector",
+    "cookingforblockheads:light_blue_connector",
+    "cookingforblockheads:yellow_connector",
+    "cookingforblockheads:lime_connector",
+    "cookingforblockheads:pink_connector",
+    "cookingforblockheads:gray_connector",
+    "cookingforblockheads:light_gray_connector",
+    "cookingforblockheads:cyan_connector",
+    "cookingforblockheads:purple_connector",
+    "cookingforblockheads:blue_connector",
+    "cookingforblockheads:brown_connector",
+    "cookingforblockheads:green_connector",
+    "cookingforblockheads:red_connector",
+    "cookingforblockheads:black_connector"
+  ]
+}

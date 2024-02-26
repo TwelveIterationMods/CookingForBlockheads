@@ -28,15 +28,18 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.sink,
                 ModBlocks.counter,
                 ModBlocks.cabinet,
-                ModBlocks.connector,
                 ModBlocks.toaster,
                 ModBlocks.milkJar,
-                ModBlocks.cowJar);
+                ModBlocks.cowJar,
+                ModBlocks.connector);
         for (final var oven : ModBlocks.ovens) {
             mineablePickaxeBuilder.add(oven);
         }
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             mineablePickaxeBuilder.add(kitchenFloor);
+        }
+        for (final var connector : ModBlocks.connectors) {
+            mineablePickaxeBuilder.add(connector);
         }
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", "mineable/axe"));
@@ -48,10 +51,10 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.fridge,
                 ModBlocks.sink,
                 ModBlocks.counter,
-                ModBlocks.cabinet,
-                ModBlocks.connector);
+                ModBlocks.cabinet);
 
         getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
+
         final var dyedOvens = getOrCreateTagBuilder(ModBlockTags.DYED_OVENS);
         for (final var oven : ModBlocks.ovens) {
             if (oven.getColor() != DyeColor.WHITE) {
@@ -59,10 +62,24 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
             }
         }
 
+        final var connectors = getOrCreateTagBuilder(ModBlockTags.CONNECTORS);
+        connectors.add(ModBlocks.connector);
+        for (final var connector : ModBlocks.connectors) {
+            connectors.add(connector);
+        }
+
+        final var dyedConnectors = getOrCreateTagBuilder(ModBlockTags.DYED_CONNECTORS);
+        for (final var connector : ModBlocks.connectors) {
+            dyedConnectors.add(connector);
+        }
+
         final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         kitchenConnectors.add(ModBlocks.connector);
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             kitchenConnectors.add(kitchenFloor);
+        }
+        for (final var connector : ModBlocks.connectors) {
+            kitchenConnectors.add(connector);
         }
         kitchenConnectors.addOptional(new ResourceLocation("buildersaddition", "counter_oak_andesite"));
         kitchenConnectors.addOptional(new ResourceLocation("buildersaddition", "counter_oak_diorite"));

@@ -1,0 +1,192 @@
+{
+  "variants": {
+    "facing=east,half=bottom,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,half=bottom,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom"
+    },
+    "facing=east,half=bottom,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,half=bottom,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom"
+    },
+    "facing=east,half=bottom,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_bottom",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,half=top,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,half=top,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true
+    },
+    "facing=east,half=top,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,half=top,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true
+    },
+    "facing=east,half=top,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_top",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,half=bottom,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,half=bottom,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,half=bottom,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,half=bottom,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,half=bottom,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_bottom",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,half=top,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,half=top,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,half=top,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=north,half=top,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,half=top,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_top",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=south,half=bottom,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom"
+    },
+    "facing=south,half=bottom,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=south,half=bottom,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom"
+    },
+    "facing=south,half=bottom,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=south,half=bottom,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_bottom",
+      "uvlock": true,
+      "y": 0
+    },
+    "facing=south,half=top,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true
+    },
+    "facing=south,half=top,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=south,half=top,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true
+    },
+    "facing=south,half=top,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=south,half=top,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_top",
+      "uvlock": true,
+      "y": 0
+    },
+    "facing=west,half=bottom,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,half=bottom,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_bottom",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=west,half=bottom,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,half=bottom,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_bottom",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=west,half=bottom,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_bottom",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,half=top,shape=inner_left": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,half=top,shape=inner_right": {
+      "model": "cookingforblockheads:block/yellow_connector_inner_top",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=west,half=top,shape=outer_left": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,half=top,shape=outer_right": {
+      "model": "cookingforblockheads:block/yellow_connector_outer_top",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=west,half=top,shape=straight": {
+      "model": "cookingforblockheads:block/yellow_connector_straight_top",
+      "uvlock": true,
+      "y": 90
+    }
+  }
+}

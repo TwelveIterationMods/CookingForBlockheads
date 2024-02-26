@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/connector_outer_bottom_template",
+  "textures": {
+    "particle": "minecraft:block/cyan_terracotta",
+    "texture": "minecraft:block/cyan_terracotta"
+  }
+}

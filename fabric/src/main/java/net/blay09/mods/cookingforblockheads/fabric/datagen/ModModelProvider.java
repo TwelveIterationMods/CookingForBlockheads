@@ -1,5 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
+import net.blay09.mods.cookingforblockheads.block.ConnectorBlock;
+import net.blay09.mods.cookingforblockheads.block.DyedConnectorBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -50,27 +52,44 @@ public class ModModelProvider extends FabricModelProvider {
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             blockStateModelGenerator.createNonTemplateModelBlock(kitchenFloor);
         }
-        createStairLike(blockStateModelGenerator, ModBlocks.connector);
+        createConnector(blockStateModelGenerator, ModBlocks.connector);
+        for (final var connector : ModBlocks.connectors) {
+            createConnector(blockStateModelGenerator, connector);
+        }
 
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.toolRack);
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.spiceRack);
     }
 
-    private void createStairLike(BlockModelGenerators blockStateModelGenerator, Block block) {
-        final var innerModelBottom = new ResourceLocation("cookingforblockheads", "block/connector_inner_bottom");
-        final var straightModelBottom = new ResourceLocation("cookingforblockheads", "block/connector_straight_bottom");
-        final var outerModelBottom = new ResourceLocation("cookingforblockheads", "block/connector_outer_bottom");
-        final var innerModelTop = new ResourceLocation("cookingforblockheads", "block/connector_inner_top");
-        final var straightModelTop = new ResourceLocation("cookingforblockheads", "block/connector_straight_top");
-        final var outerModelTop = new ResourceLocation("cookingforblockheads", "block/connector_outer_top");
+    private void createConnector(BlockModelGenerators blockStateModelGenerator, Block block) {
+        final var innerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_inner_bottom_template")),
+                Optional.of("_inner_bottom"));
+        final var straightModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_straight_bottom_template")),
+                Optional.of("_straight_bottom"));
+        final var outerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_outer_bottom_template")),
+                Optional.of("_outer_bottom"));
+        final var innerModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_inner_top_template")),
+                Optional.of("_inner_top"));
+        final var straightModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_straight_top_template")),
+                Optional.of("_straight_top"));
+        final var outerModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_outer_top_template")),
+                Optional.of("_outer_top"));
 
+        final var textures = new TextureMapping();
+        if (block instanceof DyedConnectorBlock dyedConnectorBlock) {
+            final var color = dyedConnectorBlock.getColor();
+            textures.putForced(TextureSlot.PARTICLE, new ResourceLocation("minecraft", "block/" + color.getSerializedName() + "_terracotta"));
+            textures.putForced(TextureSlot.TEXTURE, new ResourceLocation("minecraft", "block/" + color.getSerializedName() + "_terracotta"));
+        }
+
+        final var straightModelBottom = straightModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput);
         blockStateModelGenerator.blockStateOutput.accept(createStairLike(block,
-                innerModelBottom,
+                innerModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
                 straightModelBottom,
-                outerModelBottom,
-                innerModelTop,
-                straightModelTop,
-                outerModelTop));
+                outerModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
+                innerModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
+                straightModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
+                outerModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput)));
         blockStateModelGenerator.delegateItemModel(block, straightModelBottom);
     }
 
