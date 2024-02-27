@@ -382,7 +382,9 @@ public class OvenBlockEntity extends BalmBlockEntity implements IKitchenSmelting
     public void setHasPowerUpgrade(boolean hasPowerUpgrade) {
         this.hasPowerUpgrade = hasPowerUpgrade;
         BlockState state = level.getBlockState(worldPosition);
-        level.setBlockAndUpdate(worldPosition, state.setValue(OvenBlock.POWERED, hasPowerUpgrade));
+        if (state.hasProperty(OvenBlock.POWERED)) {
+            level.setBlockAndUpdate(worldPosition, state.setValue(OvenBlock.POWERED, hasPowerUpgrade));
+        }
         setChanged();
     }
 

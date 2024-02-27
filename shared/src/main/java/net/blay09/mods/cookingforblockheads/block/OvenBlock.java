@@ -47,7 +47,11 @@ public class OvenBlock extends BlockKitchen {
 
     public OvenBlock() {
         super(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(5f, 10f), registryName);
-        registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(ACTIVE, false));
+        BlockState defaultState = getStateDefinition().any().setValue(ACTIVE, false);
+        if (defaultState.hasProperty(POWERED)) {
+            defaultState = defaultState.setValue(POWERED, false);
+        }
+        registerDefaultState(defaultState);
     }
 
     @Override

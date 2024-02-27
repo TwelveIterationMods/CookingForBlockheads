@@ -27,7 +27,7 @@ public class ModBlockEntities {
 
     public static void initialize(BalmBlockEntities blockEntities) {
         cookingTable = blockEntities.registerBlockEntity(id("cooking_table"), CookingTableBlockEntity::new, () -> new Block[] {ModBlocks.cookingTable});
-        oven = blockEntities.registerBlockEntity(id("oven"), OvenBlockEntity::new, () -> new Block[] {ModBlocks.oven});
+        oven = blockEntities.registerBlockEntity(id("oven"), OvenBlockEntity::new, () -> ModBlocks.dyedOvens);
         fridge = blockEntities.registerBlockEntity(id("fridge"), FridgeBlockEntity::new, () -> new Block[] {ModBlocks.fridge});
         sink = blockEntities.registerBlockEntity(id("sink"), SinkBlockEntity::new, () -> new Block[] {ModBlocks.sink});
         toolRack = blockEntities.registerBlockEntity(id("tool_rack"), ToolRackBlockEntity::new, () -> new Block[] {ModBlocks.toolRack});

@@ -1,0 +1,12 @@
+{
+  "parent": "cookingforblockheads:block/dyed_oven",
+  "textures": {
+    "backsplash": "cookingforblockheads:block/light_gray_oven_side",
+    "ovenbottom": "cookingforblockheads:block/light_gray_oven_bottom",
+    "ovenfront": "cookingforblockheads:block/light_gray_oven_front_active",
+    "ovenfront_active": "cookingforblockheads:block/light_gray_oven_front_active",
+    "oventop": "cookingforblockheads:block/light_gray_oven_top",
+    "particle": "cookingforblockheads:block/light_gray_oven_side",
+    "texture": "cookingforblockheads:block/light_gray_oven_side"
+  }
+}

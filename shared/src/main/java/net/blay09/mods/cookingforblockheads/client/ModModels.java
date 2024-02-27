@@ -23,9 +23,9 @@ import java.util.function.Supplier;
 public class ModModels {
     public static DeferredObject<BakedModel> milkJarLiquid;
     public static DeferredObject<BakedModel> sinkLiquid;
-    public static DeferredObject<BakedModel> ovenDoor;
-    public static DeferredObject<BakedModel> ovenDoorHandle;
-    public static DeferredObject<BakedModel> ovenDoorActive;
+    public static List<DeferredObject<BakedModel>> ovenDoors;
+    public static List<DeferredObject<BakedModel>> ovenDoorHandles;
+    public static List<DeferredObject<BakedModel>> ovenDoorsActive;
     public static DeferredObject<BakedModel> fridgeDoor;
     public static DeferredObject<BakedModel> fridgeDoorFlipped;
     public static DeferredObject<BakedModel> fridgeDoorLargeLower;
@@ -38,11 +38,21 @@ public class ModModels {
     public static List<DeferredObject<BakedModel>> cabinetDoorsFlipped;
 
     public static void initialize(BalmModels models) {
+        DyeColor[] colors = DyeColor.values();
+
         milkJarLiquid = models.loadModel(id("block/milk_jar_liquid"));
         sinkLiquid = models.loadModel(id("block/sink_liquid"));
-        ovenDoor = models.loadModel(id("block/oven_door"));
-        ovenDoorHandle = models.loadModel(id("block/oven_door_handle"));
-        ovenDoorActive = models.loadModel(id("block/oven_door_active"));
+        ovenDoors = new ArrayList<>(colors.length);
+        ovenDoorHandles = new ArrayList<>(colors.length);
+        ovenDoorsActive = new ArrayList<>(colors.length);
+        models.loadModel(id("block/dyed_oven_door_active"));
+        for (DyeColor color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
+            ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefixExceptWhite + "oven_door")));
+            ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefixExceptWhite + "oven_door_active")));
+            ovenDoorHandles.add(color.getId(), models.loadModel(id("block/oven_door_handle")));
+        }
         fridgeDoor = models.loadModel(id("block/fridge_door"));
         fridgeDoorFlipped = models.loadModel(id("block/fridge_door_flipped"));
         fridgeDoorLargeLower = models.loadModel(id("block/fridge_large_door_lower"));
@@ -50,7 +60,6 @@ public class ModModels {
         fridgeDoorLargeUpper = models.loadModel(id("block/fridge_large_door_upper"));
         fridgeDoorLargeUpperFlipped = models.loadModel(id("block/fridge_large_door_upper_flipped"));
 
-        DyeColor[] colors = DyeColor.values();
         counterDoors = Lists.newArrayListWithCapacity(colors.length + 1);
         counterDoors.add(0, models.loadModel(id("block/counter_door")));
         counterDoorsFlipped = Lists.newArrayListWithCapacity(colors.length + 1);

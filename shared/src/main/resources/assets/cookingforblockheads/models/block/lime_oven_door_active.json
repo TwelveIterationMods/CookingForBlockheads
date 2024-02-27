@@ -1,0 +1,12 @@
+{
+  "parent": "cookingforblockheads:block/dyed_oven_door_active",
+  "textures": {
+    "backsplash": "cookingforblockheads:block/lime_oven_side",
+    "ovenbottom": "cookingforblockheads:block/lime_oven_bottom",
+    "ovenfront": "cookingforblockheads:block/lime_oven_front_active",
+    "ovenfront_active": "cookingforblockheads:block/lime_oven_front_active",
+    "oventop": "cookingforblockheads:block/lime_oven_top",
+    "particle": "cookingforblockheads:block/lime_oven_side",
+    "texture": "cookingforblockheads:block/lime_oven_side"
+  }
+}

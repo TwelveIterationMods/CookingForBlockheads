@@ -28,6 +28,7 @@ public class ModBlocks {
     public static Block corner;
     public static Block hangingCorner;
     public static Block[] kitchenFloors = new Block[DyeColor.values().length];
+    public static Block[] dyedOvens = new Block[DyeColor.values().length];
 
     public static void initialize(BalmBlocks blocks) {
         blocks.register(() -> oven = new OvenBlock(), () -> itemBlock(oven), id("oven"));
@@ -49,7 +50,21 @@ public class ModBlocks {
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
         for (DyeColor color : colors) {
-            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(), () -> itemBlock(kitchenFloors[color.ordinal()]), id(color.getSerializedName() + "_kitchen_floor"));
+            blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(),
+                    () -> itemBlock(kitchenFloors[color.ordinal()]),
+                    id(color.getSerializedName() + "_kitchen_floor"));
+        }
+
+        dyedOvens = new Block[colors.length];
+        for (DyeColor color : colors) {
+            if (color == DyeColor.WHITE) {
+                dyedOvens[color.ordinal()] = oven;
+                continue;
+            }
+
+            blocks.register(() -> dyedOvens[color.ordinal()] = new DyedOvenBlock(color),
+                    () -> itemBlock(dyedOvens[color.ordinal()]),
+                    id(color.getSerializedName() + "_oven"));
         }
     }
 

@@ -1,0 +1,93 @@
+{
+	"credit": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"parent": "block/block",
+	"render_type": "cutout",
+	"textures": {
+		"ovenfront": "cookingforblockheads:block/white_oven_front",
+		"oventop": "cookingforblockheads:block/white_oven_top",
+		"ovenbottom": "cookingforblockheads:block/white_oven_bottom",
+		"ovengrid": "cookingforblockheads:block/oven_grid",
+		"particle": "cookingforblockheads:block/white_oven_side",
+		"backsplash": "cookingforblockheads:block/white_oven_side"
+	},
+	"elements": [
+		{
+			"name": "Backsplash",
+			"from": [0, 15, 14.5],
+			"to": [16, 17, 15.5],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 1], "texture": "#backsplash"},
+				"east": {"uv": [0.5, 0, 1.5, 1], "texture": "#backsplash"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#backsplash"},
+				"west": {"uv": [14.5, 0, 15.5, 1], "texture": "#backsplash"},
+				"up": {"uv": [0, 14.5, 16, 15.5], "texture": "#backsplash"}
+			}
+		},
+		{
+			"name": "Bottom",
+			"from": [1, 0, 1.5],
+			"to": [15, 1, 15.5],
+			"faces": {
+				"north": {"uv": [1, 15, 15, 16], "texture": "#ovenbottom"},
+				"south": {"uv": [1, 15, 15, 16], "texture": "#ovenbottom"},
+				"up": {"uv": [1, 1.5, 15, 15.5], "texture": "#ovenbottom"},
+				"down": {"uv": [1, 0.5, 15, 14.5], "texture": "#ovenbottom"}
+			}
+		},
+		{
+			"name": "Right",
+			"from": [0, 0, 0.5],
+			"to": [1, 15, 15.5],
+			"faces": {
+				"north": {"uv": [15, 1, 16, 16], "texture": "#backsplash"},
+				"east": {"uv": [0.5, 1, 15.5, 16], "texture": "#backsplash"},
+				"south": {"uv": [0, 1, 1, 16], "texture": "#backsplash"},
+				"west": {"uv": [0.5, 1, 15.5, 16], "texture": "#backsplash"},
+				"up": {"uv": [0, 0, 16, 1], "texture": "#backsplash"},
+				"down": {"uv": [0, 6, 16, 7], "texture": "#backsplash"}
+			}
+		},
+		{
+			"name": "Left",
+			"from": [15, 0, 0.5],
+			"to": [16, 15, 15.5],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 16], "texture": "#backsplash"},
+				"east": {"uv": [0.5, 1, 15.5, 16], "texture": "#backsplash"},
+				"south": {"uv": [15, 1, 16, 16], "texture": "#backsplash"},
+				"west": {"uv": [0.5, 1, 15.5, 16], "texture": "#backsplash"},
+				"up": {"uv": [0, 0, 16, 1], "texture": "#backsplash"},
+				"down": {"uv": [0, 0, 16, 1], "texture": "#backsplash"}
+			}
+		},
+		{
+			"name": "Back",
+			"from": [1, 1, 14.5],
+			"to": [15, 15, 15.5],
+			"faces": {
+				"north": {"uv": [1, 1, 15, 15], "texture": "#backsplash"},
+				"south": {"uv": [1, 1, 15, 15], "texture": "#backsplash"}
+			}
+		},
+		{
+			"name": "InnerBoard",
+			"from": [1, 5, 1.5],
+			"to": [15, 6, 15],
+			"faces": {
+				"north": {"uv": [1, 12, 15, 13], "texture": "#ovengrid"},
+				"up": {"uv": [1, 1, 14, 13], "texture": "#ovengrid"},
+				"down": {"uv": [1, 1, 14, 13], "texture": "#ovengrid"}
+			}
+		},
+		{
+			"name": "OvenTop",
+			"from": [1, 11, 0.5],
+			"to": [15, 15, 14.5],
+			"faces": {
+				"north": {"uv": [1, 1, 15, 5], "texture": "#ovenfront"},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#oventop"},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#ovenbottom"}
+			}
+		}
+	]
+}
