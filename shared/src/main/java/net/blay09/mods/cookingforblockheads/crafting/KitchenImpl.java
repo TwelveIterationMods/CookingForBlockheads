@@ -68,7 +68,7 @@ public class KitchenImpl implements Kitchen {
                             itemProcessorList.add(itemProcessor);
                         }
 
-                        if (itemProvider != null || itemProcessor != null) {
+                        if (itemProvider != null || itemProcessor != null || state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
                             findNeighbourCraftingBlocks(level, position, true);
                         }
                     } else if (state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
