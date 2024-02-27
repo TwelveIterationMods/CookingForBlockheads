@@ -31,7 +31,7 @@ public class ModBlocks {
     public static Block[] dyedOvens = new Block[DyeColor.values().length];
 
     public static void initialize(BalmBlocks blocks) {
-        blocks.register(() -> oven = new OvenBlock(), () -> itemBlock(oven), id("oven"));
+
         blocks.register(() -> toolRack = new ToolRackBlock(), () -> itemBlock(toolRack), id("tool_rack"));
         blocks.register(() -> toaster = new ToasterBlock(), () -> itemBlock(toaster), id("toaster"));
         blocks.register(() -> milkJar = new MilkJarBlock(), () -> itemBlock(milkJar), id("milk_jar"));
@@ -58,7 +58,7 @@ public class ModBlocks {
         dyedOvens = new Block[colors.length];
         for (DyeColor color : colors) {
             if (color == DyeColor.WHITE) {
-                dyedOvens[color.ordinal()] = oven;
+                blocks.register(() -> dyedOvens[color.ordinal()] = oven = new OvenBlock(), () -> itemBlock(oven), id("oven"));
                 continue;
             }
 

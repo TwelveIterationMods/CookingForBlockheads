@@ -1,1 +1,2 @@
+- Fixed crash on startup on Forge
 - Fixed craft matrix not being populated right for shaped recipes, resulting in failed crafting
