@@ -70,10 +70,11 @@ public class ConnectorBlock extends BaseKitchenBlock {
 
     private static StairsShape getStairsShape(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         final var facing = state.getValue(FACING);
+        final var half = state.getValue(HALF);
         final var behind = blockGetter.getBlockState(pos.relative(facing));
-        if (isValidConnector(behind) && getHalf(state) == getHalf(behind)) {
-            final var behindFacing = behind.getValue(FACING);
-            if (behindFacing.getAxis() != state.getValue(FACING).getAxis() && canTakeShape(state, blockGetter, pos, behindFacing.getOpposite())) {
+        if (isValidConnector(behind) && half == getHalfFromNonStair(behind)) {
+            final var behindFacing = getFacingFromNonStair(behind);
+            if (behindFacing.getAxis() != facing.getAxis() && canTakeShape(state, blockGetter, pos, behindFacing.getOpposite())) {
                 if (behindFacing == facing.getCounterClockWise()) {
                     return StairsShape.OUTER_LEFT;
                 }
@@ -83,9 +84,9 @@ public class ConnectorBlock extends BaseKitchenBlock {
         }
 
         final var front = blockGetter.getBlockState(pos.relative(facing.getOpposite()));
-        if (isValidConnector(front) && getHalf(state) == getHalf(front)) {
-            final var frontFacing = front.getValue(FACING);
-            if (frontFacing.getAxis() != state.getValue(FACING).getAxis() && canTakeShape(state, blockGetter, pos, frontFacing)) {
+        if (isValidConnector(front) && half == getHalfFromNonStair(front)) {
+            final var frontFacing = getFacingFromNonStair(front);
+            if (frontFacing.getAxis() != facing.getAxis() && canTakeShape(state, blockGetter, pos, frontFacing)) {
                 if (frontFacing == facing.getCounterClockWise()) {
                     return StairsShape.INNER_LEFT;
                 }
@@ -99,23 +100,33 @@ public class ConnectorBlock extends BaseKitchenBlock {
 
     private static boolean canTakeShape(BlockState state, BlockGetter blockGetter, BlockPos pos, Direction direction) {
         BlockState facingState = blockGetter.getBlockState(pos.relative(direction));
-        return !isValidConnector(facingState) || facingState.getValue(FACING) != state.getValue(FACING) || getHalf(facingState) != getHalf(state);
+        return !isValidConnector(facingState) || getFacingFromNonStair(facingState) != state.getValue(FACING) || getHalfFromNonStair(facingState) != state.getValue(HALF);
     }
 
     private static boolean isValidConnector(BlockState state) {
         return state.getBlock() instanceof ConnectorBlock || (state.getBlock() instanceof BaseKitchenBlock && state.hasProperty(FACING));
     }
 
-    private static Half getHalf(BlockState state) {
+    private static Half getHalfFromNonStair(BlockState state) {
         if (state.hasProperty(HALF)) {
             return state.getValue(HALF);
         }
 
+        // Not pretty, but only the cabinet currently should be considered a top half for connectors. Should probably use an interface or tag for this for better addon support.
         if (state.getBlock() instanceof CabinetBlock) {
             return Half.TOP;
         }
 
         return Half.BOTTOM;
+    }
+
+    private static Direction getFacingFromNonStair(BlockState state) {
+        // Not pretty, but stairs have opposite facing and I don't want to rewrite the vanilla logic to account for it - s o we flip our other kitchen blocks to match.
+        if (!(state.getBlock() instanceof ConnectorBlock)) {
+            return state.getValue(FACING).getOpposite();
+        }
+
+        return state.getValue(FACING);
     }
 
     public BlockState rotate(BlockState state, Rotation rotation) {
