@@ -1,3 +1,5 @@
+- Fixed counters and other supported storage not being recognized as kitchen storage on Fabric
+
 - Updated to Minecraft 1.20.4
 - Added Dyed Ovens
 - Added Kitchen Connector block that behaves like stairs, i.e. can be used as inside and outside corners as well as straight connectors
