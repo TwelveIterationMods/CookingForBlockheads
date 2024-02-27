@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
+import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.provider.ProviderUtils;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
@@ -12,6 +13,7 @@ import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -61,6 +63,13 @@ public class KitchenImpl implements Kitchen {
                         final var itemProvider = ProviderUtils.getProvider(blockEntity, KitchenItemProvider.class);
                         if (itemProvider != null) {
                             itemProviderList.add(itemProvider);
+                        } else if (state.is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
+                            // We need to do this again because NeoForge has no fallback capability providers...
+                            if (blockEntity instanceof Container container) {
+                                itemProviderList.add(new ContainerKitchenItemProvider(container));
+                            } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
+                                itemProviderList.add(new ContainerKitchenItemProvider(containerProvider.getContainer()));
+                            }
                         }
 
                         final var itemProcessor = ProviderUtils.getProvider(blockEntity, KitchenItemProcessor.class);
