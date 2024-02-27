@@ -1,4 +1,6 @@
+- Fixed cooking table erroring and not opening when right-clicked on NeoForge
 - Fixed counters and other supported storage not being recognized as kitchen storage on Fabric
+- Fixed counters and other supported storage not being recognized as kitchen storage on NeoForge
 
 - Updated to Minecraft 1.20.4
 - Added Dyed Ovens
