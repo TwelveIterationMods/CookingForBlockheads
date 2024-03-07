@@ -171,6 +171,6 @@ public class SinkBlock extends BaseKitchenBlock {
         if (itemStack.getItem() instanceof DyeableLeatherItem dyeableLeatherItem) {
             dyeableLeatherItem.clearColor(itemStack);
         }
-        return itemStack;
+        return ItemStack.EMPTY;
     }
 }
