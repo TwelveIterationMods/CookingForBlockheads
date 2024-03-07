@@ -1,3 +1,5 @@
+- Fixed item duplication bug
+
 - Fixed connectors not behaving correctly when connecting with other kitchen blocks
 
 - Fixed cooking table erroring and not opening when right-clicked on NeoForge
