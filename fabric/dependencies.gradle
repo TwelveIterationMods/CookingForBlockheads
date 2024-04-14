@@ -2,4 +2,6 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:$modmenu_version"
     modCompileOnly "curse.maven:jade-324717:$jade_forge_version"
     modCompileOnly "mcp.mobius.waila:wthit-api:mojmap-$wthit_version"
+    modImplementation "curse.maven:epherolib-885449:4950007"
+    modImplementation "curse.maven:croptopia-415438:4950008"
 }

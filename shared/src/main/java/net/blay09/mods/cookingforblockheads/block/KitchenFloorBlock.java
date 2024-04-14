@@ -26,4 +26,8 @@ public class KitchenFloorBlock extends Block {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.kitchen_floor.description").withStyle(ChatFormatting.GRAY));
     }
 
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
 }
