@@ -23,4 +23,4 @@ run
 runs
 logs
 
-shared/src/generated/resources/.cache
+common/src/generated/resources/.cache
