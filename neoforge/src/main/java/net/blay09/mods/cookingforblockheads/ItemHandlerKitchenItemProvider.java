@@ -40,14 +40,14 @@ public class ItemHandlerKitchenItemProvider implements KitchenItemProvider {
     public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
             final var slotStack = itemHandler.getStackInSlot(itemHandlerIngredientToken.slot);
-            if (ItemStack.isSameItemSameTags(slotStack, itemStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
+            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
                 return itemHandlerIngredientToken;
             }
         }
 
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             final var slotStack = itemHandler.getStackInSlot(i);
-            if (ItemStack.isSameItemSameTags(slotStack, itemStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
+            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
                 return new ItemHandlerIngredientToken(i);
             }
         }

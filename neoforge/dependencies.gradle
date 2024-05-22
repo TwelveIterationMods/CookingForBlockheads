@@ -1,4 +1,7 @@
 dependencies {
+    implementation("net.blay09.mods:balm-neoforge:${balm_version}") {
+        changing = balm_version.contains("SNAPSHOT")
+    }
     compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
     compileOnly "curse.maven:jade-324717:$jade_forge_version"
     compileOnly "mcp.mobius.waila:wthit-api:forge-$wthit_version"

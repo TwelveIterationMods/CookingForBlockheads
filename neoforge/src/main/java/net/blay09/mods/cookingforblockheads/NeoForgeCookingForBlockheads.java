@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
+import net.blay09.mods.balm.neoforge.NeoForgeLoadContext;
 import net.blay09.mods.balm.neoforge.provider.NeoForgeBalmProviders;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -36,8 +37,10 @@ public class NeoForgeCookingForBlockheads {
             NeoForge.EVENT_BUS.post(event);
         });
 
-        Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheadsClient::initialize));
+        final var context = new NeoForgeLoadContext(eventBus);
+        Balm.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
+        // TODO client entrypoint:
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheadsClient::initialize));
 
         eventBus.addListener(this::registerCapabilities);
         eventBus.addListener(this::enqueueIMC);
