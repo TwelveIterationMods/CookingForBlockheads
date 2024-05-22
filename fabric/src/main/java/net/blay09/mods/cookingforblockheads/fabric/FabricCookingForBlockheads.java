@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.EmptyLoadContext;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.common.BalmBlockEntity;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public class FabricCookingForBlockheads implements ModInitializer {
     @Override
     public void onInitialize() {
-        Balm.initialize(CookingForBlockheads.MOD_ID, CookingForBlockheads::initialize);
+        Balm.initialize(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheads::initialize);
 
         registerProvider("kitchen_item_provider", KitchenItemProvider.class,
                 ModBlockEntities.milkJar.get(), ModBlockEntities.cowJar.get(), ModBlockEntities.fridge.get(),
