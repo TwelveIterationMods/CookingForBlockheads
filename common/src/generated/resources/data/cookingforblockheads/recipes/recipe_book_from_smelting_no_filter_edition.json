@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "cookingforblockheads:no_filter_edition"
   },
-  "result": "cookingforblockheads:recipe_book"
+  "result": {
+    "id": "cookingforblockheads:recipe_book"
+  }
 }

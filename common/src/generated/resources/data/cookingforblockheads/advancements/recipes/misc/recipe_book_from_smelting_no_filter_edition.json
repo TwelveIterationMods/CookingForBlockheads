@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "cookingforblockheads:no_filter_edition"
-            ]
+            "items": "cookingforblockheads:no_filter_edition"
           }
         ]
       },

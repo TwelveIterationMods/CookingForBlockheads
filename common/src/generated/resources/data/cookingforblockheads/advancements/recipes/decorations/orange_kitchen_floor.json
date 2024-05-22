@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "cookingforblockheads:white_kitchen_floor"
-            ]
+            "items": "cookingforblockheads:white_kitchen_floor"
           }
         ]
       },

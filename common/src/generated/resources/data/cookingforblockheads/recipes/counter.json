@@ -18,6 +18,7 @@
     "CCC"
   ],
   "result": {
-    "item": "cookingforblockheads:counter"
+    "count": 1,
+    "id": "cookingforblockheads:counter"
   }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "cookingforblockheads:recipe_book"
-            ]
+            "items": "cookingforblockheads:recipe_book"
           }
         ]
       },

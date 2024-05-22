@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "cookingforblockheads:dyed_connectors"
+            "items": "#cookingforblockheads:dyed_connectors"
           }
         ]
       },

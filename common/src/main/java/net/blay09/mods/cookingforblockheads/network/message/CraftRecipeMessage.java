@@ -34,7 +34,7 @@ public class CraftRecipeMessage implements CustomPacketPayload {
         if (message.lockedInputs != null) {
             buf.writeByte(message.lockedInputs.size());
             for (ItemStack itemstack : message.lockedInputs) {
-                ItemStack.STREAM_CODEC.encode(buf, itemstack);
+                ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, itemstack);
             }
         } else {
             buf.writeByte(0);
@@ -49,7 +49,7 @@ public class CraftRecipeMessage implements CustomPacketPayload {
         final var lockedInputsCount = buf.readByte();
         NonNullList<ItemStack> lockedInputs = NonNullList.createWithCapacity(lockedInputsCount);
         for (int i = 0; i < lockedInputsCount; i++) {
-            lockedInputs.add( ItemStack.STREAM_CODEC.decode(buf));
+            lockedInputs.add( ItemStack.OPTIONAL_STREAM_CODEC.decode(buf));
         }
         final var craftFullStack = buf.readBoolean();
         final var addToInventory = buf.readBoolean();

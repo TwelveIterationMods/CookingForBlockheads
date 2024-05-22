@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "minecraft:book"
   },
-  "result": "cookingforblockheads:recipe_book"
+  "result": {
+    "id": "cookingforblockheads:recipe_book"
+  }
 }

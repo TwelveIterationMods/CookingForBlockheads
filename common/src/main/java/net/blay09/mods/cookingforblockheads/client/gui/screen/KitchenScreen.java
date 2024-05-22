@@ -84,6 +84,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         searchBar = new EditBox(minecraft.font, leftPos + imageWidth - 78, topPos - 5, 70, 10, searchBar, Component.empty());
         setInitialFocus(searchBar);
+        addRenderableWidget(searchBar);
 
         int yOffset = -80;
 
@@ -142,7 +143,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         } else {
             if (searchBar.mouseClicked(mouseX, mouseY, button)) {
-                searchBar.setFocused(true);
+                setFocused(searchBar);
                 return true;
             }
         }
@@ -266,9 +267,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 curY += font.lineHeight + 5;
             }
         }
-
-
-        searchBar.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override

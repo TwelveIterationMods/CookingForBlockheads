@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "cookingforblockheads:white_connector"
-            ]
+            "items": "cookingforblockheads:white_connector"
           }
         ]
       },
