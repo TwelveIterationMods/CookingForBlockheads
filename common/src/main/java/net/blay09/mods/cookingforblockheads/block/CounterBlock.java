@@ -54,6 +54,10 @@ public class CounterBlock extends BaseKitchenBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (itemStack.isEmpty()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {
             return ItemInteractionResult.SUCCESS;
         }

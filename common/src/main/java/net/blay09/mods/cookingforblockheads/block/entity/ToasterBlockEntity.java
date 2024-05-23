@@ -86,8 +86,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (active) {
-            //toastTicks--;
-            toastTicks -= 100;
+            toastTicks--;
             if (toastTicks <= 0 && !level.isClientSide) {
                 for (int i = 0; i < container.getContainerSize(); i++) {
                     ItemStack inputStack = container.getItem(i);

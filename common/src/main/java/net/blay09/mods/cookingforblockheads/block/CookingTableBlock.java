@@ -65,6 +65,10 @@ public class CookingTableBlock extends BaseKitchenBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (itemStack.isEmpty()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         final var blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof CookingTableBlockEntity cookingTable) {
             if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {

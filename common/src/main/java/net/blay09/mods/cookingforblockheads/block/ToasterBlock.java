@@ -60,6 +60,10 @@ public class ToasterBlock extends BaseKitchenBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (itemStack.isEmpty()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof ToasterBlockEntity toaster) {
             ItemStack heldItem = player.getItemInHand(hand);
