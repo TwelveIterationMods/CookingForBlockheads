@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.neoforge.NeoForgeLoadContext;
+import net.blay09.mods.balm.neoforge.fluid.NeoForgeFluidTank;
 import net.blay09.mods.balm.neoforge.provider.NeoForgeBalmProviders;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -18,6 +19,7 @@ import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -61,6 +63,7 @@ public class NeoForgeCookingForBlockheads {
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.cowJar.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.fridge.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.sink.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.sink.get(), (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.cuttingBoard.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
 
         event.registerBlockEntity(KITCHEN_ITEM_PROCESSOR, ModBlockEntities.oven.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProcessor.class));
