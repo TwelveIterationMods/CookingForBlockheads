@@ -1,7 +1,0 @@
-{
-	"parent": "cookingforblockheads:block/kitchen_floor",
-	"textures": {
-		"all": "cookingforblockheads:block/purple_kitchen_floor",
-		"particle": "cookingforblockheads:block/purple_kitchen_floor"
-	}
-}
