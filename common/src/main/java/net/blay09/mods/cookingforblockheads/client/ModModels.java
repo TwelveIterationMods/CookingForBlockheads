@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 public class ModModels {
     public static DeferredObject<BakedModel> milkJarLiquid;
+    public static DeferredObject<BakedModel> cowJarLiquid;
     public static DeferredObject<BakedModel> sinkLiquid;
     public static List<DeferredObject<BakedModel>> ovenDoors;
     public static List<DeferredObject<BakedModel>> ovenDoorHandles;
@@ -41,6 +42,7 @@ public class ModModels {
         DyeColor[] colors = DyeColor.values();
 
         milkJarLiquid = models.loadModel(id("block/milk_jar_liquid"));
+        cowJarLiquid = models.loadModel(id("block/cow_jar_liquid"));
         sinkLiquid = models.loadModel(id("block/sink_liquid"));
         ovenDoors = new ArrayList<>(colors.length);
         ovenDoorHandles = new ArrayList<>(colors.length);

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 
@@ -33,11 +34,16 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
         float milkAmount = fluidTank.getAmount();
         if (milkAmount > 0) {
             poseStack.pushPose();
-            poseStack.translate(0, (BaseKitchenBlock.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), 0);
+            RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState(), 0f);
+            poseStack.translate(-0.5, (BaseKitchenBlock.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), -0.5);
             poseStack.scale(1f, milkAmount / fluidTank.getCapacity(), 1f);
-            dispatcher.getModelRenderer().tesselateBlock(level, ModModels.milkJarLiquid.get(), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+            dispatcher.getModelRenderer().tesselateBlock(level, getLiquidModel(), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
             poseStack.popPose();
         }
+    }
+
+    protected BakedModel getLiquidModel() {
+        return ModModels.milkJarLiquid.get();
     }
 
 }
