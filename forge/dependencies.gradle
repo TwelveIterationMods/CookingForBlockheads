@@ -8,9 +8,6 @@ dependencies {
     compileOnly("curse.maven:the-one-probe-245211:$theoneprobe_version")
     // runtimeOnly fg.deobf("curse.maven:croptopia-415438:5003016")
     // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
-
-    // temporary hacky fix as suggested by Forge
-    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 configurations {
