@@ -72,7 +72,7 @@ public class FridgeMenu extends AbstractContainerMenu implements IContainerWithD
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return Container.stillValidBlockEntity(tileFridge, player);
     }
 
     @Override

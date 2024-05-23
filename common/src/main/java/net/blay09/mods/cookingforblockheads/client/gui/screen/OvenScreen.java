@@ -31,7 +31,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        OvenBlockEntity tileEntity = menu.getTileEntity();
+        OvenBlockEntity tileEntity = menu.getOven();
         if (tileEntity.hasPowerUpgrade() && mouseX >= leftPos + imageWidth - 25 && mouseY >= topPos + 22 && mouseX < leftPos + imageWidth - 25 + 35 + 18 && mouseY < topPos + 22 + 72) {
             EnergyStorage energyStorage = tileEntity.getEnergyStorage();
             guiGraphics.renderTooltip(font, Component.translatable("tooltip.cookingforblockheads.energy_stored", energyStorage.getEnergy(), energyStorage.getCapacity()), mouseX, mouseY);
@@ -42,7 +42,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         super.renderLabels(guiGraphics, mouseX, mouseY);
 
-        OvenBlockEntity tileEntity = menu.getTileEntity();
+        OvenBlockEntity tileEntity = menu.getOven();
         for (int i = 0; i < 9; i++) {
             Slot slot = menu.slots.get(i + 7);
             if (slot.hasItem()) {
@@ -65,7 +65,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         // Draw tool slots
         guiGraphics.blit(texture, leftPos, topPos + 10, 176, 30, 25, 87);
 
-        OvenBlockEntity tileEntity = menu.getTileEntity();
+        OvenBlockEntity tileEntity = menu.getOven();
         int offsetX = tileEntity.hasPowerUpgrade() ? -5 : 0;
 
         // Draw main slots
