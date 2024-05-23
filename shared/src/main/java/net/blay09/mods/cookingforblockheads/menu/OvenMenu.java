@@ -13,11 +13,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoor {
 
-    private final OvenBlockEntity tileEntity;
+    private final OvenBlockEntity oven;
 
     public OvenMenu(int windowId, Inventory playerInventory, OvenBlockEntity oven) {
         super(ModMenus.oven.get(), windowId);
-        this.tileEntity = oven;
+        this.oven = oven;
 
         Container container = oven.getInternalContainer();
 
@@ -58,14 +58,14 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
         addDataSlots(oven.getContainerData());
     }
 
-    public OvenBlockEntity getTileEntity() {
-        return tileEntity;
+    public OvenBlockEntity getOven() {
+        return oven;
     }
 
     @Override
     public void removed(Player player) {
         super.removed(player);
-        tileEntity.getDoorAnimator().closeContainer(player);
+        oven.getDoorAnimator().closeContainer(player);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
 
                 slot.onQuickCraft(slotStack, itemStack);
             } else if (slotIndex >= 20) {
-                ItemStack smeltingResult = tileEntity.getSmeltingResult(slotStack);
+                ItemStack smeltingResult = oven.getSmeltingResult(slotStack);
                 if (OvenBlockEntity.isItemFuel(slotStack)) {
                     if (!moveItemStackTo(slotStack, 3, 4, false)) {
                         return ItemStack.EMPTY;
@@ -126,11 +126,11 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return Container.stillValidBlockEntity(oven, player);
     }
 
     @Override
     public boolean isTileEntity(BlockEntity blockEntity) {
-        return this.tileEntity == blockEntity;
+        return this.oven == blockEntity;
     }
 }
