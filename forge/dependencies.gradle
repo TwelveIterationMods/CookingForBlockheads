@@ -1,13 +1,16 @@
 dependencies {
-    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_version}") {
+    implementation("net.blay09.mods:balm-forge:${balm_version}") {
         changing = balm_version.contains("SNAPSHOT")
     }
-    compileOnly fg.deobf("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
-    compileOnly fg.deobf("curse.maven:jade-324717:$jade_forge_version")
-    compileOnly fg.deobf("mcp.mobius.waila:wthit-api:forge-$wthit_version")
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:$theoneprobe_version")
-    runtimeOnly fg.deobf("curse.maven:croptopia-415438:5003016")
+    compileOnly("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
+    compileOnly("curse.maven:jade-324717:$jade_forge_version")
+    compileOnly("mcp.mobius.waila:wthit-api:forge-$wthit_version")
+    compileOnly("curse.maven:the-one-probe-245211:$theoneprobe_version")
+    // runtimeOnly fg.deobf("curse.maven:croptopia-415438:5003016")
     // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
+
+    // temporary hacky fix as suggested by Forge
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 configurations {
