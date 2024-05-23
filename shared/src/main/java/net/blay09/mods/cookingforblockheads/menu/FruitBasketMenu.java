@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
 import net.blay09.mods.cookingforblockheads.block.entity.FruitBasketBlockEntity;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -9,10 +10,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class FruitBasketMenu extends AbstractContainerMenu {
 
+    private final FruitBasketBlockEntity fruitBasket;
     private final int numRows;
 
     public FruitBasketMenu(int windowId, Inventory playerInventory, FruitBasketBlockEntity fruitBasket) {
         super(ModMenus.fruitBasket.get(), windowId);
+        this.fruitBasket = fruitBasket;
         this.numRows = fruitBasket.getContainer().getContainerSize() / 9;
         int playerInventoryStart = numRows * 18;
 
@@ -60,7 +63,7 @@ public class FruitBasketMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return Container.stillValidBlockEntity(fruitBasket, player);
     }
 
     public int getNumRows() {

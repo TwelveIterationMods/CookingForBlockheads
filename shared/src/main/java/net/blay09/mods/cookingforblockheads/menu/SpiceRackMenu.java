@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
 import net.blay09.mods.cookingforblockheads.block.entity.SpiceRackBlockEntity;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -9,8 +10,11 @@ import net.minecraft.world.item.ItemStack;
 
 public class SpiceRackMenu extends AbstractContainerMenu {
 
+    private final SpiceRackBlockEntity spiceRack;
+
     public SpiceRackMenu(int windowId, Inventory playerInventory, SpiceRackBlockEntity spiceRack) {
         super(ModMenus.spiceRack.get(), windowId);
+        this.spiceRack = spiceRack;
 
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(spiceRack.getContainer(), i, 8 + i * 18, 18));
@@ -53,6 +57,6 @@ public class SpiceRackMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return Container.stillValidBlockEntity(spiceRack, player);
     }
 }
