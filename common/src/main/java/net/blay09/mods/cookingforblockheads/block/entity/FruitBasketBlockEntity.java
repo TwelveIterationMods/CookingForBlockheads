@@ -7,6 +7,8 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -35,6 +37,19 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
 
     public FruitBasketBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.fruitBasket.get(), pos, state);
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
+        if (customNameComponent != null) {
+            customName = customNameComponent;
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        builder.set(DataComponents.CUSTOM_NAME, customName);
     }
 
     @Override

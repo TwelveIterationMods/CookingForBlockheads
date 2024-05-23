@@ -12,6 +12,8 @@ import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -84,6 +86,19 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     @Override
     public boolean triggerEvent(int id, int type) {
         return doorAnimator.receiveClientEvent(id, type) || super.triggerEvent(id, type);
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
+        if (customNameComponent != null) {
+            customName = customNameComponent;
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        builder.set(DataComponents.CUSTOM_NAME, customName);
     }
 
     @Override

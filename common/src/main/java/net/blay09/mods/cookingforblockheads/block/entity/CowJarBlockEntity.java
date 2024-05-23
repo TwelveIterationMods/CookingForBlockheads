@@ -5,6 +5,8 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfigData;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -23,6 +25,19 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
 
     public CowJarBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.cowJar.get(), pos, state);
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
+        if (customNameComponent != null) {
+            customName = customNameComponent;
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        builder.set(DataComponents.CUSTOM_NAME, customName);
     }
 
     @Override

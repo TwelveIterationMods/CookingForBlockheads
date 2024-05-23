@@ -26,6 +26,7 @@ import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -332,6 +333,19 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         }
 
         return false;
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
+        if (customNameComponent != null) {
+            customName = customNameComponent;
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        builder.set(DataComponents.CUSTOM_NAME, customName);
     }
 
     @Override
