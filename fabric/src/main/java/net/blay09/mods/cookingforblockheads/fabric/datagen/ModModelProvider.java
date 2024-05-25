@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.DyedConnectorBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
+import net.blay09.mods.cookingforblockheads.block.SinkBlock;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -34,7 +35,7 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        // TODO fix FLIPPED state for counter and cabinets and sinks
+        // TODO fix FLIPPED state for sinks
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.cowJar);
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.fridge);
 
@@ -79,13 +80,21 @@ public class ModModelProvider extends FabricModelProvider {
                     Optional.empty(), TextureSlot.ALL);
             cabinetDoorFlippedTemplate.createWithSuffix(cabinet, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
         }
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.sink);
+
+        final var sinkModel = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink");
+        final var sinkModelFlipped = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_flipped");
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.sink)
+                .with(createBooleanModelDispatch(SinkBlock.FLIPPED, sinkModelFlipped, sinkModel))
+                .with(createHorizontalFacingDispatch()));
         for (final var sink : ModBlocks.dyedSinks) {
-            final var sinkParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink")),
-                    Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-            TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(sink.getColor()));
-            sinkParent.create(sink, textureMapping, blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.createNonTemplateHorizontalBlock(sink);
+            final var sinkParent = new ModelTemplate(Optional.of(sinkModel), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+            final var sinkFlippedParent = new ModelTemplate(Optional.of(sinkModelFlipped), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+            final var textureMapping = TextureMapping.cube(getTerracottaByColor(sink.getColor()));
+            final var dyedSinkModel = sinkParent.create(sink, textureMapping, blockStateModelGenerator.modelOutput);
+            final var dyedSinkModelFlipped = sinkFlippedParent.createWithSuffix(sink, "_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+            blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(sink)
+                    .with(createBooleanModelDispatch(SinkBlock.FLIPPED, dyedSinkModelFlipped, dyedSinkModel))
+                    .with(createHorizontalFacingDispatch()));
         }
         for (final var oven : ModBlocks.ovens) {
             createOvenBlock(blockStateModelGenerator, oven);
@@ -445,7 +454,9 @@ public class ModModelProvider extends FabricModelProvider {
             ovenTemplate.create(modelLocation, textureMapping, itemModelGenerator.output);
         }
 
-        final var counterTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/counter")), Optional.empty(), TextureSlot.ALL);
+        final var counterTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/counter")),
+                Optional.empty(),
+                TextureSlot.ALL);
         for (final var counter : ModBlocks.dyedCounters) {
             final var color = counter.getColor();
             if (color == null) {
@@ -457,7 +468,9 @@ public class ModModelProvider extends FabricModelProvider {
             counterTemplate.create(modelLocation, textureMapping, itemModelGenerator.output);
         }
 
-        final var cabinetTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/cabinet")), Optional.empty(), TextureSlot.ALL);
+        final var cabinetTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/cabinet")),
+                Optional.empty(),
+                TextureSlot.ALL);
         for (final var cabinet : ModBlocks.dyedCabinets) {
             final var color = cabinet.getColor();
             if (color == null) {

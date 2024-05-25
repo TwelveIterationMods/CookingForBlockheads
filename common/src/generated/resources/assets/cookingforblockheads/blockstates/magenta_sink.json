@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,flipped=false": {
       "model": "cookingforblockheads:block/magenta_sink",
       "y": 90
     },
-    "facing=north": {
+    "facing=east,flipped=true": {
+      "model": "cookingforblockheads:block/magenta_sink_flipped",
+      "y": 90
+    },
+    "facing=north,flipped=false": {
       "model": "cookingforblockheads:block/magenta_sink"
     },
-    "facing=south": {
+    "facing=north,flipped=true": {
+      "model": "cookingforblockheads:block/magenta_sink_flipped"
+    },
+    "facing=south,flipped=false": {
       "model": "cookingforblockheads:block/magenta_sink",
       "y": 180
     },
-    "facing=west": {
+    "facing=south,flipped=true": {
+      "model": "cookingforblockheads:block/magenta_sink_flipped",
+      "y": 180
+    },
+    "facing=west,flipped=false": {
       "model": "cookingforblockheads:block/magenta_sink",
+      "y": 270
+    },
+    "facing=west,flipped=true": {
+      "model": "cookingforblockheads:block/magenta_sink_flipped",
       "y": 270
     }
   }
