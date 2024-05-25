@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -86,19 +87,56 @@ public class ToolRackBlock extends BaseKitchenBlock {
     }
 
     @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
+        final var blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof ToolRackBlockEntity toolRack)) {
+            return InteractionResult.FAIL;
+        }
+
+        int hitSlot = getHitSlot(state, pos, blockHitResult);
+        final var clickedItemStack = toolRack.getContainer().getItem(hitSlot);
+        if (!clickedItemStack.isEmpty()) {
+            toolRack.getContainer().setItem(hitSlot, ItemStack.EMPTY);
+            player.setItemInHand(InteractionHand.MAIN_HAND, clickedItemStack);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        final var blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof ToolRackBlockEntity toolRack)) {
+            return ItemInteractionResult.FAIL;
         }
 
         if (hand != InteractionHand.MAIN_HAND) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
-        if (!itemStack.isEmpty() && itemStack.getItem() instanceof BlockItem) {
+        if (itemStack.getItem() instanceof BlockItem) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
+        int hitSlot = getHitSlot(state, pos, blockHitResult);
+        final var oldToolItem = toolRack.getContainer().getItem(hitSlot);
+        final var toolItem = itemStack.split(1);
+        if (!oldToolItem.isEmpty()) {
+            if (!player.getInventory().add(oldToolItem)) {
+                player.drop(oldToolItem, false);
+            }
+            toolRack.getContainer().setItem(hitSlot, toolItem);
+        } else {
+            toolRack.getContainer().setItem(hitSlot, toolItem);
+        }
+
+        return ItemInteractionResult.SUCCESS;
+    }
+
+    private static int getHitSlot(BlockState state, BlockPos pos, BlockHitResult blockHitResult) {
         Direction stateFacing = state.getValue(FACING);
 
         double hitX = blockHitResult.getLocation().x - pos.getX();
@@ -112,37 +150,13 @@ public class ToolRackBlock extends BaseKitchenBlock {
         };
 
         int hitSlot = hit > 0.5f ? 0 : 1;
-        ToolRackBlockEntity toolRack = (ToolRackBlockEntity) level.getBlockEntity(pos);
-        if (toolRack != null) {
-            if (!itemStack.isEmpty()) {
-                ItemStack oldToolItem = toolRack.getContainer().getItem(hitSlot);
-                ItemStack toolItem = itemStack.split(1);
-                if (!oldToolItem.isEmpty()) {
-                    if (!player.getInventory().add(oldToolItem)) {
-                        player.drop(oldToolItem, false);
-                    }
-                    toolRack.getContainer().setItem(hitSlot, toolItem);
-                } else {
-                    toolRack.getContainer().setItem(hitSlot, toolItem);
-                }
-            } else {
-                ItemStack clickedItemStack = toolRack.getContainer().getItem(hitSlot);
-                if (!clickedItemStack.isEmpty()) {
-                    toolRack.getContainer().setItem(hitSlot, ItemStack.EMPTY);
-                    player.setItemInHand(hand, clickedItemStack);
-                }
-            }
-        }
-
-        return ItemInteractionResult.SUCCESS;
+        return hitSlot;
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
-
-
 
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
