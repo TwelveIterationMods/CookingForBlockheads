@@ -28,7 +28,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public class CookingTableBlock extends BaseKitchenBlock {
 
@@ -125,7 +124,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.cookingTable : ModBlocks.cookingTables[color.ordinal()];
+        final var block = color == null ? ModBlocks.cookingTable : ModBlocks.dyedCookingTables[color.ordinal()];
         return block.defaultBlockState()
                 .setValue(FACING, state.getValue(FACING));
     }

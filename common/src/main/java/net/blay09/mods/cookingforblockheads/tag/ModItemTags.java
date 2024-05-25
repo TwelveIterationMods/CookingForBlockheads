@@ -12,6 +12,10 @@ public class ModItemTags {
     public static final TagKey<Item> DYED_COOKING_TABLES = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_cooking_tables"));
     public static final TagKey<Item> OVENS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "ovens"));
     public static final TagKey<Item> DYED_OVENS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_ovens"));
+    public static final TagKey<Item> COUNTERS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "counters"));
+    public static final TagKey<Item> DYED_COUNTERS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_counters"));
+    public static final TagKey<Item> CABINETS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "cabinets"));
+    public static final TagKey<Item> DYED_CABINETS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_cabinets"));
     public static final TagKey<Item> CONNECTORS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "connectors"));
     public static final TagKey<Item> DYED_CONNECTORS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_connectors"));
     public static final TagKey<Item> UTENSILS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "utensils"));

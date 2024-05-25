@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cookingforblockheads:block/cyan_counter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cookingforblockheads:block/cyan_counter"
+    },
+    "facing=south": {
+      "model": "cookingforblockheads:block/cyan_counter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cookingforblockheads:block/cyan_counter",
+      "y": 270
+    }
+  }
+}

@@ -42,7 +42,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_crafting_book", has(ModItems.craftingBook))
                 .save(exporter);
 
-        for (final var cookingTable : ModBlocks.cookingTables) {
+        shapeless(RecipeCategory.DECORATIONS, ModBlocks.cookingTable)
+                .requires(ModItemTags.DYED_COOKING_TABLES)
+                .requires(Items.BONE_MEAL)
+                .unlockedBy("has_dyed_cooking_table", has(ModItemTags.DYED_COOKING_TABLES))
+                .save(exporter, "remove_dye_from_cooking_table");
+
+        for (final var cookingTable : ModBlocks.dyedCookingTables) {
             final var color = cookingTable.getColor();
             if (color == null) {
                 continue;
@@ -112,12 +118,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_dyed_connector", has(ModItemTags.DYED_CONNECTORS))
                 .save(exporter, "remove_dye_from_connector");
 
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             final var color = connector.getColor();
             shapeless(RecipeCategory.DECORATIONS, connector)
                     .requires(ModItemTags.CONNECTORS)
                     .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
-                    .unlockedBy("has_oven", has(ModBlocks.connectors[DyeColor.WHITE.ordinal()]))
+                    .unlockedBy("has_oven", has(ModBlocks.dyedConnectors[DyeColor.WHITE.ordinal()]))
                     .save(exporter, "dye_" + color.getSerializedName() + "_connector");
         }
 
@@ -130,6 +136,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .define('B', BalmItemTags.WOODEN_CHESTS)
                 .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                 .save(exporter);
+
+        shapeless(RecipeCategory.DECORATIONS, ModBlocks.counter)
+                .requires(ModItemTags.DYED_COUNTERS)
+                .requires(Items.BONE_MEAL)
+                .unlockedBy("has_dyed_counter", has(ModItemTags.DYED_COUNTERS))
+                .save(exporter, "remove_dye_from_counter");
+
+        for (final var counter : ModBlocks.dyedCounters) {
+            final var color = counter.getColor();
+            if (color == null) {
+                continue;
+            }
+
+            shapeless(RecipeCategory.DECORATIONS, counter)
+                    .requires(ModItemTags.COUNTERS)
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                    .unlockedBy("has_counter", has(ModBlocks.counter))
+                    .save(exporter, "dye_" + color.getSerializedName() + "_counter");
+        }
 
         shaped(RecipeCategory.DECORATIONS, ModBlocks.cuttingBoard)
                 .pattern("A")
@@ -156,6 +181,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .define('B', BalmItemTags.WOODEN_CHESTS)
                 .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                 .save(exporter);
+
+        shapeless(RecipeCategory.DECORATIONS, ModBlocks.cabinet)
+                .requires(ModItemTags.DYED_CABINETS)
+                .requires(Items.BONE_MEAL)
+                .unlockedBy("has_dyed_cabinet", has(ModItemTags.DYED_CABINETS))
+                .save(exporter, "remove_dye_from_cabinet");
+
+        for (final var cabinet : ModBlocks.dyedCabinets) {
+            final var color = cabinet.getColor();
+            if (color == null) {
+                continue;
+            }
+
+            shapeless(RecipeCategory.DECORATIONS, cabinet)
+                    .requires(ModItemTags.CABINETS)
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                    .unlockedBy("has_cabinet", has(ModBlocks.cabinet))
+                    .save(exporter, "dye_" + color.getSerializedName() + "_cabinet");
+        }
 
         shaped(RecipeCategory.DECORATIONS, ModBlocks.toolRack)
                 .pattern("SSS")

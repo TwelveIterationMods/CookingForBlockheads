@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/counter",
+  "textures": {
+    "all": "minecraft:block/yellow_terracotta",
+    "particle": "minecraft:block/yellow_terracotta"
+  }
+}

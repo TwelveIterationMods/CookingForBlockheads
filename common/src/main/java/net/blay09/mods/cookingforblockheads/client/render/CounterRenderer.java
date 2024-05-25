@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
+import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -60,8 +61,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         }
 
         BlockState state = blockEntity.getBlockState();
-        boolean hasColor = state.getValue(BaseKitchenBlock.HAS_COLOR);
-        DyeColor blockColor = hasColor ? state.getValue(BaseKitchenBlock.COLOR) : null;
+        DyeColor blockColor = state.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
         float blockAngle = blockEntity.getFacing().toYRot();
         float doorAngle = blockEntity.getDoorAnimator().getRenderAngle(partialTicks);
         boolean isFlipped = blockEntity.isFlipped();

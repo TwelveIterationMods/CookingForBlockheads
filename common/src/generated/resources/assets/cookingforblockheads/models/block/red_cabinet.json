@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/cabinet",
+  "textures": {
+    "all": "minecraft:block/red_terracotta",
+    "particle": "minecraft:block/red_terracotta"
+  }
+}

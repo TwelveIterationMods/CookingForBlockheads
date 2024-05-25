@@ -67,8 +67,10 @@ public class ModModels {
         counterDoorsFlipped = new ArrayList<>(colors.length + 1);
         counterDoorsFlipped.add(0, models.loadModel(id("block/counter_door_flipped")));
         for (DyeColor color : colors) {
-            counterDoors.add(color.getId() + 1, models.retexture(id("block/counter_door"), replaceTexture(getColoredTerracottaTexture(color))));
-            counterDoorsFlipped.add(color.getId() + 1, models.retexture(id("block/counter_door_flipped"), replaceTexture(getColoredTerracottaTexture(color))));
+            final var colorPrefix = color.getSerializedName() + "_";
+            counterDoors.add(color.getId() + 1,
+                    models.loadModel(id("block/" + colorPrefix + "counter_door")));
+            counterDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "counter_door_flipped")));
         }
 
         cabinetDoors = Lists.newArrayListWithCapacity(colors.length + 1);
@@ -76,20 +78,25 @@ public class ModModels {
         cabinetDoorsFlipped = Lists.newArrayListWithCapacity(colors.length + 1);
         cabinetDoorsFlipped.add(0, models.loadModel(id("block/cabinet_door_flipped")));
         for (DyeColor color : colors) {
-            cabinetDoors.add(color.getId() + 1, models.retexture(id("block/cabinet_door"), replaceTexture(getColoredTerracottaTexture(color))));
-            cabinetDoorsFlipped.add(color.getId() + 1, models.retexture(id("block/cabinet_door_flipped"), replaceTexture(getColoredTerracottaTexture(color))));
+            final var colorPrefix = color.getSerializedName() + "_";
+            cabinetDoors.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door")));
+            cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
         }
 
         ResourceLocation sinkModel = id("block/sink");
         ResourceLocation sinkFlippedModel = id("block/sink_flipped");
         models.overrideModel(() -> ModBlocks.sink,
-                models.loadDynamicModel(id("block/sink"), Set.of(sinkModel, sinkFlippedModel), it -> it.getValue(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel, it -> {
-                    if (it.getValue(SinkBlock.HAS_COLOR)) {
-                        return replaceTexture(getColoredTerracottaTexture(it.getValue(SinkBlock.COLOR)));
-                    }
+                models.loadDynamicModel(id("block/sink"),
+                        Set.of(sinkModel, sinkFlippedModel),
+                        it -> it.getValue(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel,
+                        it -> {
+                            if (it.getValue(SinkBlock.HAS_COLOR)) {
+                                return replaceTexture(getColoredTerracottaTexture(it.getValue(SinkBlock.COLOR)));
+                            }
 
-                    return Collections.emptyMap();
-                }, ModModels::lowerableFacingTransforms)::get);
+                            return Collections.emptyMap();
+                        },
+                        ModModels::lowerableFacingTransforms)::get);
 
         ResourceLocation toasterModel = id("block/toaster");
         ResourceLocation toasterActiveModel = id("block/toaster_active");
@@ -103,22 +110,20 @@ public class ModModels {
         ResourceLocation fridgeSmallModel = id("block/fridge");
         ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
         ResourceLocation fridgeLargeUpperModel = id("block/fridge_large_upper");
-        models.overrideModel(() -> ModBlocks.fridge, models.loadDynamicModel(id("block/fridge"), Set.of(fridgeSmallModel, fridgeLargeLowerModel, fridgeLargeUpperModel), it -> {
-            FridgeBlock.FridgeModelType fridgeModelType = it.getValue(FridgeBlock.MODEL_TYPE);
-            return switch (fridgeModelType) {
-                case LARGE_LOWER -> fridgeLargeLowerModel;
-                case LARGE_UPPER -> fridgeLargeUpperModel;
-                default -> fridgeSmallModel;
-            };
-        }, null, ModModels::lowerableFacingTransforms)::get);
+        models.overrideModel(() -> ModBlocks.fridge,
+                models.loadDynamicModel(id("block/fridge"), Set.of(fridgeSmallModel, fridgeLargeLowerModel, fridgeLargeUpperModel), it -> {
+                    FridgeBlock.FridgeModelType fridgeModelType = it.getValue(FridgeBlock.MODEL_TYPE);
+                    return switch (fridgeModelType) {
+                        case LARGE_LOWER -> fridgeLargeLowerModel;
+                        case LARGE_UPPER -> fridgeLargeUpperModel;
+                        default -> fridgeSmallModel;
+                    };
+                }, null, ModModels::lowerableFacingTransforms)::get);
 
         models.overrideModel(() -> ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
         models.overrideModel(() -> ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
         models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
         models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
-
-        registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.counter, "block/counter");
-        registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.cabinet, "block/cabinet");
     }
 
     private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath) {
@@ -128,17 +133,6 @@ public class ModModels {
     private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath, List<RenderType> renderTypes) {
         final var modelId = id(modelPath);
         return BalmClient.getModels().loadDynamicModel(modelId, Set.of(modelId), null, null, ModModels::lowerableFacingTransforms, renderTypes);
-    }
-
-    private static void registerColoredKitchenBlock(BalmModels models, Supplier<Block> blockSupplier, String modelPath) {
-        final var modelId = id(modelPath);
-        models.overrideModel(blockSupplier, models.loadDynamicModel(modelId, Set.of(modelId), null, it -> {
-            if (it.getValue(BaseKitchenBlock.HAS_COLOR)) {
-                return replaceTexture(getColoredTerracottaTexture(it.getValue(BaseKitchenBlock.COLOR)));
-            }
-
-            return Collections.emptyMap();
-        }, ModModels::lowerableFacingTransforms)::get);
     }
 
     private static ResourceLocation id(String path) {

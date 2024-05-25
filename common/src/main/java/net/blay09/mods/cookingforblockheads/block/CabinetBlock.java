@@ -1,11 +1,13 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.cookingforblockheads.block.entity.CabinetBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,15 +27,18 @@ import java.util.List;
 
 public class CabinetBlock extends CounterBlock {
 
-    public static final MapCodec<CabinetBlock> CODEC = simpleCodec(CabinetBlock::new);
+    public static final MapCodec<CabinetBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
+                    .orElse(null)
+                    .forGetter(CabinetBlock::getColor),
+            propertiesCodec()).apply(it, CabinetBlock::new));
 
     private static final VoxelShape BOUNDING_BOX_NORTH = Block.box(0, 2, 2, 16, 16, 16);
     private static final VoxelShape BOUNDING_BOX_EAST = Block.box(0, 2, 0, 14, 16, 16);
     private static final VoxelShape BOUNDING_BOX_WEST = Block.box(2, 2, 0, 16, 16, 16);
     private static final VoxelShape BOUNDING_BOX_SOUTH = Block.box(0, 2, 0, 16, 16, 14);
 
-    public CabinetBlock(Properties properties) {
-        super(properties);
+    public CabinetBlock(@Nullable DyeColor color, Properties properties) {
+        super(color, properties);
     }
 
     @Nullable
@@ -65,10 +70,16 @@ public class CabinetBlock extends CounterBlock {
         return CODEC;
     }
 
-
-
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.cabinet.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.cabinet : ModBlocks.dyedCabinets[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(FLIPPED, state.getValue(FLIPPED));
     }
 }

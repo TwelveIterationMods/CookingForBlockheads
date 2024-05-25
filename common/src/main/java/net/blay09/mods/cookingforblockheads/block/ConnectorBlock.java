@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -187,7 +186,7 @@ public class ConnectorBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.connector : ModBlocks.connectors[color.ordinal()];
+        final var block = color == null ? ModBlocks.connector : ModBlocks.dyedConnectors[color.ordinal()];
         return block.defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(HALF, state.getValue(HALF))

@@ -1,0 +1,6 @@
+{
+  "parent": "cookingforblockheads:block/cabinet_door",
+  "textures": {
+    "all": "minecraft:block/yellow_terracotta"
+  }
+}

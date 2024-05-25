@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
 
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.ChatFormatting;
@@ -14,12 +14,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -36,15 +32,26 @@ import java.util.List;
 
 public class CounterBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<CounterBlock> CODEC = simpleCodec(CounterBlock::new);
+    public static final MapCodec<CounterBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
+                    .orElse(null)
+                    .forGetter(CounterBlock::getColor),
+            propertiesCodec()).apply(it, CounterBlock::new));
 
-    public CounterBlock(Properties properties) {
+    private final DyeColor color;
+
+    public CounterBlock(@Nullable DyeColor color, Properties properties) {
         super(properties.sound(SoundType.STONE).strength(5f, 10f));
+        this.color = color;
+    }
+
+    @Nullable
+    public DyeColor getColor() {
+        return color;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FLIPPED, COLOR, HAS_COLOR);
+        builder.add(FACING, FLIPPED);
     }
 
     @Override
@@ -117,5 +124,13 @@ public class CounterBlock extends BaseKitchenBlock {
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.counter.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.counter : ModBlocks.dyedCounters[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(FLIPPED, state.getValue(FLIPPED));
     }
 }

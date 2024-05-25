@@ -1,0 +1,6 @@
+{
+  "parent": "cookingforblockheads:item/counter",
+  "textures": {
+    "all": "minecraft:block/light_gray_terracotta"
+  }
+}

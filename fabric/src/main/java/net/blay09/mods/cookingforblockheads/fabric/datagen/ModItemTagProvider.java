@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -9,7 +8,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -40,19 +38,33 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
         final var cookingTables = getOrCreateTagBuilder(ModItemTags.COOKING_TABLES).add(ModBlocks.cookingTable.asItem());
         final var dyedCookingTables = getOrCreateTagBuilder(ModItemTags.DYED_COOKING_TABLES);
-        for (final var cookingTable : ModBlocks.cookingTables) {
+        for (final var cookingTable : ModBlocks.dyedCookingTables) {
             cookingTables.add(cookingTable.asItem());
             dyedCookingTables.add(cookingTable.asItem());
         }
 
+        final var counters = getOrCreateTagBuilder(ModItemTags.COUNTERS).add(ModBlocks.counter.asItem());
+        final var dyedCounters = getOrCreateTagBuilder(ModItemTags.DYED_COUNTERS);
+        for (final var counter : ModBlocks.dyedCounters) {
+            counters.add(counter.asItem());
+            dyedCounters.add(counter.asItem());
+        }
+
+        final var cabinets = getOrCreateTagBuilder(ModItemTags.CABINETS).add(ModBlocks.cabinet.asItem());
+        final var dyedCabinets = getOrCreateTagBuilder(ModItemTags.DYED_CABINETS);
+        for (final var cabinet : ModBlocks.dyedCabinets) {
+            cabinets.add(cabinet.asItem());
+            dyedCabinets.add(cabinet.asItem());
+        }
+
         final var connectors = getOrCreateTagBuilder(ModItemTags.CONNECTORS);
         connectors.add(ModBlocks.connector.asItem());
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             connectors.add(connector.asItem());
         }
 
         final var dyedConnectors = getOrCreateTagBuilder(ModItemTags.DYED_CONNECTORS);
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             dyedConnectors.add(connector.asItem());
         }
     }

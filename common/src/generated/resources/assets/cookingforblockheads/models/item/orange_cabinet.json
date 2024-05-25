@@ -1,0 +1,6 @@
+{
+  "parent": "cookingforblockheads:item/cabinet",
+  "textures": {
+    "all": "minecraft:block/orange_terracotta"
+  }
+}

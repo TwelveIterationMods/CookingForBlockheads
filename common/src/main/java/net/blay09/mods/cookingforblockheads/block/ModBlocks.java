@@ -11,7 +11,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
 
-    public static CookingTableBlock[] cookingTables = new CookingTableBlock[DyeColor.values().length];
+    public static CookingTableBlock[] dyedCookingTables = new CookingTableBlock[DyeColor.values().length];
+    public static CounterBlock[] dyedCounters = new CounterBlock[DyeColor.values().length];
+    public static CabinetBlock[] dyedCabinets = new CabinetBlock[DyeColor.values().length];
     public static OvenBlock[] ovens = new OvenBlock[DyeColor.values().length];
     public static CookingTableBlock cookingTable;
     public static Block toolRack;
@@ -23,10 +25,10 @@ public class ModBlocks {
     public static Block cuttingBoard;
     public static Block fridge;
     public static Block sink;
-    public static Block counter;
-    public static Block cabinet;
+    public static CounterBlock counter;
+    public static CabinetBlock cabinet;
     public static Block connector;
-    public static DyedConnectorBlock[] connectors = new DyedConnectorBlock[DyeColor.values().length];
+    public static DyedConnectorBlock[] dyedConnectors = new DyedConnectorBlock[DyeColor.values().length];
     public static Block[] kitchenFloors = new Block[DyeColor.values().length];
 
     public static void initialize(BalmBlocks blocks) {
@@ -39,14 +41,12 @@ public class ModBlocks {
         blocks.register(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), () -> itemBlock(cuttingBoard), id("cutting_board"));
         blocks.register(() -> fridge = new FridgeBlock(defaultProperties()), () -> itemBlock(fridge), id("fridge"));
         blocks.register(() -> sink = new SinkBlock(defaultProperties()), () -> itemBlock(sink), id("sink"));
-        blocks.register(() -> counter = new CounterBlock(defaultProperties()), () -> itemBlock(counter), id("counter"));
-        blocks.register(() -> cabinet = new CabinetBlock(defaultProperties()), () -> itemBlock(cabinet), id("cabinet"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
         ovens = new OvenBlock[colors.length];
-        cookingTables = new CookingTableBlock[colors.length];
-        connectors = new DyedConnectorBlock[colors.length];
+        dyedCookingTables = new CookingTableBlock[colors.length];
+        dyedConnectors = new DyedConnectorBlock[colors.length];
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
@@ -55,7 +55,7 @@ public class ModBlocks {
         blocks.register(() -> connector = new ConnectorBlock(defaultProperties()), () -> itemBlock(connector), id("connector"));
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            blocks.register(() -> connectors[color.ordinal()] = new DyedConnectorBlock(color, defaultProperties()), () -> itemBlock(connectors[color.ordinal()]), id(colorPrefix + "connector"));
+            blocks.register(() -> dyedConnectors[color.ordinal()] = new DyedConnectorBlock(color, defaultProperties()), () -> itemBlock(dyedConnectors[color.ordinal()]), id(colorPrefix + "connector"));
         }
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
@@ -64,7 +64,17 @@ public class ModBlocks {
         blocks.register(() -> cookingTable = new CookingTableBlock(null, defaultProperties()), () -> itemBlock(cookingTable), id("cooking_table"));
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            blocks.register(() -> cookingTables[color.ordinal()] = new CookingTableBlock(color, defaultProperties()), () -> itemBlock(cookingTables[color.ordinal()]), id(colorPrefix + "cooking_table"));
+            blocks.register(() -> dyedCookingTables[color.ordinal()] = new CookingTableBlock(color, defaultProperties()), () -> itemBlock(dyedCookingTables[color.ordinal()]), id(colorPrefix + "cooking_table"));
+        }
+        blocks.register(() -> counter = new CounterBlock(null, defaultProperties()), () -> itemBlock(counter), id("counter"));
+        for (final var color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            blocks.register(() -> dyedCounters[color.ordinal()] = new CounterBlock(color, defaultProperties()), () -> itemBlock(dyedCounters[color.ordinal()]), id(colorPrefix + "counter"));
+        }
+        blocks.register(() -> cabinet = new CabinetBlock(null, defaultProperties()), () -> itemBlock(cabinet), id("cabinet"));
+        for (final var color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            blocks.register(() -> dyedCabinets[color.ordinal()] = new CabinetBlock(color, defaultProperties()), () -> itemBlock(dyedCabinets[color.ordinal()]), id(colorPrefix + "cabinet"));
         }
     }
 

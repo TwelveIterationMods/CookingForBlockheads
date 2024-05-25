@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -38,7 +37,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             mineablePickaxeBuilder.add(kitchenFloor);
         }
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             mineablePickaxeBuilder.add(connector);
         }
 
@@ -64,12 +63,12 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
 
         final var connectors = getOrCreateTagBuilder(ModBlockTags.CONNECTORS);
         connectors.add(ModBlocks.connector);
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             connectors.add(connector);
         }
 
         final var dyedConnectors = getOrCreateTagBuilder(ModBlockTags.DYED_CONNECTORS);
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             dyedConnectors.add(connector);
         }
 
@@ -78,7 +77,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             kitchenConnectors.add(kitchenFloor);
         }
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             kitchenConnectors.add(connector);
         }
         kitchenConnectors.addOptional(new ResourceLocation("buildersaddition", "counter_oak_andesite"));

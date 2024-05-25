@@ -34,7 +34,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             dropSelf(kitchenFloor);
         }
-        for (final var connector : ModBlocks.connectors) {
+        for (final var connector : ModBlocks.dyedConnectors) {
             dropSelf(connector);
         }
     }
