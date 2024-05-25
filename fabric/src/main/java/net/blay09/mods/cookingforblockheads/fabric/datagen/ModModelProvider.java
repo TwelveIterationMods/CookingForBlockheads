@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
-import net.blay09.mods.cookingforblockheads.block.ConnectorBlock;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.DyedConnectorBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
@@ -49,12 +49,16 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.sink);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.counter);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cabinet);
-        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
-            blockStateModelGenerator.createNonTemplateModelBlock(kitchenFloor);
-        }
         createConnector(blockStateModelGenerator, ModBlocks.connector);
         for (final var connector : ModBlocks.connectors) {
             createConnector(blockStateModelGenerator, connector);
+        }
+
+        final var kitchenFloorParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/kitchen_floor")),
+                Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
+            kitchenFloorParent.create(kitchenFloor, TextureMapping.cube(kitchenFloor), blockStateModelGenerator.modelOutput);
+            blockStateModelGenerator.createNonTemplateModelBlock(kitchenFloor);
         }
 
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.toolRack);
