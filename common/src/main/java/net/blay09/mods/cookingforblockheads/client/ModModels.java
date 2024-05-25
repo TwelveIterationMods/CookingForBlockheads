@@ -94,11 +94,6 @@ public class ModModels {
        //                 default -> fridgeSmallModel;
        //             };
        //         }, null, ModModels::lowerableFacingTransforms)::get);
-
-        // models.overrideModel(() -> ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
-        // models.overrideModel(() -> ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
-        // models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
-        // models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
     }
 
     private static ResourceLocation id(String path) {
