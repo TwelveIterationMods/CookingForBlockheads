@@ -36,6 +36,13 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
             }
         }
 
+        final var sinks = getOrCreateTagBuilder(ModItemTags.SINKS).add(ModBlocks.sink.asItem());
+        final var dyedSinks = getOrCreateTagBuilder(ModItemTags.DYED_SINKS);
+        for (final var sink : ModBlocks.dyedSinks) {
+            sinks.add(sink.asItem());
+            dyedSinks.add(sink.asItem());
+        }
+
         final var cookingTables = getOrCreateTagBuilder(ModItemTags.COOKING_TABLES).add(ModBlocks.cookingTable.asItem());
         final var dyedCookingTables = getOrCreateTagBuilder(ModItemTags.DYED_COOKING_TABLES);
         for (final var cookingTable : ModBlocks.dyedCookingTables) {

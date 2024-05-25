@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cookingforblockheads:block/blue_sink",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cookingforblockheads:block/blue_sink"
+    },
+    "facing=south": {
+      "model": "cookingforblockheads:block/blue_sink",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cookingforblockheads:block/blue_sink",
+      "y": 270
+    }
+  }
+}

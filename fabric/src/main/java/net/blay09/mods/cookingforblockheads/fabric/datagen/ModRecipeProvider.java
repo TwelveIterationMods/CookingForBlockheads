@@ -174,6 +174,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
                 .save(exporter);
 
+        shapeless(RecipeCategory.DECORATIONS, ModBlocks.sink)
+                .requires(ModItemTags.DYED_SINKS)
+                .requires(Items.BONE_MEAL)
+                .unlockedBy("has_dyed_sink", has(ModItemTags.DYED_SINKS))
+                .save(exporter, "remove_dye_from_sink");
+
+        for (final var sink : ModBlocks.dyedSinks) {
+            final var color = sink.getColor();
+            if (color == null) {
+                continue;
+            }
+
+            shapeless(RecipeCategory.DECORATIONS, sink)
+                    .requires(ModItemTags.SINKS)
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                    .unlockedBy("has_sink", has(ModBlocks.sink))
+                    .save(exporter, "dye_" + color.getSerializedName() + "_sink");
+        }
+
         shaped(RecipeCategory.DECORATIONS, ModBlocks.cabinet)
                 .pattern("CCC")
                 .pattern("CBC")

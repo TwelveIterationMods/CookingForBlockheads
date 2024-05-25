@@ -24,7 +24,8 @@ public class ModBlocks {
     public static Block fruitBasket;
     public static Block cuttingBoard;
     public static Block fridge;
-    public static Block sink;
+    public static SinkBlock sink;
+    public static SinkBlock[] dyedSinks = new SinkBlock[DyeColor.values().length];
     public static CounterBlock counter;
     public static CabinetBlock cabinet;
     public static Block connector;
@@ -40,7 +41,6 @@ public class ModBlocks {
         blocks.register(() -> fruitBasket = new FruitBasketBlock(defaultProperties()), () -> itemBlock(fruitBasket), id("fruit_basket"));
         blocks.register(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), () -> itemBlock(cuttingBoard), id("cutting_board"));
         blocks.register(() -> fridge = new FridgeBlock(defaultProperties()), () -> itemBlock(fridge), id("fridge"));
-        blocks.register(() -> sink = new SinkBlock(defaultProperties()), () -> itemBlock(sink), id("sink"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
@@ -75,6 +75,11 @@ public class ModBlocks {
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             blocks.register(() -> dyedCabinets[color.ordinal()] = new CabinetBlock(color, defaultProperties()), () -> itemBlock(dyedCabinets[color.ordinal()]), id(colorPrefix + "cabinet"));
+        }
+        blocks.register(() -> sink = new SinkBlock(null, defaultProperties()), () -> itemBlock(sink), id("sink"));
+        for (final var color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            blocks.register(() -> dyedSinks[color.ordinal()] = new SinkBlock(color, defaultProperties()), () -> itemBlock(dyedSinks[color.ordinal()]), id(colorPrefix + "sink"));
         }
     }
 

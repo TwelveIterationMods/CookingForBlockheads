@@ -3,10 +3,14 @@ package net.blay09.mods.cookingforblockheads.client;
 import net.blay09.mods.balm.api.client.rendering.BalmRenderers;
 import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.SinkBlock;
 import net.blay09.mods.cookingforblockheads.client.render.*;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
+
+import java.util.Arrays;
 
 public class ModRenderers {
 
@@ -24,8 +28,13 @@ public class ModRenderers {
         renderers.registerBlockEntityRenderer(ModBlockEntities.sink::get, SinkRenderer::new);
         renderers.registerBlockEntityRenderer(ModBlockEntities.fruitBasket::get, FruitBasketRenderer::new);
 
-        renderers.registerBlockColorHandler((state, world, pos, i) -> state.getValue(BaseKitchenBlock.COLOR).getTextColor(), () -> new Block[] { ModBlocks.fridge });
-        renderers.registerBlockColorHandler((state, world, pos, i) -> 4159204, () -> new Block[] { ModBlocks.sink });
+        renderers.registerBlockColorHandler((state, world, pos, i) -> state.getValue(BaseKitchenBlock.COLOR).getTextColor(),
+                () -> new Block[]{ModBlocks.fridge});
+        renderers.registerBlockColorHandler((state, world, pos, i) -> 0x3f76e4, () -> {
+            final var allSinks = Arrays.copyOf(ModBlocks.dyedSinks, ModBlocks.dyedSinks.length + 1);
+            allSinks[allSinks.length - 1] = ModBlocks.sink;
+            return allSinks;
+        });
 
         for (final var oven : ModBlocks.ovens) {
             renderers.setBlockRenderType(() -> oven, RenderType.cutout());

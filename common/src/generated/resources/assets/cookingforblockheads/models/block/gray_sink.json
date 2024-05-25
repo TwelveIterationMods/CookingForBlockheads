@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/sink",
+  "textures": {
+    "all": "minecraft:block/gray_terracotta",
+    "particle": "minecraft:block/gray_terracotta"
+  }
+}

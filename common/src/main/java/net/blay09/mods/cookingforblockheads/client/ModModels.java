@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.mojang.math.Axis;
 import net.blay09.mods.balm.api.DeferredObject;
@@ -12,13 +11,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 public class ModModels {
     public static DeferredObject<BakedModel> milkJarLiquid;
@@ -83,21 +80,6 @@ public class ModModels {
             cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
         }
 
-        ResourceLocation sinkModel = id("block/sink");
-        ResourceLocation sinkFlippedModel = id("block/sink_flipped");
-        models.overrideModel(() -> ModBlocks.sink,
-                models.loadDynamicModel(id("block/sink"),
-                        Set.of(sinkModel, sinkFlippedModel),
-                        it -> it.getValue(SinkBlock.FLIPPED) ? sinkFlippedModel : sinkModel,
-                        it -> {
-                            if (it.getValue(SinkBlock.HAS_COLOR)) {
-                                return replaceTexture(getColoredTerracottaTexture(it.getValue(SinkBlock.COLOR)));
-                            }
-
-                            return Collections.emptyMap();
-                        },
-                        ModModels::lowerableFacingTransforms)::get);
-
         ResourceLocation toasterModel = id("block/toaster");
         ResourceLocation toasterActiveModel = id("block/toaster_active");
         models.overrideModel(() -> ModBlocks.toaster,
@@ -137,14 +119,6 @@ public class ModModels {
 
     private static ResourceLocation id(String path) {
         return new ResourceLocation(CookingForBlockheads.MOD_ID, path);
-    }
-
-    private static ImmutableMap<String, String> replaceTexture(String texturePath) {
-        return ImmutableMap.<String, String>builder().put("texture", texturePath).put("particle", texturePath).build();
-    }
-
-    private static String getColoredTerracottaTexture(DyeColor color) {
-        return "minecraft:block/" + color.name().toLowerCase(Locale.ENGLISH) + "_terracotta";
     }
 
     private static void lowerableFacingTransforms(BlockState state, Matrix4f transform) {

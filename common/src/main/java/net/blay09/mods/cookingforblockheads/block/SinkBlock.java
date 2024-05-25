@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -15,10 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -39,15 +37,26 @@ import java.util.List;
 
 public class SinkBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<SinkBlock> CODEC = simpleCodec(SinkBlock::new);
+    public static final MapCodec<SinkBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
+                    .orElse(null)
+                    .forGetter(SinkBlock::getColor),
+            propertiesCodec()).apply(it, SinkBlock::new));
 
-    public SinkBlock(Properties properties) {
+    private final DyeColor color;
+
+    public SinkBlock(DyeColor color, Properties properties) {
         super(properties.sound(SoundType.STONE).strength(5f, 10f));
+        this.color = color;
+    }
+
+    @Nullable
+    public DyeColor getColor() {
+        return color;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, COLOR, HAS_COLOR, FLIPPED);
+        builder.add(FACING, FLIPPED);
     }
 
     @Override
@@ -172,5 +181,13 @@ public class SinkBlock extends BaseKitchenBlock {
             itemStack.remove(DataComponents.DYED_COLOR);
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.sink : ModBlocks.dyedSinks[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(FLIPPED, state.getValue(FLIPPED));
     }
 }

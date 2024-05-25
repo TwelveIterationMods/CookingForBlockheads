@@ -40,17 +40,25 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         for (final var connector : ModBlocks.dyedConnectors) {
             mineablePickaxeBuilder.add(connector);
         }
+        for (final var cookingTable : ModBlocks.dyedCookingTables) {
+            mineablePickaxeBuilder.add(cookingTable);
+        }
+        for (final var cabinet : ModBlocks.dyedCabinets) {
+            mineablePickaxeBuilder.add(cabinet);
+        }
+        for (final var counter : ModBlocks.dyedCounters) {
+            mineablePickaxeBuilder.add(counter);
+        }
+        for (final var sink : ModBlocks.dyedSinks) {
+            mineablePickaxeBuilder.add(sink);
+        }
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", "mineable/axe"));
         final var mineableAxeBuilder = getOrCreateTagBuilder(mineableAxeTag);
         mineableAxeBuilder.add(ModBlocks.toolRack, ModBlocks.spiceRack, ModBlocks.fruitBasket, ModBlocks.cuttingBoard);
 
         final var isDyeable = getOrCreateTagBuilder(ModBlockTags.IS_DYEABLE);
-        isDyeable.add(ModBlocks.cookingTable,
-                ModBlocks.fridge,
-                ModBlocks.sink,
-                ModBlocks.counter,
-                ModBlocks.cabinet);
+        isDyeable.add(ModBlocks.fridge);
 
         getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
 

@@ -34,6 +34,7 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
+        // TODO fix FLIPPED state for counter and cabinets and sinks
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.cowJar);
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.fridge);
 
@@ -78,6 +79,14 @@ public class ModModelProvider extends FabricModelProvider {
                     Optional.empty(), TextureSlot.ALL);
             cabinetDoorFlippedTemplate.createWithSuffix(cabinet, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
         }
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.sink);
+        for (final var sink : ModBlocks.dyedSinks) {
+            final var sinkParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink")),
+                    Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+            TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(sink.getColor()));
+            sinkParent.create(sink, textureMapping, blockStateModelGenerator.modelOutput);
+            blockStateModelGenerator.createNonTemplateHorizontalBlock(sink);
+        }
         for (final var oven : ModBlocks.ovens) {
             createOvenBlock(blockStateModelGenerator, oven);
         }
@@ -87,7 +96,6 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fruitBasket);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cuttingBoard);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fridge);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.sink);
         createConnector(blockStateModelGenerator, ModBlocks.connector);
         for (final var connector : ModBlocks.dyedConnectors) {
             createConnector(blockStateModelGenerator, connector);

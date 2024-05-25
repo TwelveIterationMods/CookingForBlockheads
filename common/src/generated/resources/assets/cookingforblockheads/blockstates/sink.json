@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "cookingforblockheads:block/sink",
+      "y": 90
+    },
+    "facing=north": {
       "model": "cookingforblockheads:block/sink"
+    },
+    "facing=south": {
+      "model": "cookingforblockheads:block/sink",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cookingforblockheads:block/sink",
+      "y": 270
     }
   }
 }

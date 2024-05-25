@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sink": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cookingforblockheads:sink"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:dye_red_sink"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sink"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:dye_red_sink"
+    ]
+  }
+}
