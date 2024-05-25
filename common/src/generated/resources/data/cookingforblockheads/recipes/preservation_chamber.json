@@ -6,7 +6,7 @@
       "item": "minecraft:comparator"
     },
     "I": {
-      "tag": "c:iron_ingots"
+      "tag": "c:ingots/iron"
     },
     "R": {
       "item": "minecraft:redstone"

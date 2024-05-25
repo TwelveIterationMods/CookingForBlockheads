@@ -9,7 +9,7 @@
       "item": "minecraft:black_stained_glass"
     },
     "I": {
-      "tag": "c:iron_ingots"
+      "tag": "c:ingots/iron"
     }
   },
   "pattern": [

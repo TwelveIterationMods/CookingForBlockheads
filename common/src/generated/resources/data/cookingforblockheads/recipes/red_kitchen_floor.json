@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "D": {
-      "tag": "c:red_dyes"
+      "tag": "c:dyes/red"
     },
     "F": {
       "item": "cookingforblockheads:white_kitchen_floor"

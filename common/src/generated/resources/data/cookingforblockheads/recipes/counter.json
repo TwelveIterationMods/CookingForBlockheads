@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "c:wooden_chests"
+      "tag": "c:chests/wooden"
     },
     "C": {
       "item": "minecraft:terracotta"

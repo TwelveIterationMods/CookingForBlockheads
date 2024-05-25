@@ -9,7 +9,7 @@
       "item": "minecraft:crafting_table"
     },
     "D": {
-      "tag": "c:diamonds"
+      "tag": "c:gems/diamonds"
     }
   },
   "pattern": [
