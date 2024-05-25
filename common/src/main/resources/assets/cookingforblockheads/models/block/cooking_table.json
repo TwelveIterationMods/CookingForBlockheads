@@ -3,7 +3,7 @@
   "parent": "block/block",
   "textures": {
     "countertop": "minecraft:block/polished_andesite",
-    "texture": "minecraft:block/terracotta",
+    "all": "minecraft:block/terracotta",
     "particle": "minecraft:block/terracotta",
     "foot": "minecraft:block/black_terracotta",
     "backsplash": "minecraft:block/black_terracotta",
@@ -160,7 +160,7 @@
             16,
             13.5
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "north": {
           "uv": [
@@ -169,7 +169,7 @@
             16,
             16
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "south": {
           "uv": [
@@ -178,7 +178,7 @@
             16,
             16
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "west": {
           "uv": [
@@ -187,7 +187,7 @@
             15.5,
             16
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "east": {
           "uv": [
@@ -196,7 +196,7 @@
             13.5,
             16
           ],
-          "texture": "#texture"
+          "texture": "#all"
         }
       }
     },
@@ -220,7 +220,7 @@
             15.99998,
             14.5
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "north": {
           "uv": [
@@ -229,7 +229,7 @@
             16,
             15
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "south": {
           "uv": [
@@ -238,7 +238,7 @@
             15.99998,
             15
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "west": {
           "uv": [
@@ -247,7 +247,7 @@
             15.5,
             15
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "east": {
           "uv": [
@@ -256,7 +256,7 @@
             14.5,
             15
           ],
-          "texture": "#texture"
+          "texture": "#all"
         }
       }
     },
@@ -340,7 +340,7 @@
             13.5,
             15.5
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "up": {
           "uv": [
@@ -349,7 +349,7 @@
             13.5,
             1.5
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "north": {
           "uv": [
@@ -358,7 +358,7 @@
             13.5,
             7
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "west": {
           "uv": [
@@ -367,7 +367,7 @@
             1.5,
             7
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "east": {
           "uv": [
@@ -376,7 +376,7 @@
             15.5,
             7
           ],
-          "texture": "#texture"
+          "texture": "#all"
         }
       }
     },
@@ -400,7 +400,7 @@
             13.5,
             15.5
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "up": {
           "uv": [
@@ -409,7 +409,7 @@
             13.5,
             1.5
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "north": {
           "uv": [
@@ -418,7 +418,7 @@
             13.5,
             12
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "west": {
           "uv": [
@@ -427,7 +427,7 @@
             1.5,
             12
           ],
-          "texture": "#texture"
+          "texture": "#all"
         },
         "east": {
           "uv": [
@@ -436,7 +436,7 @@
             15.5,
             12
           ],
-          "texture": "#texture"
+          "texture": "#all"
         }
       }
     },

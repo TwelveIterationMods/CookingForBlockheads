@@ -42,6 +42,19 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_crafting_book", has(ModItems.craftingBook))
                 .save(exporter);
 
+        for (final var cookingTable : ModBlocks.cookingTables) {
+            final var color = cookingTable.getColor();
+            if (color == null) {
+                continue;
+            }
+
+            shapeless(RecipeCategory.DECORATIONS, cookingTable)
+                    .requires(ModItemTags.COOKING_TABLES)
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                    .unlockedBy("has_cooking_table", has(ModBlocks.cookingTable))
+                    .save(exporter, "dye_" + color.getSerializedName() + "_cooking_table");
+        }
+
         shaped(RecipeCategory.DECORATIONS, ModBlocks.fruitBasket)
                 .pattern("SPS")
                 .define('S', ItemTags.WOODEN_SLABS)
@@ -59,30 +72,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_furnace", has(Blocks.FURNACE))
                 .save(exporter);
 
-        @SuppressWarnings("unchecked") final TagKey<Item>[] dyeItemTags = new TagKey[]{
-                BalmItemTags.WHITE_DYES,
-                BalmItemTags.ORANGE_DYES,
-                BalmItemTags.MAGENTA_DYES,
-                BalmItemTags.LIGHT_BLUE_DYES,
-                BalmItemTags.YELLOW_DYES,
-                BalmItemTags.LIME_DYES,
-                BalmItemTags.PINK_DYES,
-                BalmItemTags.GRAY_DYES,
-                BalmItemTags.LIGHT_GRAY_DYES,
-                BalmItemTags.CYAN_DYES,
-                BalmItemTags.PURPLE_DYES,
-                BalmItemTags.BLUE_DYES,
-                BalmItemTags.BROWN_DYES,
-                BalmItemTags.GREEN_DYES,
-                BalmItemTags.RED_DYES,
-                BalmItemTags.BLACK_DYES
-        };
-
         for (final var oven : ModBlocks.ovens) {
             final var color = oven.getColor();
             shapeless(RecipeCategory.DECORATIONS, oven)
                     .requires(ModItemTags.OVENS)
-                    .requires(dyeItemTags[color.ordinal()])
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                     .unlockedBy("has_oven", has(ModBlocks.ovens[DyeColor.WHITE.ordinal()]))
                     .save(exporter, "dye_" + color.getSerializedName() + "_oven");
         }
@@ -122,7 +116,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             final var color = connector.getColor();
             shapeless(RecipeCategory.DECORATIONS, connector)
                     .requires(ModItemTags.CONNECTORS)
-                    .requires(dyeItemTags[color.ordinal()])
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                     .unlockedBy("has_oven", has(ModBlocks.connectors[DyeColor.WHITE.ordinal()]))
                     .save(exporter, "dye_" + color.getSerializedName() + "_connector");
         }

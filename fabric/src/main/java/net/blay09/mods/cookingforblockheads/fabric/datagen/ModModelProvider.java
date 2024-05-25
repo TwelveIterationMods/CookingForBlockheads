@@ -13,11 +13,14 @@ import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -36,6 +39,13 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.cowJar);
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.fridge);
 
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cookingTable);
+        for (final var cookingTable : ModBlocks.cookingTables) {
+            final var cookingTableParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cooking_table")),
+                    Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+            cookingTableParent.create(cookingTable, TextureMapping.cube(getTerracottaByColor(cookingTable.getColor())), blockStateModelGenerator.modelOutput);
+            blockStateModelGenerator.createNonTemplateHorizontalBlock(cookingTable);
+        }
         for (final var oven : ModBlocks.ovens) {
             createOvenBlock(blockStateModelGenerator, oven);
         }
@@ -44,7 +54,6 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cowJar);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fruitBasket);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cuttingBoard);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cookingTable);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fridge);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.sink);
         blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.counter);
@@ -65,16 +74,44 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.spiceRack);
     }
 
+    private Block getTerracottaByColor(@Nullable DyeColor color) {
+        if (color == null) {
+            return Blocks.TERRACOTTA;
+        }
+        return switch (color) {
+            case WHITE -> Blocks.WHITE_TERRACOTTA;
+            case ORANGE -> Blocks.ORANGE_TERRACOTTA;
+            case MAGENTA -> Blocks.MAGENTA_TERRACOTTA;
+            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_TERRACOTTA;
+            case YELLOW -> Blocks.YELLOW_TERRACOTTA;
+            case LIME -> Blocks.LIME_TERRACOTTA;
+            case PINK -> Blocks.PINK_TERRACOTTA;
+            case GRAY -> Blocks.GRAY_TERRACOTTA;
+            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_TERRACOTTA;
+            case CYAN -> Blocks.CYAN_TERRACOTTA;
+            case PURPLE -> Blocks.PURPLE_TERRACOTTA;
+            case BLUE -> Blocks.BLUE_TERRACOTTA;
+            case BROWN -> Blocks.BROWN_TERRACOTTA;
+            case GREEN -> Blocks.GREEN_TERRACOTTA;
+            case RED -> Blocks.RED_TERRACOTTA;
+            case BLACK -> Blocks.BLACK_TERRACOTTA;
+        };
+    }
+
     private void createConnector(BlockModelGenerators blockStateModelGenerator, Block block) {
-        final var innerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_inner_bottom_template")),
+        final var innerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+                "block/connector_inner_bottom_template")),
                 Optional.of("_inner_bottom"));
-        final var straightModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_straight_bottom_template")),
+        final var straightModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+                "block/connector_straight_bottom_template")),
                 Optional.of("_straight_bottom"));
-        final var outerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_outer_bottom_template")),
+        final var outerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+                "block/connector_outer_bottom_template")),
                 Optional.of("_outer_bottom"));
         final var innerModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_inner_top_template")),
                 Optional.of("_inner_top"));
-        final var straightModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_straight_top_template")),
+        final var straightModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+                "block/connector_straight_top_template")),
                 Optional.of("_straight_top"));
         final var outerModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_outer_top_template")),
                 Optional.of("_outer_top"));

@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -182,5 +183,14 @@ public class ConnectorBlock extends BaseKitchenBlock {
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.connector.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.connector : ModBlocks.connectors[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(HALF, state.getValue(HALF))
+                .setValue(SHAPE, state.getValue(SHAPE));
     }
 }

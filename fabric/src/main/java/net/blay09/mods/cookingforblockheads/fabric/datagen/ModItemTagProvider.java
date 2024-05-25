@@ -38,6 +38,13 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
             }
         }
 
+        final var cookingTables = getOrCreateTagBuilder(ModItemTags.COOKING_TABLES).add(ModBlocks.cookingTable.asItem());
+        final var dyedCookingTables = getOrCreateTagBuilder(ModItemTags.DYED_COOKING_TABLES);
+        for (final var cookingTable : ModBlocks.cookingTables) {
+            cookingTables.add(cookingTable.asItem());
+            dyedCookingTables.add(cookingTable.asItem());
+        }
+
         final var connectors = getOrCreateTagBuilder(ModItemTags.CONNECTORS);
         connectors.add(ModBlocks.connector.asItem());
         for (final var connector : ModBlocks.connectors) {

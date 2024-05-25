@@ -224,4 +224,11 @@ public class OvenBlock extends BaseKitchenBlock {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.oven.description").withStyle(ChatFormatting.GRAY));
     }
 
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.ovens[0] : ModBlocks.ovens[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(ACTIVE, state.getValue(ACTIVE));
+    }
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cooking_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cookingforblockheads:cooking_table"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:dye_light_blue_cooking_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cooking_table"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:dye_light_blue_cooking_table"
+    ]
+  }
+}

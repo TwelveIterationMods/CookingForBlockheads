@@ -11,7 +11,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
 
+    public static CookingTableBlock[] cookingTables = new CookingTableBlock[DyeColor.values().length];
     public static OvenBlock[] ovens = new OvenBlock[DyeColor.values().length];
+    public static CookingTableBlock cookingTable;
     public static Block toolRack;
     public static Block toaster;
     public static Block milkJar;
@@ -19,7 +21,6 @@ public class ModBlocks {
     public static Block spiceRack;
     public static Block fruitBasket;
     public static Block cuttingBoard;
-    public static Block cookingTable;
     public static Block fridge;
     public static Block sink;
     public static Block counter;
@@ -36,7 +37,6 @@ public class ModBlocks {
         blocks.register(() -> spiceRack = new SpiceRackBlock(defaultProperties()), () -> itemBlock(spiceRack), id("spice_rack"));
         blocks.register(() -> fruitBasket = new FruitBasketBlock(defaultProperties()), () -> itemBlock(fruitBasket), id("fruit_basket"));
         blocks.register(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), () -> itemBlock(cuttingBoard), id("cutting_board"));
-        blocks.register(() -> cookingTable = new CookingTableBlock(defaultProperties()), () -> itemBlock(cookingTable), id("cooking_table"));
         blocks.register(() -> fridge = new FridgeBlock(defaultProperties()), () -> itemBlock(fridge), id("fridge"));
         blocks.register(() -> sink = new SinkBlock(defaultProperties()), () -> itemBlock(sink), id("sink"));
         blocks.register(() -> counter = new CounterBlock(defaultProperties()), () -> itemBlock(counter), id("counter"));
@@ -45,6 +45,7 @@ public class ModBlocks {
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
         ovens = new OvenBlock[colors.length];
+        cookingTables = new CookingTableBlock[colors.length];
         connectors = new DyedConnectorBlock[colors.length];
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
@@ -59,6 +60,11 @@ public class ModBlocks {
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             blocks.register(() -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(defaultProperties()), () -> itemBlock(kitchenFloors[color.ordinal()]), id(colorPrefix + "kitchen_floor"));
+        }
+        blocks.register(() -> cookingTable = new CookingTableBlock(null, defaultProperties()), () -> itemBlock(cookingTable), id("cooking_table"));
+        for (final var color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            blocks.register(() -> cookingTables[color.ordinal()] = new CookingTableBlock(color, defaultProperties()), () -> itemBlock(cookingTables[color.ordinal()]), id(colorPrefix + "cooking_table"));
         }
     }
 

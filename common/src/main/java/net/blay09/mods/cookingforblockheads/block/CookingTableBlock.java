@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -12,10 +13,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -27,18 +28,30 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CookingTableBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<CookingTableBlock> CODEC = simpleCodec(CookingTableBlock::new);
+    public static final MapCodec<CookingTableBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
+                    .orElse(null)
+                    .forGetter(CookingTableBlock::getColor),
+            propertiesCodec()).apply(it, CookingTableBlock::new));
 
-    public CookingTableBlock(Properties properties) {
+    private final DyeColor color;
+
+    public CookingTableBlock(DyeColor color, Properties properties) {
         super(properties.sound(SoundType.STONE).strength(2.5f));
+        this.color = color;
+    }
+
+    @Nullable
+    public DyeColor getColor() {
+        return color;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, COLOR, HAS_COLOR);
+        builder.add(FACING);
     }
 
     @Override
@@ -108,5 +121,12 @@ public class CookingTableBlock extends BaseKitchenBlock {
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.cooking_table.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.cookingTable : ModBlocks.cookingTables[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING));
     }
 }

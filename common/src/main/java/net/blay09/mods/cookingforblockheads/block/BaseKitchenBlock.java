@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
@@ -156,26 +157,33 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
         return false;
     }
 
-    private boolean removeColor(BlockState state, LevelAccessor world, BlockPos pos, Direction facing) {
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
         if (state.hasProperty(COLOR) && state.hasProperty(HAS_COLOR)) {
-            if (state.getValue(HAS_COLOR)) {
-                world.setBlock(pos, state.setValue(HAS_COLOR, false), 3);
-                return true;
+            if (color != null) {
+                return state.setValue(COLOR, color).setValue(HAS_COLOR, true);
+            } else {
+                return state.setValue(HAS_COLOR, false);
             }
         }
 
+        return state;
+    }
+
+    private boolean removeColor(BlockState state, LevelAccessor world, BlockPos pos, Direction facing) {
+        final var removedColorState = getDyedStateOf(state, null);
+        if (!removedColorState.equals(state)) {
+            world.setBlock(pos, removedColorState, 3);
+            return true;
+        }
         return false;
     }
 
     protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
-        if (state.hasProperty(COLOR) && state.hasProperty(HAS_COLOR)) {
-            DyeColor current = state.getValue(COLOR);
-            if (current != color || !state.getValue(HAS_COLOR)) {
-                world.setBlock(pos, state.setValue(COLOR, color).setValue(HAS_COLOR, true), 3);
-                return true;
-            }
+        final var removedColorState = getDyedStateOf(state, color);
+        if (!removedColorState.equals(state)) {
+            world.setBlock(pos, removedColorState, 3);
+            return true;
         }
-
         return false;
     }
 

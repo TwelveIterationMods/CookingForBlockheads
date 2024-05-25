@@ -117,7 +117,6 @@ public class ModModels {
         models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
         models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
 
-        registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.cookingTable, "block/cooking_table");
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.counter, "block/counter");
         registerColoredKitchenBlock(BalmClient.getModels(), () -> ModBlocks.cabinet, "block/cabinet");
     }
