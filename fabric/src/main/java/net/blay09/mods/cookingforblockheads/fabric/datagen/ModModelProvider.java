@@ -1,10 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.block.DyedConnectorBlock;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.block.OvenBlock;
-import net.blay09.mods.cookingforblockheads.block.SinkBlock;
+import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -98,7 +95,12 @@ public class ModModelProvider extends FabricModelProvider {
         for (final var oven : ModBlocks.ovens) {
             createOvenBlock(blockStateModelGenerator, oven);
         }
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.toaster); // TODO active state
+        final var toasterModel = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster");
+        final var toasterModelActive = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster_active");
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.toaster)
+                .with(createBooleanModelDispatch(ToasterBlock.ACTIVE, toasterModelActive, toasterModel))
+                .with(createHorizontalFacingDispatch()));
+
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar);
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar);
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket);

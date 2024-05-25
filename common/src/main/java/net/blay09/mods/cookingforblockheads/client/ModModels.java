@@ -73,15 +73,6 @@ public class ModModels {
             cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
         }
 
-        // ResourceLocation toasterModel = id("block/toaster");
-        // ResourceLocation toasterActiveModel = id("block/toaster_active");
-        // models.overrideModel(() -> ModBlocks.toaster,
-        //         models.loadDynamicModel(id("block/toaster"),
-        //                 Set.of(toasterModel, toasterActiveModel),
-        //                 it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel,
-        //                 null,
-        //                 ModModels::lowerableFacingTransforms)::get);
-
        // ResourceLocation fridgeSmallModel = id("block/fridge");
        // ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
        // ResourceLocation fridgeLargeUpperModel = id("block/fridge_large_upper");

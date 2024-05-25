@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
+    "active=false,facing=east": {
       "model": "cookingforblockheads:block/toaster",
       "y": 90
     },
-    "facing=north": {
+    "active=false,facing=north": {
       "model": "cookingforblockheads:block/toaster"
     },
-    "facing=south": {
+    "active=false,facing=south": {
       "model": "cookingforblockheads:block/toaster",
       "y": 180
     },
-    "facing=west": {
+    "active=false,facing=west": {
       "model": "cookingforblockheads:block/toaster",
+      "y": 270
+    },
+    "active=true,facing=east": {
+      "model": "cookingforblockheads:block/toaster_active",
+      "y": 90
+    },
+    "active=true,facing=north": {
+      "model": "cookingforblockheads:block/toaster_active"
+    },
+    "active=true,facing=south": {
+      "model": "cookingforblockheads:block/toaster_active",
+      "y": 180
+    },
+    "active=true,facing=west": {
+      "model": "cookingforblockheads:block/toaster_active",
       "y": 270
     }
   }
