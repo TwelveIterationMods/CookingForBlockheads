@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "cookingforblockheads:block/toaster",
+      "y": 90
+    },
+    "facing=north": {
       "model": "cookingforblockheads:block/toaster"
+    },
+    "facing=south": {
+      "model": "cookingforblockheads:block/toaster",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cookingforblockheads:block/toaster",
+      "y": 270
     }
   }
 }

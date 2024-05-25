@@ -1,72 +1,73 @@
 {
-	"__comment": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
+	"credit": "Designed by Blay09 with Cubik Studio - https://cubik.studio",
 	"parent": "block/block",
 	"textures": {
-		"countertop": "minecraft:block/polished_andesite",
-		"texture": "minecraft:block/terracotta",
-		"particle": "minecraft:block/terracotta",
-		"foot": "minecraft:block/black_terracotta",
-		"backsplash": "minecraft:block/black_terracotta",
-		"handle": "cookingforblockheads:block/handle"
+		"countertop": "block/polished_andesite",
+		"particle": "block/terracotta",
+		"texture": "block/terracotta",
+		"backsplash": "block/black_terracotta"
 	},
 	"elements": [
 		{
-			"__comment": "Backsplash",
-			"from": [ 0, 15, 14.5 ],
-			"to": [ 15.5, 17, 15.5 ],
+			"name": "Backsplash",
+			"from": [0, 16, 14.5],
+			"to": [15.5, 18, 15.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 1, 0]},
 			"faces": {
-				"up": { "uv": [ 9.536743E-07, 14.5, 15.5, 15.5 ], "texture": "#backsplash" },
-				"north": { "uv": [ 0.499999, 0, 16, 1 ], "texture": "#backsplash" },
-				"south": { "uv": [ 9.536743E-07, 0, 15.5, 1 ], "texture": "#backsplash" },
-				"west": { "uv": [ 14.5, 0, 15.5, 1 ], "texture": "#backsplash" },
-				"east": { "uv": [ 0.500001, 0, 1.500001, 1 ], "texture": "#backsplash" }
+				"north": {"uv": [0.5, 0, 16, 1], "texture": "#backsplash"},
+				"east": {"uv": [0.5, 0, 1.5, 1], "texture": "#backsplash"},
+				"south": {"uv": [0, 0, 15.5, 1], "texture": "#backsplash"},
+				"west": {"uv": [14.5, 0, 15.5, 1], "texture": "#backsplash"},
+				"up": {"uv": [0, 14.5, 15.5, 15.5], "texture": "#backsplash"}
 			}
 		},
 		{
-			"__comment": "Top",
-			"from": [ 0, 14, 0 ],
-			"to": [ 15.5, 15, 15.5 ],
+			"name": "Top",
+			"from": [0, 15, 0],
+			"to": [15.5, 16, 15.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 1, 0]},
 			"faces": {
-				"down": { "uv": [ 0.500001, 0, 16, 15.5 ], "texture": "#countertop", "rotation": 270 },
-				"up": { "uv": [ 0.500001, 0, 16, 15.5 ], "texture": "#countertop", "rotation": 270 },
-				"north": { "uv": [ 0.500001, 15, 16, 16 ], "texture": "#countertop" },
-				"south": { "uv": [ 0.500001, 15, 16, 16 ], "texture": "#countertop" },
-				"west": { "uv": [ 0.500001, 0, 16, 1 ], "texture": "#countertop" },
-				"east": { "uv": [ 0.500001, 15, 16, 16 ], "texture": "#countertop" }
+				"north": {"uv": [0.5, 15, 16, 16], "texture": "#countertop"},
+				"east": {"uv": [0.5, 15, 16, 16], "texture": "#countertop"},
+				"south": {"uv": [0.5, 15, 16, 16], "texture": "#countertop"},
+				"west": {"uv": [0.5, 0, 16, 1], "texture": "#countertop"},
+				"up": {"uv": [0.5, 0, 16, 15.5], "rotation": 270, "texture": "#countertop"},
+				"down": {"uv": [0.5, 0, 16, 15.5], "rotation": 270, "texture": "#countertop"}
 			}
 		},
 		{
-			"__comment": "Base",
-			"from": [ 0, 0, 1 ],
-			"to": [ 15.5, 14, 15.5 ],
+			"name": "Base",
+			"from": [0, 0, 1],
+			"to": [15.5, 15, 15.5],
 			"faces": {
-				"down": { "uv": [ 0, 0.499999, 15.5, 15 ], "texture": "#texture" },
-				"north": { "uv": [ 0.5, 2, 16, 16 ], "texture": "#texture" },
-				"south": { "uv": [ 0, 2, 15.5, 16 ], "texture": "#texture" },
-				"west": { "uv": [ 1.000001, 2, 15.5, 16 ], "texture": "#texture" },
-				"east": { "uv": [ 0.499999, 2, 15, 16 ], "texture": "#texture" }
+				"north": {"uv": [0.5, 1, 16, 16], "texture": "#texture"},
+				"east": {"uv": [0.5, 1, 15, 16], "texture": "#texture"},
+				"south": {"uv": [0, 1, 15.5, 16], "texture": "#texture"},
+				"west": {"uv": [1, 1, 15.5, 16], "texture": "#texture"},
+				"down": {"uv": [0, 0.5, 15.5, 15], "texture": "#texture"}
 			}
 		},
 		{
-			"__comment": "Backsplash2",
-			"from": [ 14.5, 15, 0 ],
-			"to": [ 15.5, 17, 14.5 ],
+			"name": "Backsplash2",
+			"from": [14.5, 16, 0],
+			"to": [15.5, 18, 14.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 1, 0]},
 			"faces": {
-				"up": { "uv": [ 14.5, 0, 15.5, 14.5 ], "texture": "#backsplash" },
-				"north": { "uv": [ 0.5, 0, 1.5, 1 ], "texture": "#backsplash" },
-				"west": { "uv": [ 0, 0, 14.5, 1 ], "texture": "#backsplash" },
-				"east": { "uv": [ 1.5, 0, 16, 1 ], "texture": "#backsplash" }
+				"north": {"uv": [0.5, 0, 1.5, 1], "texture": "#backsplash"},
+				"east": {"uv": [1.5, 0, 16, 1], "texture": "#backsplash"},
+				"west": {"uv": [0, 0, 14.5, 1], "texture": "#backsplash"},
+				"up": {"uv": [14.5, 0, 15.5, 14.5], "texture": "#backsplash"}
 			}
 		},
 		{
-			"__comment": "WallFront",
-			"from": [ 1, 0, 0 ],
-			"to": [ 15.5, 14, 1 ],
+			"name": "WallFront",
+			"from": [1, 0, 0],
+			"to": [15.5, 15, 1],
 			"faces": {
-				"down": { "uv": [ 1, 15, 15.5, 16 ], "texture": "#texture" },
-				"north": { "uv": [ 0.5, 2, 15, 16 ], "texture": "#texture" },
-				"west": { "uv": [ 0, 2, 1, 16 ], "texture": "#texture" },
-				"east": { "uv": [ 15, 2, 16, 16 ], "texture": "#texture" }
+				"north": {"uv": [0.5, 1, 15, 16], "texture": "#texture"},
+				"east": {"uv": [15, 1, 16, 16], "texture": "#texture"},
+				"west": {"uv": [0, 1, 1, 16], "texture": "#texture"},
+				"down": {"uv": [1, 15, 15.5, 16], "texture": "#texture"}
 			}
 		}
 	]

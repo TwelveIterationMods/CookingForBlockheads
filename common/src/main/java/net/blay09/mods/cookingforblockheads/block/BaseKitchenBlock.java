@@ -31,18 +31,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty LOWERED = BooleanProperty.create("lowered");
     public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
     public static final BooleanProperty HAS_COLOR = BooleanProperty.create("has_color");
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
 
-    private static final VoxelShape BOUNDING_BOX_X = Block.box(0.5, 0, 0, 15.5, 15.0, 16);
-    private static final VoxelShape BOUNDING_BOX_Z = Block.box(0, 0, 0.5, 16, 15.0, 15.5);
+    private static final VoxelShape BOUNDING_BOX_X = Block.box(0.5, 0, 0, 15.5, 16.0, 16);
+    private static final VoxelShape BOUNDING_BOX_Z = Block.box(0, 0, 0.5, 16, 16.0, 15.5);
 
     protected BaseKitchenBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -70,9 +68,6 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
-        if (state.hasProperty(LOWERED)) {
-            state = state.setValue(LOWERED, shouldBeLoweredUpon(context.getLevel().getBlockState(context.getClickedPos().below())));
-        }
         return state.hasProperty(HAS_COLOR) ? state.setValue(HAS_COLOR, false) : state;
     }
 
@@ -88,15 +83,6 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
     }
 
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-    }
-
-    public static boolean shouldBlockRenderLowered(BlockGetter world, BlockPos pos) {
-        return shouldBeLoweredUpon(world.getBlockState(pos.below()));
-    }
-
-    private static boolean shouldBeLoweredUpon(BlockState stateBelow) {
-        Block blockBelow = stateBelow.getBlock();
-        return blockBelow instanceof CounterBlock || blockBelow instanceof ConnectorBlock;
     }
 
     public boolean shouldBePlacedFlipped(BlockPlaceContext context, Direction facing) {
@@ -185,15 +171,6 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (facing == Direction.DOWN && state.hasProperty(LOWERED)) {
-            return state.setValue(LOWERED, shouldBeLoweredUpon(facingState));
-        }
-
-        return state;
     }
 
     @Override

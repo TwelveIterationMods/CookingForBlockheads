@@ -35,7 +35,7 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
         if (milkAmount > 0) {
             poseStack.pushPose();
             RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState(), 0f);
-            poseStack.translate(-0.5, (BaseKitchenBlock.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), -0.5);
+            poseStack.translate(-0.5, 0, -0.5);
             poseStack.scale(1f, milkAmount / fluidTank.getCapacity(), 1f);
             dispatcher.getModelRenderer().tesselateBlock(level, getLiquidModel(), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
             poseStack.popPose();

@@ -46,15 +46,11 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LOWERED);
+        builder.add(FACING);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        if (shouldBlockRenderLowered(world, pos)) {
-            return SHAPE.move(0, -0.05, 0);
-        }
-
         return SHAPE;
     }
 

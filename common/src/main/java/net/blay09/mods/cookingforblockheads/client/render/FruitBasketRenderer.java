@@ -37,10 +37,6 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
                 float antiZFight = ((rowIndex % 2 != 0) ? 0.1f : 0f) + i * 0.01f;
                 float curX = -0.75f + rowIndex * 0.25f + ((colIndex == 3) ? 0.15f : 0f);
                 float curY = -1.35f;
-                if (BaseKitchenBlock.shouldBlockRenderLowered(world, blockEntity.getBlockPos())) {
-                    curY -= 0.2f;
-                }
-
                 float curZ = -0.75f + colIndex * 0.35f + antiZFight;
                 poseStack.pushPose();
                 poseStack.translate(curX, curY, curZ);

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "cookingforblockheads:block/cutting_board",
+      "y": 90
+    },
+    "facing=north": {
       "model": "cookingforblockheads:block/cutting_board"
+    },
+    "facing=south": {
+      "model": "cookingforblockheads:block/cutting_board",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cookingforblockheads:block/cutting_board",
+      "y": 270
     }
   }
 }

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "cookingforblockheads:block/fruit_basket",
+      "y": 90
+    },
+    "facing=north": {
       "model": "cookingforblockheads:block/fruit_basket"
+    },
+    "facing=south": {
+      "model": "cookingforblockheads:block/fruit_basket",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cookingforblockheads:block/fruit_basket",
+      "y": 270
     }
   }
 }

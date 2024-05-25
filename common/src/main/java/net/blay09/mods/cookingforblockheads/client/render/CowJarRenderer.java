@@ -37,7 +37,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
         float shrinkage = 0.2f;
         poseStack.pushPose();
         RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState(), 0f);
-        poseStack.translate(0, 0 + (MilkJarBlock.shouldBlockRenderLowered(level, blockEntity.getBlockPos()) ? -0.05 : 0), 0);
+        poseStack.translate(0, 0, 0);
         poseStack.scale(shrinkage, shrinkage, shrinkage);
 
         Minecraft.getInstance().getEntityRenderDispatcher().render(entity, 0, 0, 0, 0f, 0f, poseStack, buffer, combinedLight);

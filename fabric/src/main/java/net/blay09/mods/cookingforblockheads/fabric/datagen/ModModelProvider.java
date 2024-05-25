@@ -35,7 +35,6 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        // TODO fix FLIPPED state for sinks
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.cowJar);
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.fridge);
 
@@ -99,12 +98,12 @@ public class ModModelProvider extends FabricModelProvider {
         for (final var oven : ModBlocks.ovens) {
             createOvenBlock(blockStateModelGenerator, oven);
         }
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.toaster);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.milkJar);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cowJar);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fruitBasket);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.cuttingBoard);
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.fridge);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.toaster); // TODO active state
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cuttingBoard);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fridge); // TODO lower upper small state
         createConnector(blockStateModelGenerator, ModBlocks.connector);
         for (final var connector : ModBlocks.dyedConnectors) {
             createConnector(blockStateModelGenerator, connector);

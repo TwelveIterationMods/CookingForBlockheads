@@ -8,14 +8,9 @@
 		{
 			"name": "Liquid_Milk",
 			"from": [2.5, 8, 2.5],
-			"to": [13.5, 13, 13.5],
+			"to": [13.5, 14, 13.5],
 			"faces": {
-				"north": {"uv": [5.5, 10, 16.5, 15], "texture": "#milk", "tintindex": 0},
-				"east": {"uv": [5.5, 10, 16.5, 15], "texture": "#milk", "tintindex": 0},
-				"south": {"uv": [5.5, 10, 16.5, 15], "texture": "#milk", "tintindex": 0},
-				"west": {"uv": [5.5, 10, 16.5, 15], "texture": "#milk", "tintindex": 0},
-				"up": {"uv": [5.5, 5.5, 16.5, 16.5], "texture": "#milk", "tintindex": 0},
-				"down": {"uv": [16.5, 16.5, 5.5, 5.5], "texture": "#milk", "tintindex": 0}
+				"up": {"uv": [5.5, 5.5, 16.5, 16.5], "texture": "#milk", "tintindex": 0}
 			}
 		}
 	]

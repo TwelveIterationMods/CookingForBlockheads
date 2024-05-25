@@ -1,19 +1,12 @@
 package net.blay09.mods.cookingforblockheads.client;
 
 import com.google.common.collect.Lists;
-import com.mojang.math.Axis;
 import net.blay09.mods.balm.api.DeferredObject;
-import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.client.rendering.BalmModels;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.block.*;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.state.BlockState;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import java.util.*;
 
@@ -80,55 +73,35 @@ public class ModModels {
             cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
         }
 
-        ResourceLocation toasterModel = id("block/toaster");
-        ResourceLocation toasterActiveModel = id("block/toaster_active");
-        models.overrideModel(() -> ModBlocks.toaster,
-                models.loadDynamicModel(id("block/toaster"),
-                        Set.of(toasterModel, toasterActiveModel),
-                        it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel,
-                        null,
-                        ModModels::lowerableFacingTransforms)::get);
+        // ResourceLocation toasterModel = id("block/toaster");
+        // ResourceLocation toasterActiveModel = id("block/toaster_active");
+        // models.overrideModel(() -> ModBlocks.toaster,
+        //         models.loadDynamicModel(id("block/toaster"),
+        //                 Set.of(toasterModel, toasterActiveModel),
+        //                 it -> it.getValue(ToasterBlock.ACTIVE) ? toasterActiveModel : toasterModel,
+        //                 null,
+        //                 ModModels::lowerableFacingTransforms)::get);
 
-        ResourceLocation fridgeSmallModel = id("block/fridge");
-        ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
-        ResourceLocation fridgeLargeUpperModel = id("block/fridge_large_upper");
-        models.overrideModel(() -> ModBlocks.fridge,
-                models.loadDynamicModel(id("block/fridge"), Set.of(fridgeSmallModel, fridgeLargeLowerModel, fridgeLargeUpperModel), it -> {
-                    FridgeBlock.FridgeModelType fridgeModelType = it.getValue(FridgeBlock.MODEL_TYPE);
-                    return switch (fridgeModelType) {
-                        case LARGE_LOWER -> fridgeLargeLowerModel;
-                        case LARGE_UPPER -> fridgeLargeUpperModel;
-                        default -> fridgeSmallModel;
-                    };
-                }, null, ModModels::lowerableFacingTransforms)::get);
+       // ResourceLocation fridgeSmallModel = id("block/fridge");
+       // ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
+       // ResourceLocation fridgeLargeUpperModel = id("block/fridge_large_upper");
+       // models.overrideModel(() -> ModBlocks.fridge,
+       //         models.loadDynamicModel(id("block/fridge"), Set.of(fridgeSmallModel, fridgeLargeLowerModel, fridgeLargeUpperModel), it -> {
+       //             FridgeBlock.FridgeModelType fridgeModelType = it.getValue(FridgeBlock.MODEL_TYPE);
+       //             return switch (fridgeModelType) {
+       //                 case LARGE_LOWER -> fridgeLargeLowerModel;
+       //                 case LARGE_UPPER -> fridgeLargeUpperModel;
+       //                 default -> fridgeSmallModel;
+       //             };
+       //         }, null, ModModels::lowerableFacingTransforms)::get);
 
-        models.overrideModel(() -> ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
-        models.overrideModel(() -> ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
-        models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
-        models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
-    }
-
-    private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath) {
-        return createLowerableFacingModel(modelPath, Collections.emptyList());
-    }
-
-    private static DeferredObject<BakedModel> createLowerableFacingModel(String modelPath, List<RenderType> renderTypes) {
-        final var modelId = id(modelPath);
-        return BalmClient.getModels().loadDynamicModel(modelId, Set.of(modelId), null, null, ModModels::lowerableFacingTransforms, renderTypes);
+        // models.overrideModel(() -> ModBlocks.cuttingBoard, createLowerableFacingModel("block/cutting_board")::get);
+        // models.overrideModel(() -> ModBlocks.fruitBasket, createLowerableFacingModel("block/fruit_basket")::get);
+        // models.overrideModel(() -> ModBlocks.milkJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
+        // models.overrideModel(() -> ModBlocks.cowJar, createLowerableFacingModel("block/milk_jar", List.of(RenderType.cutout()))::get);
     }
 
     private static ResourceLocation id(String path) {
         return new ResourceLocation(CookingForBlockheads.MOD_ID, path);
-    }
-
-    private static void lowerableFacingTransforms(BlockState state, Matrix4f transform) {
-        if (state.hasProperty(BaseKitchenBlock.LOWERED) && state.getValue(BaseKitchenBlock.LOWERED)) {
-            transform.translate(new Vector3f(0, -0.05f, 0f));
-        }
-
-        if (state.hasProperty(BaseKitchenBlock.FACING)) {
-            float angle = state.getValue(BaseKitchenBlock.FACING).toYRot();
-            transform.rotate(Axis.YP.rotationDegrees(180 - angle));
-        }
     }
 }
