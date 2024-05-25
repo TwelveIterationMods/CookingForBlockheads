@@ -70,7 +70,7 @@ public class CounterBlock extends BaseKitchenBlock {
         }
 
         CounterBlockEntity counter = (CounterBlockEntity) level.getBlockEntity(pos);
-        if (blockHitResult.getDirection() == state.getValue(FACING)) {
+        if (blockHitResult.getDirection() == state.getValue(FACING) && counter.getDoorAnimator().isForcedOpen()) {
             itemStack = counter.insertItemStacked(itemStack, false);
             player.setItemInHand(hand, itemStack);
             return ItemInteractionResult.SUCCESS;
