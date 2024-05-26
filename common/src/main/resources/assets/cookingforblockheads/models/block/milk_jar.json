@@ -3,49 +3,49 @@
 	"render_type": "cutout",
 	"parent": "block/block",
 	"textures": {
-		"milk_glass": "cookingforblockheads:block/milk_glass",
-		"particle": "cookingforblockheads:block/milk_glass",
-		"milk_lid": "cookingforblockheads:block/milk_lid",
-		"milk": "cookingforblockheads:block/milk",
-		"milk_glass_top": "cookingforblockheads:block/milk_glass_top"
+		"particle": "block/glass",
+		"all": "cookingforblockheads:block/milk_jar"
 	},
 	"elements": [
 		{
-			"name": "Static_Glass",
+			"name": "jar",
 			"from": [5, 0, 5],
 			"to": [11, 7, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
-				"east": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#milk_glass"}
+				"north": {"uv": [0, 0, 6, 7], "texture": "#all"},
+				"east": {"uv": [0, 0, 6, 7], "texture": "#all"},
+				"south": {"uv": [0, 0, 6, 7], "texture": "#all"},
+				"west": {"uv": [0, 0, 6, 7], "texture": "#all"},
+				"up": {"uv": [12, 6, 6, 0], "texture": "#all"},
+				"down": {"uv": [12, 6, 6, 12], "texture": "#all"}
 			}
 		},
 		{
-			"name": "Static_GlassTop",
+			"name": "top",
 			"from": [6, 7, 6],
 			"to": [10, 8, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
-				"east": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
-				"south": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
-				"west": {"uv": [0, 0, 16, 3], "texture": "#milk_glass_top"},
-				"up": {"uv": [0, 3, 13, 16], "texture": "#milk_glass_top"}
+				"north": {"uv": [0, 11, 4, 12], "texture": "#all"},
+				"east": {"uv": [0, 11, 4, 12], "texture": "#all"},
+				"south": {"uv": [0, 11, 4, 12], "texture": "#all"},
+				"west": {"uv": [0, 11, 4, 12], "texture": "#all"},
+				"up": {"uv": [4, 11, 0, 7], "texture": "#all"}
 			}
 		},
 		{
-			"name": "Static_Lid",
-			"from": [7, 6.5, 7],
+			"name": "lid",
+			"from": [7, 8, 7],
 			"to": [9, 9, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
-				"east": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#milk_lid"}
+				"north": {"uv": [4, 11, 6, 12], "texture": "#all"},
+				"east": {"uv": [4, 11, 6, 12], "texture": "#all"},
+				"south": {"uv": [4, 11, 6, 12], "texture": "#all"},
+				"west": {"uv": [4, 11, 6, 12], "texture": "#all"},
+				"up": {"uv": [6, 9, 4, 7], "texture": "#all"},
+				"down": {"uv": [6, 9, 4, 11], "texture": "#all"}
 			}
 		}
 	],
