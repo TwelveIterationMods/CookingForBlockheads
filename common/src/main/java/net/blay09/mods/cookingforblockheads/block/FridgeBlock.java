@@ -38,6 +38,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -62,6 +64,9 @@ public class FridgeBlock extends BaseKitchenBlock {
     public static final BooleanProperty PRESERVATION_CHAMBER = BooleanProperty.create("preservation_chamber");
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
+    private static final VoxelShape BOUNDING_BOX_X = Block.box(1, 0, 1, 15, 16, 15);
+    private static final VoxelShape BOUNDING_BOX_Z = Block.box(1, 0, 1, 15, 16, 15);
+
     private final DyeColor color;
 
     public FridgeBlock(DyeColor color, Properties properties) {
@@ -72,6 +77,15 @@ public class FridgeBlock extends BaseKitchenBlock {
 
     public DyeColor getColor() {
         return color;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        if (state.getValue(FACING).getAxis() == Direction.Axis.X) {
+            return BOUNDING_BOX_X;
+        } else {
+            return BOUNDING_BOX_Z;
+        }
     }
 
     @Override

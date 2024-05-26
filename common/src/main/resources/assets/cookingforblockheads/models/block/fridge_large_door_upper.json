@@ -9,12 +9,12 @@
 		{
 			"name": "Door_Main",
 			"from": [1, 0, 1],
-			"to": [15, 13, 2],
+			"to": [15, 16, 2],
 			"faces": {
-				"north": {"uv": [1, 1, 15, 16], "texture": "#fridge_side", "tintindex": 0},
-				"east": {"uv": [1, 1, 2, 16], "texture": "#fridge_side", "tintindex": 0},
-				"south": {"uv": [1, 1, 15, 16], "texture": "#fridge_side", "tintindex": 0},
-				"west": {"uv": [1, 1, 2, 16], "texture": "#fridge_side", "tintindex": 0},
+				"north": {"uv": [1, 0, 15, 16], "texture": "#fridge_side", "tintindex": 0},
+				"east": {"uv": [1, 0, 2, 16], "texture": "#fridge_side", "tintindex": 0},
+				"south": {"uv": [1, 0, 15, 16], "texture": "#fridge_side", "tintindex": 0},
+				"west": {"uv": [1, 0, 2, 16], "texture": "#fridge_side", "tintindex": 0},
 				"up": {"uv": [1, 1, 15, 2], "texture": "#fridge_side", "tintindex": 0},
 				"down": {"uv": [1, 1, 15, 2], "texture": "#fridge_side", "tintindex": 0}
 			}
@@ -22,7 +22,7 @@
 		{
 			"name": "Door_Handle",
 			"from": [2, 0, 0],
-			"to": [3, 10, 1],
+			"to": [3, 13, 1],
 			"faces": {
 				"north": {"uv": [3, 1, 4, 3], "texture": "#fridge_top"},
 				"east": {"uv": [3, 1, 4, 3], "texture": "#fridge_top"},
