@@ -9,3 +9,4 @@
 - Use separate model for cow in a jar milk to allow more control in resource packs
 - Fixed orientation not being applied to milk model, which limited resource packs ability to change the jar model
 - Fixed dupe bug with some blocks
+- Reordered the creative tab items for Cooking for Blockheads to better showcase the mod's content and progression
