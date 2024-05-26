@@ -10,3 +10,4 @@
 - Fixed orientation not being applied to milk model, which limited resource packs ability to change the jar model
 - Fixed dupe bug with some blocks
 - Reordered the creative tab items for Cooking for Blockheads to better showcase the mod's content and progression
+- Re-added the cooked item overlay in the oven screen
