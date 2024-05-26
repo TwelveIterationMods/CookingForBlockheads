@@ -8,7 +8,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
@@ -58,26 +57,6 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", "mineable/axe"));
         final var mineableAxeBuilder = getOrCreateTagBuilder(mineableAxeTag);
         mineableAxeBuilder.add(ModBlocks.toolRack, ModBlocks.spiceRack, ModBlocks.fruitBasket, ModBlocks.cuttingBoard);
-
-        getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
-
-        final var dyedOvens = getOrCreateTagBuilder(ModBlockTags.DYED_OVENS);
-        for (final var oven : ModBlocks.ovens) {
-            if (oven.getColor() != DyeColor.WHITE) {
-                dyedOvens.add(oven);
-            }
-        }
-
-        final var connectors = getOrCreateTagBuilder(ModBlockTags.CONNECTORS);
-        connectors.add(ModBlocks.connector);
-        for (final var connector : ModBlocks.dyedConnectors) {
-            connectors.add(connector);
-        }
-
-        final var dyedConnectors = getOrCreateTagBuilder(ModBlockTags.DYED_CONNECTORS);
-        for (final var connector : ModBlocks.dyedConnectors) {
-            dyedConnectors.add(connector);
-        }
 
         final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         kitchenConnectors.add(ModBlocks.connector);
