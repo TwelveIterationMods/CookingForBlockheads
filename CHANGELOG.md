@@ -1,3 +1,11 @@
-Updated to Minecraft 1.20.6
-
-- Fixed utensils being used up in crafting
+- Updated to Minecraft 1.20.6
+- Spread cooking tables, counters, cabinets, sinks, fridges out into separate blocks per color
+- Increased the size of kitchen blocks so things can be placed on top without having them float
+- Fixed the scaling of the milk jar texture
+- Added crafting table functionality to cutting boards
+- Differently colored fridges now no longer connect into a double fridge
+- Fixed typo in cookingforblockheads:utensils tag
+- Fixed sink not providing water to pipes in NeoForge
+- Use separate model for cow in a jar milk to allow more control in resource packs
+- Fixed orientation not being applied to milk model, which limited resource packs ability to change the jar model
+- Fixed dupe bug with some blocks
