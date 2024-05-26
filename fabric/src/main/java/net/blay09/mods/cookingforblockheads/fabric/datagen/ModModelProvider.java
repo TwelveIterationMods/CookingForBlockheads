@@ -541,6 +541,9 @@ public class ModModelProvider extends FabricModelProvider {
         final var ovenDoorActiveTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/oven_door_active")),
                 Optional.empty());
         ovenDoorActiveTemplate.createWithSuffix(block, "_door_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
+        final var ovenDoorHandleTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/oven_door_handle")),
+                Optional.empty());
+        ovenDoorHandleTemplate.createWithSuffix(block, "_door_handle", activeTextureMapping, blockStateModelGenerator.modelOutput);
     }
 
     private static TextureMapping getOvenTextures(OvenBlock oven, boolean active) {

@@ -48,7 +48,7 @@ public class ModModels {
             final var colorPrefix = color.getSerializedName() + "_";
             ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door")));
             ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_active")));
-            ovenDoorHandles.add(color.getId(), models.loadModel(id("block/oven_door_handle")));
+            ovenDoorHandles.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_handle")));
             fridgeDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door")));
             fridgeDoorsFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door_flipped")));
             fridgeDoorsLargeLower.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower")));
