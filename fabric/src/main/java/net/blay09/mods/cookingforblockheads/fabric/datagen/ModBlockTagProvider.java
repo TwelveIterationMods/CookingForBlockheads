@@ -23,7 +23,6 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", "mineable/pickaxe"));
         final var mineablePickaxeBuilder = getOrCreateTagBuilder(mineablePickaxeTag);
         mineablePickaxeBuilder.add(ModBlocks.cookingTable,
-                ModBlocks.fridge,
                 ModBlocks.sink,
                 ModBlocks.counter,
                 ModBlocks.cabinet,
@@ -31,6 +30,9 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
                 ModBlocks.milkJar,
                 ModBlocks.cowJar,
                 ModBlocks.connector);
+        for (final var fridge : ModBlocks.fridges) {
+            mineablePickaxeBuilder.add(fridge);
+        }
         for (final var oven : ModBlocks.ovens) {
             mineablePickaxeBuilder.add(oven);
         }
@@ -56,9 +58,6 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", "mineable/axe"));
         final var mineableAxeBuilder = getOrCreateTagBuilder(mineableAxeTag);
         mineableAxeBuilder.add(ModBlocks.toolRack, ModBlocks.spiceRack, ModBlocks.fruitBasket, ModBlocks.cuttingBoard);
-
-        final var isDyeable = getOrCreateTagBuilder(ModBlockTags.IS_DYEABLE);
-        isDyeable.add(ModBlocks.fridge);
 
         getOrCreateTagBuilder(ModBlockTags.OVENS).add(ModBlocks.ovens);
 

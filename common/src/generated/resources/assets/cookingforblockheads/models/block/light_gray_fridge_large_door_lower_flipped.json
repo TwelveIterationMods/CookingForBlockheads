@@ -1,0 +1,9 @@
+{
+  "parent": "cookingforblockheads:block/fridge_large_door_lower_flipped",
+  "textures": {
+    "fridge_back": "cookingforblockheads:block/light_gray_fridge_back",
+    "fridge_inside": "cookingforblockheads:block/light_gray_fridge_inside",
+    "fridge_side": "cookingforblockheads:block/light_gray_fridge_side",
+    "fridge_top": "cookingforblockheads:block/light_gray_fridge_top"
+  }
+}

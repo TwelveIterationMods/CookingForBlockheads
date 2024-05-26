@@ -5,7 +5,7 @@
 		"fridge_side": "cookingforblockheads:block/fridge_side",
 		"fridge_top": "cookingforblockheads:block/fridge_top",
 		"fridge_back": "cookingforblockheads:block/fridge_back",
-		"fridgeLarge_inside": "cookingforblockheads:block/fridge_inside"
+		"fridge_inside": "cookingforblockheads:block/fridge_inside"
 	},
 	"elements": [
 		{
@@ -94,9 +94,9 @@
 			"from": [3, 4.5, 3.5],
 			"to": [13, 5.5, 12.5],
 			"faces": {
-				"north": {"uv": [3, 3, 13, 4], "texture": "#fridgeLarge_inside"},
-				"up": {"uv": [3, 3, 13, 12], "texture": "#fridgeLarge_inside"},
-				"down": {"uv": [3, 3, 13, 12], "texture": "#fridgeLarge_inside"}
+				"north": {"uv": [3, 3, 13, 4], "texture": "#fridge_inside"},
+				"up": {"uv": [3, 3, 13, 12], "texture": "#fridge_inside"},
+				"down": {"uv": [3, 3, 13, 12], "texture": "#fridge_inside"}
 			}
 		}
 	]

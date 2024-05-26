@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -99,13 +100,15 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
         poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(doorAngle)));
         poseStack.translate(-originX, 0f, -originZ);
 
+        final var blockColor = state.getBlock() instanceof FridgeBlock fridge ? fridge.getColor() : DyeColor.WHITE;
+        int colorIndex = blockColor.getId();
         BakedModel lowerModel;
         BakedModel upperModel = null;
         if (isLarge) {
-            lowerModel = isFlipped ? ModModels.fridgeDoorLargeLowerFlipped.get() : ModModels.fridgeDoorLargeLower.get();
-            upperModel = isFlipped ? ModModels.fridgeDoorLargeUpperFlipped.get() : ModModels.fridgeDoorLargeUpper.get();
+            lowerModel = isFlipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeLower.get(colorIndex).get();
+            upperModel = isFlipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeUpper.get(colorIndex).get();
         } else {
-            lowerModel = isFlipped ? ModModels.fridgeDoorFlipped.get() : ModModels.fridgeDoor.get();
+            lowerModel = isFlipped ? ModModels.fridgeDoorsFlipped.get(colorIndex).get() : ModModels.fridgeDoors.get(colorIndex).get();
         }
 
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();

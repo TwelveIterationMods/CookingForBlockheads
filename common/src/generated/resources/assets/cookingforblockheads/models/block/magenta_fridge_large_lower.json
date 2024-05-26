@@ -1,0 +1,10 @@
+{
+  "parent": "cookingforblockheads:block/fridge_large_lower",
+  "textures": {
+    "fridge_back": "cookingforblockheads:block/magenta_fridge_back",
+    "fridge_inside": "cookingforblockheads:block/magenta_fridge_inside",
+    "fridge_side": "cookingforblockheads:block/magenta_fridge_side",
+    "fridge_top": "cookingforblockheads:block/magenta_fridge_top",
+    "particle": "cookingforblockheads:block/magenta_fridge_side"
+  }
+}

@@ -7,11 +7,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public class ModItemTags {
-    public static final TagKey<Item> IS_DYEABLE = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "is_dyeable"));
     public static final TagKey<Item> COOKING_TABLES = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "cooking_tables"));
     public static final TagKey<Item> DYED_COOKING_TABLES = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_cooking_tables"));
     public static final TagKey<Item> OVENS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "ovens"));
     public static final TagKey<Item> DYED_OVENS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_ovens"));
+    public static final TagKey<Item> FRIDGES = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "fridges"));
+    public static final TagKey<Item> DYED_FRIDGES = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_fridges"));
     public static final TagKey<Item> COUNTERS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "counters"));
     public static final TagKey<Item> DYED_COUNTERS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "dyed_counters"));
     public static final TagKey<Item> CABINETS = TagKey.create(Registries.ITEM, new ResourceLocation(CookingForBlockheads.MOD_ID, "cabinets"));

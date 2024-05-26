@@ -1,0 +1,9 @@
+{
+  "parent": "cookingforblockheads:block/fridge_door_flipped",
+  "textures": {
+    "fridge_back": "cookingforblockheads:block/pink_fridge_back",
+    "fridge_inside": "cookingforblockheads:block/pink_fridge_inside",
+    "fridge_side": "cookingforblockheads:block/pink_fridge_side",
+    "fridge_top": "cookingforblockheads:block/pink_fridge_top"
+  }
+}

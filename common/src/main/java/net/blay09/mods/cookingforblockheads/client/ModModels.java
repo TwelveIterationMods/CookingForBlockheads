@@ -17,12 +17,12 @@ public class ModModels {
     public static List<DeferredObject<BakedModel>> ovenDoors;
     public static List<DeferredObject<BakedModel>> ovenDoorHandles;
     public static List<DeferredObject<BakedModel>> ovenDoorsActive;
-    public static DeferredObject<BakedModel> fridgeDoor;
-    public static DeferredObject<BakedModel> fridgeDoorFlipped;
-    public static DeferredObject<BakedModel> fridgeDoorLargeLower;
-    public static DeferredObject<BakedModel> fridgeDoorLargeUpper;
-    public static DeferredObject<BakedModel> fridgeDoorLargeLowerFlipped;
-    public static DeferredObject<BakedModel> fridgeDoorLargeUpperFlipped;
+    public static List<DeferredObject<BakedModel>> fridgeDoors;
+    public static List<DeferredObject<BakedModel>> fridgeDoorsFlipped;
+    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeLower;
+    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeUpper;
+    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeLowerFlipped;
+    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeUpperFlipped;
     public static List<DeferredObject<BakedModel>> counterDoors;
     public static List<DeferredObject<BakedModel>> counterDoorsFlipped;
     public static List<DeferredObject<BakedModel>> cabinetDoors;
@@ -37,20 +37,25 @@ public class ModModels {
         ovenDoors = new ArrayList<>(colors.length);
         ovenDoorHandles = new ArrayList<>(colors.length);
         ovenDoorsActive = new ArrayList<>(colors.length);
+        fridgeDoors = new ArrayList<>(colors.length);
+        fridgeDoorsFlipped = new ArrayList<>(colors.length);
+        fridgeDoorsLargeLower = new ArrayList<>(colors.length);
+        fridgeDoorsLargeUpper = new ArrayList<>(colors.length);
+        fridgeDoorsLargeLowerFlipped = new ArrayList<>(colors.length);
+        fridgeDoorsLargeUpperFlipped = new ArrayList<>(colors.length);
         models.loadModel(id("block/dyed_oven_door_active"));
         for (DyeColor color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
-            ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefixExceptWhite + "oven_door")));
-            ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefixExceptWhite + "oven_door_active")));
+            ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door")));
+            ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_active")));
             ovenDoorHandles.add(color.getId(), models.loadModel(id("block/oven_door_handle")));
+            fridgeDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door")));
+            fridgeDoorsFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door_flipped")));
+            fridgeDoorsLargeLower.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower")));
+            fridgeDoorsLargeLowerFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower_flipped")));
+            fridgeDoorsLargeUpper.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper")));
+            fridgeDoorsLargeUpperFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper_flipped")));
         }
-        fridgeDoor = models.loadModel(id("block/fridge_door"));
-        fridgeDoorFlipped = models.loadModel(id("block/fridge_door_flipped"));
-        fridgeDoorLargeLower = models.loadModel(id("block/fridge_large_door_lower"));
-        fridgeDoorLargeLowerFlipped = models.loadModel(id("block/fridge_large_door_lower_flipped"));
-        fridgeDoorLargeUpper = models.loadModel(id("block/fridge_large_door_upper"));
-        fridgeDoorLargeUpperFlipped = models.loadModel(id("block/fridge_large_door_upper_flipped"));
 
         counterDoors = new ArrayList<>(colors.length + 1);
         counterDoors.add(0, models.loadModel(id("block/counter_door")));
@@ -72,19 +77,6 @@ public class ModModels {
             cabinetDoors.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door")));
             cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
         }
-
-       // ResourceLocation fridgeSmallModel = id("block/fridge");
-       // ResourceLocation fridgeLargeLowerModel = id("block/fridge_large_lower");
-       // ResourceLocation fridgeLargeUpperModel = id("block/fridge_large_upper");
-       // models.overrideModel(() -> ModBlocks.fridge,
-       //         models.loadDynamicModel(id("block/fridge"), Set.of(fridgeSmallModel, fridgeLargeLowerModel, fridgeLargeUpperModel), it -> {
-       //             FridgeBlock.FridgeModelType fridgeModelType = it.getValue(FridgeBlock.MODEL_TYPE);
-       //             return switch (fridgeModelType) {
-       //                 case LARGE_LOWER -> fridgeLargeLowerModel;
-       //                 case LARGE_UPPER -> fridgeLargeUpperModel;
-       //                 default -> fridgeSmallModel;
-       //             };
-       //         }, null, ModModels::lowerableFacingTransforms)::get);
     }
 
     private static ResourceLocation id(String path) {

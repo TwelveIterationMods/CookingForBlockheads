@@ -28,8 +28,6 @@ public class ModRenderers {
         renderers.registerBlockEntityRenderer(ModBlockEntities.sink::get, SinkRenderer::new);
         renderers.registerBlockEntityRenderer(ModBlockEntities.fruitBasket::get, FruitBasketRenderer::new);
 
-        renderers.registerBlockColorHandler((state, world, pos, i) -> state.getValue(BaseKitchenBlock.COLOR).getTextColor(),
-                () -> new Block[]{ModBlocks.fridge});
         renderers.registerBlockColorHandler((state, world, pos, i) -> 0x3f76e4, () -> {
             final var allSinks = Arrays.copyOf(ModBlocks.dyedSinks, ModBlocks.dyedSinks.length + 1);
             allSinks[allSinks.length - 1] = ModBlocks.sink;
@@ -39,9 +37,11 @@ public class ModRenderers {
         for (final var oven : ModBlocks.ovens) {
             renderers.setBlockRenderType(() -> oven, RenderType.cutout());
         }
+        for (final var fridge : ModBlocks.fridges) {
+            renderers.setBlockRenderType(() -> fridge, RenderType.cutout());
+        }
         renderers.setBlockRenderType(() -> ModBlocks.milkJar, RenderType.cutout());
         renderers.setBlockRenderType(() -> ModBlocks.cowJar, RenderType.cutout());
-        renderers.setBlockRenderType(() -> ModBlocks.fridge, RenderType.cutout());
     }
 
 }

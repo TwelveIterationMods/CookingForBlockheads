@@ -33,7 +33,7 @@ public class ModBlockEntities {
             return allCookingTables;
         });
         oven = blockEntities.registerBlockEntity(id("oven"), OvenBlockEntity::new, () -> ModBlocks.ovens);
-        fridge = blockEntities.registerBlockEntity(id("fridge"), FridgeBlockEntity::new, () -> new Block[]{ModBlocks.fridge});
+        fridge = blockEntities.registerBlockEntity(id("fridge"), FridgeBlockEntity::new, () -> ModBlocks.fridges);
         sink = blockEntities.registerBlockEntity(id("sink"), SinkBlockEntity::new, () -> {
             final var allSinks = Arrays.copyOf(ModBlocks.dyedSinks, ModBlocks.dyedSinks.length + 1);
             allSinks[allSinks.length - 1] = ModBlocks.sink;

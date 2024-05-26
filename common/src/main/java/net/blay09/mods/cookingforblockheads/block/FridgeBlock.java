@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.cookingforblockheads.util.ItemUtils;
@@ -43,7 +44,8 @@ import java.util.List;
 
 public class FridgeBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<FridgeBlock> CODEC = simpleCodec(FridgeBlock::new);
+    public static final MapCodec<FridgeBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color").forGetter(FridgeBlock::getColor),
+            propertiesCodec()).apply(it, FridgeBlock::new));
 
     public enum FridgeModelType implements StringRepresentable {
         SMALL,
@@ -60,14 +62,21 @@ public class FridgeBlock extends BaseKitchenBlock {
     public static final BooleanProperty PRESERVATION_CHAMBER = BooleanProperty.create("preservation_chamber");
     public static final BooleanProperty ICE_UNIT = BooleanProperty.create("ice_unit");
 
-    public FridgeBlock(Properties properties) {
+    private final DyeColor color;
+
+    public FridgeBlock(DyeColor color, Properties properties) {
         super(properties.pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).strength(5f, 10f));
+        this.color = color;
         registerDefaultState(getStateDefinition().any().setValue(PRESERVATION_CHAMBER, false).setValue(ICE_UNIT, false));
+    }
+
+    public DyeColor getColor() {
+        return color;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, MODEL_TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT, COLOR, HAS_COLOR);
+        builder.add(FACING, MODEL_TYPE, FLIPPED, PRESERVATION_CHAMBER, ICE_UNIT);
     }
 
     @Nullable
@@ -155,10 +164,10 @@ public class FridgeBlock extends BaseKitchenBlock {
         BlockState stateBelow = world.getBlockState(posBelow);
         BlockPos posAbove = currentPos.above();
         BlockState stateAbove = world.getBlockState(posAbove);
-        if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.SMALL) {
+        if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.SMALL) {
             world.setBlock(posBelow, stateBelow.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER).setValue(FACING, state.getValue(FACING)), 3);
             return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER);
-        } else if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.SMALL) {
+        } else if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.SMALL) {
             world.setBlock(posAbove, stateAbove.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER).setValue(FACING, state.getValue(FACING)), 3);
             return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER);
         }
@@ -184,9 +193,9 @@ public class FridgeBlock extends BaseKitchenBlock {
             BlockState stateAbove = level.getBlockState(posAbove);
             BlockPos posBelow = pos.below();
             BlockState stateBelow = level.getBlockState(posBelow);
-            if (stateAbove.getBlock() == ModBlocks.fridge && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
+            if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
                 level.setBlock(posAbove, stateAbove.setValue(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            } else if (stateBelow.getBlock() == ModBlocks.fridge && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
+            } else if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
                 level.setBlock(posBelow, stateBelow.setValue(MODEL_TYPE, FridgeModelType.SMALL), 3);
             }
         }
@@ -226,5 +235,15 @@ public class FridgeBlock extends BaseKitchenBlock {
     @Override
     protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.fridge.description").withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
+        final var block = color == null ? ModBlocks.fridges[0] : ModBlocks.fridges[color.ordinal()];
+        return block.defaultBlockState()
+                .setValue(FACING, state.getValue(FACING))
+                .setValue(MODEL_TYPE, state.getValue(MODEL_TYPE))
+                .setValue(PRESERVATION_CHAMBER, state.getValue(PRESERVATION_CHAMBER))
+                .setValue(ICE_UNIT, state.getValue(ICE_UNIT));
     }
 }

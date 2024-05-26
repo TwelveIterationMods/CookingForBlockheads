@@ -87,11 +87,20 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     .save(exporter, "dye_" + color.getSerializedName() + "_oven");
         }
 
-        shapeless(RecipeCategory.DECORATIONS, ModBlocks.fridge)
+        shapeless(RecipeCategory.DECORATIONS, ModBlocks.fridges[DyeColor.WHITE.ordinal()])
                 .requires(BalmItemTags.WOODEN_CHESTS)
                 .requires(Blocks.IRON_DOOR)
                 .unlockedBy("has_iron_ingot", has(BalmItemTags.IRON_INGOTS))
                 .save(exporter);
+
+        for (final var fridge : ModBlocks.fridges) {
+            final var color = fridge.getColor();
+            shapeless(RecipeCategory.DECORATIONS, fridge)
+                    .requires(ModItemTags.FRIDGES)
+                    .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                    .unlockedBy("has_fridge", has(ModBlocks.fridges[DyeColor.WHITE.ordinal()]))
+                    .save(exporter, "dye_" + color.getSerializedName() + "_fridge");
+        }
 
         shaped(RecipeCategory.DECORATIONS, ModBlocks.milkJar)
                 .pattern("GPG")

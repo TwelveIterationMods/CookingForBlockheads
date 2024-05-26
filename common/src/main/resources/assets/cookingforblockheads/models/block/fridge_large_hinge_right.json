@@ -5,7 +5,7 @@
     "fridge_side": "cookingforblockheads:blocks/fridge_side",
     "fridge_top": "cookingforblockheads:blocks/fridge_top",
     "fridge_back": "cookingforblockheads:blocks/fridge_back",
-    "fridgeLarge_inside": "cookingforblockheads:blocks/fridge_inside"
+    "fridge_inside": "cookingforblockheads:blocks/fridge_inside"
   },
   "elements": [
     {

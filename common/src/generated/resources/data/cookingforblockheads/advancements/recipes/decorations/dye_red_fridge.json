@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fridge": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cookingforblockheads:white_fridge"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:dye_red_fridge"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fridge"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:dye_red_fridge"
+    ]
+  }
+}

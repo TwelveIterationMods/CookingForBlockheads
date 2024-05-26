@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "cookingforblockheads:fridges"
+    },
+    {
+      "tag": "c:dyes/black"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "cookingforblockheads:black_fridge"
+  }
+}

@@ -23,7 +23,7 @@ public class ModBlocks {
     public static Block spiceRack;
     public static Block fruitBasket;
     public static Block cuttingBoard;
-    public static Block fridge;
+    public static FridgeBlock[] fridges = new FridgeBlock[DyeColor.values().length];
     public static SinkBlock sink;
     public static SinkBlock[] dyedSinks = new SinkBlock[DyeColor.values().length];
     public static CounterBlock counter;
@@ -40,7 +40,6 @@ public class ModBlocks {
         blocks.register(() -> spiceRack = new SpiceRackBlock(defaultProperties()), () -> itemBlock(spiceRack), id("spice_rack"));
         blocks.register(() -> fruitBasket = new FruitBasketBlock(defaultProperties()), () -> itemBlock(fruitBasket), id("fruit_basket"));
         blocks.register(() -> cuttingBoard = new CuttingBoardBlock(defaultProperties()), () -> itemBlock(cuttingBoard), id("cutting_board"));
-        blocks.register(() -> fridge = new FridgeBlock(defaultProperties()), () -> itemBlock(fridge), id("fridge"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
@@ -49,8 +48,11 @@ public class ModBlocks {
         dyedConnectors = new DyedConnectorBlock[colors.length];
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            final var colorPrefixExceptWhite = color == DyeColor.WHITE ? "" : colorPrefix;
-            blocks.register(() -> ovens[color.ordinal()] = new OvenBlock(color, defaultProperties()), () -> itemBlock(ovens[color.ordinal()]), id(colorPrefixExceptWhite + "oven"));
+            blocks.register(() -> ovens[color.ordinal()] = new OvenBlock(color, defaultProperties()), () -> itemBlock(ovens[color.ordinal()]), id(colorPrefix + "oven"));
+        }
+        for (final var color : colors) {
+            final var colorPrefix = color.getSerializedName() + "_";
+            blocks.register(() -> fridges[color.ordinal()] = new FridgeBlock(color, defaultProperties()), () -> itemBlock(fridges[color.ordinal()]), id(colorPrefix + "fridge"));
         }
         blocks.register(() -> connector = new ConnectorBlock(defaultProperties()), () -> itemBlock(connector), id("connector"));
         for (final var color : colors) {

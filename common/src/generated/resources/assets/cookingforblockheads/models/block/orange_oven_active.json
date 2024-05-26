@@ -1,5 +1,5 @@
 {
-  "parent": "cookingforblockheads:block/dyed_oven",
+  "parent": "cookingforblockheads:block/oven",
   "textures": {
     "backsplash": "cookingforblockheads:block/orange_oven_side",
     "ovenbottom": "cookingforblockheads:block/orange_oven_bottom",

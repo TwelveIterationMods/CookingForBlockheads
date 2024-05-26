@@ -18,12 +18,6 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
-        getOrCreateTagBuilder(ModItemTags.IS_DYEABLE).add(ModBlocks.cookingTable.asItem(),
-                ModBlocks.fridge.asItem(),
-                ModBlocks.sink.asItem(),
-                ModBlocks.counter.asItem(),
-                ModBlocks.cabinet.asItem());
-
         final var ovens = getOrCreateTagBuilder(ModItemTags.OVENS);
         for (final var oven : ModBlocks.ovens) {
             ovens.add(oven.asItem());
@@ -33,6 +27,18 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
         for (final var oven : ModBlocks.ovens) {
             if (oven.getColor() != DyeColor.WHITE) {
                 dyedOvens.add(oven.asItem());
+            }
+        }
+
+        final var fridges = getOrCreateTagBuilder(ModItemTags.FRIDGES);
+        for (final var fridge : ModBlocks.fridges) {
+            fridges.add(fridge.asItem());
+        }
+
+        final var dyedFridges = getOrCreateTagBuilder(ModItemTags.DYED_FRIDGES);
+        for (final var fridge : ModBlocks.fridges) {
+            if (fridge.getColor() != DyeColor.WHITE) {
+                dyedFridges.add(fridge.asItem());
             }
         }
 
