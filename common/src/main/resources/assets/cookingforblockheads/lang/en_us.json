@@ -202,6 +202,7 @@
   "container.cookingforblockheads.cow_jar_compressed": "Compressed Cow in a Jar",
   "container.cookingforblockheads.cow_jar": "Cow in a Jar",
   "container.cookingforblockheads.cow_jar_custom": "%s in a Jar",
+  "container.cookingforblockheads.cutting_board": "Cutting Board",
   "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
   "waila.cookingforblockheads.water_stored": "Water Stored: %d/%d",
   "waila.cookingforblockheads.milk_stored": "Milk Stored: %d/%d",

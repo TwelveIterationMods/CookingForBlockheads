@@ -13,7 +13,9 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,6 +34,7 @@ public class ModMenus {
     public static DeferredObject<MenuType<KitchenMenu>> cookingTable;
     public static DeferredObject<MenuType<KitchenMenu>> noFilterBook;
     public static DeferredObject<MenuType<KitchenMenu>> craftingBook;
+    public static DeferredObject<MenuType<CuttingBoardMenu>> cuttingBoard;
 
     public static void initialize(BalmMenus menus) {
         counter = menus.registerMenu(id("counter"), new BalmMenuFactory<CounterMenu, BlockPos>() {
@@ -149,6 +152,18 @@ public class ModMenus {
             @Override
             public StreamCodec<RegistryFriendlyByteBuf, ItemStack> getStreamCodec() {
                 return ItemStack.STREAM_CODEC.cast();
+            }
+        });
+
+        cuttingBoard = menus.registerMenu(id("cutting_board"), new BalmMenuFactory<CuttingBoardMenu, BlockPos>() {
+            @Override
+            public CuttingBoardMenu create(int windowId, Inventory inventory, BlockPos pos) {
+                return new CuttingBoardMenu(windowId, inventory, ContainerLevelAccess.create(inventory.player.level(), pos));
+            }
+
+            @Override
+            public StreamCodec<RegistryFriendlyByteBuf, BlockPos> getStreamCodec() {
+                return BlockPos.STREAM_CODEC.cast();
             }
         });
     }
