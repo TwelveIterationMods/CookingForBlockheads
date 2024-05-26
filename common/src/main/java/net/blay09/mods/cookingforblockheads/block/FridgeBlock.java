@@ -158,11 +158,11 @@ public class FridgeBlock extends BaseKitchenBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        boolean below = level.getBlockState(pos.below()).getBlock() instanceof FridgeBlock;
-        boolean above = level.getBlockState(pos.above()).getBlock() instanceof FridgeBlock;
+        boolean below = level.getBlockState(pos.below()).getBlock() == this;
+        boolean above = level.getBlockState(pos.above()).getBlock() == this;
         return !(below && above)
-                && !(below && level.getBlockState(pos.below(2)).getBlock() instanceof FridgeBlock)
-                && !(above && level.getBlockState(pos.above(2)).getBlock() instanceof FridgeBlock)
+                && !(below && level.getBlockState(pos.below(2)).getBlock() == this)
+                && !(above && level.getBlockState(pos.above(2)).getBlock() == this)
                 && super.canSurvive(state, level, pos);
     }
 

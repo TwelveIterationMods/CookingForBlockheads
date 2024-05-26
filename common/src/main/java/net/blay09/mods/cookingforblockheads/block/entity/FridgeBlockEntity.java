@@ -10,14 +10,11 @@ import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
@@ -37,7 +34,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -225,10 +221,15 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     @Nullable
     public FridgeBlockEntity findNeighbourFridge() {
-        if (level.getBlockState(worldPosition.above()).getBlock() instanceof FridgeBlock) {
-            return (FridgeBlockEntity) level.getBlockEntity(worldPosition.above());
-        } else if (level.getBlockState(worldPosition.below()).getBlock() instanceof FridgeBlock) {
-            return (FridgeBlockEntity) level.getBlockEntity(worldPosition.below());
+        final var state = getBlockState();
+        final var posBelow = worldPosition.below();
+        final var stateBelow = level.getBlockState(posBelow);
+        final var posAbove = worldPosition.above();
+        final var stateAbove = level.getBlockState(posAbove);
+        if (stateAbove.getBlock() == state.getBlock()) {
+            return (FridgeBlockEntity) level.getBlockEntity(posAbove);
+        } else if (stateBelow.getBlock() == state.getBlock()) {
+            return (FridgeBlockEntity) level.getBlockEntity(posBelow);
         }
 
         return null;
@@ -239,7 +240,9 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
             return this;
         }
 
-        if (level.getBlockState(worldPosition.below()).getBlock() instanceof FridgeBlock) {
+        final var state = getBlockState();
+        final var stateBelow = level.getBlockState(worldPosition.below());
+        if (stateBelow.getBlock() == state.getBlock()) {
             FridgeBlockEntity baseFridge = (FridgeBlockEntity) level.getBlockEntity(worldPosition.below());
             if (baseFridge != null) {
                 return baseFridge;
