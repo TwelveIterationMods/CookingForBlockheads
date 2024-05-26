@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
@@ -49,8 +50,13 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
             if (slot.hasItem()) {
                 ItemStack itemStack = tileEntity.getSmeltingResult(slot.getItem());
                 if (!itemStack.isEmpty()) {
-                    // TODO At the moment, there seems to be no simple way of rendering an item transparently
-                    // renderItemOverlay(minecraft, slot, itemStack, tileEntity.getCookProgress(i));
+                    final var pose = guiGraphics.pose();
+                    pose.pushPose();
+                    pose.translate(0f, 0f, 200f);
+                    guiGraphics.setColor(1f, 1f, 1f, tileEntity.getCookProgress(i));
+                    guiGraphics.renderItem(itemStack, slot.x, slot.y);
+                    guiGraphics.setColor(1f, 1f, 1f, 1f);
+                    pose.popPose();
                 }
             }
         }
