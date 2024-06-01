@@ -7,9 +7,11 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -258,7 +260,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern(" D ")
                 .pattern("CBC")
                 .pattern(" D ")
-                .define('D', BalmItemTags.DIAMONDS)
+                .define('D', TagKey.create(Registries.ITEM, new ResourceLocation("c", "gems/diamond")))
                 .define('C', Blocks.CRAFTING_TABLE)
                 .define('B', ModItems.recipeBook)
                 .unlockedBy("has_recipe_book", has(ModItems.recipeBook))
