@@ -1,3 +1,6 @@
+- Fixed crash when clicking the cooking table to hard
+- Fixed Cooking for Blockheads II being uncraftable
+
 - Updated to Minecraft 1.20.6
 - Spread cooking tables, counters, cabinets, sinks, fridges out into separate blocks per color
 - Increased the size of kitchen blocks so things can be placed on top without having them float
