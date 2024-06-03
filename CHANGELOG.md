@@ -1,1 +1,2 @@
-- Fixed dyed ovens not being craftable 
+- Fixed dupe bug with some blocks
+- Re-added the cooked item overlay in the oven screen
