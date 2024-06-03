@@ -33,7 +33,7 @@ jobs:
         id: bump-version
       - name: Updating version properties
         run: |
-          sed -i "s/^\s*version\s*=.*/mod_version = ${{ steps.bump-version.outputs.version }}/g" gradle.properties
+          sed -i "s/^\s*mod_version\s*=.*/mod_version = ${{ steps.bump-version.outputs.version }}/g" gradle.properties
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git commit -am "Set version to ${{ steps.bump-version.outputs.version }}"
