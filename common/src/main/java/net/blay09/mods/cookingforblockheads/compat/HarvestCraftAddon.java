@@ -28,7 +28,7 @@ public class HarvestCraftAddon {
     private boolean cuttingBoardFound;
 
     public HarvestCraftAddon() {
-        final var cuttingBoardItem = Balm.getRegistries().getItem(new ResourceLocation(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
+        final var cuttingBoardItem = Balm.getRegistries().getItem(ResourceLocation.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
         if (cuttingBoardItem != null && cuttingBoardItem != Items.AIR) {
             cuttingBoardFound = true;
         }

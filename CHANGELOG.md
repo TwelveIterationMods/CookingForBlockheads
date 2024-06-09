@@ -1,3 +1,5 @@
+Updated to Minecraft 1.21
+
 - Fixed crash when clicking the cooking table to hard
 - Fixed Cooking for Blockheads II being uncraftable
 

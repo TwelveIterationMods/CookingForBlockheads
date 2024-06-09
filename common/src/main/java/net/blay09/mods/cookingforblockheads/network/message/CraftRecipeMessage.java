@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CraftRecipeMessage implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<CraftRecipeMessage> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(CookingForBlockheads.MOD_ID,
+    public static final CustomPacketPayload.Type<CraftRecipeMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "craft_recipe"));
 
     private final ResourceLocation recipeId;

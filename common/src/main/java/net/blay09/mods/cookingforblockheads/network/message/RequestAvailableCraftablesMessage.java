@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public class RequestAvailableCraftablesMessage implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<RequestAvailableCraftablesMessage> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(
+    public static final CustomPacketPayload.Type<RequestAvailableCraftablesMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(
             CookingForBlockheads.MOD_ID, "request_available_craftables"));
 
     public static RequestAvailableCraftablesMessage decode(FriendlyByteBuf buf) {

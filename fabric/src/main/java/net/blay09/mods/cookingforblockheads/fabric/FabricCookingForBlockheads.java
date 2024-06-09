@@ -29,10 +29,10 @@ public class FabricCookingForBlockheads implements ModInitializer {
 
         registerProvider("kitchen_item_processor", KitchenItemProcessor.class, ModBlockEntities.oven.get());
 
-        registerLookup(new ResourceLocation("balm", "fluid_tank"), FluidTank.class,
+        registerLookup(ResourceLocation.fromNamespaceAndPath("balm", "fluid_tank"), FluidTank.class,
                 ModBlockEntities.sink.get(), ModBlockEntities.milkJar.get(), ModBlockEntities.cowJar.get());
 
-        var itemProviderLookup = BlockApiLookup.get(new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider"),
+        var itemProviderLookup = BlockApiLookup.get(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "kitchen_item_provider"),
                 KitchenItemProvider.class,
                 Void.class);
         itemProviderLookup.registerFallback((level, pos, state, blockEntity, context) -> {
@@ -49,7 +49,7 @@ public class FabricCookingForBlockheads implements ModInitializer {
 
     private <T> void registerProvider(String name, Class<T> clazz, BlockEntityType<?>... blockEntities) {
         var providers = ((FabricBalmProviders) Balm.getProviders());
-        ResourceLocation identifier = new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+        ResourceLocation identifier = ResourceLocation.fromNamespaceAndPath( CookingForBlockheads.MOD_ID, name);
         providers.registerProvider(identifier, clazz);
         registerLookup(identifier, clazz, blockEntities);
     }

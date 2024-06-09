@@ -21,6 +21,7 @@ build
 eclipse
 run
 runs
+runserver
 logs
 
 common/src/generated/resources/.cache

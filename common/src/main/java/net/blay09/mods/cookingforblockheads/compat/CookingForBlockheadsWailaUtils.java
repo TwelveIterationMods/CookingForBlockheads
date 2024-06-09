@@ -18,12 +18,12 @@ public class CookingForBlockheadsWailaUtils {
         void appendTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer);
     }
 
-    public static final ResourceLocation MILK_JAR_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "milk_jar");
+    public static final ResourceLocation MILK_JAR_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "milk_jar");
 
-    public static final ResourceLocation TOASTER_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "toaster");
-    public static final ResourceLocation OVEN_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "oven");
-    public static final ResourceLocation FRIDGE_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "fridge");
-    public static final ResourceLocation SINK_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "sink");
+    public static final ResourceLocation TOASTER_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "toaster");
+    public static final ResourceLocation OVEN_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "oven");
+    public static final ResourceLocation FRIDGE_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "fridge");
+    public static final ResourceLocation SINK_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "sink");
 
     public static void appendMilkJarTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
         if (blockEntity instanceof CowJarBlockEntity cowJar && cowJar.getCustomName() != null) {

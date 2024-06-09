@@ -10,8 +10,8 @@ public class ModRecipes {
 
     public static final String TOASTER_RECIPE_GROUP = "toaster";
     public static final String OVEN_RECIPE_GROUP = "oven";
-    public static final ResourceLocation TOASTER_RECIPE_ID = new ResourceLocation(CookingForBlockheads.MOD_ID, TOASTER_RECIPE_GROUP);
-    public static final ResourceLocation OVEN_RECIPE_ID = new ResourceLocation(CookingForBlockheads.MOD_ID, OVEN_RECIPE_GROUP);
+    public static final ResourceLocation TOASTER_RECIPE_ID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, TOASTER_RECIPE_GROUP);
+    public static final ResourceLocation OVEN_RECIPE_ID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, OVEN_RECIPE_GROUP);
 
     public static RecipeType<ToasterRecipe> toasterRecipeType;
     public static RecipeSerializer<OvenRecipe> ovenRecipeSerializer;

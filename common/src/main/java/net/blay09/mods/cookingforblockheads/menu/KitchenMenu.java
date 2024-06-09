@@ -27,6 +27,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -443,7 +444,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
     }
 
-    private <C extends Container, T extends Recipe<C>> void updateMatrixSlots(T recipe, RecipeWithStatus status) {
+    private <C extends RecipeInput, T extends Recipe<C>> void updateMatrixSlots(T recipe, RecipeWithStatus status) {
         final var ingredients = recipe.getIngredients();
         final var matrix = NonNullList.withSize(9, Ingredient.EMPTY);
         final var missingMatrix = new boolean[9];

@@ -20,6 +20,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -153,10 +154,10 @@ public class ToasterBlockEntity extends BalmBlockEntity {
 
     private ItemStack toastItem(ItemStack itemStack) {
         // TODO fire a toaster event so addons can add custom handling
-        final var craftingContainer = new SimpleContainer(itemStack);
-        final var toastRecipes = level.getRecipeManager().getRecipesFor(ModRecipes.toasterRecipeType, craftingContainer, level);
+        final var recipeInput = new SingleRecipeInput(itemStack);
+        final var toastRecipes = level.getRecipeManager().getRecipesFor(ModRecipes.toasterRecipeType, recipeInput, level);
         for (final var toastRecipe : toastRecipes) {
-            final var assembled = toastRecipe.value().assemble(craftingContainer, level.registryAccess());
+            final var assembled = toastRecipe.value().assemble(recipeInput, level.registryAccess());
             if (!assembled.isEmpty()) {
                 return assembled;
             }
@@ -189,7 +190,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     public boolean canToast(ItemStack itemStack) {
         // TODO not sure how to best do this one with the toaster event
         return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.toasterRecipeType, new SimpleContainer(itemStack), level)
+                .getRecipeFor(ModRecipes.toasterRecipeType, new SingleRecipeInput(itemStack), level)
                 .map(it -> true)
                 .orElseGet(() -> itemStack.is(Items.BREAD));
     }

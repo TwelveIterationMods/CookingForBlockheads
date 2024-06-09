@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AvailableCraftablesListMessage implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<AvailableCraftablesListMessage> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(CookingForBlockheads.MOD_ID,
+    public static final CustomPacketPayload.Type<AvailableCraftablesListMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "available_craftables_list"));
 
     private final List<RecipeWithStatus> recipes;

@@ -5,22 +5,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-import java.util.Optional;
-
-public class ToasterRecipe implements Recipe<Container> {
+public class ToasterRecipe implements Recipe<SingleRecipeInput> {
 
     private final Ingredient ingredient;
     private final ItemStack resultItem;
@@ -31,18 +25,12 @@ public class ToasterRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            final var slotStack = container.getItem(i);
-            if (ingredient.test(slotStack)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean matches(SingleRecipeInput recipeInput, Level level) {
+        return ingredient.test(recipeInput.item());
     }
 
     @Override
-    public ItemStack assemble(Container container, HolderLookup.Provider provider) {
+    public ItemStack assemble(SingleRecipeInput recipeInput, HolderLookup.Provider provider) {
         return resultItem.copy();
     }
 

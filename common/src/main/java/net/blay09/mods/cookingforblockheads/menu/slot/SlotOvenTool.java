@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
 public class SlotOvenTool extends Slot {
 
     private static final ResourceLocation[] ovenToolIcons = new ResourceLocation[]{
-            new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_bakeware"),
-            new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_pot"),
-            new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_saucepan"),
-            new ResourceLocation(CookingForBlockheads.MOD_ID, "item/slot_skillet")
+            ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "item/slot_bakeware"),
+            ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "item/slot_pot"),
+            ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "item/slot_saucepan"),
+            ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "item/slot_skillet")
     };
 
     private final int iconIndex;

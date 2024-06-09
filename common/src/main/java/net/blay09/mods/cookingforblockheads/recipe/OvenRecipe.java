@@ -11,13 +11,10 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public class OvenRecipe implements Recipe<Container> {
+public class OvenRecipe implements Recipe<SingleRecipeInput> {
 
     private final Ingredient ingredient;
     private final ItemStack resultItem;
@@ -28,18 +25,12 @@ public class OvenRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            final var slotStack = container.getItem(i);
-            if (ingredient.test(slotStack)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean matches(SingleRecipeInput recipeInput, Level level) {
+        return ingredient.test(recipeInput.item());
     }
 
     @Override
-    public ItemStack assemble(Container container, HolderLookup.Provider provider) {
+    public ItemStack assemble(SingleRecipeInput recipeInput, HolderLookup.Provider provider) {
         return resultItem.copy();
     }
 

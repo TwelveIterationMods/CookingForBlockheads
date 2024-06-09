@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
-    private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/oven.png");
+    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/oven.png");
 
     public OvenScreen(OvenMenu container, Inventory playerInventory, Component displayName) {
         super(container, playerInventory, displayName);

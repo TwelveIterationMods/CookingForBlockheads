@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class SpiceRackScreen extends AbstractContainerScreen<SpiceRackMenu> {
 
-    private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/spice_rack.png");
+    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/spice_rack.png");
 
     public SpiceRackScreen(SpiceRackMenu container, Inventory playerInventory, Component displayName) {
         super(container, playerInventory, displayName);

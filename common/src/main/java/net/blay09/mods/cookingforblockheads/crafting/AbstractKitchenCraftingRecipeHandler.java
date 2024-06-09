@@ -17,6 +17,6 @@ public abstract class AbstractKitchenCraftingRecipeHandler<T extends CraftingRec
             final var matrixSlot = mapToMatrixSlot(recipe, i);
             craftingContainer.setItem(matrixSlot, ingredientToken.consume());
         }
-        return recipe.assemble(craftingContainer, registryAccess);
+        return recipe.assemble(craftingContainer.asCraftInput(), registryAccess);
     }
 }

@@ -260,7 +260,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .pattern(" D ")
                 .pattern("CBC")
                 .pattern(" D ")
-                .define('D', TagKey.create(Registries.ITEM, new ResourceLocation("c", "gems/diamond")))
+                .define('D', TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "gems/diamond")))
                 .define('C', Blocks.CRAFTING_TABLE)
                 .define('B', ModItems.recipeBook)
                 .unlockedBy("has_recipe_book", has(ModItems.recipeBook))

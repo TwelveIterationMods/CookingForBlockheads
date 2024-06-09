@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class CounterScreen extends AbstractContainerScreen<CounterMenu> {
 
-    private static final ResourceLocation texture = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation texture = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
     private final int inventoryRows;
 
     public CounterScreen(CounterMenu container, Inventory playerInventory, Component displayName) {

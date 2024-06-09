@@ -36,7 +36,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cookingTable);
         for (final var cookingTable : ModBlocks.dyedCookingTables) {
-            final var cookingTableParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cooking_table")),
+            final var cookingTableParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/cooking_table")),
                     Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
             cookingTableParent.create(cookingTable, TextureMapping.cube(getTerracottaByColor(cookingTable.getColor())), blockStateModelGenerator.modelOutput);
             blockStateModelGenerator.createNonTemplateHorizontalBlock(cookingTable);
@@ -44,40 +44,40 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.counter);
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.counter);
         for (final var counter : ModBlocks.dyedCounters) {
-            final var counterParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/counter")),
+            final var counterParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/counter")),
                     Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
             TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(counter.getColor()));
             counterParent.create(counter, textureMapping, blockStateModelGenerator.modelOutput);
             blockStateModelGenerator.createNonTemplateHorizontalBlock(counter);
             blockStateModelGenerator.skipAutoItemBlock(counter);
 
-            final var counterDoorTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/counter_door")),
+            final var counterDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/counter_door")),
                     Optional.empty(), TextureSlot.ALL);
             counterDoorTemplate.createWithSuffix(counter, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-            final var counterDoorFlippedTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/counter_door_flipped")),
+            final var counterDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/counter_door_flipped")),
                     Optional.empty(), TextureSlot.ALL);
             counterDoorFlippedTemplate.createWithSuffix(counter, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
         }
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cabinet);
         blockStateModelGenerator.skipAutoItemBlock(ModBlocks.cabinet);
         for (final var cabinet : ModBlocks.dyedCabinets) {
-            final var cabinetParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/cabinet")),
+            final var cabinetParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/cabinet")),
                     Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
             TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(cabinet.getColor()));
             cabinetParent.create(cabinet, textureMapping, blockStateModelGenerator.modelOutput);
             blockStateModelGenerator.createNonTemplateHorizontalBlock(cabinet);
             blockStateModelGenerator.skipAutoItemBlock(cabinet);
 
-            final var cabinetDoorTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/cabinet_door")),
+            final var cabinetDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/cabinet_door")),
                     Optional.empty(), TextureSlot.ALL);
             cabinetDoorTemplate.createWithSuffix(cabinet, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-            final var cabinetDoorFlippedTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/cabinet_door_flipped")),
+            final var cabinetDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/cabinet_door_flipped")),
                     Optional.empty(), TextureSlot.ALL);
             cabinetDoorFlippedTemplate.createWithSuffix(cabinet, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
         }
 
-        final var sinkModel = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink");
-        final var sinkModelFlipped = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/sink_flipped");
+        final var sinkModel = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/sink");
+        final var sinkModelFlipped = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/sink_flipped");
         blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.sink)
                 .with(createBooleanModelDispatch(SinkBlock.FLIPPED, sinkModelFlipped, sinkModel))
                 .with(createHorizontalFacingDispatch()));
@@ -94,8 +94,8 @@ public class ModModelProvider extends FabricModelProvider {
         for (final var oven : ModBlocks.ovens) {
             createOvenBlock(blockStateModelGenerator, oven);
         }
-        final var toasterModel = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster");
-        final var toasterModelActive = new ResourceLocation(CookingForBlockheads.MOD_ID, "block/toaster_active");
+        final var toasterModel = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/toaster");
+        final var toasterModelActive = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/toaster_active");
         blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.toaster)
                 .with(createBooleanModelDispatch(ToasterBlock.ACTIVE, toasterModelActive, toasterModel))
                 .with(createHorizontalFacingDispatch()));
@@ -109,18 +109,18 @@ public class ModModelProvider extends FabricModelProvider {
             createConnector(blockStateModelGenerator, connector);
         }
 
-        final var kitchenFloorParent = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/kitchen_floor")),
+        final var kitchenFloorParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/kitchen_floor")),
                 Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
         for (final var kitchenFloor : ModBlocks.kitchenFloors) {
             kitchenFloorParent.create(kitchenFloor, TextureMapping.cube(kitchenFloor), blockStateModelGenerator.modelOutput);
             blockStateModelGenerator.createNonTemplateModelBlock(kitchenFloor);
         }
 
-        final var fridgeParentSmall = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge")),
+        final var fridgeParentSmall = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/fridge")),
                 Optional.empty(), TextureSlot.PARTICLE);
-        final var fridgeParentLargeLower = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_lower")),
+        final var fridgeParentLargeLower = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/fridge_large_lower")),
                 Optional.empty(), TextureSlot.PARTICLE);
-        final var fridgeParentLargeUpper = new ModelTemplate(Optional.of(new ResourceLocation(CookingForBlockheads.MOD_ID, "block/fridge_large_upper")),
+        final var fridgeParentLargeUpper = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/fridge_large_upper")),
                 Optional.empty(), TextureSlot.PARTICLE);
         for(final var fridge : ModBlocks.fridges) {
             final var textureMapping = getFridgeTextures(fridge);
@@ -134,21 +134,21 @@ public class ModModelProvider extends FabricModelProvider {
             ).with(createHorizontalFacingDispatch()));
             blockStateModelGenerator.skipAutoItemBlock(fridge);
 
-            final var fridgeDoorTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/fridge_door")), Optional.empty());
+            final var fridgeDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_door")), Optional.empty());
             fridgeDoorTemplate.createWithSuffix(fridge, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-            final var fridgeDoorFlippedTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/fridge_door_flipped")),
+            final var fridgeDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_door_flipped")),
                     Optional.empty());
             fridgeDoorFlippedTemplate.createWithSuffix(fridge, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
-            final var fridgeLargeDoorLowerTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/fridge_large_door_lower")),
+            final var fridgeLargeDoorLowerTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_large_door_lower")),
                     Optional.empty());
             fridgeLargeDoorLowerTemplate.createWithSuffix(fridge, "_large_door_lower", textureMapping, blockStateModelGenerator.modelOutput);
-            final var fridgeLargeDoorLowerFlippedTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/fridge_large_door_lower_flipped")),
+            final var fridgeLargeDoorLowerFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_large_door_lower_flipped")),
                     Optional.empty());
             fridgeLargeDoorLowerFlippedTemplate.createWithSuffix(fridge, "_large_door_lower_flipped", textureMapping, blockStateModelGenerator.modelOutput);
-            final var fridgeLargeDoorUpperTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/fridge_large_door_upper")),
+            final var fridgeLargeDoorUpperTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_large_door_upper")),
                     Optional.empty());
             fridgeLargeDoorUpperTemplate.createWithSuffix(fridge, "_large_door_upper", textureMapping, blockStateModelGenerator.modelOutput);
-            final var fridgeLargeDoorUpperFlippedTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/fridge_large_door_upper_flipped")),
+            final var fridgeLargeDoorUpperFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_large_door_upper_flipped")),
                     Optional.empty());
             fridgeLargeDoorUpperFlippedTemplate.createWithSuffix(fridge, "_large_door_upper_flipped", textureMapping, blockStateModelGenerator.modelOutput);
         }
@@ -182,28 +182,28 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     private void createConnector(BlockModelGenerators blockStateModelGenerator, Block block) {
-        final var innerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+        final var innerModelBottomTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                 "block/connector_inner_bottom_template")),
                 Optional.of("_inner_bottom"));
-        final var straightModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+        final var straightModelBottomTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                 "block/connector_straight_bottom_template")),
                 Optional.of("_straight_bottom"));
-        final var outerModelBottomTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+        final var outerModelBottomTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                 "block/connector_outer_bottom_template")),
                 Optional.of("_outer_bottom"));
-        final var innerModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_inner_top_template")),
+        final var innerModelTopTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/connector_inner_top_template")),
                 Optional.of("_inner_top"));
-        final var straightModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads",
+        final var straightModelTopTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                 "block/connector_straight_top_template")),
                 Optional.of("_straight_top"));
-        final var outerModelTopTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/connector_outer_top_template")),
+        final var outerModelTopTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/connector_outer_top_template")),
                 Optional.of("_outer_top"));
 
         final var textures = new TextureMapping();
         if (block instanceof DyedConnectorBlock dyedConnectorBlock) {
             final var color = dyedConnectorBlock.getColor();
-            textures.putForced(TextureSlot.PARTICLE, new ResourceLocation("minecraft", "block/" + color.getSerializedName() + "_terracotta"));
-            textures.putForced(TextureSlot.TEXTURE, new ResourceLocation("minecraft", "block/" + color.getSerializedName() + "_terracotta"));
+            textures.putForced(TextureSlot.PARTICLE, ResourceLocation.withDefaultNamespace( "block/" + color.getSerializedName() + "_terracotta"));
+            textures.putForced(TextureSlot.TEXTURE, ResourceLocation.withDefaultNamespace( "block/" + color.getSerializedName() + "_terracotta"));
         }
 
         final var straightModelBottom = straightModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput);
@@ -483,20 +483,20 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(ModItems.iceUnit, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.preservationChamber, ModelTemplates.FLAT_ITEM);
 
-        final var ovenTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/oven")), Optional.empty());
+        final var ovenTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/oven")), Optional.empty());
         for (final var oven : ModBlocks.ovens) {
             final var modelLocation = ModelLocationUtils.getModelLocation(oven.asItem());
             final var textureMapping = getOvenTextures(oven, false);
             ovenTemplate.create(modelLocation, textureMapping, itemModelGenerator.output);
         }
 
-        final var fridgeTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/fridge")), Optional.empty());
+        final var fridgeTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/fridge")), Optional.empty());
         for (final var fridge : ModBlocks.fridges) {
             final var modelLocation = ModelLocationUtils.getModelLocation(fridge.asItem());
             fridgeTemplate.create(modelLocation, getFridgeTextures(fridge), itemModelGenerator.output);
         }
 
-        final var counterTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/counter")),
+        final var counterTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/counter")),
                 Optional.empty(),
                 TextureSlot.ALL);
         for (final var counter : ModBlocks.dyedCounters) {
@@ -510,7 +510,7 @@ public class ModModelProvider extends FabricModelProvider {
             counterTemplate.create(modelLocation, textureMapping, itemModelGenerator.output);
         }
 
-        final var cabinetTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "item/cabinet")),
+        final var cabinetTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/cabinet")),
                 Optional.empty(),
                 TextureSlot.ALL);
         for (final var cabinet : ModBlocks.dyedCabinets) {
@@ -526,7 +526,7 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, OvenBlock block) {
-        final var ovenTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/oven")), Optional.empty());
+        final var ovenTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/oven")), Optional.empty());
         final var textureMapping = getOvenTextures(block, false);
         final var ovenModel = ovenTemplate.create(block, textureMapping, blockStateModelGenerator.modelOutput);
         final var activeTextureMapping = getOvenTextures(block, true);
@@ -536,12 +536,12 @@ public class ModModelProvider extends FabricModelProvider {
                 .with(createHorizontalFacingDispatch()));
         blockStateModelGenerator.skipAutoItemBlock(block);
 
-        final var ovenDoorTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/oven_door")), Optional.empty());
+        final var ovenDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/oven_door")), Optional.empty());
         ovenDoorTemplate.createWithSuffix(block, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-        final var ovenDoorActiveTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/oven_door_active")),
+        final var ovenDoorActiveTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/oven_door_active")),
                 Optional.empty());
         ovenDoorActiveTemplate.createWithSuffix(block, "_door_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
-        final var ovenDoorHandleTemplate = new ModelTemplate(Optional.of(new ResourceLocation("cookingforblockheads", "block/oven_door_handle")),
+        final var ovenDoorHandleTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/oven_door_handle")),
                 Optional.empty());
         ovenDoorHandleTemplate.createWithSuffix(block, "_door_handle", activeTextureMapping, blockStateModelGenerator.modelOutput);
     }
@@ -549,30 +549,30 @@ public class ModModelProvider extends FabricModelProvider {
     private static TextureMapping getOvenTextures(OvenBlock oven, boolean active) {
         final var textureMapping = new TextureMapping();
         final var colorName = oven.getColor().getName();
-        textureMapping.putForced(TextureSlot.PARTICLE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
-        textureMapping.putForced(TextureSlot.TEXTURE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
+        textureMapping.putForced(TextureSlot.PARTICLE, ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_side"));
+        textureMapping.putForced(TextureSlot.TEXTURE, ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_side"));
         if (active) {
             textureMapping.putForced(TextureSlot.create("ovenfront"),
-                    new ResourceLocation("cookingforblockheads", "block/" + oven.getColor().getName() + "_oven_front_active"));
+                    ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + oven.getColor().getName() + "_oven_front_active"));
         } else {
-            textureMapping.putForced(TextureSlot.create("ovenfront"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_front"));
+            textureMapping.putForced(TextureSlot.create("ovenfront"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_front"));
         }
         textureMapping.putForced(TextureSlot.create("ovenfront_active"),
-                new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_front_active"));
-        textureMapping.putForced(TextureSlot.create("oventop"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_top"));
-        textureMapping.putForced(TextureSlot.create("ovenbottom"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_bottom"));
-        textureMapping.putForced(TextureSlot.create("backsplash"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_oven_side"));
+                ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_front_active"));
+        textureMapping.putForced(TextureSlot.create("oventop"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_top"));
+        textureMapping.putForced(TextureSlot.create("ovenbottom"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_bottom"));
+        textureMapping.putForced(TextureSlot.create("backsplash"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_side"));
         return textureMapping;
     }
 
     private static TextureMapping getFridgeTextures(FridgeBlock fridge) {
         final var textureMapping = new TextureMapping();
         final var colorName = fridge.getColor().getName();
-        textureMapping.put(TextureSlot.PARTICLE, new ResourceLocation("cookingforblockheads", "block/" + colorName + "_fridge_side"));
-        textureMapping.putForced(TextureSlot.create("fridge_back"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_fridge_back"));
-        textureMapping.putForced(TextureSlot.create("fridge_top"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_fridge_top"));
-        textureMapping.putForced(TextureSlot.create("fridge_side"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_fridge_side"));
-        textureMapping.putForced(TextureSlot.create("fridge_inside"), new ResourceLocation("cookingforblockheads", "block/" + colorName + "_fridge_inside"));
+        textureMapping.put(TextureSlot.PARTICLE, ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_side"));
+        textureMapping.putForced(TextureSlot.create("fridge_back"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_back"));
+        textureMapping.putForced(TextureSlot.create("fridge_top"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_top"));
+        textureMapping.putForced(TextureSlot.create("fridge_side"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_side"));
+        textureMapping.putForced(TextureSlot.create("fridge_inside"), ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_inside"));
         return textureMapping;
     }
 

@@ -40,9 +40,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -280,19 +278,17 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         }
     }
 
-    private final Container singleSlotRecipeWrapper = new DefaultContainer(1);
-
     public ItemStack getSmeltingResult(ItemStack itemStack) {
-        singleSlotRecipeWrapper.setItem(0, itemStack);
-        final var ovenRecipeResult = getSmeltingResult(ModRecipes.ovenRecipeType, singleSlotRecipeWrapper);
+        final var recipeInput = new SingleRecipeInput(itemStack);
+        final var ovenRecipeResult = getSmeltingResult(ModRecipes.ovenRecipeType, recipeInput);
         if (!ovenRecipeResult.isEmpty()) {
             return ovenRecipeResult;
         }
 
-        return getSmeltingResult(RecipeType.SMELTING, singleSlotRecipeWrapper);
+        return getSmeltingResult(RecipeType.SMELTING, recipeInput);
     }
 
-    public <T extends Container> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T container) {
+    public <T extends RecipeInput> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T container) {
         RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(recipeType, container, this.level).orElse(null);
         if (recipe != null) {
             final var result = recipe.value().getResultItem(level.registryAccess());

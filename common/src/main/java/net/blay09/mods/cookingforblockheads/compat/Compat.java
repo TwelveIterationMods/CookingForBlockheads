@@ -4,7 +4,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluid;
 
 public class Compat {
@@ -20,7 +19,7 @@ public class Compat {
     @Deprecated(forRemoval = true)
     public static TagKey<Item> getCookingOilTag() {
         if(cookingOilTag == null) {
-            cookingOilTag = Balm.getRegistries().getItemTag(new ResourceLocation("balm", "cooking_oil"));
+            cookingOilTag = Balm.getRegistries().getItemTag(ResourceLocation.fromNamespaceAndPath("c", "cooking_oil"));
         }
         return cookingOilTag;
     }

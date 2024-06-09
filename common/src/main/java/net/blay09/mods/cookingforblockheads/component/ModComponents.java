@@ -14,6 +14,6 @@ public class ModComponents {
 
     public static void initialize(BalmComponents components) {
         toasted = components.registerComponent(() -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).build(),
-                new ResourceLocation(CookingForBlockheads.MOD_ID, "toasted"));
+                ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "toasted"));
     }
 }

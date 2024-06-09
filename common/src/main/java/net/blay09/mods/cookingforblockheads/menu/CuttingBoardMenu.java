@@ -9,12 +9,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public class CuttingBoardMenu extends RecipeBookMenu<CraftingContainer> {
+public class CuttingBoardMenu extends RecipeBookMenu<CraftingInput, CraftingRecipe> {
     private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
@@ -49,14 +47,15 @@ public class CuttingBoardMenu extends RecipeBookMenu<CraftingContainer> {
 
     protected static void slotChangedCraftingGrid(AbstractContainerMenu menu, Level level, Player player, CraftingContainer craftingContainer, ResultContainer resultContainer) {
         if (!level.isClientSide) {
+            final var recipeInput = craftingContainer.asCraftInput();
             final var serverPlayer = (ServerPlayer) player;
             var itemStack = ItemStack.EMPTY;
-            final var optionalRecipe = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level);
+            final var optionalRecipe = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, recipeInput, level);
             if (optionalRecipe.isPresent()) {
                 final var recipeHolder = optionalRecipe.get();
                 final var recipe = recipeHolder.value();
                 if (resultContainer.setRecipeUsed(level, serverPlayer, recipeHolder)) {
-                    final var assembledStack = recipe.assemble(craftingContainer, level.registryAccess());
+                    final var assembledStack = recipe.assemble(recipeInput, level.registryAccess());
                     if (assembledStack.isItemEnabled(level.enabledFeatures())) {
                         itemStack = assembledStack;
                     }
@@ -86,8 +85,8 @@ public class CuttingBoardMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     @Override
-    public boolean recipeMatches(RecipeHolder<? extends Recipe<CraftingContainer>> recipe) {
-        return recipe.value().matches(craftSlots, player.level());
+    public boolean recipeMatches(RecipeHolder<CraftingRecipe> recipe) {
+        return recipe.value().matches(craftSlots.asCraftInput(), player.level());
     }
 
     @Override

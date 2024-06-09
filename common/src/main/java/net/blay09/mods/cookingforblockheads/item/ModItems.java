@@ -117,6 +117,6 @@ public class ModItems {
     }
 
     private static ResourceLocation id(String name) {
-        return new ResourceLocation(CookingForBlockheads.MOD_ID, name);
+        return ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, name);
     }
 }

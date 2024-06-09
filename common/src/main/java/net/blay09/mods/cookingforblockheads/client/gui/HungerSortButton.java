@@ -12,7 +12,7 @@ import java.util.Comparator;
 
 public class HungerSortButton implements ISortButton {
 
-    private static final ResourceLocation icon = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
+    private static final ResourceLocation icon = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
 
     @Override
     public ResourceLocation getIcon() {

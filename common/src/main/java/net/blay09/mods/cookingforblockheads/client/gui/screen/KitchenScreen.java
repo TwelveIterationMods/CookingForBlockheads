@@ -28,7 +28,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
@@ -37,7 +36,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private static final int SCROLLBAR_WIDTH = 7;
     private static final int SCROLLBAR_HEIGHT = 77;
 
-    private static final ResourceLocation guiTexture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
+    private static final ResourceLocation guiTexture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
     private static final int VISIBLE_ROWS = 4;
     private static final int VISIBLE_COLS = 3;
 

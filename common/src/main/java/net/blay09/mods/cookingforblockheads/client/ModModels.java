@@ -80,6 +80,6 @@ public class ModModels {
     }
 
     private static ResourceLocation id(String path) {
-        return new ResourceLocation(CookingForBlockheads.MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, path);
     }
 }

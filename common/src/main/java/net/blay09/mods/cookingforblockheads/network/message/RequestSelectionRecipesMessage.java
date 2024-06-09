@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class RequestSelectionRecipesMessage implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<RequestSelectionRecipesMessage> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(CookingForBlockheads.MOD_ID,
+    public static final CustomPacketPayload.Type<RequestSelectionRecipesMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "request_selection_recipes"));
 
     private final ItemStack outputItem;

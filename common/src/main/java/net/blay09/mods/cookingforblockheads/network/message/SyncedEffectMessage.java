@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class SyncedEffectMessage implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<SyncedEffectMessage> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(CookingForBlockheads.MOD_ID,
+    public static final CustomPacketPayload.Type<SyncedEffectMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "synced_effect"));
 
     public enum Type {

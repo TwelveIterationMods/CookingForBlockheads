@@ -15,12 +15,8 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 
 import java.util.*;
 
@@ -45,7 +41,7 @@ public class CookingForBlockheadsRegistry {
         loadRecipesByType(recipeManager, registryAccess, RecipeType.SMELTING);
     }
 
-    private static <C extends Container, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
+    private static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
         for (final var recipe : recipeManager.getAllRecipesFor(recipeType)) {
             if (!isEligibleRecipe(recipe)) {
                 continue;
@@ -82,11 +78,11 @@ public class CookingForBlockheadsRegistry {
         return itemStack.has(DataComponents.FOOD) || itemStack.is(ModItemTags.FOODS) || itemStack.is(ModItemTags.INGREDIENTS);
     }
 
-    private static <T extends Container> boolean isEligibleRecipe(RecipeHolder<? extends Recipe<T>> recipe) {
+    private static <T extends RecipeInput> boolean isEligibleRecipe(RecipeHolder<? extends Recipe<T>> recipe) {
         return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id());
     }
 
-    public static <C extends Container, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {
+    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {
         kitchenRecipeHandlers.put(recipeType, handler);
     }
 
