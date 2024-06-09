@@ -1,18 +1,1 @@
-Updated to Minecraft 1.21
-
-- Fixed crash when clicking the cooking table to hard
-- Fixed Cooking for Blockheads II being uncraftable
-
-- Updated to Minecraft 1.20.6
-- Spread cooking tables, counters, cabinets, sinks, fridges out into separate blocks per color
-- Increased the size of kitchen blocks so things can be placed on top without having them float
-- Fixed the scaling of the milk jar texture
-- Added crafting table functionality to cutting boards
-- Differently colored fridges now no longer connect into a double fridge
-- Fixed typo in cookingforblockheads:utensils tag
-- Fixed sink not providing water to pipes in NeoForge
-- Use separate model for cow in a jar milk to allow more control in resource packs
-- Fixed orientation not being applied to milk model, which limited resource packs ability to change the jar model
-- Fixed dupe bug with some blocks
-- Reordered the creative tab items for Cooking for Blockheads to better showcase the mod's content and progression
-- Re-added the cooked item overlay in the oven screen
+- Updated to Minecraft 1.21
