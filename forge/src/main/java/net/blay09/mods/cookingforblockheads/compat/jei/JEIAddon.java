@@ -52,7 +52,7 @@ public class JEIAddon implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation("cookingforblockheads", "jei");
+        return ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "jei");
     }
 
     @Override

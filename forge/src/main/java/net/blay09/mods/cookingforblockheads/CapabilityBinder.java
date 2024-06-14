@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 @Mod.EventBusSubscriber(modid = CookingForBlockheads.MOD_ID)
 public class CapabilityBinder {
 
-    private static final ResourceLocation itemProviderResourceKey = new ResourceLocation(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
+    private static final ResourceLocation itemProviderResourceKey = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "kitchen_item_provider");
 
     @SubscribeEvent
     public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
