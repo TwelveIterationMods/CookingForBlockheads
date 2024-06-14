@@ -38,7 +38,7 @@ public class TheOneProbeAddon {
 
         @Override
         public ResourceLocation getID() {
-            return new ResourceLocation(CookingForBlockheads.MOD_ID, CookingForBlockheads.MOD_ID);
+            return ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, CookingForBlockheads.MOD_ID);
         }
 
         @Override

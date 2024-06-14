@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.neoforge.NeoForgeLoadContext;
 import net.blay09.mods.balm.neoforge.fluid.NeoForgeFluidTank;
 import net.blay09.mods.balm.neoforge.provider.NeoForgeBalmProviders;
@@ -9,13 +8,10 @@ import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
-import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -27,9 +23,9 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 @Mod(CookingForBlockheads.MOD_ID)
 public class NeoForgeCookingForBlockheads {
 
-    private static final BlockCapability<KitchenItemProvider, Void> KITCHEN_ITEM_PROVIDER = BlockCapability.createVoid(new ResourceLocation(CookingForBlockheads.MOD_ID,
+    private static final BlockCapability<KitchenItemProvider, Void> KITCHEN_ITEM_PROVIDER = BlockCapability.createVoid(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "kitchen_item_provider"), KitchenItemProvider.class);
-    private static final BlockCapability<KitchenItemProcessor, Void> KITCHEN_ITEM_PROCESSOR = BlockCapability.createVoid(new ResourceLocation(
+    private static final BlockCapability<KitchenItemProcessor, Void> KITCHEN_ITEM_PROCESSOR = BlockCapability.createVoid(ResourceLocation.fromNamespaceAndPath(
             CookingForBlockheads.MOD_ID,
             "kitchen_item_processor"), KitchenItemProcessor.class);
 
@@ -41,8 +37,6 @@ public class NeoForgeCookingForBlockheads {
 
         final var context = new NeoForgeLoadContext(eventBus);
         Balm.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
-        // TODO client entrypoint:
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheadsClient::initialize));
 
         eventBus.addListener(this::registerCapabilities);
         eventBus.addListener(this::enqueueIMC);

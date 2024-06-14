@@ -63,10 +63,10 @@ public class CookingForBlockheads {
         CookingForBlockheadsConfig.initialize();
         ModNetworking.initialize(Balm.getNetworking());
         ModBlocks.initialize(Balm.getBlocks());
-        ModBlockEntities.initialize(Balm.getBlockEntities());
+        ModBlockEntities.initialize();
         ModItems.initialize(Balm.getItems());
         ModRecipes.initialize(Balm.getRecipes());
-        ModMenus.initialize(Balm.getMenus());
+        ModMenus.initialize();
         ModSounds.initialize(Balm.getSounds());
         ModComponents.initialize(Balm.getComponents());
 

@@ -22,10 +22,10 @@ import net.minecraft.world.item.Items;
 
 public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
-    private static final ResourceLocation texture = new ResourceLocation(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
+    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
 
     public static final RecipeType<CowJarRecipe> TYPE = RecipeType.create(CookingForBlockheads.MOD_ID, "cow_jar", CowJarRecipe.class);
-    public static final ResourceLocation UID = new ResourceLocation("cookingforblockheads", "cow_jar");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "cow_jar");
     private final IDrawableStatic background;
     private final IDrawable icon;
     private final IDrawableStatic overlay;
