@@ -1,1 +1,2 @@
+- Fixed dyed cooking tables not allowing items to be crafted
 - Fixed dyed cabinet and counter contents not being available to the kitchen
