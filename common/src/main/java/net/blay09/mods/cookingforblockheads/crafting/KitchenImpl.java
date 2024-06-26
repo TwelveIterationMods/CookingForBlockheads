@@ -105,7 +105,7 @@ public class KitchenImpl implements Kitchen {
     @Override
     public boolean canProcess(RecipeType<?> recipeType) {
         if (recipeType == RecipeType.CRAFTING) {
-            return activatingBlockState.is(ModBlocks.cookingTable) || activatingItemStack.is(ModItems.craftingBook);
+            return activatingBlockState.is(ModBlockTags.COOKING_TABLES) || activatingItemStack.is(ModItems.craftingBook);
         }
 
         return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));

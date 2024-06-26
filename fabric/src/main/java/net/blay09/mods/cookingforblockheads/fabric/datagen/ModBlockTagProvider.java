@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.block.CabinetBlock;
+import net.blay09.mods.cookingforblockheads.block.CookingTableBlock;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
@@ -21,7 +22,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace( "mineable/pickaxe"));
+        final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/pickaxe"));
         final var mineablePickaxeBuilder = getOrCreateTagBuilder(mineablePickaxeTag);
         mineablePickaxeBuilder.add(ModBlocks.cookingTable,
                 ModBlocks.sink,
@@ -56,7 +57,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
             mineablePickaxeBuilder.add(sink);
         }
 
-        final var mineableAxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace( "mineable/axe"));
+        final var mineableAxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/axe"));
         final var mineableAxeBuilder = getOrCreateTagBuilder(mineableAxeTag);
         mineableAxeBuilder.add(ModBlocks.toolRack, ModBlocks.spiceRack, ModBlocks.fruitBasket, ModBlocks.cuttingBoard);
 
@@ -204,6 +205,12 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         kitchenItemProviders.addOptional(ResourceLocation.fromNamespaceAndPath("storagedrawers", "standard_drawers_2"));
         kitchenItemProviders.addOptional(ResourceLocation.fromNamespaceAndPath("storagedrawers", "standard_drawers_4"));
         kitchenItemProviders.addOptional(ResourceLocation.fromNamespaceAndPath("storagedrawers", "fractional_drawers_3"));
+
+        final var cookingTables = getOrCreateTagBuilder(ModBlockTags.COOKING_TABLES);
+        cookingTables.add(ModBlocks.cookingTable);
+        for (final var cookingTable : ModBlocks.dyedCookingTables) {
+            cookingTables.add(cookingTable);
+        }
 
         final var kitchenConnectors = getOrCreateTagBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         kitchenConnectors.add(ModBlocks.connector);
