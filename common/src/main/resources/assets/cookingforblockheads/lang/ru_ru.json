@@ -127,7 +127,7 @@
   "block.cookingforblockheads.brown_oven": "Коричневая духовка",
   "block.cookingforblockheads.green_oven": "Зелёная духовка",
   "block.cookingforblockheads.red_oven": "Красная духовка",
-  "block.cookingforblockheads.black_oven": "Чёрная духовка"
+  "block.cookingforblockheads.black_oven": "Чёрная духовка",
   "block.cookingforblockheads.fruit_basket": "Корзина для фруктов",
   "block.cookingforblockheads.tool_rack": "Полка для инструментов",
   "block.cookingforblockheads.milk_jar": "Крынка",
@@ -221,7 +221,7 @@
   "config.jade.plugin_cookingforblockheads.milk_jar": "Крынка",
   "config.jade.plugin_cookingforblockheads.toaster": "Тостер",
   "config.jade.plugin_cookingforblockheads.fridge": "Холодильник",
-  "config.jade.plugin_cookingforblockheads.sink": "Кухонная раковина"
+  "config.jade.plugin_cookingforblockheads.sink": "Кухонная раковина",
   "config.cookingforblockheads": "Готовка для болванов",
   "config.cookingforblockheads.cowJarEnabled": "Включить корову в банке",
   "config.cookingforblockheads.cowJarEnabled.tooltip": "Если включено, корову можно втиснуть в молочную банку, бросив сверху наковальню.",
