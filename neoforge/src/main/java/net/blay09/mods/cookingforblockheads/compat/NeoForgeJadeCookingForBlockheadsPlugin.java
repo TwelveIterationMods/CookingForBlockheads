@@ -7,7 +7,7 @@ import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
 @WailaPlugin(CookingForBlockheads.MOD_ID)
-public class ForgeJadeCookingForBlockheadsPlugin implements IWailaPlugin {
+public class NeoForgeJadeCookingForBlockheadsPlugin implements IWailaPlugin {
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
