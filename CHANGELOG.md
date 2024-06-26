@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21
+- Fixed dyed cabinet and counter contents not being available to the kitchen
