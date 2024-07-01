@@ -49,12 +49,12 @@ jobs:
       packages: write
     strategy:
       matrix:
-        loader: [ common, fabric, forge, neoforge ]
+        loader: [ shared, fabric, forge, neoforge ]
         site: [ curseforge, modrinth, publish ]
         exclude:
-          - loader: common
+          - loader: shared
             site: curseforge
-          - loader: common
+          - loader: shared
             site: modrinth
     steps:
       - name: Checkout repository
