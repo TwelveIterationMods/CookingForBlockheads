@@ -1,2 +1,1 @@
-- Fixed dyed cooking tables not allowing items to be crafted
-- Fixed dyed cabinet and counter contents not being available to the kitchen
+- Fixed oven heating unit not accepting energy on NeoForge
