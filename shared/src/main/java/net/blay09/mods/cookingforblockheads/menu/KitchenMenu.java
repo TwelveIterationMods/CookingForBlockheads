@@ -415,7 +415,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         for (final var slot : recipeListingSlots) {
             if (i < filteredCraftables.size()) {
                 final var craftable = filteredCraftables.get(i);
-                if (craftable != null && selectedCraftable != null && ItemStack.isSameItemSameComponents(selectedCraftable.resultItem(), craftable.resultItem())) {
+                if (craftable != null && selectedCraftable != null && ItemStack.isSameItemSameTags(selectedCraftable.resultItem(), craftable.resultItem())) {
                     final var selectedRecipe = getSelectedRecipe();
                     slot.setCraftable(selectedRecipe != null ? selectedRecipe : craftable);
                 } else {
