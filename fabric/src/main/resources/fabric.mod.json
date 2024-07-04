@@ -34,6 +34,9 @@
     ],
     "jade": [
       "net.blay09.mods.cookingforblockheads.fabric.compat.FabricJadeCookingForBlockheadsPlugin"
+    ],
+    "jei_mod_plugin": [
+      "net.blay09.mods.cookingforblockheads.compat.jei.JEIAddon"
     ]
   },
   "mixins": [
