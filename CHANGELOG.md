@@ -1,1 +1,1 @@
-- Fixed oven heating unit not accepting energy on NeoForge
+- Fixed missing texture warnings spamming the log
