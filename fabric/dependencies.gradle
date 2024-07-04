@@ -2,6 +2,7 @@ dependencies {
     modImplementation("net.blay09.mods:balm-fabric:${balm_version}") {
         changing = balm_version.contains("SNAPSHOT")
     }
+    compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
     modCompileOnly "com.terraformersmc:modmenu:$modmenu_version"
     modImplementation "curse.maven:jade-324717:$jade_fabric_version"
     modCompileOnly "mcp.mobius.waila:wthit-api:mojmap-$wthit_version"
