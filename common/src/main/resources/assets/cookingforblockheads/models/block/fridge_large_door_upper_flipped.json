@@ -1,7 +1,6 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"particle": "cookingforblockheads:block/fridge_side",
 		"fridge_side": "cookingforblockheads:block/fridge_side",
 		"fridge_top": "cookingforblockheads:block/fridge_top"
 	},

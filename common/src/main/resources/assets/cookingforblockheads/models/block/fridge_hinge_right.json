@@ -1,11 +1,7 @@
 {
   "__comment": "Designed by Blay09 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net (Sub Model: HingeRight)",
   "textures": {
-    "particle": "cookingforblockheads:blocks/fridge_side",
-    "fridge_side": "cookingforblockheads:blocks/fridge_side",
-    "fridge_top": "cookingforblockheads:blocks/fridge_top",
-    "fridge_back": "cookingforblockheads:blocks/fridge_back",
-    "fridge_inside": "cookingforblockheads:blocks/fridge_inside"
+    "fridge_top": "cookingforblockheads:blocks/fridge_top"
   },
   "elements": [
     {
