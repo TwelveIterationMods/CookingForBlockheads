@@ -19,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
 
 public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
@@ -71,4 +72,8 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
         RenderSystem.disableBlend();
     }
 
+    @Override
+    public @Nullable ResourceLocation getRegistryName(CowJarRecipe recipe) {
+        return UID;
+    }
 }
