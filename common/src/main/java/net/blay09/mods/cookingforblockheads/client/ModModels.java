@@ -43,7 +43,6 @@ public class ModModels {
         fridgeDoorsLargeUpper = new ArrayList<>(colors.length);
         fridgeDoorsLargeLowerFlipped = new ArrayList<>(colors.length);
         fridgeDoorsLargeUpperFlipped = new ArrayList<>(colors.length);
-        models.loadModel(id("block/dyed_oven_door_active"));
         for (DyeColor color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door")));
