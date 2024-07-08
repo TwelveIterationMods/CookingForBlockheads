@@ -153,10 +153,14 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     private ItemStack toastItem(ItemStack itemStack) {
         // TODO fire a toaster event so addons can add custom handling
         final var craftingContainer = new SimpleContainer(itemStack);
-        final var toastRecipe = level.getRecipeManager().getRecipeFor(ModRecipes.toasterRecipeType, craftingContainer, level).orElse(null);
-        if (toastRecipe != null) {
-            return toastRecipe.value().assemble(craftingContainer, level.registryAccess());
-        } else if (itemStack.is(Items.BREAD)) {
+        final var toastRecipes = level.getRecipeManager().getRecipesFor(ModRecipes.toasterRecipeType, craftingContainer, level);
+        for (final var toastRecipe : toastRecipes) {
+            final var assembled = toastRecipe.value().assemble(craftingContainer, level.registryAccess());
+            if (!assembled.isEmpty()) {
+                return assembled;
+            }
+        }
+        if (itemStack.is(Items.BREAD)) {
             return toastBread(itemStack);
         } else {
             return itemStack;
