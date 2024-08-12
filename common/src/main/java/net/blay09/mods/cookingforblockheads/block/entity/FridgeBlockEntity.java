@@ -11,6 +11,8 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
@@ -43,7 +45,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
+public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -339,5 +341,15 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     @Override
     public BlockPos getScreenOpeningData(ServerPlayer serverPlayer) {
         return worldPosition;
+    }
+
+    @Override
+    public TransferableContainer snapshotDataForTransfer() {
+        return TransferableContainer.copyAndClear(container);
+    }
+
+    @Override
+    public void restoreFromTransferSnapshot(TransferableContainer data) {
+        data.applyTo(container);
     }
 }

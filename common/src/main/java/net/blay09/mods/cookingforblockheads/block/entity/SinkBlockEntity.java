@@ -9,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
@@ -25,7 +26,7 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.Collection;
 import java.util.List;
 
-public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider {
+public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer> {
 
     private static final int SYNC_INTERVAL = 10;
 
@@ -198,5 +199,15 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     @Override
     public FluidTank getFluidTank() {
         return sinkTank;
+    }
+
+    @Override
+    public Integer snapshotDataForTransfer() {
+        return sinkTank.getAmount();
+    }
+
+    @Override
+    public void restoreFromTransferSnapshot(Integer data) {
+        sinkTank.setFluid(Fluids.WATER, data);
     }
 }

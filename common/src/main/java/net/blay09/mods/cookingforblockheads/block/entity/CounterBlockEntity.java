@@ -7,6 +7,8 @@ import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
@@ -16,7 +18,6 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -34,7 +35,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
+public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -218,5 +219,15 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     @Override
     public StreamCodec<RegistryFriendlyByteBuf, BlockPos> getScreenStreamCodec() {
         return BlockPos.STREAM_CODEC.cast();
+    }
+
+    @Override
+    public TransferableContainer snapshotDataForTransfer() {
+        return TransferableContainer.copyAndClear(container);
+    }
+
+    @Override
+    public void restoreFromTransferSnapshot(TransferableContainer data) {
+        data.applyTo(container);
     }
 }

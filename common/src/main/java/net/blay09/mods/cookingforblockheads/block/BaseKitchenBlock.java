@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.blay09.mods.cookingforblockheads.block.entity.IMutableNameable;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -154,16 +154,34 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
     private boolean removeColor(BlockState state, LevelAccessor world, BlockPos pos, Direction facing) {
         final var removedColorState = getDyedStateOf(state, null);
         if (!removedColorState.equals(state)) {
+            final var blockEntity = world.getBlockEntity(pos);
+            Object transferData = null;
+            if (blockEntity instanceof TransferableBlockEntity transferableBlockEntity) {
+                transferData = transferableBlockEntity.snapshotDataForTransfer();
+            }
             world.setBlock(pos, removedColorState, 3);
+            final var newBlockEntity = world.getBlockEntity(pos);
+            if (transferData != null && newBlockEntity instanceof TransferableBlockEntity transferableBlockEntity) {
+                transferableBlockEntity.restoreFromTransferSnapshot(transferData);
+            }
             return true;
         }
         return false;
     }
 
     protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
-        final var removedColorState = getDyedStateOf(state, color);
-        if (!removedColorState.equals(state)) {
-            world.setBlock(pos, removedColorState, 3);
+        final var recoloredState = getDyedStateOf(state, color);
+        if (!recoloredState.equals(state)) {
+            final var blockEntity = world.getBlockEntity(pos);
+            Object transferData = null;
+            if (blockEntity instanceof TransferableBlockEntity transferableBlockEntity) {
+                transferData = transferableBlockEntity.snapshotDataForTransfer();
+            }
+            world.setBlock(pos, recoloredState, 3);
+            final var newBlockEntity = world.getBlockEntity(pos);
+            if (transferData != null && newBlockEntity instanceof TransferableBlockEntity transferableBlockEntity) {
+                transferableBlockEntity.restoreFromTransferSnapshot(transferData);
+            }
             return true;
         }
         return false;

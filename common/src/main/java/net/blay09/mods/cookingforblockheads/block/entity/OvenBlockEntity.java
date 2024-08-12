@@ -15,6 +15,8 @@ import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenOperation;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
@@ -49,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox {
+public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
 
     private static final int COOK_TIME = 200;
 
@@ -556,5 +558,15 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     @Override
     public BlockPos getScreenOpeningData(ServerPlayer serverPlayer) {
         return worldPosition;
+    }
+
+    @Override
+    public TransferableContainer snapshotDataForTransfer() {
+        return TransferableContainer.copyAndClear(container);
+    }
+
+    @Override
+    public void restoreFromTransferSnapshot(TransferableContainer data) {
+        data.applyTo(container);
     }
 }
