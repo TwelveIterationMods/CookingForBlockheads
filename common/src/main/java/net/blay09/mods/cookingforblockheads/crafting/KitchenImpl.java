@@ -60,16 +60,18 @@ public class KitchenImpl implements Kitchen {
                     BlockState state = level.getBlockState(position);
                     BlockEntity blockEntity = level.getBlockEntity(position);
                     if (blockEntity != null) {
-                        final var itemProvider = ProviderUtils.getProvider(blockEntity, KitchenItemProvider.class);
-                        if (itemProvider != null) {
-                            itemProviderList.add(itemProvider);
-                        } else if (state.is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
+                        var itemProvider = ProviderUtils.getProvider(blockEntity, KitchenItemProvider.class);
+                        if (itemProvider == null && state.is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
                             // We need to do this again because NeoForge has no fallback capability providers...
                             if (blockEntity instanceof Container container) {
-                                itemProviderList.add(new ContainerKitchenItemProvider(container));
+                                itemProvider = new ContainerKitchenItemProvider(container);
                             } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
-                                itemProviderList.add(new ContainerKitchenItemProvider(containerProvider.getContainer()));
+                                itemProvider = new ContainerKitchenItemProvider(containerProvider.getContainer());
                             }
+                        }
+
+                        if (itemProvider != null) {
+                            itemProviderList.add(itemProvider);
                         }
 
                         final var itemProcessor = ProviderUtils.getProvider(blockEntity, KitchenItemProcessor.class);
