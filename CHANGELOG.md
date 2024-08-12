@@ -1,1 +1,1 @@
-- Fixed missing texture warnings spamming the log
+- Updated to Minecraft 1.21.1
