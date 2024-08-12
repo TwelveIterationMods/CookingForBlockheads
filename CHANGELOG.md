@@ -1,1 +1,7 @@
 - Updated to Minecraft 1.21.1
+- Fixed NoFilter edition not rendering on top of cooking tables
+- Fixed items dropping when changing a kitchen block's color using dye
+- Fixed counters and some other blocks not acting as kitchen connectors
+- Fixed some model loading error logs
+- Fixed Cow in a Jar recipe not being bookmarkable in JEI
+- Fixed JEI support to be available on Fabric as well
