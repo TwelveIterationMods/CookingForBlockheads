@@ -28,7 +28,7 @@ public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlo
         if (!itemStack.isEmpty()) {
             poseStack.pushPose();
             RenderUtils.applyBlockAngle(poseStack, state);
-            poseStack.translate(0, 1.01f, 0);
+            poseStack.translate(0, 1.0725f, 0);
             poseStack.mulPose(Axis.XP.rotationDegrees(90f));
             poseStack.scale(0.5f, 0.5f, 0.5f);
             RenderUtils.renderItem(itemStack, combinedLightIn, poseStack, bufferIn, level);
