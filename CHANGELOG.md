@@ -1,4 +1,1 @@
-- Fixed oven heating unit not accepting energy on NeoForge 
-- Fixed crash when interacting with slots in the cooking table
-- Fixed sink not fulfilling its sole purpose on NeoForge (that is, providing infinite water to your nuclear reactors)
-- Fixed dupe bug due with some of the blocks
+- Fixed toaster not toasting correctly
