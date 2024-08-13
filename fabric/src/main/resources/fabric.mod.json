@@ -48,7 +48,7 @@
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": "*",
     "balm-fabric": "*",
-    "minecraft": ">=${minecraft_version}",
+    "minecraft": ">=${minimum_minecraft_version}",
     "java": ">=${java_version}"
   },
   "suggests": {
