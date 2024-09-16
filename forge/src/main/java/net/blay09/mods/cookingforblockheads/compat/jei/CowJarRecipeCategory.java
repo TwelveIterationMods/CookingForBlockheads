@@ -60,7 +60,7 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, CowJarRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 65, 1)
                 .addIngredients(VanillaTypes.ITEM_STACK, ImmutableList.of(new ItemStack(Items.ANVIL), new ItemStack(ModBlocks.milkJar)));
-        builder.addSlot(RecipeIngredientRole.INPUT, 65, 77)
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 65, 77)
                 .addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.cowJar));
     }
 
