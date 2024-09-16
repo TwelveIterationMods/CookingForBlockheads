@@ -1,2 +1,1 @@
-- Fixed dupe bug with some blocks
-- Re-added the cooked item overlay in the oven screen
+- Fixed Cow in a Jar Recipe not being lookupable in JEI
