@@ -93,12 +93,17 @@ public class ToolRackBlock extends BaseKitchenBlock {
             return InteractionResult.FAIL;
         }
 
+        if (!player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+            return InteractionResult.PASS;
+        }
+
         int hitSlot = getHitSlot(state, pos, blockHitResult);
         final var clickedItemStack = toolRack.getContainer().getItem(hitSlot);
         if (!clickedItemStack.isEmpty()) {
             toolRack.getContainer().setItem(hitSlot, ItemStack.EMPTY);
             player.setItemInHand(InteractionHand.MAIN_HAND, clickedItemStack);
         }
+
         return InteractionResult.SUCCESS;
     }
 
