@@ -1,1 +1,1 @@
-- Fixed Cow in a Jar recipe not being lookupable in JEI
+- Fixed Tool Rack deleting item in hand if it's a block
