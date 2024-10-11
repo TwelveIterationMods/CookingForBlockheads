@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.block;
 
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.ToasterBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -12,8 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -59,9 +56,9 @@ public class ToasterBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
@@ -76,16 +73,16 @@ public class ToasterBlock extends BaseKitchenBlock {
                     for (int i = 0; i < toaster.getContainer().getContainerSize(); i++) {
                         if (toaster.getContainer().getItem(i).isEmpty()) {
                             toaster.getContainer().setItem(i, player.getAbilities().instabuild ? heldItem.copy().split(1) : heldItem.split(1));
-                            return ItemInteractionResult.SUCCESS;
+                            return InteractionResult.SUCCESS;
                         }
                     }
 
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
 
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable

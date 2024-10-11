@@ -9,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -66,7 +65,7 @@ public class ToolRackBlock extends BaseKitchenBlock {
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         Direction facing = state.getValue(FACING);
         return RENDER_SHAPES[facing.get3DDataValue() - 2];
     }
@@ -108,22 +107,22 @@ public class ToolRackBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         final var blockEntity = level.getBlockEntity(pos);
         if (!(blockEntity instanceof ToolRackBlockEntity toolRack)) {
-            return ItemInteractionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         if (hand != InteractionHand.MAIN_HAND) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         if (itemStack.getItem() instanceof BlockItem) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         int hitSlot = getHitSlot(state, pos, blockHitResult);
@@ -138,7 +137,7 @@ public class ToolRackBlock extends BaseKitchenBlock {
             toolRack.getContainer().setItem(hitSlot, toolItem);
         }
 
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     private static int getHitSlot(BlockState state, BlockPos pos, BlockHitResult blockHitResult) {

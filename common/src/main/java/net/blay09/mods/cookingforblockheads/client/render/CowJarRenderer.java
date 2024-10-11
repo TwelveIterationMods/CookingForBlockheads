@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
@@ -40,7 +39,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
         poseStack.translate(0, 0, 0);
         poseStack.scale(shrinkage, shrinkage, shrinkage);
 
-        Minecraft.getInstance().getEntityRenderDispatcher().render(entity, 0, 0, 0, 0f, 0f, poseStack, buffer, combinedLight);
+        Minecraft.getInstance().getEntityRenderDispatcher().render(entity, 0, 0, 0, 0f, poseStack, buffer, combinedLight);
         poseStack.popPose();
     }
 

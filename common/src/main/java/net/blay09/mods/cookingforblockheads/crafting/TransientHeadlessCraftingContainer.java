@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.crafting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -90,7 +90,7 @@ public class TransientHeadlessCraftingContainer implements CraftingContainer {
     }
 
     @Override
-    public void fillStackedContents(StackedContents stackedContents) {
+    public void fillStackedContents(StackedItemContents stackedContents) {
         for (final var itemStack : items) {
             stackedContents.accountSimpleStack(itemStack);
         }

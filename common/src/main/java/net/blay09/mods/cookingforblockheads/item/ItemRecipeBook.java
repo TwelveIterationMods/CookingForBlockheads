@@ -6,13 +6,12 @@ import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -58,7 +56,7 @@ public class ItemRecipeBook extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
             final var itemStack = player.getItemInHand(hand);
             Balm.getNetworking().openGui(player, new BalmMenuProvider<ItemStack>() {
@@ -84,7 +82,7 @@ public class ItemRecipeBook extends Item {
             });
         }
 
-        return InteractionResultHolder.success(player.getItemInHand(hand));
+        return InteractionResult.SUCCESS;
     }
 
     @Override

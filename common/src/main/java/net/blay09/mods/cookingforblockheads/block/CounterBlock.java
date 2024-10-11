@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -60,24 +59,24 @@ public class CounterBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         CounterBlockEntity counter = (CounterBlockEntity) level.getBlockEntity(pos);
         if (blockHitResult.getDirection() == state.getValue(FACING) && counter.getDoorAnimator().isForcedOpen()) {
             itemStack = counter.insertItemStacked(itemStack, false);
             player.setItemInHand(hand, itemStack);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         if (blockHitResult.getDirection() == Direction.UP && itemStack.getItem() instanceof BlockItem) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         }
 
         return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);

@@ -1,1 +1,1 @@
-- Fixed Tool Rack deleting item in hand if it's a block
+- Updated to Minecraft 1.21.2

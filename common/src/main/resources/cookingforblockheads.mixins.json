@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "cookingforblockheads.refmap.json",
   "mixins": [
+    "ShapelessRecipeAccessor"
   ],
   "client": [
   ],

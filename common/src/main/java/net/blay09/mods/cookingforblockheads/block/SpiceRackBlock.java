@@ -69,7 +69,7 @@ public class SpiceRackBlock extends BaseKitchenBlock {
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+    public VoxelShape getOcclusionShape(BlockState state) {
         Direction facing = state.getValue(FACING);
         return RENDER_SHAPES[facing.get3DDataValue() - 2];
     }

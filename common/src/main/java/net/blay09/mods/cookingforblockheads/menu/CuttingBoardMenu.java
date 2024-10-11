@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public class CuttingBoardMenu extends RecipeBookMenu<CraftingInput, CraftingRecipe> {
+public class CuttingBoardMenu extends RecipeBookMenu {
     private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
@@ -54,7 +54,7 @@ public class CuttingBoardMenu extends RecipeBookMenu<CraftingInput, CraftingReci
             if (optionalRecipe.isPresent()) {
                 final var recipeHolder = optionalRecipe.get();
                 final var recipe = recipeHolder.value();
-                if (resultContainer.setRecipeUsed(level, serverPlayer, recipeHolder)) {
+                if (resultContainer.setRecipeUsed(serverPlayer, recipeHolder)) {
                     final var assembledStack = recipe.assemble(recipeInput, level.registryAccess());
                     if (assembledStack.isItemEnabled(level.enabledFeatures())) {
                         itemStack = assembledStack;

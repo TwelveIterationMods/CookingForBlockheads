@@ -29,7 +29,6 @@ public class CookingForBlockheadsRegistry {
     private static final Map<Class<? extends Recipe<?>>, KitchenRecipeHandler<? extends Recipe<?>>> kitchenRecipeHandlers = new HashMap<>();
 
     public static void initialize(BalmEvents events) {
-        events.onEvent(RecipesUpdatedEvent.class, event -> reload(event.getRecipeManager(), event.getRegistryAccess()));
         events.onEvent(ServerReloadFinishedEvent.class,
                 (ServerReloadFinishedEvent event) -> reload(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
         events.onEvent(ServerStartedEvent.class, event -> reload(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
@@ -42,7 +41,7 @@ public class CookingForBlockheadsRegistry {
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
-        for (final var recipe : recipeManager.getAllRecipesFor(recipeType)) {
+        for (final var recipe : recipeManager.getRecipesFor(recipeType)) {
             if (!isEligibleRecipe(recipe)) {
                 continue;
             }
@@ -87,7 +86,7 @@ public class CookingForBlockheadsRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Recipe<?>, V extends KitchenRecipeHandler<T>> V getRecipeWorkshopHandler(T recipe) {
+    public static <T extends Recipe<?>, V extends KitchenRecipeHandler<T>> V getKitchenRecipeHandler(T recipe) {
         for (Class<? extends Recipe<?>> handlerClass : kitchenRecipeHandlers.keySet()) {
             if (handlerClass.isAssignableFrom(recipe.getClass())) {
                 return (V) kitchenRecipeHandlers.get(handlerClass);

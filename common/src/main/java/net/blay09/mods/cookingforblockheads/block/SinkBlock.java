@@ -14,7 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -66,13 +66,13 @@ public class SinkBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         ItemStack resultStack = cleanItem(itemStack);
@@ -89,7 +89,7 @@ public class SinkBlock extends BaseKitchenBlock {
             }
             spawnParticlesAndPlaySound(level, pos, state);
             level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1f, level.random.nextFloat() + 0.5f);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof SinkBlockEntity sink) {
@@ -114,11 +114,11 @@ public class SinkBlock extends BaseKitchenBlock {
                         spawnParticlesAndPlaySound(level, pos, state);
                     }
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     private void spawnParticlesAndPlaySound(Level level, BlockPos pos, BlockState state) {

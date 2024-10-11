@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -55,14 +54,14 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         
         final var blockEntity = level.getBlockEntity(pos);
         if (!(blockEntity instanceof MilkJarBlockEntity milkJar)) {
-            return ItemInteractionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         FluidTank milkTank = milkJar.getFluidTank();
@@ -73,7 +72,7 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
                     player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                 }
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else if (itemStack.getItem() == Items.BUCKET) {
             if (milkTank.getAmount() >= 1000) {
                 if (itemStack.getCount() == 1) {
@@ -90,7 +89,7 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
                     }
                 }
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);

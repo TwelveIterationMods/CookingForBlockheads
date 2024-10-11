@@ -1,6 +1,10 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+
+import java.util.List;
+import java.util.Optional;
 
 public class KitchenShapedRecipeHandler extends AbstractKitchenCraftingRecipeHandler<ShapedRecipe> {
     @Override
@@ -13,5 +17,10 @@ public class KitchenShapedRecipeHandler extends AbstractKitchenCraftingRecipeHan
         final int offsetX = recipeWidth == 1 ? 1 : 0;
 
         return origY * 3 + origX + offsetX;
+    }
+
+    @Override
+    public List<Optional<Ingredient>> getIngredients(ShapedRecipe recipe) {
+        return recipe.getIngredients();
     }
 }

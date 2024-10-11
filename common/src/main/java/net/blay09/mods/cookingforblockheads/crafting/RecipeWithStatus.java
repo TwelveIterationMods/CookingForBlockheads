@@ -80,7 +80,7 @@ public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, 
     }
 
     private static boolean isUtensil(Ingredient ingredient) {
-        for (final var itemStack : ingredient.getItems()) {
+        for (final var itemStack : ingredient.items()) {
             if (itemStack.is(ModItemTags.UTENSILS)) {
                 return true;
             }

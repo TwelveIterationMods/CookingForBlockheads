@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -32,7 +32,7 @@ import java.util.List;
 public class ConnectorBlock extends BaseKitchenBlock {
     public static final MapCodec<ConnectorBlock> CODEC = simpleCodec(ConnectorBlock::new);
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
     public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
 
@@ -50,23 +50,23 @@ public class ConnectorBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {
-            return ItemInteractionResult.CONSUME_PARTIAL;
+            return InteractionResult.CONSUME;
         }
 
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         final var clickedFace = context.getClickedFace();
         final var clickedPos = context.getClickedPos();
-        final var state = (BlockState) this.defaultBlockState()
+        final var state = this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection())
                 .setValue(HALF,
                         clickedFace != Direction.DOWN && (clickedFace == Direction.UP || !(context.getClickLocation().y - (double) clickedPos.getY() > 0.5)) ? Half.BOTTOM : Half.TOP);

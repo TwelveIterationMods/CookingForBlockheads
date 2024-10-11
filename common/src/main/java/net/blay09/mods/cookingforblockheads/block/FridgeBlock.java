@@ -15,17 +15,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -100,22 +96,22 @@ public class FridgeBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         final var blockEntity = level.getBlockEntity(pos);
         if (!(blockEntity instanceof FridgeBlockEntity fridge)) {
-            return ItemInteractionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         if (itemStack.getItem() == ModItems.preservationChamber || itemStack.getItem() == ModItems.iceUnit) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         }
 
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         Direction frontFace = state.getValue(FACING);
@@ -123,12 +119,12 @@ public class FridgeBlock extends BaseKitchenBlock {
             if (fridge.getBaseFridge().getDoorAnimator().isForcedOpen()) {
                 itemStack = fridge.insertItemStacked(itemStack, false);
                 player.setItemInHand(hand, itemStack);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
         if (Block.byItem(itemStack.getItem()) instanceof FridgeBlock && blockHitResult.getDirection() != frontFace) {
-            return ItemInteractionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);
@@ -173,20 +169,20 @@ public class FridgeBlock extends BaseKitchenBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-        BlockPos posBelow = currentPos.below();
-        BlockState stateBelow = world.getBlockState(posBelow);
-        BlockPos posAbove = currentPos.above();
-        BlockState stateAbove = world.getBlockState(posAbove);
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource randomSource) {
+        BlockPos posBelow = pos.below();
+        BlockState stateBelow = level.getBlockState(posBelow);
+        BlockPos posAbove = pos.above();
+        BlockState stateAbove = level.getBlockState(posAbove);
         if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.SMALL) {
-            world.setBlock(posBelow, stateBelow.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER).setValue(FACING, state.getValue(FACING)), 3);
+            // TODO can't set anymore from updateShape level.setBlock(posBelow, stateBelow.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER).setValue(FACING, state.getValue(FACING)), 3);
             return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER);
         } else if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.SMALL) {
-            world.setBlock(posAbove, stateAbove.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER).setValue(FACING, state.getValue(FACING)), 3);
+            // TODO can't set anymore from updateShape level.setBlock(posAbove, stateAbove.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER).setValue(FACING, state.getValue(FACING)), 3);
             return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER);
         }
 
-        return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+        return super.updateShape(state, level, scheduledTickAccess, pos, facing, facingPos, facingState, randomSource);
     }
 
     @Override

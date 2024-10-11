@@ -45,6 +45,10 @@ public class CookingForBlockheadsAPI {
         internalMethods.registerKitchenRecipeHandler(recipeClass, kitchenRecipeHandler);
     }
 
+    public static <C extends RecipeInput, T extends Recipe<C>> KitchenRecipeHandler<T> getKitchenRecipeHandler(T recipe) {
+        return internalMethods.getKitchenRecipeHandler(recipe);
+    }
+
     public static void addSortButton(ISortButton button) {
         internalMethods.addSortButton(button);
     }

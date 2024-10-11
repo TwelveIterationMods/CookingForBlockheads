@@ -449,7 +449,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var matrix = NonNullList.withSize(9, Ingredient.EMPTY);
         final var missingMatrix = new boolean[9];
         final var ingredientIndexMatrix = new int[9];
-        final var recipeTypeHandler = CookingForBlockheadsRegistry.getRecipeWorkshopHandler(recipe);
+        final var recipeTypeHandler = CookingForBlockheadsRegistry.getKitchenRecipeHandler(recipe);
         if (recipeTypeHandler != null) {
             for (int i = 0; i < ingredients.size(); i++) {
                 final var ingredient = ingredients.get(i);

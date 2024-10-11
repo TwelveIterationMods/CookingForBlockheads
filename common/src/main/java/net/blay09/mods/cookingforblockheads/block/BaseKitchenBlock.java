@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -34,7 +33,7 @@ import java.util.List;
 
 public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
     public static final BooleanProperty HAS_COLOR = BooleanProperty.create("has_color");
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);

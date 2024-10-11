@@ -2,14 +2,16 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
+import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -21,18 +23,18 @@ import java.util.*;
 
 public class CraftingOperation {
 
-    public record IngredientTokenKey(int providerIndex, IntList stackingIds) {
+    public record IngredientTokenKey(int providerIndex, List<Holder<Item>> items) {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             IngredientTokenKey that = (IngredientTokenKey) o;
-            return providerIndex == that.providerIndex && Objects.equals(stackingIds, that.stackingIds);
+            return providerIndex == that.providerIndex && Objects.equals(items, that.items);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(providerIndex, stackingIds);
+            return Objects.hash(providerIndex, items);
         }
     }
 
@@ -62,7 +64,8 @@ public class CraftingOperation {
         missingIngredients.clear();
         missingIngredientsMask = 0;
 
-        final var ingredients = recipe.getIngredients();
+        final var recipeMapper = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe);
+        final var ingredients = recipeMapper.getIngredients(recipe);
         for (int i = 0; i < ingredients.size(); i++) {
             final var ingredient = ingredients.get(i);
             if (ingredient.isEmpty()) {
@@ -113,7 +116,7 @@ public class CraftingOperation {
 
     @Nullable
     private IngredientToken accountForIngredient(int itemProviderIndex, KitchenItemProvider itemProvider, Ingredient ingredient, ItemStack lockedInput, boolean useCache) {
-        final var ingredientTokenKey = new IngredientTokenKey(itemProviderIndex, ingredient.getStackingIds());
+        final var ingredientTokenKey = new IngredientTokenKey(itemProviderIndex, ingredient.items());
         final var scopedIngredientTokens = tokensByIngredient.get(ingredientTokenKey);
         final var cacheHint = useCache ? context.getCacheHintFor(ingredientTokenKey) : CacheHint.NONE;
         final var ingredientToken = findIngredient(itemProvider, ingredient, lockedInput, scopedIngredientTokens, cacheHint);
@@ -146,7 +149,7 @@ public class CraftingOperation {
     }
 
     private <C extends RecipeInput, T extends Recipe<C>> ItemStack craft(AbstractContainerMenu menu, RegistryAccess registryAccess, T recipe) {
-        final var recipeTypeHandler = CookingForBlockheadsRegistry.getRecipeWorkshopHandler(recipe);
+        final var recipeTypeHandler = CookingForBlockheadsRegistry.getKitchenRecipeHandler(recipe);
         if (recipeTypeHandler == null) {
             return ItemStack.EMPTY;
         }

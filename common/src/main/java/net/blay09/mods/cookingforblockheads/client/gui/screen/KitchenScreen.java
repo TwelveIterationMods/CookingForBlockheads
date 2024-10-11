@@ -17,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -206,8 +207,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             menu.setScrollOffsetDirty(false);
         }
 
-        guiGraphics.setColor(1f, 1f, 1f, 1f);
-        guiGraphics.blit(guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10);
+        guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1,
@@ -243,15 +243,15 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 curY += font.lineHeight + 5;
             }
         } else if (selection.recipe(Minecraft.getInstance().player).value().getType() == RecipeType.SMELTING) {
-            guiGraphics.blit(guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54);
+            guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
         } else {
-            guiGraphics.blit(guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54);
+            guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);
         }
 
         if (selection != null) {
             for (CraftMatrixFakeSlot slot : menu.getMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-                    guiGraphics.blit(guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16);
+                    guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16, 256, 256);
                 }
             }
         }
@@ -270,7 +270,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.setColor(1f, 1f, 1f, 1f);
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
             var poseStack = guiGraphics.pose();
             poseStack.pushPose();
@@ -278,12 +277,12 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             for (Slot slot : menu.slots) {
                 if (slot instanceof CraftableListingFakeSlot fakeSlot) {
                     if (slot.getItem().is(ModItemTags.INGREDIENTS)) {
-                        guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 76, 16, 16);
+                        guiGraphics.blit(RenderType::guiTextured, guiTexture, slot.x, slot.y, 176, 76, 16, 16, 256, 256);
                     }
 
                     final var recipe = fakeSlot.getCraftable();
                     if (recipe != null && recipe.isMissingUtensils()) {
-                        guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 92, 16, 16);
+                        guiGraphics.blit(RenderType::guiTextured, guiTexture, slot.x, slot.y, 176, 92, 16, 16, 256, 256);
                     }
                 }
             }
