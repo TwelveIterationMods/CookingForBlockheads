@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ItemPreservationChamber extends Item {
 
-    public ItemPreservationChamber() {
-        super(new Item.Properties());
+    public ItemPreservationChamber(Item.Properties properties) {
+        super(properties);
     }
 
     @Override

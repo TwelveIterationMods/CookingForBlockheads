@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ItemHeatingUnit extends Item {
 
-    public ItemHeatingUnit() {
-        super(new Item.Properties());
+    public ItemHeatingUnit(Item.Properties properties) {
+        super(properties);
     }
 
     @Override

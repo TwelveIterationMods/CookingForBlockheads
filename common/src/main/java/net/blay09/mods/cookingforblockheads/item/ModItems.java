@@ -5,6 +5,8 @@ import net.blay09.mods.balm.api.item.BalmItems;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -28,12 +30,12 @@ public class ModItems {
     public static Item preservationChamber;
 
     public static void initialize(BalmItems items) {
-        items.registerItem(() -> recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE), id("recipe_book"));
-        items.registerItem(() -> noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NO_FILTER), id("no_filter_edition"));
-        items.registerItem(() -> craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING), id("crafting_book"));
-        items.registerItem(() -> heatingUnit = new ItemHeatingUnit(), id("heating_unit"));
-        items.registerItem(() -> iceUnit = new ItemIceUnit(), id("ice_unit"));
-        items.registerItem(() -> preservationChamber = new ItemPreservationChamber(), id("preservation_chamber"));
+        items.registerItem((identifier) -> recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE, itemProperties(identifier)), id("recipe_book"));
+        items.registerItem((identifier) -> noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NO_FILTER, itemProperties(identifier)), id("no_filter_edition"));
+        items.registerItem((identifier) -> craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING, itemProperties(identifier)), id("crafting_book"));
+        items.registerItem((identifier) -> heatingUnit = new ItemHeatingUnit(itemProperties(identifier)), id("heating_unit"));
+        items.registerItem((identifier) -> iceUnit = new ItemIceUnit(itemProperties(identifier)), id("ice_unit"));
+        items.registerItem((identifier) -> preservationChamber = new ItemPreservationChamber(itemProperties(identifier)), id("preservation_chamber"));
 
         creativeModeTab = items.registerCreativeModeTab(() -> new ItemStack(ModBlocks.cowJar), id("cookingforblockheads"));
         items.setCreativeModeTabSorting(id("cookingforblockheads"), new Comparator<>() {
@@ -114,6 +116,14 @@ public class ModItems {
                 return name1.compareTo(name2);
             }
         });
+    }
+
+    private static Item.Properties itemProperties(ResourceLocation identifier) {
+        return new Item.Properties().setId(itemId(identifier));
+    }
+
+    private static ResourceKey<Item> itemId(ResourceLocation identifier) {
+        return ResourceKey.create(Registries.ITEM, identifier);
     }
 
     private static ResourceLocation id(String name) {

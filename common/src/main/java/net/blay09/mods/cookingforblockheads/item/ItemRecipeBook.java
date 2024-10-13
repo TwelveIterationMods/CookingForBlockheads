@@ -50,8 +50,8 @@ public class ItemRecipeBook extends Item {
 
     private final RecipeBookEdition edition;
 
-    public ItemRecipeBook(RecipeBookEdition edition) {
-        super(new Item.Properties().stacksTo(1));
+    public ItemRecipeBook(RecipeBookEdition edition, Item.Properties properties) {
+        super(properties.stacksTo(1));
         this.edition = edition;
     }
 

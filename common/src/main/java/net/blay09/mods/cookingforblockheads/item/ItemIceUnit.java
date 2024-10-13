@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ItemIceUnit extends Item {
 
-    public ItemIceUnit() {
-        super(new Item.Properties());
+    public ItemIceUnit(Item.Properties properties) {
+        super(properties);
     }
 
     @Override
