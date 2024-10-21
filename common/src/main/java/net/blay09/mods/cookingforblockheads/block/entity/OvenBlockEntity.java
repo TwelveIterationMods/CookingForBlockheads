@@ -61,7 +61,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             if (slot < 3) {
                 return !getSmeltingResult(itemStack).isEmpty();
             } else if (slot == 3) {
-                return isItemFuel(itemStack);
+                return isItemFuel(level, itemStack);
             }
             return true;
         }
@@ -198,7 +198,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
                     ItemStack fuelItem = fuelContainer.getItem(i);
                     if (!fuelItem.isEmpty()) {
                         currentItemBurnTime = furnaceBurnTime = (int) Math.max(1,
-                                (float) getBurnTime(fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
+                                (float) getBurnTime(level, fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
                             ItemStack containerItem = Balm.getHooks().getCraftingRemainingItem(fuelItem);
                             fuelItem.shrink(1);
@@ -290,10 +290,10 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         return getSmeltingResult(RecipeType.SMELTING, recipeInput);
     }
 
-    public <T extends RecipeInput> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T container) {
-        RecipeHolder<?> recipe = level.getServer().getRecipeManager().getRecipeFor(recipeType, container, this.level).orElse(null);
+    public <T extends RecipeInput> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T recipeInput) {
+        final var recipe = level.getServer().getRecipeManager().getRecipeFor(recipeType, recipeInput, level).orElse(null);
         if (recipe != null) {
-            final var result = recipe.value().assemble(level.registryAccess());
+            final var result = recipe.value().assemble(recipeInput, level.registryAccess());
             if (!result.isEmpty() && result.has(DataComponents.FOOD)) {
                 return result;
             }
@@ -302,15 +302,15 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         return ItemStack.EMPTY;
     }
 
-    public static boolean isItemFuel(ItemStack itemStack) {
+    public static boolean isItemFuel(Level level, ItemStack itemStack) {
         if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil) {
             return itemStack.is(BalmItemTags.COOKING_OIL);
         }
 
-        return getBurnTime(itemStack) > 0;
+        return getBurnTime(level, itemStack) > 0;
     }
 
-    protected static int getBurnTime(ItemStack itemStack) {
+    protected static int getBurnTime(Level level, ItemStack itemStack) {
         if (itemStack.isEmpty()) {
             return 0;
         }
@@ -319,7 +319,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             return 800;
         }
 
-        return Balm.getHooks().getBurnTime(itemStack);
+        return Balm.getHooks().getBurnTime(level, itemStack);
     }
 
     private boolean shouldConsumeFuel() {

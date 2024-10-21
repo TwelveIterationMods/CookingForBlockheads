@@ -26,7 +26,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
             addSlot(new Slot(container, i, 84 + i * 18 + offsetX, 19));
         }
 
-        addSlot(new SlotOvenFuel(container, 3, 61 + offsetX, 59));
+        addSlot(new SlotOvenFuel(this, container, 3, 61 + offsetX, 59));
 
         for (int i = 0; i < 3; i++) {
             addSlot(new OvenResultSlot(playerInventory.player, oven, container, i + 4, 142 + offsetX, 41 + i * 18));
@@ -88,7 +88,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
                 slot.onQuickCraft(slotStack, itemStack);
             } else if (slotIndex >= 20) {
                 ItemStack smeltingResult = oven.getSmeltingResult(slotStack);
-                if (OvenBlockEntity.isItemFuel(slotStack)) {
+                if (isFuel(slotStack)) {
                     if (!moveItemStackTo(slotStack, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -131,5 +131,9 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
     @Override
     public boolean isTileEntity(BlockEntity blockEntity) {
         return this.oven == blockEntity;
+    }
+
+    public boolean isFuel(ItemStack itemStack) {
+        return OvenBlockEntity.isItemFuel(oven.getLevel(), itemStack);
     }
 }
