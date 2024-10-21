@@ -35,23 +35,23 @@ public class OvenRecipe implements Recipe<SingleRecipeInput> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int i, int i1) {
-        return true;
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return resultItem;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<OvenRecipe> getSerializer() {
         return ModRecipes.ovenRecipeSerializer;
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<OvenRecipe> getType() {
         return ModRecipes.ovenRecipeType;
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.create(ingredient);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return ModRecipes.ovenRecipeBookCategory;
     }
 
     static class Serializer implements RecipeSerializer<OvenRecipe> {

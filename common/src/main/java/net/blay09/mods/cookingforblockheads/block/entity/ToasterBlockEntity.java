@@ -13,6 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
@@ -153,19 +154,13 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     private ItemStack toastItem(ItemStack itemStack) {
-        // TODO fire a toaster event so addons can add custom handling
         final var recipeInput = new SingleRecipeInput(itemStack);
-        final var toastRecipes = level.getRecipeManager().getRecipesFor(ModRecipes.toasterRecipeType, recipeInput, level);
-        for (final var toastRecipe : toastRecipes) {
-            final var assembled = toastRecipe.value().assemble(recipeInput, level.registryAccess());
-            if (!assembled.isEmpty()) {
-                return assembled;
-            }
-        }
-        if (itemStack.is(Items.BREAD)) {
-            return toastBread(itemStack);
+        final var toastRecipe = level.getServer().getRecipeManager().getRecipeFor(ModRecipes.toasterRecipeType, recipeInput, level);
+        final var outputItem = toastRecipe.map(recipeHolder -> recipeHolder.value().assemble(recipeInput, level.registryAccess())).orElse(itemStack);
+        if (outputItem.is(Items.BREAD)) {
+            return toastBread(outputItem);
         } else {
-            return itemStack;
+            return outputItem;
         }
     }
 
@@ -188,8 +183,12 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     public boolean canToast(ItemStack itemStack) {
-        // TODO not sure how to best do this one with the toaster event
-        return level.getRecipeManager()
+        final var server = level.getServer();
+        if (server == null) {
+            return false;
+        }
+
+        return server.getRecipeManager()
                 .getRecipeFor(ModRecipes.toasterRecipeType, new SingleRecipeInput(itemStack), level)
                 .map(it -> true)
                 .orElseGet(() -> itemStack.is(Items.BREAD));

@@ -67,18 +67,18 @@ public class CraftingOperation {
         final var recipeMapper = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe);
         final var ingredients = recipeMapper.getIngredients(recipe);
         for (int i = 0; i < ingredients.size(); i++) {
-            final var ingredient = ingredients.get(i);
-            if (ingredient.isEmpty()) {
+            if (ingredients.get(i).isEmpty()) {
                 ingredientTokens.add(IngredientToken.EMPTY);
                 continue;
             }
 
+            final var ingredient = ingredients.get(i).get();
             final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
-                if (ingredient.getItems().length > 1) {
+                if (ingredient.items().size() > 1) {
                     if (lockedInputs == null) {
-                        lockedInputs = NonNullList.withSize(recipe.getIngredients().size(), ItemStack.EMPTY);
+                        lockedInputs = NonNullList.withSize(ingredients.size(), ItemStack.EMPTY);
                     }
                     lockedInputs.set(i, ingredientToken.peek());
                 }

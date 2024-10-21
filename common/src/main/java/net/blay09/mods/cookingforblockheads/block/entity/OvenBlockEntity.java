@@ -291,9 +291,9 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     public <T extends RecipeInput> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T container) {
-        RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(recipeType, container, this.level).orElse(null);
+        RecipeHolder<?> recipe = level.getServer().getRecipeManager().getRecipeFor(recipeType, container, this.level).orElse(null);
         if (recipe != null) {
-            final var result = recipe.value().getResultItem(level.registryAccess());
+            final var result = recipe.value().assemble(level.registryAccess());
             if (!result.isEmpty() && result.has(DataComponents.FOOD)) {
                 return result;
             }

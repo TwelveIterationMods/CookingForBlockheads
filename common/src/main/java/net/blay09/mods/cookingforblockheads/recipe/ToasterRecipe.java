@@ -35,23 +35,23 @@ public class ToasterRecipe implements Recipe<SingleRecipeInput> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int i, int i1) {
-        return true;
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return resultItem;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<ToasterRecipe> getSerializer() {
         return ModRecipes.toasterRecipeSerializer;
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<ToasterRecipe> getType() {
         return ModRecipes.toasterRecipeType;
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.create(ingredient);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return ModRecipes.toasterRecipeBookCategory;
     }
 
     static class Serializer implements RecipeSerializer<ToasterRecipe> {

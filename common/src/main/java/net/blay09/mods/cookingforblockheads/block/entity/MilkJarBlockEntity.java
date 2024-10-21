@@ -49,8 +49,8 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
     private record MilkJarItemProvider(MilkJarBlockEntity milkJar) implements KitchenItemProvider {
         @Override
         public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
-            for (final var itemStack : ingredient.getItems()) {
-                final var found = findIngredient(itemStack, ingredientTokens, cacheHint);
+            for (final var item : ingredient.items()) {
+                final var found = findIngredient(new ItemStack(item), ingredientTokens, cacheHint);
                 if (found != null) {
                     return found;
                 }

@@ -2,129 +2,117 @@ package net.blay09.mods.cookingforblockheads.menu;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
 
-public class CuttingBoardMenu extends RecipeBookMenu {
-    private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 3, 3);
-    private final ResultContainer resultSlots = new ResultContainer();
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class CuttingBoardMenu extends AbstractCraftingMenu {
+    private static final int CRAFTING_GRID_WIDTH = 3;
+    private static final int CRAFTING_GRID_HEIGHT = 3;
+    public static final int RESULT_SLOT = 0;
+    private static final int CRAFT_SLOT_START = 1;
+    private static final int CRAFT_SLOT_END = 10;
+    private static final int INV_SLOT_START = 10;
+    private static final int INV_SLOT_END = 37;
+    private static final int USE_ROW_SLOT_START = 37;
+    private static final int USE_ROW_SLOT_END = 46;
+
     private final ContainerLevelAccess access;
     private final Player player;
+    private boolean placingRecipe;
 
-    public CuttingBoardMenu(int windowId, Inventory inventory) {
-        this(windowId, inventory, ContainerLevelAccess.NULL);
-    }
-
-    public CuttingBoardMenu(int windowId, Inventory inventory, ContainerLevelAccess access) {
-        super(MenuType.CRAFTING, windowId);
+    public CuttingBoardMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
+        super(ModMenus.cuttingBoard.get(), containerId, CRAFTING_GRID_WIDTH, CRAFTING_GRID_HEIGHT);
         this.access = access;
         this.player = inventory.player;
-        addSlot(new ResultSlot(inventory.player, craftSlots, resultSlots, 0, 124, 35));
-
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                addSlot(new Slot(craftSlots, y + x * 3, 30 + y * 18, 17 + x * 18));
-            }
-        }
-
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 9; y++) {
-                addSlot(new Slot(inventory, y + x * 9 + 9, 8 + y * 18, 84 + x * 18));
-            }
-        }
-
-        for (int i = 0; i < 9; i++) {
-            addSlot(new Slot(inventory, i, 8 + i * 18, 142));
-        }
+        addResultSlot(player, 124, 35);
+        addCraftingGridSlots(30, 17);
+        addStandardInventorySlots(inventory, 8, 84);
     }
 
-    protected static void slotChangedCraftingGrid(AbstractContainerMenu menu, Level level, Player player, CraftingContainer craftingContainer, ResultContainer resultContainer) {
-        if (!level.isClientSide) {
-            final var recipeInput = craftingContainer.asCraftInput();
-            final var serverPlayer = (ServerPlayer) player;
-            var itemStack = ItemStack.EMPTY;
-            final var optionalRecipe = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, recipeInput, level);
-            if (optionalRecipe.isPresent()) {
-                final var recipeHolder = optionalRecipe.get();
-                final var recipe = recipeHolder.value();
-                if (resultContainer.setRecipeUsed(serverPlayer, recipeHolder)) {
-                    final var assembledStack = recipe.assemble(recipeInput, level.registryAccess());
-                    if (assembledStack.isItemEnabled(level.enabledFeatures())) {
-                        itemStack = assembledStack;
-                    }
+    protected static void slotChangedCraftingGrid(AbstractContainerMenu menu, ServerLevel level, Player player, CraftingContainer craftingContainer, ResultContainer resultContainer, @Nullable RecipeHolder<CraftingRecipe> recipeHolder) {
+        final var craftInput = craftingContainer.asCraftInput();
+        final var serverPlayer = (ServerPlayer) player;
+        var resultStack = ItemStack.EMPTY;
+        final var foundRecipe = level.getServer()
+                .getRecipeManager()
+                .getRecipeFor(RecipeType.CRAFTING, craftInput, level, recipeHolder);
+        if (foundRecipe.isPresent()) {
+            final var foundRecipeHolder = foundRecipe.get();
+            final var craftingRecipe = foundRecipeHolder.value();
+            if (resultContainer.setRecipeUsed(serverPlayer, foundRecipeHolder)) {
+                final var assembledStack = craftingRecipe.assemble(craftInput, level.registryAccess());
+                if (assembledStack.isItemEnabled(level.enabledFeatures())) {
+                    resultStack = assembledStack;
                 }
             }
+        }
 
-            resultContainer.setItem(0, itemStack);
-            menu.setRemoteSlot(0, itemStack);
-            serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(menu.containerId, menu.incrementStateId(), 0, itemStack));
+        resultContainer.setItem(0, resultStack);
+        menu.setRemoteSlot(RESULT_SLOT, resultStack);
+        serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(menu.containerId, menu.incrementStateId(), RESULT_SLOT, resultStack));
+    }
+
+    public void slotsChanged(Container container) {
+        if (!placingRecipe) {
+            access.execute((level, pos) -> {
+                if (level instanceof ServerLevel serverlevel) {
+                    slotChangedCraftingGrid(this, serverlevel, player, craftSlots, resultSlots, null);
+                }
+            });
         }
     }
 
-    @Override
-    public void slotsChanged(Container container) {
-        access.execute((level, pos) -> slotChangedCraftingGrid(this, level, player, craftSlots, resultSlots));
+    public void beginPlacingRecipe() {
+        this.placingRecipe = true;
     }
 
-    @Override
-    public void fillCraftSlotsStackedContents(StackedContents stackedContents) {
-        craftSlots.fillStackedContents(stackedContents);
+    public void finishPlacingRecipe(ServerLevel level, RecipeHolder<CraftingRecipe> recipeHolder) {
+        this.placingRecipe = false;
+        slotChangedCraftingGrid(this, level, player, craftSlots, resultSlots, recipeHolder);
     }
 
-    @Override
-    public void clearCraftingContent() {
-        craftSlots.clearContent();
-        resultSlots.clearContent();
-    }
-
-    @Override
-    public boolean recipeMatches(RecipeHolder<CraftingRecipe> recipe) {
-        return recipe.value().matches(craftSlots.asCraftInput(), player.level());
-    }
-
-    @Override
     public void removed(Player player) {
         super.removed(player);
-        access.execute((level, pos) -> clearContainer(player, craftSlots));
+        this.access.execute((level, pos) -> clearContainer(player, craftSlots));
     }
 
-    @Override
     public boolean stillValid(Player player) {
         return stillValid(access, player, ModBlocks.cuttingBoard);
     }
 
-    @Override
-    public ItemStack quickMoveStack(Player player, int slotId) {
-        var itemStack = ItemStack.EMPTY;
-        final var slot = slots.get(slotId);
+    public ItemStack quickMoveStack(Player player, int index) {
+        var itemstack = ItemStack.EMPTY;
+        final var slot = slots.get(index);
         if (slot != null && slot.hasItem()) {
             final var slotStack = slot.getItem();
-            itemStack = slotStack.copy();
-            if (slotId == 0) {
-                this.access.execute(($$2x, $$3x) -> slotStack.getItem().onCraftedBy(slotStack, $$2x, player));
-                if (!moveItemStackTo(slotStack, 10, 46, true)) {
+            itemstack = slotStack.copy();
+            if (index == RESULT_SLOT) {
+                access.execute((level, pos) -> slotStack.getItem().onCraftedBy(slotStack, level, player));
+                if (!moveItemStackTo(slotStack, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }
 
-                slot.onQuickCraft(slotStack, itemStack);
-            } else if (slotId >= 10 && slotId < 46) {
-                if (!moveItemStackTo(slotStack, 1, 10, false)) {
-                    if (slotId < 37) {
-                        if (!moveItemStackTo(slotStack, 37, 46, false)) {
+                slot.onQuickCraft(slotStack, itemstack);
+            } else if (index >= INV_SLOT_START && index < USE_ROW_SLOT_END) {
+                if (!moveItemStackTo(slotStack, CRAFT_SLOT_START, CRAFT_SLOT_END, false)) {
+                    if (index < INV_SLOT_END) {
+                        if (!moveItemStackTo(slotStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (!moveItemStackTo(slotStack, 10, 37, false)) {
+                    } else if (!moveItemStackTo(slotStack, INV_SLOT_START, INV_SLOT_END, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
-            } else if (!moveItemStackTo(slotStack, 10, 46, false)) {
+            } else if (!moveItemStackTo(slotStack, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -134,51 +122,37 @@ public class CuttingBoardMenu extends RecipeBookMenu {
                 slot.setChanged();
             }
 
-            if (slotStack.getCount() == itemStack.getCount()) {
+            if (slotStack.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
             }
 
             slot.onTake(player, slotStack);
-            if (slotId == 0) {
+            if (index == RESULT_SLOT) {
                 player.drop(slotStack, false);
             }
         }
 
-        return itemStack;
+        return itemstack;
     }
 
-    @Override
     public boolean canTakeItemForPickAll(ItemStack itemStack, Slot slot) {
         return slot.container != resultSlots && super.canTakeItemForPickAll(itemStack, slot);
     }
 
-    @Override
-    public int getResultSlotIndex() {
-        return 0;
+    public Slot getResultSlot() {
+        //noinspection SequencedCollectionMethodCanBeUsed
+        return this.slots.get(RESULT_SLOT);
     }
 
-    @Override
-    public int getGridWidth() {
-        return craftSlots.getWidth();
+    public List<Slot> getInputGridSlots() {
+        return this.slots.subList(CRAFT_SLOT_START, CRAFT_SLOT_END);
     }
 
-    @Override
-    public int getGridHeight() {
-        return craftSlots.getHeight();
-    }
-
-    @Override
-    public int getSize() {
-        return 10;
-    }
-
-    @Override
     public RecipeBookType getRecipeBookType() {
         return RecipeBookType.CRAFTING;
     }
 
-    @Override
-    public boolean shouldMoveToInventory(int slot) {
-        return slot != getResultSlotIndex();
+    protected Player owner() {
+        return this.player;
     }
 }
