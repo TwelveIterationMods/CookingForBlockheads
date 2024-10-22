@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.display.RecipeDisplayId;
 import org.jetbrains.annotations.Nullable;
 
 public class CraftRecipeMessage implements CustomPacketPayload {
@@ -17,20 +18,20 @@ public class CraftRecipeMessage implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<CraftRecipeMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "craft_recipe"));
 
-    private final ResourceLocation recipeId;
+    private final RecipeDisplayId recipeDisplayId;
     private final NonNullList<ItemStack> lockedInputs;
     private final boolean craftFullStack;
     private final boolean addToInventory;
 
-    public CraftRecipeMessage(ResourceLocation recipeId, @Nullable NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
-        this.recipeId = recipeId;
+    public CraftRecipeMessage(RecipeDisplayId recipeDisplayId, @Nullable NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
+        this.recipeDisplayId = recipeDisplayId;
         this.lockedInputs = lockedInputs;
         this.craftFullStack = craftFullStack;
         this.addToInventory = addToInventory;
     }
 
     public static void encode(RegistryFriendlyByteBuf buf, CraftRecipeMessage message) {
-        buf.writeResourceLocation(message.recipeId);
+        RecipeDisplayId.STREAM_CODEC.encode(buf, message.recipeDisplayId);
         if (message.lockedInputs != null) {
             buf.writeByte(message.lockedInputs.size());
             for (ItemStack itemstack : message.lockedInputs) {
@@ -45,7 +46,7 @@ public class CraftRecipeMessage implements CustomPacketPayload {
     }
 
     public static CraftRecipeMessage decode(RegistryFriendlyByteBuf buf) {
-        final var recipeId = buf.readResourceLocation();
+        final var recipeDisplayId = RecipeDisplayId.STREAM_CODEC.decode(buf);
         final var lockedInputsCount = buf.readByte();
         NonNullList<ItemStack> lockedInputs = NonNullList.createWithCapacity(lockedInputsCount);
         for (int i = 0; i < lockedInputsCount; i++) {
@@ -53,13 +54,13 @@ public class CraftRecipeMessage implements CustomPacketPayload {
         }
         final var craftFullStack = buf.readBoolean();
         final var addToInventory = buf.readBoolean();
-        return new CraftRecipeMessage(recipeId, lockedInputs, craftFullStack, addToInventory);
+        return new CraftRecipeMessage(recipeDisplayId, lockedInputs, craftFullStack, addToInventory);
     }
 
     public static void handle(ServerPlayer player, CraftRecipeMessage message) {
         AbstractContainerMenu container = player.containerMenu;
         if (container instanceof KitchenMenu kitchenMenu) {
-            kitchenMenu.craft(message.recipeId, message.lockedInputs, message.craftFullStack, message.addToInventory);
+            kitchenMenu.craft(message.recipeDisplayId, message.lockedInputs, message.craftFullStack, message.addToInventory);
         }
     }
 

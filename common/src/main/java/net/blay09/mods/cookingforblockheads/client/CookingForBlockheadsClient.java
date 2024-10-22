@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 
 public class CookingForBlockheadsClient {
     public static void initialize() {
@@ -39,10 +40,10 @@ public class CookingForBlockheadsClient {
                     return;
                 }
 
-                final var selectedRecipe = selectedRecipeWithStatus.recipe(player).value();
+                final var selectedRecipeDisplay = selectedRecipeWithStatus.recipeDisplayEntry().display();
 
                 if (menu.isSelectedSlot(listingSlot) && kitchen.canProcess(RecipeType.CRAFTING)) {
-                    if (selectedRecipe.getType() == RecipeType.SMELTING) {
+                    if (selectedRecipeDisplay instanceof FurnaceRecipeDisplay) {
                         if (!kitchen.canProcess(RecipeType.SMELTING)) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
                         } else {

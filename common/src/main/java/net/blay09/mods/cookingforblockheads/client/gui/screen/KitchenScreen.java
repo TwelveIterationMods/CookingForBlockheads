@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -242,7 +243,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 guiGraphics.drawString(font, s, leftPos + 23 + 27 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
                 curY += font.lineHeight + 5;
             }
-        } else if (selection.recipe(Minecraft.getInstance().player).value().getType() == RecipeType.SMELTING) {
+        } else if (selection.recipeDisplayEntry().display() instanceof FurnaceRecipeDisplay) {
             guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
         } else {
             guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);

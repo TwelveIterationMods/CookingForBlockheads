@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.mixin;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,4 +13,7 @@ import java.util.Optional;
 public interface ShapelessRecipeAccessor {
     @Accessor
     List<Optional<Ingredient>> getIngredients();
+
+    @Accessor
+    ItemStack getResult();
 }

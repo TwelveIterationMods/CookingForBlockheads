@@ -3,26 +3,19 @@ package net.blay09.mods.cookingforblockheads.crafting;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.RecipeDisplayEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, List<Ingredient> missingIngredients,
+public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingredient> missingIngredients,
                                int missingIngredientsMask, NonNullList<ItemStack> lockedInputs) {
 
-    public RecipeHolder<?> recipe(Player player) {
-        return player.level().getRecipeManager().byKey(recipeId).orElse(null);
-    }
-
     public void toNetwork(RegistryFriendlyByteBuf buf) {
-        buf.writeResourceLocation(recipeId);
-        ItemStack.STREAM_CODEC.encode(buf, resultItem);
+        RecipeDisplayEntry.STREAM_CODEC.encode(buf, recipeDisplayEntry);
         buf.writeInt(missingIngredientsMask);
         buf.writeInt(missingIngredients.size());
         for (final var ingredient : missingIngredients) {
@@ -39,8 +32,7 @@ public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, 
     }
 
     public static RecipeWithStatus fromNetwork(RegistryFriendlyByteBuf buf) {
-        final var recipeId = buf.readResourceLocation();
-        final var resultItem = ItemStack.STREAM_CODEC.decode(buf);
+        final var recipeDisplayEntry = RecipeDisplayEntry.STREAM_CODEC.decode(buf);
         final var missingIngredientsMask = buf.readInt();
         final var missingIngredientCount = buf.readInt();
         final var missingIngredients = new ArrayList<Ingredient>(missingIngredientCount);
@@ -52,7 +44,7 @@ public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, 
         for (int j = 0; j < lockedInputCount; j++) {
             lockedInputs.set(j, ItemStack.OPTIONAL_STREAM_CODEC.decode(buf));
         }
-        return new RecipeWithStatus(recipeId, resultItem, missingIngredients, missingIngredientsMask, lockedInputs);
+        return new RecipeWithStatus(recipeDisplayEntry, missingIngredients, missingIngredientsMask, lockedInputs);
     }
 
     public static RecipeWithStatus best(@Nullable RecipeWithStatus first, @Nullable RecipeWithStatus second) {

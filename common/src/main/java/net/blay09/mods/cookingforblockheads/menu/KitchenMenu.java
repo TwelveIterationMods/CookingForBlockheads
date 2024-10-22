@@ -28,6 +28,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.display.RecipeDisplayId;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -230,10 +231,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private void requestCraft(boolean craftFullStack, boolean addToInventory) {
         final var selectedRecipe = getSelectedRecipe();
         if (selectedRecipe != null) {
-            final var recipe = selectedRecipe.recipe(player);
-            if (kitchen.canProcess(recipe.value().getType())) {
-                Balm.getNetworking().sendToServer(new CraftRecipeMessage(recipe.id(), lockedInputs, craftFullStack, addToInventory));
-            }
+            Balm.getNetworking().sendToServer(new CraftRecipeMessage(selectedRecipe.recipeDisplayEntry().id(), lockedInputs, craftFullStack, addToInventory));
         }
     }
 
@@ -295,18 +293,16 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void broadcastRecipesForResultItem(ItemStack resultItem) {
         final List<RecipeWithStatus> result = new ArrayList<>();
+        final var recipeManager = player.getServer().getRecipeManager();
 
         final var context = new CraftingContext(kitchen, player);
         final var recipesForResult = getRecipesFor(resultItem);
         for (final var recipe : recipesForResult) {
-            final var recipeResultItem = recipe.value().getResultItem(player.level().registryAccess());
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
-
-            result.add(new RecipeWithStatus(recipe.id(),
-                    recipeResultItem,
+            recipeManager.listDisplaysForRecipe(recipe.id(), recipeDisplayEntry -> result.add(new RecipeWithStatus(recipeDisplayEntry,
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
-                    operation.getLockedInputs()));
+                    operation.getLockedInputs())));
         }
 
         result.sort(currentSorting);
@@ -314,16 +310,16 @@ public class KitchenMenu extends AbstractContainerMenu {
         Balm.getNetworking().sendTo(player, new SelectionRecipesListMessage(result));
     }
 
-    public void craft(ResourceLocation recipeId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
+    public void craft(RecipeDisplayId recipeDisplayId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
         final var level = player.level();
-        final var recipe = (RecipeHolder<Recipe<?>>) level.getRecipeManager().byKey(recipeId).orElse(null);
+        final var recipe = (RecipeHolder<Recipe<?>>) level.getServer().getRecipeManager().getRecipeFromDisplay(recipeDisplayId).parent();
         if (recipe == null) {
-            CookingForBlockheads.logger.error("Received invalid recipe from client: {}", recipeId);
+            CookingForBlockheads.logger.error("Received invalid recipe from client: {}", recipeDisplayId);
             return;
         }
 
         if (!kitchen.canProcess(recipe.value().getType())) {
-            CookingForBlockheads.logger.error("Received invalid craft request, unprocessable recipe {}", recipeId);
+            CookingForBlockheads.logger.error("Received invalid craft request, unprocessable recipe {}", recipeDisplayId);
             return;
         }
 
@@ -331,7 +327,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         if (craftable == null) {
             craftable = this.recipesForSelection.stream().filter(it -> it.recipe(player) == recipe).findAny().orElse(null);
             if (craftable == null) {
-                CookingForBlockheads.logger.error("Received invalid craft request, unknown recipe {}", recipeId);
+                CookingForBlockheads.logger.error("Received invalid craft request, unknown recipe {}", recipeDisplayId);
                 return;
             }
         }
@@ -417,7 +413,8 @@ public class KitchenMenu extends AbstractContainerMenu {
         for (final var slot : recipeListingSlots) {
             if (i < filteredCraftables.size()) {
                 final var craftable = filteredCraftables.get(i);
-                if (craftable != null && selectedCraftable != null && ItemStack.isSameItemSameComponents(selectedCraftable.resultItem(), craftable.resultItem())) {
+                if (craftable != null && selectedCraftable != null && ItemStack.isSameItemSameComponents(selectedCraftable.resultItem(),
+                        craftable.resultItem())) {
                     final var selectedRecipe = getSelectedRecipe();
                     slot.setCraftable(selectedRecipe != null ? selectedRecipe : craftable);
                 } else {

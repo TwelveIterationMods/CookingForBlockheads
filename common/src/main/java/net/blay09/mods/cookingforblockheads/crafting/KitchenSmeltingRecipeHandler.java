@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
+import net.blay09.mods.cookingforblockheads.mixin.SingleItemRecipeAccessor;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -31,5 +32,10 @@ public class KitchenSmeltingRecipeHandler implements KitchenRecipeHandler<Smelti
         }
 
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack predictResultItem(SmeltingRecipe recipe) {
+        return ((SingleItemRecipeAccessor) recipe).getResult();
     }
 }

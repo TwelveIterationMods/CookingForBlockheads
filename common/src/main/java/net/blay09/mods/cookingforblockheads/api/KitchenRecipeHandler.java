@@ -15,5 +15,7 @@ public interface KitchenRecipeHandler<T extends Recipe<?>> {
 
     List<Optional<Ingredient>> getIngredients(T recipe);
 
+    ItemStack predictResultItem(T recipe);
+
     ItemStack assemble(CraftingContext context, T recipe, List<IngredientToken> ingredientTokens, RegistryAccess registryAccess);
 }

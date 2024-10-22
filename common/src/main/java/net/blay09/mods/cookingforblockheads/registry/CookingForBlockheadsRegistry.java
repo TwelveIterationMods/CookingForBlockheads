@@ -4,13 +4,13 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.BalmEvents;
-import net.blay09.mods.balm.api.event.client.RecipesUpdatedEvent;
 import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeGroup;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
+import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
@@ -41,12 +41,14 @@ public class CookingForBlockheadsRegistry {
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
-        for (final var recipe : recipeManager.getRecipesFor(recipeType)) {
+        final var recipeMap = ((RecipeManagerAccessor) recipeManager).getRecipes();
+        for (final var recipe : recipeMap.byType(recipeType)) {
             if (!isEligibleRecipe(recipe)) {
                 continue;
             }
 
-            final var resultItem = recipe.value().getResultItem(registryAccess);
+            final var recipeHandler = getKitchenRecipeHandler(recipe.value());
+            final var resultItem = recipeHandler.predictResultItem(recipe.value());
             if (isEligibleResultItem(resultItem)) {
                 final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
                 recipesByItemId.put(itemId, (RecipeHolder<Recipe<?>>) recipe);
@@ -78,7 +80,7 @@ public class CookingForBlockheadsRegistry {
     }
 
     private static <T extends RecipeInput> boolean isEligibleRecipe(RecipeHolder<? extends Recipe<T>> recipe) {
-        return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id());
+        return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id().location());
     }
 
     public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {
