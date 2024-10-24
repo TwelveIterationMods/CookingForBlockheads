@@ -35,7 +35,7 @@ import java.util.*;
 
 public class KitchenMenu extends AbstractContainerMenu {
 
-    private final Player player;
+    public final Player player;
     private final KitchenImpl kitchen;
 
     private final List<CraftableListingFakeSlot> recipeListingSlots = new ArrayList<>();
@@ -46,7 +46,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private final List<RecipeWithStatus> filteredCraftables = new ArrayList<>();
 
     private String currentSearch;
-    private Comparator<RecipeWithStatus> currentSorting = new ComparatorName();
+    private Comparator<RecipeWithStatus> currentSorting;
 
     private List<RecipeWithStatus> craftables = new ArrayList<>();
 
@@ -65,11 +65,13 @@ public class KitchenMenu extends AbstractContainerMenu {
         this.player = player;
         this.kitchen = kitchen;
 
+        currentSorting = new ComparatorName(player);
+
         final var fakeInventory = new DefaultContainer(4 * 3 + 3 * 3);
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
-                final var slot = new CraftableListingFakeSlot(fakeInventory, j + i * 3, 102 + j * 18, 11 + i * 18);
+                final var slot = new CraftableListingFakeSlot(this, fakeInventory, j + i * 3, 102 + j * 18, 11 + i * 18);
                 recipeListingSlots.add(slot);
                 addSlot(slot);
             }
@@ -528,8 +530,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     public boolean isSelectedSlot(CraftableListingFakeSlot slot) {
         final var selectedRecipe = getSelectedRecipe();
         final var craftable = selectedRecipe != null ? selectedRecipe : selectedCraftable;
-        return craftable != null && slot.getCraftable() != null && ItemStack.isSameItemSameComponents(slot.getCraftable().resultItem(),
-                craftable.resultItem());
+        return craftable != null && slot.getCraftable() != null && slot.getCraftable().recipeDisplayEntry().id().equals(craftable.recipeDisplayEntry().id());
     }
 
     public boolean isScrollOffsetDirty() {

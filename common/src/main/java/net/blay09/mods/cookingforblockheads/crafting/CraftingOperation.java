@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class CraftingOperation {
+public class CraftingOperation<C extends RecipeInput, T extends Recipe<C>>  {
 
     public record IngredientTokenKey(int providerIndex, List<Holder<Item>> items) {
         @Override
@@ -39,7 +39,7 @@ public class CraftingOperation {
     }
 
     private final CraftingContext context;
-    private final Recipe<?> recipe;
+    private final T recipe;
 
     private final Multimap<IngredientTokenKey, IngredientToken> tokensByIngredient = ArrayListMultimap.create();
     private final List<IngredientToken> ingredientTokens = new ArrayList<>();
@@ -48,17 +48,17 @@ public class CraftingOperation {
     private NonNullList<ItemStack> lockedInputs;
     private int missingIngredientsMask;
 
-    public CraftingOperation(final CraftingContext context, RecipeHolder<Recipe<?>> recipe) {
+    public CraftingOperation(final CraftingContext context, RecipeHolder<T> recipe) {
         this.context = context;
         this.recipe = recipe.value();
     }
 
-    public CraftingOperation withLockedInputs(@Nullable NonNullList<ItemStack> lockedInputs) {
+    public CraftingOperation<C, T> withLockedInputs(@Nullable NonNullList<ItemStack> lockedInputs) {
         this.lockedInputs = lockedInputs;
         return this;
     }
 
-    public CraftingOperation prepare() {
+    public CraftingOperation<C, T> prepare() {
         tokensByIngredient.clear();
         ingredientTokens.clear();
         missingIngredients.clear();
@@ -148,7 +148,7 @@ public class CraftingOperation {
         return craft(menu, registryAccess, recipe);
     }
 
-    private <C extends RecipeInput, T extends Recipe<C>> ItemStack craft(AbstractContainerMenu menu, RegistryAccess registryAccess, T recipe) {
+    private ItemStack craft(AbstractContainerMenu menu, RegistryAccess registryAccess, T recipe) {
         final var recipeTypeHandler = CookingForBlockheadsRegistry.getKitchenRecipeHandler(recipe);
         if (recipeTypeHandler == null) {
             return ItemStack.EMPTY;

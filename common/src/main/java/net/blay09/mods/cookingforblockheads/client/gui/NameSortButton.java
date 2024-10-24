@@ -26,7 +26,7 @@ public class NameSortButton implements ISortButton {
 
     @Override
     public Comparator<RecipeWithStatus> getComparator(Player player) {
-        return new ComparatorName();
+        return new ComparatorName(player);
     }
 
     @Override
