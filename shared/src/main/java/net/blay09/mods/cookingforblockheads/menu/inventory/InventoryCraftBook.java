@@ -77,6 +77,7 @@ public class InventoryCraftBook extends TransientCraftingContainer implements Re
 
         // Get the final result and remove ingredients
         ItemStack result = craftingRecipe.assemble(this, level.registryAccess());
+        final var remainders = craftingRecipe.getRemainingItems(this);
         if (!result.isEmpty()) {
             fireEventsAndHandleAchievements(player, result);
             for (int i = 0; i < getContainerSize(); i++) {
@@ -89,7 +90,7 @@ public class InventoryCraftBook extends TransientCraftingContainer implements Re
                             continue;
                         }
 
-                        ItemStack containerItem = Balm.getHooks().getCraftingRemainingItem(itemStack);
+                        ItemStack containerItem = remainders.get(i);
                         if (sourceItems[i].getSourceSlot() != -1) {
                             sourceProvider.resetSimulation();
                             sourceProvider.consumeSourceItem(sourceItems[i], 1, inventories, requireContainer);
