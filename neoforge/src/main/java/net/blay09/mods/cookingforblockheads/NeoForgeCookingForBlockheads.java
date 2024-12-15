@@ -25,6 +25,8 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 @Mod(CookingForBlockheads.MOD_ID)
 public class NeoForgeCookingForBlockheads {
@@ -104,6 +106,10 @@ public class NeoForgeCookingForBlockheads {
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
                 ModBlockEntities.counter.get(),
                 (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.counter.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.cabinet.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.oven.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.fridge.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
                 ModBlockEntities.sink.get(),
                 (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
