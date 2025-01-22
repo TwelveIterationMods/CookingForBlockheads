@@ -1,2 +1,1 @@
-- Fixed scrolling of ingredient choices in craft matrix (by KyleV)
-- Fixed scrolling behaviour in recipe list (by KyleV)
+- Fixed models rendering with broken textures. Consider migrating to NeoForge for a more stable experience.
