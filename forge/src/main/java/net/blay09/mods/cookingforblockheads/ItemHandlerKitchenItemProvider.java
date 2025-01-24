@@ -86,10 +86,7 @@ public class ItemHandlerKitchenItemProvider implements KitchenItemProvider {
 
         @Override
         public ItemStack consume() {
-            final var consumed = itemHandler.extractItem(slot, 1, false);
-            final var remainingItem = Balm.getHooks().getCraftingRemainingItem(consumed);
-            itemHandler.insertItem(slot, remainingItem, false);
-            return consumed;
+            return itemHandler.extractItem(slot, 1, false);
         }
 
         @Override
