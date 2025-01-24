@@ -1,3 +1,2 @@
-- Fixed recipe remainders not being respected on custom recipes (e.g. CraftTweaker .reuse())
 - Fixed Cow in a Jar recipe in JEI displaying wrong
 - Fixed items consumed from Tool Rack, Spice Rack or other containers not resulting in a visual update of the block

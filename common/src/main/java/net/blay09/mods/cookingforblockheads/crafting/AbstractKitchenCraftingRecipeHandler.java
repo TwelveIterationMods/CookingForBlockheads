@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
 import net.minecraft.core.RegistryAccess;
@@ -13,12 +14,12 @@ public abstract class AbstractKitchenCraftingRecipeHandler<T extends Recipe<Craf
     @Override
     public ItemStack assemble(CraftingContext context, T recipe, List<IngredientToken> ingredientTokens, RegistryAccess registryAccess) {
         final var craftingContainer = new TransientHeadlessCraftingContainer(3, 3);
-        final var remainingItems = recipe.getRemainingItems(craftingContainer.asCraftInput());
         for (int i = 0; i < ingredientTokens.size(); i++) {
             final var ingredientToken = ingredientTokens.get(i);
             final var matrixSlot = mapToMatrixSlot(recipe, i);
-            craftingContainer.setItem(matrixSlot, ingredientToken.consume());
-            final var remainingItem = remainingItems.get(matrixSlot);
+            final var consumedItem = ingredientToken.consume();
+            craftingContainer.setItem(matrixSlot, consumedItem);
+            final var remainingItem = Balm.getHooks().getCraftingRemainingItem(consumedItem);
             if (!remainingItem.isEmpty()) {
                 ingredientToken.restore(remainingItem);
             }
