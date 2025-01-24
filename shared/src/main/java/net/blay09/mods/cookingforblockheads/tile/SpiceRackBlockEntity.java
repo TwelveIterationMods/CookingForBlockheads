@@ -29,6 +29,7 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
         @Override
         public void setChanged() {
             SpiceRackBlockEntity.this.setChanged();
+            SpiceRackBlockEntity.this.sync();
         }
     };
 

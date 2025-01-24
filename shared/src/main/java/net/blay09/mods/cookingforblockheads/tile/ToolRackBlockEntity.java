@@ -7,6 +7,7 @@ import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.block.ToolRackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
@@ -20,6 +21,7 @@ public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContaine
         @Override
         public void setChanged() {
             ToolRackBlockEntity.this.setChanged();
+            ToolRackBlockEntity.this.sync();
         }
     };
 

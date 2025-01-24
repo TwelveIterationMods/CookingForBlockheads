@@ -29,6 +29,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
         @Override
         public void setChanged() {
             FruitBasketBlockEntity.this.setChanged();
+            FruitBasketBlockEntity.this.sync();
         }
     };
     private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
