@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CraftMatrixFakeSlot extends FakeSlot {
 
-    private static final float ITEM_SWITCH_TIME = 80f;
+    private static final float ITEM_SWITCH_TIME = 60f;
 
     private final NonNullList<ItemStack> visibleStacks = NonNullList.create();
 
