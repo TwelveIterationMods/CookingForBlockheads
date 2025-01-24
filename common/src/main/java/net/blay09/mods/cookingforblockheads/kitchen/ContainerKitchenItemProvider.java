@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.kitchen;
 
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
@@ -91,10 +90,7 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
 
         @Override
         public ItemStack consume() {
-            final var consumed = ContainerUtils.extractItem(container, slot, 1, false);
-            final var remainingItem = Balm.getHooks().getCraftingRemainingItem(consumed);
-            ContainerUtils.insertItem(container, slot, remainingItem, false);
-            return consumed;
+            return ContainerUtils.extractItem(container, slot, 1, false);
         }
 
         @Override
