@@ -88,7 +88,8 @@ public class CookingRegistry {
 
             //noinspection ConstantConditions
             if (output == null) {
-                CookingForBlockheads.logger.warn("Recipe " + recipe.getId() + " returned a null ItemStack in getRecipeOutput - this is bad! The developer of " + recipe.getId().getNamespace() + " should return an empty ItemStack instead to avoid problems.");
+                CookingForBlockheads.logger.warn("Recipe " + recipe.getId() + " returned a null ItemStack in getRecipeOutput - this is bad! The developer of " + recipe.getId()
+                        .getNamespace() + " should return an empty ItemStack instead to avoid problems.");
                 continue;
             }
 
@@ -275,20 +276,28 @@ public class CookingRegistry {
 
     public static List<SourceItem> findSourceCandidates(FoodIngredient ingredient, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean isNoFilter) {
         List<SourceItem> sourceList = new ArrayList<>();
+        List<SourceItem> fallbackSourceList = new ArrayList<>();
 
         ItemStack[] variants = ingredient.getItemStacks();
         for (ItemStack checkStack : variants) {
             SourceItem sourceItem = CookingRegistry.findAnyItemStack(checkStack, inventories, requireBucket);
             ItemStack foundStack = sourceItem != null ? sourceItem.getSourceStack() : ItemStack.EMPTY;
             if (foundStack.isEmpty()) {
-                if (isNoFilter || ingredient.isToolItem()) {
+                if (isNoFilter) {
                     sourceItem = new SourceItem(null, -1, checkStack);
+                    sourceList.add(sourceItem);
+                } else if (ingredient.isToolItem()) {
+                    sourceItem = new SourceItem(null, -1, checkStack);
+                    fallbackSourceList.add(sourceItem);
                 }
-            }
-
-            if (sourceItem != null) {
+            } else {
                 sourceList.add(sourceItem);
             }
+        }
+
+        // Only include all tag variants for tools if there are no valid sources present
+        if (sourceList.isEmpty()) {
+            sourceList.addAll(fallbackSourceList);
         }
 
         SourceItem sourceItem = !sourceList.isEmpty() ? sourceList.get(0) : null;
@@ -350,7 +359,8 @@ public class CookingRegistry {
     @SuppressWarnings("unchecked")
     public static <T extends Recipe<?>> T findFoodRecipe(InventoryCraftBook craftMatrix, Level level, RecipeType<T> recipeType, Item expectedItem) {
         for (Recipe<Container> recipe : recipeList) {
-            if (recipe.getType() == recipeType && recipe.matches(craftMatrix, level) && recipe.getResultItem(level.registryAccess()).getItem() == expectedItem) {
+            if (recipe.getType() == recipeType && recipe.matches(craftMatrix, level) && recipe.getResultItem(level.registryAccess())
+                    .getItem() == expectedItem) {
                 return (T) recipe;
             }
         }
