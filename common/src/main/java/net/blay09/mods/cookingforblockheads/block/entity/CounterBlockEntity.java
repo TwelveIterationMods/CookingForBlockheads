@@ -42,6 +42,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     private final DefaultContainer container = new DefaultContainer(containerSize) {
         @Override
         public void setChanged() {
+            isDirty = true;
             CounterBlockEntity.this.setChanged();
         }
     };
