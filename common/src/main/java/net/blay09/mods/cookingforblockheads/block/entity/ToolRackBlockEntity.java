@@ -15,6 +15,7 @@ public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContaine
         @Override
         public void setChanged() {
             ToolRackBlockEntity.this.setChanged();
+            ToolRackBlockEntity.this.sync();
         }
     };
 
