@@ -1,2 +1,3 @@
-- Fixed scrolling of ingredient choices in craft matrix (by KyleV)
-- Fixed scrolling behaviour in recipe list (by KyleV)
+- Fixed recipe remainders not being respected on custom recipes (e.g. CraftTweaker .reuse())
+- Fixed Cow in a Jar recipe in JEI displaying wrong
+- Fixed items consumed from Tool Rack, Spice Rack or other containers not resulting in a visual update of the block
