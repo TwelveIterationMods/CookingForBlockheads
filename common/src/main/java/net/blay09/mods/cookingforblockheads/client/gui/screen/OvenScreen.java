@@ -48,7 +48,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         for (int i = 0; i < 9; i++) {
             Slot slot = menu.slots.get(i + 7);
             if (slot.hasItem()) {
-                ItemStack itemStack = oven.getSmeltingResult(slot.getItem());
+                ItemStack itemStack = menu.getResultItems().get(i);
                 if (!itemStack.isEmpty()) {
                     final var pose = guiGraphics.pose();
                     pose.pushPose();
