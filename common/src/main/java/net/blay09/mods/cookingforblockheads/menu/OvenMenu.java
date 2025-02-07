@@ -1,7 +1,10 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.menu.slot.*;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.network.message.ClientboundOvenResultsPacket;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,10 +16,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoor {
 
     private final OvenBlockEntity oven;
+    private final Player player;
+    private NonNullList<ItemStack> resultItems = NonNullList.withSize(9, ItemStack.EMPTY);
 
     public OvenMenu(int windowId, Inventory playerInventory, OvenBlockEntity oven) {
         super(ModMenus.oven.get(), windowId);
         this.oven = oven;
+        this.player = playerInventory.player;
 
         Container container = oven.getInternalContainer();
 
@@ -131,5 +137,35 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
     @Override
     public boolean isTileEntity(BlockEntity blockEntity) {
         return this.oven == blockEntity;
+    }
+
+    public boolean isFuel(ItemStack itemStack) {
+        return OvenBlockEntity.isItemFuel(itemStack);
+    }
+
+    public void setResultItems(NonNullList<ItemStack> resultItems) {
+        this.resultItems = resultItems;
+    }
+
+    public NonNullList<ItemStack> getResultItems() {
+        return resultItems;
+    }
+
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+        if (!player.isLocalPlayer()) {
+            var changes = false;
+            for (int i = 0; i < 9; i++) {
+                final var result = oven.getSmeltingResult(slots.get(i + 7).getItem());
+                if (!ItemStack.isSameItemSameComponents(resultItems.get(i), result)) {
+                    resultItems.set(i, result);
+                    changes = true;
+                }
+            }
+            if (changes) {
+                Balm.getNetworking().sendTo(this.player, new ClientboundOvenResultsPacket(resultItems));
+            }
+        }
     }
 }
