@@ -24,7 +24,7 @@ public abstract class AbstractKitchenCraftingRecipeHandler<T extends CraftingRec
         for (int i = 0; i < ingredientTokens.size(); i++) {
             final var ingredientToken = ingredientTokens.get(i);
             final var matrixSlot = mapToMatrixSlot(recipe, i);
-            final var remainingItem = remainingItems.get(matrixSlot);
+            final var remainingItem = matrixSlot < remainingItems.size() ? remainingItems.get(matrixSlot) : ItemStack.EMPTY;
             if (!remainingItem.isEmpty()) {
                 ingredientToken.restore(remainingItem);
             }
