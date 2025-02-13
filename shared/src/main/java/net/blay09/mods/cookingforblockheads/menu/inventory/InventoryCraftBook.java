@@ -90,7 +90,7 @@ public class InventoryCraftBook extends TransientCraftingContainer implements Re
                             continue;
                         }
 
-                        ItemStack containerItem = remainders.get(i);
+                        ItemStack containerItem = i < remainders.size() ? remainders.get(i) : ItemStack.EMPTY;
                         if (sourceItems[i].getSourceSlot() != -1) {
                             sourceProvider.resetSimulation();
                             sourceProvider.consumeSourceItem(sourceItems[i], 1, inventories, requireContainer);
