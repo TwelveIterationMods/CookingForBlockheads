@@ -1,2 +1,1 @@
-- Added back the cooked item overlay in the oven
-- Fixed `kitchen_item_providers` tag not working on NeoForge
+- Fixed errors when crafting custom recipes with uncommon remaining items implementation
