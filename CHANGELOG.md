@@ -1,5 +1,1 @@
-- Fixed recipe remainders not being respected on custom recipes (e.g. CraftTweaker .reuse())
-- Fixed Cow in a Jar recipe in JEI displaying wrong
-- Fixed tag ingredients cycling through items that are not available when marked as tools
-- Fixed items consumed from Tool Rack, Spice Rack or other containers not resulting in a visual update of the block
-- Slightly decreased the time it takes for tag ingredients to cycle in the slot
+- Fixed errors when crafting custom recipes with uncommon remaining items implementation
