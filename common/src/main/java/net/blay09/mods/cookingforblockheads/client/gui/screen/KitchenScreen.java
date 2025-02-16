@@ -91,6 +91,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         int yOffset = -80;
 
+        sortButtons.clear();
         for (final var sortButton : CookingForBlockheadsRegistry.getSortButtons()) {
             SortButton button = new SortButton(width / 2 + 87, height / 2 + yOffset, sortButton, it -> {
                 menu.setSortComparator(sortButton.getComparator(Minecraft.getInstance().player));
