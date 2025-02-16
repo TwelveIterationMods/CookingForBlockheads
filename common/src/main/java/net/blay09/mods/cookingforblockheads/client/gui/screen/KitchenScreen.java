@@ -158,8 +158,10 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 ItemStack itemStack = mouseSlot.getItem();
                 RecipeWithStatus recipe = menu.findRecipeForResultItem(itemStack);
                 if (recipe != null) {
+                    menu.pushHistory();
                     menu.selectCraftable(recipe);
                     setCurrentOffset(menu.getRecipesForSelectionIndex());
+                    setFocused(null);
                 }
             } else if (button == 1) {
                 final var lockedInput = fakeSlot.toggleLock();
@@ -186,6 +188,11 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             minecraft.player.closeContainer();
+            return true;
+        }
+
+        if (!searchBar.isFocused() && keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+            menu.popHistory();
             return true;
         }
 

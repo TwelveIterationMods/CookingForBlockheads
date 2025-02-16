@@ -43,6 +43,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private final NonNullList<ItemStack> lockedInputs = NonNullList.withSize(9, ItemStack.EMPTY);
 
     private final List<RecipeWithStatus> filteredCraftables = new ArrayList<>();
+    private final List<RecipeWithStatus> history = new ArrayList<>();
 
     private String currentSearch;
     private Comparator<RecipeWithStatus> currentSorting = new ComparatorName();
@@ -118,6 +119,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                             handled = true;
                         }
                     } else {
+                        clearHistory();
                         selectCraftable(craftableSlot.getCraftable());
                         handled = true;
                     }
@@ -417,7 +419,8 @@ public class KitchenMenu extends AbstractContainerMenu {
         for (final var slot : recipeListingSlots) {
             if (i < filteredCraftables.size()) {
                 final var craftable = filteredCraftables.get(i);
-                if (craftable != null && selectedCraftable != null && ItemStack.isSameItemSameComponents(selectedCraftable.resultItem(), craftable.resultItem())) {
+                if (craftable != null && selectedCraftable != null && ItemStack.isSameItemSameComponents(selectedCraftable.resultItem(),
+                        craftable.resultItem())) {
                     final var selectedRecipe = getSelectedRecipe();
                     slot.setCraftable(selectedRecipe != null ? selectedRecipe : craftable);
                 } else {
@@ -593,5 +596,22 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public int getRecipesForSelectionIndex() {
         return filteredCraftables.indexOf(selectedCraftable);
+    }
+
+    public void clearHistory() {
+        history.clear();
+    }
+
+    public void pushHistory() {
+        if (selectedCraftable != null) {
+            history.add(selectedCraftable);
+        }
+    }
+
+    public void popHistory() {
+        if (!history.isEmpty()) {
+            final var entry = history.removeLast();
+            selectCraftable(entry);
+        }
     }
 }
