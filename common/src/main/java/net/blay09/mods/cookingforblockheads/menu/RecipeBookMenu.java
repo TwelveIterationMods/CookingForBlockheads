@@ -11,6 +11,7 @@ import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
+import net.blay09.mods.cookingforblockheads.menu.comparator.FavoriteComparator;
 import net.blay09.mods.cookingforblockheads.menu.inventory.InventoryCraftBook;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
@@ -55,10 +56,11 @@ public class RecipeBookMenu extends AbstractContainerMenu {
     private ItemStack lastOutputItem = ItemStack.EMPTY;
 
     private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
-    private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
+    private Comparator<FoodRecipeWithStatus> currentSorting = new FavoriteComparator(new ComparatorName());
     private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
 
-    public record HistoryEntry(FoodRecipeWithStatus recipe, boolean noFilterPreview) {}
+    public record HistoryEntry(FoodRecipeWithStatus recipe, boolean noFilterPreview) {
+    }
 
     private final List<HistoryEntry> history = new ArrayList<>();
 
@@ -434,10 +436,10 @@ public class RecipeBookMenu extends AbstractContainerMenu {
     }
 
     public void setSortComparator(Comparator<FoodRecipeWithStatus> comparator) {
-        this.currentSorting = comparator;
+        currentSorting = new FavoriteComparator(comparator);
         // When re-sorting, make sure to remove all null slots that were added to preserve layout
         filteredItems.removeIf(Objects::isNull);
-        filteredItems.sort(comparator);
+        filteredItems.sort(currentSorting);
         populateRecipeSlots();
     }
 

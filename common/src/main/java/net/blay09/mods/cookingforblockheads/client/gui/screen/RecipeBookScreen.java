@@ -2,16 +2,19 @@ package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.FoodRecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.RecipeStatus;
+import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.RecipeBookMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
+import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
@@ -23,6 +26,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -144,26 +148,6 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        super.mouseClicked(mouseX, mouseY, button);
-
-        if (button == 1 && mouseX >= searchBar.getX() && mouseX < searchBar.getX() + searchBar.getWidth() && mouseY >= searchBar.getY() && mouseY < searchBar.getY() + searchBar.getHeight()) {
-            searchBar.setValue("");
-            container.search(null);
-            container.populateRecipeSlots();
-            setCurrentOffset(currentOffset);
-            return true;
-        } else {
-            if (searchBar.mouseClicked(mouseX, mouseY, button)) {
-                setFocused(searchBar);
-                return true;
-            }
-        }
-
-        if (mouseX >= scrollBarXPos && mouseX <= scrollBarXPos + SCROLLBAR_WIDTH && mouseY >= scrollBarYPos && mouseY <= scrollBarYPos + scrollBarScaledHeight) {
-            mouseClickY = mouseY;
-            indexWhenClicked = currentOffset;
-        }
-
         Slot mouseSlot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
         if (mouseSlot instanceof CraftMatrixFakeSlot) {
             if (button == 0) {
@@ -183,6 +167,36 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                 ((CraftMatrixFakeSlot) mouseSlot).setLocked(!((CraftMatrixFakeSlot) mouseSlot).isLocked());
             }
             return true;
+        } else if (mouseSlot instanceof RecipeFakeSlot recipeFakeSlot) {
+            if (hasAltDown()) {
+                final var recipe = recipeFakeSlot.getRecipe();
+                if (recipe != null) {
+                    final var itemStack = recipe.getOutputItem();
+                    final var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+                    Balm.getNetworking().sendToServer(new ToggleFavoriteMessage(itemId, !isFavoriteItem(itemStack)));
+                    return true;
+                }
+            }
+        }
+
+        super.mouseClicked(mouseX, mouseY, button);
+
+        if (button == 1 && mouseX >= searchBar.getX() && mouseX < searchBar.getX() + searchBar.getWidth() && mouseY >= searchBar.getY() && mouseY < searchBar.getY() + searchBar.getHeight()) {
+            searchBar.setValue("");
+            container.search(null);
+            container.populateRecipeSlots();
+            setCurrentOffset(currentOffset);
+            return true;
+        } else {
+            if (searchBar.mouseClicked(mouseX, mouseY, button)) {
+                setFocused(searchBar);
+                return true;
+            }
+        }
+
+        if (mouseX >= scrollBarXPos && mouseX <= scrollBarXPos + SCROLLBAR_WIDTH && mouseY >= scrollBarYPos && mouseY <= scrollBarYPos + scrollBarScaledHeight) {
+            mouseClickY = mouseY;
+            indexWhenClicked = currentOffset;
         }
 
         return false;
@@ -310,11 +324,19 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                     if (recipe != null && recipe.getStatus() == RecipeStatus.MISSING_TOOLS) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 92, 16, 16);
                     }
+
+                    if (recipe != null && isFavoriteItem(recipe.getOutputItem())) {
+                        guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 108, 16, 16);
+                    }
                 }
             }
 
             poseStack.popPose();
         }
+    }
+
+    private boolean isFavoriteItem(ItemStack itemStack) {
+        return CookingForBlockheadsClient.isFavoriteItem(itemStack);
     }
 
     @Override

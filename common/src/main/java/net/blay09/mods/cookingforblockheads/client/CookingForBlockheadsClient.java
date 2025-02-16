@@ -17,9 +17,18 @@ import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CookingForBlockheadsClient {
+
+    private static final Set<ResourceLocation> favoriteItemIds = new HashSet<>();
+
     public static void initialize() {
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
@@ -49,7 +58,8 @@ public class CookingForBlockheadsClient {
                             event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_oven", ChatFormatting.RED));
                         } else {
                             if (Screen.hasShiftDown()) {
-                                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_stack", ChatFormatting.GREEN));
+                                event.getToolTip()
+                                        .add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_stack", ChatFormatting.GREEN));
                             } else {
                                 event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_smelt_one", ChatFormatting.GREEN));
                             }
@@ -61,7 +71,8 @@ public class CookingForBlockheadsClient {
                             event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:missing_ingredients", ChatFormatting.RED));
                         } else {
                             if (Screen.hasShiftDown()) {
-                                event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_stack", ChatFormatting.GREEN));
+                                event.getToolTip()
+                                        .add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_stack", ChatFormatting.GREEN));
                             } else {
                                 event.getToolTip().add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:click_to_craft_one", ChatFormatting.GREEN));
                             }
@@ -82,5 +93,15 @@ public class CookingForBlockheadsClient {
             }
         });
 
+    }
+
+    public static void setFavoriteItems(Set<ResourceLocation> favoriteItemIds) {
+        CookingForBlockheadsClient.favoriteItemIds.clear();
+        CookingForBlockheadsClient.favoriteItemIds.addAll(favoriteItemIds);
+    }
+
+    public static boolean isFavoriteItem(ItemStack itemStack) {
+        final var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+        return favoriteItemIds.contains(itemId);
     }
 }
