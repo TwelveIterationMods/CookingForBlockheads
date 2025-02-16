@@ -96,6 +96,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         int yOffset = -80;
 
+        sortButtons.clear();
         for (ISortButton button : CookingRegistry.getSortButtons()) {
             SortButton sortButton = new SortButton(width / 2 + 87, height / 2 + yOffset, button, it -> {
                 container.setSortComparator(((SortButton) it).getComparator(Minecraft.getInstance().player));
