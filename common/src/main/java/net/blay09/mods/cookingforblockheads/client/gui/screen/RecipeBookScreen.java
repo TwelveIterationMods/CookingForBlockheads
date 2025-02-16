@@ -162,9 +162,11 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                 ItemStack itemStack = mouseSlot.getItem();
                 FoodRecipeWithStatus recipe = container.findAvailableRecipe(itemStack);
                 if (recipe != null) {
+                    container.pushHistory();
                     container.setSelectedRecipe(recipe, false);
                     setCurrentOffset(container.getSelectedRecipeIndex());
                 } else if (!CookingRegistry.getFoodRecipes(itemStack).isEmpty()) {
+                    container.pushHistory();
                     container.setSelectedRecipe(new FoodRecipeWithStatus(itemStack, RecipeStatus.MISSING_INGREDIENTS), true);
                 }
             } else if (button == 1) {
@@ -191,6 +193,11 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             minecraft.player.closeContainer();
+            return true;
+        }
+
+        if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+            container.popHistory();
             return true;
         }
 

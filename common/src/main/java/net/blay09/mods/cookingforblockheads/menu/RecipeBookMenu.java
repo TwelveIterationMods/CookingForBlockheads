@@ -58,6 +58,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
     private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
     private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
     private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
+    private final List<FoodRecipeWithStatus> history = new ArrayList<>();
 
     private boolean slotWasClicked;
     private String currentSearch;
@@ -75,7 +76,7 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
         this.player = player;
 
-        Container fakeInventory = new DefaultContainer(4*3+3*3);
+        Container fakeInventory = new DefaultContainer(4 * 3 + 3 * 3);
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
@@ -124,10 +125,15 @@ public class RecipeBookMenu extends AbstractContainerMenu {
                                 } else if (recipe.getRecipeType() == FoodRecipeType.SMELTING) {
                                     craftMatrix.add(matrixSlots.get(4).getItem());
                                 }
-                                Balm.getNetworking().sendToServer(new CraftRecipeMessage(recipe.getOutputItem(), recipe.getRecipeType(), craftMatrix, clickType == ClickType.QUICK_MOVE));
+                                Balm.getNetworking()
+                                        .sendToServer(new CraftRecipeMessage(recipe.getOutputItem(),
+                                                recipe.getRecipeType(),
+                                                craftMatrix,
+                                                clickType == ClickType.QUICK_MOVE));
                             }
                         }
                     } else {
+                        resetHistory();
                         setSelectedRecipe(recipeSlot.getRecipe(), false);
                     }
                 }
@@ -145,6 +151,10 @@ public class RecipeBookMenu extends AbstractContainerMenu {
         }
 
         this.isInNoFilterPreview = forceNoFilter;
+    }
+
+    public FoodRecipeWithStatus getSelectedRecipe() {
+        return selectedRecipe;
     }
 
     @Override
@@ -533,5 +543,22 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     public int getSelectedRecipeIndex() {
         return filteredItems.indexOf(selectedRecipe);
+    }
+
+    public void resetHistory() {
+        history.clear();
+    }
+
+    public void pushHistory() {
+        if (selectedRecipe != null) {
+            history.add(selectedRecipe);
+        }
+    }
+
+    public void popHistory() {
+        if (!history.isEmpty()) {
+            final var entry = history.remove(history.size() - 1);
+            setSelectedRecipe(entry, false);
+        }
     }
 }
