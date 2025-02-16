@@ -154,6 +154,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
             return true;
         } else {
             if (searchBar.mouseClicked(mouseX, mouseY, button)) {
+                setFocused(searchBar);
                 return true;
             }
         }
@@ -172,9 +173,11 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
                     container.pushHistory();
                     container.setSelectedRecipe(recipe, false);
                     setCurrentOffset(container.getSelectedRecipeIndex());
+                    setFocused(null);
                 } else if (!CookingRegistry.getFoodRecipes(itemStack).isEmpty()) {
                     container.pushHistory();
                     container.setSelectedRecipe(new FoodRecipeWithStatus(itemStack, RecipeStatus.MISSING_INGREDIENTS), true);
+                    setFocused(null);
                 }
             } else if (button == 1) {
                 ((CraftMatrixFakeSlot) mouseSlot).setLocked(!((CraftMatrixFakeSlot) mouseSlot).isLocked());
@@ -203,7 +206,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
             return true;
         }
 
-        if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+        if (!searchBar.isFocused() && keyCode == GLFW.GLFW_KEY_BACKSPACE) {
             container.popHistory();
             return true;
         }
