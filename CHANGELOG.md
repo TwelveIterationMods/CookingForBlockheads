@@ -1,1 +1,1 @@
-- Fixed errors when crafting custom recipes with uncommon remaining items implementation
+- Added support for applying the Preservation Chamber to Counters, Cabinets, Fruit Baskets and Spice Racks
