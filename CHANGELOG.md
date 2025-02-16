@@ -1,3 +1,4 @@
 - Added support for applying the Preservation Chamber to Counters, Cabinets, Fruit Baskets and Spice Racks
 - Added support for going back after viewing an ingredient recipe via backspace
 - Added indicator when an item is moved to the oven for cooking
+- Fixed ghost sort button tooltips remaining when resizing window
