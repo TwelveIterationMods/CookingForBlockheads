@@ -4,6 +4,7 @@ import com.cazsius.solcarrot.api.SOLCarrotAPI;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
+import net.blay09.mods.cookingforblockheads.crafting.CraftableWithStatus;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.minecraft.core.component.DataComponents;
@@ -31,13 +32,13 @@ public class SpiceOfLifeAddon {
             }
 
             @Override
-            public Comparator<RecipeWithStatus> getComparator(Player player) {
+            public Comparator<CraftableWithStatus> getComparator(Player player) {
                 return (o1, o2) -> {
                     final var foodCapability = SOLCarrotAPI.getFoodCapability(player);
-                    final var isEdibleO1 = o1.resultItem().has(DataComponents.FOOD);
-                    final var isEdibleO2 = o2.resultItem().has(DataComponents.FOOD);
-                    final var hasEatenO1 = foodCapability.hasEaten(o1.resultItem().getItem());
-                    final var hasEatenO2 = foodCapability.hasEaten(o2.resultItem().getItem());
+                    final var isEdibleO1 = o1.itemStack().has(DataComponents.FOOD);
+                    final var isEdibleO2 = o2.itemStack().has(DataComponents.FOOD);
+                    final var hasEatenO1 = foodCapability.hasEaten(o1.itemStack().getItem());
+                    final var hasEatenO2 = foodCapability.hasEaten(o2.itemStack().getItem());
 
                     if (isEdibleO1 && !isEdibleO2) {
                         return -1;
