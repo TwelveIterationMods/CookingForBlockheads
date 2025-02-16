@@ -34,7 +34,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -58,7 +57,10 @@ public class RecipeBookMenu extends AbstractContainerMenu {
     private final List<FoodRecipeWithStatus> itemList = Lists.newArrayList();
     private Comparator<FoodRecipeWithStatus> currentSorting = new ComparatorName();
     private final List<FoodRecipeWithStatus> filteredItems = Lists.newArrayList();
-    private final List<FoodRecipeWithStatus> history = new ArrayList<>();
+
+    public record HistoryEntry(FoodRecipeWithStatus recipe, boolean noFilterPreview) {}
+
+    private final List<HistoryEntry> history = new ArrayList<>();
 
     private boolean slotWasClicked;
     private String currentSearch;
@@ -551,14 +553,14 @@ public class RecipeBookMenu extends AbstractContainerMenu {
 
     public void pushHistory() {
         if (selectedRecipe != null) {
-            history.add(selectedRecipe);
+            history.add(new HistoryEntry(selectedRecipe, isInNoFilterPreview));
         }
     }
 
     public void popHistory() {
         if (!history.isEmpty()) {
             final var entry = history.remove(history.size() - 1);
-            setSelectedRecipe(entry, false);
+            setSelectedRecipe(entry.recipe(), entry.noFilterPreview());
         }
     }
 }
