@@ -43,6 +43,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         super.renderLabels(guiGraphics, mouseX, mouseY);
+        guiGraphics.flush();
 
         final var oven = menu.getOven();
         for (int i = 0; i < 9; i++) {
