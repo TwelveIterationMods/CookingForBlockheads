@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.compat;
 import mcjty.theoneprobe.api.*;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.core.BlockPos;
@@ -63,20 +64,25 @@ public class TheOneProbeAddon {
                 if (tileEntity != null && tileEntity.getBaseFridge().hasIceUpgrade()) {
                     info.text(Component.translatable("waila.cookingforblockheads:ice_unit"));
                 }
-
-                if (tileEntity != null && tileEntity.getBaseFridge().hasPreservationUpgrade()) {
-                    info.text(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
-                }
             } else if (state.getBlock() instanceof SinkBlock) {
                 SinkBlockEntity sink = tryGetTileEntity(level, data.getPos(), SinkBlockEntity.class);
                 if (sink != null && CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                    info.text(Component.translatable("waila.cookingforblockheads:water_stored", sink.getFluidTank().getAmount(), sink.getFluidTank().getCapacity()));
+                    info.text(Component.translatable("waila.cookingforblockheads:water_stored",
+                            sink.getFluidTank().getAmount(),
+                            sink.getFluidTank().getCapacity()));
                 }
+            }
+
+            final var blockEntity = level.getBlockEntity(data.getPos());
+            if (blockEntity instanceof UpgradeablePreservation upgradeable && upgradeable.hasPreservationUpgrade()) {
+                info.text(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
             }
         }
 
         private void addMilkJarInfo(MilkJarBlockEntity milkJar, IProbeInfo info) {
-            info.text(Component.translatable("waila.cookingforblockheads:milk_stored", milkJar.getFluidTank().getAmount(), milkJar.getFluidTank().getCapacity()));
+            info.text(Component.translatable("waila.cookingforblockheads:milk_stored",
+                    milkJar.getFluidTank().getAmount(),
+                    milkJar.getFluidTank().getCapacity()));
         }
 
         private void addToasterInfo(ToasterBlockEntity tileEntity, IProbeInfo info) {

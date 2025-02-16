@@ -6,6 +6,7 @@ import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider {
+public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, UpgradeablePreservation {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -32,8 +33,14 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
             FruitBasketBlockEntity.this.sync();
         }
     };
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
+    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container) {
+        @Override
+        public boolean hasPreservationUpgrade() {
+            return FruitBasketBlockEntity.this.hasPreservationUpgrade();
+        }
+    };
 
+    private boolean hasPreservationUpgrade;
     private Component customName;
     private boolean isDirty;
 
@@ -44,6 +51,8 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
+
+        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
 
         container.deserialize(tag.getCompound("ItemHandler"));
 
@@ -57,6 +66,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
         super.saveAdditional(tag);
 
         tag.put("ItemHandler", container.serialize());
+        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {
             tag.putString("CustomName", Component.Serializer.toJson(customName));
@@ -131,5 +141,16 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     public void setChanged() {
         isDirty = true;
         super.setChanged();
+    }
+
+    @Override
+    public boolean hasPreservationUpgrade() {
+        return hasPreservationUpgrade;
+    }
+
+    @Override
+    public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
+        this.hasPreservationUpgrade = hasPreservationUpgrade;
+        setChanged();
     }
 }

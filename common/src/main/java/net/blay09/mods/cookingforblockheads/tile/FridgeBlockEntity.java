@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.tile;
 
 import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.CombinedContainer;
@@ -12,11 +11,10 @@ import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
-import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
-import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.blay09.mods.cookingforblockheads.tile.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
+public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, UpgradeablePreservation {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -72,13 +70,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
                 return iceUnitResult;
             }
 
-            IngredientPredicate modifiedPredicate = predicate;
-            if (getBaseFridge().hasPreservationUpgrade) {
-                modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
-                        (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
-            }
-
-            return super.findSource(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+            return super.findSource(predicate, maxAmount, inventories, requireBucket, simulate);
         }
 
         @Nullable
@@ -89,13 +81,12 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
                 return iceUnitResult;
             }
 
-            IngredientPredicate modifiedPredicate = predicate;
-            if (getBaseFridge().hasPreservationUpgrade) {
-                modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
-                        (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
-            }
+            return super.findSourceAndMarkAsUsed(predicate, maxAmount, inventories, requireBucket, simulate);
+        }
 
-            return super.findSourceAndMarkAsUsed(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+        @Override
+        public boolean hasPreservationUpgrade() {
+            return FridgeBlockEntity.this.hasPreservationUpgrade();
         }
     };
 
@@ -124,12 +115,13 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     public boolean hasPreservationUpgrade() {
-        return hasPreservationUpgrade;
+        return getBaseFridge().hasPreservationUpgrade;
     }
 
     public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
-        this.hasPreservationUpgrade = hasPreservationUpgrade;
-        markDirtyAndUpdate();
+        final var baseFridge = getBaseFridge();
+        baseFridge.hasPreservationUpgrade = hasPreservationUpgrade;
+        baseFridge.markDirtyAndUpdate();
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {

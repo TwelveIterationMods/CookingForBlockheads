@@ -6,6 +6,7 @@ import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.SpiceRackMenu;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider {
+public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, UpgradeablePreservation {
 
     private final DefaultContainer container = new DefaultContainer(9) {
         @Override
@@ -33,8 +34,14 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
         }
     };
 
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
+    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container) {
+        @Override
+        public boolean hasPreservationUpgrade() {
+            return SpiceRackBlockEntity.this.hasPreservationUpgrade();
+        }
+    };
 
+    private boolean hasPreservationUpgrade;
     private Component customName;
     private boolean isDirty;
 
@@ -43,12 +50,14 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
-        container.deserialize(tagCompound.getCompound("ItemHandler"));
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        container.deserialize(tag.getCompound("ItemHandler"));
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"));
+        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
+
+        if (tag.contains("CustomName", Tag.TAG_STRING)) {
+            customName = Component.Serializer.fromJson(tag.getString("CustomName"));
         }
     }
 
@@ -56,6 +65,7 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("ItemHandler", container.serialize());
+        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {
             tag.putString("CustomName", Component.Serializer.toJson(customName));
@@ -132,4 +142,14 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
         super.setChanged();
     }
 
+    @Override
+    public boolean hasPreservationUpgrade() {
+        return hasPreservationUpgrade;
+    }
+
+    @Override
+    public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
+        this.hasPreservationUpgrade = hasPreservationUpgrade;
+        setChanged();
+    }
 }

@@ -104,6 +104,7 @@
     "tooltip.cookingforblockheads:scroll_to_switch": "Scroll to select item",
 
     "tooltip.cookingforblockheads:energy_stored": "Energy stored: %d/%d",
+    "tooltip.cookingforblockheads:kitchen_upgrade": "Kitchen Upgrade",
     "tooltip.cookingforblockheads:oven_upgrade": "Oven Upgrade",
     "tooltip.cookingforblockheads:fridge_upgrade": "Fridge Upgrade",
     "tooltip.cookingforblockheads:toasted": "Toasted %s",

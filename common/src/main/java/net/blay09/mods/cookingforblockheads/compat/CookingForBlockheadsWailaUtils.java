@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.compat;
 import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.tile.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,7 @@ public class CookingForBlockheadsWailaUtils {
     public static final ResourceLocation TOASTER_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "toaster");
     public static final ResourceLocation OVEN_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "oven");
     public static final ResourceLocation FRIDGE_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "fridge");
+    public static final ResourceLocation PRESERVATION_CHAMBER_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "preservation_chamber");
     public static final ResourceLocation SINK_UID = new ResourceLocation(CookingForBlockheads.MOD_ID, "sink");
 
     public static void appendMilkJarTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
@@ -52,8 +54,12 @@ public class CookingForBlockheadsWailaUtils {
             if (fridge.hasIceUpgrade()) {
                 tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:ice_unit"));
             }
+        }
+    }
 
-            if (fridge.hasPreservationUpgrade()) {
+    public static void appendPreservationChamberTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
+        if (blockEntity instanceof UpgradeablePreservation upgradeable) {
+            if (upgradeable.hasPreservationUpgrade()) {
                 tooltipConsumer.accept(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
             }
         }

@@ -16,7 +16,8 @@ public class SyncedEffectMessage {
     public enum Type {
         COW_IN_A_JAR,
         OVEN_UPGRADE,
-        FRIDGE_UPGRADE
+        FRIDGE_UPGRADE,
+        KITCHEN_UPGRADE,
     }
 
     private final BlockPos pos;
@@ -50,7 +51,7 @@ public class SyncedEffectMessage {
                 soundEvent = SoundEvents.CHICKEN_EGG;
                 particleOffset = new Vec3i(0, 1, 0);
             }
-            case OVEN_UPGRADE, FRIDGE_UPGRADE -> {
+            case OVEN_UPGRADE, FRIDGE_UPGRADE, KITCHEN_UPGRADE -> {
                 soundEvent = SoundEvents.ANVIL_USE;
                 particleType = ParticleTypes.LARGE_SMOKE;
                 particleCount = 10;

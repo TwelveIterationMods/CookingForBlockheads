@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
-import net.blay09.mods.cookingforblockheads.tile.FridgeBlockEntity;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
@@ -42,14 +42,15 @@ public class ItemPreservationChamber extends Item {
         }
 
         BlockEntity tileEntity = level.getBlockEntity(pos);
-        if (tileEntity instanceof FridgeBlockEntity && !((FridgeBlockEntity) tileEntity).getBaseFridge().hasPreservationUpgrade()) {
+        if (tileEntity instanceof UpgradeablePreservation upgradeable && !upgradeable.hasPreservationUpgrade()) {
             if (!player.getAbilities().instabuild) {
                 player.getItemInHand(context.getHand()).shrink(1);
             }
 
-            ((FridgeBlockEntity) tileEntity).getBaseFridge().setHasPreservationUpgrade(true);
+            upgradeable.setHasPreservationUpgrade(true);
+
             if (!level.isClientSide) {
-                Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.FRIDGE_UPGRADE));
+                Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.KITCHEN_UPGRADE));
             }
 
             return InteractionResult.SUCCESS;
@@ -62,7 +63,7 @@ public class ItemPreservationChamber extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
 
-        tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:fridge_upgrade", ChatFormatting.YELLOW));
+        tooltip.add(TextUtils.coloredTextComponent("tooltip.cookingforblockheads:kitchen_upgrade", ChatFormatting.YELLOW));
         for (String s : I18n.get("tooltip.cookingforblockheads:preservation_chamber.description").split("\\\\n")) {
             tooltip.add(TextUtils.coloredTextComponent(s, ChatFormatting.GRAY));
         }

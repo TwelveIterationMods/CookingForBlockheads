@@ -8,6 +8,7 @@ import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.api.capability.DefaultKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.capability.IKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox {
+public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, UpgradeablePreservation {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -45,9 +46,15 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         }
     };
 
-    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container);
+    private final DefaultKitchenItemProvider itemProvider = new DefaultKitchenItemProvider(container) {
+        @Override
+        public boolean hasPreservationUpgrade() {
+            return CounterBlockEntity.this.hasPreservationUpgrade();
+        }
+    };
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
+    private boolean hasPreservationUpgrade;
     private Component customName;
 
     private boolean isDirty;
@@ -97,6 +104,8 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
             itemHandlerCompound.putInt("Size", 54);
         }
 
+        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
+
         container.deserialize(itemHandlerCompound);
 
         color = DyeColor.byId(tag.getByte("Color"));
@@ -120,6 +129,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
         tag.put("ItemHandler", container.serialize());
         tag.putByte("Color", (byte) color.getId());
+        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {
             tag.putString("CustomName", Component.Serializer.toJson(customName));
@@ -204,5 +214,16 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     @Override
     public Container getContainer() {
         return container;
+    }
+
+    @Override
+    public boolean hasPreservationUpgrade() {
+        return hasPreservationUpgrade;
+    }
+
+    @Override
+    public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
+        this.hasPreservationUpgrade = hasPreservationUpgrade;
+        setChanged();
     }
 }

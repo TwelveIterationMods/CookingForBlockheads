@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.FruitBasketBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.tile.SpiceRackBlockEntity;
@@ -12,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -87,6 +89,11 @@ public class SpiceRackBlock extends BlockKitchen {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        if (heldItem.getItem() == ModItems.preservationChamber) {
+            return InteractionResult.PASS;
+        }
+
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.SUCCESS;
         }

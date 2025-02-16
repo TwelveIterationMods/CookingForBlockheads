@@ -1,9 +1,13 @@
 package net.blay09.mods.cookingforblockheads.api.capability;
 
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
+import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
+import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,4 +80,31 @@ public class DefaultKitchenItemProvider extends AbstractKitchenItemProvider {
         return container.getItem(slot);
     }
 
+    @Nullable
+    @Override
+    public SourceItem findSource(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+        var modifiedPredicate = predicate;
+        if (hasPreservationUpgrade()) {
+            modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
+                    (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
+        }
+
+        return super.findSource(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+    }
+
+    @Nullable
+    @Override
+    public SourceItem findSourceAndMarkAsUsed(IngredientPredicate predicate, int maxAmount, List<IKitchenItemProvider> inventories, boolean requireBucket, boolean simulate) {
+        var modifiedPredicate = predicate;
+        if (hasPreservationUpgrade()) {
+            modifiedPredicate = IngredientPredicateWithCacheImpl.and(predicate,
+                    (it, count) -> (count > 1 || !Balm.getHooks().getCraftingRemainingItem(it).isEmpty() || CookingRegistry.isToolItem(it)));
+        }
+
+        return super.findSourceAndMarkAsUsed(modifiedPredicate, maxAmount, inventories, requireBucket, simulate);
+    }
+
+    public boolean hasPreservationUpgrade() {
+        return false;
+    }
 }

@@ -4,6 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.tile.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -55,6 +56,9 @@ public class CounterBlock extends BlockDyeableKitchen {
         ItemStack heldItem = player.getItemInHand(hand);
         if (tryRecolorBlock(state, heldItem, level, pos, player, rayTraceResult)) {
             return InteractionResult.SUCCESS;
+        }
+        if (heldItem.getItem() == ModItems.preservationChamber) {
+            return InteractionResult.PASS;
         }
 
         CounterBlockEntity counter = (CounterBlockEntity) level.getBlockEntity(pos);

@@ -15,6 +15,9 @@ public class FabricJadeCookingForBlockheadsPlugin implements IWailaPlugin {
         registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.TOASTER_UID, CookingForBlockheadsWailaUtils::appendToasterTooltip), ToasterBlock.class);
         registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.OVEN_UID, CookingForBlockheadsWailaUtils::appendOvenTooltip), OvenBlock.class);
         registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.FRIDGE_UID, CookingForBlockheadsWailaUtils::appendFridgeTooltip), FridgeBlock.class);
+        registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.PRESERVATION_CHAMBER_UID, CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), CounterBlock.class);
+        registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.PRESERVATION_CHAMBER_UID, CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), FruitBasketBlock.class);
+        registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.PRESERVATION_CHAMBER_UID, CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), SpiceRackBlock.class);
         registration.registerBlockComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils.SINK_UID, CookingForBlockheadsWailaUtils::appendSinkTooltip), SinkBlock.class);
     }
 
