@@ -215,10 +215,13 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         }
 
+        final var previousSearch = searchBar.getValue();
         if (searchBar.keyPressed(keyCode, scanCode, modifiers) || searchBar.isFocused()) {
-            menu.search(searchBar.getValue());
-            menu.updateCraftableSlots();
-            setCurrentOffset(currentOffset);
+            if (!searchBar.getValue().equals(previousSearch)) {
+                menu.search(searchBar.getValue());
+                menu.updateCraftableSlots();
+                setCurrentOffset(currentOffset);
+            }
             return true;
         }
 
