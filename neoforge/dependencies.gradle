@@ -6,8 +6,8 @@ dependencies {
     compileOnly "curse.maven:jade-324717:$jade_neoforge_version"
     compileOnly "mcp.mobius.waila:wthit-api:forge-$wthit_version"
     compileOnly "curse.maven:the-one-probe-245211:$theoneprobe_version"
-    // runtimeOnly fg.deobf("curse.maven:croptopia-415438:4344754")
-    // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
+
+    implementation "curse.maven:spice-of-life-carrot-edition-277616:5957429"
 }
 
 configurations {
