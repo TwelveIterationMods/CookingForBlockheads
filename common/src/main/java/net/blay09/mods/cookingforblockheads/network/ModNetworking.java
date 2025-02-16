@@ -14,6 +14,7 @@ public class ModNetworking {
         networking.registerClientboundPacket(SelectionRecipesListMessage.TYPE, SelectionRecipesListMessage.class, SelectionRecipesListMessage::encode, SelectionRecipesListMessage::decode, SelectionRecipesListMessage::handle);
         networking.registerClientboundPacket(SyncedEffectMessage.TYPE, SyncedEffectMessage.class, SyncedEffectMessage::encode, SyncedEffectMessage::decode, SyncedEffectMessage::handle);
         networking.registerClientboundPacket(ClientboundOvenResultsPacket.TYPE, ClientboundOvenResultsPacket.class, ClientboundOvenResultsPacket::encode, ClientboundOvenResultsPacket::decode, ClientboundOvenResultsPacket::handle);
+        networking.registerClientboundPacket(KitchenFeedbackMessage.TYPE, KitchenFeedbackMessage.class, KitchenFeedbackMessage::encode, KitchenFeedbackMessage::decode, KitchenFeedbackMessage::handle);
     }
 
 }

@@ -27,7 +27,7 @@ public class KitchenSmeltingRecipeHandler implements KitchenRecipeHandler<Single
     public ItemStack assemble(CraftingContext context, SmeltingRecipe recipe, List<IngredientToken> ingredientTokens, RegistryAccess registryAccess) {
         for (final var itemProcessor : context.getItemProcessors()) {
             if (itemProcessor.canProcess(recipe.getType())) {
-                itemProcessor.processRecipe(recipe, ingredientTokens);
+                context.notify(itemProcessor.processRecipe(recipe, ingredientTokens));
                 return ItemStack.EMPTY;
             }
         }
