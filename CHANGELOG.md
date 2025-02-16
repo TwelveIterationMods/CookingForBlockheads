@@ -2,3 +2,4 @@
 - Added support for going back after viewing an ingredient recipe via backspace
 - Added indicator when an item is moved to the oven for cooking
 - Fixed ghost sort button tooltips remaining when resizing window
+- Fixed sort buttons to match new vanilla button style
