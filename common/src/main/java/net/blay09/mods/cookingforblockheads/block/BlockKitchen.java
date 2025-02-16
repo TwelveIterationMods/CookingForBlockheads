@@ -2,6 +2,9 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
+import net.blay09.mods.cookingforblockheads.ItemUtils;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tile.IMutableNameable;
 import net.blay09.mods.cookingforblockheads.util.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -142,6 +145,11 @@ public abstract class BlockKitchen extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof BalmContainerProvider containerProvider && !state.is(newState.getBlock())) {
             containerProvider.dropItems(level, pos);
+        }
+        if(blockEntity instanceof UpgradeablePreservation upgradeable) {
+            if(upgradeable.hasPreservationUpgrade()) {
+                ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            }
         }
 
         super.onRemove(state, level, pos, newState, isMoving);

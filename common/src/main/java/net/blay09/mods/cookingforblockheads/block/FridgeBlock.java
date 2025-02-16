@@ -153,10 +153,6 @@ public class FridgeBlock extends BlockDyeableKitchen {
                 if (((FridgeBlockEntity) blockEntity).hasIceUpgrade()) {
                     ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
                 }
-
-                if (((FridgeBlockEntity) blockEntity).hasPreservationUpgrade()) {
-                    ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
-                }
             }
 
             BlockPos posAbove = pos.above();
