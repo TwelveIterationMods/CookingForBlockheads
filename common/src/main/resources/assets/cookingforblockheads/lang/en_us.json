@@ -87,6 +87,7 @@
 
     "gui.cookingforblockheads:no_ingredients": "Not\\nenough\\ningredients",
     "gui.cookingforblockheads:no_selection": "Select an item\\non the right to\\nsee its recipe.",
+    "gui.cookingforblockheads:moved_to_oven": "Moved to Oven",
 
     "tooltip.cookingforblockheads:click_to_see_recipe": "Click to see recipe",
     "tooltip.cookingforblockheads:click_to_craft_one": "Click again to craft",

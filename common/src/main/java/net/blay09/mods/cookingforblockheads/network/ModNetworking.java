@@ -15,6 +15,7 @@ public class ModNetworking {
         networking.registerClientboundPacket(id("item_list"), ItemListMessage.class, ItemListMessage::encode, ItemListMessage::decode, ItemListMessage::handle);
         networking.registerClientboundPacket(id("synced_effect"), SyncedEffectMessage.class, SyncedEffectMessage::encode, SyncedEffectMessage::decode, SyncedEffectMessage::handle);
         networking.registerClientboundPacket(id("recipes"), RecipesMessage.class, RecipesMessage::encode, RecipesMessage::decode, RecipesMessage::handle);
+        networking.registerClientboundPacket(id("moved_to_oven"), MovedToOvenMessage.class, MovedToOvenMessage::encode, MovedToOvenMessage::decode, MovedToOvenMessage::handle);
     }
 
     @NotNull

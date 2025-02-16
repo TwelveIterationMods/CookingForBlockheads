@@ -2,10 +2,12 @@ package net.blay09.mods.cookingforblockheads;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.provider.ProviderUtils;
 import net.blay09.mods.cookingforblockheads.api.IKitchenMultiBlock;
 import net.blay09.mods.cookingforblockheads.api.SourceItem;
 import net.blay09.mods.cookingforblockheads.api.capability.*;
+import net.blay09.mods.cookingforblockheads.network.message.MovedToOvenMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.IngredientPredicateWithCacheImpl;
 import net.minecraft.core.BlockPos;
@@ -118,6 +120,7 @@ public class KitchenMultiBlock implements IKitchenMultiBlock {
                         player.drop(restStack, false);
                     }
                 }
+                Balm.getNetworking().sendTo(player, new MovedToOvenMessage());
                 player.containerMenu.broadcastChanges();
                 return;
             }

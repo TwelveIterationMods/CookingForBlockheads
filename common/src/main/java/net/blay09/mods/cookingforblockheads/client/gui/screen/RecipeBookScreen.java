@@ -15,6 +15,7 @@ import net.blay09.mods.cookingforblockheads.menu.slot.RecipeFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingRegistry;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeWithIngredients;
 import net.blay09.mods.cookingforblockheads.registry.FoodRecipeType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -34,6 +35,7 @@ import java.util.Optional;
 
 public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
+    private static final float MOVED_TO_OVEN_HINT_TIME = 40f;
     private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
     private static final int SCROLLBAR_Y = 8;
     private static final int SCROLLBAR_WIDTH = 7;
@@ -48,6 +50,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
     private int scrollBarYPos;
     private int currentOffset;
 
+    private float movedToOvenHintTime;
+
     private double mouseClickY = -1;
     private int indexWhenClicked;
     private int lastNumberOfMoves;
@@ -61,6 +65,8 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
     private final String[] noIngredients;
     private final String[] noSelection;
+
+    private final Component MOVED_TO_OVEN_COMPONENT = Component.translatable("gui.cookingforblockheads:moved_to_oven").withStyle(ChatFormatting.YELLOW);
 
     public RecipeBookScreen(RecipeBookMenu container, Inventory playerInventory, Component displayName) {
         super(container, playerInventory, displayName);
@@ -313,6 +319,16 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
 
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
+        if (movedToOvenHintTime > 0) {
+            float alpha = 1f;
+            if (movedToOvenHintTime < MOVED_TO_OVEN_HINT_TIME / 2f) {
+                alpha = Math.max(0f, movedToOvenHintTime / (MOVED_TO_OVEN_HINT_TIME / 2f));
+            }
+            guiGraphics.setColor(1f, 1f, 1f, alpha);
+            guiGraphics.drawCenteredString(font, MOVED_TO_OVEN_COMPONENT, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
+            movedToOvenHintTime -= partialTicks;
+        }
+
         var poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 300);
@@ -356,4 +372,7 @@ public class RecipeBookScreen extends AbstractContainerScreen<RecipeBookMenu> {
         return sortButtons.toArray(new SortButton[0]);
     }
 
+    public void displayMovedToOvenHint() {
+        movedToOvenHintTime = MOVED_TO_OVEN_HINT_TIME;
+    }
 }
