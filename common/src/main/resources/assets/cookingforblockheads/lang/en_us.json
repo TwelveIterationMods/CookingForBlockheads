@@ -145,6 +145,7 @@
     "config.jade.plugin_cookingforblockheads.toaster": "Toaster",
     "config.jade.plugin_cookingforblockheads.fridge": "Fridge",
     "config.jade.plugin_cookingforblockheads.sink": "Sink",
+    "config.jade.plugin_cookingforblockheads.preservation_chamber": "Preservation Chamber",
 
     "config.cookingforblockheads": "Cooking for Blockheads",
     "config.cookingforblockheads.cowJarEnabled": "Enable Cow in a Jar",
