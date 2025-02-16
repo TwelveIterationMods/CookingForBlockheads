@@ -6,9 +6,7 @@ plugins {
 	id "com.modrinth.minotaur" version "2.+"
 }
 
-group = mod_group
 archivesBaseName = "${mod_id}-fabric-${minecraft_version}"
-version = mod_version
 
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -16,7 +14,7 @@ dependencies {
 
 	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-	implementation project(":shared")
+	implementation project(":common")
 
 	modImplementation("net.blay09.mods:balm-fabric:${balm_version}") {
 		transitive = false
@@ -63,7 +61,7 @@ loom {
 			runDir("build/datagen")
 
 			vmArg "-Dfabric-api.datagen"
-			vmArg "-Dfabric-api.datagen.output-dir=${project(":shared").file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.output-dir=${project(":common").file("src/main/generated")}"
 			vmArg "-Dfabric-api.datagen.modid=${mod_id}"
 		}
 	}
@@ -78,7 +76,7 @@ sourceSets {
 }
 
 processResources {
-	from project(":shared").sourceSets.main.resources
+	from project(":common").sourceSets.main.resources
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
@@ -87,7 +85,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile) {
-	source(project(":shared").sourceSets.main.allSource)
+	source(project(":common").sourceSets.main.allSource)
 }
 
 jar {

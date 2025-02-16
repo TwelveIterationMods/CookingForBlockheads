@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/TwelveIterationMods/CookingForBlockheads/iss
 
 [[mods]]
 modId="cookingforblockheads"
-version="${mod_version}"
+version="${version}"
 displayName="CookingForBlockheads"
 displayURL="https://mods.twelveiterations.com/mc/cookingforblockheads"
 logoFile="cookingforblockheads-icon.png"
