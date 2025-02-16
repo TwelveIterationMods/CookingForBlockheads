@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads.item;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
-import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -35,14 +34,15 @@ public class ItemPreservationChamber extends Item {
         }
 
         BlockEntity tileEntity = level.getBlockEntity(pos);
-        if (tileEntity instanceof FridgeBlockEntity && !((FridgeBlockEntity) tileEntity).getBaseFridge().hasPreservationUpgrade()) {
+        if (tileEntity instanceof UpgradeablePreservation upgradeable && !upgradeable.hasPreservationUpgrade()) {
             if (!player.getAbilities().instabuild) {
                 player.getItemInHand(context.getHand()).shrink(1);
             }
 
-            ((FridgeBlockEntity) tileEntity).getBaseFridge().setHasPreservationUpgrade(true);
+            upgradeable.setHasPreservationUpgrade(true);
+
             if (!level.isClientSide) {
-                Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.FRIDGE_UPGRADE));
+                Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.KITCHEN_UPGRADE));
             }
 
             return InteractionResult.SUCCESS;
@@ -55,7 +55,7 @@ public class ItemPreservationChamber extends Item {
     public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, context, tooltip, flag);
 
-        tooltip.add(Component.translatable("tooltip.cookingforblockheads.fridge_upgrade").withStyle(ChatFormatting.YELLOW));
+        tooltip.add(Component.translatable("tooltip.cookingforblockheads.kitchen_upgrade").withStyle(ChatFormatting.YELLOW));
         tooltip.add(Component.translatable("tooltip.cookingforblockheads.preservation_chamber.description").withStyle(ChatFormatting.GRAY));
     }
 

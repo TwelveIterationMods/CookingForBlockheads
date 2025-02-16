@@ -23,9 +23,17 @@ public class FabricCookingForBlockheads implements ModInitializer {
     public void onInitialize() {
         Balm.initialize(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheads::initialize);
 
-        registerProvider("kitchen_item_provider", KitchenItemProvider.class,
-                ModBlockEntities.milkJar.get(), ModBlockEntities.cowJar.get(), ModBlockEntities.fridge.get(),
-                ModBlockEntities.sink.get(), ModBlockEntities.cuttingBoard.get());
+        registerProvider("kitchen_item_provider",
+                KitchenItemProvider.class,
+                ModBlockEntities.milkJar.get(),
+                ModBlockEntities.cowJar.get(),
+                ModBlockEntities.fridge.get(),
+                ModBlockEntities.sink.get(),
+                ModBlockEntities.cuttingBoard.get(),
+                ModBlockEntities.counter.get(),
+                ModBlockEntities.cabinet.get(),
+                ModBlockEntities.fruitBasket.get(),
+                ModBlockEntities.spiceRack.get());
 
         registerProvider("kitchen_item_processor", KitchenItemProcessor.class, ModBlockEntities.oven.get());
 
@@ -39,7 +47,7 @@ public class FabricCookingForBlockheads implements ModInitializer {
             if (state.is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
                 if (blockEntity instanceof Container container) {
                     return new ContainerKitchenItemProvider(container);
-                } else if(blockEntity instanceof BalmContainerProvider containerProvider) {
+                } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
                     return new ContainerKitchenItemProvider(containerProvider.getContainer());
                 }
             }
@@ -49,7 +57,7 @@ public class FabricCookingForBlockheads implements ModInitializer {
 
     private <T> void registerProvider(String name, Class<T> clazz, BlockEntityType<?>... blockEntities) {
         var providers = ((FabricBalmProviders) Balm.getProviders());
-        ResourceLocation identifier = ResourceLocation.fromNamespaceAndPath( CookingForBlockheads.MOD_ID, name);
+        ResourceLocation identifier = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, name);
         providers.registerProvider(identifier, clazz);
         registerLookup(identifier, clazz, blockEntities);
     }

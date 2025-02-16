@@ -1,9 +1,17 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
+import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +31,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider {
+import java.util.List;
+
+public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -33,8 +43,13 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
         }
     };
 
+    private boolean hasPreservationUpgrade;
     private Component customName;
     private boolean isDirty;
+
+    private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
+    private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
+    private final KitchenItemProvider itemProvider = new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider);
 
     public FruitBasketBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.fruitBasket.get(), pos, state);
@@ -56,6 +71,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         container.deserialize(tag.getCompound("ItemHandler"), provider);
+        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
 
         if (tag.contains("CustomName", Tag.TAG_STRING)) {
             customName = Component.Serializer.fromJson(tag.getString("CustomName"), provider);
@@ -65,6 +81,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         tag.put("ItemHandler", container.serialize(provider));
+        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {
             tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
@@ -144,5 +161,21 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public BlockPos getScreenOpeningData(ServerPlayer serverPlayer) {
         return worldPosition;
+    }
+
+    @Override
+    public boolean hasPreservationUpgrade() {
+        return hasPreservationUpgrade;
+    }
+
+    @Override
+    public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
+        this.hasPreservationUpgrade = hasPreservationUpgrade;
+        setChanged();
+    }
+
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
     }
 }

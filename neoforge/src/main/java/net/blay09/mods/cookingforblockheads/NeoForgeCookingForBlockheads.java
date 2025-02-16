@@ -87,6 +87,18 @@ public class NeoForgeCookingForBlockheads {
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
                 ModBlockEntities.sink.get(),
                 (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.fruitBasket.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.spiceRack.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.cabinet.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.counter.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
                 ModBlockEntities.sink.get(),
                 (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));

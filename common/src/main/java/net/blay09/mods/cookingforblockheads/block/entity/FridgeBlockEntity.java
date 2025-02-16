@@ -11,11 +11,13 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
@@ -45,7 +47,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
+public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -101,18 +103,11 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         }
     };
 
-    private final ContainerKitchenItemProvider conservingItemProvider = new ContainerKitchenItemProvider(container) {
-        @Override
-        protected int getUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
-            return super.getUsesLeft(slot, slotStack, ingredientTokens) - 1;
-        }
-    };
-
+    private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
     private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
-
     private final KitchenItemProvider itemProvider = new CombinedKitchenItemProvider(List.of(
-            new ConditionalKitchenItemProvider(this::hasIceUpgrade, iceUnitItemProvider),
-            new ConditionalKitchenItemProvider(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider)));
+            new ConditionalKitchenItemProvider<>(this::hasIceUpgrade, iceUnitItemProvider),
+            new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider)));
 
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
@@ -138,13 +133,16 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         markDirtyAndUpdate();
     }
 
+    @Override
     public boolean hasPreservationUpgrade() {
-        return hasPreservationUpgrade;
+        return getBaseFridge().hasPreservationUpgrade;
     }
 
+    @Override
     public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
-        this.hasPreservationUpgrade = hasPreservationUpgrade;
-        markDirtyAndUpdate();
+        final var baseFridge = getBaseFridge();
+        baseFridge.hasPreservationUpgrade = hasPreservationUpgrade;
+        baseFridge.markDirtyAndUpdate();
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
@@ -352,4 +350,5 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     public void restoreFromTransferSnapshot(TransferableContainer data) {
         data.applyTo(container);
     }
+
 }

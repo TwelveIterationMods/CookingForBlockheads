@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.compat;
 import mcjty.theoneprobe.api.*;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.block.entity.*;
 import net.minecraft.core.BlockPos;
@@ -72,6 +73,11 @@ public class TheOneProbeAddon {
                 if (sink != null && CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                     info.text(Component.translatable("waila.cookingforblockheads.water_stored", sink.getFluidTank().getAmount(), sink.getFluidTank().getCapacity()));
                 }
+            }
+
+            final var blockEntity = level.getBlockEntity(data.getPos());
+            if (blockEntity instanceof UpgradeablePreservation upgradeable && upgradeable.hasPreservationUpgrade()) {
+                info.text(Component.translatable("waila.cookingforblockheads:preservation_chamber"));
             }
         }
 
