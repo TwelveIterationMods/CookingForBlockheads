@@ -1,3 +1,4 @@
+- Added ability to favorite items using alt-click, causing them to always stay on top of the list
 - Added support for applying the Preservation Chamber to Counters, Cabinets, Fruit Baskets and Spice Racks
 - Added support for going back after viewing an ingredient recipe via backspace
 - Added indicator when an item is moved to the oven for cooking
