@@ -67,6 +67,8 @@ public class NeoForgeCookingForBlockheads {
             }
             return null;
         });
+
+        Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {

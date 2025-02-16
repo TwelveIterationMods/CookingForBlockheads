@@ -10,6 +10,9 @@ public class Compat {
 
     public static final String HARVESTCRAFT_FOOD_CORE = "pamhc2foodcore";
     public static final String THEONEPROBE = "theoneprobe";
+    public static final String APPLECORE = "applecore";
+    public static final String EX_COMPRESSUM = "excompressum";
+    public static final String SPICE_OF_LIFE = "solcarrot";
 
     public static Fluid getMilkFluid() {
         return Balm.getRegistries().getMilkFluid();
