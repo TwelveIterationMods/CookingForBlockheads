@@ -76,19 +76,57 @@ public class NeoForgeCookingForBlockheads {
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.milkJar.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.cowJar.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.fridge.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.sink.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.counter.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.cabinet.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.oven.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.fridge.get(), (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.sink.get(), (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.milkJar.get(), (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.cowJar.get(), (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.oven.get(), (blockEntity, context) -> new NeoForgeEnergyStorage(blockEntity.getEnergyStorage()));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER, ModBlockEntities.cuttingBoard.get(), (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.milkJar.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.cowJar.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.fridge.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.sink.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.fruitBasket.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.spiceRack.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.cabinet.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.counter.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.counter.get(),
+                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.cabinet.get(),
+                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.oven.get(),
+                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.fridge.get(),
+                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.sink.get(),
+                (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.milkJar.get(),
+                (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.cowJar.get(),
+                (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.oven.get(),
+                (blockEntity, context) -> new NeoForgeEnergyStorage(blockEntity.getEnergyStorage()));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.cuttingBoard.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
 
         event.registerBlockEntity(KITCHEN_ITEM_PROCESSOR,
                 ModBlockEntities.oven.get(),

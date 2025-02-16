@@ -7,6 +7,9 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.ChatFormatting;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -66,6 +69,10 @@ public class CounterBlock extends BaseKitchenBlock {
 
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {
             return InteractionResult.SUCCESS;
+        }
+
+        if (itemStack.getItem() == ModItems.preservationChamber) {
+            return InteractionResult.PASS;
         }
 
         CounterBlockEntity counter = (CounterBlockEntity) level.getBlockEntity(pos);

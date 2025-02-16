@@ -1,14 +1,22 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
+import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
@@ -35,7 +43,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
+import java.util.List;
+
+public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -49,11 +59,18 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
+    private boolean hasPreservationUpgrade;
     private Component customName;
 
     private boolean isDirty;
 
     private DyeColor color = DyeColor.WHITE;
+
+    private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
+    private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
+    private final KitchenItemProvider itemProvider = new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade,
+            conservingItemProvider,
+            containerItemProvider);
 
     public CounterBlockEntity(BlockPos pos, BlockState state) {
         this(ModBlockEntities.counter.get(), pos, state);
@@ -111,6 +128,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
         }
 
         container.deserialize(itemHandlerCompound, provider);
+        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
 
         color = DyeColor.byId(tag.getByte("Color"));
 
@@ -131,6 +149,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         tag.put("ItemHandler", container.serialize(provider));
         tag.putByte("Color", (byte) color.getId());
+        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {
             tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
@@ -231,4 +250,21 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     public void restoreFromTransferSnapshot(TransferableContainer data) {
         data.applyTo(container);
     }
+
+    @Override
+    public boolean hasPreservationUpgrade() {
+        return hasPreservationUpgrade;
+    }
+
+    @Override
+    public void setHasPreservationUpgrade(boolean hasPreservationUpgrade) {
+        this.hasPreservationUpgrade = hasPreservationUpgrade;
+        setChanged();
+    }
+
+    @Override
+    public List<BalmProvider<?>> getProviders() {
+        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
+    }
+
 }

@@ -10,6 +10,10 @@ public class WTHITCookingForBlockheadsPlugin implements IWailaPlugin {
         registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendToasterTooltip), TooltipPosition.BODY, ToasterBlock.class);
         registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendOvenTooltip), TooltipPosition.BODY, OvenBlock.class);
         registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendFridgeTooltip), TooltipPosition.BODY, FridgeBlock.class);
+        registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), TooltipPosition.BODY, FridgeBlock.class);
+        registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), TooltipPosition.BODY, CounterBlock.class);
+        registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), TooltipPosition.BODY, SpiceRackBlock.class);
+        registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendPreservationChamberTooltip), TooltipPosition.BODY, FruitBasketBlock.class);
         registrar.addComponent(new GenericComponentProvider(CookingForBlockheadsWailaUtils::appendSinkTooltip), TooltipPosition.BODY, SinkBlock.class);
     }
 

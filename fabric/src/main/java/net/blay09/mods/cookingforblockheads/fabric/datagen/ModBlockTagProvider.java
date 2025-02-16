@@ -62,7 +62,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         mineableAxeBuilder.add(ModBlocks.toolRack, ModBlocks.spiceRack, ModBlocks.fruitBasket, ModBlocks.cuttingBoard);
 
         final var kitchenItemProviders = getOrCreateTagBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
-        kitchenItemProviders.add(ModBlocks.sink, ModBlocks.counter, ModBlocks.cabinet, ModBlocks.fruitBasket, ModBlocks.spiceRack, ModBlocks.toolRack);
+        kitchenItemProviders.add(ModBlocks.toolRack);
         for (final var cabinet : ModBlocks.dyedCabinets) {
             kitchenItemProviders.add(cabinet);
         }

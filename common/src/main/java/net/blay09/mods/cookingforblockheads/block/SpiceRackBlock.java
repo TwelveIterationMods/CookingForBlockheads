@@ -6,6 +6,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.SpiceRackBlockEntity;
 import net.minecraft.ChatFormatting;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -87,6 +88,15 @@ public class SpiceRackBlock extends BaseKitchenBlock {
         }
 
         return defaultBlockState().setValue(FACING, facing);
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (itemStack.getItem() == ModItems.preservationChamber) {
+            return InteractionResult.PASS;
+        }
+
+        return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);
     }
 
     @Override
