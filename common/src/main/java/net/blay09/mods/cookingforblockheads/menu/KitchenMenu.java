@@ -44,6 +44,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private final NonNullList<ItemStack> lockedInputs = NonNullList.withSize(9, ItemStack.EMPTY);
 
     private final List<CraftableWithStatus> filteredCraftables = new ArrayList<>();
+    private final List<RecipeWithStatus> history = new ArrayList<>();
 
     private String currentSearch;
     private Comparator<CraftableWithStatus> currentSorting = new ComparatorName();
@@ -119,6 +120,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                             handled = true;
                         }
                     } else {
+                        clearHistory();
                         selectCraftable(craftableSlot.getCraftable());
                         handled = true;
                     }
@@ -603,5 +605,22 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public int getRecipesForSelectionIndex() {
         return filteredCraftables.indexOf(selectedCraftable);
+    }
+
+    public void clearHistory() {
+        history.clear();
+    }
+
+    public void pushHistory() {
+        if (selectedCraftable != null) {
+            history.add(selectedCraftable);
+        }
+    }
+
+    public void popHistory() {
+        if (!history.isEmpty()) {
+            final var entry = history.removeLast();
+            selectCraftable(entry);
+        }
     }
 }
