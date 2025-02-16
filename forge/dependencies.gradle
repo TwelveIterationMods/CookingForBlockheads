@@ -1,4 +1,5 @@
 dependencies {
+    implementation fg.deobf("curse.maven:spice-of-life-carrot-edition-277616:4888575")
     // runtimeOnly fg.deobf("curse.maven:croptopia-415438:4344754")
     // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
 }
