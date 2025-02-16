@@ -339,6 +339,10 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
 
         final var context = new CraftingContext(kitchen, player);
+        context.addListener(operation -> {
+            final var feedback = operation.getFeedback();
+            feedback.ifPresent(component -> Balm.getNetworking().sendTo(player, new KitchenFeedbackMessage(component)));
+        });
         final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs);
         final var resultItem = recipe.value().getResultItem(level.registryAccess());
         final var repeats = craftFullStack ? resultItem.getMaxStackSize() / resultItem.getCount() : 1;

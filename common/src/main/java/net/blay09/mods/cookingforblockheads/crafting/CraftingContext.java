@@ -1,19 +1,18 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.blay09.mods.cookingforblockheads.api.CacheHint;
-import net.blay09.mods.cookingforblockheads.api.Kitchen;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class CraftingContext {
 
@@ -21,6 +20,7 @@ public class CraftingContext {
     private final List<KitchenItemProcessor> itemProcessors;
     private final Map<IntList, Integer> cachedProviderIndexByIngredient = new HashMap<>();
     private final Map<CraftingOperation.IngredientTokenKey, CacheHint> cacheHintsByIngredient = new HashMap<>();
+    private final List<Consumer<KitchenOperation>> listeners = new ArrayList<>();
 
     public CraftingContext(final Kitchen kitchen, final @Nullable Player player) {
         itemProviders = kitchen.getItemProviders(player);
@@ -50,5 +50,15 @@ public class CraftingContext {
     public void cache(CraftingOperation.IngredientTokenKey ingredientTokenKey, int itemProviderIndex, CacheHint cacheHint) {
         cacheHintsByIngredient.put(ingredientTokenKey, cacheHint);
         cachedProviderIndexByIngredient.put(ingredientTokenKey.stackingIds(), itemProviderIndex);
+    }
+
+    public void addListener(Consumer<KitchenOperation> listener) {
+        listeners.add(listener);
+    }
+
+    public void notify(KitchenOperation operation) {
+        for (final var listener : listeners) {
+            listener.accept(operation);
+        }
     }
 }

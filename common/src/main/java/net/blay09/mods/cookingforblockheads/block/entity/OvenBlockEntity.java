@@ -25,6 +25,7 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -50,6 +51,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
 
@@ -433,7 +435,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
                 ingredientToken.restore(restStack);
             }
         }
-        return KitchenOperation.EMPTY;
+        return OvenOperation.INSTANCE;
     }
 
     public DoorAnimator getDoorAnimator() {
@@ -568,5 +570,14 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     @Override
     public void restoreFromTransferSnapshot(TransferableContainer data) {
         data.applyTo(container);
+    }
+
+    private static class OvenOperation implements KitchenOperation {
+        public static final KitchenOperation INSTANCE = new OvenOperation();
+
+        @Override
+        public Optional<Component> getFeedback() {
+            return Optional.of(Component.translatable("gui.cookingforblockheads.moved_to_oven").withStyle(ChatFormatting.YELLOW));
+        }
     }
 }

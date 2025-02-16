@@ -31,6 +31,7 @@ import java.util.List;
 
 public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
+    private static final float KITCHEN_FEEDBACK_HINT_TIME = 40f;
     private static final int SCROLLBAR_COLOR = 0xFFAAAAAA;
     private static final int SCROLLBAR_Y = 8;
     private static final int SCROLLBAR_WIDTH = 7;
@@ -44,6 +45,9 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private int scrollBarXPos;
     private int scrollBarYPos;
     private int currentOffset;
+
+    private Component kitchenFeedback;
+    private float kitchenFeedbackTimeLeft;
 
     private double mouseClickY = -1;
     private int indexWhenClicked;
@@ -303,6 +307,16 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
+        if (kitchenFeedback != null && kitchenFeedbackTimeLeft > 0) {
+            float alpha = 1f;
+            if (kitchenFeedbackTimeLeft < KITCHEN_FEEDBACK_HINT_TIME / 2f) {
+                alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
+            }
+            guiGraphics.setColor(1f, 1f, 1f, alpha);
+            guiGraphics.drawCenteredString(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
+            kitchenFeedbackTimeLeft -= partialTicks;
+        }
+
         var poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 300);
@@ -324,7 +338,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     private void recalculateScrollBar() {
         int scrollBarTotalHeight = SCROLLBAR_HEIGHT - 1;
-        this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f, ((float) VISIBLE_ROWS / (Math.ceil(menu.getItemListCount() / (float) VISIBLE_COLS)))));
+        this.scrollBarScaledHeight = (int) (scrollBarTotalHeight * Math.min(1f,
+                ((float) VISIBLE_ROWS / (Math.ceil(menu.getItemListCount() / (float) VISIBLE_COLS)))));
         this.scrollBarXPos = leftPos + imageWidth - SCROLLBAR_WIDTH - 9;
         this.scrollBarYPos = topPos + SCROLLBAR_Y + ((scrollBarTotalHeight - scrollBarScaledHeight) * currentOffset / Math.max(1,
                 (int) Math.ceil((menu.getItemListCount() / (float) VISIBLE_COLS)) - VISIBLE_ROWS));
@@ -342,4 +357,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         return new ArrayList<>(sortButtons);
     }
 
+    public void displayKitchenFeedback(Component component) {
+        kitchenFeedback = component;
+        kitchenFeedbackTimeLeft = KITCHEN_FEEDBACK_HINT_TIME;
+    }
 }
