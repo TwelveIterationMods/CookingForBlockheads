@@ -11,10 +11,19 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CookingForBlockheadsClient {
+
+    private static final Set<ResourceLocation> favoriteItemIds = new HashSet<>();
+
     public static void initialize() {
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
@@ -85,5 +94,15 @@ public class CookingForBlockheadsClient {
             }
         });
 
+    }
+
+    public static void setFavoriteItems(Set<ResourceLocation> favoriteItemIds) {
+        CookingForBlockheadsClient.favoriteItemIds.clear();
+        CookingForBlockheadsClient.favoriteItemIds.addAll(favoriteItemIds);
+    }
+
+    public static boolean isFavoriteItem(ItemStack itemStack) {
+        final var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+        return favoriteItemIds.contains(itemId);
     }
 }

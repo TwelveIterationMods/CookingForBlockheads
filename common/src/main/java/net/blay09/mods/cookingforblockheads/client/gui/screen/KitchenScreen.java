@@ -1,9 +1,11 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
@@ -11,6 +13,7 @@ import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
+import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,6 +21,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -173,6 +177,16 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
             return true;
+        } else if (mouseSlot instanceof CraftableListingFakeSlot recipeFakeSlot) {
+            if (hasAltDown()) {
+                final var recipe = recipeFakeSlot.getCraftable();
+                if (recipe != null) {
+                    final var itemStack = recipe.resultItem();
+                    final var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+                    Balm.getNetworking().sendToServer(new ToggleFavoriteMessage(itemId, !isFavoriteItem(itemStack)));
+                    return true;
+                }
+            }
         }
 
         return super.mouseClicked(mouseX, mouseY, button);
@@ -297,11 +311,19 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                     if (recipe != null && recipe.isMissingUtensils()) {
                         guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 92, 16, 16);
                     }
+
+                    if (recipe != null && isFavoriteItem(recipe.resultItem())) {
+                        guiGraphics.blit(guiTexture, slot.x, slot.y, 176, 108, 16, 16);
+                    }
                 }
             }
 
             poseStack.popPose();
         }
+    }
+
+    private boolean isFavoriteItem(ItemStack itemStack) {
+        return CookingForBlockheadsClient.isFavoriteItem(itemStack);
     }
 
     @Override

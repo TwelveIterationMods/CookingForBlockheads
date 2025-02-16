@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
+import net.blay09.mods.cookingforblockheads.menu.comparator.FavoriteComparator;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.network.message.*;
@@ -46,7 +47,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private final List<RecipeWithStatus> history = new ArrayList<>();
 
     private String currentSearch;
-    private Comparator<RecipeWithStatus> currentSorting = new ComparatorName();
+    private Comparator<RecipeWithStatus> currentSorting = new FavoriteComparator(new ComparatorName());
 
     private List<RecipeWithStatus> craftables = new ArrayList<>();
 
@@ -478,10 +479,10 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void setSortComparator(Comparator<RecipeWithStatus> comparator) {
-        this.currentSorting = comparator;
+        currentSorting = new FavoriteComparator(comparator);
         // When re-sorting, make sure to remove all null slots that were added to preserve layout
         filteredCraftables.removeIf(Objects::isNull);
-        filteredCraftables.sort(comparator);
+        filteredCraftables.sort(currentSorting);
         updateCraftableSlots();
     }
 

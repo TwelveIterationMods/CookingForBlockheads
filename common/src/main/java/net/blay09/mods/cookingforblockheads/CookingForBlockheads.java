@@ -2,6 +2,9 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
+import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
+import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -16,6 +19,8 @@ import net.blay09.mods.cookingforblockheads.crafting.KitchenSmeltingRecipeHandle
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
+import net.blay09.mods.cookingforblockheads.network.message.FavoriteListMessage;
+import net.minecraft.resources.ResourceLocation;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -31,6 +36,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
+
+import java.util.HashSet;
 
 public class CookingForBlockheads {
 
@@ -73,6 +80,17 @@ public class CookingForBlockheads {
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 
         CookingForBlockheadsRegistry.initialize(Balm.getEvents());
+
+        Balm.getEvents().onEvent(PlayerLoginEvent.class, event -> {
+            final var data = Balm.getHooks().getPersistentData(event.getPlayer());
+            final var cfbData = data.getCompound("CookingForBlockheads");
+            final var favoriteItems = cfbData.getCompound("FavoriteItemIds");
+            final var favoriteItemIds = new HashSet<ResourceLocation>();
+            for (final var favoriteItemId : favoriteItems.getAllKeys()) {
+                favoriteItemIds.add(ResourceLocation.parse(favoriteItemId));
+            }
+            Balm.getNetworking().sendTo(event.getPlayer(), new FavoriteListMessage(favoriteItemIds));
+        });
 
         Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
     }
