@@ -107,8 +107,15 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof BalmContainerProvider containerProvider && !state.is(newState.getBlock())) {
-            containerProvider.dropItems(level, pos);
+        if (!state.is(newState.getBlock())) {
+            if (blockEntity instanceof BalmContainerProvider containerProvider) {
+                containerProvider.dropItems(level, pos);
+            }
+            if (blockEntity instanceof UpgradeablePreservation upgradeable) {
+                if (upgradeable.hasPreservationUpgrade()) {
+                    ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+                }
+            }
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
