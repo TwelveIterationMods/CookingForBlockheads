@@ -19,9 +19,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ItemRecipeBook extends Item {
@@ -59,7 +61,7 @@ public class ItemRecipeBook extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
             final var itemStack = player.getItemInHand(hand);
-            Balm.getNetworking().openGui(player, new BalmMenuProvider<ItemStack>() {
+            Balm.getNetworking().openMenu(player, new BalmMenuProvider<ItemStack>() {
                 @Override
                 public Component getDisplayName() {
                     return Component.translatable("container.cookingforblockheads." + edition.getName());
@@ -86,12 +88,10 @@ public class ItemRecipeBook extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(itemStack, context, tooltip, flag);
-
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
         final var editionName = edition.getName();
-        tooltip.add(Component.translatable("tooltip.cookingforblockheads." + editionName).withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.translatable("tooltip.cookingforblockheads." + editionName + ".description").withStyle(ChatFormatting.GRAY));
+        consumer.accept(Component.translatable("tooltip.cookingforblockheads." + editionName).withStyle(ChatFormatting.YELLOW));
+        consumer.accept(Component.translatable("tooltip.cookingforblockheads." + editionName + ".description").withStyle(ChatFormatting.GRAY));
     }
 
 }

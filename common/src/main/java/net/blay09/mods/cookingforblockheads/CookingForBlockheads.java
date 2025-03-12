@@ -3,8 +3,6 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
 import net.blay09.mods.balm.api.event.PlayerLoginEvent;
-import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
-import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -37,7 +35,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
-import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CookingForBlockheads {
 
@@ -83,16 +82,16 @@ public class CookingForBlockheads {
 
         Balm.getEvents().onEvent(PlayerLoginEvent.class, event -> {
             final var data = Balm.getHooks().getPersistentData(event.getPlayer());
-            final var cfbData = data.getCompound("CookingForBlockheads");
-            final var favoriteItems = cfbData.getCompound("FavoriteItemIds");
-            final var favoriteItemIds = new HashSet<ResourceLocation>();
-            for (final var favoriteItemId : favoriteItems.getAllKeys()) {
-                favoriteItemIds.add(ResourceLocation.parse(favoriteItemId));
-            }
+            final var favoriteItemIds = data.getCompound("CookingForBlockheads")
+                    .flatMap(it -> it.getCompound("FavoriteItemIds"))
+                    .map(it -> it.keySet().stream().map(ResourceLocation::parse).collect(Collectors.toSet())).orElse(Set.of());
             Balm.getNetworking().sendTo(event.getPlayer(), new FavoriteListMessage(favoriteItemIds));
         });
 
         Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
     }
 
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
 }

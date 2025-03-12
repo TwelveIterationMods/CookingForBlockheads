@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
@@ -12,13 +11,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
 
@@ -28,7 +27,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
     }
 
     @Override
-    public void render(OvenBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(OvenBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level level = blockEntity.getLevel();
         if (level == null) {
             return;
@@ -47,8 +46,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(doorAngle)));
         DyeColor blockColor = state.getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
         int colorIndex = blockColor.getId();
-        BakedModel model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex)
-                .get();
+        final var model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex).get();
         dispatcher.getModelRenderer()
                 .tesselateBlock(level,
                         model,

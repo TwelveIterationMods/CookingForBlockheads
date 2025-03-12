@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.registry;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.BalmEvents;
 import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
 import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
@@ -14,6 +13,7 @@ import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -55,14 +55,14 @@ public class CookingForBlockheadsRegistry {
 
             final var resultItem = recipeHandler.predictResultItem(recipe);
             if (isEligibleResultItem(resultItem)) {
-                final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+                final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
                 recipesByItemId.put(itemId, recipeHolder);
 
                 final var groups = getGroups();
                 for (final var group : groups) {
                     for (final var ingredient : group.getChildren()) {
                         if (ingredient.test(resultItem)) {
-                            final var groupItemId = Balm.getRegistries().getKey(group.getParentItem());
+                            final var groupItemId = BuiltInRegistries.ITEM.getKey(group.getParentItem());
                             recipesByGroup.put(groupItemId, recipeHolder);
                             break;
                         }
@@ -125,12 +125,12 @@ public class CookingForBlockheadsRegistry {
     }
 
     public static Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem) {
-        final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
         return recipesByItemId.get(itemId);
     }
 
     public static Collection<? extends RecipeHolder<?>> getRecipesInGroup(ItemStack resultItem) {
-        final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
         return recipesByGroup.get(itemId);
     }
 

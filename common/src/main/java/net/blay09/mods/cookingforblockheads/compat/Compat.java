@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.balm.api.Balm;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -22,7 +23,7 @@ public class Compat {
     @Deprecated(forRemoval = true)
     public static TagKey<Item> getCookingOilTag() {
         if(cookingOilTag == null) {
-            cookingOilTag = Balm.getRegistries().getItemTag(ResourceLocation.fromNamespaceAndPath("c", "cooking_oil"));
+            cookingOilTag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "cooking_oil"));
         }
         return cookingOilTag;
     }

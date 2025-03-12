@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -28,7 +29,7 @@ public class HarvestCraftAddon {
     private boolean cuttingBoardFound;
 
     public HarvestCraftAddon() {
-        final var cuttingBoardItem = Balm.getRegistries().getItem(ResourceLocation.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
+        final var cuttingBoardItem = BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
         if (cuttingBoardItem != null && cuttingBoardItem != Items.AIR) {
             cuttingBoardFound = true;
         }

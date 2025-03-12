@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.menu.slot;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -48,7 +49,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
                 }
             }
         }
-        visibleStacks.sort(Comparator.comparing(it -> Balm.getRegistries().getKey(it.getItem()).toString()));
+        visibleStacks.sort(Comparator.comparing(it -> BuiltInRegistries.ITEM.getKey(it.getItem()).toString()));
 
         variantTimePassed = 0;
         if (previousIngredient != slotDisplay) {

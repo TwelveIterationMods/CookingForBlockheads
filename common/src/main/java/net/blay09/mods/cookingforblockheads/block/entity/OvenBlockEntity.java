@@ -29,6 +29,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -339,7 +340,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
         if (customNameComponent != null) {
             customName = customNameComponent;
@@ -353,20 +354,19 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
 
     @Override
     public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        container.deserialize(tagCompound.getCompound("ItemHandler"), provider);
-        furnaceBurnTime = tagCompound.getShort("BurnTime");
-        currentItemBurnTime = tagCompound.getShort("CurrentItemBurnTime");
-        slotCookTime = tagCompound.getIntArray("CookTimes");
+        tagCompound.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
+        furnaceBurnTime = tagCompound.getShortOr("BurnTime", (short) 0);
+        currentItemBurnTime = tagCompound.getShortOr("CurrentItemBurnTime", (short) 0);
+        slotCookTime = tagCompound.getIntArray("CookTimes").orElseGet(() -> new int[9]);
         if (slotCookTime.length != 9) {
             slotCookTime = new int[9];
         }
 
-        hasPowerUpgrade = tagCompound.getBoolean("HasPowerUpgrade");
-        energyStorage.setEnergy(tagCompound.getInt("EnergyStored"));
+        hasPowerUpgrade = tagCompound.getBooleanOr("HasPowerUpgrade", false);
+        energyStorage.setEnergy(tagCompound.getIntOr("EnergyStored", 0));
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"), provider);
-        }
+        customName = tagCompound.getString("CustomName")
+                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
     }
 
     @Override
@@ -383,13 +383,8 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
         }
 
-        if (tag.contains("IsForcedOpen", Tag.TAG_BYTE)) {
-            doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
-        }
-
-        if (tag.contains("NumPlayersUsing", Tag.TAG_BYTE)) {
-            doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
-        }
+        doorAnimator.setForcedOpen(tag.getBooleanOr("IsForcedOpen", false));
+        doorAnimator.setNumPlayersUsing(tag.getByteOr("NumPlayersUsing", (byte) 0));
     }
 
     @Override

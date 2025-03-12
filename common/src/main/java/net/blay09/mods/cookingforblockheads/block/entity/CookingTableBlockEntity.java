@@ -55,9 +55,7 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        if (tag.contains("NoFilterBook")) {
-            setNoFilterBook(ItemStack.parseOptional(provider, tag.getCompound("NoFilterBook")));
-        }
+        tag.getCompound("NoFilterBook").ifPresent(it -> setNoFilterBook(ItemStack.parse(provider, it).orElse(ItemStack.EMPTY)));
     }
 
     @Override

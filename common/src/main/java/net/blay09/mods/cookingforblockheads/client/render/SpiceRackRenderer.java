@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEntity> {
 
@@ -15,7 +16,7 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
     }
 
     @Override
-    public void render(SpiceRackBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(SpiceRackBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         if (!blockEntity.hasLevel()) {
             return;
         }

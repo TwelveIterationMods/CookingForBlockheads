@@ -7,6 +7,9 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -14,30 +17,28 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 
-public class SyncedEffectMessage implements CustomPacketPayload {
+/**
+ * @deprecated TODO Pretty sure this isn't necessary. sendParticles can spawn the particles and the sound can also be played from server.
+ */
+@Deprecated
+public record SyncedEffectMessage(BlockPos pos, Type effectType) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<SyncedEffectMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(
             CookingForBlockheads.MOD_ID,
             "synced_effect"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncedEffectMessage> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC,
+            SyncedEffectMessage::pos,
+            ByteBufCodecs.idMapper(it -> Type.values()[it], Type::ordinal),
+            SyncedEffectMessage::effectType,
+            SyncedEffectMessage::new
+    );
 
     public enum Type {
         COW_IN_A_JAR,
         OVEN_UPGRADE,
         FRIDGE_UPGRADE,
         KITCHEN_UPGRADE,
-    }
-
-    private final BlockPos pos;
-    private final Type type;
-
-    public SyncedEffectMessage(BlockPos pos, Type type) {
-        this.pos = pos;
-        this.type = type;
-    }
-
-    public static void encode(FriendlyByteBuf buf, SyncedEffectMessage message) {
-        buf.writeLong(message.pos.asLong());
-        buf.writeByte(message.type.ordinal());
     }
 
     public static SyncedEffectMessage decode(FriendlyByteBuf buf) {
@@ -53,7 +54,7 @@ public class SyncedEffectMessage implements CustomPacketPayload {
         Vec3i particleOffset = Vec3i.ZERO;
         SoundEvent soundEvent = null;
         float volume = 1f;
-        switch (message.type) {
+        switch (message.effectType) {
             case COW_IN_A_JAR -> {
                 soundEvent = SoundEvents.CHICKEN_EGG;
                 particleOffset = new Vec3i(0, 1, 0);

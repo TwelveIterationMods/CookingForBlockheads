@@ -1,18 +1,13 @@
 package net.blay09.mods.cookingforblockheads.recipe;
 
 import net.blay09.mods.balm.api.recipe.BalmRecipes;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public class ModRecipes {
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
-    public static final String TOASTER_RECIPE_GROUP = "toaster";
-    public static final String OVEN_RECIPE_GROUP = "oven";
-    public static final ResourceLocation TOASTER_RECIPE_ID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, TOASTER_RECIPE_GROUP);
-    public static final ResourceLocation OVEN_RECIPE_ID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, OVEN_RECIPE_GROUP);
+public class ModRecipes {
 
     public static RecipeBookCategory toasterRecipeBookCategory;
     public static RecipeType<ToasterRecipe> toasterRecipeType;
@@ -23,19 +18,19 @@ public class ModRecipes {
     public static RecipeSerializer<OvenRecipe> ovenRecipeSerializer;
 
     public static void initialize(BalmRecipes registry) {
-        registry.registerRecipeType(() -> toasterRecipeType = new RecipeType<>() {
+        registry.registerRecipeType((identifier) -> toasterRecipeType = new RecipeType<>() {
                     @Override
                     public String toString() {
-                        return TOASTER_RECIPE_GROUP;
+                        return identifier.getPath();
                     }
-                },
-                () -> toasterRecipeSerializer = new ToasterRecipe.Serializer(), TOASTER_RECIPE_ID);
-        registry.registerRecipeType(() -> ovenRecipeType = new RecipeType<>() {
+                }, id("toaster"));
+        registry.registerRecipeSerializer(() -> toasterRecipeSerializer = new ToasterRecipe.Serializer(), id("toaster"));
+        registry.registerRecipeType((identifier) -> ovenRecipeType = new RecipeType<>() {
                     @Override
                     public String toString() {
-                        return OVEN_RECIPE_GROUP;
+                        return identifier.getPath();
                     }
-                },
-                () -> ovenRecipeSerializer = new OvenRecipe.Serializer(), OVEN_RECIPE_ID);
+                }, id("oven"));
+        registry.registerRecipeSerializer(() -> ovenRecipeSerializer = new OvenRecipe.Serializer(), id("oven"));
     }
 }

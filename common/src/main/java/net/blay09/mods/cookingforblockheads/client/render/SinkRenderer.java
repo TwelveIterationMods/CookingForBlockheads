@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity> {
 
@@ -22,7 +23,7 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity> {
     }
 
     @Override
-    public void render(SinkBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(SinkBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level level = blockEntity.getLevel();
         if (level == null) {
             return;

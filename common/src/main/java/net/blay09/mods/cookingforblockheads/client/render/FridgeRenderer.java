@@ -10,13 +10,14 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
 
@@ -26,7 +27,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
     }
 
     @Override
-    public void render(FridgeBlockEntity tileEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(FridgeBlockEntity tileEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level level = tileEntity.getLevel();
         if (level == null) {
             return;
@@ -102,8 +103,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
 
         final var blockColor = state.getBlock() instanceof FridgeBlock fridge ? fridge.getColor() : DyeColor.WHITE;
         int colorIndex = blockColor.getId();
-        BakedModel lowerModel;
-        BakedModel upperModel = null;
+        ItemModel lowerModel;
+        ItemModel upperModel = null;
         if (isLarge) {
             lowerModel = isFlipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeLower.get(colorIndex).get();
             upperModel = isFlipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeUpper.get(colorIndex).get();

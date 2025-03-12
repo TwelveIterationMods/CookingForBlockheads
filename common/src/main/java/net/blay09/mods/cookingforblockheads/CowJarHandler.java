@@ -34,7 +34,8 @@ public class CowJarHandler {
                 }
 
                 // Ex Compressum compat for compressed cows
-                boolean wasCompressed = Balm.getHooks().getPersistentData(event.getEntity()).getCompound("excompressum").getBoolean("Compressed");
+                boolean wasCompressed = Balm.getHooks().getPersistentData(event.getEntity()).getCompound("excompressum")
+                        .flatMap(it -> it.getBoolean("Compressed")).orElse(false);
                 if (wasCompressed && tileEntity instanceof CowJarBlockEntity) {
                     ((CowJarBlockEntity) tileEntity).setCompressedCow(true);
                 }

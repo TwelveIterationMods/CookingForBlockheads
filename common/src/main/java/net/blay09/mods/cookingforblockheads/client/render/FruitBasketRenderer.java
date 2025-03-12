@@ -2,13 +2,13 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.FruitBasketBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlockEntity> {
 
@@ -16,7 +16,7 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
     }
 
     @Override
-    public void render(FruitBasketBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(FruitBasketBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level world = blockEntity.getLevel();
         if (world == null) {
             return;

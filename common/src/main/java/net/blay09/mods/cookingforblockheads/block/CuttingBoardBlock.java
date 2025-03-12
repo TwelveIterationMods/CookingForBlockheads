@@ -69,7 +69,7 @@ public class CuttingBoardBlock extends BaseKitchenBlock {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            Balm.getNetworking().openGui(player, state.getMenuProvider(level, pos));
+            Balm.getNetworking().openMenu(player, state.getMenuProvider(level, pos));
             player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
             return InteractionResult.CONSUME;
         }

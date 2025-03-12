@@ -73,9 +73,7 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
     @Override
     public void draw(CowJarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        RenderSystem.enableBlend();
         background.draw(guiGraphics);
-        RenderSystem.disableBlend();
     }
 
     @Override

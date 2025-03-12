@@ -7,10 +7,11 @@ import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
 
@@ -21,13 +22,13 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
     }
 
     @Override
-    public void render(MilkJarBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(MilkJarBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level level = blockEntity.getLevel();
         if (level == null) {
             return;
         }
 
-        super.render(blockEntity, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);
+        super.render(blockEntity, partialTicks, poseStack, buffer, combinedLight, combinedOverlay, cameraPos);
 
         if (entity == null) {
             entity = new Cow(EntityType.COW, level);
@@ -44,7 +45,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
     }
 
     @Override
-    protected BakedModel getLiquidModel() {
+    protected ItemModel getLiquidModel() {
         return ModModels.cowJarLiquid.get();
     }
 }

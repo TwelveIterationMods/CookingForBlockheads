@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.DeferredObject;
 import net.blay09.mods.balm.api.client.rendering.BalmModels;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -11,22 +12,22 @@ import net.minecraft.world.item.DyeColor;
 import java.util.*;
 
 public class ModModels {
-    public static DeferredObject<BakedModel> milkJarLiquid;
-    public static DeferredObject<BakedModel> cowJarLiquid;
-    public static DeferredObject<BakedModel> sinkLiquid;
-    public static List<DeferredObject<BakedModel>> ovenDoors;
-    public static List<DeferredObject<BakedModel>> ovenDoorHandles;
-    public static List<DeferredObject<BakedModel>> ovenDoorsActive;
-    public static List<DeferredObject<BakedModel>> fridgeDoors;
-    public static List<DeferredObject<BakedModel>> fridgeDoorsFlipped;
-    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeLower;
-    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeUpper;
-    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeLowerFlipped;
-    public static List<DeferredObject<BakedModel>> fridgeDoorsLargeUpperFlipped;
-    public static List<DeferredObject<BakedModel>> counterDoors;
-    public static List<DeferredObject<BakedModel>> counterDoorsFlipped;
-    public static List<DeferredObject<BakedModel>> cabinetDoors;
-    public static List<DeferredObject<BakedModel>> cabinetDoorsFlipped;
+    public static DeferredObject<ItemModel> milkJarLiquid;
+    public static DeferredObject<ItemModel> cowJarLiquid;
+    public static DeferredObject<ItemModel> sinkLiquid;
+    public static List<DeferredObject<ItemModel>> ovenDoors;
+    public static List<DeferredObject<ItemModel>> ovenDoorHandles;
+    public static List<DeferredObject<ItemModel>> ovenDoorsActive;
+    public static List<DeferredObject<ItemModel>> fridgeDoors;
+    public static List<DeferredObject<ItemModel>> fridgeDoorsFlipped;
+    public static List<DeferredObject<ItemModel>> fridgeDoorsLargeLower;
+    public static List<DeferredObject<ItemModel>> fridgeDoorsLargeUpper;
+    public static List<DeferredObject<ItemModel>> fridgeDoorsLargeLowerFlipped;
+    public static List<DeferredObject<ItemModel>> fridgeDoorsLargeUpperFlipped;
+    public static List<DeferredObject<ItemModel>> counterDoors;
+    public static List<DeferredObject<ItemModel>> counterDoorsFlipped;
+    public static List<DeferredObject<ItemModel>> cabinetDoors;
+    public static List<DeferredObject<ItemModel>> cabinetDoorsFlipped;
 
     public static void initialize(BalmModels models) {
         DyeColor[] colors = DyeColor.values();

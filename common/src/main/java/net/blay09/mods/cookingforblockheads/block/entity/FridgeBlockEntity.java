@@ -23,6 +23,7 @@ import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -170,7 +171,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
         if (customNameComponent != null) {
             customName = customNameComponent;
@@ -184,21 +185,15 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        container.deserialize(tag.getCompound("ItemHandler"), provider);
-        hasIceUpgrade = tag.getBoolean("HasIceUpgrade");
-        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
+        tag.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
+        hasIceUpgrade = tag.getBooleanOr("HasIceUpgrade", false);
+        hasPreservationUpgrade = tag.getBooleanOr("HasPreservationUpgrade", false);
 
-        if (tag.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tag.getString("CustomName"), provider);
-        }
+        customName = tag.getString("CustomName")
+                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
 
-        if (tag.contains("IsForcedOpen", Tag.TAG_BYTE)) {
-            doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
-        }
-
-        if (tag.contains("NumPlayersUsing", Tag.TAG_BYTE)) {
-            doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
-        }
+        doorAnimator.setForcedOpen(tag.getBooleanOr("IsForcedOpen", false));
+        doorAnimator.setNumPlayersUsing(tag.getByteOr("NumPlayersUsing", (byte) 0));
     }
 
     @Override

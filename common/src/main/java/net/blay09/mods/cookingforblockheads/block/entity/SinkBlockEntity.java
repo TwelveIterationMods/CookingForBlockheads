@@ -151,8 +151,6 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     private int ticksSinceSync;
     private boolean isDirty;
 
-    private DyeColor color = DyeColor.WHITE;
-
     public SinkBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.sink.get(), pos, state);
     }
@@ -160,13 +158,11 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     @Override
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         tag.put("FluidTank", sinkTank.serialize());
-        tag.putByte("Color", (byte) color.getId());
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        sinkTank.deserialize(tag.getCompound("FluidTank"));
-        color = DyeColor.byId(tag.getByte("Color"));
+        tag.getCompound("FluidTank").ifPresent(sinkTank::deserialize);
     }
 
     @Override

@@ -3,40 +3,28 @@ package net.blay09.mods.cookingforblockheads.network.message;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FavoriteListMessage implements CustomPacketPayload {
+public record FavoriteListMessage(Set<ResourceLocation> favoriteItemIds) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<FavoriteListMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(
             CookingForBlockheads.MOD_ID,
             "favorite_list"));
 
-    private final Set<ResourceLocation> favoriteItemIds;
-
-    public FavoriteListMessage(Set<ResourceLocation> favoriteItemIds) {
-        this.favoriteItemIds = favoriteItemIds;
-    }
-
-    public static void encode(FriendlyByteBuf buf, FavoriteListMessage message) {
-        buf.writeVarInt(message.favoriteItemIds.size());
-        for (final var itemId : message.favoriteItemIds) {
-            buf.writeResourceLocation(itemId);
-        }
-    }
-
-    public static FavoriteListMessage decode(FriendlyByteBuf buf) {
-        final var count = buf.readVarInt();
-        final var favoriteItemIds = new HashSet<ResourceLocation>();
-        for (int i = 0; i < count; i++) {
-            favoriteItemIds.add(buf.readResourceLocation());
-        }
-        return new FavoriteListMessage(favoriteItemIds);
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, FavoriteListMessage> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.collection(it -> new HashSet<>(), ResourceLocation.STREAM_CODEC),
+            FavoriteListMessage::favoriteItemIds,
+            FavoriteListMessage::new
+    );
 
     public static void handle(Player player, FavoriteListMessage message) {
         CookingForBlockheadsClient.setFavoriteItems(message.favoriteItemIds);

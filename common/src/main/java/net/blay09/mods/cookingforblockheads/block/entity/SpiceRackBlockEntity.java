@@ -14,6 +14,7 @@ import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvide
 import net.blay09.mods.cookingforblockheads.menu.SpiceRackMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +56,7 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
         if (customNameComponent != null) {
             customName = customNameComponent;
@@ -69,13 +70,12 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
 
     @Override
     public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        container.deserialize(tagCompound.getCompound("ItemHandler"), provider);
+        tagCompound.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
 
-        if (tagCompound.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tagCompound.getString("CustomName"), provider);
-        }
+        customName = tagCompound.getString("CustomName")
+                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
 
-        hasPreservationUpgrade = tagCompound.getBoolean("HasPreservationUpgrade");
+        hasPreservationUpgrade = tagCompound.getBooleanOr("HasPreservationUpgrade", false);
     }
 
     @Override

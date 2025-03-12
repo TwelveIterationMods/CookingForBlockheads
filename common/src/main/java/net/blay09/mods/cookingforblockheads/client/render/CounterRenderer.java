@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
@@ -12,13 +11,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntityRenderer<T> {
@@ -48,13 +48,13 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         return 0.35f;
     }
 
-    protected BakedModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
+    protected ItemModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
         int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
         return isFlipped ? ModModels.counterDoorsFlipped.get(colorIndex).get() : ModModels.counterDoors.get(colorIndex).get();
     }
 
     @Override
-    public void render(T blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(T blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level level = blockEntity.getLevel();
         if (level == null) {
             return;
@@ -83,7 +83,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         poseStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-        BakedModel model = getDoorModel(blockColor, isFlipped);
+        final var model = getDoorModel(blockColor, isFlipped);
         dispatcher.getModelRenderer().tesselateBlock(level, model, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
         poseStack.popPose();
 

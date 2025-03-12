@@ -25,7 +25,7 @@ public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContaine
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        container.deserialize(tag.getCompound("ItemHandler"), provider);
+        tag.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
     }
 
     @Override

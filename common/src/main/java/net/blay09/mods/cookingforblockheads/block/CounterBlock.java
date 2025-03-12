@@ -7,8 +7,6 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.ChatFormatting;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -30,7 +29,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class CounterBlock extends BaseKitchenBlock {
 
@@ -102,7 +101,7 @@ public class CounterBlock extends BaseKitchenBlock {
         }
 
         if (!level.isClientSide) {
-            Balm.getNetworking().openGui(player, counter);
+            Balm.getNetworking().openMenu(player, counter);
         }
 
         return InteractionResult.SUCCESS;
@@ -128,8 +127,8 @@ public class CounterBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.cookingforblockheads.counter.description").withStyle(ChatFormatting.GRAY));
+    protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable("tooltip.cookingforblockheads.counter.description").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

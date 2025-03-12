@@ -65,9 +65,9 @@ public class ToasterBlockEntity extends BalmBlockEntity {
 
     @Override
     public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        container.deserialize(tagCompound.getCompound("ItemHandler"), provider);
-        active = tagCompound.getBoolean("Active");
-        toastTicks = tagCompound.getInt("ToastTicks");
+        tagCompound.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
+        active = tagCompound.getBooleanOr("Active", false);
+        toastTicks = tagCompound.getIntOr("ToastTicks", 0);
     }
 
     @Override

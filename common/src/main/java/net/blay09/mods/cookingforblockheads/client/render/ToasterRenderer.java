@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity> {
 
@@ -15,7 +16,7 @@ public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity> 
     }
 
     @Override
-    public void render(ToasterBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void render(ToasterBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, Vec3 cameraPos) {
         if (!blockEntity.hasLevel()) {
             return;
         }

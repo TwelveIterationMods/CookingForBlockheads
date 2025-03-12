@@ -1,1 +1,1 @@
-- Fixed preservation chamber dropping as duplicate when dying blocks 
+- Updated to Minecraft 1.21.5

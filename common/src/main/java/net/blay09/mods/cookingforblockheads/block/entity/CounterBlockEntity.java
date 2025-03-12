@@ -13,7 +13,6 @@ import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
-import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvider;
@@ -22,10 +21,10 @@ import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,7 +34,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -63,8 +61,6 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     private Component customName;
 
     private boolean isDirty;
-
-    private DyeColor color = DyeColor.WHITE;
 
     private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
     private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
@@ -108,7 +104,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
         if (customNameComponent != null) {
             customName = customNameComponent;
@@ -122,33 +118,25 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        CompoundTag itemHandlerCompound = tag.getCompound("ItemHandler");
-        if (CookingForBlockheadsConfig.getActive().largeCounters && itemHandlerCompound.getInt("Size") < 54) {
-            itemHandlerCompound.putInt("Size", 54);
-        }
+        tag.getCompound("ItemHandler").ifPresent(it -> {
+            if (CookingForBlockheadsConfig.getActive().largeCounters && it.getIntOr("Size", 0) < 54) {
+                it.putInt("Size", 54);
+            }
+            container.deserialize(it, provider);
+        });
 
-        container.deserialize(itemHandlerCompound, provider);
-        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
+        hasPreservationUpgrade = tag.getBooleanOr("HasPreservationUpgrade", false);
 
-        color = DyeColor.byId(tag.getByte("Color"));
+        customName = tag.getString("CustomName")
+                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
 
-        if (tag.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tag.getString("CustomName"), provider);
-        }
-
-        if (tag.contains("IsForcedOpen", Tag.TAG_BYTE)) {
-            doorAnimator.setForcedOpen(tag.getBoolean("IsForcedOpen"));
-        }
-
-        if (tag.contains("NumPlayersUsing", Tag.TAG_BYTE)) {
-            doorAnimator.setNumPlayersUsing(tag.getByte("NumPlayersUsing"));
-        }
+        doorAnimator.setForcedOpen(tag.getBooleanOr("IsForcedOpen", false));
+        doorAnimator.setNumPlayersUsing(tag.getByteOr("NumPlayersUsing", (byte) 0));
     }
 
     @Override
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         tag.put("ItemHandler", container.serialize(provider));
-        tag.putByte("Color", (byte) color.getId());
         tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
 
         if (customName != null) {

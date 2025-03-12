@@ -12,12 +12,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class ItemHeatingUnit extends Item {
 
@@ -52,11 +52,9 @@ public class ItemHeatingUnit extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(itemStack, context, tooltip, flag);
-
-        tooltip.add(Component.translatable("tooltip.cookingforblockheads.oven_upgrade").withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.translatable("tooltip.cookingforblockheads.heating_unit.description").withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
+        consumer.accept(Component.translatable("tooltip.cookingforblockheads.oven_upgrade").withStyle(ChatFormatting.YELLOW));
+        consumer.accept(Component.translatable("tooltip.cookingforblockheads.heating_unit.description").withStyle(ChatFormatting.GRAY));
     }
 
 }

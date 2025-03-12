@@ -6,6 +6,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public record CraftableWithStatus(ItemStack itemStack, boolean missingIngredients, boolean missingUtensils) {
     public static final StreamCodec<RegistryFriendlyByteBuf, CraftableWithStatus> STREAM_CODEC = StreamCodec.composite(
             ItemStack.STREAM_CODEC,
@@ -16,6 +19,8 @@ public record CraftableWithStatus(ItemStack itemStack, boolean missingIngredient
             CraftableWithStatus::missingUtensils,
             CraftableWithStatus::new
     );
+    public static final StreamCodec<RegistryFriendlyByteBuf, List<CraftableWithStatus>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.collection(
+            ArrayList::new));
 
     public static CraftableWithStatus best(@Nullable CraftableWithStatus first, @Nullable CraftableWithStatus second) {
         if (first == null) {

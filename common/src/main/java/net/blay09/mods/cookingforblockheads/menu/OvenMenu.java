@@ -13,6 +13,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.util.List;
+
 public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoor {
 
     private final OvenBlockEntity oven;

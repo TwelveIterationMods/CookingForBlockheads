@@ -15,6 +15,7 @@ import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvide
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -56,7 +57,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
         if (customNameComponent != null) {
             customName = customNameComponent;
@@ -70,12 +71,11 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        container.deserialize(tag.getCompound("ItemHandler"), provider);
-        hasPreservationUpgrade = tag.getBoolean("HasPreservationUpgrade");
+        tag.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
+        hasPreservationUpgrade = tag.getBooleanOr("HasPreservationUpgrade", false);
 
-        if (tag.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tag.getString("CustomName"), provider);
-        }
+        customName = tag.getString("CustomName")
+                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
     }
 
     @Override

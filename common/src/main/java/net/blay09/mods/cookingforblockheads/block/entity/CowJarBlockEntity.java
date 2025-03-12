@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfigData;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +29,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         final var customNameComponent = input.get(DataComponents.CUSTOM_NAME);
         if (customNameComponent != null) {
             customName = customNameComponent;
@@ -44,11 +45,10 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
 
-        if (tag.contains("CustomName", Tag.TAG_STRING)) {
-            customName = Component.Serializer.fromJson(tag.getString("CustomName"), provider);
-        }
+        customName = tag.getString("CustomName")
+                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
 
-        compressedCow = tag.getBoolean("CompressedCow");
+        compressedCow = tag.getBooleanOr("CompressedCow", false);
     }
 
     @Override

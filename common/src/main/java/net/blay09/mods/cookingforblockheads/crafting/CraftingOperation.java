@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
+import net.blay09.mods.cookingforblockheads.util.ListUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class CraftingOperation  {
+public class CraftingOperation {
 
     public record IngredientTokenKey(int providerIndex, Ingredient ingredient) {
         @Override

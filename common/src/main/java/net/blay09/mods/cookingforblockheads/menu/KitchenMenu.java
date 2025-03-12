@@ -16,6 +16,7 @@ import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.network.message.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -221,7 +222,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.itemStack(), lockedInputs));
     }
 
-    public void handleRequestSelectionRecipes(ItemStack resultItem, NonNullList<ItemStack> lockedInputs) {
+    public void handleRequestSelectionRecipes(ItemStack resultItem, List<ItemStack> lockedInputs) {
         selectedCraftable = findCraftableForResultItem(resultItem);
         this.lockedInputs.clear();
         for (int i = 0; i < lockedInputs.size(); i++) {
@@ -272,9 +273,9 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     private boolean isGroupItem(ItemStack resultItem) {
-        final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
         for (final var group : CookingForBlockheadsRegistry.getGroups()) {
-            final var groupItemId = Balm.getRegistries().getKey(group.getParentItem());
+            final var groupItemId = BuiltInRegistries.ITEM.getKey(group.getParentItem());
             if (groupItemId.equals(itemId)) {
                 continue;
             }

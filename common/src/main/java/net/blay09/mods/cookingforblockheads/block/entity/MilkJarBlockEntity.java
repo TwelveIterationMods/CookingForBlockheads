@@ -115,7 +115,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        milkTank.deserialize(tag.getCompound("FluidTank"));
+        tag.getCompound("FluidTank").ifPresent(milkTank::deserialize);
     }
 
     @Override

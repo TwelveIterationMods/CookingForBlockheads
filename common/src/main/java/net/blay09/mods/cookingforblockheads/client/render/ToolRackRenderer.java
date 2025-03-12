@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class ToolRackRenderer implements BlockEntityRenderer<ToolRackBlockEntity> {
 
@@ -14,7 +15,7 @@ public class ToolRackRenderer implements BlockEntityRenderer<ToolRackBlockEntity
     }
 
     @Override
-    public void render(ToolRackBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(ToolRackBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         if (!blockEntity.hasLevel()) {
             return;
         }

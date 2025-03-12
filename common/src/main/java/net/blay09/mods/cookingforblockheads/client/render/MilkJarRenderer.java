@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -11,9 +10,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntityRenderer<T> {
 
@@ -23,7 +23,7 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
     }
 
     @Override
-    public void render(MilkJarBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(MilkJarBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         Level level = blockEntity.getLevel();
         if (level == null) {
             return;
@@ -42,7 +42,7 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
         }
     }
 
-    protected BakedModel getLiquidModel() {
+    protected ItemModel getLiquidModel() {
         return ModModels.milkJarLiquid.get();
     }
 
