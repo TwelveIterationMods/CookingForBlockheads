@@ -67,6 +67,7 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
+        ModComponents.initialize(Balm.getComponents());
         ModNetworking.initialize(Balm.getNetworking());
         ModBlocks.initialize(Balm.getBlocks());
         ModBlockEntities.initialize();
@@ -74,7 +75,6 @@ public class CookingForBlockheads {
         ModRecipes.initialize(Balm.getRecipes());
         ModMenus.initialize();
         ModSounds.initialize(Balm.getSounds());
-        ModComponents.initialize(Balm.getComponents());
 
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 
