@@ -5,7 +5,7 @@ import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.client.renderer.block.model.TextureSlots;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -280,270 +280,167 @@ public class ModModelProvider extends FabricModelProvider {
 
         final var straightModelBottom = straightModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput);
         blockStateModelGenerator.blockStateOutput.accept(createStairLike(block,
-                innerModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
-                straightModelBottom,
-                outerModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
-                innerModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
-                straightModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput),
-                outerModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput)));
+                plainVariant(innerModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput)),
+                plainVariant(straightModelBottom),
+                plainVariant(outerModelBottomTemplate.create(block, textures, blockStateModelGenerator.modelOutput)),
+                plainVariant(innerModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput)),
+                plainVariant(straightModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput)),
+                plainVariant(outerModelTopTemplate.create(block, textures, blockStateModelGenerator.modelOutput))));
+
         blockStateModelGenerator.registerSimpleItemModel(block, straightModelBottom);
     }
 
-    public static BlockStateGenerator createStairLike(Block block, ResourceLocation innerModelBottom, ResourceLocation straightModelBottom, ResourceLocation outerModelBottom, ResourceLocation innerModelTop, ResourceLocation straightModelTop, ResourceLocation outerModelTop) {
+    public static MultiVariantGenerator createStairLike(Block block, MultiVariant innerModelBottom, MultiVariant straightModelBottom, MultiVariant outerModelBottom, MultiVariant innerModelTop, MultiVariant straightModelTop, MultiVariant outerModelTop) {
         return MultiVariantGenerator.dispatch(block)
-                .with(PropertyDispatch.properties(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.HALF, BlockStateProperties.STAIRS_SHAPE)
+                .with(PropertyDispatch.initial(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.HALF, BlockStateProperties.STAIRS_SHAPE)
                         .select(Direction.EAST,
                                 Half.BOTTOM,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelBottom.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.BOTTOM,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelBottom.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.BOTTOM,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R0)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelBottom.with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.BOTTOM,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
-                        .select(Direction.EAST, Half.BOTTOM, StairsShape.OUTER_RIGHT, Variant.variant().with(VariantProperties.MODEL, outerModelBottom))
+                                straightModelBottom.with(Y_ROT_180).with(UV_LOCK))
+                        .select(Direction.EAST, Half.BOTTOM, StairsShape.OUTER_RIGHT, outerModelBottom)
                         .select(Direction.WEST,
                                 Half.BOTTOM,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelBottom.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.BOTTOM,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelBottom.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.BOTTOM,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelBottom.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.BOTTOM,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelBottom.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.BOTTOM,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
-                        .select(Direction.SOUTH, Half.BOTTOM, StairsShape.OUTER_LEFT, Variant.variant().with(VariantProperties.MODEL, outerModelBottom))
+                                outerModelBottom.with(Y_ROT_90).with(UV_LOCK))
+                        .select(Direction.SOUTH, Half.BOTTOM, StairsShape.OUTER_LEFT, outerModelBottom)
                         .select(Direction.NORTH,
                                 Half.BOTTOM,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
-                        .select(Direction.EAST, Half.BOTTOM, StairsShape.INNER_RIGHT, Variant.variant().with(VariantProperties.MODEL, innerModelBottom))
+                                outerModelBottom.with(Y_ROT_180).with(UV_LOCK))
+                        .select(Direction.EAST, Half.BOTTOM, StairsShape.INNER_RIGHT, innerModelBottom)
                         .select(Direction.WEST,
                                 Half.BOTTOM,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelBottom.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.BOTTOM,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelBottom.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.BOTTOM,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelBottom.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.BOTTOM,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelBottom.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.BOTTOM,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
-                        .select(Direction.SOUTH, Half.BOTTOM, StairsShape.INNER_LEFT, Variant.variant().with(VariantProperties.MODEL, innerModelBottom))
+                                innerModelBottom.with(Y_ROT_90).with(UV_LOCK))
+                        .select(Direction.SOUTH, Half.BOTTOM, StairsShape.INNER_LEFT, innerModelBottom)
                         .select(Direction.NORTH,
                                 Half.BOTTOM,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelBottom)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelBottom.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.TOP,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelTop.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.TOP,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelTop.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.TOP,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R0)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelTop.with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.TOP,
                                 StairsShape.STRAIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, straightModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                straightModelTop.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.TOP,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.TOP,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.TOP,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.TOP,
                                 StairsShape.OUTER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.TOP,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.TOP,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.TOP,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.TOP,
                                 StairsShape.OUTER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, outerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                outerModelTop.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.TOP,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.TOP,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(Y_ROT_180).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.TOP,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.TOP,
                                 StairsShape.INNER_RIGHT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.EAST,
                                 Half.TOP,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(Y_ROT_270).with(UV_LOCK))
                         .select(Direction.WEST,
                                 Half.TOP,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(Y_ROT_90).with(UV_LOCK))
                         .select(Direction.SOUTH,
                                 Half.TOP,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.UV_LOCK, true))
+                                innerModelTop.with(UV_LOCK))
                         .select(Direction.NORTH,
                                 Half.TOP,
                                 StairsShape.INNER_LEFT,
-                                Variant.variant()
-                                        .with(VariantProperties.MODEL, innerModelTop)
-                                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                                        .with(VariantProperties.UV_LOCK, true)));
+                                innerModelTop.with(Y_ROT_180).with(UV_LOCK)));
     }
 
     @Override

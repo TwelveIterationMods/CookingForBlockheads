@@ -8,6 +8,8 @@ import net.minecraft.world.item.DyeColor;
 
 import java.util.*;
 
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+
 public class ModModels {
     public static DeferredObject<BlockStateModel> milkJarLiquid;
     public static DeferredObject<BlockStateModel> cowJarLiquid;
@@ -29,9 +31,9 @@ public class ModModels {
     public static void initialize(BalmModels models) {
         DyeColor[] colors = DyeColor.values();
 
-        // TODO milkJarLiquid = models.loadModel(id("block/milk_jar_liquid"));
-        // TODO cowJarLiquid = models.loadModel(id("block/cow_jar_liquid"));
-        // TODO sinkLiquid = models.loadModel(id("block/sink_liquid"));
+        milkJarLiquid = models.loadModel(id("block/milk_jar_liquid"));
+        cowJarLiquid = models.loadModel(id("block/cow_jar_liquid"));
+        sinkLiquid = models.loadModel(id("block/sink_liquid"));
         ovenDoors = new ArrayList<>(colors.length);
         ovenDoorHandles = new ArrayList<>(colors.length);
         ovenDoorsActive = new ArrayList<>(colors.length);
@@ -43,36 +45,36 @@ public class ModModels {
         fridgeDoorsLargeUpperFlipped = new ArrayList<>(colors.length);
         for (DyeColor color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            // TODO ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door")));
-            // TODO ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_active")));
-            // TODO ovenDoorHandles.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_handle")));
-            // TODO fridgeDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door")));
-            // TODO fridgeDoorsFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door_flipped")));
-            // TODO fridgeDoorsLargeLower.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower")));
-            // TODO fridgeDoorsLargeLowerFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower_flipped")));
-            // TODO fridgeDoorsLargeUpper.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper")));
-            // TODO fridgeDoorsLargeUpperFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper_flipped")));
+            ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door")));
+            ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_active")));
+            ovenDoorHandles.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_handle")));
+            fridgeDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door")));
+            fridgeDoorsFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door_flipped")));
+            fridgeDoorsLargeLower.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower")));
+            fridgeDoorsLargeLowerFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower_flipped")));
+            fridgeDoorsLargeUpper.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper")));
+            fridgeDoorsLargeUpperFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper_flipped")));
         }
 
         counterDoors = new ArrayList<>(colors.length + 1);
-        // TODO counterDoors.add(0, models.loadModel(id("block/counter_door")));
+        counterDoors.add(0, models.loadModel(id("block/counter_door")));
         counterDoorsFlipped = new ArrayList<>(colors.length + 1);
-        // TODO counterDoorsFlipped.add(0, models.loadModel(id("block/counter_door_flipped")));
+        counterDoorsFlipped.add(0, models.loadModel(id("block/counter_door_flipped")));
         for (DyeColor color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            // TODO counterDoors.add(color.getId() + 1,
-            // TODO         models.loadModel(id("block/" + colorPrefix + "counter_door")));
-            // TODO counterDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "counter_door_flipped")));
+            counterDoors.add(color.getId() + 1,
+                    models.loadModel(id("block/" + colorPrefix + "counter_door")));
+            counterDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "counter_door_flipped")));
         }
 
         cabinetDoors = Lists.newArrayListWithCapacity(colors.length + 1);
-        // TODO cabinetDoors.add(0, models.loadModel(id("block/cabinet_door")));
-        // TODO cabinetDoorsFlipped = Lists.newArrayListWithCapacity(colors.length + 1);
-        // TODO cabinetDoorsFlipped.add(0, models.loadModel(id("block/cabinet_door_flipped")));
+        cabinetDoors.add(0, models.loadModel(id("block/cabinet_door")));
+        cabinetDoorsFlipped = Lists.newArrayListWithCapacity(colors.length + 1);
+        cabinetDoorsFlipped.add(0, models.loadModel(id("block/cabinet_door_flipped")));
         for (DyeColor color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
-            // TODO cabinetDoors.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door")));
-            // TODO cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
+            cabinetDoors.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door")));
+            cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
         }
     }
 }
