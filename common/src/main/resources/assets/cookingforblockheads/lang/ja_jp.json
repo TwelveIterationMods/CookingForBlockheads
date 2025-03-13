@@ -186,8 +186,8 @@
   "tooltip.cookingforblockheads.sort_by_name": "名前でソート",
   "tooltip.cookingforblockheads.sort_by_hunger": "空腹の回復でソート",
   "tooltip.cookingforblockheads.sort_by_saturation": "満腹度回復でソート",
-  "tooltip.cookingforblockheads.sort_by_eatenness": "食べた順に並び替え",
   "tooltip.cookingforblockheads.click_to_unlock": "右クリックしてアイテムをアンロック",
+  "tooltip.cookingforblockheads.sort_by_eatenness": "食べた順に並び替え",
   "tooltip.cookingforblockheads.scroll_to_switch": "右クリックしてアイテムを選択",
   "tooltip.cookingforblockheads.energy_stored": "貯蔵エネルギー: %d/%d",
   "tooltip.cookingforblockheads.kitchen_upgrade": "キッチンのアップグレード",
@@ -255,6 +255,5 @@
   "tag.item.cookingforblockheads.ingredients": "材料",
   "tag.item.cookingforblockheads.milk": "ミルク",
   "tag.item.cookingforblockheads.utensils": "調理器具",
-  "tag.item.cookingforblockheads.water": "水",
-  "tooltip.cookingforblockheads.click_to_lock": "Right-Click to lock item"
+  "tag.item.cookingforblockheads.water": "水"
 }
