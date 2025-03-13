@@ -243,11 +243,6 @@ public class FridgeBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-        tooltip.accept(Component.translatable("tooltip.cookingforblockheads.fridge.description").withStyle(ChatFormatting.GRAY));
-    }
-
-    @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
         final var block = color == null ? ModBlocks.fridges[0] : ModBlocks.fridges[color.ordinal()];
         return block.defaultBlockState()

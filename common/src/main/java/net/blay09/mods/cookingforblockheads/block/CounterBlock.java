@@ -6,16 +6,13 @@ import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
-import net.minecraft.ChatFormatting;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -28,8 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 public class CounterBlock extends BaseKitchenBlock {
 
@@ -124,11 +119,6 @@ public class CounterBlock extends BaseKitchenBlock {
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
-    }
-
-    @Override
-    protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-        tooltip.accept(Component.translatable("tooltip.cookingforblockheads.counter.description").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

@@ -1,21 +1,14 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.entity.IMutableNameable;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.util.ItemUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -32,8 +25,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 public abstract class BaseKitchenBlock extends BaseEntityBlock {
 
@@ -72,16 +63,6 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
         return state.hasProperty(HAS_COLOR) ? state.setValue(HAS_COLOR, false) : state;
-    }
-
-    // TODO @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag) {
-        consumer.accept(Component.translatable("tooltip.cookingforblockheads.multiblock_kitchen").withStyle(ChatFormatting.YELLOW));
-
-        appendHoverDescriptionText(itemStack, context, display, consumer, flag);
-    }
-
-    protected void appendHoverDescriptionText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
     }
 
     public boolean shouldBePlacedFlipped(BlockPlaceContext context, Direction facing) {
