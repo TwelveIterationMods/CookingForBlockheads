@@ -47,7 +47,9 @@ public class ModBlocks {
         blocks.register((identifier) -> milkJar = new MilkJarBlock(blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
                 .component(ModComponents.multiblockKitchen.get(),
                         new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.milk_jar.description")))), id("milk_jar"));
-        blocks.register((identifier) -> cowJar = new CowJarBlock(blockProperties(identifier)), ModBlocks::itemBlock, id("cow_jar"));
+        blocks.register((identifier) -> cowJar = new CowJarBlock(blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
+                .component(ModComponents.multiblockKitchen.get(),
+                        new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.cow_jar.description")))), id("cow_jar"));
         blocks.register((identifier) -> spiceRack = new SpiceRackBlock(blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
                 .component(ModComponents.multiblockKitchen.get(),
                         new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.spice_rack.description")))), id("spice_rack"));
@@ -55,7 +57,9 @@ public class ModBlocks {
                 .component(ModComponents.multiblockKitchen.get(),
                         new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.fruit_basket.description")))),
                 id("fruit_basket"));
-        blocks.register((identifier) -> cuttingBoard = new CuttingBoardBlock(blockProperties(identifier)), ModBlocks::itemBlock, id("cutting_board"));
+        blocks.register((identifier) -> cuttingBoard = new CuttingBoardBlock(blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
+                .component(ModComponents.multiblockKitchen.get(),
+                        new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.cutting_board.description")))), id("cutting_board"));
 
         DyeColor[] colors = DyeColor.values();
         kitchenFloors = new Block[colors.length];
@@ -92,7 +96,9 @@ public class ModBlocks {
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             blocks.register((identifier) -> kitchenFloors[color.ordinal()] = new KitchenFloorBlock(blockProperties(identifier)),
-                    ModBlocks::itemBlock,
+                    (block, id) -> new BlockItem(block, itemProperties(id)
+                            .component(ModComponents.multiblockKitchen.get(),
+                                    new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.kitchen_floor.description")))),
                     id(colorPrefix + "kitchen_floor"));
         }
         blocks.register((identifier) -> cookingTable = new CookingTableBlock(null, blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
@@ -118,11 +124,15 @@ public class ModBlocks {
                                     new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.counter.description")))),
                     id(colorPrefix + "counter"));
         }
-        blocks.register((identifier) -> cabinet = new CabinetBlock(null, blockProperties(identifier)), ModBlocks::itemBlock, id("cabinet"));
+        blocks.register((identifier) -> cabinet = new CabinetBlock(null, blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
+                .component(ModComponents.multiblockKitchen.get(),
+                        new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.cabinet.description")))), id("cabinet"));
         for (final var color : colors) {
             final var colorPrefix = color.getSerializedName() + "_";
             blocks.register((identifier) -> dyedCabinets[color.ordinal()] = new CabinetBlock(color, blockProperties(identifier)),
-                    ModBlocks::itemBlock,
+                    (block, id) -> new BlockItem(block, itemProperties(id)
+                            .component(ModComponents.multiblockKitchen.get(),
+                                    new MultiblockKitchenComponent(Component.translatable("tooltip.cookingforblockheads.cabinet.description")))),
                     id(colorPrefix + "cabinet"));
         }
         blocks.register((identifier) -> sink = new SinkBlock(null, blockProperties(identifier)), (block, id) -> new BlockItem(block, itemProperties(id)
