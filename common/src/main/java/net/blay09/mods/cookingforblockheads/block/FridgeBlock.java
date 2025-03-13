@@ -196,20 +196,9 @@ public class FridgeBlock extends BaseKitchenBlock {
         return super.updateShape(state, level, scheduledTickAccess, pos, facing, facingPos, facingState, randomSource);
     }
 
-    @Override
+    /*@Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof FridgeBlockEntity) {
-                if (((FridgeBlockEntity) blockEntity).hasIceUpgrade()) {
-                    ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
-                }
-
-                if (((FridgeBlockEntity) blockEntity).hasPreservationUpgrade()) {
-                    ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
-                }
-            }
-
             BlockPos posAbove = pos.above();
             BlockState stateAbove = level.getBlockState(posAbove);
             BlockPos posBelow = pos.below();
@@ -222,7 +211,7 @@ public class FridgeBlock extends BaseKitchenBlock {
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
-    }
+    }*/
 
     @Nullable
     @Override

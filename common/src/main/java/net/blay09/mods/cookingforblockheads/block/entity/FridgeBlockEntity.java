@@ -14,6 +14,7 @@ import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
@@ -21,6 +22,7 @@ import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvide
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentGetter;
@@ -346,4 +348,14 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         data.applyTo(container);
     }
 
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (hasIceUpgrade()) {
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
+        }
+        if (hasPreservationUpgrade()) {
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+        }
+    }
 }

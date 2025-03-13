@@ -17,14 +17,15 @@ import net.blay09.mods.cookingforblockheads.api.KitchenOperation;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +34,6 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -576,6 +576,14 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         @Override
         public Optional<Component> getFeedback() {
             return Optional.of(Component.translatable("gui.cookingforblockheads.moved_to_oven").withStyle(ChatFormatting.YELLOW));
+        }
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (hasPowerUpgrade()) {
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
         }
     }
 }

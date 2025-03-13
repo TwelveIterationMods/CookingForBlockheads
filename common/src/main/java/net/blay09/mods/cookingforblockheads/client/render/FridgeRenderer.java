@@ -8,9 +8,9 @@ import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.DyeColor;
@@ -103,8 +103,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
 
         final var blockColor = state.getBlock() instanceof FridgeBlock fridge ? fridge.getColor() : DyeColor.WHITE;
         int colorIndex = blockColor.getId();
-        ItemModel lowerModel;
-        ItemModel upperModel = null;
+        BlockStateModel lowerModel;
+        BlockStateModel upperModel = null;
         if (isLarge) {
             lowerModel = isFlipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeLower.get(colorIndex).get();
             upperModel = isFlipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeUpper.get(colorIndex).get();
@@ -115,27 +115,23 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity> {
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
         dispatcher.getModelRenderer()
                 .tesselateBlock(level,
-                        lowerModel,
+                        lowerModel.collectParts(random),
                         tileEntity.getBlockState(),
                         tileEntity.getBlockPos(),
                         poseStack,
                         buffer.getBuffer(RenderType.solid()),
                         false,
-                        random,
-                        0,
                         0);
         if (upperModel != null) {
             poseStack.translate(0, 1, 0);
             dispatcher.getModelRenderer()
                     .tesselateBlock(level,
-                            upperModel,
+                            upperModel.collectParts(random),
                             tileEntity.getBlockState(),
                             tileEntity.getBlockPos().above(),
                             poseStack,
                             buffer.getBuffer(RenderType.solid()),
                             false,
-                            random,
-                            0,
                             0);
         }
 

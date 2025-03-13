@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CabinetBlockEntity;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +38,7 @@ public class CabinetRenderer extends CounterRenderer<CabinetBlockEntity> {
     }
 
     @Override
-    protected ItemModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
+    protected BlockStateModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
         int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
         return isFlipped ? ModModels.cabinetDoorsFlipped.get(colorIndex).get() : ModModels.cabinetDoors.get(colorIndex).get();
     }

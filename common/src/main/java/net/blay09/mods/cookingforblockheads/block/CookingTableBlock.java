@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -94,16 +93,6 @@ public class CookingTableBlock extends BaseKitchenBlock {
         }
 
         return InteractionResult.TRY_WITH_EMPTY_HAND;
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        CookingTableBlockEntity tileEntity = (CookingTableBlockEntity) level.getBlockEntity(pos);
-        if (tileEntity != null && !state.is(newState.getBlock())) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, tileEntity.getNoFilterBook());
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Nullable

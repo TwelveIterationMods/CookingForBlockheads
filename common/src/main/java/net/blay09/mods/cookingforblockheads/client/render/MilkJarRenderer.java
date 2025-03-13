@@ -8,9 +8,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -37,12 +37,12 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
             RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState(), 0f);
             poseStack.translate(-0.5, 0, -0.5);
             poseStack.scale(1f, milkAmount / fluidTank.getCapacity(), 1f);
-            dispatcher.getModelRenderer().tesselateBlock(level, getLiquidModel(), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+            dispatcher.getModelRenderer().tesselateBlock(level, getLiquidModel().collectParts(random), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, 0);
             poseStack.popPose();
         }
     }
 
-    protected ItemModel getLiquidModel() {
+    protected BlockStateModel getLiquidModel() {
         return ModModels.milkJarLiquid.get();
     }
 

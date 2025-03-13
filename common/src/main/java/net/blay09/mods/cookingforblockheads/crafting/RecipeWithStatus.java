@@ -4,6 +4,8 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.RecipeDisplayEntry;
@@ -13,40 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingredient> missingIngredients,
-                               int missingIngredientsMask, NonNullList<ItemStack> lockedInputs) {
+                               int missingIngredientsMask, List<ItemStack> lockedInputs) {
 
-    public void toNetwork(RegistryFriendlyByteBuf buf) {
-        RecipeDisplayEntry.STREAM_CODEC.encode(buf, recipeDisplayEntry);
-        buf.writeInt(missingIngredientsMask);
-        buf.writeInt(missingIngredients.size());
-        for (final var ingredient : missingIngredients) {
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ingredient);
-        }
-        if (lockedInputs != null) {
-            buf.writeInt(lockedInputs.size());
-            for (final var lockedInput : lockedInputs) {
-                ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, lockedInput);
-            }
-        } else {
-            buf.writeInt(0);
-        }
-    }
-
-    public static RecipeWithStatus fromNetwork(RegistryFriendlyByteBuf buf) {
-        final var recipeDisplayEntry = RecipeDisplayEntry.STREAM_CODEC.decode(buf);
-        final var missingIngredientsMask = buf.readInt();
-        final var missingIngredientCount = buf.readInt();
-        final var missingIngredients = new ArrayList<Ingredient>(missingIngredientCount);
-        for (int j = 0; j < missingIngredientCount; j++) {
-            missingIngredients.add(Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
-        }
-        final var lockedInputCount = buf.readInt();
-        final var lockedInputs = NonNullList.withSize(lockedInputCount, ItemStack.EMPTY);
-        for (int j = 0; j < lockedInputCount; j++) {
-            lockedInputs.set(j, ItemStack.OPTIONAL_STREAM_CODEC.decode(buf));
-        }
-        return new RecipeWithStatus(recipeDisplayEntry, missingIngredients, missingIngredientsMask, lockedInputs);
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, RecipeWithStatus> STREAM_CODEC = StreamCodec.composite(
+            RecipeDisplayEntry.STREAM_CODEC,
+            RecipeWithStatus::recipeDisplayEntry,
+            ByteBufCodecs.collection(ArrayList::new, Ingredient.CONTENTS_STREAM_CODEC),
+            RecipeWithStatus::missingIngredients,
+            ByteBufCodecs.INT,
+            RecipeWithStatus::missingIngredientsMask,
+            ItemStack.OPTIONAL_LIST_STREAM_CODEC,
+            RecipeWithStatus::lockedInputs,
+            RecipeWithStatus::new
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, List<RecipeWithStatus>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.collection(
+            ArrayList::new));
 
     public static RecipeWithStatus best(@Nullable RecipeWithStatus first, @Nullable RecipeWithStatus second) {
         if (first == null) {

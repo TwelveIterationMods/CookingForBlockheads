@@ -6,10 +6,10 @@ import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockE
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
+import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -94,5 +94,13 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     @Override
     public void restoreFromTransferSnapshot(ItemStack data) {
         setNoFilterBook(data);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (hasNoFilterBook()) {
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, getNoFilterBook());
+        }
     }
 }

@@ -8,10 +8,12 @@ import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.SpiceRackMenu;
+import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentGetter;
@@ -27,6 +29,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -177,5 +180,13 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     @Override
     public List<BalmProvider<?>> getProviders() {
         return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (hasPreservationUpgrade()) {
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+        }
     }
 }

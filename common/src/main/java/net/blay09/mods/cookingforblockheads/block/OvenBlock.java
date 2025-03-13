@@ -6,7 +6,6 @@ import net.blay09.mods.balm.api.Balm;
 
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
@@ -187,20 +186,6 @@ public class OvenBlock extends BaseKitchenBlock {
                 level.addParticle(ParticleTypes.SMOKE, x + f4, y, z + f3, 0, 0, 0);
             }
         }
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (newState.getBlock() != state.getBlock()) {
-            BlockEntity tileEntity = level.getBlockEntity(pos);
-            if (tileEntity instanceof OvenBlockEntity) {
-                if (((OvenBlockEntity) tileEntity).hasPowerUpgrade()) {
-                    ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
-                }
-            }
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Nullable

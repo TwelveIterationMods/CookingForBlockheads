@@ -49,26 +49,22 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
         final var model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex).get();
         dispatcher.getModelRenderer()
                 .tesselateBlock(level,
-                        model,
+                        model.collectParts(random),
                         blockEntity.getBlockState(),
                         blockEntity.getBlockPos(),
                         poseStack,
                         buffer.getBuffer(RenderType.solid()),
                         false,
-                        random,
-                        0,
                         0);
         poseStack.translate(0f, 0f, -1f);
         dispatcher.getModelRenderer()
                 .tesselateBlock(level,
-                        ModModels.ovenDoorHandles.get(colorIndex).get(),
+                        ModModels.ovenDoorHandles.get(colorIndex).get().collectParts(random),
                         blockEntity.getBlockState(),
                         blockEntity.getBlockPos().relative(facing),
                         poseStack,
                         buffer.getBuffer(RenderType.solid()),
                         false,
-                        random,
-                        0,
                         0);
         poseStack.popPose();
 

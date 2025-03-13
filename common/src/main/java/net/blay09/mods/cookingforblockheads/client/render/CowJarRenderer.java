@@ -6,8 +6,8 @@ import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.level.Level;
@@ -45,7 +45,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
     }
 
     @Override
-    protected ItemModel getLiquidModel() {
+    protected BlockStateModel getLiquidModel() {
         return ModModels.cowJarLiquid.get();
     }
 }

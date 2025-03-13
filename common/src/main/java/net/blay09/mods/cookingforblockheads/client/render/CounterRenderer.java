@@ -9,9 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.DyeColor;
@@ -48,7 +48,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         return 0.35f;
     }
 
-    protected ItemModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
+    protected BlockStateModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
         int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
         return isFlipped ? ModModels.counterDoorsFlipped.get(colorIndex).get() : ModModels.counterDoors.get(colorIndex).get();
     }
@@ -84,7 +84,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
 
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
         final var model = getDoorModel(blockColor, isFlipped);
-        dispatcher.getModelRenderer().tesselateBlock(level, model, blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, random, 0, 0);
+        dispatcher.getModelRenderer().tesselateBlock(level, model.collectParts(random), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, 0);
         poseStack.popPose();
 
         // Render the content if the door is open
