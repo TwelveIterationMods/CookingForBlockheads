@@ -255,5 +255,6 @@
   "tag.item.cookingforblockheads.ingredients": "材料",
   "tag.item.cookingforblockheads.milk": "ミルク",
   "tag.item.cookingforblockheads.utensils": "調理器具",
-  "tag.item.cookingforblockheads.water": "水"
+  "tag.item.cookingforblockheads.water": "水",
+  "tooltip.cookingforblockheads.click_to_lock": "右クリックしてアイテムをロックする"
 }
