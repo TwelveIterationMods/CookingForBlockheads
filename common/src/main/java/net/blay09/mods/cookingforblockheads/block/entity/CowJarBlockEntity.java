@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfigData;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -9,7 +8,6 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -68,7 +66,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (milkTank.getAmount() < MILK_CAPACITY) {
-            CookingForBlockheadsConfigData config = CookingForBlockheadsConfig.getActive();
+            CookingForBlockheadsConfig config = CookingForBlockheadsConfig.getActive();
 
             int milkToAdd = config.cowJarMilkPerTick;
             if (compressedCow) {
