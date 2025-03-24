@@ -5,9 +5,9 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.*;
 import net.blay09.mods.balm.api.energy.BalmEnergyStorageProvider;
+import net.blay09.mods.balm.api.energy.DefaultEnergyStorage;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.api.tag.BalmItemTags;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
@@ -107,7 +107,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         }
     };
 
-    private final EnergyStorage energyStorage = new EnergyStorage(10000) {
+    private final DefaultEnergyStorage energyStorage = new DefaultEnergyStorage(10000) {
         @Override
         public int fill(int maxReceive, boolean simulate) {
             if (!simulate) {
@@ -325,7 +325,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             return 800;
         }
 
-        return Balm.getHooks().getBurnTime(level, itemStack);
+        return level.fuelValues().burnDuration(itemStack);
     }
 
     private boolean shouldConsumeFuel() {

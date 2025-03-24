@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
+import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
@@ -13,7 +13,6 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -87,7 +86,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
     }
 
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
-    protected final FluidTank milkTank = new FluidTank(MILK_CAPACITY) {
+    protected final DefaultFluidTank milkTank = new DefaultFluidTank(MILK_CAPACITY) {
         @Override
         public boolean canFill(Fluid fluid) {
             return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);

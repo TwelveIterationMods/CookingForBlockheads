@@ -1,17 +1,16 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.provider.ProviderUtils;
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
+import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -56,12 +55,12 @@ public class KitchenImpl implements Kitchen {
                     BlockState state = level.getBlockState(position);
                     BlockEntity blockEntity = level.getBlockEntity(position);
                     if (blockEntity != null) {
-                        var itemProvider = ProviderUtils.getProvider(blockEntity, KitchenItemProvider.class);
+                        var itemProvider = Balm.getCapabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROVIDER);
                         if (itemProvider != null) {
                             itemProviderList.add(itemProvider);
                         }
 
-                        final var itemProcessor = ProviderUtils.getProvider(blockEntity, KitchenItemProcessor.class);
+                        final var itemProcessor = Balm.getCapabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROCESSOR);
                         if (itemProcessor != null) {
                             itemProcessorList.add(itemProcessor);
                         }

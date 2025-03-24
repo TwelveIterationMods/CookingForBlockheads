@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
+import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.balm.api.provider.BalmProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
@@ -16,8 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -90,7 +88,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         }
     }
 
-    private final FluidTank sinkTank = new FluidTank(16000) {
+    private final DefaultFluidTank sinkTank = new DefaultFluidTank(16000) {
 
         @Override
         public Fluid getFluid() {
