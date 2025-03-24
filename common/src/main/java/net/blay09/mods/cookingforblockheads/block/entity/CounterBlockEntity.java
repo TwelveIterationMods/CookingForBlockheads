@@ -12,6 +12,7 @@ import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
@@ -45,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation {
+public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -253,15 +254,15 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
-    }
-
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (hasPreservationUpgrade()) {
             ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
         }
+    }
+
+    @Override
+    public KitchenItemProvider getKitchenItemProvider() {
+        return itemProvider;
     }
 }

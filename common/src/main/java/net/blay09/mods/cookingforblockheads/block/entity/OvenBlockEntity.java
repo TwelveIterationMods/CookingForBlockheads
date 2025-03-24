@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.*;
@@ -12,19 +11,21 @@ import net.blay09.mods.balm.api.tag.BalmItemTags;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenOperation;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
-import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
-import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProcessorHolder;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
+import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -44,7 +45,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -54,31 +58,32 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
+public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, KitchenItemProviderHolder, KitchenItemProcessorHolder {
 
     private static final int COOK_TIME = 200;
-
-    private final DefaultContainer container = new DefaultContainer(20) {
+    private final DefaultEnergyStorage energyStorage = new DefaultEnergyStorage(10000) {
         @Override
-        public boolean canPlaceItem(int slot, ItemStack itemStack) {
-            if (slot < 3) {
-                return !getSmeltingResult(itemStack).isEmpty();
-            } else if (slot == 3) {
-                return isItemFuel(level, itemStack);
+        public int fill(int maxReceive, boolean simulate) {
+            if (!simulate) {
+                OvenBlockEntity.this.setChanged();
             }
-            return true;
+
+            return super.fill(maxReceive, simulate);
         }
 
         @Override
-        public void slotChanged(int slot) {
-            if (slot >= 7 && slot < 16) {
-                slotCookTime[slot - 7] = 0;
+        public int drain(int maxExtract, boolean simulate) {
+            if (!simulate) {
+                OvenBlockEntity.this.setChanged();
             }
-            isDirty = true;
-            OvenBlockEntity.this.setChanged();
+
+            return super.drain(maxExtract, simulate);
         }
     };
-
+    private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
+    public int[] slotCookTime = new int[9];
+    public int furnaceBurnTime;
+    public int currentItemBurnTime;
     private final ContainerData dataAccess = new ContainerData() {
         public int get(int id) {
             if (id == 0) {
@@ -106,44 +111,35 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             return 11;
         }
     };
-
-    private final DefaultEnergyStorage energyStorage = new DefaultEnergyStorage(10000) {
+    private Component customName;
+    private boolean isFirstTick = true;
+    private boolean isDirty;
+    private final DefaultContainer container = new DefaultContainer(20) {
         @Override
-        public int fill(int maxReceive, boolean simulate) {
-            if (!simulate) {
-                OvenBlockEntity.this.setChanged();
+        public boolean canPlaceItem(int slot, ItemStack itemStack) {
+            if (slot < 3) {
+                return !getSmeltingResult(itemStack).isEmpty();
+            } else if (slot == 3) {
+                return isItemFuel(level, itemStack);
             }
-
-            return super.fill(maxReceive, simulate);
+            return true;
         }
 
         @Override
-        public int drain(int maxExtract, boolean simulate) {
-            if (!simulate) {
-                OvenBlockEntity.this.setChanged();
+        public void slotChanged(int slot) {
+            if (slot >= 7 && slot < 16) {
+                slotCookTime[slot - 7] = 0;
             }
-
-            return super.drain(maxExtract, simulate);
+            isDirty = true;
+            OvenBlockEntity.this.setChanged();
         }
     };
-
     private final SubContainer inputContainer = new SubContainer(container, 0, 3);
     private final SubContainer fuelContainer = new SubContainer(container, 3, 4);
     private final SubContainer outputContainer = new SubContainer(container, 4, 7);
     private final SubContainer processingContainer = new SubContainer(container, 7, 16);
     private final SubContainer toolsContainer = new SubContainer(container, 16, 20);
     private final KitchenItemProvider itemProvider = new ContainerKitchenItemProvider(new CombinedContainer(toolsContainer, outputContainer));
-    private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
-
-    private Component customName;
-
-    private boolean isFirstTick = true;
-
-    public int[] slotCookTime = new int[9];
-    public int furnaceBurnTime;
-    public int currentItemBurnTime;
-    private boolean isDirty;
-
     private boolean hasPowerUpgrade;
     private Direction facing;
 
@@ -153,21 +149,41 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         doorAnimator.setSoundEventClose(ModSounds.ovenClose.get());
     }
 
+    public static void clientTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
+        blockEntity.clientTick(level, pos, state);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    public static boolean isItemFuel(Level level, ItemStack itemStack) {
+        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil) {
+            return itemStack.is(BalmItemTags.COOKING_OIL);
+        }
+
+        return getBurnTime(level, itemStack) > 0;
+    }
+
+    protected static int getBurnTime(Level level, ItemStack itemStack) {
+        if (itemStack.isEmpty()) {
+            return 0;
+        }
+
+        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil && itemStack.is(BalmItemTags.COOKING_OIL)) {
+            return 800;
+        }
+
+        return level.fuelValues().burnDuration(itemStack);
+    }
+
     @Override
     public boolean triggerEvent(int id, int type) {
         return doorAnimator.receiveClientEvent(id, type) || super.triggerEvent(id, type);
     }
 
-    public static void clientTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
-        blockEntity.clientTick(level, pos, state);
-    }
-
     public void clientTick(Level level, BlockPos pos, BlockState state) {
         doorAnimator.update();
-    }
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
-        blockEntity.serverTick(level, pos, state);
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
@@ -308,26 +324,6 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         return ItemStack.EMPTY;
     }
 
-    public static boolean isItemFuel(Level level, ItemStack itemStack) {
-        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil) {
-            return itemStack.is(BalmItemTags.COOKING_OIL);
-        }
-
-        return getBurnTime(level, itemStack) > 0;
-    }
-
-    protected static int getBurnTime(Level level, ItemStack itemStack) {
-        if (itemStack.isEmpty()) {
-            return 0;
-        }
-
-        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil && itemStack.is(BalmItemTags.COOKING_OIL)) {
-            return 800;
-        }
-
-        return level.fuelValues().burnDuration(itemStack);
-    }
-
     private boolean shouldConsumeFuel() {
         for (int i = 0; i < processingContainer.getContainerSize(); i++) {
             ItemStack cookingStack = processingContainer.getItem(i);
@@ -466,11 +462,13 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(
-                new BalmProvider<>(KitchenItemProvider.class, itemProvider),
-                new BalmProvider<>(KitchenItemProcessor.class, this)
-        );
+    public KitchenItemProvider getKitchenItemProvider() {
+        return itemProvider;
+    }
+
+    @Override
+    public KitchenItemProcessor getKitchenItemProcessor() {
+        return this;
     }
 
     public Container getInputContainer() {
@@ -502,12 +500,6 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     @Override
-    public void setCustomName(Component customName) {
-        this.customName = customName;
-        setChanged();
-    }
-
-    @Override
     public boolean hasCustomName() {
         return customName != null;
     }
@@ -516,6 +508,12 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     @Override
     public Component getCustomName() {
         return customName;
+    }
+
+    @Override
+    public void setCustomName(Component customName) {
+        this.customName = customName;
+        setChanged();
     }
 
     @Override
@@ -570,20 +568,20 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         data.applyTo(container);
     }
 
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (hasPowerUpgrade()) {
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
+        }
+    }
+
     private static class OvenOperation implements KitchenOperation {
         public static final KitchenOperation INSTANCE = new OvenOperation();
 
         @Override
         public Optional<Component> getFeedback() {
             return Optional.of(Component.translatable("gui.cookingforblockheads.moved_to_oven").withStyle(ChatFormatting.YELLOW));
-        }
-    }
-
-    @Override
-    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        super.preRemoveSideEffects(pos, state);
-        if (hasPowerUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
         }
     }
 }

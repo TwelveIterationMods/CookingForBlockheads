@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.CombinedContainer;
@@ -11,16 +10,17 @@ import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
+import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ConversingKitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.menu.FridgeMenu;
-import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
+import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -28,7 +28,6 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -49,32 +48,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation {
-
-    private final DefaultContainer container = new DefaultContainer(27) {
-        @Override
-        public void setChanged() {
-            isDirty = true;
-            FridgeBlockEntity.this.setChanged();
-        }
-    };
-
-    public record IceUnitIngredientToken(ItemStack itemStack) implements IngredientToken {
-        @Override
-        public ItemStack peek() {
-            return itemStack;
-        }
-
-        @Override
-        public ItemStack consume() {
-            return itemStack;
-        }
-
-        @Override
-        public ItemStack restore(ItemStack itemStack) {
-            return ItemStack.EMPTY;
-        }
-    }
+public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
@@ -104,26 +78,37 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
             return CacheHint.NONE;
         }
     };
-
+    private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
+    public boolean hasIceUpgrade;
+    public boolean hasPreservationUpgrade;
+    private Component customName;
+    private boolean isDirty;
+    private final DefaultContainer container = new DefaultContainer(27) {
+        @Override
+        public void setChanged() {
+            isDirty = true;
+            FridgeBlockEntity.this.setChanged();
+        }
+    };
     private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
     private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
     private final KitchenItemProvider itemProvider = new CombinedKitchenItemProvider(List.of(
             new ConditionalKitchenItemProvider<>(this::hasIceUpgrade, iceUnitItemProvider),
             new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider)));
 
-    private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
-
-    private Component customName;
-
-    private boolean isDirty;
-    public boolean hasIceUpgrade;
-    public boolean hasPreservationUpgrade;
-
     public FridgeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.fridge.get(), pos, state);
         doorAnimator.setOpenRadius(2);
         doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen.get());
         doorAnimator.setSoundEventClose(ModSounds.fridgeClose.get());
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
+        blockEntity.clientTick(level, pos, state);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
     }
 
     public boolean hasIceUpgrade() {
@@ -147,16 +132,8 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         baseFridge.markDirtyAndUpdate();
     }
 
-    public static void clientTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
-        blockEntity.clientTick(level, pos, state);
-    }
-
     public void clientTick(Level level, BlockPos pos, BlockState state) {
         doorAnimator.update();
-    }
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {
-        blockEntity.serverTick(level, pos, state);
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
@@ -249,8 +226,8 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
+    public KitchenItemProvider getKitchenItemProvider() {
+        return itemProvider;
     }
 
     public DoorAnimator getDoorAnimator() {
@@ -296,12 +273,6 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     @Override
-    public void setCustomName(Component customName) {
-        this.customName = customName;
-        setChanged();
-    }
-
-    @Override
     public boolean hasCustomName() {
         return customName != null;
     }
@@ -310,6 +281,12 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     @Override
     public Component getCustomName() {
         return customName;
+    }
+
+    @Override
+    public void setCustomName(Component customName) {
+        this.customName = customName;
+        setChanged();
     }
 
     @Override
@@ -355,6 +332,23 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         }
         if (hasPreservationUpgrade()) {
             ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+        }
+    }
+
+    public record IceUnitIngredientToken(ItemStack itemStack) implements IngredientToken {
+        @Override
+        public ItemStack peek() {
+            return itemStack;
+        }
+
+        @Override
+        public ItemStack consume() {
+            return itemStack;
+        }
+
+        @Override
+        public ItemStack restore(ItemStack itemStack) {
+            return ItemStack.EMPTY;
         }
     }
 }

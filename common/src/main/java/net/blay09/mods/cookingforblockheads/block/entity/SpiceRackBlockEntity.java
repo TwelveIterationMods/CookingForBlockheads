@@ -1,12 +1,12 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
@@ -32,10 +32,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
 
-public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation {
-
+    private boolean hasPreservationUpgrade;
+    private Component customName;
+    private boolean isDirty;
     private final DefaultContainer container = new DefaultContainer(9) {
         @Override
         public void setChanged() {
@@ -43,17 +44,18 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
             SpiceRackBlockEntity.this.sync();
         }
     };
-
-    private boolean hasPreservationUpgrade;
-    private Component customName;
-    private boolean isDirty;
-
     private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
     private final ContainerKitchenItemProvider containerItemProvider = new ContainerKitchenItemProvider(container);
-    private final KitchenItemProvider itemProvider = new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider);
+    private final KitchenItemProvider itemProvider = new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade,
+            conservingItemProvider,
+            containerItemProvider);
 
     public SpiceRackBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.spiceRack.get(), pos, state);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, SpiceRackBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
     }
 
     @Override
@@ -106,12 +108,6 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     }
 
     @Override
-    public void setCustomName(Component customName) {
-        this.customName = customName;
-        setChanged();
-    }
-
-    @Override
     public boolean hasCustomName() {
         return customName != null;
     }
@@ -120,6 +116,12 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     @Override
     public Component getCustomName() {
         return customName;
+    }
+
+    @Override
+    public void setCustomName(Component customName) {
+        this.customName = customName;
+        setChanged();
     }
 
     @Override
@@ -135,10 +137,6 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     @Override
     public Container getContainer() {
         return container;
-    }
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, SpiceRackBlockEntity blockEntity) {
-        blockEntity.serverTick(level, pos, state);
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
@@ -176,8 +174,8 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     }
 
     @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
+    public KitchenItemProvider getKitchenItemProvider() {
+        return itemProvider;
     }
 
     @Override

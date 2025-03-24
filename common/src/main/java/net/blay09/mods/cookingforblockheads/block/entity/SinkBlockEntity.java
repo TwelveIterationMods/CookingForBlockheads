@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
 import net.blay09.mods.balm.api.fluid.FluidTank;
@@ -10,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
@@ -24,11 +24,129 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.Collection;
-import java.util.List;
 
-public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer> {
+public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer>, KitchenItemProviderHolder {
 
     private static final int SYNC_INTERVAL = 10;
+    private final SinkItemProvider itemProvider = new SinkItemProvider(this);
+    private int ticksSinceSync;
+    private boolean isDirty;
+    private final DefaultFluidTank sinkTank = new DefaultFluidTank(16000) {
+
+        @Override
+        public Fluid getFluid() {
+            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
+                return Fluids.WATER;
+            }
+
+            return super.getFluid();
+        }
+
+        @Override
+        public int getAmount() {
+            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
+                return Integer.MAX_VALUE;
+            }
+
+            return super.getAmount();
+        }
+
+        @Override
+        public int getCapacity() {
+            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
+                return Integer.MAX_VALUE;
+            }
+
+            return super.getCapacity();
+        }
+
+        @Override
+        public int drain(Fluid fluid, int maxDrain, boolean simulate) {
+            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater && fluid == Fluids.WATER) {
+                return maxDrain;
+            }
+
+            if (fluid.isSame(Fluids.EMPTY) || !fluid.isSame(fluid)) {
+                return 0;
+            }
+
+            SinkBlockEntity.this.setChanged();
+
+            return super.drain(fluid, maxDrain, simulate);
+        }
+
+        @Override
+        public int fill(Fluid fluid, int maxFill, boolean simulate) {
+            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
+                return maxFill;
+            }
+
+            SinkBlockEntity.this.setChanged();
+
+            return super.fill(fluid, maxFill, simulate);
+        }
+    };
+
+    public SinkBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.sink.get(), pos, state);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, SinkBlockEntity blockEntity) {
+        blockEntity.serverTick(level, pos, state);
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.put("FluidTank", sinkTank.serialize());
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.getCompound("FluidTank").ifPresent(sinkTank::deserialize);
+    }
+
+    @Override
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag, level.registryAccess());
+    }
+
+    @Override
+    public KitchenItemProvider getKitchenItemProvider() {
+        return itemProvider;
+    }
+
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
+        // Sync to clients
+        ticksSinceSync++;
+        if (ticksSinceSync >= SYNC_INTERVAL) {
+            ticksSinceSync = 0;
+            if (isDirty) {
+                sync();
+                isDirty = false;
+            }
+        }
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        isDirty = true;
+    }
+
+    @Override
+    public FluidTank getFluidTank() {
+        return sinkTank;
+    }
+
+    @Override
+    public Integer snapshotDataForTransfer() {
+        return sinkTank.getAmount();
+    }
+
+    @Override
+    public void restoreFromTransferSnapshot(Integer data) {
+        sinkTank.setFluid(Fluids.WATER, data);
+    }
 
     private record SinkIngredientToken(SinkBlockEntity milkJar, ItemStack itemStack) implements IngredientToken {
         @Override
@@ -86,127 +204,5 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         public CacheHint getCacheHint(IngredientToken ingredientToken) {
             return CacheHint.NONE;
         }
-    }
-
-    private final DefaultFluidTank sinkTank = new DefaultFluidTank(16000) {
-
-        @Override
-        public Fluid getFluid() {
-            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                return Fluids.WATER;
-            }
-
-            return super.getFluid();
-        }
-
-        @Override
-        public int getAmount() {
-            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                return Integer.MAX_VALUE;
-            }
-
-            return super.getAmount();
-        }
-
-        @Override
-        public int getCapacity() {
-            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                return Integer.MAX_VALUE;
-            }
-
-            return super.getCapacity();
-        }
-
-        @Override
-        public int drain(Fluid fluid, int maxDrain, boolean simulate) {
-            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater && fluid == Fluids.WATER) {
-                return maxDrain;
-            }
-
-            if (fluid.isSame(Fluids.EMPTY) || !fluid.isSame(fluid)) {
-                return 0;
-            }
-
-            SinkBlockEntity.this.setChanged();
-
-            return super.drain(fluid, maxDrain, simulate);
-        }
-
-        @Override
-        public int fill(Fluid fluid, int maxFill, boolean simulate) {
-            if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                return maxFill;
-            }
-
-            SinkBlockEntity.this.setChanged();
-
-            return super.fill(fluid, maxFill, simulate);
-        }
-    };
-
-    private final SinkItemProvider itemProvider = new SinkItemProvider(this);
-
-    private int ticksSinceSync;
-    private boolean isDirty;
-
-    public SinkBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.sink.get(), pos, state);
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("FluidTank", sinkTank.serialize());
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.getCompound("FluidTank").ifPresent(sinkTank::deserialize);
-    }
-
-    @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
-    }
-
-    @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
-    }
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, SinkBlockEntity blockEntity) {
-        blockEntity.serverTick(level, pos, state);
-    }
-
-    public void serverTick(Level level, BlockPos pos, BlockState state) {
-        // Sync to clients
-        ticksSinceSync++;
-        if (ticksSinceSync >= SYNC_INTERVAL) {
-            ticksSinceSync = 0;
-            if (isDirty) {
-                sync();
-                isDirty = false;
-            }
-        }
-    }
-
-    @Override
-    public void setChanged() {
-        super.setChanged();
-        isDirty = true;
-    }
-
-    @Override
-    public FluidTank getFluidTank() {
-        return sinkTank;
-    }
-
-    @Override
-    public Integer snapshotDataForTransfer() {
-        return sinkTank.getAmount();
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(Integer data) {
-        sinkTank.setFluid(Fluids.WATER, data);
     }
 }

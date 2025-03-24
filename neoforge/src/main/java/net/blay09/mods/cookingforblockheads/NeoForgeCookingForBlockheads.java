@@ -3,38 +3,24 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.neoforge.NeoForgeLoadContext;
-import net.blay09.mods.balm.neoforge.energy.NeoForgeEnergyStorage;
-import net.blay09.mods.balm.neoforge.fluid.NeoForgeFluidTank;
-import net.blay09.mods.balm.neoforge.provider.NeoForgeBalmProviders;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
-import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
-import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
 @Mod(CookingForBlockheads.MOD_ID)
 public class NeoForgeCookingForBlockheads {
-
-    private static final BlockCapability<KitchenItemProvider, Void> KITCHEN_ITEM_PROVIDER = BlockCapability.createVoid(ResourceLocation.fromNamespaceAndPath(
-            CookingForBlockheads.MOD_ID,
-            "kitchen_item_provider"), KitchenItemProvider.class);
-    private static final BlockCapability<KitchenItemProcessor, Void> KITCHEN_ITEM_PROCESSOR = BlockCapability.createVoid(ResourceLocation.fromNamespaceAndPath(
-            CookingForBlockheads.MOD_ID,
-            "kitchen_item_processor"), KitchenItemProcessor.class);
 
     public NeoForgeCookingForBlockheads(IEventBus eventBus) {
         Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
@@ -45,30 +31,27 @@ public class NeoForgeCookingForBlockheads {
         final var context = new NeoForgeLoadContext(eventBus);
         Balm.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
 
-        eventBus.addListener(this::registerCapabilities);
         eventBus.addListener(this::enqueueIMC);
 
-        final var providers = ((NeoForgeBalmProviders) Balm.getProviders());
-        providers.registerBlockProvider(KitchenItemProvider.class, KITCHEN_ITEM_PROVIDER);
-        providers.registerBlockProvider(KitchenItemProcessor.class, KITCHEN_ITEM_PROCESSOR);
-        providers.registerFallbackBlockProvider(KitchenItemProvider.class, (blockEntity, direction) -> {
-            if (blockEntity.getBlockState().is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
-                final var level = blockEntity.getLevel();
-                if (blockEntity instanceof Container container) {
-                    return new ContainerKitchenItemProvider(container);
-                } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
-                    return new ContainerKitchenItemProvider(containerProvider.getContainer());
-                } else if (level != null) {
-                    final var itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
-                    if (itemHandler != null) {
-                        return new ItemHandlerKitchenItemProvider(itemHandler);
-                    }
-                }
-            }
-            return null;
-        });
-
         Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");
+
+        Balm.getCapabilities()
+                .registerFallbackBlockEntityProvider(id("kitchen_item_providers_tag"), ModCapabilities.KITCHEN_ITEM_PROVIDER, (blockEntity, direction) -> {
+                    if (blockEntity.getBlockState().is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
+                        final var level = blockEntity.getLevel();
+                        if (blockEntity instanceof Container container) {
+                            return new ContainerKitchenItemProvider(container);
+                        } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
+                            return new ContainerKitchenItemProvider(containerProvider.getContainer());
+                        } else if (level != null) {
+                            final var itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
+                            if (itemHandler != null) {
+                                return new ItemHandlerKitchenItemProvider(itemHandler);
+                            }
+                        }
+                    }
+                    return null;
+                });
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {
@@ -77,61 +60,4 @@ public class NeoForgeCookingForBlockheads {
         }
     }
 
-    private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.milkJar.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.cowJar.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.fridge.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.sink.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.fruitBasket.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.spiceRack.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.cabinet.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.counter.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
-                ModBlockEntities.counter.get(),
-                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
-                ModBlockEntities.cabinet.get(),
-                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
-                ModBlockEntities.oven.get(),
-                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
-                ModBlockEntities.fridge.get(),
-                (blockEntity, context) -> new InvWrapper(blockEntity.getContainer()));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                ModBlockEntities.sink.get(),
-                (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                ModBlockEntities.milkJar.get(),
-                (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
-                ModBlockEntities.cowJar.get(),
-                (blockEntity, context) -> new NeoForgeFluidTank(blockEntity.getFluidTank()));
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.oven.get(),
-                (blockEntity, context) -> new NeoForgeEnergyStorage(blockEntity.getEnergyStorage()));
-        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
-                ModBlockEntities.cuttingBoard.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
-
-        event.registerBlockEntity(KITCHEN_ITEM_PROCESSOR,
-                ModBlockEntities.oven.get(),
-                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProcessor.class));
-    }
 }

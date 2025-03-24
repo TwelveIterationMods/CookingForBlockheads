@@ -96,7 +96,7 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
             final var slotStack = slot.getItem();
             itemstack = slotStack.copy();
             if (index == RESULT_SLOT) {
-                access.execute((level, pos) -> slotStack.getItem().onCraftedBy(slotStack, level, player));
+                access.execute((level, pos) -> slotStack.getItem().onCraftedBy(slotStack, player));
                 if (!moveItemStackTo(slotStack, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }

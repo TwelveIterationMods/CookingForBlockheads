@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
 import net.blay09.mods.balm.api.fluid.FluidTank;
@@ -8,6 +7,7 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
@@ -21,11 +21,55 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.Collection;
-import java.util.List;
 
-public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider {
+public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider, KitchenItemProviderHolder {
 
     protected static final int MILK_CAPACITY = 32000;
+    protected final DefaultFluidTank milkTank = new DefaultFluidTank(MILK_CAPACITY) {
+        @Override
+        public boolean canFill(Fluid fluid) {
+            return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);
+        }
+
+        @Override
+        public void setChanged() {
+            MilkJarBlockEntity.this.setChanged();
+            sync();
+        }
+    };
+    private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
+
+    public MilkJarBlockEntity(BlockPos pos, BlockState state) {
+        this(ModBlockEntities.milkJar.get(), pos, state);
+    }
+    protected MilkJarBlockEntity(BlockEntityType<? extends MilkJarBlockEntity> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.put("FluidTank", milkTank.serialize());
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.getCompound("FluidTank").ifPresent(milkTank::deserialize);
+    }
+
+    @Override
+    public void writeUpdateTag(CompoundTag tag) {
+        saveAdditional(tag, level.registryAccess());
+    }
+
+    @Override
+    public FluidTank getFluidTank() {
+        return milkTank;
+    }
+
+    @Override
+    public KitchenItemProvider getKitchenItemProvider() {
+        return itemProvider;
+    }
 
     private record MilkJarIngredientToken(MilkJarBlockEntity milkJar, ItemStack itemStack) implements IngredientToken {
         @Override
@@ -83,53 +127,6 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         public CacheHint getCacheHint(IngredientToken ingredientToken) {
             return CacheHint.NONE;
         }
-    }
-
-    private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
-    protected final DefaultFluidTank milkTank = new DefaultFluidTank(MILK_CAPACITY) {
-        @Override
-        public boolean canFill(Fluid fluid) {
-            return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);
-        }
-
-        @Override
-        public void setChanged() {
-            MilkJarBlockEntity.this.setChanged();
-            sync();
-        }
-    };
-
-    public MilkJarBlockEntity(BlockPos pos, BlockState state) {
-        this(ModBlockEntities.milkJar.get(), pos, state);
-    }
-
-    protected MilkJarBlockEntity(BlockEntityType<? extends MilkJarBlockEntity> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("FluidTank", milkTank.serialize());
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.getCompound("FluidTank").ifPresent(milkTank::deserialize);
-    }
-
-    @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
-    }
-
-    @Override
-    public FluidTank getFluidTank() {
-        return milkTank;
-    }
-
-    @Override
-    public List<BalmProvider<?>> getProviders() {
-        return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
     }
 
 }
