@@ -17,8 +17,8 @@ public class ModCapabilities {
     public static CapabilityType<Block, KitchenItemProcessor, Void> KITCHEN_ITEM_PROCESSOR;
 
     public static void initialize(BalmCapabilities capabilities) {
-        KITCHEN_ITEM_PROVIDER = capabilities.registerType(id("container"), Block.class, KitchenItemProvider.class, Void.class);
-        KITCHEN_ITEM_PROCESSOR = capabilities.registerType(id("fluid_tank"), Block.class, KitchenItemProcessor.class, Void.class);
+        KITCHEN_ITEM_PROVIDER = capabilities.registerType(id("kitchen_item_provider"), Block.class, KitchenItemProvider.class, Void.class);
+        KITCHEN_ITEM_PROCESSOR = capabilities.registerType(id("kitchen_item_processor"), Block.class, KitchenItemProcessor.class, Void.class);
 
         capabilities.registerProvider(id("kitchen_item_provider"),
                 KITCHEN_ITEM_PROVIDER,
