@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;

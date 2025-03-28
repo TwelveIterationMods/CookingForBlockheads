@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.5
+- Fixed counters and other storage blocks not providing items to the Cooking Table on Forge
