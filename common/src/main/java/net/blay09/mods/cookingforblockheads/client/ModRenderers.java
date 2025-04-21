@@ -1,9 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.balm.api.client.rendering.BalmRenderers;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
-import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.block.SinkBlock;
+import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.client.render.*;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.client.Minecraft;
@@ -36,11 +34,16 @@ public class ModRenderers {
             return allSinks;
         });
 
-        for (final var oven : ModBlocks.ovens) {
-            renderers.setBlockRenderType(() -> oven, RenderType.cutout());
+        // We cannot use foreach loops because the array is only filled at a later time on Neo/Forge
+        final var ovens = ModBlocks.ovens;
+        for (int i = 0; i < ovens.length; i++) {
+            final var j = i;
+            renderers.setBlockRenderType(() -> ovens[j], RenderType.cutout());
         }
-        for (final var fridge : ModBlocks.fridges) {
-            renderers.setBlockRenderType(() -> fridge, RenderType.cutout());
+        final var fridges = ModBlocks.fridges;
+        for (int i = 0; i < fridges.length; i++) {
+            final var j = i;
+            renderers.setBlockRenderType(() -> ovens[j], RenderType.cutout());
         }
         renderers.setBlockRenderType(() -> ModBlocks.milkJar, RenderType.cutout());
         renderers.setBlockRenderType(() -> ModBlocks.cowJar, RenderType.cutout());

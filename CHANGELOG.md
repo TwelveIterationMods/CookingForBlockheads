@@ -1,1 +1,1 @@
-- Fixed counters and other storage blocks not providing items to the Cooking Table on Forge
+- Fixed crash on latest version of Balm
