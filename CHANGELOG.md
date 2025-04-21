@@ -1,1 +1,1 @@
-- Fixed preservation chamber dropping as duplicate when dying blocks 
+- Fixed crash on latest version of Balm
