@@ -129,6 +129,9 @@ public class NeoForgeCookingForBlockheads {
         event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
                 ModBlockEntities.cuttingBoard.get(),
                 (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
+        event.registerBlockEntity(KITCHEN_ITEM_PROVIDER,
+                ModBlockEntities.oven.get(),
+                (blockEntity, context) -> blockEntity.getProvider(KitchenItemProvider.class));
 
         event.registerBlockEntity(KITCHEN_ITEM_PROCESSOR,
                 ModBlockEntities.oven.get(),
