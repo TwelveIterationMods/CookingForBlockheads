@@ -27,6 +27,7 @@ public class FabricCookingForBlockheads implements ModInitializer {
                 KitchenItemProvider.class,
                 ModBlockEntities.milkJar.get(),
                 ModBlockEntities.cowJar.get(),
+                ModBlockEntities.oven.get(),
                 ModBlockEntities.fridge.get(),
                 ModBlockEntities.sink.get(),
                 ModBlockEntities.cuttingBoard.get(),
