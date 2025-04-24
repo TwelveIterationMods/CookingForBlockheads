@@ -1,1 +1,1 @@
-- Fixed crash on latest version of Balm
+- Fixed tools in oven not being used in cooking table on NeoForge and Fabric
