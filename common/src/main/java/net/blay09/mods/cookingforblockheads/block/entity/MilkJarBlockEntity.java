@@ -86,7 +86,9 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
 
         @Override
         public ItemStack restore(ItemStack itemStack) {
-            milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
+            if (itemStack.is(ModItemTags.MILK)) {
+                milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
+            }
             return ItemStack.EMPTY;
         }
     }
