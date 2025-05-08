@@ -1,1 +1,1 @@
-- Fixed crash on latest version of Balm
+- Fixed milk jar instantly filling back up when using milk
