@@ -1,1 +1,1 @@
-- Fixed tools in oven not being used in cooking table on NeoForge and Fabric
+- Fixed milk jar instantly filling back up when using milk
