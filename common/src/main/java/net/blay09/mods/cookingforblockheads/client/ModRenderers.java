@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.client.render.*;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Arrays;
@@ -38,15 +39,15 @@ public class ModRenderers {
         final var ovens = ModBlocks.ovens;
         for (int i = 0; i < ovens.length; i++) {
             final var j = i;
-            renderers.setBlockRenderType(() -> ovens[j], RenderType.cutout());
+            renderers.setBlockRenderType(() -> ovens[j], ChunkSectionLayer.CUTOUT);
         }
         final var fridges = ModBlocks.fridges;
         for (int i = 0; i < fridges.length; i++) {
             final var j = i;
-            renderers.setBlockRenderType(() -> ovens[j], RenderType.cutout());
+            renderers.setBlockRenderType(() -> ovens[j], ChunkSectionLayer.CUTOUT);
         }
-        renderers.setBlockRenderType(() -> ModBlocks.milkJar, RenderType.cutout());
-        renderers.setBlockRenderType(() -> ModBlocks.cowJar, RenderType.cutout());
+        renderers.setBlockRenderType(() -> ModBlocks.milkJar, ChunkSectionLayer.CUTOUT);
+        renderers.setBlockRenderType(() -> ModBlocks.cowJar, ChunkSectionLayer.CUTOUT);
     }
 
 }

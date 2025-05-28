@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.gui.screen;
 import net.blay09.mods.cookingforblockheads.menu.FruitBasketMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,8 +29,8 @@ public class FruitBasketScreen extends AbstractContainerScreen<FruitBasketMenu> 
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0, 0, this.imageWidth, this.inventoryRows * 18 + 17, 256, 256);
-        guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos + this.inventoryRows * 18 + 17, 0, 126, this.imageWidth, 96, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, this.imageWidth, this.inventoryRows * 18 + 17, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos + this.inventoryRows * 18 + 17, 0, 126, this.imageWidth, 96, 256, 256);
     }
 
 }

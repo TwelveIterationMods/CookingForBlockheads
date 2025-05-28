@@ -17,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +25,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ToasterBlockEntity extends BalmBlockEntity {
 
@@ -64,22 +67,22 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        tagCompound.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
-        active = tagCompound.getBooleanOr("Active", false);
-        toastTicks = tagCompound.getIntOr("ToastTicks", 0);
+    public void loadAdditional(ValueInput input) {
+        input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
+        active = input.getBooleanOr("Active", false);
+        toastTicks = input.getIntOr("ToastTicks", 0);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("ItemHandler", container.serialize(provider));
-        tag.putBoolean("Active", active);
-        tag.putInt("ToastTicks", toastTicks);
+    public void saveAdditional(ValueOutput output) {
+        ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
+        output.putBoolean("Active", active);
+        output.putInt("ToastTicks", toastTicks);
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
+    public void writeUpdateTag(ValueOutput output) {
+        saveAdditional(output);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ToasterBlockEntity blockEntity) {

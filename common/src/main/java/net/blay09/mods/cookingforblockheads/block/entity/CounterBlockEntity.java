@@ -29,10 +29,12 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -41,6 +43,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
@@ -120,38 +124,26 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.getCompound("ItemHandler").ifPresent(it -> {
-            if (CookingForBlockheadsConfig.getActive().largeCounters && it.getIntOr("Size", 0) < 54) {
-                it.putInt("Size", 54);
-            }
-            container.deserialize(it, provider);
-        });
-
-        hasPreservationUpgrade = tag.getBooleanOr("HasPreservationUpgrade", false);
-
-        customName = tag.getString("CustomName")
-                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
-
-        doorAnimator.setForcedOpen(tag.getBooleanOr("IsForcedOpen", false));
-        doorAnimator.setNumPlayersUsing(tag.getByteOr("NumPlayersUsing", (byte) 0));
+    public void loadAdditional(ValueInput input) {
+        input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
+        hasPreservationUpgrade = input.getBooleanOr("HasPreservationUpgrade", false);
+        customName = input.read("CustomNameV2", ComponentSerialization.CODEC).orElse(null);
+        doorAnimator.setForcedOpen(input.getBooleanOr("IsForcedOpen", false));
+        doorAnimator.setNumPlayersUsing(input.getByteOr("NumPlayersUsing", (byte) 0));
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("ItemHandler", container.serialize(provider));
-        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
-
-        if (customName != null) {
-            tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
-        }
+    public void saveAdditional(ValueOutput output) {
+        ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
+        output.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
+        output.storeNullable("CustomName", ComponentSerialization.CODEC, customName);
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
-        tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
-        tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+    public void writeUpdateTag(ValueOutput output) {
+        saveAdditional(output);
+        output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+        output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
     }
 
     public DoorAnimator getDoorAnimator() {

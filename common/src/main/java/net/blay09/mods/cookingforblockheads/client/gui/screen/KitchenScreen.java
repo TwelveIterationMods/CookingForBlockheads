@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
@@ -19,7 +18,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -235,7 +234,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             menu.setScrollOffsetDirty(false);
         }
 
-        guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1,
@@ -260,8 +259,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             sortButton.active = hasRecipes;
         }
 
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
         Font font = minecraft.font;
         final var selection = menu.getSelectedRecipe();
         if (selection == null) {
@@ -271,15 +268,15 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 curY += font.lineHeight + 5;
             }
         } else if (selection.recipeDisplayEntry().display() instanceof FurnaceRecipeDisplay) {
-            guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
         } else {
-            guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);
         }
 
         if (selection != null) {
             for (CraftMatrixFakeSlot slot : menu.getMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-                    guiGraphics.blit(RenderType::guiTextured, guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16, 256, 256);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16, 256, 256);
                 }
             }
         }
@@ -300,26 +297,26 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
             var poseStack = guiGraphics.pose();
-            poseStack.pushPose();
-            poseStack.translate(0, 0, 300);
+            poseStack.pushMatrix();
+            // TODO 1.21.6: poseStack.translate(0, 0, 300);
             for (Slot slot : menu.slots) {
                 if (slot instanceof CraftableListingFakeSlot fakeSlot) {
                     if (slot.getItem().is(ModItemTags.INGREDIENTS)) {
-                        guiGraphics.blit(RenderType::guiTextured, guiTexture, slot.x, slot.y, 176, 76, 16, 16, 256, 256);
+                        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, slot.x, slot.y, 176, 76, 16, 16, 256, 256);
                     }
 
                     final var craftable = fakeSlot.getCraftable();
                     if (craftable != null && craftable.missingUtensils()) {
-                        guiGraphics.blit(RenderType::guiTextured, guiTexture, slot.x, slot.y, 176, 92, 16, 16, 256, 256);
+                        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, slot.x, slot.y, 176, 92, 16, 16, 256, 256);
                     }
 
                     if (craftable != null && isFavoriteItem(craftable.itemStack())) {
-                        guiGraphics.blit(RenderType::guiTextured, guiTexture, slot.x, slot.y, 176, 108, 16, 16, 256, 256);
+                        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, slot.x, slot.y, 176, 108, 16, 16, 256, 256);
                     }
                 }
             }
 
-            poseStack.popPose();
+            poseStack.popMatrix();
         }
     }
 
@@ -336,15 +333,15 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             if (kitchenFeedbackTimeLeft < KITCHEN_FEEDBACK_HINT_TIME / 2f) {
                 alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
             }
-            RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
+            // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
             guiGraphics.drawCenteredString(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
-            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             kitchenFeedbackTimeLeft -= partialTicks;
         }
 
         var poseStack = guiGraphics.pose();
-        poseStack.pushPose();
-        poseStack.translate(0, 0, 300);
+        poseStack.pushMatrix();
+        // TODO 1.21.6: poseStack.translate(0, 0, 300);
         for (Slot slot : menu.slots) {
             if (slot instanceof CraftMatrixFakeSlot fakeSlot) {
                 if (fakeSlot.isMissing() && !slot.getItem().isEmpty()) {
@@ -352,7 +349,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 }
             }
         }
-        poseStack.popPose();
+        poseStack.popMatrix();
 
         for (CraftMatrixFakeSlot matrixSlot : menu.getMatrixSlots()) {
             matrixSlot.updateSlot(partialTicks);

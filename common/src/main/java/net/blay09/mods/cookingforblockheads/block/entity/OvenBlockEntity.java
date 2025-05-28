@@ -37,9 +37,11 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -51,6 +53,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
@@ -349,45 +353,37 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     @Override
-    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        tagCompound.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
-        furnaceBurnTime = tagCompound.getShortOr("BurnTime", (short) 0);
-        currentItemBurnTime = tagCompound.getShortOr("CurrentItemBurnTime", (short) 0);
-        slotCookTime = tagCompound.getIntArray("CookTimes").orElseGet(() -> new int[9]);
+    public void loadAdditional(ValueInput input) {
+        input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
+        furnaceBurnTime = input.getShortOr("BurnTime", (short) 0);
+        currentItemBurnTime = input.getShortOr("CurrentItemBurnTime", (short) 0);
+        slotCookTime = input.getIntArray("CookTimes").orElseGet(() -> new int[9]);
         if (slotCookTime.length != 9) {
             slotCookTime = new int[9];
         }
 
-        hasPowerUpgrade = tagCompound.getBooleanOr("HasPowerUpgrade", false);
-        energyStorage.setEnergy(tagCompound.getIntOr("EnergyStored", 0));
+        hasPowerUpgrade = input.getBooleanOr("HasPowerUpgrade", false);
+        energyStorage.setEnergy(input.getIntOr("EnergyStored", 0));
 
-        customName = tagCompound.getString("CustomName")
-                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
+        customName = input.read("CustomNameV2", ComponentSerialization.CODEC).orElse(null);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("ItemHandler", container.serialize(provider));
-        tag.putShort("BurnTime", (short) furnaceBurnTime);
-        tag.putShort("CurrentItemBurnTime", (short) currentItemBurnTime);
-        tag.putIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
-
-        tag.putBoolean("HasPowerUpgrade", hasPowerUpgrade);
-        tag.putInt("EnergyStored", energyStorage.getEnergy());
-
-        if (customName != null) {
-            tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
-        }
-
-        doorAnimator.setForcedOpen(tag.getBooleanOr("IsForcedOpen", false));
-        doorAnimator.setNumPlayersUsing(tag.getByteOr("NumPlayersUsing", (byte) 0));
+    public void saveAdditional(ValueOutput output) {
+        ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
+        output.putShort("BurnTime", (short) furnaceBurnTime);
+        output.putShort("CurrentItemBurnTime", (short) currentItemBurnTime);
+        output.putIntArray("CookTimes", ArrayUtils.clone(slotCookTime));
+        output.putBoolean("HasPowerUpgrade", hasPowerUpgrade);
+        output.putInt("EnergyStored", energyStorage.getEnergy());
+        output.storeNullable("CustomNameV2", ComponentSerialization.CODEC, customName);
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
-        tag.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
-        tag.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+    public void writeUpdateTag(ValueOutput output) {
+        saveAdditional(output);
+        output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+        output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
     }
 
     public boolean hasPowerUpgrade() {

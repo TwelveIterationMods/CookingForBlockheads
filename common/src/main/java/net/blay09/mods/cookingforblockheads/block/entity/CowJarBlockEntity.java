@@ -9,8 +9,11 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNameable {
 
@@ -40,24 +43,17 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
-
-        customName = tag.getString("CustomName")
-                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
-
-        compressedCow = tag.getBooleanOr("CompressedCow", false);
+    public void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        customName = input.read("CustomNameV2", ComponentSerialization.CODEC).orElse(null);
+        compressedCow = input.getBooleanOr("CompressedCow", false);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
-
-        if (customName != null) {
-            tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
-        }
-
-        tag.putBoolean("CompressedCow", compressedCow);
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.storeNullable("CustomNameV2", ComponentSerialization.CODEC, customName);
+        output.putBoolean("CompressedCow", compressedCow);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {

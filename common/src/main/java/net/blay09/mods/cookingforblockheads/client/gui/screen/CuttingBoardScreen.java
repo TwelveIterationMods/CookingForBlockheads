@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.recipebook.CraftingRecipeBookComponent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +34,6 @@ public class CuttingBoardScreen extends AbstractRecipeBookScreen<CuttingBoardMen
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
         int x = leftPos;
         int y = (height - imageHeight) / 2;
-        guiGraphics.blit(RenderType::guiTextured, CRAFTING_TABLE_LOCATION, x, y, 0f, 0f, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TABLE_LOCATION, x, y, 0f, 0f, imageWidth, imageHeight, 256, 256);
     }
 }

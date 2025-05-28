@@ -10,6 +10,6 @@ public class FabricCookingForBlockheadsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        BalmClient.initialize(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheadsClient::initialize);
+        BalmClient.initializeMod(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheadsClient::initialize);
     }
 }

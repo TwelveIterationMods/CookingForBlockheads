@@ -7,7 +7,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContainerProvider {
 
@@ -24,18 +27,18 @@ public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContaine
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
+    public void loadAdditional(ValueInput input) {
+        input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("ItemHandler", container.serialize(provider));
+    public void saveAdditional(ValueOutput output) {
+        ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
+    public void writeUpdateTag(ValueOutput output) {
+        saveAdditional(output);
     }
 
     @Override

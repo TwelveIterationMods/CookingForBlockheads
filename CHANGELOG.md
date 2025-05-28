@@ -1,1 +1,1 @@
-- Fixed milk jar instantly filling back up when using milk
+- Updated to Minecraft 1.21.6

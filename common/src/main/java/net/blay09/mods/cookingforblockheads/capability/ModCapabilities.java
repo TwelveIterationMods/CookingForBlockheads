@@ -7,7 +7,7 @@ import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.world.level.block.Block;
 
-import java.util.List;
+import java.util.Set;
 
 import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
@@ -23,7 +23,7 @@ public class ModCapabilities {
         capabilities.registerProvider(id("kitchen_item_provider"),
                 KITCHEN_ITEM_PROVIDER,
                 (blockEntity, context) -> blockEntity instanceof KitchenItemProviderHolder holder ? holder.getKitchenItemProvider() : null,
-                () -> List.of(
+                () -> Set.of(
                         ModBlockEntities.counter.get(),
                         ModBlockEntities.cabinet.get(),
                         ModBlockEntities.fridge.get(),
@@ -38,6 +38,6 @@ public class ModCapabilities {
         capabilities.registerProvider(id("kitchen_item_processor"),
                 KITCHEN_ITEM_PROCESSOR,
                 (blockEntity, context) -> blockEntity instanceof KitchenItemProcessorHolder holder ? holder.getKitchenItemProcessor() : null,
-                () -> List.of(ModBlockEntities.oven.get()));
+                () -> Set.of(ModBlockEntities.oven.get()));
     }
 }

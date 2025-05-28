@@ -21,15 +21,19 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
@@ -72,28 +76,22 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     }
 
     @Override
-    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        tagCompound.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
-
-        customName = tagCompound.getString("CustomName")
-                .map(it -> Component.Serializer.fromJson(it, provider)).orElse(null);
-
-        hasPreservationUpgrade = tagCompound.getBooleanOr("HasPreservationUpgrade", false);
+    public void loadAdditional(ValueInput input) {
+        input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
+        customName = input.read("CustomNameV2", ComponentSerialization.CODEC).orElse(null);
+        hasPreservationUpgrade = input.getBooleanOr("HasPreservationUpgrade", false);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("ItemHandler", container.serialize(provider));
-        tag.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
-
-        if (customName != null) {
-            tag.putString("CustomName", Component.Serializer.toJson(customName, provider));
-        }
+    public void saveAdditional(ValueOutput output) {
+        ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
+        output.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
+        output.storeNullable("CustomNameV2", ComponentSerialization.CODEC, customName);
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
+    public void writeUpdateTag(ValueOutput tag) {
+        saveAdditional(tag);
     }
 
     @Nullable

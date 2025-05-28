@@ -15,7 +15,7 @@ import net.minecraft.world.Container;
 public class FabricCookingForBlockheads implements ModInitializer {
     @Override
     public void onInitialize() {
-        Balm.initialize(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheads::initialize);
+        Balm.initializeMod(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheads::initialize);
 
         var itemProviderLookup = BlockApiLookup.get(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "kitchen_item_provider"),
                 KitchenItemProvider.class,

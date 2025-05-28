@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.crafting.CraftableWithStatus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +33,7 @@ public class SortButton extends Button {
             texY += 20;
         }
 
-        guiGraphics.blit(RenderType::guiTextured, button.getIcon(), getX(), getY(), button.getIconTextureX(), texY, width, height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, button.getIcon(), getX(), getY(), button.getIconTextureX(), texY, width, height, 256, 256);
     }
 
     public Comparator<CraftableWithStatus> getComparator(Player player) {

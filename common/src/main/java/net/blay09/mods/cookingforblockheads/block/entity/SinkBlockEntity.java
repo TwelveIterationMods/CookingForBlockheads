@@ -22,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Collection;
 
@@ -96,18 +98,18 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("FluidTank", sinkTank.serialize());
+    public void saveAdditional(ValueOutput output) {
+        sinkTank.serialize(output.child("FluidTank"));
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.getCompound("FluidTank").ifPresent(sinkTank::deserialize);
+    public void loadAdditional(ValueInput input) {
+        input.child("FluidTank").ifPresent(sinkTank::deserialize);
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
+    public void writeUpdateTag(ValueOutput output) {
+        saveAdditional(output);
     }
 
     @Override

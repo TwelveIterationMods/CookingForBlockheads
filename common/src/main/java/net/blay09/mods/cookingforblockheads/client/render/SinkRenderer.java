@@ -38,7 +38,7 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity> {
             float filledPercentage = waterAmount / (float) capacity;
             poseStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             poseStack.scale(1f, filledPercentage, 1f);
-            dispatcher.getModelRenderer().tesselateBlock(level, ModModels.sinkLiquid.get().collectParts(random), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.translucent()), false, Integer.MAX_VALUE);
+            dispatcher.getModelRenderer().tesselateBlock(level, ModModels.sinkLiquid.get().collectParts(random), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.translucentMovingBlock()), false, Integer.MAX_VALUE);
             poseStack.popPose();
         }
     }

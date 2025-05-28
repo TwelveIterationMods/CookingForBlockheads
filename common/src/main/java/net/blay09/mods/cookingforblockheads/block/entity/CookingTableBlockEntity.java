@@ -19,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -44,23 +46,18 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        CompoundTag itemCompound = new CompoundTag();
-        if (!noFilterBook.isEmpty()) {
-            noFilterBook.save(provider, itemCompound);
-        }
-
-        tag.put("NoFilterBook", itemCompound);
+    public void saveAdditional(ValueOutput output) {
+        output.store("NoFilterBook", ItemStack.CODEC, noFilterBook);
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.getCompound("NoFilterBook").ifPresent(it -> setNoFilterBook(ItemStack.parse(provider, it).orElse(ItemStack.EMPTY)));
+    public void loadAdditional(ValueInput input) {
+        input.read("NoFilterBook", ItemStack.CODEC).ifPresent(this::setNoFilterBook);
     }
 
     @Override
-    public void writeUpdateTag(CompoundTag tag) {
-        saveAdditional(tag, level.registryAccess());
+    public void writeUpdateTag(ValueOutput output) {
+        saveAdditional(output);
     }
 
     @Override
