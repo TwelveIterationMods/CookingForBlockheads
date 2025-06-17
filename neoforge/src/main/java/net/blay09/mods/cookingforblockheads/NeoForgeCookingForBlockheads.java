@@ -29,7 +29,7 @@ public class NeoForgeCookingForBlockheads {
         });
 
         final var context = new NeoForgeLoadContext(eventBus);
-        Balm.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
+        Balm.initializeMod(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
 
         eventBus.addListener(this::enqueueIMC);
 
