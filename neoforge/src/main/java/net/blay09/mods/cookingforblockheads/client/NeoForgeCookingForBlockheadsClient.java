@@ -12,6 +12,6 @@ public class NeoForgeCookingForBlockheadsClient {
 
     public NeoForgeCookingForBlockheadsClient(IEventBus eventBus) {
         final var context = new NeoForgeLoadContext(eventBus);
-       BalmClient.initialize(CookingForBlockheads.MOD_ID, context, CookingForBlockheadsClient::initialize);
+       BalmClient.initializeMod(CookingForBlockheads.MOD_ID, context, CookingForBlockheadsClient::initialize);
     }
 }
