@@ -31,7 +31,7 @@ import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 public class ForgeCookingForBlockheads {
 
     public ForgeCookingForBlockheads(FMLJavaModLoadingContext context) {
-        final var loadContext = new ForgeLoadContext(context.getModEventBus());
+        final var loadContext = new ForgeLoadContext(context.getModBusGroup());
         Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
             PlayerEvent.ItemSmeltedEvent event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem());
             MinecraftForge.EVENT_BUS.post(event);
