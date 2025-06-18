@@ -15,7 +15,6 @@ import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.world.Container;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -33,8 +32,8 @@ public class ForgeCookingForBlockheads {
     public ForgeCookingForBlockheads(FMLJavaModLoadingContext context) {
         final var loadContext = new ForgeLoadContext(context.getModBusGroup());
         Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
-            PlayerEvent.ItemSmeltedEvent event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem());
-            MinecraftForge.EVENT_BUS.post(event);
+            final var event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem());
+            PlayerEvent.ItemSmeltedEvent.BUS.post(event);
         });
 
         final var forgeCapabilities = (ForgeBalmCapabilities) Balm.getCapabilities();
@@ -48,7 +47,7 @@ public class ForgeCookingForBlockheads {
             BalmClient.initializeMod(CookingForBlockheads.MOD_ID, loadContext, CookingForBlockheadsClient::initialize);
         }
 
-        context.getModEventBus().addListener(this::enqueueIMC);
+        InterModEnqueueEvent.getBus(context.getModBusGroup()).addListener(this::enqueueIMC);
 
         Balm.getCapabilities()
                 .registerFallbackBlockEntityProvider(id("kitchen_item_providers_tag"), ModCapabilities.KITCHEN_ITEM_PROVIDER, (blockEntity, direction) -> {
