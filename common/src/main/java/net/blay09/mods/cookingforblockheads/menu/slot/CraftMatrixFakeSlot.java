@@ -37,8 +37,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
         this.ingredient = ingredient;
         for (ItemStack itemStack : ingredient.getItems()) {
             if (!itemStack.isEmpty()) {
-                itemStack.setCount(1);
-                visibleStacks.add(itemStack);
+                visibleStacks.add(itemStack.copyWithCount(1));
             }
         }
         visibleStacks.sort(Comparator.comparing(it -> Balm.getRegistries().getKey(it.getItem()).toString()));
