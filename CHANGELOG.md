@@ -1,1 +1,1 @@
-- Fixed milk jar instantly filling back up when using milk
+- Fixed incompatibility with AllTheLeaks and possible other related issues
