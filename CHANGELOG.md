@@ -1,1 +1,2 @@
 - Fixed rest items (like knifes) still sometimes being deleted on crafting
+- Possibly fixed rare issues where cow in a jar would not form
