@@ -1,1 +1,1 @@
-- Fixed preservation chamber dropping as duplicate when dying blocks 
+- Fixed Sophisticated Storage limited barrels not being detected for kitchen
