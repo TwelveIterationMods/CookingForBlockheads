@@ -1,1 +1,2 @@
 - Fixed Sophisticated Storage limited barrels not being detected for kitchen
+- Possibly fixed rare issues where cow in a jar would not form
