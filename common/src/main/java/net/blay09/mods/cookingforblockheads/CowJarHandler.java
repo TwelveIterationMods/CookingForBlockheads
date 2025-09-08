@@ -10,15 +10,14 @@ import net.blay09.mods.cookingforblockheads.tile.CowJarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CowJarHandler {
 
@@ -36,10 +35,8 @@ public class CowJarHandler {
 
         if (event.getDamageSource().getMsgId().equals("anvil") && isCow(event.getEntity())) {
             Entity entity = event.getEntity();
-            BlockPos pos = entity.blockPosition();
             Level level = entity.level();
-            BlockState blockBelow = level.getBlockState(pos);
-            if (blockBelow.getBlock() == ModBlocks.milkJar) {
+            findMilkJar(level, entity.blockPosition()).ifPresent(pos -> {
                 level.setBlockAndUpdate(pos, ModBlocks.cowJar.defaultBlockState());
                 BlockEntity tileEntity = level.getBlockEntity(pos);
                 if (tileEntity instanceof CowJarBlockEntity && entity.getCustomName() != null) {
@@ -52,11 +49,36 @@ public class CowJarHandler {
                 if (wasCompressed && tileEntity instanceof CowJarBlockEntity) {
                     ((CowJarBlockEntity) tileEntity).setCompressedCow(true);
                 }
-            }
-            Balm.getNetworking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));
-            entity.remove(Entity.RemovalReason.DISCARDED);
-            event.setCanceled(true);
+
+                Balm.getNetworking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));
+                entity.remove(Entity.RemovalReason.DISCARDED);
+                event.setCanceled(true);
+            });
         }
+    }
+
+    private static Optional<BlockPos> findMilkJar(Level level, BlockPos pos) {
+        if (level.getBlockState(pos).is(ModBlocks.milkJar)) {
+            return Optional.of(pos);
+        }
+        final var posBelow = pos.below();
+        if (level.getBlockState(posBelow).is(ModBlocks.milkJar)) {
+            return Optional.of(posBelow);
+        }
+
+        final var mutablePos = pos.mutable();
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    mutablePos.setWithOffset(pos, x, y, z);
+                    if (level.getBlockState(mutablePos).is(ModBlocks.milkJar)) {
+                        return Optional.of(mutablePos.immutable());
+                    }
+                }
+            }
+        }
+
+        return Optional.empty();
     }
 
     public static boolean isCow(LivingEntity entity) {
