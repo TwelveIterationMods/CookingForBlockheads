@@ -1,1 +1,1 @@
-- Fixed milk jar instantly filling back up when using milk
+- Possibly fixed rare issues where cow in a jar would not form
