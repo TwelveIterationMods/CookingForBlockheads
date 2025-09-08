@@ -2,10 +2,8 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 
 import java.util.List;
@@ -21,12 +19,11 @@ public abstract class AbstractKitchenCraftingRecipeHandler<T extends CraftingRec
         }
         final var craftInput = craftingContainer.asCraftInput();
         final var remainingItems = recipe.getRemainingItems(craftInput);
-        for (int i = 0; i < ingredientTokens.size(); i++) {
-            final var ingredientToken = ingredientTokens.get(i);
-            final var matrixSlot = mapToMatrixSlot(recipe, i);
-            final var remainingItem = matrixSlot < remainingItems.size() ? remainingItems.get(matrixSlot) : ItemStack.EMPTY;
-            if (!remainingItem.isEmpty()) {
-                ingredientToken.restore(remainingItem);
+        for (int i = 0; i < remainingItems.size(); i++) {
+            final var ingredientToken = i < ingredientTokens.size() ? ingredientTokens.get(i) : IngredientToken.EMPTY;
+            final var restItem = ingredientToken.restore(remainingItems.get(i));
+            if (!restItem.isEmpty()) {
+                context.restore(restItem);
             }
         }
         return recipe.assemble(craftInput, registryAccess);

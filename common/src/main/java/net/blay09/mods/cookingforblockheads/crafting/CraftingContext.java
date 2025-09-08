@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.crafting;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -16,6 +17,7 @@ import java.util.function.Consumer;
 
 public class CraftingContext {
 
+    private final @Nullable Player player;
     private final List<KitchenItemProvider> itemProviders;
     private final List<KitchenItemProcessor> itemProcessors;
     private final Map<IntList, Integer> cachedProviderIndexByIngredient = new HashMap<>();
@@ -23,6 +25,7 @@ public class CraftingContext {
     private final List<Consumer<KitchenOperation>> listeners = new ArrayList<>();
 
     public CraftingContext(final Kitchen kitchen, final @Nullable Player player) {
+        this.player = player;
         itemProviders = kitchen.getItemProviders(player);
         itemProcessors = kitchen.getItemProcessors();
     }
@@ -60,5 +63,13 @@ public class CraftingContext {
         for (final var listener : listeners) {
             listener.accept(operation);
         }
+    }
+
+    public ItemStack restore(ItemStack itemStack) {
+        if (player != null && !player.addItem(itemStack)) {
+            player.drop(itemStack, true);
+            return ItemStack.EMPTY;
+        }
+        return itemStack;
     }
 }
