@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.8
+- Possibly fixed rare issues where cow in a jar would not form
