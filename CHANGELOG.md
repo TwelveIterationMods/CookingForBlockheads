@@ -1,1 +1,1 @@
-- Fixed incompatibility with AllTheLeaks and possible other related issues
+- Fixed rest items (like knifes) still sometimes being deleted on crafting
