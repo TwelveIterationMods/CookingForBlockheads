@@ -115,7 +115,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             Slot slot = slots.get(slotNumber);
             if (slot instanceof CraftableListingFakeSlot craftableSlot) {
-                if (player.level().isClientSide) {
+                if (player.level().isClientSide()) {
                     if (isSelectedSlot(craftableSlot)) {
                         if (clickType == ClickType.PICKUP || clickType == ClickType.PICKUP_ALL || clickType == ClickType.QUICK_MOVE || clickType == ClickType.CLONE) {
                             requestCraft(clickType == ClickType.QUICK_MOVE, clickType == ClickType.CLONE);
@@ -194,7 +194,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         updateCraftableSlots();
 
         if (recipe != null) {
-            if (player.level().isClientSide) {
+            if (player.level().isClientSide()) {
                 lockedInputs.clear();
                 requestSelectionRecipes(recipe);
             }
@@ -303,7 +303,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void broadcastRecipesForResultItem(ItemStack resultItem) {
         final List<RecipeWithStatus> result = new ArrayList<>();
-        final var recipeManager = player.getServer().getRecipeManager();
+        final var recipeManager = player.level().getServer().getRecipeManager();
 
         final var context = new CraftingContext(kitchen, player);
         final var recipesForResult = getRecipesFor(resultItem);

@@ -2,45 +2,64 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.cookingforblockheads.block.entity.ToolRackBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class ToolRackRenderer implements BlockEntityRenderer<ToolRackBlockEntity> {
+public class ToolRackRenderer implements BlockEntityRenderer<ToolRackBlockEntity, ToolRackRenderer.ToolRackRenderState> {
+
+    public static class ToolRackRenderState extends BlockEntityRenderState {
+        public final ItemStackRenderState leftItem = new ItemStackRenderState();
+        public final ItemStackRenderState rightItem = new ItemStackRenderState();
+    }
+
+    private final ItemModelResolver itemModelResolver;
 
     public ToolRackRenderer(BlockEntityRendererProvider.Context context) {
+        itemModelResolver = context.itemModelResolver();
     }
 
     @Override
-    public void render(ToolRackBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-        if (!blockEntity.hasLevel()) {
-            return;
-        }
+    public ToolRackRenderState createRenderState() {
+        return new ToolRackRenderState();
+    }
 
-        Level level = blockEntity.getLevel();
+    @Override
+    public void extractRenderState(ToolRackBlockEntity blockEntity, ToolRackRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
-        ItemStack leftStack = blockEntity.getContainer().getItem(0);
-        ItemStack rightStack = blockEntity.getContainer().getItem(1);
-        if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
+        itemModelResolver.updateForTopItem(renderState.leftItem, blockEntity.getContainer().getItem(0), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        itemModelResolver.updateForTopItem(renderState.rightItem, blockEntity.getContainer().getItem(1), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+    }
+
+    @Override
+    public void submit(ToolRackRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        if (!renderState.leftItem.isEmpty() || !renderState.rightItem.isEmpty()) {
             poseStack.pushPose();
-            RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
             poseStack.translate(0f, 0.6f, 0.4f);
             poseStack.scale(0.5f, 0.5f, 0.5f);
 
-            if (!leftStack.isEmpty()) {
+            if (!renderState.leftItem.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0.4, 0f, 0f);
-                RenderUtils.renderItem(leftStack, combinedLight, poseStack, buffer, level);
+                renderState.leftItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
 
-            if (!rightStack.isEmpty()) {
+            if (!renderState.rightItem.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(-0.4, 0f, 0f);
-                RenderUtils.renderItem(rightStack, combinedLight, poseStack, buffer, level);
+                renderState.rightItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
 

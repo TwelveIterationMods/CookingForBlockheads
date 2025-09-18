@@ -53,7 +53,7 @@ public class CabinetBlock extends CounterBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide
+        return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.cabinet.get(), CabinetBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.cabinet.get(), CabinetBlockEntity::serverTick);
     }

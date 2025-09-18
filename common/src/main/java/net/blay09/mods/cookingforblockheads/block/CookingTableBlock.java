@@ -60,7 +60,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
                 }
             }
 
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 Balm.getNetworking().openMenu(player, cookingTable);
             }
         }

@@ -43,7 +43,7 @@ public class ItemPreservationChamber extends Item {
 
             upgradeable.setHasPreservationUpgrade(true);
 
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.KITCHEN_UPGRADE));
             }
 

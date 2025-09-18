@@ -95,7 +95,7 @@ public class CounterBlock extends BaseKitchenBlock {
             }
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             Balm.getNetworking().openMenu(player, counter);
         }
 
@@ -111,7 +111,7 @@ public class CounterBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide
+        return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::serverTick);
     }

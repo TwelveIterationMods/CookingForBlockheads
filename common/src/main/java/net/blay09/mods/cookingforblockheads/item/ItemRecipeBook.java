@@ -59,7 +59,7 @@ public class ItemRecipeBook extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             final var itemStack = player.getItemInHand(hand);
             Balm.getNetworking().openMenu(player, new BalmMenuProvider<ItemStack>() {
                 @Override

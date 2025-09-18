@@ -43,7 +43,7 @@ public class ItemIceUnit extends Item {
             }
 
             ((FridgeBlockEntity) blockEntity).getBaseFridge().setHasIceUpgrade(true);
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.FRIDGE_UPGRADE));
             }
 

@@ -214,7 +214,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             furnaceBurnTime--;
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (furnaceBurnTime == 0 && shouldConsumeFuel()) {
                 // Check for fuel items in side slots
                 for (int i = 0; i < fuelContainer.getContainerSize(); i++) {

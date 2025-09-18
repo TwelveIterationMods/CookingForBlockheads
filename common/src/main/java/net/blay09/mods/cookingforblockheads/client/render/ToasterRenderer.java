@@ -2,46 +2,65 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.cookingforblockheads.block.entity.ToasterBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity> {
+public class ToasterRenderer implements BlockEntityRenderer<ToasterBlockEntity, ToasterRenderer.ToasterRenderState> {
+
+    public static class ToasterRenderState extends BlockEntityRenderState {
+        public final ItemStackRenderState leftItem = new ItemStackRenderState();
+        public final ItemStackRenderState rightItem = new ItemStackRenderState();
+        public boolean active;
+    }
+
+    private final ItemModelResolver itemModelResolver;
 
     public ToasterRenderer(BlockEntityRendererProvider.Context context) {
+        itemModelResolver = context.itemModelResolver();
     }
 
     @Override
-    public void render(ToasterBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, Vec3 cameraPos) {
-        if (!blockEntity.hasLevel()) {
-            return;
-        }
+    public ToasterRenderState createRenderState() {
+        return new ToasterRenderState();
+    }
 
-        Level level = blockEntity.getLevel();
-        BlockState state = blockEntity.getBlockState();
+    @Override
+    public void extractRenderState(ToasterBlockEntity blockEntity, ToasterRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
-        ItemStack leftStack = blockEntity.getContainer().getItem(0);
-        ItemStack rightStack = blockEntity.getContainer().getItem(1);
-        if (!leftStack.isEmpty() || !rightStack.isEmpty()) {
+        renderState.active = blockEntity.isActive();
+        itemModelResolver.updateForTopItem(renderState.leftItem, blockEntity.getContainer().getItem(0), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        itemModelResolver.updateForTopItem(renderState.rightItem, blockEntity.getContainer().getItem(1), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+    }
+
+    @Override
+    public void submit(ToasterRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        if (!renderState.leftItem.isEmpty() || !renderState.rightItem.isEmpty()) {
             poseStack.pushPose();
-            RenderUtils.applyBlockAngle(poseStack, state);
-            poseStack.translate(0f, 0.25 + (blockEntity.isActive() ? -0.075 : 0), 0);
+            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+            poseStack.translate(0f, 0.25 + (renderState.active ? -0.075 : 0), 0);
             float shrinkage = 0.3f;
             poseStack.scale(shrinkage, shrinkage, shrinkage);
-            if (!leftStack.isEmpty()) {
+            if (!renderState.leftItem.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, 0.2f);
-                RenderUtils.renderItem(leftStack, combinedLightIn, poseStack, buffer, level);
+                renderState.leftItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
-            if (!rightStack.isEmpty()) {
+            if (!renderState.rightItem.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, -0.2f);
-                RenderUtils.renderItem(rightStack, combinedLightIn, poseStack, buffer, level);
+                renderState.rightItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
             poseStack.popPose();

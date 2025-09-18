@@ -7,9 +7,9 @@ import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.kuma.api.Kuma;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -56,7 +56,7 @@ public class CookingForBlockheadsClient {
                         if (!kitchen.canProcess(RecipeType.SMELTING)) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
                         } else {
-                            if (Screen.hasShiftDown()) {
+                            if (Kuma.hasShiftDown()) {
                                 event.getToolTip()
                                         .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
                             } else {
@@ -71,7 +71,7 @@ public class CookingForBlockheadsClient {
                         } else if (!missingIngredients.isEmpty()) {
                             event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
                         } else {
-                            if (Screen.hasShiftDown()) {
+                            if (Kuma.hasShiftDown()) {
                                 event.getToolTip()
                                         .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_stack").withStyle(ChatFormatting.GREEN));
                             } else {

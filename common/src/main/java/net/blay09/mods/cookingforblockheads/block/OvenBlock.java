@@ -146,7 +146,7 @@ public class OvenBlock extends BaseKitchenBlock {
             }
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             Balm.getNetworking().openMenu(player, oven);
         }
 
@@ -185,7 +185,7 @@ public class OvenBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide
+        return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::serverTick);
     }

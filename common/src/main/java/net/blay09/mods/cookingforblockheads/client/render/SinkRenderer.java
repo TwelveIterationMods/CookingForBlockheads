@@ -2,43 +2,51 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.SinkBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity> {
+public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRenderer.SinkRenderState> {
 
-    private static final RandomSource random = RandomSource.create();
+    public static class SinkRenderState extends BlockEntityRenderState {
+        public float fluidLevel;
+    }
 
     public SinkRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(SinkBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-        Level level = blockEntity.getLevel();
-        if (level == null) {
-            return;
-        }
+    public SinkRenderState createRenderState() {
+        return new SinkRenderState();
+    }
 
-        BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-        FluidTank fluidTank = blockEntity.getFluidTank();
-        int waterAmount = fluidTank.getAmount();
-        int capacity = fluidTank.getCapacity();
-        if (waterAmount > 0) {
+    @Override
+    public void extractRenderState(SinkBlockEntity blockEntity, SinkRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
+
+        renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
+    }
+
+    @Override
+    public void submit(SinkRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        if (renderState.fluidLevel > 0f) {
             poseStack.pushPose();
-            float filledPercentage = waterAmount / (float) capacity;
+            float filledPercentage = renderState.fluidLevel;
             poseStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             poseStack.scale(1f, filledPercentage, 1f);
-            dispatcher.getModelRenderer().tesselateBlock(level, ModModels.sinkLiquid.get().collectParts(random), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.translucentMovingBlock()), false, Integer.MAX_VALUE);
+            final var model = ModModels.sinkLiquid.get();
+            submitNodeCollector.submitBlockModel(poseStack, RenderType.entitySolid(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
     }

@@ -147,7 +147,7 @@ public class FridgeBlock extends BaseKitchenBlock {
             }
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             Balm.getNetworking().openMenu(player, fridge);
         }
 
@@ -216,7 +216,7 @@ public class FridgeBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide
+        return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::serverTick);
     }

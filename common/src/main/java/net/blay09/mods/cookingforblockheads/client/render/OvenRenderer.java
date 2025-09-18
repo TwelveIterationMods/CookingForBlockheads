@@ -3,128 +3,140 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
-import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
+import java.util.Collections;
+import java.util.List;
 
-    private static final RandomSource random = RandomSource.create();
+public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRenderer.OvenRenderState> {
+
+    public static class OvenRenderState extends BlockEntityRenderState {
+        public final ItemStackRenderState firstTool = new ItemStackRenderState();
+        public final ItemStackRenderState secondTool = new ItemStackRenderState();
+        public final ItemStackRenderState thirdTool = new ItemStackRenderState();
+        public final ItemStackRenderState fourthTool = new ItemStackRenderState();
+        public List<ItemStackRenderState> items = Collections.emptyList();
+        public float doorAngle;
+        public DyeColor dye;
+        public boolean active;
+    }
+
+    private final ItemModelResolver itemModelResolver;
 
     public OvenRenderer(BlockEntityRendererProvider.Context context) {
+        itemModelResolver = context.itemModelResolver();
     }
 
     @Override
-    public void render(OvenBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-        Level level = blockEntity.getLevel();
-        if (level == null) {
-            return;
+    public OvenRenderState createRenderState() {
+        return new OvenRenderState();
+    }
+
+    @Override
+    public void extractRenderState(OvenBlockEntity blockEntity, OvenRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
+
+        itemModelResolver.updateForTopItem(renderState.firstTool, blockEntity.getToolItem(0), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        itemModelResolver.updateForTopItem(renderState.secondTool, blockEntity.getToolItem(1), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        itemModelResolver.updateForTopItem(renderState.thirdTool, blockEntity.getToolItem(2), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        itemModelResolver.updateForTopItem(renderState.fourthTool, blockEntity.getToolItem(3), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+
+        renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
+        renderState.dye = blockEntity.getBlockState().getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
+
+        final var id = (int) blockEntity.getBlockPos().asLong();
+        for (int i = 0; i < 9; i++) {
+            final var itemStack = blockEntity.getInternalContainer().getItem(7 + i);
+            final var itemStackRenderState = new ItemStackRenderState();
+            itemModelResolver.updateForTopItem(itemStackRenderState, itemStack, ItemDisplayContext.FIXED, blockEntity.getLevel(), null, id + i);
+            renderState.items.add(itemStackRenderState);
         }
-        BlockState state = blockEntity.getBlockState();
+    }
 
-        BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-
-        Direction facing = blockEntity.getFacing();
-        float doorAngle = blockEntity.getDoorAnimator().getRenderAngle(partialTicks);
-
+    @Override
+    public void submit(OvenRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         // Render the oven door
         poseStack.pushPose();
-        RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
         poseStack.translate(-0.5f, 0f, -0.5f);
-        poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(doorAngle)));
-        DyeColor blockColor = state.getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
-        int colorIndex = blockColor.getId();
-        final var model = doorAngle < 0.3f && blockEntity.isBurning() ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex).get();
-        dispatcher.getModelRenderer()
-                .tesselateBlock(level,
-                        model.collectParts(random),
-                        blockEntity.getBlockState(),
-                        blockEntity.getBlockPos(),
-                        poseStack,
-                        buffer.getBuffer(RenderType.solid()),
-                        false,
-                        0);
+        poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(renderState.doorAngle)));
+        int colorIndex = renderState.dye.getId();
+        final var model = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex).get();
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.translate(0f, 0f, -1f);
-        dispatcher.getModelRenderer()
-                .tesselateBlock(level,
-                        ModModels.ovenDoorHandles.get(colorIndex).get().collectParts(random),
-                        blockEntity.getBlockState(),
-                        blockEntity.getBlockPos().relative(facing),
-                        poseStack,
-                        buffer.getBuffer(RenderType.solid()),
-                        false,
-                        0);
+        final var handleModel = ModModels.ovenDoorHandles.get(colorIndex).get();
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), handleModel, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         // Render the oven tools
         poseStack.pushPose();
         poseStack.translate(0f, 1.05, 0f);
-        RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
         poseStack.scale(0.4f, 0.4f, 0.4f);
-        ItemStack itemStack = blockEntity.getToolItem(0);
-        if (!itemStack.isEmpty()) {
+        if (!renderState.firstTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, 0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+            renderState.firstTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
 
-        itemStack = blockEntity.getToolItem(1);
-        if (!itemStack.isEmpty()) {
+        if (!renderState.secondTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, 0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+            renderState.secondTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
 
-        itemStack = blockEntity.getToolItem(2);
-        if (!itemStack.isEmpty()) {
+        if (!renderState.thirdTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, -0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+            renderState.thirdTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
 
-        itemStack = blockEntity.getToolItem(3);
-        if (!itemStack.isEmpty()) {
+        if (!renderState.fourthTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, -0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-            RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+            renderState.fourthTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
         poseStack.popPose();
 
         // Render the oven content when the door is open
-        if (doorAngle > 0f) {
+        if (renderState.doorAngle > 0f) {
             poseStack.pushPose();
             poseStack.translate(0, 0.4, 0);
-            RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
             poseStack.scale(0.3f, 0.3f, 0.3f);
             float offsetX = 0.825f;
             float offsetZ = 0.8f;
-            for (int i = 0; i < 9; i++) {
-                itemStack = blockEntity.getInternalContainer().getItem(7 + i);
-                if (!itemStack.isEmpty()) {
+            for (int i = 0; i < renderState.items.size(); i++) {
+                final var itemStackRenderState = renderState.items.get(i);
+                if (!itemStackRenderState.isEmpty()) {
                     poseStack.pushPose();
                     poseStack.translate(offsetX, 0f, offsetZ);
                     poseStack.mulPose(Axis.XP.rotationDegrees(90f));
-                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+                    itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                     poseStack.popPose();
                 }
                 offsetX -= 0.8f;

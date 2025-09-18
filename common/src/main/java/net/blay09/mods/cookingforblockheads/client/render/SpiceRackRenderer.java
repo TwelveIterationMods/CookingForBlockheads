@@ -3,38 +3,66 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.entity.SpiceRackBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEntity> {
+import java.util.Collections;
+import java.util.List;
+
+public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEntity, SpiceRackRenderer.SpiceRackRenderState> {
+
+    public static class SpiceRackRenderState extends BlockEntityRenderState {
+        public List<ItemStackRenderState> items = Collections.emptyList();
+    }
+
+    private final ItemModelResolver itemModelResolver;
 
     public SpiceRackRenderer(BlockEntityRendererProvider.Context context) {
+        itemModelResolver = context.itemModelResolver();
     }
 
     @Override
-    public void render(SpiceRackBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-        if (!blockEntity.hasLevel()) {
-            return;
+    public SpiceRackRenderState createRenderState() {
+        return new SpiceRackRenderState();
+    }
+
+    @Override
+    public void extractRenderState(SpiceRackBlockEntity blockEntity, SpiceRackRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
+
+        final var id = (int) blockEntity.getBlockPos().asLong();
+        for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
+            final var itemStack = blockEntity.getContainer().getItem(i);
+            final var itemStackRenderState = new ItemStackRenderState();
+            itemModelResolver.updateForTopItem(itemStackRenderState, itemStack, ItemDisplayContext.FIXED, blockEntity.getLevel(), null, id + i);
+            renderState.items.add(itemStackRenderState);
         }
+    }
 
-        Level level = blockEntity.getLevel();
-
+    @Override
+    public void submit(SpiceRackRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
         poseStack.translate(-0.4, 0.75, 0.3);
         poseStack.mulPose(Axis.YP.rotationDegrees(90f));
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
-            ItemStack itemStack = blockEntity.getContainer().getItem(i);
-            if (!itemStack.isEmpty()) {
+        for (int i = 0; i < renderState.items.size(); i++) {
+            final var itemStackRenderState = renderState.items.get(i);
+            if (!itemStackRenderState.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, 0.2f * i);
                 poseStack.mulPose(Axis.YN.rotationDegrees(20));
-                RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+                itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
         }

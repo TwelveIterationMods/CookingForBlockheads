@@ -61,7 +61,7 @@ public class FruitBasketBlock extends BaseKitchenBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             final var blockEntity = ((FruitBasketBlockEntity) level.getBlockEntity(pos));
             Balm.getNetworking().openMenu(player, blockEntity);
         }
@@ -70,7 +70,7 @@ public class FruitBasketBlock extends BaseKitchenBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return !level.isClientSide ? createTickerHelper(type, ModBlockEntities.fruitBasket.get(), FruitBasketBlockEntity::serverTick) : null;
+        return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.fruitBasket.get(), FruitBasketBlockEntity::serverTick) : null;
     }
 
     @Override

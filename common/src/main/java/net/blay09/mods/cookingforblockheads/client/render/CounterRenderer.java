@@ -5,32 +5,37 @@ import com.mojang.math.Axis;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Container;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntityRenderer<T> {
+import java.util.Collections;
+import java.util.List;
 
-    private static final RandomSource random = RandomSource.create();
+public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntityRenderer<T, CounterRenderer.CounterRenderState> {
+
+    public static class CounterRenderState extends BlockEntityRenderState {
+        public List<ItemStackRenderState> items = Collections.emptyList();
+        public DyeColor dye;
+        public float doorAngle;
+        public boolean flipped;
+    }
 
     private static final float doorOriginX = 0.84375f;
-
     private static final float doorOriginZ = 0.09375f;
-
-    public CounterRenderer(BlockEntityRendererProvider.Context context) {
-    }
 
     protected float getDoorOriginX() {
         return doorOriginX;
@@ -53,52 +58,67 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         return isFlipped ? ModModels.counterDoorsFlipped.get(colorIndex).get() : ModModels.counterDoors.get(colorIndex).get();
     }
 
+    private final ItemModelResolver itemModelResolver;
+
+    public CounterRenderer(BlockEntityRendererProvider.Context context) {
+        itemModelResolver = context.itemModelResolver();
+    }
+
     @Override
-    public void render(T blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-        Level level = blockEntity.getLevel();
-        if (level == null) {
-            return;
+    public CounterRenderState createRenderState() {
+        return new CounterRenderState();
+    }
+
+    @Override
+    public void extractRenderState(T blockEntity, CounterRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
+
+        renderState.dye = renderState.blockState.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
+        renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
+        renderState.flipped = blockEntity.isFlipped();
+
+        final var id = (int) blockEntity.getBlockPos().asLong();
+        for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
+            final var itemStack = blockEntity.getContainer().getItem(i);
+            final var itemStackRenderState = new ItemStackRenderState();
+            itemModelResolver.updateForTopItem(itemStackRenderState, itemStack, ItemDisplayContext.FIXED, blockEntity.getLevel(), null, id + i);
+            renderState.items.add(itemStackRenderState);
         }
+    }
 
-        BlockState state = blockEntity.getBlockState();
-        DyeColor blockColor = state.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
-        float blockAngle = blockEntity.getFacing().toYRot();
-        float doorAngle = blockEntity.getDoorAnimator().getRenderAngle(partialTicks);
-        boolean isFlipped = blockEntity.isFlipped();
-
+    @Override
+    public void submit(CounterRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         float doorOriginX = getDoorOriginX();
         float doorOriginZ = getDoorOriginZ();
         float doorDirection = -1f;
-        if (isFlipped) {
+        if (renderState.flipped) {
             doorOriginX = 1 - doorOriginX;
             doorDirection = 1f;
         }
 
-        RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(doorOriginX, 0f, doorOriginZ);
-        poseStack.mulPose(Axis.YP.rotationDegrees(doorDirection * (float) Math.toDegrees(doorAngle)));
+        poseStack.mulPose(Axis.YP.rotationDegrees(doorDirection * (float) Math.toDegrees(renderState.doorAngle)));
         poseStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
-        BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-        final var model = getDoorModel(blockColor, isFlipped);
-        dispatcher.getModelRenderer().tesselateBlock(level, model.collectParts(random), blockEntity.getBlockState(), blockEntity.getBlockPos(), poseStack, buffer.getBuffer(RenderType.solid()), false, 0);
+        final var model = getDoorModel(renderState.dye, renderState.flipped);
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         // Render the content if the door is open
-        if (doorAngle > 0f) {
+        if (renderState.doorAngle > 0f) {
             poseStack.pushPose();
             poseStack.translate(0, 0.5, 0);
-            RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
+            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
             poseStack.scale(0.3f, 0.3f, 0.3f);
-            Container itemHandler = blockEntity.getContainer();
-            int itemsPerShelf = itemHandler.getContainerSize() / 2;
+            int itemsPerShelf = renderState.items.size() / 2;
             int itemsPerRow = itemsPerShelf / 2;
-            for (int i = itemHandler.getContainerSize() - 1; i >= 0; i--) {
-                ItemStack itemStack = itemHandler.getItem(i);
-                if (!itemStack.isEmpty()) {
+            for (int i = renderState.items.size() - 1; i >= 0; i--) {
+                final var itemStackRenderState = renderState.items.get(i);
+                if (!itemStackRenderState.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
                     int shelfIndex = i % itemsPerShelf;
                     int rowIndex = i % itemsPerRow;
@@ -109,7 +129,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
                     poseStack.mulPose(Axis.YP.rotationDegrees(45f));
-                    RenderUtils.renderItem(itemStack, combinedLight, poseStack, buffer, level);
+                    itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                     poseStack.popPose();
                 }
             }

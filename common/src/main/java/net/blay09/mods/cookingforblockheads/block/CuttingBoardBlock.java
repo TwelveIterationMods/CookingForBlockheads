@@ -66,7 +66,7 @@ public class CuttingBoardBlock extends BaseKitchenBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {
             Balm.getNetworking().openMenu(player, state.getMenuProvider(level, pos));

@@ -18,6 +18,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -128,10 +131,10 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int state) {
-        boolean result = super.mouseReleased(mouseX, mouseY, state);
+    public boolean mouseReleased(MouseButtonEvent event) {
+        boolean result = super.mouseReleased(event);
 
-        if (state != -1 && mouseClickY != -1) {
+        if (event.button() != -1 && mouseClickY != -1) {
             mouseClickY = -1;
             indexWhenClicked = 0;
             lastNumberOfMoves = 0;
@@ -141,28 +144,28 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 1 && mouseX >= searchBar.getX() && mouseX < searchBar.getX() + searchBar.getWidth() && mouseY >= searchBar.getY() && mouseY < searchBar.getY() + searchBar.getHeight()) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (event.button() == 1 && event.x() >= searchBar.getX() && event.x() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.search(null);
             menu.updateCraftableSlots();
             setCurrentOffset(currentOffset);
             return true;
         } else {
-            if (searchBar.mouseClicked(mouseX, mouseY, button)) {
+            if (searchBar.mouseClicked(event, doubleClick)) {
                 setFocused(searchBar);
                 return true;
             }
         }
 
-        if (mouseX >= scrollBarXPos && mouseX <= scrollBarXPos + SCROLLBAR_WIDTH && mouseY >= scrollBarYPos && mouseY <= scrollBarYPos + scrollBarScaledHeight) {
-            mouseClickY = mouseY;
+        if (event.x() >= scrollBarXPos && event.x() <= scrollBarXPos + SCROLLBAR_WIDTH && event.y() >= scrollBarYPos && event.y() <= scrollBarYPos + scrollBarScaledHeight) {
+            mouseClickY = event.y();
             indexWhenClicked = currentOffset;
         }
 
         Slot mouseSlot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
         if (mouseSlot instanceof CraftMatrixFakeSlot fakeSlot) {
-            if (button == 0) {
+            if (event.button() == 0) {
                 ItemStack itemStack = mouseSlot.getItem();
                 final var recipe = menu.findCraftableForResultItem(itemStack);
                 if (recipe != null) {
@@ -171,13 +174,13 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                     setCurrentOffset(menu.getRecipesForSelectionIndex());
                     setFocused(null);
                 }
-            } else if (button == 1) {
+            } else if (event.button() == 1) {
                 final var lockedInput = fakeSlot.toggleLock();
                 menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
             return true;
         } else if (mouseSlot instanceof CraftableListingFakeSlot recipeFakeSlot) {
-            if (hasAltDown()) {
+            if (event.hasAltDown()) {
                 final var recipe = recipeFakeSlot.getCraftable();
                 if (recipe != null) {
                     final var itemStack = recipe.itemStack();
@@ -188,12 +191,12 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    public boolean charTyped(char c, int keyCode) {
-        boolean result = super.charTyped(c, keyCode);
+    public boolean charTyped(CharacterEvent event) {
+        boolean result = super.charTyped(event);
 
         menu.search(searchBar.getValue());
         menu.updateCraftableSlots();
@@ -203,19 +206,19 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.isEscape()) {
             minecraft.player.closeContainer();
             return true;
         }
 
-        if (!searchBar.isFocused() && keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+        if (!searchBar.isFocused() && event.key() == GLFW.GLFW_KEY_BACKSPACE) {
             menu.popHistory();
             return true;
         }
 
         final var previousSearch = searchBar.getValue();
-        if (searchBar.keyPressed(keyCode, scanCode, modifiers) || searchBar.isFocused()) {
+        if (searchBar.keyPressed(event) || searchBar.isFocused()) {
             if (!searchBar.getValue().equals(previousSearch)) {
                 menu.search(searchBar.getValue());
                 menu.updateCraftableSlots();
@@ -224,7 +227,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Override

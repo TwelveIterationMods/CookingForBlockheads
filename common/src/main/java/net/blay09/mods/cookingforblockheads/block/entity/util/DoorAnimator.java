@@ -46,7 +46,7 @@ public class DoorAnimator {
         int x = blockEntity.getBlockPos().getX();
         int y = blockEntity.getBlockPos().getY();
         int z = blockEntity.getBlockPos().getZ();
-        if (!blockEntity.getLevel().isClientSide && numPlayersUsing != 0 && (ticksSinceSync + x + y + z) % 200 == 0) {
+        if (!blockEntity.getLevel().isClientSide() && numPlayersUsing != 0 && (ticksSinceSync + x + y + z) % 200 == 0) {
             // This is Mojang's bad fix for chests staying open. Because it makes so much more sense to do this than to ensure onContainerClosed is always called properly.
             numPlayersUsing = 0;
             float range = 5f;
