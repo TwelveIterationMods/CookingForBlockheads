@@ -1,1 +1,3 @@
-- Possibly fixed rare issues where cow in a jar would not form
+- Fixed serialization errors on cooking table
+- Fixed double fridge rendering wrong when breaking one of its halves
+- Fixed double fridge rendering wrong when placing the top with a different facing
