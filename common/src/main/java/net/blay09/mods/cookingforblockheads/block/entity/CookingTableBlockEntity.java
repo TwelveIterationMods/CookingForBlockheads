@@ -47,12 +47,12 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
 
     @Override
     public void saveAdditional(ValueOutput output) {
-        output.store("NoFilterBook", ItemStack.CODEC, noFilterBook);
+        output.store("NoFilterBook", ItemStack.OPTIONAL_CODEC, noFilterBook);
     }
 
     @Override
     public void loadAdditional(ValueInput input) {
-        input.read("NoFilterBook", ItemStack.CODEC).ifPresent(this::setNoFilterBook);
+        input.read("NoFilterBook", ItemStack.OPTIONAL_CODEC).ifPresent(this::setNoFilterBook);
     }
 
     @Override
