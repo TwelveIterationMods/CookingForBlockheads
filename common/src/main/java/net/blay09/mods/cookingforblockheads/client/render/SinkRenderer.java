@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +20,7 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
 
     public static class SinkRenderState extends BlockEntityRenderState {
         public float fluidLevel;
+        public int waterColor;
     }
 
     public SinkRenderer(BlockEntityRendererProvider.Context context) {
@@ -36,6 +36,8 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
+        final var level = blockEntity.getLevel();
+        renderState.waterColor = level != null ? level.getBiome(blockEntity.getBlockPos()).value().getWaterColor() : 0xFFFFFFFF;
     }
 
     @Override
@@ -46,7 +48,11 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
             poseStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             poseStack.scale(1f, filledPercentage, 1f);
             final var model = ModModels.sinkLiquid.get();
-            submitNodeCollector.submitBlockModel(poseStack, RenderType.entitySolid(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            int color = renderState.waterColor;
+            float red = (float) (color >> 16 & 255) / 255f;
+            float green = (float) (color >> 8 & 255) / 255f;
+            float blue = (float) (color & 255) / 255f;
+            submitNodeCollector.submitBlockModel(poseStack, RenderType.entitySolid(TextureAtlas.LOCATION_BLOCKS), model, red, green, blue, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
     }

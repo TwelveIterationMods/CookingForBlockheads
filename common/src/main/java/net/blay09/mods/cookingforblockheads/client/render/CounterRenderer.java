@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
 
     public static class CounterRenderState extends BlockEntityRenderState {
         public List<ItemStackRenderState> items = Collections.emptyList();
+        @Nullable
         public DyeColor dye;
         public float doorAngle;
         public boolean flipped;
@@ -78,6 +80,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         renderState.flipped = blockEntity.isFlipped();
 
         final var id = (int) blockEntity.getBlockPos().asLong();
+        renderState.items = new ArrayList<>();
         for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
             final var itemStack = blockEntity.getContainer().getItem(i);
             final var itemStackRenderState = new ItemStackRenderState();

@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         public final ItemStackRenderState fourthTool = new ItemStackRenderState();
         public List<ItemStackRenderState> items = Collections.emptyList();
         public float doorAngle;
-        public DyeColor dye;
+        public DyeColor dye = DyeColor.WHITE;
         public boolean active;
     }
 
@@ -59,8 +60,10 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
 
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.dye = blockEntity.getBlockState().getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
+        renderState.active = blockEntity.isBurning();
 
         final var id = (int) blockEntity.getBlockPos().asLong();
+        renderState.items = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             final var itemStack = blockEntity.getInternalContainer().getItem(7 + i);
             final var itemStackRenderState = new ItemStackRenderState();

@@ -3,24 +3,18 @@ package net.blay09.mods.cookingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
-
-import net.blay09.mods.cookingforblockheads.util.ItemUtils;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
-import net.minecraft.ChatFormatting;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.util.*;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -38,8 +32,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 public class FridgeBlock extends BaseKitchenBlock {
 
@@ -188,30 +180,18 @@ public class FridgeBlock extends BaseKitchenBlock {
         final var posAbove = pos.above();
         final var stateAbove = level.getBlockState(posAbove);
         if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
-            return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER);
+            return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER)
+                    .setValue(FACING, stateBelow.getValue(FACING));
         } else if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
             return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER);
+        } else if (state.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER && stateAbove.getBlock() != this) {
+            return state.setValue(MODEL_TYPE, FridgeModelType.SMALL);
+        } else if (state.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER && stateBelow.getBlock() != this) {
+            return state.setValue(MODEL_TYPE, FridgeModelType.SMALL);
         }
 
         return super.updateShape(state, level, scheduledTickAccess, pos, facing, facingPos, facingState, randomSource);
     }
-
-    /*@Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            BlockPos posAbove = pos.above();
-            BlockState stateAbove = level.getBlockState(posAbove);
-            BlockPos posBelow = pos.below();
-            BlockState stateBelow = level.getBlockState(posBelow);
-            if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
-                level.setBlock(posAbove, stateAbove.setValue(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            } else if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
-                level.setBlock(posBelow, stateBelow.setValue(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            }
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
-    }*/
 
     @Nullable
     @Override

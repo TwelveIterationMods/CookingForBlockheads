@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         final var id = (int) blockEntity.getBlockPos().asLong();
+        renderState.items = new ArrayList<>();
         for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
             final var itemStack = blockEntity.getContainer().getItem(i);
             final var itemStackRenderState = new ItemStackRenderState();

@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
     public static class FridgeRenderState extends BlockEntityRenderState {
         public boolean skip;
         public List<ItemStackRenderState> items = Collections.emptyList();
-        public FridgeBlock.FridgeModelType modelType;
-        public DyeColor dye;
+        public FridgeBlock.FridgeModelType modelType = FridgeBlock.FridgeModelType.SMALL;
+        public DyeColor dye = DyeColor.WHITE;
         public float doorAngle;
         public boolean flipped;
     }
@@ -52,12 +53,14 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
     public void extractRenderState(FridgeBlockEntity blockEntity, FridgeRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
-        renderState.dye = renderState.blockState.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
+        renderState.dye = renderState.blockState.getBlock() instanceof FridgeBlock fridgeBlock ? fridgeBlock.getColor() : DyeColor.WHITE;
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.modelType = blockEntity.getBlockState().getValue(FridgeBlock.MODEL_TYPE);
+        renderState.skip = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_UPPER;
         renderState.flipped = blockEntity.getBlockState().getValue(FridgeBlock.FLIPPED);
 
         final var id = (int) blockEntity.getBlockPos().asLong();
+        renderState.items = new ArrayList<>();
         for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
             final var itemStack = blockEntity.getContainer().getItem(i);
             final var itemStackRenderState = new ItemStackRenderState();
@@ -98,10 +101,10 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
             lowerModel = renderState.flipped ? ModModels.fridgeDoorsFlipped.get(colorIndex).get() : ModModels.fridgeDoors.get(colorIndex).get();
         }
 
-        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), lowerModel, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), lowerModel, 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         if (upperModel != null) {
             poseStack.translate(0, 1, 0);
-            submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), upperModel, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), upperModel, 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         }
 
         poseStack.popPose();

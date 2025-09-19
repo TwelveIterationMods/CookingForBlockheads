@@ -17,7 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntityRenderer<T, MilkJarRenderer.MilkJarRenderState> {
+public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements BlockEntityRenderer<TBlockEntity, MilkJarRenderer.MilkJarRenderState> {
 
     public static class MilkJarRenderState extends BlockEntityRenderState {
         public float fluidLevel;
@@ -34,7 +34,7 @@ public class MilkJarRenderer<T extends MilkJarBlockEntity> implements BlockEntit
     }
 
     @Override
-    public void extractRenderState(T blockEntity, MilkJarRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(TBlockEntity blockEntity, MilkJarRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
