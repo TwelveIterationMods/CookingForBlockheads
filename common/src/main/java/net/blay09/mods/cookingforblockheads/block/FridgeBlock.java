@@ -188,30 +188,18 @@ public class FridgeBlock extends BaseKitchenBlock {
         final var posAbove = pos.above();
         final var stateAbove = level.getBlockState(posAbove);
         if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
-            return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER);
+            return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_UPPER)
+                .setValue(FACING, stateBelow.getValue(FACING));
         } else if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
             return state.setValue(MODEL_TYPE, FridgeModelType.LARGE_LOWER);
+        } else if (state.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER && stateAbove.getBlock() != this) {
+            return state.setValue(MODEL_TYPE, FridgeModelType.SMALL);
+        } else if (state.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER && stateBelow.getBlock() != this) {
+            return state.setValue(MODEL_TYPE, FridgeModelType.SMALL);
         }
 
         return super.updateShape(state, level, scheduledTickAccess, pos, facing, facingPos, facingState, randomSource);
     }
-
-    /*@Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            BlockPos posAbove = pos.above();
-            BlockState stateAbove = level.getBlockState(posAbove);
-            BlockPos posBelow = pos.below();
-            BlockState stateBelow = level.getBlockState(posBelow);
-            if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == FridgeModelType.LARGE_UPPER) {
-                level.setBlock(posAbove, stateAbove.setValue(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            } else if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == FridgeModelType.LARGE_LOWER) {
-                level.setBlock(posBelow, stateBelow.setValue(MODEL_TYPE, FridgeModelType.SMALL), 3);
-            }
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
-    }*/
 
     @Nullable
     @Override
