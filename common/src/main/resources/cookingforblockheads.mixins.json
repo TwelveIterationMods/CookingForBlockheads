@@ -8,7 +8,8 @@
     "ShapelessRecipeAccessor",
     "ShapedRecipeAccessor",
     "SingleItemRecipeAccessor",
-    "RecipeManagerAccessor"
+    "RecipeManagerAccessor",
+    "LevelEventHandlerMixin"
   ],
   "client": [
   ],

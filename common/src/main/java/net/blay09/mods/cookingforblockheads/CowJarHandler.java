@@ -3,14 +3,14 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
 import net.blay09.mods.cookingforblockheads.tag.ModEntityTypeTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Optional;
 
@@ -22,21 +22,26 @@ public class CowJarHandler {
         }
 
         if (event.getDamageSource().getMsgId().equals("anvil") && event.getEntity().getType().is(ModEntityTypeTags.COW)) {
-            Entity entity = event.getEntity();
-            Level level = entity.level();
+            final var entity = event.getEntity();
+            final var level = entity.level();
             findMilkJar(level, entity.blockPosition()).ifPresent(pos -> {
                 level.setBlockAndUpdate(pos, ModBlocks.cowJar.defaultBlockState());
-                BlockEntity tileEntity = level.getBlockEntity(pos);
-                if (tileEntity instanceof CowJarBlockEntity && entity.getCustomName() != null) {
-                    Component textComponent = Component.translatable("container.cookingforblockheads.cow_jar_custom", entity.getCustomName());
-                    ((CowJarBlockEntity) tileEntity).setCustomName(textComponent);
-                }
+                final var blockEntity = level.getBlockEntity(pos);
+                if (blockEntity instanceof CowJarBlockEntity cowJar) {
+                    final var cowVariant = entity.get(DataComponents.COW_VARIANT);
+                    cowJar.setVariant(cowVariant);
 
-                // Ex Compressum compat for compressed cows
-                boolean wasCompressed = Balm.getHooks().getPersistentData(event.getEntity()).getCompound("excompressum")
-                        .flatMap(it -> it.getBoolean("Compressed")).orElse(false);
-                if (wasCompressed && tileEntity instanceof CowJarBlockEntity) {
-                    ((CowJarBlockEntity) tileEntity).setCompressedCow(true);
+                    if (entity.getCustomName() != null) {
+                        final var textComponent = Component.translatable("container.cookingforblockheads.cow_jar_custom", entity.getCustomName());
+                        cowJar.setCustomName(textComponent);
+                    }
+
+                    // Ex Compressum compat for compressed cows
+                    boolean wasCompressed = Balm.getHooks().getPersistentData(event.getEntity()).getCompound("excompressum")
+                            .flatMap(it -> it.getBoolean("Compressed")).orElse(false);
+                    if (wasCompressed) {
+                        cowJar.setCompressedCow(true);
+                    }
                 }
 
                 Balm.getNetworking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));

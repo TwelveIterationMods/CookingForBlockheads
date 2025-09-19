@@ -14,7 +14,7 @@ public class RenderUtils {
     public static void applyBlockAngle(PoseStack poseStack, BlockState state, float angleOffset) {
         float angle = state.getValue(BaseKitchenBlock.FACING).toYRot();
         poseStack.translate(0.5, 0, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(angleOffset - angle));
+        poseStack.mulPose(Axis.YP.rotationDegrees(angleOffset + angle));
     }
 
 }

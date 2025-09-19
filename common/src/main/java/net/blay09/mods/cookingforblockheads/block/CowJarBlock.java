@@ -29,7 +29,9 @@ public class CowJarBlock extends MilkJarBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.cowJar.get(), CowJarBlockEntity::serverTick);
+        return level.isClientSide()
+                ? createTickerHelper(type, ModBlockEntities.cowJar.get(), CowJarBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.cowJar.get(), CowJarBlockEntity::serverTick);
     }
 
     @Override

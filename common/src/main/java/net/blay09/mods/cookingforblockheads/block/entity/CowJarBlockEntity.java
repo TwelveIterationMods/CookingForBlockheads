@@ -2,18 +2,22 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.world.entity.animal.CowVariant;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNameable {
 
@@ -23,7 +27,11 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     private int ticksSinceUpdate;
 
     private Component customName;
+    private Holder<CowVariant> variant;
     private boolean compressedCow;
+
+    private BlockPos jukebox;
+    private int partyBpm;
 
     public CowJarBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.cowJar.get(), pos, state);
@@ -46,6 +54,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     public void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         customName = input.read("CustomNameV2", ComponentSerialization.CODEC).orElse(null);
+        variant = input.read("Variant", CowVariant.CODEC).orElse(null);
         compressedCow = input.getBooleanOr("CompressedCow", false);
     }
 
@@ -53,7 +62,16 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     public void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         output.storeNullable("CustomNameV2", ComponentSerialization.CODEC, customName);
+        output.storeNullable("Variant", CowVariant.CODEC, variant);
         output.putBoolean("CompressedCow", compressedCow);
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {
+        final var jukebox = blockEntity.jukebox;
+        if (jukebox == null || !jukebox.closerToCenterThan(pos.getCenter(), 3.46f) || !level.getBlockState(jukebox).is(Blocks.JUKEBOX)) {
+            blockEntity.partyBpm = 0;
+            blockEntity.jukebox = null;
+        }
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {
@@ -123,4 +141,23 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
 
         return Component.translatable("container.cookingforblockheads.cow_jar");
     }
+
+    @Nullable
+    public Holder<CowVariant> getVariant() {
+        return variant;
+    }
+
+    public void setVariant(Holder<CowVariant> variant) {
+        this.variant = variant;
+    }
+
+    public boolean isPartying() {
+        return partyBpm > 0;
+    }
+
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.jukebox = pos;
+        this.partyBpm = playing ? 85 : 0;
+    }
+
 }
