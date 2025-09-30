@@ -87,22 +87,24 @@ public record ResourceHandlerKitchenItemProvider(
         @Override
         public ItemStack consume() {
             final var slotResource = itemHandler.getResource(slot);
-            final var transaction = Transaction.open(null);
-            int count = itemHandler.extract(slot, slotResource, 1, transaction);
-            transaction.commit();
-            return slotResource.toStack(count);
+            try (final var transaction = Transaction.open(null)) {
+                int count = itemHandler.extract(slot, slotResource, 1, transaction);
+                transaction.commit();
+                return slotResource.toStack(count);
+            }
         }
 
         @Override
         public ItemStack restore(ItemStack itemStack) {
-            final var transaction = Transaction.open(null);
-            var restCount = itemHandler.insert(slot, ItemResource.of(itemStack), itemStack.getCount(), transaction);
-            if (restCount > 0) {
-                restCount = itemHandler.insert(ItemResource.of(itemStack), itemStack.getCount(), transaction);
-            }
-            transaction.commit();
+            try (final var transaction = Transaction.open(null)) {
+                var restCount = itemHandler.insert(slot, ItemResource.of(itemStack), itemStack.getCount(), transaction);
+                if (restCount > 0) {
+                    restCount = itemHandler.insert(ItemResource.of(itemStack), itemStack.getCount(), transaction);
+                }
+                transaction.commit();
 
-            return restCount > 0 ? itemStack.copyWithCount(restCount) : ItemStack.EMPTY;
+                return restCount > 0 ? itemStack.copyWithCount(restCount) : ItemStack.EMPTY;
+            }
         }
     }
 }
