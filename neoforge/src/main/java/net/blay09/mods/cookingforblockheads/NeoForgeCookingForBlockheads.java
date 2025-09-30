@@ -44,9 +44,9 @@ public class NeoForgeCookingForBlockheads {
                         } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
                             return new ContainerKitchenItemProvider(containerProvider.getContainer());
                         } else if (level != null) {
-                            final var itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
+                            final var itemHandler = level.getCapability(Capabilities.Item.BLOCK, blockEntity.getBlockPos(), null);
                             if (itemHandler != null) {
-                                return new ItemHandlerKitchenItemProvider(itemHandler);
+                                return new ResourceHandlerKitchenItemProvider(itemHandler);
                             }
                         }
                     }
