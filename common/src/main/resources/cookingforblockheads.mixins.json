@@ -8,10 +8,10 @@
     "ShapelessRecipeAccessor",
     "ShapedRecipeAccessor",
     "SingleItemRecipeAccessor",
-    "RecipeManagerAccessor",
-    "LevelEventHandlerMixin"
+    "RecipeManagerAccessor"
   ],
   "client": [
+    "LevelEventHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
