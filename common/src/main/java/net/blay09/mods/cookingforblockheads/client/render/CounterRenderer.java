@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
@@ -17,6 +18,8 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +37,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         public DyeColor dye;
         public float doorAngle;
         public boolean flipped;
+        public Direction facing = Direction.NORTH;
     }
 
     private static final float doorOriginX = 0.84375f;
@@ -76,6 +80,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         renderState.dye = renderState.blockState.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
+        renderState.facing = renderState.blockState.getValue(CounterBlock.FACING);
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.flipped = blockEntity.isFlipped();
 
@@ -100,7 +105,8 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
             doorDirection = 1f;
         }
 
-        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+        poseStack.translate(0.5f, 0f, 0.5f);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(doorOriginX, 0f, doorOriginZ);
@@ -114,8 +120,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         // Render the content if the door is open
         if (renderState.doorAngle > 0f) {
             poseStack.pushPose();
-            poseStack.translate(0, 0.5, 0);
-            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+            poseStack.translate(0.5, 0.5, 0.5);
             poseStack.scale(0.3f, 0.3f, 0.3f);
             int itemsPerShelf = renderState.items.size() / 2;
             int itemsPerRow = itemsPerShelf / 2;

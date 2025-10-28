@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
@@ -36,6 +37,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         public float doorAngle;
         public DyeColor dye = DyeColor.WHITE;
         public boolean active;
+        public Direction facing = Direction.NORTH;
     }
 
     private final ItemModelResolver itemModelResolver;
@@ -60,6 +62,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
 
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.dye = blockEntity.getBlockState().getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
+        renderState.facing = blockEntity.getBlockState().getValue(OvenBlock.FACING);
         renderState.active = blockEntity.isBurning();
 
         final var id = (int) blockEntity.getBlockPos().asLong();
@@ -74,12 +77,16 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
 
     @Override
     public void submit(OvenRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        poseStack.pushPose();
+
+        poseStack.translate(0.5f, 0f, 0.5f);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180));
+        poseStack.translate(-0.5f, 0f, -0.5f);
+
         // Render the oven door
         poseStack.pushPose();
-        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
-        poseStack.translate(-0.5f, 0f, -0.5f);
         poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(renderState.doorAngle)));
-        int colorIndex = renderState.dye.getId();
+        final var colorIndex = renderState.dye.getId();
         final var model = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex).get();
         submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.translate(0f, 0f, -1f);
@@ -89,9 +96,9 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
 
         // Render the oven tools
         poseStack.pushPose();
-        poseStack.translate(0f, 1.05, 0f);
-        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+        poseStack.translate(0.5f, 1.05, 0.5f);
         poseStack.scale(0.4f, 0.4f, 0.4f);
+
         if (!renderState.firstTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, 0.5f);
@@ -128,8 +135,8 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         // Render the oven content when the door is open
         if (renderState.doorAngle > 0f) {
             poseStack.pushPose();
-            poseStack.translate(0, 0.4, 0);
-            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+            poseStack.translate(0.5, 0.4, 0.5);
+
             poseStack.scale(0.3f, 0.3f, 0.3f);
             float offsetX = 0.825f;
             float offsetZ = 0.8f;
@@ -150,6 +157,8 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
             }
             poseStack.popPose();
         }
+
+        poseStack.popPose();
     }
 
 }

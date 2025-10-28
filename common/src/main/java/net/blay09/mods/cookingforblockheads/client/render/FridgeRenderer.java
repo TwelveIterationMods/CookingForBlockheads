@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
@@ -36,6 +37,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         public DyeColor dye = DyeColor.WHITE;
         public float doorAngle;
         public boolean flipped;
+        public Direction facing = Direction.NORTH;
     }
 
     private final ItemModelResolver itemModelResolver;
@@ -58,6 +60,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         renderState.modelType = blockEntity.getBlockState().getValue(FridgeBlock.MODEL_TYPE);
         renderState.skip = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_UPPER;
         renderState.flipped = blockEntity.getBlockState().getValue(FridgeBlock.FLIPPED);
+        renderState.facing = blockEntity.getBlockState().getValue(FridgeBlock.FACING);
 
         final var id = (int) blockEntity.getBlockPos().asLong();
         renderState.items = new ArrayList<>();
@@ -78,7 +81,9 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         // Render the fridge door
         boolean isLarge = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_LOWER;
         poseStack.pushPose();
-        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+
+        poseStack.translate(0.5f, 0f, 0.5f);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         float originX = 0.9375f - 0.5f / 16f;
@@ -87,6 +92,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
             originX = 1f - originX;
         }
 
+        poseStack.pushPose();
         poseStack.translate(originX, 0f, originZ);
         poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(renderState.flipped ? -renderState.doorAngle : renderState.doorAngle)));
         poseStack.translate(-originX, 0f, -originZ);
@@ -112,8 +118,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         // Render the fridge content if the door is open
         if (renderState.doorAngle > 0f) {
             poseStack.pushPose();
-            poseStack.translate(0, 0.5, 0);
-            RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
+
+            poseStack.translate(0.5f, 0.5f, 0.5f);
             poseStack.scale(0.3f, 0.3f, 0.3f);
             float topY = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_LOWER ? 3.25f : 0.45f;
             for (int i = renderState.items.size() - 1; i >= 0; i--) {
@@ -146,6 +152,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
             }
             poseStack.popPose();
         }
+
+        poseStack.popPose();
     }
 
 }

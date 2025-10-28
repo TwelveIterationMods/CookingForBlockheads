@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.blay09.mods.cookingforblockheads.block.SpiceRackBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.SpiceRackBlockEntity;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +26,7 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
 
     public static class SpiceRackRenderState extends BlockEntityRenderState {
         public List<ItemStackRenderState> items = Collections.emptyList();
+        public Direction facing = Direction.NORTH;
     }
 
     private final ItemModelResolver itemModelResolver;
@@ -41,6 +44,8 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
     public void extractRenderState(SpiceRackBlockEntity blockEntity, SpiceRackRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
+        renderState.facing = blockEntity.getBlockState().getValue(SpiceRackBlock.FACING);
+
         final var id = (int) blockEntity.getBlockPos().asLong();
         renderState.items = new ArrayList<>();
         for (int i = 0; i < blockEntity.getContainer().getContainerSize(); i++) {
@@ -54,8 +59,12 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
     @Override
     public void submit(SpiceRackRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        RenderUtils.applyBlockAngle(poseStack, renderState.blockState);
-        poseStack.translate(-0.4, 0.75, 0.3);
+
+        poseStack.translate(0.5f, 0f, 0.5f);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.translate(-0.5f, 0f, -0.5f);
+
+        poseStack.translate(0.1, 0.75, 0.8);
         poseStack.mulPose(Axis.YP.rotationDegrees(90f));
         poseStack.scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < renderState.items.size(); i++) {

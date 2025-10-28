@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.blay09.mods.cookingforblockheads.block.CowJarBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.model.AdultAndBabyModelPair;
@@ -17,6 +18,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.state.BlockState;
 import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
@@ -36,6 +38,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
         public final LivingEntityRenderState cow = new LivingEntityRenderState();
         @Nullable
         public CowVariant variant;
+        public Direction facing = Direction.NORTH;
     }
 
     private final Map<CowVariant.ModelType, AdultAndBabyModelPair<CowModel>> models;
@@ -123,6 +126,8 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
     public void extractRenderState(CowJarBlockEntity blockEntity, MilkJarRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
+        renderState.facing = blockEntity.getBlockState().getValue(CowJarBlock.FACING);
+
         if (renderState instanceof CowJarRenderState cowJarRenderState) {
             theCowIsAlive(blockEntity.getLevel(), blockEntity.getBlockPos(), blockEntity.getBlockState(), delta, cowJarRenderState, blockEntity);
 
@@ -136,11 +141,16 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
 
         if (renderState instanceof CowJarRenderState cowJarRenderState && cowJarRenderState.variant != null) {
             poseStack.pushPose();
+
+            poseStack.translate(0.5f, 0f, 0.5f);
+            poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+            poseStack.translate(-0.5f, 0f, -0.5f);
+
             poseStack.translate(0.5f, 0.5f, 0.5f);
             poseStack.mulPose(Axis.ZP.rotationDegrees(180));
             poseStack.translate(-0.5f, -0.5f, -0.5f);
-            RenderUtils.applyBlockAngle(poseStack, renderState.blockState, 180f);
-            poseStack.translate(0, 0.675f, 0);
+
+            poseStack.translate(0.5f, 0.675f, 0.5f);
             float scale = 0.2f;
             poseStack.scale(scale, scale, scale);
             final var modelAndTexture = cowJarRenderState.variant.modelAndTexture();
