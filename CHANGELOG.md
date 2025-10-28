@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.10
+- Fixed doors and contents rendering with wrong rotation on some facings
