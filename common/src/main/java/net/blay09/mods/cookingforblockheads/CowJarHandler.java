@@ -37,14 +37,14 @@ public class CowJarHandler {
                     }
 
                     // Ex Compressum compat for compressed cows
-                    boolean wasCompressed = Balm.getHooks().getPersistentData(event.getEntity()).getCompound("excompressum")
+                    boolean wasCompressed = Balm.hooks().getPersistentData(event.getEntity()).getCompound("excompressum")
                             .flatMap(it -> it.getBoolean("Compressed")).orElse(false);
                     if (wasCompressed) {
                         cowJar.setCompressedCow(true);
                     }
                 }
 
-                Balm.getNetworking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));
+                Balm.networking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));
                 entity.remove(Entity.RemovalReason.DISCARDED);
                 event.setCanceled(true);
             });

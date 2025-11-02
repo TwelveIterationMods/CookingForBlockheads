@@ -3,7 +3,9 @@ package net.blay09.mods.cookingforblockheads.client;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
+import net.blay09.mods.balm.client.BalmClientRegistrars;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
@@ -25,12 +27,14 @@ public class CookingForBlockheadsClient {
 
     private static final Set<ResourceLocation> favoriteItemIds = new HashSet<>();
 
-    public static void initialize() {
-        ModRenderers.initialize(BalmClient.getRenderers());
-        ModScreens.initialize(BalmClient.getScreens());
-        ModModels.initialize(BalmClient.getModels());
+    public static void initialize(BalmClientRegistrars registrars) {
+        registrars.blockEntityRenderers(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
+        registrars.menuScreens(CookingForBlockheads.MOD_ID, ModMenuScreens::initialize);
+        registrars.blockColors(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
+        registrars.blockRenderTypes(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
+        registrars.blockStateModels(CookingForBlockheads.MOD_ID, ModModels::initialize);
 
-        Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
+        Balm.events().onEvent(ItemTooltipEvent.class, event -> {
             if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
                 return;
             }

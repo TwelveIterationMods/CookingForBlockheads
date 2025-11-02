@@ -16,7 +16,7 @@ public class Compat {
     public static final String SPICE_OF_LIFE = "solcarrot";
 
     public static Fluid getMilkFluid() {
-        return Balm.getRegistries().getMilkFluid();
+        return Balm.modSupport().milkFluid().get();
     }
 
     private static TagKey<Item> cookingOilTag;

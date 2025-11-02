@@ -14,7 +14,7 @@ public class FruitBasketMenu extends AbstractContainerMenu {
     private final int numRows;
 
     public FruitBasketMenu(int windowId, Inventory playerInventory, FruitBasketBlockEntity fruitBasket) {
-        super(ModMenus.fruitBasket.get(), windowId);
+        super(ModMenus.fruitBasket.value(), windowId);
         this.fruitBasket = fruitBasket;
         this.numRows = fruitBasket.getContainer().getContainerSize() / 9;
         int playerInventoryStart = numRows * 18;

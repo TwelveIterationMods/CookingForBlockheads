@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
 import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
@@ -55,13 +56,13 @@ public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements
             poseStack.translate(-0.5f, 0f, -0.5f);
 
             poseStack.scale(1f, renderState.fluidLevel, 1f);
-            submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), getLiquidModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), getLiquidModel().asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
     }
 
-    protected BlockStateModel getLiquidModel() {
-        return ModModels.milkJarLiquid.get();
+    protected DeferredBlockStateModel getLiquidModel() {
+        return ModModels.milkJarLiquid;
     }
 
 }

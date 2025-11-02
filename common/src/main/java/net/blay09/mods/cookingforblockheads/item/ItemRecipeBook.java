@@ -29,9 +29,9 @@ import java.util.function.Supplier;
 public class ItemRecipeBook extends Item {
 
     public enum RecipeBookEdition {
-        NO_FILTER("no_filter_edition", () -> ModMenus.noFilterBook.get()),
-        RECIPE("recipe_book", () -> ModMenus.recipeBook.get()),
-        CRAFTING("crafting_book", () -> ModMenus.craftingBook.get());
+        NO_FILTER("no_filter_edition", () -> ModMenus.noFilterBook.value()),
+        RECIPE("recipe_book", () -> ModMenus.recipeBook.value()),
+        CRAFTING("crafting_book", () -> ModMenus.craftingBook.value());
 
         private final String name;
         private final Supplier<MenuType<KitchenMenu>> containerTypeSupplier;
@@ -57,11 +57,23 @@ public class ItemRecipeBook extends Item {
         this.edition = edition;
     }
 
+    public static ItemRecipeBook recipeBook(Item.Properties properties) {
+        return new ItemRecipeBook(RecipeBookEdition.RECIPE, properties);
+    }
+
+    public static ItemRecipeBook craftingBook(Item.Properties properties) {
+        return new ItemRecipeBook(RecipeBookEdition.CRAFTING, properties);
+    }
+
+    public static ItemRecipeBook noFilterBook(Item.Properties properties) {
+        return new ItemRecipeBook(RecipeBookEdition.NO_FILTER, properties);
+    }
+
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
             final var itemStack = player.getItemInHand(hand);
-            Balm.getNetworking().openMenu(player, new BalmMenuProvider<ItemStack>() {
+            Balm.networking().openMenu(player, new BalmMenuProvider<ItemStack>() {
                 @Override
                 public Component getDisplayName() {
                     return Component.translatable("container.cookingforblockheads." + edition.getName());

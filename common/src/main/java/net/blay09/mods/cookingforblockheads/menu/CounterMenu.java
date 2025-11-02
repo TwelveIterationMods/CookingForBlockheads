@@ -15,7 +15,7 @@ public class CounterMenu extends AbstractContainerMenu implements IContainerWith
     private final int numRows;
 
     public CounterMenu(int windowId, Inventory playerInventory, CounterBlockEntity counter) {
-        super(ModMenus.counter.get(), windowId);
+        super(ModMenus.counter.value(), windowId);
         this.tileCounter = counter;
         this.numRows = counter.getContainer().getContainerSize() / 9;
         int playerInventoryStart = numRows * 18;

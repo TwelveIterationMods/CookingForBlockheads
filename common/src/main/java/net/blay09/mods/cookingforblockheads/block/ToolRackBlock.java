@@ -43,7 +43,7 @@ public class ToolRackBlock extends BaseKitchenBlock {
     };
 
     public ToolRackBlock(Properties properties) {
-        super(properties.sound(SoundType.WOOD).strength(2.5f));
+        super(properties);
     }
 
     @Nullable

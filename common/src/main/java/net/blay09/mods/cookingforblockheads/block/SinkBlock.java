@@ -38,9 +38,10 @@ public class SinkBlock extends BaseKitchenBlock {
                     .forGetter(SinkBlock::getColor),
             propertiesCodec()).apply(it, SinkBlock::new));
 
+    @Nullable
     private final DyeColor color;
 
-    public SinkBlock(DyeColor color, Properties properties) {
+    public SinkBlock(@Nullable DyeColor color, Properties properties) {
         super(properties.sound(SoundType.STONE).strength(5f, 10f));
         this.color = color;
     }
@@ -90,7 +91,7 @@ public class SinkBlock extends BaseKitchenBlock {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof SinkBlockEntity sink) {
                 FluidTank fluidTank = sink.getFluidTank();
-                if (!Balm.getHooks().useFluidTank(state, level, pos, player, hand, blockHitResult)) {
+                if (!Balm.hooks().useFluidTank(state, level, pos, player, hand, blockHitResult)) {
                     // Special case for bottles, they can hold 1/3 of a bucket
                     if (itemStack.getItem() == Items.GLASS_BOTTLE) {
                         int simulated = fluidTank.drain(Fluids.WATER, 333, true);
@@ -159,7 +160,7 @@ public class SinkBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.sink.get(), SinkBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.sink.value(), SinkBlockEntity::serverTick);
     }
 
     @Override
@@ -176,8 +177,8 @@ public class SinkBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.sink : ModBlocks.dyedSinks[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.sinks.get(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(FLIPPED, state.getValue(FLIPPED));
     }

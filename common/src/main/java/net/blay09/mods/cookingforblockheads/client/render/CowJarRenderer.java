@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
 import net.blay09.mods.cookingforblockheads.block.CowJarBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
@@ -11,7 +12,6 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -162,7 +162,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
     }
 
     @Override
-    protected BlockStateModel getLiquidModel() {
-        return ModModels.cowJarLiquid.get();
+    protected DeferredBlockStateModel getLiquidModel() {
+        return ModModels.cowJarLiquid;
     }
 }

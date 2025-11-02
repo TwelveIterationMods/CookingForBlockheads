@@ -1,11 +1,10 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
@@ -31,6 +30,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
@@ -38,8 +39,8 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -48,9 +49,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
+public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -76,7 +75,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
             containerItemProvider);
 
     public CounterBlockEntity(BlockPos pos, BlockState state) {
-        this(ModBlockEntities.counter.get(), pos, state);
+        this(ModBlockEntities.counter.value(), pos, state);
     }
 
     public CounterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -100,7 +99,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isDirty) {
-            sync();
+            BlockEntityUtils.sync(this);
             isDirty = false;
         }
     }
@@ -140,10 +139,12 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
-        output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
-        output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, output -> {
+            saveAdditional(output);
+            output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+            output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+        });
     }
 
     public DoorAnimator getDoorAnimator() {
@@ -248,8 +249,9 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
+        dropItems(level, pos);
         if (hasPreservationUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.preservationChamber.createStack());
         }
     }
 
@@ -257,4 +259,11 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     public KitchenItemProvider getKitchenItemProvider() {
         return itemProvider;
     }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
+    }
+
 }

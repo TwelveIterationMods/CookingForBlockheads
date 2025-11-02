@@ -1,132 +1,87 @@
 package net.blay09.mods.cookingforblockheads.item;
 
-import net.blay09.mods.balm.api.DeferredObject;
-import net.blay09.mods.balm.api.item.BalmItems;
+import net.blay09.mods.balm.world.item.BalmCreativeModeTabRegistrar;
+import net.blay09.mods.balm.world.item.BalmItemRegistrar;
+import net.blay09.mods.balm.world.item.DeferredItem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class ModItems {
 
-    public static DeferredObject<CreativeModeTab> creativeModeTab;
+    public static DeferredItem recipeBook;
+    public static DeferredItem noFilterBook;
+    public static DeferredItem craftingBook;
+    public static DeferredItem heatingUnit;
+    public static DeferredItem iceUnit;
+    public static DeferredItem preservationChamber;
 
-    public static Item recipeBook;
-    public static Item noFilterBook;
-    public static Item craftingBook;
-    public static Item heatingUnit;
-    public static Item iceUnit;
-    public static Item preservationChamber;
-
-    public static void initialize(BalmItems items) {
-        items.registerItem((identifier) -> recipeBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.RECIPE, itemProperties(identifier)), id("recipe_book"));
-        items.registerItem((identifier) -> noFilterBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.NO_FILTER, itemProperties(identifier)), id("no_filter_edition"));
-        items.registerItem((identifier) -> craftingBook = new ItemRecipeBook(ItemRecipeBook.RecipeBookEdition.CRAFTING, itemProperties(identifier)), id("crafting_book"));
-        items.registerItem((identifier) -> heatingUnit = new ItemHeatingUnit(itemProperties(identifier)), id("heating_unit"));
-        items.registerItem((identifier) -> iceUnit = new ItemIceUnit(itemProperties(identifier)), id("ice_unit"));
-        items.registerItem((identifier) -> preservationChamber = new ItemPreservationChamber(itemProperties(identifier)), id("preservation_chamber"));
-
-        creativeModeTab = items.registerCreativeModeTab(() -> new ItemStack(ModBlocks.cowJar), id("cookingforblockheads"));
-        items.setCreativeModeTabSorting(id("cookingforblockheads"), new Comparator<>() {
-            private static final String[] patternStrings = new String[]{
-                    "recipe_book",
-                    "crafting_book",
-                    "cooking_table",
-                    "white_fridge",
-                    "white_oven",
-                    "sink",
-                    "counter",
-                    "cabinet",
-                    "connector",
-                    "white_kitchen_floor",
-                    "milk_jar",
-                    "cow_jar",
-                    "toaster",
-                    "tool_rack",
-                    "spice_rack",
-                    "fruit_basket",
-                    "cutting_board",
-                    "ice_unit",
-                    "preservation_chamber",
-                    "heating_unit",
-                    "no_filter_edition",
-                    ".+_cooking_table",
-                    ".+_fridge",
-                    ".+_oven",
-                    ".+_sink",
-                    ".+_counter",
-                    ".+_cabinet",
-                    ".+_kitchen_floor",
-                    ".+_connector",
-            };
-
-            private static final Map<String, Integer> indexMap = new HashMap<>();
-            private static final Map<Pattern, Integer> patternIndexMap = new HashMap<>();
-
-            static {
-                for (int i = 0; i < patternStrings.length; i++) {
-                    final var patternString = patternStrings[i];
-                    indexMap.put(patternString, i);
-                    patternIndexMap.put(Pattern.compile(patternString), i);
-                }
-            }
-
-            private static int getIndex(String name) {
-                final var index = indexMap.get(name);
-                if (index != null) {
-                    return index;
-                }
-
-                for (var entry : patternIndexMap.entrySet()) {
-                    if (entry.getKey().matcher(name).matches()) {
-                        return entry.getValue();
-                    }
-                }
-
-                return -1;
-            }
-
-            @Override
-            public int compare(ItemLike o1, ItemLike o2) {
-                final var id1 = BuiltInRegistries.ITEM.getKey(o1.asItem());
-                final var id2 = BuiltInRegistries.ITEM.getKey(o2.asItem());
-                final var name1 = id1.getPath();
-                final var name2 = id2.getPath();
-                final var index1 = getIndex(name1);
-                final var index2 = getIndex(name2);
-                if (index1 != -1 && index2 != -1) {
-                    return Integer.compare(index1, index2);
-                } else if (index1 != -1) {
-                    return -1;
-                } else if (index2 != -1) {
-                    return 1;
-                }
-
-                return name1.compareTo(name2);
-            }
-        });
+    public static void initialize(BalmItemRegistrar items) {
+        recipeBook = items.register("recipe_book", ItemRecipeBook::recipeBook).asDeferredItem();
+        noFilterBook = items.register("no_filter_edition", ItemRecipeBook::noFilterBook).asDeferredItem();
+        craftingBook = items.register("crafting_book", ItemRecipeBook::craftingBook).asDeferredItem();
+        heatingUnit = items.register("heating_unit", ItemHeatingUnit::new).asDeferredItem();
+        iceUnit = items.register("ice_unit", ItemIceUnit::new).asDeferredItem();
+        preservationChamber = items.register("preservation_chamber", ItemPreservationChamber::new).asDeferredItem();
     }
 
-    private static Item.Properties itemProperties(ResourceLocation identifier) {
-        return new Item.Properties().setId(itemId(identifier));
+    public static void initialize(BalmCreativeModeTabRegistrar creativeModeTabs) {
+        creativeModeTabs.register(CookingForBlockheads.MOD_ID, builder ->
+                builder.title(Component.translatable("itemGroup.cookingforblockheads.cookingforblockheads"))
+                        .icon(() -> new ItemStack(ModBlocks.cowJar))
+                        .displayItems((parameters, output) -> {
+                            output.accept(recipeBook);
+                            output.accept(craftingBook);
+                            output.accept(ModBlocks.cookingTables.get(null));
+                            output.accept(ModBlocks.fridges.get(DyeColor.WHITE));
+                            output.accept(ModBlocks.ovens.get(DyeColor.WHITE));
+                            output.accept(ModBlocks.sinks.get(null));
+                            output.accept(ModBlocks.counters.get(null));
+                            output.accept(ModBlocks.cabinets.get(null));
+                            output.accept(ModBlocks.connectors.get(null));
+                            output.accept(ModBlocks.kitchenFloors.get(DyeColor.WHITE));
+                            output.accept(ModBlocks.milkJar);
+                            output.accept(ModBlocks.cowJar);
+                            output.accept(ModBlocks.toaster);
+                            output.accept(ModBlocks.toolRack);
+                            output.accept(ModBlocks.spiceRack);
+                            output.accept(ModBlocks.fruitBasket);
+                            output.accept(ModBlocks.cuttingBoard);
+                            output.accept(iceUnit);
+                            output.accept(preservationChamber);
+                            output.accept(heatingUnit);
+                            output.accept(noFilterBook);
+
+                            ModBlocks.cookingTables.filterNonNullDiscriminators().forEach(output::accept);
+
+                            ModBlocks.fridges.forEach((color, block) -> {
+                                if (color != DyeColor.WHITE) {
+                                    output.accept(block);
+                                }
+                            });
+
+                            ModBlocks.ovens.forEach((color, block) -> {
+                                if (color != DyeColor.WHITE) {
+                                    output.accept(block);
+                                }
+                            });
+
+                            ModBlocks.sinks.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.counters.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.cabinets.filterNonNullDiscriminators().forEach(output::accept);
+
+                            ModBlocks.kitchenFloors.forEach((color, block) -> {
+                                if (color != DyeColor.WHITE) {
+                                    output.accept(block);
+                                }
+                            });
+
+                            ModBlocks.connectors.filterNonNullDiscriminators().forEach(output::accept);
+                        }));
     }
 
-    private static ResourceKey<Item> itemId(ResourceLocation identifier) {
-        return ResourceKey.create(Registries.ITEM, identifier);
-    }
-
-    private static ResourceLocation id(String name) {
-        return ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, name);
-    }
 }

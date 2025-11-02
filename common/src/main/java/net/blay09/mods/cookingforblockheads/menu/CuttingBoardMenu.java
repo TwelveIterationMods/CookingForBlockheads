@@ -30,7 +30,7 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
     private boolean placingRecipe;
 
     public CuttingBoardMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
-        super(ModMenus.cuttingBoard.get(), containerId, CRAFTING_GRID_WIDTH, CRAFTING_GRID_HEIGHT);
+        super(ModMenus.cuttingBoard.value(), containerId, CRAFTING_GRID_WIDTH, CRAFTING_GRID_HEIGHT);
         this.access = access;
         this.player = inventory.player;
         addResultSlot(player, 124, 35);
@@ -86,7 +86,7 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
     }
 
     public boolean stillValid(Player player) {
-        return stillValid(access, player, ModBlocks.cuttingBoard);
+        return stillValid(access, player, ModBlocks.cuttingBoard.value());
     }
 
     public ItemStack quickMoveStack(Player player, int index) {

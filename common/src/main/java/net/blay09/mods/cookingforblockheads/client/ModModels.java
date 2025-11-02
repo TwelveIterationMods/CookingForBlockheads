@@ -3,78 +3,60 @@ package net.blay09.mods.cookingforblockheads.client;
 import com.google.common.collect.Lists;
 import net.blay09.mods.balm.api.DeferredObject;
 import net.blay09.mods.balm.api.client.rendering.BalmModels;
+import net.blay09.mods.balm.client.renderer.block.model.BalmBlockStateModelRegistrar;
+import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
 public class ModModels {
-    public static DeferredObject<BlockStateModel> milkJarLiquid;
-    public static DeferredObject<BlockStateModel> cowJarLiquid;
-    public static DeferredObject<BlockStateModel> sinkLiquid;
-    public static List<DeferredObject<BlockStateModel>> ovenDoors;
-    public static List<DeferredObject<BlockStateModel>> ovenDoorHandles;
-    public static List<DeferredObject<BlockStateModel>> ovenDoorsActive;
-    public static List<DeferredObject<BlockStateModel>> fridgeDoors;
-    public static List<DeferredObject<BlockStateModel>> fridgeDoorsFlipped;
-    public static List<DeferredObject<BlockStateModel>> fridgeDoorsLargeLower;
-    public static List<DeferredObject<BlockStateModel>> fridgeDoorsLargeUpper;
-    public static List<DeferredObject<BlockStateModel>> fridgeDoorsLargeLowerFlipped;
-    public static List<DeferredObject<BlockStateModel>> fridgeDoorsLargeUpperFlipped;
-    public static List<DeferredObject<BlockStateModel>> counterDoors;
-    public static List<DeferredObject<BlockStateModel>> counterDoorsFlipped;
-    public static List<DeferredObject<BlockStateModel>> cabinetDoors;
-    public static List<DeferredObject<BlockStateModel>> cabinetDoorsFlipped;
+    public static DeferredBlockStateModel milkJarLiquid;
+    public static DeferredBlockStateModel cowJarLiquid;
+    public static DeferredBlockStateModel sinkLiquid;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> ovenDoors;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> ovenDoorHandles;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> ovenDoorsActive;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> fridgeDoors;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> fridgeDoorsFlipped;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> fridgeDoorsLargeLower;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> fridgeDoorsLargeUpper;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> fridgeDoorsLargeLowerFlipped;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> fridgeDoorsLargeUpperFlipped;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> counterDoors;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> counterDoorsFlipped;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoors;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsFlipped;
 
-    public static void initialize(BalmModels models) {
-        DyeColor[] colors = DyeColor.values();
+    private static ResourceLocation modelId(String name, @Nullable DyeColor color) {
+        return id("block/" + (color != null ? color.getSerializedName() + "_" : "") + name);
+    }
 
-        milkJarLiquid = models.loadModel(id("block/milk_jar_liquid"));
-        cowJarLiquid = models.loadModel(id("block/cow_jar_liquid"));
-        sinkLiquid = models.loadModel(id("block/sink_liquid"));
-        ovenDoors = new ArrayList<>(colors.length);
-        ovenDoorHandles = new ArrayList<>(colors.length);
-        ovenDoorsActive = new ArrayList<>(colors.length);
-        fridgeDoors = new ArrayList<>(colors.length);
-        fridgeDoorsFlipped = new ArrayList<>(colors.length);
-        fridgeDoorsLargeLower = new ArrayList<>(colors.length);
-        fridgeDoorsLargeUpper = new ArrayList<>(colors.length);
-        fridgeDoorsLargeLowerFlipped = new ArrayList<>(colors.length);
-        fridgeDoorsLargeUpperFlipped = new ArrayList<>(colors.length);
-        for (DyeColor color : colors) {
-            final var colorPrefix = color.getSerializedName() + "_";
-            ovenDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door")));
-            ovenDoorsActive.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_active")));
-            ovenDoorHandles.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "oven_door_handle")));
-            fridgeDoors.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door")));
-            fridgeDoorsFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_door_flipped")));
-            fridgeDoorsLargeLower.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower")));
-            fridgeDoorsLargeLowerFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_lower_flipped")));
-            fridgeDoorsLargeUpper.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper")));
-            fridgeDoorsLargeUpperFlipped.add(color.getId(), models.loadModel(id("block/" + colorPrefix + "fridge_large_door_upper_flipped")));
-        }
+    public static void initialize(BalmBlockStateModelRegistrar models) {
+        milkJarLiquid = models.register(id("block/milk_jar_liquid"));
+        cowJarLiquid = models.register(id("block/cow_jar_liquid"));
+        sinkLiquid = models.register(id("block/sink_liquid"));
 
-        counterDoors = new ArrayList<>(colors.length + 1);
-        counterDoors.add(0, models.loadModel(id("block/counter_door")));
-        counterDoorsFlipped = new ArrayList<>(colors.length + 1);
-        counterDoorsFlipped.add(0, models.loadModel(id("block/counter_door_flipped")));
-        for (DyeColor color : colors) {
-            final var colorPrefix = color.getSerializedName() + "_";
-            counterDoors.add(color.getId() + 1,
-                    models.loadModel(id("block/" + colorPrefix + "counter_door")));
-            counterDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "counter_door_flipped")));
-        }
+        final var colors = Set.of(DyeColor.values());
+        ovenDoors = models.registerDiscriminated(colors, color -> modelId("oven_door", color));
+        ovenDoorsActive = models.registerDiscriminated(colors, color -> modelId("oven_door_active", color));
+        ovenDoorHandles = models.registerDiscriminated(colors, color -> modelId("oven_door_handle", color));
+        fridgeDoors = models.registerDiscriminated(colors, color -> modelId("fridge_door", color));
+        fridgeDoorsFlipped = models.registerDiscriminated(colors, color -> modelId("fridge_door_flipped", color));
+        fridgeDoorsLargeLower = models.registerDiscriminated(colors, color -> modelId("fridge_large_door_lower", color));
+        fridgeDoorsLargeLowerFlipped = models.registerDiscriminated(colors, color -> modelId("fridge_large_door_lower_flipped", color));
+        fridgeDoorsLargeUpper = models.registerDiscriminated(colors, color -> modelId("fridge_large_door_upper", color));
+        fridgeDoorsLargeUpperFlipped = models.registerDiscriminated(colors, color -> modelId("fridge_large_door_upper_flipped", color));
 
-        cabinetDoors = Lists.newArrayListWithCapacity(colors.length + 1);
-        cabinetDoors.add(0, models.loadModel(id("block/cabinet_door")));
-        cabinetDoorsFlipped = Lists.newArrayListWithCapacity(colors.length + 1);
-        cabinetDoorsFlipped.add(0, models.loadModel(id("block/cabinet_door_flipped")));
-        for (DyeColor color : colors) {
-            final var colorPrefix = color.getSerializedName() + "_";
-            cabinetDoors.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door")));
-            cabinetDoorsFlipped.add(color.getId() + 1, models.loadModel(id("block/" + colorPrefix + "cabinet_door_flipped")));
-        }
+        final var colorsWithNull = new HashSet<@Nullable DyeColor>(colors);
+        colorsWithNull.add(null);
+        counterDoors = models.registerDiscriminated(colorsWithNull, color -> modelId("counter_door", color));
+        counterDoorsFlipped = models.registerDiscriminated(colorsWithNull, color -> modelId("counter_door_flipped", color));
+        cabinetDoors = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_door", color));
+        cabinetDoorsFlipped = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_door_flipped", color));
     }
 }

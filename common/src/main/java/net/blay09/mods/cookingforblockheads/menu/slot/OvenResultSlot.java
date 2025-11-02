@@ -60,7 +60,7 @@ public class OvenResultSlot extends Slot {
 
         removeCount = 0;
         if (tileEntity.getLevel() != null && !stack.isEmpty()) {
-            Balm.getEvents().fireEvent(new OvenItemSmeltedEvent(player, tileEntity.getLevel(), tileEntity.getBlockPos(), stack));
+            Balm.events().fireEvent(new OvenItemSmeltedEvent(player, tileEntity.getLevel(), tileEntity.getBlockPos(), stack));
         }
     }
 }

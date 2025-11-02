@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
@@ -23,20 +23,22 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
-public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
+public class FruitBasketBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private boolean hasPreservationUpgrade;
     private Component customName;
@@ -45,7 +47,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
         @Override
         public void setChanged() {
             FruitBasketBlockEntity.this.setChanged();
-            FruitBasketBlockEntity.this.sync();
+            BlockEntityUtils.sync(FruitBasketBlockEntity.this);
         }
     };
     private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
@@ -55,7 +57,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
             containerItemProvider);
 
     public FruitBasketBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.fruitBasket.get(), pos, state);
+        super(ModBlockEntities.fruitBasket.value(), pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, FruitBasketBlockEntity blockEntity) {
@@ -88,10 +90,9 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
         output.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
         output.storeNullable("CustomName", ComponentSerialization.CODEC, customName);
     }
-
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
     }
 
     @Override
@@ -139,7 +140,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isDirty) {
-            sync();
+            BlockEntityUtils.sync(this);
             isDirty = false;
         }
     }
@@ -179,8 +180,15 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
+        dropItems(level, pos);
         if (hasPreservationUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.preservationChamber.createStack());
         }
+    }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
     }
 }

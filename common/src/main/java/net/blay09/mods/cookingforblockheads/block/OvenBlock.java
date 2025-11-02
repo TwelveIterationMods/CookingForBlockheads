@@ -3,12 +3,11 @@ package net.blay09.mods.cookingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
-
 import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -44,7 +42,7 @@ public class OvenBlock extends BaseKitchenBlock {
     private final DyeColor color;
 
     public OvenBlock(DyeColor color, Properties properties) {
-        super(properties.sound(SoundType.METAL).strength(5f, 10f));
+        super(properties);
         this.color = color;
         registerDefaultState(getStateDefinition().any().setValue(ACTIVE, false));
     }
@@ -147,7 +145,7 @@ public class OvenBlock extends BaseKitchenBlock {
         }
 
         if (!level.isClientSide()) {
-            Balm.getNetworking().openMenu(player, oven);
+            Balm.networking().openMenu(player, oven);
         }
 
         return InteractionResult.SUCCESS;
@@ -186,8 +184,8 @@ public class OvenBlock extends BaseKitchenBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide()
-                ? createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::clientTick)
-                : createTickerHelper(type, ModBlockEntities.oven.get(), OvenBlockEntity::serverTick);
+                ? createTickerHelper(type, ModBlockEntities.oven.value(), OvenBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.oven.value(), OvenBlockEntity::serverTick);
     }
 
     @Override
@@ -197,8 +195,8 @@ public class OvenBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.ovens[0] : ModBlocks.ovens[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.ovens.get(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(ACTIVE, state.getValue(ACTIVE));
     }

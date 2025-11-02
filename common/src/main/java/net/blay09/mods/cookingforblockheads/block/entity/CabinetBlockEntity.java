@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class CabinetBlockEntity extends CounterBlockEntity {
 
     public CabinetBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.cabinet.get(), pos, state);
+        super(ModBlockEntities.cabinet.value(), pos, state);
     }
 
     @Override

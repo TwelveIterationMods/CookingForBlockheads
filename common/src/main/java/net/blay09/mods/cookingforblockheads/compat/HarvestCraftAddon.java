@@ -34,7 +34,7 @@ public class HarvestCraftAddon {
             cuttingBoardFound = true;
         }
 
-        Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
+        Balm.events().onEvent(ItemTooltipEvent.class, event -> {
             if (!cuttingBoardFound) {
                 return;
             }
@@ -45,7 +45,7 @@ public class HarvestCraftAddon {
             }
         });
 
-        Balm.getEvents().onEvent(UseBlockEvent.class, event -> {
+        Balm.events().onEvent(UseBlockEvent.class, event -> {
             if (!cuttingBoardFound) {
                 return;
             }
@@ -71,7 +71,7 @@ public class HarvestCraftAddon {
             BlockPos relativePos = pos.relative(face);
             if (canPlace(player, ModBlocks.cuttingBoard.defaultBlockState(), level, relativePos)) {
                 BlockPlaceContext useContext = new BlockPlaceContext(new UseOnContext(player, event.getHand(), new BlockHitResult(Vec3.atLowerCornerOf(relativePos), face, relativePos, true)));
-                BlockState placedState = ModBlocks.cuttingBoard.getStateForPlacement(useContext);
+                BlockState placedState = ModBlocks.cuttingBoard.value().getStateForPlacement(useContext);
                 level.setBlockAndUpdate(relativePos, placedState);
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);

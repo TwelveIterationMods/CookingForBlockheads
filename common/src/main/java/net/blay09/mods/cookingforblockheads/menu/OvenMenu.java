@@ -22,7 +22,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
     private NonNullList<ItemStack> resultItems = NonNullList.withSize(9, ItemStack.EMPTY);
 
     public OvenMenu(int windowId, Inventory playerInventory, OvenBlockEntity oven) {
-        super(ModMenus.oven.get(), windowId);
+        super(ModMenus.oven.value(), windowId);
         this.oven = oven;
         this.player = playerInventory.player;
 
@@ -166,7 +166,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
                 }
             }
             if (changes) {
-                Balm.getNetworking().sendTo(this.player, new ClientboundOvenResultsPacket(resultItems));
+                Balm.networking().sendTo(this.player, new ClientboundOvenResultsPacket(resultItems));
             }
         }
     }

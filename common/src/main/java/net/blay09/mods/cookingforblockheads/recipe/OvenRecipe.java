@@ -36,12 +36,12 @@ public class OvenRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeSerializer<OvenRecipe> getSerializer() {
-        return ModRecipes.ovenRecipeSerializer;
+        return ModRecipes.ovenRecipes.serializer();
     }
 
     @Override
     public RecipeType<OvenRecipe> getType() {
-        return ModRecipes.ovenRecipeType;
+        return ModRecipes.ovenRecipes.type();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class OvenRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return ModRecipes.ovenRecipeBookCategory;
+        return ModRecipes.ovenRecipes.bookCategory();
     }
 
     static class Serializer implements RecipeSerializer<OvenRecipe> {

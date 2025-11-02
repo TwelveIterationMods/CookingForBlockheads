@@ -3,8 +3,8 @@ package net.blay09.mods.cookingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -28,10 +27,15 @@ public class CookingTableBlock extends BaseKitchenBlock {
                     .forGetter(CookingTableBlock::getColor),
             propertiesCodec()).apply(it, CookingTableBlock::new));
 
+    @Nullable
     private final DyeColor color;
 
-    public CookingTableBlock(DyeColor color, Properties properties) {
-        super(properties.sound(SoundType.STONE).strength(2.5f));
+    public CookingTableBlock(Properties properties) {
+        this(null, properties);
+    }
+
+    public CookingTableBlock(@Nullable DyeColor color, Properties properties) {
+        super(properties);
         this.color = color;
     }
 
@@ -61,7 +65,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
             }
 
             if (!level.isClientSide()) {
-                Balm.getNetworking().openMenu(player, cookingTable);
+                Balm.networking().openMenu(player, cookingTable);
             }
         }
         return InteractionResult.SUCCESS;
@@ -101,8 +105,8 @@ public class CookingTableBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.cookingTable : ModBlocks.dyedCookingTables[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.cookingTables.get(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING));
     }
 }

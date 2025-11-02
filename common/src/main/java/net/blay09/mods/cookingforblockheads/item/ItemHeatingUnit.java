@@ -42,7 +42,7 @@ public class ItemHeatingUnit extends Item {
 
             ((OvenBlockEntity) blockEntity).setHasPowerUpgrade(true);
             if (!level.isClientSide()) {
-                Balm.getNetworking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.OVEN_UPGRADE));
+                Balm.networking().sendToTracking(((ServerLevel) level), pos, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.OVEN_UPGRADE));
             }
 
             return InteractionResult.SUCCESS;

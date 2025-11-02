@@ -49,10 +49,10 @@ public class CookingForBlockheadsConfig {
     public Set<ResourceLocation> excludedRecipes = Set.of();
 
     public static CookingForBlockheadsConfig getActive() {
-        return Balm.getConfig().getActiveConfig(CookingForBlockheadsConfig.class);
+        return Balm.config().getActiveConfig(CookingForBlockheadsConfig.class);
     }
 
     public static void initialize() {
-        Balm.getConfig().registerConfig(CookingForBlockheadsConfig.class);
+        Balm.config().registerConfig(CookingForBlockheadsConfig.class);
     }
 }

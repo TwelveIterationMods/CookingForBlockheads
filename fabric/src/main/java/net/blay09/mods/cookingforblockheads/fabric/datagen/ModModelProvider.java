@@ -3,15 +3,16 @@ package net.blay09.mods.cookingforblockheads.fabric.datagen;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.client.data.models.MultiVariant;
-import net.minecraft.client.renderer.block.model.VariantMutator;
-import net.minecraft.core.Direction;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.blockstates.*;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -40,95 +41,98 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        blockStateModelGenerator.registerSimpleItemModel(ModBlocks.cowJar, ModelLocationUtils.getModelLocation(ModBlocks.cowJar.asItem()));
+        blockStateModelGenerator.registerSimpleItemModel(ModBlocks.cowJar.value(), ModelLocationUtils.getModelLocation(ModBlocks.cowJar.asItem()));
 
 
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cookingTable);
-        for (final var cookingTable : ModBlocks.dyedCookingTables) {
-            final var cookingTableParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
-                    "block/cooking_table")),
-                    Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-            cookingTableParent.create(cookingTable, TextureMapping.cube(getTerracottaByColor(cookingTable.getColor())), blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.createNonTemplateHorizontalBlock(cookingTable);
-        }
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.counter);
-        blockStateModelGenerator.registerSimpleItemModel(ModBlocks.counter, ModelLocationUtils.getModelLocation(ModBlocks.counter.asItem()));
-        for (final var counter : ModBlocks.dyedCounters) {
-            final var counterParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/counter")),
-                    Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-            TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(counter.getColor()));
-            counterParent.create(counter, textureMapping, blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.createNonTemplateHorizontalBlock(counter);
-            blockStateModelGenerator.registerSimpleItemModel(counter, ModelLocationUtils.getModelLocation(counter.asItem()));
+        ModBlocks.cookingTables.forEach((color, cookingTable) -> {
+            if (color != null) {
+                final var cookingTableParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
+                        "block/cooking_table")),
+                        Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                cookingTableParent.create(cookingTable.asBlock(), TextureMapping.cube(getTerracottaByColor(color)), blockStateModelGenerator.modelOutput);
+            }
+            blockStateModelGenerator.createNonTemplateHorizontalBlock(cookingTable.asBlock());
+        });
 
-            textureMapping.putForced(TextureSlot.PARTICLE, getBlockTexture(getTerracottaByColor(counter.getColor())));
-            final var counterDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/counter_door")),
-                    Optional.empty(), TextureSlot.ALL);
-            counterDoorTemplate.createWithSuffix(counter, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-            final var counterDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
-                    "block/counter_door_flipped")),
-                    Optional.empty(), TextureSlot.ALL);
-            counterDoorFlippedTemplate.createWithSuffix(counter, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
-        }
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cabinet);
-        blockStateModelGenerator.registerSimpleItemModel(ModBlocks.cabinet, ModelLocationUtils.getModelLocation(ModBlocks.cabinet.asItem()));
-        for (final var cabinet : ModBlocks.dyedCabinets) {
-            final var cabinetParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/cabinet")),
-                    Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-            TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(cabinet.getColor()));
-            cabinetParent.create(cabinet, textureMapping, blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.createNonTemplateHorizontalBlock(cabinet);
-            blockStateModelGenerator.registerSimpleItemModel(cabinet, ModelLocationUtils.getModelLocation(cabinet.asItem()));
+        ModBlocks.counters.forEach((color, counter) -> {
+            if (color != null) {
+                final var counterParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/counter")),
+                        Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(color));
+                counterParent.create(counter.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
 
-            textureMapping.putForced(TextureSlot.PARTICLE, getBlockTexture(getTerracottaByColor(cabinet.getColor())));
-            final var cabinetDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/cabinet_door")),
-                    Optional.empty(), TextureSlot.ALL);
-            cabinetDoorTemplate.createWithSuffix(cabinet, "_door", textureMapping, blockStateModelGenerator.modelOutput);
-            final var cabinetDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
-                    "block/cabinet_door_flipped")),
-                    Optional.empty(), TextureSlot.ALL);
-            cabinetDoorFlippedTemplate.createWithSuffix(cabinet, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
-        }
+                textureMapping.putForced(TextureSlot.PARTICLE, getBlockTexture(getTerracottaByColor(color)));
+                final var counterDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/counter_door")),
+                        Optional.empty(), TextureSlot.ALL);
+                counterDoorTemplate.createWithSuffix(counter.asBlock(), "_door", textureMapping, blockStateModelGenerator.modelOutput);
+                final var counterDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
+                        "block/counter_door_flipped")),
+                        Optional.empty(), TextureSlot.ALL);
+                counterDoorFlippedTemplate.createWithSuffix(counter.asBlock(), "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+            }
+            blockStateModelGenerator.createNonTemplateHorizontalBlock(counter.asBlock());
+            blockStateModelGenerator.registerSimpleItemModel(counter.asBlock(), ModelLocationUtils.getModelLocation(counter.asItem()));
+        });
+
+        ModBlocks.cabinets.forEach((color, cabinet) -> {
+            if (color != null) {
+                final var cabinetParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/cabinet")),
+                        Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(color));
+                cabinetParent.create(cabinet.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
+
+                textureMapping.putForced(TextureSlot.PARTICLE, getBlockTexture(getTerracottaByColor(color)));
+                final var cabinetDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/cabinet_door")),
+                        Optional.empty(), TextureSlot.ALL);
+                cabinetDoorTemplate.createWithSuffix(cabinet.asBlock(), "_door", textureMapping, blockStateModelGenerator.modelOutput);
+                final var cabinetDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
+                        "block/cabinet_door_flipped")),
+                        Optional.empty(), TextureSlot.ALL);
+                cabinetDoorFlippedTemplate.createWithSuffix(cabinet.asBlock(), "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+            }
+            blockStateModelGenerator.createNonTemplateHorizontalBlock(cabinet.asBlock());
+            blockStateModelGenerator.registerSimpleItemModel(cabinet.asBlock(), ModelLocationUtils.getModelLocation(cabinet.asItem()));
+        });
 
         final var sinkModel = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/sink");
         final var sinkModelFlipped = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/sink_flipped");
-        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.sink)
-                .with(createBooleanModelDispatch(SinkBlock.FLIPPED, plainVariant(sinkModelFlipped), plainVariant(sinkModel)))
-                .with(ROTATION_HORIZONTAL_FACING));
-        for (final var sink : ModBlocks.dyedSinks) {
-            final var sinkParent = new ModelTemplate(Optional.of(sinkModel), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-            final var sinkFlippedParent = new ModelTemplate(Optional.of(sinkModelFlipped), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-            final var textureMapping = TextureMapping.cube(getTerracottaByColor(sink.getColor()));
-            final var dyedSinkModel = sinkParent.create(sink, textureMapping, blockStateModelGenerator.modelOutput);
-            final var dyedSinkModelFlipped = sinkFlippedParent.createWithSuffix(sink, "_flipped", textureMapping, blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(sink)
-                    .with(createBooleanModelDispatch(SinkBlock.FLIPPED, plainVariant(dyedSinkModelFlipped), plainVariant(dyedSinkModel)))
-                    .with(ROTATION_HORIZONTAL_FACING));
-        }
-        for (final var oven : ModBlocks.ovens) {
-            createOvenBlock(blockStateModelGenerator, oven);
-        }
+        ModBlocks.sinks.forEach((color, sink) -> {
+            if (color != null) {
+                final var sinkParent = new ModelTemplate(Optional.of(sinkModel), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                final var sinkFlippedParent = new ModelTemplate(Optional.of(sinkModelFlipped), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                final var textureMapping = TextureMapping.cube(getTerracottaByColor(color));
+                final var dyedSinkModel = sinkParent.create(sink.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
+                final var dyedSinkModelFlipped = sinkFlippedParent.createWithSuffix(sink.asBlock(), "_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+                blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(sink.asBlock())
+                        .with(createBooleanModelDispatch(SinkBlock.FLIPPED, plainVariant(dyedSinkModelFlipped), plainVariant(dyedSinkModel)))
+                        .with(ROTATION_HORIZONTAL_FACING));
+            } else {
+                blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.sinks.get(null).asBlock())
+                        .with(createBooleanModelDispatch(SinkBlock.FLIPPED, plainVariant(sinkModelFlipped), plainVariant(sinkModel)))
+                        .with(ROTATION_HORIZONTAL_FACING));
+            }
+        });
+
+        ModBlocks.ovens.forEach((color, oven) -> createOvenBlock(blockStateModelGenerator, oven.asBlock(), color));
+
         final var toasterModel = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/toaster");
         final var toasterModelActive = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/toaster_active");
-        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.toaster)
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.toaster.value())
                 .with(createBooleanModelDispatch(ToasterBlock.ACTIVE, plainVariant(toasterModelActive), plainVariant(toasterModel)))
                 .with(ROTATION_HORIZONTAL_FACING));
 
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cuttingBoard);
-        createConnector(blockStateModelGenerator, ModBlocks.connector);
-        for (final var connector : ModBlocks.dyedConnectors) {
-            createConnector(blockStateModelGenerator, connector);
-        }
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar.value());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar.value());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket.value());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cuttingBoard.value());
+        ModBlocks.connectors.forEach((color, connector) -> createConnector(blockStateModelGenerator, connector.asBlock(), color));
 
         final var kitchenFloorParent = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/kitchen_floor")),
                 Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
-        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
-            kitchenFloorParent.create(kitchenFloor, TextureMapping.cube(kitchenFloor), blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.createNonTemplateModelBlock(kitchenFloor);
-        }
+        ModBlocks.kitchenFloors.forEach((color, kitchenFloor) -> {
+            kitchenFloorParent.create(kitchenFloor.asBlock(), TextureMapping.cube(kitchenFloor.asBlock()), blockStateModelGenerator.modelOutput);
+            blockStateModelGenerator.createNonTemplateModelBlock(kitchenFloor.asBlock());
+        });
 
         final var fridgeParentSmall = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/fridge")),
                 Optional.empty(), TextureSlot.PARTICLE);
@@ -138,93 +142,87 @@ public class ModModelProvider extends FabricModelProvider {
         final var fridgeParentLargeUpper = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
                 "block/fridge_large_upper")),
                 Optional.empty(), TextureSlot.PARTICLE);
-        for (final var fridge : ModBlocks.fridges) {
-            final var textureMapping = getFridgeTextures(fridge);
-            final var fridgeModelSmall = fridgeParentSmall.create(fridge, textureMapping, blockStateModelGenerator.modelOutput);
-            final var fridgeModelLargeLower = fridgeParentLargeLower.createWithSuffix(fridge,
+        ModBlocks.fridges.forEach((color, fridge) -> {
+            final var textureMapping = getFridgeTextures(color);
+            final var fridgeModelSmall = fridgeParentSmall.create(fridge.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
+            final var fridgeModelLargeLower = fridgeParentLargeLower.createWithSuffix(fridge.asBlock(),
                     "_large_lower",
                     textureMapping,
                     blockStateModelGenerator.modelOutput);
-            final var fridgeModelLargeUpper = fridgeParentLargeUpper.createWithSuffix(fridge,
+            final var fridgeModelLargeUpper = fridgeParentLargeUpper.createWithSuffix(fridge.asBlock(),
                     "_large_upper",
                     textureMapping,
                     blockStateModelGenerator.modelOutput);
-            blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(fridge).with(PropertyDispatch.initial(FridgeBlock.MODEL_TYPE)
+            blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(fridge.asBlock()).with(PropertyDispatch.initial(FridgeBlock.MODEL_TYPE)
                     .select(FridgeBlock.FridgeModelType.SMALL, plainVariant(fridgeModelSmall))
                     .select(FridgeBlock.FridgeModelType.LARGE_LOWER, plainVariant(fridgeModelLargeLower))
                     .select(FridgeBlock.FridgeModelType.LARGE_UPPER, plainVariant(fridgeModelLargeUpper))
             ).with(ROTATION_HORIZONTAL_FACING));
-            blockStateModelGenerator.registerSimpleItemModel(fridge, ModelLocationUtils.getModelLocation(fridge.asItem()));
+            blockStateModelGenerator.registerSimpleItemModel(fridge.asBlock(), ModelLocationUtils.getModelLocation(fridge.asItem()));
 
             final var fridgeDoorTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/fridge_door")),
                     Optional.empty());
-            fridgeDoorTemplate.createWithSuffix(fridge, "_door", textureMapping, blockStateModelGenerator.modelOutput);
+            fridgeDoorTemplate.createWithSuffix(fridge.asBlock(), "_door", textureMapping, blockStateModelGenerator.modelOutput);
             final var fridgeDoorFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                     "block/fridge_door_flipped")),
                     Optional.empty());
-            fridgeDoorFlippedTemplate.createWithSuffix(fridge, "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+            fridgeDoorFlippedTemplate.createWithSuffix(fridge.asBlock(), "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
             final var fridgeLargeDoorLowerTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                     "block/fridge_large_door_lower")),
                     Optional.empty());
-            fridgeLargeDoorLowerTemplate.createWithSuffix(fridge, "_large_door_lower", textureMapping, blockStateModelGenerator.modelOutput);
+            fridgeLargeDoorLowerTemplate.createWithSuffix(fridge.asBlock(), "_large_door_lower", textureMapping, blockStateModelGenerator.modelOutput);
             final var fridgeLargeDoorLowerFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                     "block/fridge_large_door_lower_flipped")),
                     Optional.empty());
-            fridgeLargeDoorLowerFlippedTemplate.createWithSuffix(fridge, "_large_door_lower_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+            fridgeLargeDoorLowerFlippedTemplate.createWithSuffix(fridge.asBlock(), "_large_door_lower_flipped", textureMapping, blockStateModelGenerator.modelOutput);
             final var fridgeLargeDoorUpperTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                     "block/fridge_large_door_upper")),
                     Optional.empty());
-            fridgeLargeDoorUpperTemplate.createWithSuffix(fridge, "_large_door_upper", textureMapping, blockStateModelGenerator.modelOutput);
+            fridgeLargeDoorUpperTemplate.createWithSuffix(fridge.asBlock(), "_large_door_upper", textureMapping, blockStateModelGenerator.modelOutput);
             final var fridgeLargeDoorUpperFlippedTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                     "block/fridge_large_door_upper_flipped")),
                     Optional.empty());
-            fridgeLargeDoorUpperFlippedTemplate.createWithSuffix(fridge, "_large_door_upper_flipped", textureMapping, blockStateModelGenerator.modelOutput);
-        }
+            fridgeLargeDoorUpperFlippedTemplate.createWithSuffix(fridge.asBlock(), "_large_door_upper_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+        });
 
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.toolRack);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.spiceRack);
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.toolRack.asBlock());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.spiceRack.asBlock());
 
         final var ovenTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/oven")), Optional.empty());
-        for (final var oven : ModBlocks.ovens) {
+        ModBlocks.ovens.forEach((color, oven) -> {
             final var modelLocation = ModelLocationUtils.getModelLocation(oven.asItem());
-            final var textureMapping = getOvenTextures(oven, false);
+            final var textureMapping = getOvenTextures(color, false);
             ovenTemplate.create(modelLocation, textureMapping, blockStateModelGenerator.modelOutput);
-        }
+        });
 
         final var fridgeTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/fridge")),
                 Optional.empty());
-        for (final var fridge : ModBlocks.fridges) {
+        ModBlocks.fridges.forEach((color, fridge) -> {
             final var modelLocation = ModelLocationUtils.getModelLocation(fridge.asItem());
-            fridgeTemplate.create(modelLocation, getFridgeTextures(fridge), blockStateModelGenerator.modelOutput);
-        }
+            fridgeTemplate.create(modelLocation, getFridgeTextures(color), blockStateModelGenerator.modelOutput);
+        });
 
         final var counterTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/counter")),
                 Optional.empty(),
                 TextureSlot.ALL);
-        for (final var counter : ModBlocks.dyedCounters) {
-            final var color = counter.getColor();
-            if (color == null) {
-                continue;
+        ModBlocks.counters.forEach((color, counter) -> {
+            if (color != null) {
+                final var modelLocation = ModelLocationUtils.getModelLocation(counter.asItem());
+                final var textureMapping = TextureMapping.cube(getTerracottaByColor(color));
+                counterTemplate.create(modelLocation, textureMapping, blockStateModelGenerator.modelOutput);
             }
-
-            final var modelLocation = ModelLocationUtils.getModelLocation(counter.asItem());
-            final var textureMapping = TextureMapping.cube(getTerracottaByColor(color));
-            counterTemplate.create(modelLocation, textureMapping, blockStateModelGenerator.modelOutput);
-        }
+        });
 
         final var cabinetTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "item/cabinet")),
                 Optional.empty(),
                 TextureSlot.ALL);
-        for (final var cabinet : ModBlocks.dyedCabinets) {
-            final var color = cabinet.getColor();
-            if (color == null) {
-                continue;
+        ModBlocks.cabinets.forEach((color, cabinet) -> {
+            if (color != null) {
+                final var modelLocation = ModelLocationUtils.getModelLocation(cabinet.asItem());
+                final var textureMapping = TextureMapping.cube(getTerracottaByColor(color));
+                cabinetTemplate.create(modelLocation, textureMapping, blockStateModelGenerator.modelOutput);
             }
-
-            final var modelLocation = ModelLocationUtils.getModelLocation(cabinet.asItem());
-            final var textureMapping = TextureMapping.cube(getTerracottaByColor(color));
-            cabinetTemplate.create(modelLocation, textureMapping, blockStateModelGenerator.modelOutput);
-        }
+        });
     }
 
     private Block getTerracottaByColor(@Nullable DyeColor color) {
@@ -251,7 +249,7 @@ public class ModModelProvider extends FabricModelProvider {
         };
     }
 
-    private void createConnector(BlockModelGenerators blockStateModelGenerator, Block block) {
+    private void createConnector(BlockModelGenerators blockStateModelGenerator, Block block, @Nullable DyeColor color) {
         final var innerModelBottomTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads",
                 "block/connector_inner_bottom_template")),
                 Optional.of("_inner_bottom"));
@@ -272,8 +270,7 @@ public class ModModelProvider extends FabricModelProvider {
                 Optional.of("_outer_top"));
 
         final var textures = new TextureMapping();
-        if (block instanceof DyedConnectorBlock dyedConnectorBlock) {
-            final var color = dyedConnectorBlock.getColor();
+        if (color != null) {
             textures.putForced(TextureSlot.PARTICLE, ResourceLocation.withDefaultNamespace("block/" + color.getSerializedName() + "_terracotta"));
             textures.putForced(TextureSlot.TEXTURE, ResourceLocation.withDefaultNamespace("block/" + color.getSerializedName() + "_terracotta"));
         }
@@ -445,19 +442,19 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
-        itemModelGenerator.generateFlatItem(ModItems.recipeBook, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.craftingBook, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.noFilterBook, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.heatingUnit, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.iceUnit, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.preservationChamber, ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.recipeBook.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.craftingBook.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.noFilterBook.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.heatingUnit.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.iceUnit.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.preservationChamber.asItem(), ModelTemplates.FLAT_ITEM);
     }
 
-    private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, OvenBlock block) {
+    private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, Block block, DyeColor color) {
         final var ovenTemplate = new ModelTemplate(Optional.of(ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/oven")), Optional.empty());
-        final var textureMapping = getOvenTextures(block, false);
+        final var textureMapping = getOvenTextures(color, false);
         final var ovenModel = ovenTemplate.create(block, textureMapping, blockStateModelGenerator.modelOutput);
-        final var activeTextureMapping = getOvenTextures(block, true);
+        final var activeTextureMapping = getOvenTextures(color, true);
         final var activeOvenModel = ovenTemplate.createWithSuffix(block, "_active", activeTextureMapping, blockStateModelGenerator.modelOutput);
         blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
                 .with(createBooleanModelDispatch(OvenBlock.ACTIVE, plainVariant(ovenModel), plainVariant(activeOvenModel)))
@@ -477,14 +474,14 @@ public class ModModelProvider extends FabricModelProvider {
         ovenDoorHandleTemplate.createWithSuffix(block, "_door_handle", activeTextureMapping, blockStateModelGenerator.modelOutput);
     }
 
-    private static TextureMapping getOvenTextures(OvenBlock oven, boolean active) {
+    private static TextureMapping getOvenTextures(DyeColor color, boolean active) {
         final var textureMapping = new TextureMapping();
-        final var colorName = oven.getColor().getName();
+        final var colorName = color.getName();
         textureMapping.putForced(TextureSlot.PARTICLE, ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_side"));
         textureMapping.putForced(TextureSlot.TEXTURE, ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_side"));
         if (active) {
             textureMapping.putForced(TextureSlot.create("ovenfront"),
-                    ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + oven.getColor().getName() + "_oven_front_active"));
+                    ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + color.getName() + "_oven_front_active"));
         } else {
             textureMapping.putForced(TextureSlot.create("ovenfront"),
                     ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_oven_front"));
@@ -500,9 +497,9 @@ public class ModModelProvider extends FabricModelProvider {
         return textureMapping;
     }
 
-    private static TextureMapping getFridgeTextures(FridgeBlock fridge) {
+    private static TextureMapping getFridgeTextures(DyeColor color) {
         final var textureMapping = new TextureMapping();
-        final var colorName = fridge.getColor().getName();
+        final var colorName = color.getName();
         textureMapping.put(TextureSlot.PARTICLE, ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_side"));
         textureMapping.putForced(TextureSlot.create("fridge_back"),
                 ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "block/" + colorName + "_fridge_back"));

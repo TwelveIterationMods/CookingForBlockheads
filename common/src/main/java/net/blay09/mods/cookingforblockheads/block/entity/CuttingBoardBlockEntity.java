@@ -1,13 +1,13 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CuttingBoardBlockEntity extends BalmBlockEntity {
+public class CuttingBoardBlockEntity extends BlockEntity {
 
     public CuttingBoardBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.cuttingBoard.get(), pos, state);
+        super(ModBlockEntities.cuttingBoard.value(), pos, state);
     }
 
 }

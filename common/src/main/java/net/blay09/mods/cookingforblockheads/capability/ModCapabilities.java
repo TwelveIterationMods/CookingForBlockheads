@@ -24,20 +24,20 @@ public class ModCapabilities {
                 KITCHEN_ITEM_PROVIDER,
                 (blockEntity, context) -> blockEntity instanceof KitchenItemProviderHolder holder ? holder.getKitchenItemProvider() : null,
                 () -> Set.of(
-                        ModBlockEntities.counter.get(),
-                        ModBlockEntities.cabinet.get(),
-                        ModBlockEntities.fridge.get(),
-                        ModBlockEntities.milkJar.get(),
-                        ModBlockEntities.cowJar.get(),
-                        ModBlockEntities.spiceRack.get(),
-                        ModBlockEntities.sink.get(),
-                        ModBlockEntities.oven.get(),
-                        ModBlockEntities.fruitBasket.get()
+                        ModBlockEntities.counter.value(),
+                        ModBlockEntities.cabinet.value(),
+                        ModBlockEntities.fridge.value(),
+                        ModBlockEntities.milkJar.value(),
+                        ModBlockEntities.cowJar.value(),
+                        ModBlockEntities.spiceRack.value(),
+                        ModBlockEntities.sink.value(),
+                        ModBlockEntities.oven.value(),
+                        ModBlockEntities.fruitBasket.value()
                 ));
 
         capabilities.registerProvider(id("kitchen_item_processor"),
                 KITCHEN_ITEM_PROCESSOR,
                 (blockEntity, context) -> blockEntity instanceof KitchenItemProcessorHolder holder ? holder.getKitchenItemProcessor() : null,
-                () -> Set.of(ModBlockEntities.oven.get()));
+                () -> Set.of(ModBlockEntities.oven.value()));
     }
 }

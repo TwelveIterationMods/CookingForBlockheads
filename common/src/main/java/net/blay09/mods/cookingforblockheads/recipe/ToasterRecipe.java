@@ -36,12 +36,12 @@ public class ToasterRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeSerializer<ToasterRecipe> getSerializer() {
-        return ModRecipes.toasterRecipeSerializer;
+        return ModRecipes.toasterRecipes.serializer();
     }
 
     @Override
     public RecipeType<ToasterRecipe> getType() {
-        return ModRecipes.toasterRecipeType;
+        return ModRecipes.toasterRecipes.type();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ToasterRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return ModRecipes.toasterRecipeBookCategory;
+        return ModRecipes.toasterRecipes.bookCategory();
     }
 
     static class Serializer implements RecipeSerializer<ToasterRecipe> {

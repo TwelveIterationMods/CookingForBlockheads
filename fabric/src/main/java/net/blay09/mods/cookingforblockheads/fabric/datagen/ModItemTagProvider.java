@@ -2,8 +2,6 @@ package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -21,66 +19,53 @@ public class ModItemTagProvider extends IntrinsicHolderTagsProvider<Item> {
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
         final var ovens = tag(ModItemTags.OVENS);
-        for (final var oven : ModBlocks.ovens) {
-            ovens.add(oven.asItem());
-        }
+        ModBlocks.ovens.forEach((discriminator, it) -> ovens.add(it.asItem()));
 
         final var dyedOvens = tag(ModItemTags.DYED_OVENS);
-        for (final var oven : ModBlocks.ovens) {
-            if (oven.getColor() != DyeColor.WHITE) {
-                dyedOvens.add(oven.asItem());
+        ModBlocks.ovens.forEach((color, block) -> {
+            if (color != DyeColor.WHITE) {
+                dyedOvens.add(block.asItem());
             }
-        }
+        });
 
         final var fridges = tag(ModItemTags.FRIDGES);
-        for (final var fridge : ModBlocks.fridges) {
-            fridges.add(fridge.asItem());
-        }
+        ModBlocks.fridges.forEach((discriminator, it) -> fridges.add(it.asItem()));
 
         final var dyedFridges = tag(ModItemTags.DYED_FRIDGES);
-        for (final var fridge : ModBlocks.fridges) {
-            if (fridge.getColor() != DyeColor.WHITE) {
-                dyedFridges.add(fridge.asItem());
+        ModBlocks.fridges.forEach((color, block) -> {
+            if (color != DyeColor.WHITE) {
+                dyedFridges.add(block.asItem());
             }
-        }
+        });
 
-        final var sinks = tag(ModItemTags.SINKS).add(ModBlocks.sink.asItem());
+        final var sinks = tag(ModItemTags.SINKS).add(ModBlocks.sinks.get(null).asItem());
+        ModBlocks.sinks.forEach((discriminator, it) -> sinks.add(it.asItem()));
+
         final var dyedSinks = tag(ModItemTags.DYED_SINKS);
-        for (final var sink : ModBlocks.dyedSinks) {
-            sinks.add(sink.asItem());
-            dyedSinks.add(sink.asItem());
-        }
+        ModBlocks.sinks.forEach((color, block) -> dyedSinks.add(block.asItem()));
 
-        final var cookingTables = tag(ModItemTags.COOKING_TABLES).add(ModBlocks.cookingTable.asItem());
+        final var cookingTables = tag(ModItemTags.COOKING_TABLES);
+        ModBlocks.cookingTables.forEach((discriminator, it) -> cookingTables.add(it.asItem()));
+
         final var dyedCookingTables = tag(ModItemTags.DYED_COOKING_TABLES);
-        for (final var cookingTable : ModBlocks.dyedCookingTables) {
-            cookingTables.add(cookingTable.asItem());
-            dyedCookingTables.add(cookingTable.asItem());
-        }
+        ModBlocks.cookingTables.filterNonNullDiscriminators().forEach(block -> dyedCookingTables.add(block.asItem()));
 
-        final var counters = tag(ModItemTags.COUNTERS).add(ModBlocks.counter.asItem());
+        final var counters = tag(ModItemTags.COUNTERS);
+        ModBlocks.counters.forEach((discriminator, it) -> counters.add(it.asItem()));
+
         final var dyedCounters = tag(ModItemTags.DYED_COUNTERS);
-        for (final var counter : ModBlocks.dyedCounters) {
-            counters.add(counter.asItem());
-            dyedCounters.add(counter.asItem());
-        }
+        ModBlocks.counters.filterNonNullDiscriminators().forEach(block -> dyedCounters.add(block.asItem()));
 
-        final var cabinets = tag(ModItemTags.CABINETS).add(ModBlocks.cabinet.asItem());
+        final var cabinets = tag(ModItemTags.CABINETS);
+        ModBlocks.cabinets.forEach((discriminator, it) -> cabinets.add(it.asItem()));
+
         final var dyedCabinets = tag(ModItemTags.DYED_CABINETS);
-        for (final var cabinet : ModBlocks.dyedCabinets) {
-            cabinets.add(cabinet.asItem());
-            dyedCabinets.add(cabinet.asItem());
-        }
+        ModBlocks.cabinets.filterNonNullDiscriminators().forEach(block -> dyedCabinets.add(block.asItem()));
 
         final var connectors = tag(ModItemTags.CONNECTORS);
-        connectors.add(ModBlocks.connector.asItem());
-        for (final var connector : ModBlocks.dyedConnectors) {
-            connectors.add(connector.asItem());
-        }
+        ModBlocks.connectors.forEach((discriminator, it) -> connectors.add(it.asItem()));
 
         final var dyedConnectors = tag(ModItemTags.DYED_CONNECTORS);
-        for (final var connector : ModBlocks.dyedConnectors) {
-            dyedConnectors.add(connector.asItem());
-        }
+        ModBlocks.connectors.filterNonNullDiscriminators().forEach(block -> dyedConnectors.add(block.asItem()));
     }
 }

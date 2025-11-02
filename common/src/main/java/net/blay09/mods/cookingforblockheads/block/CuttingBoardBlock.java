@@ -40,7 +40,7 @@ public class CuttingBoardBlock extends BaseKitchenBlock {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 1.6, 14);
 
     public CuttingBoardBlock(Properties properties) {
-        super(properties.sound(SoundType.WOOD).strength(2.5f));
+        super(properties);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class CuttingBoardBlock extends BaseKitchenBlock {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {
-            Balm.getNetworking().openMenu(player, state.getMenuProvider(level, pos));
+            Balm.networking().openMenu(player, state.getMenuProvider(level, pos));
             player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
             return InteractionResult.CONSUME;
         }

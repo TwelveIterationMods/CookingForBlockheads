@@ -25,7 +25,7 @@ public record ToggleFavoriteMessage(ResourceLocation itemId, boolean favorite) i
     );
 
     public static void handle(ServerPlayer player, ToggleFavoriteMessage message) {
-        final var data = Balm.getHooks().getPersistentData(player);
+        final var data = Balm.hooks().getPersistentData(player);
         final var cfbData = data.getCompoundOrEmpty("CookingForBlockheads");
         final var favoriteItems = cfbData.getCompoundOrEmpty("FavoriteItemIds");
         if (message.favorite) {
@@ -40,7 +40,7 @@ public record ToggleFavoriteMessage(ResourceLocation itemId, boolean favorite) i
         for (final var favoriteItemId : favoriteItems.keySet()) {
             favoriteItemIds.add(ResourceLocation.parse(favoriteItemId));
         }
-        Balm.getNetworking().sendTo(player, new FavoriteListMessage(favoriteItemIds));
+        Balm.networking().sendTo(player, new FavoriteListMessage(favoriteItemIds));
     }
 
     @Override
