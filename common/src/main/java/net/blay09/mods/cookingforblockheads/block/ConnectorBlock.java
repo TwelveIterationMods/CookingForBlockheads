@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -24,18 +25,33 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class ConnectorBlock extends BaseKitchenBlock {
-    public static final MapCodec<ConnectorBlock> CODEC = simpleCodec(ConnectorBlock::new);
+    public static final MapCodec<ConnectorBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
+                    .orElse(null)
+                    .forGetter(ConnectorBlock::getColor),
+            propertiesCodec()).apply(it, ConnectorBlock::new));
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
     public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
 
-    protected ConnectorBlock(BlockBehaviour.Properties properties) {
+    @Nullable
+    private final DyeColor color;
+
+    public ConnectorBlock(BlockBehaviour.Properties properties) {
+        this(null, properties);
+    }
+
+    public ConnectorBlock(@Nullable DyeColor color, BlockBehaviour.Properties properties) {
         super(properties);
+        this.color = color;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(HALF, Half.BOTTOM)
                 .setValue(SHAPE, StairsShape.STRAIGHT));
+    }
+
+    public @Nullable DyeColor getColor() {
+        return color;
     }
 
     @Override
@@ -175,8 +191,8 @@ public class ConnectorBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.connector : ModBlocks.dyedConnectors[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.connectors.getDeferred(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(HALF, state.getValue(HALF))
                 .setValue(SHAPE, state.getValue(SHAPE));

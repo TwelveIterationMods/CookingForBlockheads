@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class CuttingBoardBlockEntity extends BalmBlockEntity {
 
     public CuttingBoardBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.cuttingBoard.get(), pos, state);
+        super(ModBlockEntities.cuttingBoard.value(), pos, state);
     }
 
 }

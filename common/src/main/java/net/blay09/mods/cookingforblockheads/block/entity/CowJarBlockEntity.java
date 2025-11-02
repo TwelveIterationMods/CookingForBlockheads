@@ -34,7 +34,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     private int partyBpm;
 
     public CowJarBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.cowJar.get(), pos, state);
+        super(ModBlockEntities.cowJar.value(), pos, state);
     }
 
     @Override

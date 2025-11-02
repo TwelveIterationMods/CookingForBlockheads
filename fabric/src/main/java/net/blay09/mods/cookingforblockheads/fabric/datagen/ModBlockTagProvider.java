@@ -1,12 +1,7 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
-import net.blay09.mods.cookingforblockheads.block.CabinetBlock;
-import net.blay09.mods.cookingforblockheads.block.CookingTableBlock;
-import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -26,51 +21,25 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
     protected void addTags(HolderLookup.Provider arg) {
         final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/pickaxe"));
         final var mineablePickaxeBuilder = tag(mineablePickaxeTag);
-        mineablePickaxeBuilder.add(ModBlocks.cookingTable,
-                ModBlocks.sink,
-                ModBlocks.counter,
-                ModBlocks.cabinet,
-                ModBlocks.toaster,
-                ModBlocks.milkJar,
-                ModBlocks.cowJar,
-                ModBlocks.connector);
-        for (final var fridge : ModBlocks.fridges) {
-            mineablePickaxeBuilder.add(fridge);
-        }
-        for (final var oven : ModBlocks.ovens) {
-            mineablePickaxeBuilder.add(oven);
-        }
-        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
-            mineablePickaxeBuilder.add(kitchenFloor);
-        }
-        for (final var connector : ModBlocks.dyedConnectors) {
-            mineablePickaxeBuilder.add(connector);
-        }
-        for (final var cookingTable : ModBlocks.dyedCookingTables) {
-            mineablePickaxeBuilder.add(cookingTable);
-        }
-        for (final var cabinet : ModBlocks.dyedCabinets) {
-            mineablePickaxeBuilder.add(cabinet);
-        }
-        for (final var counter : ModBlocks.dyedCounters) {
-            mineablePickaxeBuilder.add(counter);
-        }
-        for (final var sink : ModBlocks.dyedSinks) {
-            mineablePickaxeBuilder.add(sink);
-        }
+        ModBlocks.cookingTables.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.sinks.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.counters.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.cabinets.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.connectors.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.fridges.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.ovens.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.kitchenFloors.forEach(block -> mineablePickaxeBuilder.add(block));
+        mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/axe"));
         final var mineableAxeBuilder = tag(mineableAxeTag);
-        mineableAxeBuilder.add(ModBlocks.toolRack, ModBlocks.spiceRack, ModBlocks.fruitBasket, ModBlocks.cuttingBoard);
+        mineableAxeBuilder.add(ModBlocks.toolRack.asBlock(), ModBlocks.spiceRack.asBlock(), ModBlocks.fruitBasket.asBlock(), ModBlocks.cuttingBoard.asBlock());
 
         final var kitchenItemProviders = tag(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
-        kitchenItemProviders.add(ModBlocks.toolRack);
-        for (final var cabinet : ModBlocks.dyedCabinets) {
-            kitchenItemProviders.add(cabinet);
-        }
-        for (final var counter : ModBlocks.dyedCounters) {
-            kitchenItemProviders.add(counter);
-        }
+        kitchenItemProviders.add(ModBlocks.toolRack.asBlock());
+        ModBlocks.cabinets.forEach(block -> kitchenItemProviders.add(block));
+        ModBlocks.counters.forEach(block -> kitchenItemProviders.add(block));
+
         final var rawKitchenItemProviders = getOrCreateRawBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         rawKitchenItemProviders.addOptionalElement(ResourceLocation.fromNamespaceAndPath("farmersdelight", "basket"));
         rawKitchenItemProviders.addOptionalElement(ResourceLocation.fromNamespaceAndPath("farmersdelight", "pantry"));
@@ -210,19 +179,12 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
         rawKitchenItemProviders.addOptionalElement(ResourceLocation.fromNamespaceAndPath("storagedrawers", "fractional_drawers_3"));
 
         final var cookingTables = tag(ModBlockTags.COOKING_TABLES);
-        cookingTables.add(ModBlocks.cookingTable);
-        for (final var cookingTable : ModBlocks.dyedCookingTables) {
-            cookingTables.add(cookingTable);
-        }
+        ModBlocks.cookingTables.forEach(block -> cookingTables.add(block));
 
         final var kitchenConnectors = tag(ModBlockTags.KITCHEN_CONNECTORS);
-        kitchenConnectors.add(ModBlocks.connector);
-        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
-            kitchenConnectors.add(kitchenFloor);
-        }
-        for (final var connector : ModBlocks.dyedConnectors) {
-            kitchenConnectors.add(connector);
-        }
+        ModBlocks.connectors.forEach(block -> kitchenConnectors.add(block));
+        ModBlocks.kitchenFloors.forEach(block -> kitchenConnectors.add(block));
+
         final var rawKitchenConnectors = getOrCreateRawBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         rawKitchenConnectors.addOptionalElement(ResourceLocation.fromNamespaceAndPath("buildersaddition", "counter_oak_andesite"));
         rawKitchenConnectors.addOptionalElement(ResourceLocation.fromNamespaceAndPath("buildersaddition", "counter_oak_diorite"));

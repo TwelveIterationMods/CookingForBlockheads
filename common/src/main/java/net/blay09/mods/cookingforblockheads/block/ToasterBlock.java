@@ -35,7 +35,7 @@ public class ToasterBlock extends BaseKitchenBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public ToasterBlock(Properties properties) {
-        super(properties.sound(SoundType.METAL).strength(2.5f));
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(ACTIVE, false));
     }
 
@@ -128,7 +128,7 @@ public class ToasterBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.toaster.get(), ToasterBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.toaster.value(), ToasterBlockEntity::serverTick);
     }
 
     @Override

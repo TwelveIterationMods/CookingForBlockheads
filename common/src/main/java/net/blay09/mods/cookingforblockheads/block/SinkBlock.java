@@ -38,9 +38,10 @@ public class SinkBlock extends BaseKitchenBlock {
                     .forGetter(SinkBlock::getColor),
             propertiesCodec()).apply(it, SinkBlock::new));
 
+    @Nullable
     private final DyeColor color;
 
-    public SinkBlock(DyeColor color, Properties properties) {
+    public SinkBlock(@Nullable DyeColor color, Properties properties) {
         super(properties.sound(SoundType.STONE).strength(5f, 10f));
         this.color = color;
     }
@@ -159,7 +160,7 @@ public class SinkBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.sink.get(), SinkBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.sink.value(), SinkBlockEntity::serverTick);
     }
 
     @Override
@@ -176,8 +177,8 @@ public class SinkBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.sink : ModBlocks.dyedSinks[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.sinks.getDeferred(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(FLIPPED, state.getValue(FLIPPED));
     }

@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.api.Balm;
-
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -12,7 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -34,6 +35,10 @@ public class CounterBlock extends BaseKitchenBlock {
             propertiesCodec()).apply(it, CounterBlock::new));
 
     private final DyeColor color;
+
+    public CounterBlock(Properties properties) {
+        this(null, properties);
+    }
 
     public CounterBlock(@Nullable DyeColor color, Properties properties) {
         super(properties.sound(SoundType.STONE).strength(5f, 10f));
@@ -112,8 +117,8 @@ public class CounterBlock extends BaseKitchenBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide()
-                ? createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::clientTick)
-                : createTickerHelper(type, ModBlockEntities.counter.get(), CounterBlockEntity::serverTick);
+                ? createTickerHelper(type, ModBlockEntities.counter.value(), CounterBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.counter.value(), CounterBlockEntity::serverTick);
     }
 
     @Override
@@ -123,8 +128,8 @@ public class CounterBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.counter : ModBlocks.dyedCounters[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.counters.getDeferred(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(FLIPPED, state.getValue(FLIPPED));
     }

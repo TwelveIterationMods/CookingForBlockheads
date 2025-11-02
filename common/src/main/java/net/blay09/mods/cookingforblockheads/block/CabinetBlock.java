@@ -30,6 +30,10 @@ public class CabinetBlock extends CounterBlock {
     private static final VoxelShape BOUNDING_BOX_WEST = Block.box(2, 2, 0, 16, 16, 16);
     private static final VoxelShape BOUNDING_BOX_SOUTH = Block.box(0, 2, 0, 16, 16, 14);
 
+    public CabinetBlock(Properties properties) {
+        this(null, properties);
+    }
+
     public CabinetBlock(@Nullable DyeColor color, Properties properties) {
         super(color, properties);
     }
@@ -54,8 +58,8 @@ public class CabinetBlock extends CounterBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide()
-                ? createTickerHelper(type, ModBlockEntities.cabinet.get(), CabinetBlockEntity::clientTick)
-                : createTickerHelper(type, ModBlockEntities.cabinet.get(), CabinetBlockEntity::serverTick);
+                ? createTickerHelper(type, ModBlockEntities.cabinet.value(), CabinetBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.cabinet.value(), CabinetBlockEntity::serverTick);
     }
 
     @Override
@@ -65,8 +69,8 @@ public class CabinetBlock extends CounterBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.cabinet : ModBlocks.dyedCabinets[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.cabinets.getDeferred(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(FLIPPED, state.getValue(FLIPPED));
     }

@@ -14,41 +14,20 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        dropSelf(ModBlocks.cookingTable);
-        for (final var cookingTable : ModBlocks.dyedCookingTables) {
-            dropSelf(cookingTable);
-        }
-        dropSelf(ModBlocks.toaster);
-        dropSelf(ModBlocks.milkJar);
-        dropSelf(ModBlocks.cowJar);
-        dropSelf(ModBlocks.cuttingBoard);
-        dropSelf(ModBlocks.sink);
-        for (final var sink : ModBlocks.dyedSinks) {
-            dropSelf(sink);
-        }
-        dropSelf(ModBlocks.connector);
-        for (final var oven : ModBlocks.ovens) {
-            add(oven, this::createNameableBlockEntityTable);
-        }
-        for (final var fridge : ModBlocks.fridges) {
-            add(fridge, this::createNameableBlockEntityTable);
-        }
-        add(ModBlocks.toolRack, this::createNameableBlockEntityTable);
-        add(ModBlocks.spiceRack, this::createNameableBlockEntityTable);
-        add(ModBlocks.fruitBasket, this::createNameableBlockEntityTable);
-        add(ModBlocks.counter, this::createNameableBlockEntityTable);
-        for (final var counter : ModBlocks.dyedCounters) {
-            add(counter, this::createNameableBlockEntityTable);
-        }
-        add(ModBlocks.cabinet, this::createNameableBlockEntityTable);
-        for (final var cabinet : ModBlocks.dyedCabinets) {
-            add(cabinet, this::createNameableBlockEntityTable);
-        }
-        for (final var kitchenFloor : ModBlocks.kitchenFloors) {
-            dropSelf(kitchenFloor);
-        }
-        for (final var connector : ModBlocks.dyedConnectors) {
-            dropSelf(connector);
-        }
+        dropSelf(ModBlocks.toaster.value());
+        dropSelf(ModBlocks.milkJar.value());
+        dropSelf(ModBlocks.cowJar.value());
+        dropSelf(ModBlocks.cuttingBoard.value());
+        ModBlocks.ovens.getAll().forEach(it -> add(it, this::createNameableBlockEntityTable));
+        ModBlocks.fridges.getAll().forEach(it -> add(it, this::createNameableBlockEntityTable));
+        add(ModBlocks.toolRack.value(), this::createNameableBlockEntityTable);
+        add(ModBlocks.spiceRack.value(), this::createNameableBlockEntityTable);
+        add(ModBlocks.fruitBasket.value(), this::createNameableBlockEntityTable);
+        ModBlocks.counters.getAll().forEach(it -> add(it, this::createNameableBlockEntityTable));
+        ModBlocks.cabinets.getAll().forEach(it -> add(it, this::createNameableBlockEntityTable));
+        ModBlocks.kitchenFloors.getAll().forEach(this::dropSelf);
+        ModBlocks.connectors.getAll().forEach(this::dropSelf);
+        ModBlocks.sinks.getAll().forEach(this::dropSelf);
+        ModBlocks.cookingTables.getAll().forEach(this::dropSelf);
     }
 }

@@ -47,7 +47,7 @@ public class SpiceRackBlock extends BaseKitchenBlock {
     };
 
     public SpiceRackBlock(Properties properties) {
-        super(properties.sound(SoundType.WOOD).strength(2.5f));
+        super(properties);
     }
 
     @Nullable
@@ -103,7 +103,7 @@ public class SpiceRackBlock extends BaseKitchenBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.spiceRack.get(), SpiceRackBlockEntity::serverTick) : null;
+        return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.spiceRack.value(), SpiceRackBlockEntity::serverTick) : null;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     private ItemStack noFilterBook = ItemStack.EMPTY;
 
     public CookingTableBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.cookingTable.get(), pos, state);
+        super(ModBlockEntities.cookingTable.value(), pos, state);
     }
 
     public boolean hasNoFilterBook() {

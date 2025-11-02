@@ -197,8 +197,8 @@ public class FridgeBlock extends BaseKitchenBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide()
-                ? createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::clientTick)
-                : createTickerHelper(type, ModBlockEntities.fridge.get(), FridgeBlockEntity::serverTick);
+                ? createTickerHelper(type, ModBlockEntities.fridge.value(), FridgeBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.fridge.value(), FridgeBlockEntity::serverTick);
     }
 
     @Override
@@ -224,8 +224,8 @@ public class FridgeBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        final var block = color == null ? ModBlocks.fridges[0] : ModBlocks.fridges[color.ordinal()];
-        return block.defaultBlockState()
+        return ModBlocks.fridges.getDeferred(color)
+                .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(MODEL_TYPE, state.getValue(MODEL_TYPE))
                 .setValue(PRESERVATION_CHAMBER, state.getValue(PRESERVATION_CHAMBER))

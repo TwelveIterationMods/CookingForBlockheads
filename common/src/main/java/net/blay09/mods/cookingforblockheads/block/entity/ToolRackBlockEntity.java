@@ -23,7 +23,7 @@ public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContaine
     };
 
     public ToolRackBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.toolRack.get(), pos, state);
+        super(ModBlockEntities.toolRack.value(), pos, state);
     }
 
     @Override

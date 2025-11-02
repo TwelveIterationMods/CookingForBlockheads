@@ -148,7 +148,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     private Direction facing;
 
     public OvenBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.oven.get(), pos, state);
+        super(ModBlockEntities.oven.value(), pos, state);
         doorAnimator.setSoundEventOpen(ModSounds.ovenOpen.get());
         doorAnimator.setSoundEventClose(ModSounds.ovenClose.get());
     }
@@ -568,7 +568,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (hasPowerUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.heatingUnit));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.heatingUnit.createStack());
         }
     }
 

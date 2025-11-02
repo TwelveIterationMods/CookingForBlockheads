@@ -55,7 +55,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
             containerItemProvider);
 
     public FruitBasketBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.fruitBasket.get(), pos, state);
+        super(ModBlockEntities.fruitBasket.value(), pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, FruitBasketBlockEntity blockEntity) {
@@ -180,7 +180,7 @@ public class FruitBasketBlockEntity extends BalmBlockEntity implements BalmMenuP
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (hasPreservationUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.preservationChamber.createStack());
         }
     }
 }

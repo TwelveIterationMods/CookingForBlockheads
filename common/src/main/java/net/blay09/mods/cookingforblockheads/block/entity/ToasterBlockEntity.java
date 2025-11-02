@@ -47,7 +47,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     private int toastTicks;
 
     public ToasterBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.toaster.get(), pos, state);
+        super(ModBlockEntities.toaster.value(), pos, state);
     }
 
     @Override
@@ -124,13 +124,13 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         this.active = active;
         if (active) {
             toastTicks = TOAST_TICKS;
-            level.blockEvent(worldPosition, ModBlocks.toaster, 0, 0);
+            level.blockEvent(worldPosition, ModBlocks.toaster.value(), 0, 0);
         } else {
             toastTicks = 0;
-            level.blockEvent(worldPosition, ModBlocks.toaster, 1, 0);
+            level.blockEvent(worldPosition, ModBlocks.toaster.value(), 1, 0);
         }
 
-        level.blockEvent(worldPosition, ModBlocks.toaster, 2, 0);
+        level.blockEvent(worldPosition, ModBlocks.toaster.value(), 2, 0);
 
         BlockState state = level.getBlockState(worldPosition);
         level.setBlockAndUpdate(worldPosition, state.setValue(ToasterBlock.ACTIVE, active));

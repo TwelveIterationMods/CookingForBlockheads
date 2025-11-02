@@ -45,7 +45,7 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
     private final MilkJarItemProvider itemProvider = new MilkJarItemProvider(this);
 
     public MilkJarBlockEntity(BlockPos pos, BlockState state) {
-        this(ModBlockEntities.milkJar.get(), pos, state);
+        this(ModBlockEntities.milkJar.value(), pos, state);
     }
     protected MilkJarBlockEntity(BlockEntityType<? extends MilkJarBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

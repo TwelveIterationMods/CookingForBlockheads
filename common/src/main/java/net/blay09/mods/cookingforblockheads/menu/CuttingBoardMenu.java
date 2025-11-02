@@ -86,7 +86,7 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
     }
 
     public boolean stillValid(Player player) {
-        return stillValid(access, player, ModBlocks.cuttingBoard);
+        return stillValid(access, player, ModBlocks.cuttingBoard.value());
     }
 
     public ItemStack quickMoveStack(Player player, int index) {

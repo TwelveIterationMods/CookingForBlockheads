@@ -90,7 +90,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     };
 
     public SinkBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.sink.get(), pos, state);
+        super(ModBlockEntities.sink.value(), pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SinkBlockEntity blockEntity) {

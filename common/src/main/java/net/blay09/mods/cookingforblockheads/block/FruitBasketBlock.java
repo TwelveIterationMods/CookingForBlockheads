@@ -32,7 +32,7 @@ public class FruitBasketBlock extends BaseKitchenBlock {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 1.6, 14);
 
     public FruitBasketBlock(Properties properties) {
-        super(properties.sound(SoundType.WOOD).strength(2.5f));
+        super(properties);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class FruitBasketBlock extends BaseKitchenBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.fruitBasket.get(), FruitBasketBlockEntity::serverTick) : null;
+        return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.fruitBasket.value(), FruitBasketBlockEntity::serverTick) : null;
     }
 
     @Override

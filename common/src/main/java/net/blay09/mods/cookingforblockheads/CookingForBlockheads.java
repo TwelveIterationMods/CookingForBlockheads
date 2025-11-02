@@ -6,6 +6,7 @@ import net.blay09.mods.balm.api.event.PlayerLoginEvent;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
@@ -15,16 +16,15 @@ import net.blay09.mods.cookingforblockheads.component.ModComponents;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenSmeltingRecipeHandler;
-import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
 import net.blay09.mods.cookingforblockheads.network.message.FavoriteListMessage;
-import net.minecraft.resources.ResourceLocation;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
-import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +35,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,7 +56,7 @@ public class CookingForBlockheads {
             }
         });
 
-        Balm.getRegistries().enableMilkFluid();
+        Balm.getModSupport().milkFluid().enable();
 
         CookingForBlockheadsAPI.addSortButton(new NameSortButton());
         CookingForBlockheadsAPI.addSortButton(new HungerSortButton());
@@ -70,9 +69,10 @@ public class CookingForBlockheads {
         CookingForBlockheadsConfig.initialize();
         ModComponents.initialize(Balm.getComponents());
         ModNetworking.initialize(Balm.getNetworking());
-        ModBlocks.initialize(Balm.getBlocks());
-        ModBlockEntities.initialize();
-        ModItems.initialize(Balm.getItems());
+        Balm.blocks(MOD_ID, ModBlocks::initialize);
+        Balm.blockEntityTypes(MOD_ID, ModBlockEntities::initialize);
+        Balm.items(MOD_ID, ModItems::initialize);
+        Balm.creativeModeTabs(MOD_ID, ModItems::initialize);
         ModRecipes.initialize(Balm.getRecipes());
         ModMenus.initialize();
         ModSounds.initialize(Balm.getSounds());

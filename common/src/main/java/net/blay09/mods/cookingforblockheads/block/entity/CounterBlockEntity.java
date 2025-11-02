@@ -76,7 +76,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
             containerItemProvider);
 
     public CounterBlockEntity(BlockPos pos, BlockState state) {
-        this(ModBlockEntities.counter.get(), pos, state);
+        this(ModBlockEntities.counter.value(), pos, state);
     }
 
     public CounterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -249,7 +249,7 @@ public class CounterBlockEntity extends BalmBlockEntity implements BalmMenuProvi
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (hasPreservationUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.preservationChamber.createStack());
         }
     }
 

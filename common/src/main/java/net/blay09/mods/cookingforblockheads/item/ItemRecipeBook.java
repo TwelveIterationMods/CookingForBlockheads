@@ -57,6 +57,18 @@ public class ItemRecipeBook extends Item {
         this.edition = edition;
     }
 
+    public static ItemRecipeBook recipeBook(Item.Properties properties) {
+        return new ItemRecipeBook(RecipeBookEdition.RECIPE, properties);
+    }
+
+    public static ItemRecipeBook craftingBook(Item.Properties properties) {
+        return new ItemRecipeBook(RecipeBookEdition.CRAFTING, properties);
+    }
+
+    public static ItemRecipeBook noFilterBook(Item.Properties properties) {
+        return new ItemRecipeBook(RecipeBookEdition.NO_FILTER, properties);
+    }
+
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {

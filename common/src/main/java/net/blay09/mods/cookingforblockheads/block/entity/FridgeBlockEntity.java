@@ -101,7 +101,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
             new ConditionalKitchenItemProvider<>(this::hasPreservationUpgrade, conservingItemProvider, containerItemProvider)));
 
     public FridgeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.fridge.get(), pos, state);
+        super(ModBlockEntities.fridge.value(), pos, state);
         doorAnimator.setOpenRadius(2);
         doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen.get());
         doorAnimator.setSoundEventClose(ModSounds.fridgeClose.get());
@@ -326,10 +326,10 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (hasIceUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.iceUnit));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.iceUnit.createStack());
         }
         if (hasPreservationUpgrade()) {
-            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.preservationChamber));
+            ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.preservationChamber.createStack());
         }
     }
 

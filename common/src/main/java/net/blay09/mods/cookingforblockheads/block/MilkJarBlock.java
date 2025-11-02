@@ -36,7 +36,7 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
     private static final VoxelShape SHAPE = Block.box(4.8, 0, 4.8, 11.2, 8.0, 11.2);
 
     public MilkJarBlock(Properties properties) {
-        super(properties.sound(SoundType.GLASS).strength(0.6f));
+        super(properties);
     }
 
     @Override
