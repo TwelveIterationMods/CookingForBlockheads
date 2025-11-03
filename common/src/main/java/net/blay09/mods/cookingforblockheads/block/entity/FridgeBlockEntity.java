@@ -103,8 +103,8 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     public FridgeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.fridge.value(), pos, state);
         doorAnimator.setOpenRadius(2);
-        doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen.get());
-        doorAnimator.setSoundEventClose(ModSounds.fridgeClose.get());
+        doorAnimator.setSoundEventOpen(ModSounds.fridgeOpen.value());
+        doorAnimator.setSoundEventClose(ModSounds.fridgeClose.value());
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, FridgeBlockEntity blockEntity) {

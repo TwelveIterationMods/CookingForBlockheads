@@ -149,8 +149,8 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
 
     public OvenBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.oven.value(), pos, state);
-        doorAnimator.setSoundEventOpen(ModSounds.ovenOpen.get());
-        doorAnimator.setSoundEventClose(ModSounds.ovenClose.get());
+        doorAnimator.setSoundEventOpen(ModSounds.ovenOpen.value());
+        doorAnimator.setSoundEventClose(ModSounds.ovenClose.value());
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity blockEntity) {
@@ -305,7 +305,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
 
     public ItemStack getSmeltingResult(ItemStack itemStack) {
         final var recipeInput = new SingleRecipeInput(itemStack);
-        final var ovenRecipeResult = getSmeltingResult(ModRecipes.ovenRecipeType, recipeInput);
+        final var ovenRecipeResult = getSmeltingResult(ModRecipes.ovenRecipes.type(), recipeInput);
         if (!ovenRecipeResult.isEmpty()) {
             return ovenRecipeResult;
         }

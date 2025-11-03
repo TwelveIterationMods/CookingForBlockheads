@@ -3,22 +3,18 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
-import net.blay09.mods.cookingforblockheads.component.ModComponents;
+import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -53,10 +49,10 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     @Override
     public boolean triggerEvent(int id, int type) {
         if (id == 0) {
-            level.playSound(null, worldPosition, ModSounds.toasterStart.get(), SoundSource.BLOCKS, 1f, 1f);
+            level.playSound(null, worldPosition, ModSounds.toasterStart.value(), SoundSource.BLOCKS, 1f, 1f);
             return true;
         } else if (id == 1) {
-            level.playSound(null, worldPosition, ModSounds.toasterStop.get(), SoundSource.BLOCKS, 1f, 1f);
+            level.playSound(null, worldPosition, ModSounds.toasterStop.value(), SoundSource.BLOCKS, 1f, 1f);
             return true;
         } else if (id == 2) {
             BlockState state = level.getBlockState(worldPosition);
@@ -151,14 +147,14 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     public boolean isBurningToast() {
-        final var firstToasted = container.getItem(0).has(ModComponents.toasted.get());
-        final var secondToasted = container.getItem(1).has(ModComponents.toasted.get());
+        final var firstToasted = container.getItem(0).has(ModDataComponents.toasted.value());
+        final var secondToasted = container.getItem(1).has(ModDataComponents.toasted.value());
         return firstToasted || secondToasted;
     }
 
     private ItemStack toastItem(ItemStack itemStack) {
         final var recipeInput = new SingleRecipeInput(itemStack);
-        final var toastRecipe = level.getServer().getRecipeManager().getRecipeFor(ModRecipes.toasterRecipeType, recipeInput, level);
+        final var toastRecipe = ModRecipes.toasterRecipes.getRecipeFor(level, recipeInput);
         final var outputItem = toastRecipe.map(recipeHolder -> recipeHolder.value().assemble(recipeInput, level.registryAccess())).orElse(itemStack);
         if (outputItem.is(Items.BREAD)) {
             return toastBread(outputItem);
@@ -168,7 +164,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     private ItemStack toastBread(ItemStack itemStack) {
-        boolean alreadyToasted = itemStack.has(ModComponents.toasted.get());
+        boolean alreadyToasted = itemStack.has(ModDataComponents.toasted.value());
         if (alreadyToasted) {
             if (CookingForBlockheadsConfig.getActive().allowVeryToastedBread) {
                 ItemStack veryToasted = new ItemStack(Items.CHARCOAL);
@@ -180,7 +176,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         } else {
             ItemStack toasted = itemStack.copy();
             toasted.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.cookingforblockheads.toasted", itemStack.getHoverName()));
-            toasted.set(ModComponents.toasted.get(), Unit.INSTANCE);
+            toasted.set(ModDataComponents.toasted.value(), Unit.INSTANCE);
             return toasted;
         }
     }
@@ -191,8 +187,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
             return false;
         }
 
-        return server.getRecipeManager()
-                .getRecipeFor(ModRecipes.toasterRecipeType, new SingleRecipeInput(itemStack), level)
+        return ModRecipes.toasterRecipes.getRecipeFor(level, new SingleRecipeInput(itemStack))
                 .map(it -> true)
                 .orElseGet(() -> itemStack.is(Items.BREAD));
     }

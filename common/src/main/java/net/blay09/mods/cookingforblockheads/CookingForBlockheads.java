@@ -12,7 +12,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.component.ModComponents;
+import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenSmeltingRecipeHandler;
@@ -24,6 +24,7 @@ import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
@@ -67,15 +68,15 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
-        ModComponents.initialize(Balm.getComponents());
+        Balm.dataComponentTypes(MOD_ID, ModDataComponents::initialize);
         ModNetworking.initialize(Balm.getNetworking());
         Balm.blocks(MOD_ID, ModBlocks::initialize);
         Balm.blockEntityTypes(MOD_ID, ModBlockEntities::initialize);
         Balm.items(MOD_ID, ModItems::initialize);
         Balm.creativeModeTabs(MOD_ID, ModItems::initialize);
-        ModRecipes.initialize(Balm.getRecipes());
+        Balm.recipeTypes(MOD_ID, ModRecipes::initialize);
         ModMenus.initialize();
-        ModSounds.initialize(Balm.getSounds());
+        ModSounds.initialize(Balm.registrar(Registries.SOUND_EVENT, MOD_ID));
         ModCapabilities.initialize(Balm.getCapabilities());
 
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");

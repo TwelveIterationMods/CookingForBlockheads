@@ -1,36 +1,23 @@
 package net.blay09.mods.cookingforblockheads.recipe;
 
-import net.blay09.mods.balm.api.recipe.BalmRecipes;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-
-import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+import net.blay09.mods.balm.world.item.crafting.BalmRecipeTypeFactory;
+import net.blay09.mods.balm.world.item.crafting.DeferredRecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 
 public class ModRecipes {
 
-    public static RecipeBookCategory toasterRecipeBookCategory;
-    public static RecipeType<ToasterRecipe> toasterRecipeType;
-    public static RecipeSerializer<ToasterRecipe> toasterRecipeSerializer;
+    public static DeferredRecipeType<SingleRecipeInput, ToasterRecipe> toasterRecipes;
+    public static DeferredRecipeType<SingleRecipeInput, OvenRecipe> ovenRecipes;
 
-    public static RecipeBookCategory ovenRecipeBookCategory;
-    public static RecipeType<OvenRecipe> ovenRecipeType;
-    public static RecipeSerializer<OvenRecipe> ovenRecipeSerializer;
+    public static void initialize(BalmRecipeTypeFactory recipeTypes) {
+        toasterRecipes = recipeTypes.register("toaster", ToasterRecipe.class)
+                .withSerializer(ToasterRecipe.Serializer::new)
+                .withRecipeBookCategory()
+                .asDeferredRecipeType();
 
-    public static void initialize(BalmRecipes registry) {
-        registry.registerRecipeType((identifier) -> toasterRecipeType = new RecipeType<>() {
-                    @Override
-                    public String toString() {
-                        return identifier.getPath();
-                    }
-                }, id("toaster"));
-        registry.registerRecipeSerializer(() -> toasterRecipeSerializer = new ToasterRecipe.Serializer(), id("toaster"));
-        registry.registerRecipeType((identifier) -> ovenRecipeType = new RecipeType<>() {
-                    @Override
-                    public String toString() {
-                        return identifier.getPath();
-                    }
-                }, id("oven"));
-        registry.registerRecipeSerializer(() -> ovenRecipeSerializer = new OvenRecipe.Serializer(), id("oven"));
+        ovenRecipes = recipeTypes.register("oven", OvenRecipe.class)
+                .withSerializer(OvenRecipe.Serializer::new)
+                .withRecipeBookCategory()
+                .asDeferredRecipeType();
     }
 }

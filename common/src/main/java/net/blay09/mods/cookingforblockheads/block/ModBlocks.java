@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.block;
 import net.blay09.mods.balm.world.level.block.BalmBlockFactory;
 import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.balm.world.level.block.DiscriminatedBlocks;
-import net.blay09.mods.cookingforblockheads.component.ModComponents;
+import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.component.MultiblockKitchenComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
@@ -32,7 +32,7 @@ public class ModBlocks {
 
     private static Function<Item.Properties, Item.Properties> configureTooltip(Component component) {
         return (Item.Properties properties) ->
-                properties.component(ModComponents.multiblockKitchen.get(), new MultiblockKitchenComponent(component));
+                properties.component(ModDataComponents.multiblockKitchen.value(), new MultiblockKitchenComponent(component));
     }
 
     public static void initialize(BalmBlockFactory blocks) {

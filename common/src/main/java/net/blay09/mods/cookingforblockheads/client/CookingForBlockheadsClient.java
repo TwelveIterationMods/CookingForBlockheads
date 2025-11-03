@@ -4,6 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
@@ -26,6 +27,7 @@ public class CookingForBlockheadsClient {
     private static final Set<ResourceLocation> favoriteItemIds = new HashSet<>();
 
     public static void initialize() {
+        BalmClient.blockEntityRenderers(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
         ModRenderers.initialize(BalmClient.getRenderers());
         ModScreens.initialize(BalmClient.getScreens());
         ModModels.initialize(BalmClient.getModels());

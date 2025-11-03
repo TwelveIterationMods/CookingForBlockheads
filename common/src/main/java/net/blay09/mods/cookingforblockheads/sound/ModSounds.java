@@ -1,31 +1,25 @@
 package net.blay09.mods.cookingforblockheads.sound;
 
-import net.blay09.mods.balm.api.DeferredObject;
-import net.blay09.mods.balm.api.sound.BalmSounds;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.minecraft.resources.ResourceLocation;
+import net.blay09.mods.balm.core.BalmRegistrar;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 
 public class ModSounds {
 
-    public static DeferredObject<SoundEvent> fridgeOpen;
-    public static DeferredObject<SoundEvent> fridgeClose;
-    public static DeferredObject<SoundEvent> ovenOpen;
-    public static DeferredObject<SoundEvent> ovenClose;
-    public static DeferredObject<SoundEvent> toasterStart;
-    public static DeferredObject<SoundEvent> toasterStop;
+    public static Holder<SoundEvent> fridgeOpen;
+    public static Holder<SoundEvent> fridgeClose;
+    public static Holder<SoundEvent> ovenOpen;
+    public static Holder<SoundEvent> ovenClose;
+    public static Holder<SoundEvent> toasterStart;
+    public static Holder<SoundEvent> toasterStop;
 
-    public static void initialize(BalmSounds sounds) {
-        fridgeOpen = sounds.register(id("fridge_open"));
-        fridgeClose = sounds.register(id("fridge_close"));
-        ovenOpen = sounds.register(id("oven_open"));
-        ovenClose = sounds.register(id("oven_close"));
-        toasterStart = sounds.register(id("toaster_start"));
-        toasterStop = sounds.register(id("toaster_stop"));
-    }
-
-    private static ResourceLocation id(String name) {
-        return ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, name);
+    public static void initialize(BalmRegistrar.Scoped<SoundEvent> sounds) {
+        fridgeOpen = sounds.register("fridge_open", SoundEvent::createVariableRangeEvent);
+        fridgeClose = sounds.register("fridge_close", SoundEvent::createVariableRangeEvent);
+        ovenOpen = sounds.register("oven_open", SoundEvent::createVariableRangeEvent);
+        ovenClose = sounds.register("oven_close", SoundEvent::createVariableRangeEvent);
+        toasterStart = sounds.register("toaster_start", SoundEvent::createVariableRangeEvent);
+        toasterStop = sounds.register("toaster_stop", SoundEvent::createVariableRangeEvent);
     }
 
 }
