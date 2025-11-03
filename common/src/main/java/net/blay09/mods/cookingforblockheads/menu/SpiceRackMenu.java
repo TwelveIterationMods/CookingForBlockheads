@@ -13,7 +13,7 @@ public class SpiceRackMenu extends AbstractContainerMenu {
     private final SpiceRackBlockEntity spiceRack;
 
     public SpiceRackMenu(int windowId, Inventory playerInventory, SpiceRackBlockEntity spiceRack) {
-        super(ModMenus.spiceRack.get(), windowId);
+        super(ModMenus.spiceRack.value(), windowId);
         this.spiceRack = spiceRack;
 
         for (int i = 0; i < 9; i++) {

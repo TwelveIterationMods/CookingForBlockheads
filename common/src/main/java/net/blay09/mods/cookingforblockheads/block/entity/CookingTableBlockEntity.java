@@ -68,7 +68,7 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new KitchenMenu(ModMenus.cookingTable.get(), i, player, new KitchenImpl(level, worldPosition));
+        return new KitchenMenu(ModMenus.cookingTable.value(), i, player, new KitchenImpl(level, worldPosition));
     }
 
     @Override

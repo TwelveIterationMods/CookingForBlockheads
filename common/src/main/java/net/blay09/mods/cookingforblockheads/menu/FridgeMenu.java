@@ -15,7 +15,7 @@ public class FridgeMenu extends AbstractContainerMenu implements IContainerWithD
     private final int numRows;
 
     public FridgeMenu(int windowId, Inventory playerInventory, FridgeBlockEntity fridge) {
-        super(ModMenus.fridge.get(), windowId);
+        super(ModMenus.fridge.value(), windowId);
         this.tileFridge = fridge;
         Container itemHandler = fridge.getCombinedContainer();
         this.numRows = itemHandler.getContainerSize() / 9;

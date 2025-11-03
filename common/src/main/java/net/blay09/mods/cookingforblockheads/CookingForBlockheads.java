@@ -75,7 +75,7 @@ public class CookingForBlockheads {
         Balm.items(MOD_ID, ModItems::initialize);
         Balm.creativeModeTabs(MOD_ID, ModItems::initialize);
         Balm.recipeTypes(MOD_ID, ModRecipes::initialize);
-        ModMenus.initialize();
+        Balm.menuTypes(MOD_ID, ModMenus::initialize);
         ModSounds.initialize(Balm.registrar(Registries.SOUND_EVENT, MOD_ID));
         ModCapabilities.initialize(Balm.getCapabilities());
 

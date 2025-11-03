@@ -29,9 +29,9 @@ import java.util.function.Supplier;
 public class ItemRecipeBook extends Item {
 
     public enum RecipeBookEdition {
-        NO_FILTER("no_filter_edition", () -> ModMenus.noFilterBook.get()),
-        RECIPE("recipe_book", () -> ModMenus.recipeBook.get()),
-        CRAFTING("crafting_book", () -> ModMenus.craftingBook.get());
+        NO_FILTER("no_filter_edition", () -> ModMenus.noFilterBook.value()),
+        RECIPE("recipe_book", () -> ModMenus.recipeBook.value()),
+        CRAFTING("crafting_book", () -> ModMenus.craftingBook.value());
 
         private final String name;
         private final Supplier<MenuType<KitchenMenu>> containerTypeSupplier;
