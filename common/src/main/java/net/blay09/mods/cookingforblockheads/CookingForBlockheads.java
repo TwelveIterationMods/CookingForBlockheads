@@ -57,7 +57,7 @@ public class CookingForBlockheads {
             }
         });
 
-        Balm.getModSupport().milkFluid().enable();
+        Balm.modSupport().milkFluid().enable();
 
         CookingForBlockheadsAPI.addSortButton(new NameSortButton());
         CookingForBlockheadsAPI.addSortButton(new HungerSortButton());

@@ -69,7 +69,7 @@ public class ForgeCookingForBlockheads {
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {
-        if (Balm.isModLoaded(Compat.THEONEPROBE)) {
+        if (Balm.platform().isModLoaded(Compat.THEONEPROBE)) {
             TheOneProbeAddon.register();
         }
     }
