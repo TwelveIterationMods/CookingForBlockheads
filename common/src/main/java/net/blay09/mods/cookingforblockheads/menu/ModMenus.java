@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
 import net.blay09.mods.balm.api.menu.BalmMenuFactory;
-import net.blay09.mods.balm.api.menu.BalmMenuTypeFactory;
+import net.blay09.mods.balm.world.inventory.BalmMenuTypeRegistrar;
 import net.blay09.mods.cookingforblockheads.block.entity.*;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.minecraft.core.BlockPos;
@@ -28,7 +28,7 @@ public class ModMenus {
     public static Holder<MenuType<KitchenMenu>> craftingBook;
     public static Holder<MenuType<CuttingBoardMenu>> cuttingBoard;
 
-    public static void initialize(BalmMenuTypeFactory menuTypes) {
+    public static void initialize(BalmMenuTypeRegistrar menuTypes) {
         counter = menuTypes.register("counter", new BalmMenuFactory<CounterMenu, BlockPos>() {
             @Override
             public CounterMenu create(int syncId, Inventory inventory, BlockPos pos) {

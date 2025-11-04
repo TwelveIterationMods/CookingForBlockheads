@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityTypeFactory;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityTypeRegistrar;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,7 +21,7 @@ public class ModBlockEntities {
     public static Holder<BlockEntityType<FruitBasketBlockEntity>> fruitBasket;
     public static Holder<BlockEntityType<CuttingBoardBlockEntity>> cuttingBoard;
 
-    public static void initialize(BalmBlockEntityTypeFactory blockEntityTypes) {
+    public static void initialize(BalmBlockEntityTypeRegistrar blockEntityTypes) {
         cookingTable = blockEntityTypes.register("cooking_table", CookingTableBlockEntity::new, ModBlocks.cookingTables).asHolder();
         oven = blockEntityTypes.register("oven", OvenBlockEntity::new, ModBlocks.ovens).asHolder();
         fridge = blockEntityTypes.register("fridge", FridgeBlockEntity::new, ModBlocks.fridges).asHolder();

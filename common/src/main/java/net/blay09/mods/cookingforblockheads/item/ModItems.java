@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.item;
 
-import net.blay09.mods.balm.world.item.BalmCreativeModeTabFactory;
-import net.blay09.mods.balm.world.item.BalmItemFactory;
+import net.blay09.mods.balm.world.item.BalmCreativeModeTabRegistrar;
+import net.blay09.mods.balm.world.item.BalmItemRegistrar;
 import net.blay09.mods.balm.world.item.DeferredItem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -18,7 +18,7 @@ public class ModItems {
     public static DeferredItem iceUnit;
     public static DeferredItem preservationChamber;
 
-    public static void initialize(BalmItemFactory items) {
+    public static void initialize(BalmItemRegistrar items) {
         recipeBook = items.register("recipe_book", ItemRecipeBook::recipeBook).asDeferredItem();
         noFilterBook = items.register("no_filter_edition", ItemRecipeBook::noFilterBook).asDeferredItem();
         craftingBook = items.register("crafting_book", ItemRecipeBook::craftingBook).asDeferredItem();
@@ -27,7 +27,7 @@ public class ModItems {
         preservationChamber = items.register("preservation_chamber", ItemPreservationChamber::new).asDeferredItem();
     }
 
-    public static void initialize(BalmCreativeModeTabFactory creativeModeTabs) {
+    public static void initialize(BalmCreativeModeTabRegistrar creativeModeTabs) {
         creativeModeTabs.register(CookingForBlockheads.MOD_ID, builder ->
                 builder.title(Component.translatable("itemGroup.cookingforblockheads.cookingforblockheads"))
                         .icon(() -> new ItemStack(ModBlocks.cowJar))

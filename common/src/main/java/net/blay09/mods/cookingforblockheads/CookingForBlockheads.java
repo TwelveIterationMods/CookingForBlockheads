@@ -69,29 +69,29 @@ public class CookingForBlockheads {
 
         CookingForBlockheadsConfig.initialize();
         Balm.dataComponentTypes(MOD_ID, ModDataComponents::initialize);
-        ModNetworking.initialize(Balm.getNetworking());
+        ModNetworking.initialize(Balm.networking());
         Balm.blocks(MOD_ID, ModBlocks::initialize);
         Balm.blockEntityTypes(MOD_ID, ModBlockEntities::initialize);
         Balm.items(MOD_ID, ModItems::initialize);
         Balm.creativeModeTabs(MOD_ID, ModItems::initialize);
         Balm.recipeTypes(MOD_ID, ModRecipes::initialize);
         Balm.menuTypes(MOD_ID, ModMenus::initialize);
-        ModSounds.initialize(Balm.registrar(Registries.SOUND_EVENT, MOD_ID));
-        ModCapabilities.initialize(Balm.getCapabilities());
+        Balm.registrar(Registries.SOUND_EVENT, MOD_ID, ModSounds::initialize);
+        ModCapabilities.initialize(Balm.capabilities());
 
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 
-        CookingForBlockheadsRegistry.initialize(Balm.getEvents());
+        CookingForBlockheadsRegistry.initialize(Balm.events());
 
-        Balm.getEvents().onEvent(PlayerLoginEvent.class, event -> {
-            final var data = Balm.getHooks().getPersistentData(event.getPlayer());
+        Balm.events().onEvent(PlayerLoginEvent.class, event -> {
+            final var data = Balm.hooks().getPersistentData(event.getPlayer());
             final var favoriteItemIds = data.getCompound("CookingForBlockheads")
                     .flatMap(it -> it.getCompound("FavoriteItemIds"))
                     .map(it -> it.keySet().stream().map(ResourceLocation::parse).collect(Collectors.toSet())).orElse(Set.of());
-            Balm.getNetworking().sendTo(event.getPlayer(), new FavoriteListMessage(favoriteItemIds));
+            Balm.networking().sendTo(event.getPlayer(), new FavoriteListMessage(favoriteItemIds));
         });
 
-        Balm.getEvents().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
+        Balm.events().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
     }
 
     public static ResourceLocation id(String path) {

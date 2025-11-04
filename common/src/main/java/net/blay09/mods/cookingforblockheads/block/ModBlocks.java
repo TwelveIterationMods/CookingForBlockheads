@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.balm.world.level.block.BalmBlockFactory;
+import net.blay09.mods.balm.world.level.block.BalmBlockRegistrar;
 import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.balm.world.level.block.DiscriminatedBlocks;
 import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
@@ -35,7 +35,7 @@ public class ModBlocks {
                 properties.component(ModDataComponents.multiblockKitchen.value(), new MultiblockKitchenComponent(component));
     }
 
-    public static void initialize(BalmBlockFactory blocks) {
+    public static void initialize(BalmBlockRegistrar blocks) {
         toolRack = blocks.register("tool_rack", ToolRackBlock::new, it -> it.sound(SoundType.WOOD).strength(2.5f))
                 .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.tool_rack.description")))
                 .asDeferredBlock();
