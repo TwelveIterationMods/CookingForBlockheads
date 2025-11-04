@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.balm.api.client.rendering.BalmRenderers;
-import net.blay09.mods.balm.client.renderer.blockentity.BalmBlockEntityRendererFactory;
+import net.blay09.mods.balm.client.renderer.blockentity.BalmBlockEntityRendererRegistrar;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.client.render.*;
@@ -12,7 +12,7 @@ import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
 public class ModRenderers {
 
-    public static void initialize(BalmBlockEntityRendererFactory blockEntityRenderers) {
+    public static void initialize(BalmBlockEntityRendererRegistrar blockEntityRenderers) {
         blockEntityRenderers.register(ModBlockEntities.toolRack, ToolRackRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.milkJar, MilkJarRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.cowJar, CowJarRenderer::new);

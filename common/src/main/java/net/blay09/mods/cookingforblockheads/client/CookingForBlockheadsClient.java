@@ -28,11 +28,11 @@ public class CookingForBlockheadsClient {
 
     public static void initialize() {
         BalmClient.blockEntityRenderers(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
+        BalmClient.menuScreens(CookingForBlockheads.MOD_ID, ModMenuScreens::initialize);
         ModRenderers.initialize(BalmClient.getRenderers());
-        ModScreens.initialize(BalmClient.getScreens());
         ModModels.initialize(BalmClient.getModels());
 
-        Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
+        Balm.events().onEvent(ItemTooltipEvent.class, event -> {
             if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
                 return;
             }
