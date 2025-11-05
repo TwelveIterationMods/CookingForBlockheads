@@ -140,7 +140,7 @@ public class FridgeBlock extends BaseKitchenBlock {
         }
 
         if (!level.isClientSide()) {
-            Balm.getNetworking().openMenu(player, fridge);
+            Balm.networking().openMenu(player, fridge);
         }
 
         return InteractionResult.SUCCESS;
@@ -224,7 +224,7 @@ public class FridgeBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        return ModBlocks.fridges.getDeferred(color)
+        return ModBlocks.fridges.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(MODEL_TYPE, state.getValue(MODEL_TYPE))

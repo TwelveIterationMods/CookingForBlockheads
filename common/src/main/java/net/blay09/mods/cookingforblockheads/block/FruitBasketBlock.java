@@ -63,7 +63,7 @@ public class FruitBasketBlock extends BaseKitchenBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             final var blockEntity = ((FruitBasketBlockEntity) level.getBlockEntity(pos));
-            Balm.getNetworking().openMenu(player, blockEntity);
+            Balm.networking().openMenu(player, blockEntity);
         }
         return InteractionResult.SUCCESS;
     }

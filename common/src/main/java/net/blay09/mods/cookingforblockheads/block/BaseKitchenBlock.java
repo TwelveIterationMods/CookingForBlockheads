@@ -99,7 +99,7 @@ public abstract class BaseKitchenBlock extends BaseEntityBlock {
             }
         }
 
-        DyeColor color = Balm.getHooks().getColor(heldItem);
+        DyeColor color = Balm.hooks().getColor(heldItem);
         if (color != null) {
             if (recolorBlock(state, level, pos, rayTraceResult.getDirection(), color)) {
                 if (!player.getAbilities().instabuild) {

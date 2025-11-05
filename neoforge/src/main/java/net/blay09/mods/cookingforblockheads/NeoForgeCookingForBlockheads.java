@@ -23,7 +23,7 @@ import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 public class NeoForgeCookingForBlockheads {
 
     public NeoForgeCookingForBlockheads(IEventBus eventBus) {
-        Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
+        Balm.events().onEvent(OvenItemSmeltedEvent.class, orig -> {
             PlayerEvent.ItemSmeltedEvent event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem(), 1);
             NeoForge.EVENT_BUS.post(event);
         });
@@ -35,7 +35,7 @@ public class NeoForgeCookingForBlockheads {
 
         Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");
 
-        Balm.getCapabilities()
+        Balm.capabilities()
                 .registerFallbackBlockEntityProvider(id("kitchen_item_providers_tag"), ModCapabilities.KITCHEN_ITEM_PROVIDER, (blockEntity, direction) -> {
                     if (blockEntity.getBlockState().is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
                         final var level = blockEntity.getLevel();

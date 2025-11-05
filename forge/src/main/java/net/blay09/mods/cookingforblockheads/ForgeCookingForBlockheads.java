@@ -31,12 +31,12 @@ public class ForgeCookingForBlockheads {
 
     public ForgeCookingForBlockheads(FMLJavaModLoadingContext context) {
         final var loadContext = new ForgeLoadContext(context.getModBusGroup());
-        Balm.getEvents().onEvent(OvenItemSmeltedEvent.class, orig -> {
+        Balm.events().onEvent(OvenItemSmeltedEvent.class, orig -> {
             final var event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem());
             PlayerEvent.ItemSmeltedEvent.BUS.post(event);
         });
 
-        final var forgeCapabilities = (ForgeBalmCapabilities) Balm.getCapabilities();
+        final var forgeCapabilities = (ForgeBalmCapabilities) Balm.capabilities();
         forgeCapabilities.preRegisterType(id("kitchen_item_provider"), CapabilityManager.get(new CapabilityToken<KitchenItemProvider>() {
         }));
         forgeCapabilities.preRegisterType(id("kitchen_item_processor"), CapabilityManager.get(new CapabilityToken<KitchenItemProcessor>() {
@@ -49,7 +49,7 @@ public class ForgeCookingForBlockheads {
 
         InterModEnqueueEvent.getBus(context.getModBusGroup()).addListener(this::enqueueIMC);
 
-        Balm.getCapabilities()
+        Balm.capabilities()
                 .registerFallbackBlockEntityProvider(id("kitchen_item_providers_tag"), ModCapabilities.KITCHEN_ITEM_PROVIDER, (blockEntity, direction) -> {
                     if (blockEntity.getBlockState().is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
                         final var level = blockEntity.getLevel();

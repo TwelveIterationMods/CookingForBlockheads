@@ -101,7 +101,7 @@ public class CounterBlock extends BaseKitchenBlock {
         }
 
         if (!level.isClientSide()) {
-            Balm.getNetworking().openMenu(player, counter);
+            Balm.networking().openMenu(player, counter);
         }
 
         return InteractionResult.SUCCESS;
@@ -128,7 +128,7 @@ public class CounterBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        return ModBlocks.counters.getDeferred(color)
+        return ModBlocks.counters.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(FLIPPED, state.getValue(FLIPPED));

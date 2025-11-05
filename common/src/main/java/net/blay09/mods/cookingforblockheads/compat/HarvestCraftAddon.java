@@ -34,7 +34,7 @@ public class HarvestCraftAddon {
             cuttingBoardFound = true;
         }
 
-        Balm.getEvents().onEvent(ItemTooltipEvent.class, event -> {
+        Balm.events().onEvent(ItemTooltipEvent.class, event -> {
             if (!cuttingBoardFound) {
                 return;
             }
@@ -45,7 +45,7 @@ public class HarvestCraftAddon {
             }
         });
 
-        Balm.getEvents().onEvent(UseBlockEvent.class, event -> {
+        Balm.events().onEvent(UseBlockEvent.class, event -> {
             if (!cuttingBoardFound) {
                 return;
             }

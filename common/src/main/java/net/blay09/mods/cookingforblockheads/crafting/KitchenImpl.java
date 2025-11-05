@@ -55,12 +55,12 @@ public class KitchenImpl implements Kitchen {
                     BlockState state = level.getBlockState(position);
                     BlockEntity blockEntity = level.getBlockEntity(position);
                     if (blockEntity != null) {
-                        var itemProvider = Balm.getCapabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROVIDER);
+                        var itemProvider = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROVIDER);
                         if (itemProvider != null) {
                             itemProviderList.add(itemProvider);
                         }
 
-                        final var itemProcessor = Balm.getCapabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROCESSOR);
+                        final var itemProcessor = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROCESSOR);
                         if (itemProcessor != null) {
                             itemProcessorList.add(itemProcessor);
                         }

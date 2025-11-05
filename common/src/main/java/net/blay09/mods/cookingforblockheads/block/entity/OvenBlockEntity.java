@@ -8,7 +8,7 @@ import net.blay09.mods.balm.api.energy.DefaultEnergyStorage;
 import net.blay09.mods.balm.api.energy.EnergyStorage;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
 import net.blay09.mods.balm.api.tag.BalmItemTags;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
@@ -39,6 +39,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -52,6 +54,7 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -62,7 +65,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, KitchenItemProviderHolder, KitchenItemProcessorHolder {
+public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, KitchenItemProviderHolder, KitchenItemProcessorHolder {
 
     private static final int COOK_TIME = 200;
     private final DefaultEnergyStorage energyStorage = new DefaultEnergyStorage(10000) {
@@ -199,7 +202,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
         }
 
         if (isDirty) {
-            sync();
+            BlockEntityUtils.sync(this);
             isDirty = false;
         }
 
@@ -223,7 +226,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
                         currentItemBurnTime = furnaceBurnTime = (int) Math.max(1,
                                 (float) getBurnTime(level, fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
-                            ItemStack containerItem = Balm.getHooks().getCraftingRemainingItem(fuelItem);
+                            ItemStack containerItem = Balm.hooks().getCraftingRemainingItem(fuelItem);
                             fuelItem.shrink(1);
                             if (fuelItem.isEmpty()) {
                                 fuelContainer.setItem(i, containerItem);
@@ -257,7 +260,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
                             if (!smeltingResult.isEmpty()) {
                                 ItemStack resultStack = smeltingResult.copy();
                                 processingContainer.setItem(i, resultStack);
-                                Balm.getEvents().fireEvent(new OvenCookedEvent(level, worldPosition, resultStack));
+                                Balm.events().fireEvent(new OvenCookedEvent(level, worldPosition, resultStack));
                                 slotCookTime[i] = -1;
                                 if (firstTransferSlot == -1) {
                                     firstTransferSlot = i;
@@ -380,10 +383,13 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
-        output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
-        output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, output -> {
+
+            saveAdditional(output);
+            output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+            output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+        });
     }
 
     public boolean hasPowerUpgrade() {
@@ -567,6 +573,7 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
+        dropItems(level, pos);
         if (hasPowerUpgrade()) {
             ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.heatingUnit.createStack());
         }
@@ -580,4 +587,11 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
             return Optional.of(Component.translatable("gui.cookingforblockheads.moved_to_oven").withStyle(ChatFormatting.YELLOW));
         }
     }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
+    }
+
 }

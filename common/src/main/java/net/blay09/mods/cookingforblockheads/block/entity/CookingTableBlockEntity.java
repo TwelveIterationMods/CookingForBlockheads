@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
@@ -13,18 +13,21 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 
-public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, TransferableBlockEntity<ItemStack> {
+public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, TransferableBlockEntity<ItemStack> {
 
     private ItemStack noFilterBook = ItemStack.EMPTY;
 
@@ -56,8 +59,8 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
     }
 
     @Override
@@ -100,4 +103,11 @@ public class CookingTableBlockEntity extends BalmBlockEntity implements BalmMenu
             ItemUtils.spawnItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, getNoFilterBook());
         }
     }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
+    }
+
 }

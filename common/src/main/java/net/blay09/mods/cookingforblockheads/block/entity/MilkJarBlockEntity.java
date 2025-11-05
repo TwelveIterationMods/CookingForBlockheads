@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -14,20 +14,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ProblemReporter;
-import net.minecraft.world.ContainerHelper;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider, KitchenItemProviderHolder {
+public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProvider, KitchenItemProviderHolder {
 
     protected static final int MILK_CAPACITY = 32000;
     protected final DefaultFluidTank milkTank = new DefaultFluidTank(MILK_CAPACITY) {
@@ -62,8 +63,8 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
     }
 
     @Override
@@ -136,4 +137,13 @@ public class MilkJarBlockEntity extends BalmBlockEntity implements BalmFluidTank
         }
     }
 
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
+    }
+
+    public void sync() {
+        BlockEntityUtils.sync(this);
+    }
 }

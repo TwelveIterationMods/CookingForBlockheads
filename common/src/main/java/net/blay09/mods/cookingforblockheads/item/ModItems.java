@@ -9,6 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Map;
+
 public class ModItems {
 
     public static DeferredItem recipeBook;
@@ -34,13 +36,13 @@ public class ModItems {
                         .displayItems((parameters, output) -> {
                             output.accept(recipeBook);
                             output.accept(craftingBook);
-                            output.accept(ModBlocks.cookingTables.getUndiscriminated());
+                            output.accept(ModBlocks.cookingTables.get(null));
                             output.accept(ModBlocks.fridges.get(DyeColor.WHITE));
                             output.accept(ModBlocks.ovens.get(DyeColor.WHITE));
-                            output.accept(ModBlocks.sinks.getUndiscriminated());
-                            output.accept(ModBlocks.counters.getUndiscriminated());
-                            output.accept(ModBlocks.cabinets.getUndiscriminated());
-                            output.accept(ModBlocks.connectors.getUndiscriminated());
+                            output.accept(ModBlocks.sinks.get(null));
+                            output.accept(ModBlocks.counters.get(null));
+                            output.accept(ModBlocks.cabinets.get(null));
+                            output.accept(ModBlocks.connectors.get(null));
                             output.accept(ModBlocks.kitchenFloors.get(DyeColor.WHITE));
                             output.accept(ModBlocks.milkJar);
                             output.accept(ModBlocks.cowJar);
@@ -54,7 +56,7 @@ public class ModItems {
                             output.accept(heatingUnit);
                             output.accept(noFilterBook);
 
-                            ModBlocks.cookingTables.getDiscriminated().forEach(output::accept);
+                            ModBlocks.cookingTables.filterNonNullDiscriminators().forEach(output::accept);
 
                             ModBlocks.fridges.forEach((color, block) -> {
                                 if (color != DyeColor.WHITE) {
@@ -68,9 +70,9 @@ public class ModItems {
                                 }
                             });
 
-                            ModBlocks.sinks.getDiscriminated().forEach(output::accept);
-                            ModBlocks.counters.getDiscriminated().forEach(output::accept);
-                            ModBlocks.cabinets.getDiscriminated().forEach(output::accept);
+                            ModBlocks.sinks.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.counters.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.cabinets.filterNonNullDiscriminators().forEach(output::accept);
 
                             ModBlocks.kitchenFloors.forEach((color, block) -> {
                                 if (color != DyeColor.WHITE) {
@@ -78,7 +80,7 @@ public class ModItems {
                                 }
                             });
 
-                            ModBlocks.connectors.getDiscriminated().forEach(output::accept);
+                            ModBlocks.connectors.filterNonNullDiscriminators().forEach(output::accept);
                         }));
     }
 

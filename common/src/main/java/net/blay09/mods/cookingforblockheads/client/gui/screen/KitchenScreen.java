@@ -185,7 +185,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 if (recipe != null) {
                     final var itemStack = recipe.itemStack();
                     final var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
-                    Balm.getNetworking().sendToServer(new ToggleFavoriteMessage(itemId, !isFavoriteItem(itemStack)));
+                    Balm.networking().sendToServer(new ToggleFavoriteMessage(itemId, !isFavoriteItem(itemStack)));
                     return true;
                 }
             }

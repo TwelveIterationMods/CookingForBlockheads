@@ -191,7 +191,7 @@ public class ConnectorBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        return ModBlocks.connectors.getDeferred(color)
+        return ModBlocks.connectors.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(HALF, state.getValue(HALF))

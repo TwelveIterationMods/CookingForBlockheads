@@ -86,12 +86,11 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         // Render the oven door
         poseStack.pushPose();
         poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(renderState.doorAngle)));
-        final var colorIndex = renderState.dye.getId();
-        final var model = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(colorIndex).get() : ModModels.ovenDoors.get(colorIndex).get();
-        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        final var model = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(renderState.dye) : ModModels.ovenDoors.get(renderState.dye);
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model.asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.translate(0f, 0f, -1f);
-        final var handleModel = ModModels.ovenDoorHandles.get(colorIndex).get();
-        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), handleModel, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        final var handleModel = ModModels.ovenDoorHandles.get(renderState.dye);
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), handleModel.asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         // Render the oven tools

@@ -47,7 +47,7 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
             float filledPercentage = renderState.fluidLevel;
             poseStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             poseStack.scale(1f, filledPercentage, 1f);
-            final var model = ModModels.sinkLiquid.get();
+            final var model = ModModels.sinkLiquid.asBlockStateModel();
             int color = renderState.waterColor;
             float red = (float) (color >> 16 & 255) / 255f;
             float green = (float) (color >> 8 & 255) / 255f;

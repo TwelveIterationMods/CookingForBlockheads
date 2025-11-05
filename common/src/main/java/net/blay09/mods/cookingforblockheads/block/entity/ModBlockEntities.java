@@ -22,17 +22,17 @@ public class ModBlockEntities {
     public static Holder<BlockEntityType<CuttingBoardBlockEntity>> cuttingBoard;
 
     public static void initialize(BalmBlockEntityTypeRegistrar blockEntityTypes) {
-        cookingTable = blockEntityTypes.register("cooking_table", CookingTableBlockEntity::new, ModBlocks.cookingTables).asHolder();
-        oven = blockEntityTypes.register("oven", OvenBlockEntity::new, ModBlocks.ovens).asHolder();
-        fridge = blockEntityTypes.register("fridge", FridgeBlockEntity::new, ModBlocks.fridges).asHolder();
-        sink = blockEntityTypes.register("sink", SinkBlockEntity::new, ModBlocks.sinks).asHolder();
+        cookingTable = blockEntityTypes.register("cooking_table", CookingTableBlockEntity::new, ModBlocks.cookingTables.values()).asHolder();
+        oven = blockEntityTypes.register("oven", OvenBlockEntity::new, ModBlocks.ovens.values()).asHolder();
+        fridge = blockEntityTypes.register("fridge", FridgeBlockEntity::new, ModBlocks.fridges.values()).asHolder();
+        sink = blockEntityTypes.register("sink", SinkBlockEntity::new, ModBlocks.sinks.values()).asHolder();
         toolRack = blockEntityTypes.register("tool_rack", ToolRackBlockEntity::new, ModBlocks.toolRack).asHolder();
         toaster = blockEntityTypes.register("toaster", ToasterBlockEntity::new, ModBlocks.toaster).asHolder();
         milkJar = blockEntityTypes.register("milk_jar", MilkJarBlockEntity::new, ModBlocks.milkJar).asHolder();
         cowJar = blockEntityTypes.register("cow_jar", CowJarBlockEntity::new, ModBlocks.cowJar).asHolder();
         spiceRack = blockEntityTypes.register("spice_rack", SpiceRackBlockEntity::new, ModBlocks.spiceRack).asHolder();
-        counter = blockEntityTypes.register("counter", CounterBlockEntity::new, ModBlocks.counters).asHolder();
-        cabinet = blockEntityTypes.register("cabinet", CabinetBlockEntity::new, ModBlocks.cabinets).asHolder();
+        counter = blockEntityTypes.register("counter", CounterBlockEntity::new, ModBlocks.counters.values()).asHolder();
+        cabinet = blockEntityTypes.register("cabinet", CabinetBlockEntity::new, ModBlocks.cabinets.values()).asHolder();
         fruitBasket = blockEntityTypes.register("fruit_basket", FruitBasketBlockEntity::new, ModBlocks.fruitBasket).asHolder();
         cuttingBoard = blockEntityTypes.register("cutting_board", CuttingBoardBlockEntity::new, ModBlocks.cuttingBoard).asHolder();
     }

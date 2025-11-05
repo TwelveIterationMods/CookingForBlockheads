@@ -5,7 +5,7 @@ import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.CombinedContainer;
 import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -32,6 +32,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -42,6 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -52,7 +55,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
+public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
@@ -184,10 +187,12 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
-        output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
-        output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, output -> {
+            saveAdditional(output);
+            output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
+            output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
+        });
     }
 
     @Nullable
@@ -325,6 +330,7 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
+        dropItems(level, pos);
         if (hasIceUpgrade()) {
             ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.iceUnit.createStack());
         }
@@ -349,4 +355,15 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
             return ItemStack.EMPTY;
         }
     }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
+    }
+
+    public void sync() {
+        BlockEntityUtils.sync(this);
+    }
+
 }

@@ -65,7 +65,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
             }
 
             if (!level.isClientSide()) {
-                Balm.getNetworking().openMenu(player, cookingTable);
+                Balm.networking().openMenu(player, cookingTable);
             }
         }
         return InteractionResult.SUCCESS;
@@ -105,7 +105,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        return ModBlocks.cookingTables.getDeferred(color)
+        return ModBlocks.cookingTables.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING));
     }

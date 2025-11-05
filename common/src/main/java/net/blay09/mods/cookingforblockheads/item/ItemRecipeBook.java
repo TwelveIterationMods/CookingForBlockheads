@@ -73,7 +73,7 @@ public class ItemRecipeBook extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
             final var itemStack = player.getItemInHand(hand);
-            Balm.getNetworking().openMenu(player, new BalmMenuProvider<ItemStack>() {
+            Balm.networking().openMenu(player, new BalmMenuProvider<ItemStack>() {
                 @Override
                 public Component getDisplayName() {
                     return Component.translatable("container.cookingforblockheads." + edition.getName());

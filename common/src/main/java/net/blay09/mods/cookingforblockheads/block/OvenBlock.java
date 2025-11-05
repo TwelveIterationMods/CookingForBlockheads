@@ -145,7 +145,7 @@ public class OvenBlock extends BaseKitchenBlock {
         }
 
         if (!level.isClientSide()) {
-            Balm.getNetworking().openMenu(player, oven);
+            Balm.networking().openMenu(player, oven);
         }
 
         return InteractionResult.SUCCESS;
@@ -195,7 +195,7 @@ public class OvenBlock extends BaseKitchenBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        return ModBlocks.ovens.getDeferred(color)
+        return ModBlocks.ovens.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(ACTIVE, state.getValue(ACTIVE));

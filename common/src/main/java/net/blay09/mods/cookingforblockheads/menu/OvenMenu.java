@@ -166,7 +166,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
                 }
             }
             if (changes) {
-                Balm.getNetworking().sendTo(this.player, new ClientboundOvenResultsPacket(resultItems));
+                Balm.networking().sendTo(this.player, new ClientboundOvenResultsPacket(resultItems));
             }
         }
     }

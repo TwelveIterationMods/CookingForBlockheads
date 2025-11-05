@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
 import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
 import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
@@ -16,18 +16,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer>, KitchenItemProviderHolder {
+public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer>, KitchenItemProviderHolder {
 
     private static final int SYNC_INTERVAL = 10;
     private final SinkItemProvider itemProvider = new SinkItemProvider(this);
@@ -108,8 +112,8 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
     }
 
     @Override
@@ -123,7 +127,7 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         if (ticksSinceSync >= SYNC_INTERVAL) {
             ticksSinceSync = 0;
             if (isDirty) {
-                sync();
+                BlockEntityUtils.sync(this);
                 isDirty = false;
             }
         }
@@ -206,5 +210,11 @@ public class SinkBlockEntity extends BalmBlockEntity implements BalmFluidTankPro
         public CacheHint getCacheHint(IngredientToken ingredientToken) {
             return CacheHint.NONE;
         }
+    }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
     }
 }

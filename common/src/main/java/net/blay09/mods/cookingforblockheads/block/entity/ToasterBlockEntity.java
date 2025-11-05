@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
@@ -9,8 +9,12 @@ import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.ToasterBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
@@ -20,11 +24,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jetbrains.annotations.Nullable;
 
-public class ToasterBlockEntity extends BalmBlockEntity {
+public class ToasterBlockEntity extends BlockEntity {
 
     private static final int UPDATE_INTERVAL = 20;
     private static final int TOAST_TICKS = 1200;
@@ -33,7 +39,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
         @Override
         public void setChanged() {
             ToasterBlockEntity.this.setChanged();
-            sync();
+            BlockEntityUtils.sync(ToasterBlockEntity.this);
         }
     };
 
@@ -77,8 +83,8 @@ public class ToasterBlockEntity extends BalmBlockEntity {
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ToasterBlockEntity blockEntity) {
@@ -110,7 +116,7 @@ public class ToasterBlockEntity extends BalmBlockEntity {
 
         ticksSinceUpdate++;
         if (isDirty && ticksSinceUpdate > UPDATE_INTERVAL) {
-            sync();
+            BlockEntityUtils.sync(this);
             ticksSinceUpdate = 0;
             isDirty = false;
         }
@@ -191,4 +197,11 @@ public class ToasterBlockEntity extends BalmBlockEntity {
                 .map(it -> true)
                 .orElseGet(() -> itemStack.is(Items.BREAD));
     }
+
+    @Override
+    @Nullable
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BlockEntityUtils.createUpdatePacket(this);
+    }
+
 }

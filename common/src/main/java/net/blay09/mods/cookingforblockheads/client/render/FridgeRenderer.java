@@ -2,13 +2,12 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.cookingforblockheads.block.CounterBlock;
+import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
 import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -97,20 +96,19 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(renderState.flipped ? -renderState.doorAngle : renderState.doorAngle)));
         poseStack.translate(-originX, 0f, -originZ);
 
-        int colorIndex = renderState.dye.getId();
-        BlockStateModel lowerModel;
-        BlockStateModel upperModel = null;
+        DeferredBlockStateModel lowerModel;
+        DeferredBlockStateModel upperModel = null;
         if (isLarge) {
-            lowerModel = renderState.flipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeLower.get(colorIndex).get();
-            upperModel = renderState.flipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(colorIndex).get() : ModModels.fridgeDoorsLargeUpper.get(colorIndex).get();
+            lowerModel = renderState.flipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(renderState.dye) : ModModels.fridgeDoorsLargeLower.get(renderState.dye);
+            upperModel = renderState.flipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(renderState.dye) : ModModels.fridgeDoorsLargeUpper.get(renderState.dye);
         } else {
-            lowerModel = renderState.flipped ? ModModels.fridgeDoorsFlipped.get(colorIndex).get() : ModModels.fridgeDoors.get(colorIndex).get();
+            lowerModel = renderState.flipped ? ModModels.fridgeDoorsFlipped.get(renderState.dye) : ModModels.fridgeDoors.get(renderState.dye);
         }
 
-        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), lowerModel, 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), lowerModel.asBlockStateModel(), 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         if (upperModel != null) {
             poseStack.translate(0, 1, 0);
-            submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), upperModel, 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), upperModel.asBlockStateModel(), 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         }
 
         poseStack.popPose();

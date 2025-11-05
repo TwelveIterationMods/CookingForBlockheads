@@ -211,7 +211,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void requestCraftables() {
-        Balm.getNetworking().sendToServer(new RequestAvailableCraftablesMessage());
+        Balm.networking().sendToServer(new RequestAvailableCraftablesMessage());
     }
 
     public void handleRequestCraftables() {
@@ -219,7 +219,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void requestSelectionRecipes(CraftableWithStatus craftable) {
-        Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.itemStack(), lockedInputs));
+        Balm.networking().sendToServer(new RequestSelectionRecipesMessage(craftable.itemStack(), lockedInputs));
     }
 
     public void handleRequestSelectionRecipes(ItemStack resultItem, List<ItemStack> lockedInputs) {
@@ -235,7 +235,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private void requestCraft(boolean craftFullStack, boolean addToInventory) {
         final var selectedRecipe = getSelectedRecipe();
         if (selectedRecipe != null) {
-            Balm.getNetworking().sendToServer(new CraftRecipeMessage(selectedRecipe.recipeDisplayEntry().id(), lockedInputs, craftFullStack, addToInventory));
+            Balm.networking().sendToServer(new CraftRecipeMessage(selectedRecipe.recipeDisplayEntry().id(), lockedInputs, craftFullStack, addToInventory));
         }
     }
 
@@ -298,7 +298,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void broadcastAvailableRecipes() {
         craftables = getAvailableCraftables();
-        Balm.getNetworking().sendTo(player, new AvailableCraftablesListMessage(craftables));
+        Balm.networking().sendTo(player, new AvailableCraftablesListMessage(craftables));
     }
 
     public void broadcastRecipesForResultItem(ItemStack resultItem) {
@@ -316,7 +316,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
 
         this.recipesForSelection = result;
-        Balm.getNetworking().sendTo(player, new SelectionRecipesListMessage(result));
+        Balm.networking().sendTo(player, new SelectionRecipesListMessage(result));
     }
 
     public void craft(RecipeDisplayId recipeDisplayId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
@@ -336,7 +336,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var context = new CraftingContext(kitchen, player);
         context.addListener(operation -> {
             final var feedback = operation.getFeedback();
-            feedback.ifPresent(component -> Balm.getNetworking().sendTo(player, new KitchenFeedbackMessage(component)));
+            feedback.ifPresent(component -> Balm.networking().sendTo(player, new KitchenFeedbackMessage(component)));
         });
         final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs);
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());

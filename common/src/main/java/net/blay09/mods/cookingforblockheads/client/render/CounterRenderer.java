@@ -2,13 +2,12 @@ package net.blay09.mods.cookingforblockheads.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
+import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -19,7 +18,6 @@ import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
@@ -59,9 +57,8 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         return 0.35f;
     }
 
-    protected BlockStateModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
-        int colorIndex = blockColor != null ? blockColor.getId() + 1 : 0;
-        return isFlipped ? ModModels.counterDoorsFlipped.get(colorIndex).get() : ModModels.counterDoors.get(colorIndex).get();
+    protected DeferredBlockStateModel getDoorModel(@Nullable DyeColor blockColor, boolean isFlipped) {
+        return isFlipped ? ModModels.counterDoorsFlipped.get(blockColor) : ModModels.counterDoors.get(blockColor);
     }
 
     private final ItemModelResolver itemModelResolver;
@@ -114,7 +111,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         poseStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
         final var model = getDoorModel(renderState.dye, renderState.flipped);
-        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model, 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        submitNodeCollector.submitBlockModel(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), model.asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         // Render the content if the door is open

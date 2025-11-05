@@ -29,8 +29,9 @@ public class CookingForBlockheadsClient {
     public static void initialize() {
         BalmClient.blockEntityRenderers(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
         BalmClient.menuScreens(CookingForBlockheads.MOD_ID, ModMenuScreens::initialize);
-        ModRenderers.initialize(BalmClient.getRenderers());
-        ModModels.initialize(BalmClient.getModels());
+        BalmClient.blockColors(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
+        BalmClient.blockRenderTypes(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
+        BalmClient.blockStateModels(CookingForBlockheads.MOD_ID, ModModels::initialize);
 
         Balm.events().onEvent(ItemTooltipEvent.class, event -> {
             if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {

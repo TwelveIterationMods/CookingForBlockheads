@@ -96,7 +96,7 @@ public class SpiceRackBlock extends BaseKitchenBlock {
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult rayTraceResult) {
         if (!level.isClientSide()) {
             SpiceRackBlockEntity spiceRack = (SpiceRackBlockEntity) level.getBlockEntity(pos);
-            Balm.getNetworking().openMenu(player, spiceRack);
+            Balm.networking().openMenu(player, spiceRack);
         }
         return InteractionResult.SUCCESS;
     }

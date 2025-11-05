@@ -69,7 +69,7 @@ public class CabinetBlock extends CounterBlock {
 
     @Override
     protected BlockState getDyedStateOf(BlockState state, @Nullable DyeColor color) {
-        return ModBlocks.cabinets.getDeferred(color)
+        return ModBlocks.cabinets.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(FLIPPED, state.getValue(FLIPPED));
