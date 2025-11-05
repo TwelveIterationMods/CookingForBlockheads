@@ -21,14 +21,14 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
     protected void addTags(HolderLookup.Provider arg) {
         final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/pickaxe"));
         final var mineablePickaxeBuilder = tag(mineablePickaxeTag);
-        ModBlocks.cookingTables.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.sinks.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.counters.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.cabinets.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.connectors.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.fridges.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.ovens.forEach(block -> mineablePickaxeBuilder.add(block));
-        ModBlocks.kitchenFloors.forEach(block -> mineablePickaxeBuilder.add(block));
+        ModBlocks.cookingTables.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.sinks.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.counters.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.cabinets.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.connectors.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.fridges.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.ovens.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.kitchenFloors.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
         mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/axe"));
@@ -37,8 +37,8 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
 
         final var kitchenItemProviders = tag(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         kitchenItemProviders.add(ModBlocks.toolRack.asBlock());
-        ModBlocks.cabinets.forEach(block -> kitchenItemProviders.add(block));
-        ModBlocks.counters.forEach(block -> kitchenItemProviders.add(block));
+        ModBlocks.cabinets.forEach((discriminator, block) -> kitchenItemProviders.add(block.asBlock()));
+        ModBlocks.counters.forEach((discriminator, block) -> kitchenItemProviders.add(block.asBlock()));
 
         final var rawKitchenItemProviders = getOrCreateRawBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         rawKitchenItemProviders.addOptionalElement(ResourceLocation.fromNamespaceAndPath("farmersdelight", "basket"));
@@ -179,11 +179,11 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
         rawKitchenItemProviders.addOptionalElement(ResourceLocation.fromNamespaceAndPath("storagedrawers", "fractional_drawers_3"));
 
         final var cookingTables = tag(ModBlockTags.COOKING_TABLES);
-        ModBlocks.cookingTables.forEach(block -> cookingTables.add(block));
+        ModBlocks.cookingTables.forEach((discriminator, block) -> cookingTables.add(block.asBlock()));
 
         final var kitchenConnectors = tag(ModBlockTags.KITCHEN_CONNECTORS);
-        ModBlocks.connectors.forEach(block -> kitchenConnectors.add(block));
-        ModBlocks.kitchenFloors.forEach(block -> kitchenConnectors.add(block));
+        ModBlocks.connectors.forEach((discriminator, block) -> kitchenConnectors.add(block.asBlock()));
+        ModBlocks.kitchenFloors.forEach((discriminator, block) -> kitchenConnectors.add(block.asBlock()));
 
         final var rawKitchenConnectors = getOrCreateRawBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         rawKitchenConnectors.addOptionalElement(ResourceLocation.fromNamespaceAndPath("buildersaddition", "counter_oak_andesite"));

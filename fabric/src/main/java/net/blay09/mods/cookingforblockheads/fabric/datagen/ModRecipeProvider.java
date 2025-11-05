@@ -37,7 +37,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         return new RecipeProvider(registryLookup, exporter) {
             @Override
             public void buildRecipes() {
-                shaped(RecipeCategory.DECORATIONS, ModBlocks.cookingTables.getUndiscriminated())
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.cookingTables.get(null))
                         .pattern("SSS")
                         .pattern("CBC")
                         .pattern("CCC")
@@ -47,7 +47,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_crafting_book", has(ModItems.craftingBook))
                         .save(exporter);
 
-                shapeless(RecipeCategory.DECORATIONS, ModBlocks.cookingTables.getUndiscriminated())
+                shapeless(RecipeCategory.DECORATIONS, ModBlocks.cookingTables.get(null))
                         .requires(ModItemTags.DYED_COOKING_TABLES)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_cooking_table", has(ModItemTags.DYED_COOKING_TABLES))
@@ -58,7 +58,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.COOKING_TABLES)
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
-                                .unlockedBy("has_cooking_table", has(ModBlocks.cookingTables.getUndiscriminated()))
+                                .unlockedBy("has_cooking_table", has(ModBlocks.cookingTables.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_cooking_table");
                     }
                 });
@@ -111,7 +111,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_milk_bucket", has(Items.MILK_BUCKET))
                         .save(exporter);
 
-                shaped(RecipeCategory.DECORATIONS, ModBlocks.connectors.getUndiscriminated())
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.connectors.get(null))
                         .pattern("SSS")
                         .pattern("CCC")
                         .pattern("CCC")
@@ -120,7 +120,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                         .save(exporter);
 
-                shapeless(RecipeCategory.DECORATIONS, ModBlocks.connectors.getUndiscriminated())
+                shapeless(RecipeCategory.DECORATIONS, ModBlocks.connectors.get(null))
                         .requires(ModItemTags.DYED_CONNECTORS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_connector", has(ModItemTags.DYED_CONNECTORS))
@@ -136,7 +136,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     }
                 });
 
-                shaped(RecipeCategory.DECORATIONS, ModBlocks.counters.getUndiscriminated())
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.counters.get(null))
                         .pattern("SSS")
                         .pattern("CBC")
                         .pattern("CCC")
@@ -146,7 +146,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                         .save(exporter);
 
-                shapeless(RecipeCategory.DECORATIONS, ModBlocks.counters.getUndiscriminated())
+                shapeless(RecipeCategory.DECORATIONS, ModBlocks.counters.get(null))
                         .requires(ModItemTags.DYED_COUNTERS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_counter", has(ModItemTags.DYED_COUNTERS))
@@ -157,7 +157,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.COUNTERS)
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
-                                .unlockedBy("has_counter", has(ModBlocks.counters.getUndiscriminated()))
+                                .unlockedBy("has_counter", has(ModBlocks.counters.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_counter");
                     }
                 });
@@ -170,7 +170,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_axe", has(Items.IRON_AXE))
                         .save(exporter);
 
-                shaped(RecipeCategory.DECORATIONS, ModBlocks.sinks.getUndiscriminated())
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.sinks.get(null))
                         .pattern("III")
                         .pattern("CBC")
                         .pattern("CCC")
@@ -180,7 +180,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
                         .save(exporter);
 
-                shapeless(RecipeCategory.DECORATIONS, ModBlocks.sinks.getUndiscriminated())
+                shapeless(RecipeCategory.DECORATIONS, ModBlocks.sinks.get(null))
                         .requires(ModItemTags.DYED_SINKS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_sink", has(ModItemTags.DYED_SINKS))
@@ -191,12 +191,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.SINKS)
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
-                                .unlockedBy("has_sink", has(ModBlocks.sinks.getUndiscriminated()))
+                                .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_sink");
                     }
                 });
 
-                shaped(RecipeCategory.DECORATIONS, ModBlocks.cabinets.getUndiscriminated())
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.cabinets.get(null))
                         .pattern("CCC")
                         .pattern("CBC")
                         .define('C', Blocks.TERRACOTTA)
@@ -204,7 +204,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
                         .save(exporter);
 
-                shapeless(RecipeCategory.DECORATIONS, ModBlocks.cabinets.getUndiscriminated())
+                shapeless(RecipeCategory.DECORATIONS, ModBlocks.cabinets.get(null))
                         .requires(ModItemTags.DYED_CABINETS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_cabinet", has(ModItemTags.DYED_CABINETS))
@@ -215,7 +215,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.CABINETS)
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
-                                .unlockedBy("has_cabinet", has(ModBlocks.cabinets.getUndiscriminated()))
+                                .unlockedBy("has_cabinet", has(ModBlocks.cabinets.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_cabinet");
                     }
                 });
@@ -303,21 +303,21 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_white_concrete", has(Items.WHITE_CONCRETE))
                         .save(exporter, "kitchen_floor_from_concrete");
 
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.ORANGE), BalmItemTags.ORANGE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.MAGENTA), BalmItemTags.MAGENTA_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_BLUE), BalmItemTags.LIGHT_BLUE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.YELLOW), BalmItemTags.YELLOW_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIME), BalmItemTags.LIME_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PINK), BalmItemTags.PINK_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GRAY), BalmItemTags.GRAY_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_GRAY), BalmItemTags.LIGHT_GRAY_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.CYAN), BalmItemTags.CYAN_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PURPLE), BalmItemTags.PURPLE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLUE), BalmItemTags.BLUE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BROWN), BalmItemTags.BROWN_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GREEN), BalmItemTags.GREEN_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.RED), BalmItemTags.RED_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLACK), BalmItemTags.BLACK_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.ORANGE).asBlock(), BalmItemTags.ORANGE_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.MAGENTA).asBlock(), BalmItemTags.MAGENTA_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_BLUE).asBlock(), BalmItemTags.LIGHT_BLUE_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.YELLOW).asBlock(), BalmItemTags.YELLOW_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIME).asBlock(), BalmItemTags.LIME_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PINK).asBlock(), BalmItemTags.PINK_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GRAY).asBlock(), BalmItemTags.GRAY_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_GRAY).asBlock(), BalmItemTags.LIGHT_GRAY_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.CYAN).asBlock(), BalmItemTags.CYAN_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PURPLE).asBlock(), BalmItemTags.PURPLE_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLUE).asBlock(), BalmItemTags.BLUE_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BROWN).asBlock(), BalmItemTags.BROWN_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GREEN).asBlock(), BalmItemTags.GREEN_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.RED).asBlock(), BalmItemTags.RED_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLACK).asBlock(), BalmItemTags.BLACK_DYES).save(exporter);
 
                 smelting(Ingredient.of(Items.BOOK), RecipeCategory.MISC, ModItems.recipeBook, 0.15f, 200).unlockedBy("has_book", has(Items.BOOK))
                         .save(exporter);

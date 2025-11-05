@@ -19,7 +19,7 @@ public class ModItemTagProvider extends IntrinsicHolderTagsProvider<Item> {
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
         final var ovens = tag(ModItemTags.OVENS);
-        ModBlocks.ovens.forEach(it -> ovens.add(it.asItem()));
+        ModBlocks.ovens.forEach((discriminator, it) -> ovens.add(it.asItem()));
 
         final var dyedOvens = tag(ModItemTags.DYED_OVENS);
         ModBlocks.ovens.forEach((color, block) -> {
@@ -29,7 +29,7 @@ public class ModItemTagProvider extends IntrinsicHolderTagsProvider<Item> {
         });
 
         final var fridges = tag(ModItemTags.FRIDGES);
-        ModBlocks.fridges.forEach(it -> fridges.add(it.asItem()));
+        ModBlocks.fridges.forEach((discriminator, it) -> fridges.add(it.asItem()));
 
         final var dyedFridges = tag(ModItemTags.DYED_FRIDGES);
         ModBlocks.fridges.forEach((color, block) -> {
@@ -38,34 +38,34 @@ public class ModItemTagProvider extends IntrinsicHolderTagsProvider<Item> {
             }
         });
 
-        final var sinks = tag(ModItemTags.SINKS).add(ModBlocks.sinks.getUndiscriminated().asItem());
-        ModBlocks.sinks.forEach(it -> sinks.add(it.asItem()));
+        final var sinks = tag(ModItemTags.SINKS).add(ModBlocks.sinks.get(null).asItem());
+        ModBlocks.sinks.forEach((discriminator, it) -> sinks.add(it.asItem()));
 
         final var dyedSinks = tag(ModItemTags.DYED_SINKS);
-        ModBlocks.sinks.forEachDiscriminated((color, block) -> dyedSinks.add(block.asItem()));
+        ModBlocks.sinks.forEach((color, block) -> dyedSinks.add(block.asItem()));
 
         final var cookingTables = tag(ModItemTags.COOKING_TABLES);
-        ModBlocks.cookingTables.forEach(it -> cookingTables.add(it.asItem()));
+        ModBlocks.cookingTables.forEach((discriminator, it) -> cookingTables.add(it.asItem()));
 
         final var dyedCookingTables = tag(ModItemTags.DYED_COOKING_TABLES);
-        ModBlocks.cookingTables.forEachDiscriminated((color, block) -> dyedCookingTables.add(block.asItem()));
+        ModBlocks.cookingTables.filterNonNullDiscriminators().forEach(block -> dyedCookingTables.add(block.asItem()));
 
         final var counters = tag(ModItemTags.COUNTERS);
-        ModBlocks.counters.forEach(it -> counters.add(it.asItem()));
+        ModBlocks.counters.forEach((discriminator, it) -> counters.add(it.asItem()));
 
         final var dyedCounters = tag(ModItemTags.DYED_COUNTERS);
-        ModBlocks.counters.forEachDiscriminated((color, block) -> dyedCounters.add(block.asItem()));
+        ModBlocks.counters.filterNonNullDiscriminators().forEach(block -> dyedCounters.add(block.asItem()));
 
         final var cabinets = tag(ModItemTags.CABINETS);
-        ModBlocks.cabinets.forEach(it -> cabinets.add(it.asItem()));
+        ModBlocks.cabinets.forEach((discriminator, it) -> cabinets.add(it.asItem()));
 
         final var dyedCabinets = tag(ModItemTags.DYED_CABINETS);
-        ModBlocks.cabinets.forEachDiscriminated((color, block) -> dyedCabinets.add(block.asItem()));
+        ModBlocks.cabinets.filterNonNullDiscriminators().forEach(block -> dyedCabinets.add(block.asItem()));
 
         final var connectors = tag(ModItemTags.CONNECTORS);
-        ModBlocks.connectors.forEach(it -> connectors.add(it.asItem()));
+        ModBlocks.connectors.forEach((discriminator, it) -> connectors.add(it.asItem()));
 
         final var dyedConnectors = tag(ModItemTags.DYED_CONNECTORS);
-        ModBlocks.connectors.forEachDiscriminated((color, block) -> dyedConnectors.add(block.asItem()));
+        ModBlocks.connectors.filterNonNullDiscriminators().forEach(block -> dyedConnectors.add(block.asItem()));
     }
 }
