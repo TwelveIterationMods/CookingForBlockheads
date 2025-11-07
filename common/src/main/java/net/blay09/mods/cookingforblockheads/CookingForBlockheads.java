@@ -3,6 +3,7 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.LivingDamageEvent;
 import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.balm.core.BalmRegistrars;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -44,7 +45,7 @@ public class CookingForBlockheads {
     public static final String MOD_ID = "cookingforblockheads";
     public static final Logger logger = LogManager.getLogger(MOD_ID);
 
-    public static void initialize() {
+    public static void initialize(BalmRegistrars registrars) {
         CookingForBlockheadsAPI.setFoodStatsProvider(new FoodStatsProvider() {
             @Override
             public float getSaturationModifier(ItemStack itemStack, Player entityPlayer) {
@@ -68,15 +69,15 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
-        Balm.dataComponentTypes(MOD_ID, ModDataComponents::initialize);
+        registrars.dataComponentTypes(MOD_ID, ModDataComponents::initialize);
         ModNetworking.initialize(Balm.networking());
-        Balm.blocks(MOD_ID, ModBlocks::initialize);
-        Balm.blockEntityTypes(MOD_ID, ModBlockEntities::initialize);
-        Balm.items(MOD_ID, ModItems::initialize);
-        Balm.creativeModeTabs(MOD_ID, ModItems::initialize);
-        Balm.recipeTypes(MOD_ID, ModRecipes::initialize);
-        Balm.menuTypes(MOD_ID, ModMenus::initialize);
-        Balm.registrar(Registries.SOUND_EVENT, MOD_ID, ModSounds::initialize);
+        registrars.blocks(MOD_ID, ModBlocks::initialize);
+        registrars.blockEntityTypes(MOD_ID, ModBlockEntities::initialize);
+        registrars.items(MOD_ID, ModItems::initialize);
+        registrars.creativeModeTabs(MOD_ID, ModItems::initialize);
+        registrars.recipeTypes(MOD_ID, ModRecipes::initialize);
+        registrars.menuTypes(MOD_ID, ModMenus::initialize);
+        registrars.registrar(Registries.SOUND_EVENT, MOD_ID, ModSounds::initialize);
         ModCapabilities.initialize(Balm.capabilities());
 
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
