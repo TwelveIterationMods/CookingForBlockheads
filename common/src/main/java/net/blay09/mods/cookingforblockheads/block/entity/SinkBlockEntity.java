@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
-import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
-import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.platform.fluid.BalmFluidTankProvider;
+import net.blay09.mods.balm.platform.fluid.DefaultFluidTank;
+import net.blay09.mods.balm.platform.fluid.FluidTank;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
@@ -113,7 +113,7 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
         if (ticksSinceSync >= SYNC_INTERVAL) {
             ticksSinceSync = 0;
             if (isDirty) {
-                BlockEntityUtils.sync(this);
+                BalmBlockEntityUtils.sync(this);
                 isDirty = false;
             }
         }
@@ -215,6 +215,6 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 }

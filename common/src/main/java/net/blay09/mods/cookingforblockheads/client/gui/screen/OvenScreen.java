@@ -1,22 +1,20 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import net.blay09.mods.balm.api.energy.EnergyStorage;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
-    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/oven.png");
+    private static final Identifier texture = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/oven.png");
 
     public OvenScreen(OvenMenu container, Inventory playerInventory, Component displayName) {
         super(container, playerInventory, displayName);
@@ -35,7 +33,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
         OvenBlockEntity tileEntity = menu.getOven();
         if (tileEntity.hasPowerUpgrade() && mouseX >= leftPos + imageWidth - 25 && mouseY >= topPos + 22 && mouseX < leftPos + imageWidth - 25 + 35 + 18 && mouseY < topPos + 22 + 72) {
-            EnergyStorage energyStorage = tileEntity.getEnergyStorage();
+            final var energyStorage = tileEntity.getEnergyStorage();
             guiGraphics.setTooltipForNextFrame(font, Component.translatable("tooltip.cookingforblockheads.energy_stored", energyStorage.getEnergy(), energyStorage.getCapacity()), mouseX, mouseY);
         }
     }
@@ -89,7 +87,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         // Draw power bar
         if (tileEntity.hasPowerUpgrade()) {
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos + imageWidth - 25, topPos + 22, 205, 0, 18, 72, 256, 256);
-            EnergyStorage energyStorage = tileEntity.getEnergyStorage();
+            final var energyStorage = tileEntity.getEnergyStorage();
             float energyPercentage = energyStorage.getEnergy() / (float) energyStorage.getCapacity();
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos + imageWidth - 25 + 1, topPos + 22 + 1 + 70 - (int) (energyPercentage * 70), 223, 0, 16, (int) (energyPercentage * 70), 256, 256);
         }

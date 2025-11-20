@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.config.reflection.Comment;
-import net.blay09.mods.balm.api.config.reflection.Config;
-import net.blay09.mods.balm.api.config.reflection.NestedType;
-import net.minecraft.resources.ResourceLocation;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.platform.config.reflection.Comment;
+import net.blay09.mods.balm.platform.config.reflection.Config;
+import net.blay09.mods.balm.platform.config.reflection.NestedType;
+import net.minecraft.resources.Identifier;
 
 import java.util.Set;
 
@@ -45,8 +45,8 @@ public class CookingForBlockheadsConfig {
     public boolean allowVeryToastedBread = true;
 
     @Comment("List of recipe ids that should be excluded from the recipe book.")
-    @NestedType(ResourceLocation.class)
-    public Set<ResourceLocation> excludedRecipes = Set.of();
+    @NestedType(Identifier.class)
+    public Set<Identifier> excludedRecipes = Set.of();
 
     public static CookingForBlockheadsConfig getActive() {
         return Balm.config().getActiveConfig(CookingForBlockheadsConfig.class);

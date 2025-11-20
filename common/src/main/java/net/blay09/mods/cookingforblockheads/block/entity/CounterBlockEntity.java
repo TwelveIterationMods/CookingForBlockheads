@@ -1,10 +1,9 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.balm.world.BalmMenuProvider;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
@@ -49,7 +48,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
+public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -99,7 +98,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isDirty) {
-            BlockEntityUtils.sync(this);
+            BalmBlockEntityUtils.sync(this);
             isDirty = false;
         }
     }
@@ -140,7 +139,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, output -> {
+        return BalmBlockEntityUtils.createUpdateTag(registries, output -> {
             saveAdditional(output);
             output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
             output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
@@ -167,7 +166,6 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
         return new CounterMenu(i, playerInventory, this);
     }
 
-    @Override
     public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 1, 2).getCenter());
     }
@@ -263,7 +261,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
 }

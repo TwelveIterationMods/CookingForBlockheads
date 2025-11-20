@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.menu.slot.*;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.blay09.mods.cookingforblockheads.network.message.ClientboundOvenResultsPacket;

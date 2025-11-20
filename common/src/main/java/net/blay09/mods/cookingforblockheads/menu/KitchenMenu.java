@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.DefaultContainer;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
@@ -17,7 +17,7 @@ import net.blay09.mods.cookingforblockheads.network.message.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -240,7 +240,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public List<CraftableWithStatus> getAvailableCraftables() {
-        final var result = new HashMap<ResourceLocation, CraftableWithStatus>();
+        final var result = new HashMap<Identifier, CraftableWithStatus>();
         final var context = new CraftingContext(kitchen, player);
         final var recipesByItemId = CookingForBlockheadsRegistry.getRecipesByItemId();
         for (final var itemId : recipesByItemId.keySet()) {

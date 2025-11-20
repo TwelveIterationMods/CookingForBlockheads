@@ -17,17 +17,17 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
 
-    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
+    private static final Identifier texture = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/jei_cow_jar.png");
 
     public static final RecipeType<CowJarRecipe> TYPE = RecipeType.create(CookingForBlockheads.MOD_ID, "cow_jar", CowJarRecipe.class);
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath("cookingforblockheads", "cow_jar");
+    public static final Identifier UID = Identifier.fromNamespaceAndPath("cookingforblockheads", "cow_jar");
     private final IDrawableStatic background;
     private final IDrawable icon;
 
@@ -77,7 +77,7 @@ public class CowJarRecipeCategory implements IRecipeCategory<CowJarRecipe> {
     }
 
     @Override
-    public @Nullable ResourceLocation getRegistryName(CowJarRecipe recipe) {
+    public @Nullable Identifier getRegistryName(CowJarRecipe recipe) {
         return UID;
     }
 }

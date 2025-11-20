@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +22,7 @@ public class ToolRackBlockEntity extends BlockEntity implements BalmContainerPro
         @Override
         public void setChanged() {
             ToolRackBlockEntity.this.setChanged();
-            BlockEntityUtils.sync(ToolRackBlockEntity.this);
+            BalmBlockEntityUtils.sync(ToolRackBlockEntity.this);
         }
     };
 
@@ -42,7 +42,7 @@ public class ToolRackBlockEntity extends BlockEntity implements BalmContainerPro
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ToolRackBlockEntity extends BlockEntity implements BalmContainerPro
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
     @Override

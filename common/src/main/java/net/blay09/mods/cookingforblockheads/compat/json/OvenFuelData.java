@@ -1,12 +1,12 @@
 package net.blay09.mods.cookingforblockheads.compat.json;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class OvenFuelData {
-    private ResourceLocation item;
+    private Identifier item;
     private int value;
 
-    public ResourceLocation getItem() {
+    public Identifier getItem() {
         return item;
     }
 

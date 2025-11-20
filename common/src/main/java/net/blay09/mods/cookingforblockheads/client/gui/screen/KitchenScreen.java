@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
@@ -25,7 +25,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -43,7 +43,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private static final int SCROLLBAR_WIDTH = 7;
     private static final int SCROLLBAR_HEIGHT = 77;
 
-    private static final ResourceLocation guiTexture = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
+    private static final Identifier guiTexture = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
     private static final int VISIBLE_ROWS = 4;
     private static final int VISIBLE_COLS = 3;
 

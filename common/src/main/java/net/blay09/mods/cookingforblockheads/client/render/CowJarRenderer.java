@@ -4,29 +4,31 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
+import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.CowJarBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.model.AdultAndBabyModelPair;
-import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.animal.cow.CowModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.block.state.BlockState;
-import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
-import net.minecraft.world.entity.animal.CowVariant;
-import net.minecraft.world.entity.animal.CowVariants;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.Mth;
+import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.entity.animal.cow.CowVariant;
+import net.minecraft.world.entity.animal.cow.CowVariants;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.MoonPhase;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -70,8 +72,13 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
     }
 
 
-    private boolean shouldCreepyStare(@Nullable Level level) {
-        return level != null && level.getMoonPhase() == 0 && level.isDarkOutside();
+    private boolean shouldCreepyStare(@Nullable Level level, BlockPos pos) {
+        if (level == null) {
+            return false;
+        }
+
+        final var moonPhase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
+        return moonPhase == MoonPhase.FULL_MOON && level.isDarkOutside();
     }
 
     private void headbang(@Nullable Level level, CowJarRenderState renderState, int bpm) {
@@ -112,12 +119,12 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
             headbang(level, renderState, 85);
             return;
         }
-        
-        if (shouldCreepyStare(level)) {
+
+        if (shouldCreepyStare(level, pos)) {
             creepyStare(level, pos, state, delta, renderState);
             return;
         }
-        
+
         renderState.cow.xRot = 0f;
         renderState.cow.yRot = 0f;
     }
@@ -156,7 +163,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
             final var modelAndTexture = cowJarRenderState.variant.modelAndTexture();
             final var model = models.get(modelAndTexture.model()).getModel(cowJarRenderState.cow.isBaby);
             final var textureAsset = modelAndTexture.asset();
-            submitNodeCollector.submitModel(model, cowJarRenderState.cow, poseStack, RenderType.entityCutout(textureAsset.texturePath()), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, renderState.breakProgress);
+            submitNodeCollector.submitModel(model, cowJarRenderState.cow, poseStack, RenderTypes.entityCutout(textureAsset.texturePath()), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, renderState.breakProgress);
             poseStack.popPose();
         }
     }

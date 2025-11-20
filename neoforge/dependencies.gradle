@@ -1,7 +1,6 @@
 dependencies {
-    implementation("net.blay09.mods:kuma-api-neoforge:${kuma_version}")
-    implementation("net.blay09.mods:balm-neoforge:${balm_version}") {
-        changing = balm_version.contains("SNAPSHOT")
+    implementation(libs.balmNeoForge) {
+        changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
     compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
     compileOnly "curse.maven:jade-324717:$jade_neoforge_version"
@@ -9,8 +8,4 @@ dependencies {
     compileOnly "curse.maven:the-one-probe-245211:$theoneprobe_version"
 
     compileOnly "curse.maven:spice-of-life-carrot-edition-277616:6695035"
-}
-
-configurations {
-    testCompileOnly.extendsFrom compileOnly // for some reason needed for some deps
 }

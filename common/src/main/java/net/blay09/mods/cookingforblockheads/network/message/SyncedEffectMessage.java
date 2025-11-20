@@ -11,7 +11,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,7 +23,7 @@ import net.minecraft.world.entity.player.Player;
 @Deprecated
 public record SyncedEffectMessage(BlockPos pos, Type effectType) implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<SyncedEffectMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(
+    public static final CustomPacketPayload.Type<SyncedEffectMessage> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(
             CookingForBlockheads.MOD_ID,
             "synced_effect"));
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncedEffectMessage> STREAM_CODEC = StreamCodec.composite(

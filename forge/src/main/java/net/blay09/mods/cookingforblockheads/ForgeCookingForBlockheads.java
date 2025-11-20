@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.api.client.BalmClient;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.forge.ForgeLoadContext;

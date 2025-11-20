@@ -1,14 +1,12 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
-import net.blay09.mods.balm.api.container.*;
-import net.blay09.mods.balm.api.energy.BalmEnergyStorageProvider;
-import net.blay09.mods.balm.api.energy.DefaultEnergyStorage;
-import net.blay09.mods.balm.api.energy.EnergyStorage;
-import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.api.tag.BalmItemTags;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.platform.energy.BalmEnergyStorageProvider;
+import net.blay09.mods.balm.platform.energy.DefaultEnergyStorage;
+import net.blay09.mods.balm.platform.energy.EnergyStorage;
+import net.blay09.mods.balm.tags.BalmItemTags;
+import net.blay09.mods.balm.world.*;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
@@ -65,7 +63,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, KitchenItemProviderHolder, KitchenItemProcessorHolder {
+public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, TransferableBlockEntity<TransferableContainer>, KitchenItemProviderHolder, KitchenItemProcessorHolder {
 
     private static final int COOK_TIME = 200;
     private final DefaultEnergyStorage energyStorage = new DefaultEnergyStorage(10000) {
@@ -202,7 +200,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         }
 
         if (isDirty) {
-            BlockEntityUtils.sync(this);
+            BalmBlockEntityUtils.sync(this);
             isDirty = false;
         }
 
@@ -260,7 +258,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
                             if (!smeltingResult.isEmpty()) {
                                 ItemStack resultStack = smeltingResult.copy();
                                 processingContainer.setItem(i, resultStack);
-                                Balm.events().fireEvent(new OvenCookedEvent(level, worldPosition, resultStack));
+                                OvenCookedEvent.EVENT.invoker().accept(new OvenCookedEvent(level, worldPosition, resultStack));
                                 slotCookTime[i] = -1;
                                 if (firstTransferSlot == -1) {
                                     firstTransferSlot = i;
@@ -384,8 +382,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, output -> {
-
+        return BalmBlockEntityUtils.createUpdateTag(registries, output -> {
             saveAdditional(output);
             output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
             output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
@@ -491,7 +488,6 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         return new OvenMenu(i, playerInventory, this);
     }
 
-    @Override
     public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 1, 2).getCenter());
     }
@@ -591,7 +587,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
 }

@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
@@ -39,7 +39,7 @@ public class ToasterBlockEntity extends BlockEntity {
         @Override
         public void setChanged() {
             ToasterBlockEntity.this.setChanged();
-            BlockEntityUtils.sync(ToasterBlockEntity.this);
+            BalmBlockEntityUtils.sync(ToasterBlockEntity.this);
         }
     };
 
@@ -84,7 +84,7 @@ public class ToasterBlockEntity extends BlockEntity {
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ToasterBlockEntity blockEntity) {
@@ -116,7 +116,7 @@ public class ToasterBlockEntity extends BlockEntity {
 
         ticksSinceUpdate++;
         if (isDirty && ticksSinceUpdate > UPDATE_INTERVAL) {
-            BlockEntityUtils.sync(this);
+            BalmBlockEntityUtils.sync(this);
             ticksSinceUpdate = 0;
             isDirty = false;
         }
@@ -201,7 +201,7 @@ public class ToasterBlockEntity extends BlockEntity {
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
 }

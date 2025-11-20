@@ -1,12 +1,12 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import net.blay09.mods.balm.api.fluid.FluidTank;
+import net.blay09.mods.balm.platform.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.entity.*;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -19,13 +19,13 @@ public class CookingForBlockheadsWailaUtils {
         void appendTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer);
     }
 
-    public static final ResourceLocation MILK_JAR_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "milk_jar");
+    public static final Identifier MILK_JAR_UID = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "milk_jar");
 
-    public static final ResourceLocation TOASTER_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "toaster");
-    public static final ResourceLocation OVEN_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "oven");
-    public static final ResourceLocation FRIDGE_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "fridge");
-    public static final ResourceLocation PRESERVATION_CHAMBER_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "preservation_chamber");
-    public static final ResourceLocation SINK_UID = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "sink");
+    public static final Identifier TOASTER_UID = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "toaster");
+    public static final Identifier OVEN_UID = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "oven");
+    public static final Identifier FRIDGE_UID = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "fridge");
+    public static final Identifier PRESERVATION_CHAMBER_UID = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "preservation_chamber");
+    public static final Identifier SINK_UID = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "sink");
 
     public static void appendMilkJarTooltip(BlockEntity blockEntity, Player player, Consumer<Component> tooltipConsumer) {
         if (blockEntity instanceof CowJarBlockEntity cowJar && cowJar.getCustomName() != null) {

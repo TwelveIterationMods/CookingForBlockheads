@@ -1,0 +1,33 @@
+[versions]
+balm = "21.11.1-SNAPSHOT"
+minecraft = "1.21.11-pre1"
+neoForm = "1.21.11-pre1-20251119.112005"
+neoForge = "21.11.0-alpha.25w45a.20251119.221026"
+forge = "60.0.20"
+fabricApi = "0.139.1+1.21.11"
+fabricLoader = "0.17.3"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+parchment = { module = "org.parchmentmc.data:parchment-1.21.10", version = "2025.10.12" }
+
+balmCommon = { module = "net.blay09.mods:balm-common", version.ref = "balm" }
+balmNeoForge = { module = "net.blay09.mods:balm-neoforge", version.ref = "balm" }
+balmForge = { module = "net.blay09.mods:balm-forge", version.ref = "balm" }
+balmFabric = { module = "net.blay09.mods:balm-fabric", version.ref = "balm" }
+
+neoForm = { module = "net.neoforged:neoform", version.ref = "neoForm" }
+neoForge = { module = "net.neoforged:neoforge", version.ref = "neoForge" }
+forge = { module = "net.minecraftforge:forge", version.ref = "forge" }
+fabricApi = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabricApi" }
+fabricLoader = { module = "net.fabricmc:fabric-loader", version.ref = "fabricLoader" }
+
+mixin = { module = "org.spongepowered:mixin", version = "0.8.7" }
+
+[plugins]
+fabricLoom = { id = "fabric-loom", version = "1.13-SNAPSHOT" }
+modDevGradle = { id = "net.neoforged.moddev", version = "2.0.107" }
+forge = { id = "net.minecraftforge.gradle", version = "[6.0.25,6.2)" }
+mixin = { id = "org.spongepowered.mixin", version = "0.7-SNAPSHOT" }
+curseForgeGradle = { id = "net.darkhax.curseforgegradle", version = "1.1.26" }
+modrinthMinotaur = { id = "com.modrinth.minotaur", version = "2.+" }

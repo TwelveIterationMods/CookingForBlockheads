@@ -1,15 +1,14 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.event.UseBlockEvent;
-import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
+import net.blay09.mods.balm.platform.event.callback.BlockCallback;
+import net.blay09.mods.balm.platform.event.callback.ItemCallback;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -29,59 +28,58 @@ public class HarvestCraftAddon {
     private boolean cuttingBoardFound;
 
     public HarvestCraftAddon() {
-        final var cuttingBoardItem = BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
+        final var cuttingBoardItem = BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
         if (cuttingBoardItem != null && cuttingBoardItem != Items.AIR) {
             cuttingBoardFound = true;
         }
 
-        Balm.events().onEvent(ItemTooltipEvent.class, event -> {
+        ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, flags) -> {
             if (!cuttingBoardFound) {
                 return;
             }
 
-            if (event.getItemStack().getItem() == cuttingBoardItem) {
-                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.multiblock_kitchen").withStyle(ChatFormatting.YELLOW));
-                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.can_be_placed_in_world"));
+            if (itemStack.getItem() == cuttingBoardItem) {
+                tooltip.add(Component.translatable("tooltip.cookingforblockheads.multiblock_kitchen").withStyle(ChatFormatting.YELLOW));
+                tooltip.add(Component.translatable("tooltip.cookingforblockheads.can_be_placed_in_world"));
             }
         });
 
-        Balm.events().onEvent(UseBlockEvent.class, event -> {
+        BlockCallback.Use.EVENT.register((player, level, hand, hitResult) -> {
             if (!cuttingBoardFound) {
-                return;
+                return InteractionResult.PASS;
             }
 
-            ItemStack heldItem = event.getPlayer().getItemInHand(event.getHand());
+            ItemStack heldItem = player.getItemInHand(hand);
             if (heldItem.getItem() != cuttingBoardItem) {
-                return;
+                return InteractionResult.PASS;
             }
 
-            Direction face = event.getHitResult().getDirection();
+            Direction face = hitResult.getDirection();
             if (face != Direction.UP) {
-                return;
+                return InteractionResult.PASS;
             }
 
-            Level level = event.getLevel();
-            Player player = event.getPlayer();
-            BlockPos pos = event.getHitResult().getBlockPos();
+            BlockPos pos = hitResult.getBlockPos();
             BlockState clickedBlock = level.getBlockState(pos);
             if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.getBlock() == ModBlocks.cuttingBoard) {
-                return;
+                return InteractionResult.PASS;
             }
 
             BlockPos relativePos = pos.relative(face);
             if (canPlace(player, ModBlocks.cuttingBoard.defaultBlockState(), level, relativePos)) {
-                BlockPlaceContext useContext = new BlockPlaceContext(new UseOnContext(player, event.getHand(), new BlockHitResult(Vec3.atLowerCornerOf(relativePos), face, relativePos, true)));
+                BlockPlaceContext useContext = new BlockPlaceContext(new UseOnContext(player, hand, new BlockHitResult(Vec3.atLowerCornerOf(relativePos), face, relativePos, true)));
                 BlockState placedState = ModBlocks.cuttingBoard.value().getStateForPlacement(useContext);
                 level.setBlockAndUpdate(relativePos, placedState);
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);
                 }
 
-                player.swing(event.getHand());
+                player.swing(hand);
                 player.playSound(SoundEvents.WOOD_PLACE, 1f, 1f);
-                event.setResult(InteractionResult.SUCCESS);
-                event.setCanceled(true);
+                return InteractionResult.SUCCESS;
             }
+
+            return InteractionResult.PASS;
         });
     }
 

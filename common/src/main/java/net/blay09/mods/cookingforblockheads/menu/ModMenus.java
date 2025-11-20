@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
-import net.blay09.mods.balm.api.menu.BalmMenuFactory;
+import net.blay09.mods.balm.world.BalmMenuFactory;
 import net.blay09.mods.balm.world.inventory.BalmMenuTypeRegistrar;
 import net.blay09.mods.cookingforblockheads.block.entity.*;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;

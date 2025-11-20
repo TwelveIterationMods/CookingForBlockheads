@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat.json;
 
 import com.google.gson.annotations.SerializedName;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 import java.util.Map;
@@ -11,10 +11,10 @@ public class JsonCompatData {
     @SerializedName("modid")
     private String modId;
 
-    private Map<String, List<ResourceLocation>> foods;
-    private List<ResourceLocation> tools;
-    private List<ResourceLocation> water;
-    private List<ResourceLocation> milk;
+    private Map<String, List<Identifier>> foods;
+    private List<Identifier> tools;
+    private List<Identifier> water;
+    private List<Identifier> milk;
 
     @SerializedName("oven_fuel")
     private List<OvenFuelData> ovenFuels;
@@ -25,26 +25,26 @@ public class JsonCompatData {
     @SerializedName("toaster")
     private List<ToasterRecipeData> toasterRecipes;
 
-    private List<ResourceLocation> kitchenItemProviders;
-    private List<ResourceLocation> kitchenConnectors;
+    private List<Identifier> kitchenItemProviders;
+    private List<Identifier> kitchenConnectors;
 
     public String getModId() {
         return modId;
     }
 
-    public Map<String, List<ResourceLocation>> getFoods() {
+    public Map<String, List<Identifier>> getFoods() {
         return foods;
     }
 
-    public List<ResourceLocation> getTools() {
+    public List<Identifier> getTools() {
         return tools;
     }
 
-    public List<ResourceLocation> getWater() {
+    public List<Identifier> getWater() {
         return water;
     }
 
-    public List<ResourceLocation> getMilk() {
+    public List<Identifier> getMilk() {
         return milk;
     }
 
@@ -60,11 +60,11 @@ public class JsonCompatData {
         return toasterRecipes;
     }
 
-    public List<ResourceLocation> getKitchenItemProviders() {
+    public List<Identifier> getKitchenItemProviders() {
         return kitchenItemProviders;
     }
 
-    public List<ResourceLocation> getKitchenConnectors() {
+    public List<Identifier> getKitchenConnectors() {
         return kitchenConnectors;
     }
 }

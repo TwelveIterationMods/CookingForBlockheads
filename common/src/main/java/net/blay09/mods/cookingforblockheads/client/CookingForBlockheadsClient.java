@@ -1,11 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.client.BalmClient;
-import net.blay09.mods.balm.api.event.client.ItemTooltipEvent;
 import net.blay09.mods.balm.client.BalmClientRegistrars;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
-import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
+import net.blay09.mods.balm.platform.event.callback.ItemCallback;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
@@ -14,7 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
@@ -25,28 +22,23 @@ import java.util.Set;
 
 public class CookingForBlockheadsClient {
 
-    private static final Set<ResourceLocation> favoriteItemIds = new HashSet<>();
+    private static final Set<Identifier> favoriteItemIds = new HashSet<>();
 
     public static void initialize(BalmClientRegistrars registrars) {
-        registrars.blockEntityRenderers(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
-        registrars.menuScreens(CookingForBlockheads.MOD_ID, ModMenuScreens::initialize);
-        registrars.blockColors(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
-        registrars.blockRenderTypes(CookingForBlockheads.MOD_ID, ModRenderers::initialize);
-        registrars.blockStateModels(CookingForBlockheads.MOD_ID, ModModels::initialize);
+        registrars.blockEntityRenderers(ModRenderers::initialize);
+        registrars.menuScreens(ModMenuScreens::initialize);
+        registrars.blockColors(ModRenderers::initialize);
+        registrars.blockRenderTypes(ModRenderers::initialize);
+        registrars.blockStateModels(ModModels::initialize);
 
-        Balm.events().onEvent(ItemTooltipEvent.class, event -> {
+        ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, flags) -> {
             if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
-                return;
-            }
-
-            final var player = event.getPlayer();
-            if (player == null) {
                 return;
             }
 
             final var menu = screen.getMenu();
             Slot hoverSlot = ((AbstractContainerScreenAccessor) screen).getHoveredSlot();
-            if (hoverSlot instanceof CraftableListingFakeSlot listingSlot && event.getItemStack() == hoverSlot.getItem()) {
+            if (hoverSlot instanceof CraftableListingFakeSlot listingSlot && itemStack == hoverSlot.getItem()) {
                 final var kitchen = menu.getKitchen();
                 final var selectedRecipeWithStatus = menu.getSelectedRecipe();
                 if (selectedRecipeWithStatus == null) {
@@ -58,50 +50,46 @@ public class CookingForBlockheadsClient {
                 if (menu.isSelectedSlot(listingSlot) && kitchen.canProcess(RecipeType.CRAFTING)) {
                     if (selectedRecipeDisplay instanceof FurnaceRecipeDisplay) {
                         if (!kitchen.canProcess(RecipeType.SMELTING)) {
-                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
+                            tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
                         } else {
                             if (Kuma.hasShiftDown()) {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
+                                tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
                             } else {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_one").withStyle(ChatFormatting.GREEN));
+                                tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_one").withStyle(ChatFormatting.GREEN));
                             }
                         }
                     } else {
                         final var missingIngredients = selectedRecipeWithStatus.missingIngredients();
                         if (selectedRecipeWithStatus.isMissingUtensils()) {
-                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
+                            tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
                         } else if (!missingIngredients.isEmpty()) {
-                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
+                            tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
                         } else {
                             if (Kuma.hasShiftDown()) {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_stack").withStyle(ChatFormatting.GREEN));
+                                tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_stack").withStyle(ChatFormatting.GREEN));
                             } else {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_one").withStyle(ChatFormatting.GREEN));
+                                tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_one").withStyle(ChatFormatting.GREEN));
                             }
                         }
                     }
                 } else {
-                    event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
+                    tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
-            } else if (hoverSlot instanceof CraftMatrixFakeSlot && event.getItemStack() == hoverSlot.getItem()) {
+            } else if (hoverSlot instanceof CraftMatrixFakeSlot && itemStack == hoverSlot.getItem()) {
                 if (((CraftMatrixFakeSlot) hoverSlot).getVisibleStacks().size() > 1) {
                     if (((CraftMatrixFakeSlot) hoverSlot).isLocked()) {
-                        event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_unlock").withStyle(ChatFormatting.GREEN));
+                        tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_unlock").withStyle(ChatFormatting.GREEN));
                     } else {
-                        event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_lock").withStyle(ChatFormatting.GREEN));
+                        tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_lock").withStyle(ChatFormatting.GREEN));
                     }
-                    event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.scroll_to_switch").withStyle(ChatFormatting.YELLOW));
+                    tooltip.add(Component.translatable("tooltip.cookingforblockheads.scroll_to_switch").withStyle(ChatFormatting.YELLOW));
                 }
             }
         });
 
     }
 
-    public static void setFavoriteItems(Set<ResourceLocation> favoriteItemIds) {
+    public static void setFavoriteItems(Set<Identifier> favoriteItemIds) {
         CookingForBlockheadsClient.favoriteItemIds.clear();
         CookingForBlockheadsClient.favoriteItemIds.addAll(favoriteItemIds);
     }

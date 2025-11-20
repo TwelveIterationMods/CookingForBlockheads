@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.capability;
 
-import net.blay09.mods.balm.api.capability.BalmCapabilities;
-import net.blay09.mods.balm.api.capability.CapabilityType;
+import net.blay09.mods.balm.platform.capabilities.BalmCapabilities;
+import net.blay09.mods.balm.platform.capabilities.CapabilityType;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;

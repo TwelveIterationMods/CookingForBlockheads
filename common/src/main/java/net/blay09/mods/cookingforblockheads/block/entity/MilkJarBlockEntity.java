@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.fluid.BalmFluidTankProvider;
-import net.blay09.mods.balm.api.fluid.DefaultFluidTank;
-import net.blay09.mods.balm.api.fluid.FluidTank;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.platform.fluid.BalmFluidTankProvider;
+import net.blay09.mods.balm.platform.fluid.DefaultFluidTank;
+import net.blay09.mods.balm.platform.fluid.FluidTank;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -64,7 +64,7 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     @Override
@@ -140,10 +140,10 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
     public void sync() {
-        BlockEntityUtils.sync(this);
+        BalmBlockEntityUtils.sync(this);
     }
 }

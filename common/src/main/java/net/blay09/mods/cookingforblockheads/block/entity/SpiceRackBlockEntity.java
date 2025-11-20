@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.balm.world.BalmMenuProvider;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
@@ -47,7 +47,7 @@ public class SpiceRackBlockEntity extends BlockEntity implements BalmMenuProvide
         @Override
         public void setChanged() {
             SpiceRackBlockEntity.this.setChanged();
-            BlockEntityUtils.sync(SpiceRackBlockEntity.this);
+            BalmBlockEntityUtils.sync(SpiceRackBlockEntity.this);
         }
     };
     private final ContainerKitchenItemProvider conservingItemProvider = new ConversingKitchenItemProvider(container);
@@ -93,7 +93,7 @@ public class SpiceRackBlockEntity extends BlockEntity implements BalmMenuProvide
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, this::saveAdditional);
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     @Nullable
@@ -141,7 +141,7 @@ public class SpiceRackBlockEntity extends BlockEntity implements BalmMenuProvide
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (isDirty) {
-            BlockEntityUtils.sync(this);
+            BalmBlockEntityUtils.sync(this);
             isDirty = false;
         }
     }
@@ -190,6 +190,6 @@ public class SpiceRackBlockEntity extends BlockEntity implements BalmMenuProvide
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 }

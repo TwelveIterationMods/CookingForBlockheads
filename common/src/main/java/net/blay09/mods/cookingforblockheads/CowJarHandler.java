@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.event.LivingDamageEvent;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
@@ -9,22 +8,23 @@ import net.blay09.mods.cookingforblockheads.tag.ModEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
 public class CowJarHandler {
 
-    public static void onLivingDamage(LivingDamageEvent event) {
+    public static float onLivingDamage(LivingEntity entity, DamageSource damageSource, float damageAmount) {
         if (!CookingForBlockheadsConfig.getActive().cowJarEnabled) {
-            return;
+            return damageAmount;
         }
 
-        if (event.getDamageSource().getMsgId().equals("anvil") && event.getEntity().getType().is(ModEntityTypeTags.COW)) {
-            final var entity = event.getEntity();
+        if (damageSource.getMsgId().equals("anvil") && entity.getType().is(ModEntityTypeTags.COW)) {
             final var level = entity.level();
-            findMilkJar(level, entity.blockPosition()).ifPresent(pos -> {
+            return findMilkJar(level, entity.blockPosition()).map(pos -> {
                 level.setBlockAndUpdate(pos, ModBlocks.cowJar.defaultBlockState());
                 final var blockEntity = level.getBlockEntity(pos);
                 if (blockEntity instanceof CowJarBlockEntity cowJar) {
@@ -37,7 +37,7 @@ public class CowJarHandler {
                     }
 
                     // Ex Compressum compat for compressed cows
-                    boolean wasCompressed = Balm.hooks().getPersistentData(event.getEntity()).getCompound("excompressum")
+                    boolean wasCompressed = Balm.hooks().getPersistentData(entity).getCompound("excompressum")
                             .flatMap(it -> it.getBoolean("Compressed")).orElse(false);
                     if (wasCompressed) {
                         cowJar.setCompressedCow(true);
@@ -46,9 +46,11 @@ public class CowJarHandler {
 
                 Balm.networking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));
                 entity.remove(Entity.RemovalReason.DISCARDED);
-                event.setCanceled(true);
-            });
+                return 0f;
+            }).orElse(damageAmount);
         }
+
+        return damageAmount;
     }
 
     private static Optional<BlockPos> findMilkJar(Level level, BlockPos pos) {

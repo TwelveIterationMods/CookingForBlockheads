@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.minecraft.world.Container;
@@ -60,7 +59,7 @@ public class OvenResultSlot extends Slot {
 
         removeCount = 0;
         if (tileEntity.getLevel() != null && !stack.isEmpty()) {
-            Balm.events().fireEvent(new OvenItemSmeltedEvent(player, tileEntity.getLevel(), tileEntity.getBlockPos(), stack));
+            OvenItemSmeltedEvent.EVENT.invoker().accept(new OvenItemSmeltedEvent(player, tileEntity.getLevel(), tileEntity.getBlockPos(), stack));
         }
     }
 }

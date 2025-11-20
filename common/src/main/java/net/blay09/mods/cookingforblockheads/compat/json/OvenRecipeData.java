@@ -1,16 +1,16 @@
 package net.blay09.mods.cookingforblockheads.compat.json;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class OvenRecipeData {
-    private ResourceLocation input;
-    private ResourceLocation output;
+    private Identifier input;
+    private Identifier output;
 
-    public ResourceLocation getInput() {
+    public Identifier getInput() {
         return input;
     }
 
-    public ResourceLocation getOutput() {
+    public Identifier getOutput() {
         return output;
     }
 }

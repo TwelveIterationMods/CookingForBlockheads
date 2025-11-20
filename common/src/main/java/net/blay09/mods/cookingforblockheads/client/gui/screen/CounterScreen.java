@@ -4,14 +4,13 @@ import net.blay09.mods.cookingforblockheads.menu.CounterMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class CounterScreen extends AbstractContainerScreen<CounterMenu> {
 
-    private static final ResourceLocation texture = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
+    private static final Identifier texture = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
     private final int inventoryRows;
 
     public CounterScreen(CounterMenu container, Inventory playerInventory, Component displayName) {

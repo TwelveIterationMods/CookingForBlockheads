@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
 import net.minecraft.core.RegistryAccess;

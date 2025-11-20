@@ -2,9 +2,7 @@ package net.blay09.mods.cookingforblockheads.registry;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.blay09.mods.balm.api.event.BalmEvents;
-import net.blay09.mods.balm.api.event.server.ServerReloadFinishedEvent;
-import net.blay09.mods.balm.api.event.server.ServerStartedEvent;
+import net.blay09.mods.balm.platform.event.callback.ServerLifecycleCallback;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeGroup;
@@ -14,7 +12,7 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 
@@ -22,16 +20,15 @@ import java.util.*;
 
 public class CookingForBlockheadsRegistry {
 
-    private static final Multimap<ResourceLocation, RecipeHolder<?>> recipesByItemId = ArrayListMultimap.create();
-    private static final Multimap<ResourceLocation, RecipeHolder<?>> recipesByGroup = ArrayListMultimap.create();
+    private static final Multimap<Identifier, RecipeHolder<?>> recipesByItemId = ArrayListMultimap.create();
+    private static final Multimap<Identifier, RecipeHolder<?>> recipesByGroup = ArrayListMultimap.create();
     private static final List<ISortButton> sortButtons = new ArrayList<>();
     private static final Map<ItemStack, Integer> ovenFuelItems = new HashMap<>();
     private static final Map<Class<? extends Recipe<?>>, KitchenRecipeHandler<?, ?>> kitchenRecipeHandlers = new HashMap<>();
 
-    public static void initialize(BalmEvents events) {
-        events.onEvent(ServerReloadFinishedEvent.class,
-                (ServerReloadFinishedEvent event) -> reload(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
-        events.onEvent(ServerStartedEvent.class, event -> reload(event.getServer().getRecipeManager(), event.getServer().registryAccess()));
+    public static void initialize() {
+        ServerLifecycleCallback.Reloaded.EVENT.register(server -> reload(server.getRecipeManager(), server.registryAccess()));
+        ServerLifecycleCallback.Started.EVENT.register(server -> reload(server.getRecipeManager(), server.registryAccess()));
     }
 
     private static void reload(RecipeManager recipeManager, RegistryAccess registryAccess) {
@@ -85,7 +82,7 @@ public class CookingForBlockheadsRegistry {
     }
 
     private static <T extends RecipeInput> boolean isEligibleRecipe(RecipeHolder<? extends Recipe<T>> recipe) {
-        return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id().location());
+        return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id().identifier());
     }
 
     public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<C, T> handler) {
@@ -134,7 +131,7 @@ public class CookingForBlockheadsRegistry {
         return recipesByGroup.get(itemId);
     }
 
-    public static Multimap<ResourceLocation, RecipeHolder<?>> getRecipesByItemId() {
+    public static Multimap<Identifier, RecipeHolder<?>> getRecipesByItemId() {
         return recipesByItemId;
     }
 }

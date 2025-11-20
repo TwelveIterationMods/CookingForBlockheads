@@ -1,9 +1,9 @@
 package net.blay09.mods.cookingforblockheads;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.event.LivingDamageEvent;
-import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.core.BalmRegistrars;
+import net.blay09.mods.balm.platform.event.callback.LivingEntityCallback;
+import net.blay09.mods.balm.platform.event.callback.ServerPlayerCallback;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.FoodStatsProvider;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
@@ -26,7 +26,7 @@ import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistr
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
@@ -69,33 +69,33 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
-        registrars.dataComponentTypes(MOD_ID, ModDataComponents::initialize);
+        registrars.dataComponentTypes(ModDataComponents::initialize);
         ModNetworking.initialize(Balm.networking());
-        registrars.blocks(MOD_ID, ModBlocks::initialize);
-        registrars.blockEntityTypes(MOD_ID, ModBlockEntities::initialize);
-        registrars.items(MOD_ID, ModItems::initialize);
-        registrars.creativeModeTabs(MOD_ID, ModItems::initialize);
-        registrars.recipeTypes(MOD_ID, ModRecipes::initialize);
-        registrars.menuTypes(MOD_ID, ModMenus::initialize);
-        registrars.registrar(Registries.SOUND_EVENT, MOD_ID, ModSounds::initialize);
+        registrars.blocks(ModBlocks::initialize);
+        registrars.blockEntityTypes( ModBlockEntities::initialize);
+        registrars.items(ModItems::initialize);
+        registrars.creativeModeTabs(ModItems::initialize);
+        registrars.recipeTypes(ModRecipes::initialize);
+        registrars.menuTypes(ModMenus::initialize);
+        registrars.registrar(Registries.SOUND_EVENT, ModSounds::initialize);
         ModCapabilities.initialize(Balm.capabilities());
 
         Balm.initializeIfLoaded(Compat.HARVESTCRAFT_FOOD_CORE, "net.blay09.mods.cookingforblockheads.compat.HarvestCraftAddon");
 
-        CookingForBlockheadsRegistry.initialize(Balm.events());
+        CookingForBlockheadsRegistry.initialize();
 
-        Balm.events().onEvent(PlayerLoginEvent.class, event -> {
-            final var data = Balm.hooks().getPersistentData(event.getPlayer());
+        ServerPlayerCallback.Login.EVENT.register(player -> {
+            final var data = Balm.hooks().getPersistentData(player);
             final var favoriteItemIds = data.getCompound("CookingForBlockheads")
                     .flatMap(it -> it.getCompound("FavoriteItemIds"))
-                    .map(it -> it.keySet().stream().map(ResourceLocation::parse).collect(Collectors.toSet())).orElse(Set.of());
-            Balm.networking().sendTo(event.getPlayer(), new FavoriteListMessage(favoriteItemIds));
+                    .map(it -> it.keySet().stream().map(Identifier::parse).collect(Collectors.toSet())).orElse(Set.of());
+            Balm.networking().sendTo(player, new FavoriteListMessage(favoriteItemIds));
         });
 
-        Balm.events().onEvent(LivingDamageEvent.class, CowJarHandler::onLivingDamage);
+        LivingEntityCallback.Damage.EVENT.register(CowJarHandler::onLivingDamage);
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

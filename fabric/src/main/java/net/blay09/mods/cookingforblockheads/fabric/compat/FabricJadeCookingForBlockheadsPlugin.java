@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.fabric.compat;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.compat.CookingForBlockheadsWailaUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
@@ -23,10 +23,10 @@ public class FabricJadeCookingForBlockheadsPlugin implements IWailaPlugin {
     }
 
     private static class GenericComponentProvider implements IBlockComponentProvider {
-        private final ResourceLocation uid;
+        private final Identifier uid;
         private final CookingForBlockheadsWailaUtils.TooltipAppender appender;
 
-        private GenericComponentProvider(ResourceLocation uid, CookingForBlockheadsWailaUtils.TooltipAppender appender) {
+        private GenericComponentProvider(Identifier uid, CookingForBlockheadsWailaUtils.TooltipAppender appender) {
             this.uid = uid;
             this.appender = appender;
         }
@@ -37,7 +37,7 @@ public class FabricJadeCookingForBlockheadsPlugin implements IWailaPlugin {
         }
 
         @Override
-        public ResourceLocation getUid() {
+        public Identifier getUid() {
             return uid;
         }
     }

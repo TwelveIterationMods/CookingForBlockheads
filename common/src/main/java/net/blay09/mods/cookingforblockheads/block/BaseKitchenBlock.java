@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.IMutableNameable;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.minecraft.core.BlockPos;

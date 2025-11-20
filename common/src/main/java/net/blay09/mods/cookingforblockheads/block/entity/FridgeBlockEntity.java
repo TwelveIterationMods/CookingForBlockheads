@@ -1,11 +1,10 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.block.entity.CustomRenderBoundingBox;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.container.CombinedContainer;
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.world.level.block.entity.BlockEntityUtils;
+import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.balm.world.BalmMenuProvider;
+import net.blay09.mods.balm.world.CombinedContainer;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -55,7 +54,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
+public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
@@ -188,7 +187,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return BlockEntityUtils.createUpdateTag(this, output -> {
+        return BalmBlockEntityUtils.createUpdateTag(registries, output -> {
             saveAdditional(output);
             output.putBoolean("IsForcedOpen", doorAnimator.isForcedOpen());
             output.putByte("NumPlayersUsing", (byte) doorAnimator.getNumPlayersUsing());
@@ -253,7 +252,6 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         return container;
     }
 
-    @Override
     public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 2, 2).getCenter());
     }
@@ -359,11 +357,11 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
     @Override
     @Nullable
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return BlockEntityUtils.createUpdatePacket(this);
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
     public void sync() {
-        BlockEntityUtils.sync(this);
+        BalmBlockEntityUtils.sync(this);
     }
 
 }

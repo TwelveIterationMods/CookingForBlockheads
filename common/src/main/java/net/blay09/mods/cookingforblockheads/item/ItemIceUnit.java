@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.item;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
 import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.minecraft.ChatFormatting;

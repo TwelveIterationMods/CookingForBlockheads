@@ -9,7 +9,7 @@ import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
@@ -19,10 +19,10 @@ public class SpiceOfLifeAddon {
         CookingForBlockheadsAPI.addSortButton(new ISortButton() {
 
             private final ComparatorName fallback = new ComparatorName();
-            private static final ResourceLocation icon = ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
+            private static final Identifier icon = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
 
             @Override
-            public ResourceLocation getIcon() {
+            public Identifier getIcon() {
                 return icon;
             }
 

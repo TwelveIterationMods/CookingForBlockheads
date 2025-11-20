@@ -1,12 +1,8 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import com.google.common.collect.Lists;
-import net.blay09.mods.balm.api.DeferredObject;
-import net.blay09.mods.balm.api.client.rendering.BalmModels;
 import net.blay09.mods.balm.client.renderer.block.model.BalmBlockStateModelRegistrar;
 import net.blay09.mods.balm.client.renderer.block.model.DeferredBlockStateModel;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +28,7 @@ public class ModModels {
     public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoors;
     public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsFlipped;
 
-    private static ResourceLocation modelId(String name, @Nullable DyeColor color) {
+    private static Identifier modelId(String name, @Nullable DyeColor color) {
         return id("block/" + (color != null ? color.getSerializedName() + "_" : "") + name);
     }
 

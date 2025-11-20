@@ -13,7 +13,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -249,7 +249,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern(" D ")
                         .pattern("CBC")
                         .pattern(" D ")
-                        .define('D', TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "gems/diamond")))
+                        .define('D', TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "gems/diamond")))
                         .define('C', Blocks.CRAFTING_TABLE)
                         .define('B', ModItems.recipeBook)
                         .unlockedBy("has_recipe_book", has(ModItems.recipeBook))

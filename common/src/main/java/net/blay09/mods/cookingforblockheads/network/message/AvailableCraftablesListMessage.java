@@ -6,7 +6,7 @@ import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 public record AvailableCraftablesListMessage(List<CraftableWithStatus> craftables) implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<AvailableCraftablesListMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
+    public static final CustomPacketPayload.Type<AvailableCraftablesListMessage> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "available_craftables_list"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AvailableCraftablesListMessage> STREAM_CODEC = StreamCodec.composite(

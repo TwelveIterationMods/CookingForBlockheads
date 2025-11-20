@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 
 import net.blay09.mods.cookingforblockheads.block.entity.FruitBasketBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
