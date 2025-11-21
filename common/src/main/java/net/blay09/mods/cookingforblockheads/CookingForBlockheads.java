@@ -84,7 +84,7 @@ public class CookingForBlockheads {
 
         CookingForBlockheadsRegistry.initialize();
 
-        ServerPlayerCallback.Login.EVENT.register(player -> {
+        ServerPlayerCallback.Join.EVENT.register(player -> {
             final var data = Balm.hooks().getPersistentData(player);
             final var favoriteItemIds = data.getCompound("CookingForBlockheads")
                     .flatMap(it -> it.getCompound("FavoriteItemIds"))
@@ -92,7 +92,7 @@ public class CookingForBlockheads {
             Balm.networking().sendTo(player, new FavoriteListMessage(favoriteItemIds));
         });
 
-        LivingEntityCallback.Damage.EVENT.register(CowJarHandler::onLivingDamage);
+        LivingEntityCallback.Damage.Before.EVENT.register(CowJarHandler::onLivingDamage);
     }
 
     public static Identifier id(String path) {

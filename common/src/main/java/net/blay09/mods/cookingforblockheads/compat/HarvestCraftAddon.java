@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.balm.platform.event.callback.BlockCallback;
+import net.blay09.mods.balm.platform.event.callback.InteractionEventResult;
 import net.blay09.mods.balm.platform.event.callback.ItemCallback;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.ChatFormatting;
@@ -46,23 +47,23 @@ public class HarvestCraftAddon {
 
         BlockCallback.Use.EVENT.register((player, level, hand, hitResult) -> {
             if (!cuttingBoardFound) {
-                return InteractionResult.PASS;
+                return InteractionEventResult.DEFAULT;
             }
 
             ItemStack heldItem = player.getItemInHand(hand);
             if (heldItem.getItem() != cuttingBoardItem) {
-                return InteractionResult.PASS;
+                return InteractionEventResult.DEFAULT;
             }
 
             Direction face = hitResult.getDirection();
             if (face != Direction.UP) {
-                return InteractionResult.PASS;
+                return InteractionEventResult.DEFAULT;
             }
 
             BlockPos pos = hitResult.getBlockPos();
             BlockState clickedBlock = level.getBlockState(pos);
             if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.getBlock() == ModBlocks.cuttingBoard) {
-                return InteractionResult.PASS;
+                return InteractionEventResult.DEFAULT;
             }
 
             BlockPos relativePos = pos.relative(face);
@@ -76,10 +77,10 @@ public class HarvestCraftAddon {
 
                 player.swing(hand);
                 player.playSound(SoundEvents.WOOD_PLACE, 1f, 1f);
-                return InteractionResult.SUCCESS;
+                return InteractionEventResult.SUCCESS;
             }
 
-            return InteractionResult.PASS;
+            return InteractionEventResult.DEFAULT;
         });
     }
 
