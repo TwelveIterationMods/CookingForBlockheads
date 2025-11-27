@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.Balm;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.neoforge.NeoForgeLoadContext;
+import net.blay09.mods.balm.neoforge.platform.runtime.NeoForgeLoadContext;
+import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -23,10 +23,8 @@ import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 public class NeoForgeCookingForBlockheads {
 
     public NeoForgeCookingForBlockheads(IEventBus eventBus) {
-        Balm.events().onEvent(OvenItemSmeltedEvent.class, orig -> {
-            PlayerEvent.ItemSmeltedEvent event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem(), 1);
-            NeoForge.EVENT_BUS.post(event);
-        });
+        OvenItemSmeltedEvent.EVENT.register(event
+                -> NeoForge.EVENT_BUS.post(new PlayerEvent.ItemSmeltedEvent(event.player(), event.resultItem(), 1)));
 
         final var context = new NeoForgeLoadContext(eventBus);
         Balm.initializeMod(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);

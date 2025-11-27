@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client;
 
-import net.blay09.mods.balm.api.client.BalmClient;
-import net.blay09.mods.balm.neoforge.NeoForgeLoadContext;
+import net.blay09.mods.balm.client.BalmClient;
+import net.blay09.mods.balm.neoforge.platform.runtime.NeoForgeLoadContext;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
