@@ -12,9 +12,7 @@ import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
-import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.compat.recipeviewers.CowJarRecipe;
 import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
@@ -26,15 +24,12 @@ import net.blay09.mods.cookingforblockheads.network.message.FavoriteListMessage;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
@@ -64,29 +59,6 @@ public class CookingForBlockheads {
         });
 
         Balm.modSupport().milkFluid().enable();
-
-        Balm.modSupport().recipeViewers().register(id("recipes"), registrar -> {
-            registrar.registerScreenOcclusion(KitchenScreen.class, containerScreen -> containerScreen.getSortingButtons().stream()
-                    .map(button -> new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()))
-                    .toList());
-
-            if (CookingForBlockheadsConfig.getActive().cowJarEnabled) {
-                registrar.registerCustomRecipeType(id("cow_jar"), CowJarRecipe.class)
-                        .withCraftingStation(ModBlocks.cowJar)
-                        .withRecipe(new CowJarRecipe())
-                        .buildDisplay(display -> display
-                                .title(Component.translatable("container.cookingforblockheads.cow_jar"))
-                                .icon(ModBlocks.cowJar)
-                                .background(id("textures/gui/jei_cow_jar.png"))
-                                .size(150, 110)
-                                .slots((recipe, slots) -> {
-                                    slots.inputSlot(65, 1).add(Items.ANVIL);
-                                    slots.craftingStationSlot(65, 77).withSlotBackground().add(ModBlocks.milkJar);
-                                    slots.outputSlot(123, 77).withSlotBackground().add(ModBlocks.cowJar);
-                                })
-                        );
-            }
-        });
 
         CookingForBlockheadsAPI.addSortButton(new NameSortButton());
         CookingForBlockheadsAPI.addSortButton(new HungerSortButton());

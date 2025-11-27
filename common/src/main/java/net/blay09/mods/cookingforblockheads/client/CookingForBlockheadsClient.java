@@ -1,24 +1,32 @@
 package net.blay09.mods.cookingforblockheads.client;
 
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.client.BalmClientRegistrars;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.balm.platform.event.callback.ItemCallback;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
+import net.blay09.mods.cookingforblockheads.compat.recipeviewers.CowJarRecipe;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.kuma.api.Kuma;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
 public class CookingForBlockheadsClient {
 
@@ -30,6 +38,29 @@ public class CookingForBlockheadsClient {
         registrars.blockColors(ModRenderers::initialize);
         registrars.blockRenderTypes(ModRenderers::initialize);
         registrars.blockStateModels(ModModels::initialize);
+
+        Balm.modSupport().recipeViewers().register(id("recipes"), registrar -> {
+            registrar.registerScreenOcclusion(KitchenScreen.class, containerScreen -> containerScreen.getSortingButtons().stream()
+                    .map(button -> new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()))
+                    .toList());
+
+            if (CookingForBlockheadsConfig.getActive().cowJarEnabled) {
+                registrar.registerCustomRecipeType(id("cow_jar"), CowJarRecipe.class)
+                        .withCraftingStation(ModBlocks.cowJar)
+                        .withRecipe(new CowJarRecipe())
+                        .buildDisplay(display -> display
+                                .title(Component.translatable("container.cookingforblockheads.cow_jar"))
+                                .icon(ModBlocks.cowJar)
+                                .background(id("textures/gui/jei_cow_jar.png"))
+                                .size(150, 110)
+                                .slots((recipe, slots) -> {
+                                    slots.inputSlot(65, 1).add(Items.ANVIL);
+                                    slots.craftingStationSlot(65, 77).withSlotBackground().add(ModBlocks.milkJar);
+                                    slots.outputSlot(123, 77).withSlotBackground().add(ModBlocks.cowJar);
+                                })
+                        );
+            }
+        });
 
         ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, flags) -> {
             if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
