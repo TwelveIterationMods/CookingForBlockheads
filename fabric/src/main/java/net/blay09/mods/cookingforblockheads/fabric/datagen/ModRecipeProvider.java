@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
-import net.blay09.mods.balm.api.tag.BalmItemTags;
+import net.blay09.mods.balm.tags.BalmItemTags;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.item.ModItems;

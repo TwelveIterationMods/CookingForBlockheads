@@ -1,8 +1,8 @@
 package net.blay09.mods.cookingforblockheads.fabric;
 
 import net.blay09.mods.balm.Balm;
-import net.blay09.mods.balm.api.EmptyLoadContext;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
+import net.blay09.mods.balm.fabric.platform.runtime.FabricLoadContext;
+import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
@@ -15,7 +15,7 @@ import net.minecraft.world.Container;
 public class FabricCookingForBlockheads implements ModInitializer {
     @Override
     public void onInitialize() {
-        Balm.initializeMod(CookingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, CookingForBlockheads::initialize);
+        Balm.initializeMod(CookingForBlockheads.MOD_ID, FabricLoadContext.INSTANCE, CookingForBlockheads::initialize);
 
         var itemProviderLookup = BlockApiLookup.get(Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "kitchen_item_provider"),
                 KitchenItemProvider.class,
