@@ -79,7 +79,6 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
 
         final var moonPhase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
         final var moonAngle = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_ANGLE, pos);
-        System.out.println(moonAngle);
         return moonPhase == MoonPhase.FULL_MOON && level.isDarkOutside();
     }
 
