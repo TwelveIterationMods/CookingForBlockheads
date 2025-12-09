@@ -6,7 +6,6 @@ import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.world.Container;
@@ -29,8 +28,6 @@ public class NeoForgeCookingForBlockheads {
         final var context = new NeoForgeLoadContext(eventBus);
         Balm.initializeMod(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
 
-        eventBus.addListener(this::enqueueIMC);
-
         Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");
 
         Balm.capabilities()
@@ -50,12 +47,6 @@ public class NeoForgeCookingForBlockheads {
                     }
                     return null;
                 });
-    }
-
-    private void enqueueIMC(InterModEnqueueEvent event) {
-        if (Balm.platform().isModLoaded(Compat.THEONEPROBE)) {
-            TheOneProbeAddon.register();
-        }
     }
 
 }

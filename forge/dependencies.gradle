@@ -2,9 +2,4 @@ dependencies {
     implementation(libs.balmForge) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
-    compileOnly("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
-    compileOnly("mcp.mobius.waila:wthit-api:forge-$wthit_version")
-    compileOnly("curse.maven:the-one-probe-245211:$theoneprobe_version")
-    // runtimeOnly fg.deobf("curse.maven:croptopia-415438:5003016")
-    // runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:4344754")
 }

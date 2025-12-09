@@ -2,10 +2,6 @@ dependencies {
     implementation(libs.balmNeoForge) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
-    compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
-    compileOnly "curse.maven:jade-324717:$jade_neoforge_version"
-    compileOnly "mcp.mobius.waila:wthit-api:forge-$wthit_version"
-    compileOnly "curse.maven:the-one-probe-245211:$theoneprobe_version"
 
     compileOnly "curse.maven:spice-of-life-carrot-edition-277616:6695035"
 }

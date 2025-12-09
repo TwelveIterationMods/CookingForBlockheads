@@ -2,7 +2,4 @@ dependencies {
     implementation(libs.balmCommon) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
-    compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
-
-    compileOnly "mcp.mobius.waila:wthit-api:mojmap-$wthit_version"
 }

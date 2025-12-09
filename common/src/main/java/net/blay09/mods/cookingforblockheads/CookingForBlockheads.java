@@ -13,6 +13,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.HungerSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.NameSortButton;
 import net.blay09.mods.cookingforblockheads.client.gui.SaturationSortButton;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
+import net.blay09.mods.cookingforblockheads.compat.hudinfo.ModHudInfo;
 import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
@@ -93,6 +94,8 @@ public class CookingForBlockheads {
         });
 
         LivingEntityCallback.Damage.Before.EVENT.register(CowJarHandler::onLivingDamage);
+
+        ModHudInfo.initialize(Balm.modSupport().hudInfo());
     }
 
     public static Identifier id(String path) {

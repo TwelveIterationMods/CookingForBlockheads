@@ -11,7 +11,6 @@ import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
-import net.blay09.mods.cookingforblockheads.compat.TheOneProbeAddon;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.world.Container;
@@ -20,7 +19,6 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -47,8 +45,6 @@ public class ForgeCookingForBlockheads {
             BalmClient.initializeMod(CookingForBlockheads.MOD_ID, loadContext, CookingForBlockheadsClient::initialize);
         }
 
-        InterModEnqueueEvent.getBus(context.getModBusGroup()).addListener(this::enqueueIMC);
-
         Balm.capabilities()
                 .registerFallbackBlockEntityProvider(id("kitchen_item_providers_tag"), ModCapabilities.KITCHEN_ITEM_PROVIDER, (blockEntity, direction) -> {
                     if (blockEntity.getBlockState().is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
@@ -66,12 +62,6 @@ public class ForgeCookingForBlockheads {
                     }
                     return null;
                 });
-    }
-
-    private void enqueueIMC(InterModEnqueueEvent event) {
-        if (Balm.platform().isModLoaded(Compat.THEONEPROBE)) {
-            TheOneProbeAddon.register();
-        }
     }
 
 }

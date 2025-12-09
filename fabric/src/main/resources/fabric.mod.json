@@ -28,9 +28,6 @@
     ],
     "fabric-datagen": [
       "net.blay09.mods.cookingforblockheads.fabric.datagen.ModDataGenerator"
-    ],
-    "jade": [
-      "net.blay09.mods.cookingforblockheads.fabric.compat.FabricJadeCookingForBlockheadsPlugin"
     ]
   },
   "mixins": [
@@ -52,10 +49,6 @@
       "links": {
         "modmenu.discord": "https://discord.gg/VAfZ2Nau6j"
       }
-    },
-    "waila:plugins": {
-      "id": "cookingforblockheads:wthit",
-      "initializer": "net.blay09.mods.cookingforblockheads.compat.WTHITCookingForBlockheadsPlugin"
     }
   }
 }
