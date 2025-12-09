@@ -83,7 +83,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
                 return InteractionResult.SUCCESS;
             }
 
-            if (!cookingTable.hasNoFilterBook() && itemStack.getItem() == ModItems.noFilterBook) {
+            if (!cookingTable.hasNoFilterBook() && itemStack.is(ModItems.noFilterBook)) {
                 cookingTable.setNoFilterBook(itemStack.split(1));
                 return InteractionResult.SUCCESS;
             }

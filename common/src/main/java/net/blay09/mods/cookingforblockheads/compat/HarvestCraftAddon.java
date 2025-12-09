@@ -61,7 +61,7 @@ public class HarvestCraftAddon {
 
             BlockPos pos = hitResult.getBlockPos();
             BlockState clickedBlock = level.getBlockState(pos);
-            if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.getBlock() == ModBlocks.cuttingBoard) {
+            if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.is(ModBlocks.cuttingBoard)) {
                 return InteractionEventResult.DEFAULT;
             }
 

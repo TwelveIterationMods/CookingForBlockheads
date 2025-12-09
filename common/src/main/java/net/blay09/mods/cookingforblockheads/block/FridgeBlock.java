@@ -100,7 +100,7 @@ public class FridgeBlock extends BaseKitchenBlock {
             return InteractionResult.FAIL;
         }
 
-        if (itemStack.getItem() == ModItems.preservationChamber || itemStack.getItem() == ModItems.iceUnit) {
+        if (itemStack.is(ModItems.preservationChamber) || itemStack.is(ModItems.iceUnit)) {
             return InteractionResult.PASS;
         }
 

@@ -52,7 +52,7 @@ public class FruitBasketBlock extends BaseKitchenBlock {
 
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-        if (itemStack.getItem() == ModItems.preservationChamber) {
+        if (itemStack.is(ModItems.preservationChamber)) {
             return InteractionResult.PASS;
         }
 
