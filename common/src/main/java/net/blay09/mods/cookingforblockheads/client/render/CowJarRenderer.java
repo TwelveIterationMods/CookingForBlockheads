@@ -78,8 +78,9 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
         }
 
         final var moonPhase = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, pos);
-        final var moonAngle = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_ANGLE, pos);
-        return moonPhase == MoonPhase.FULL_MOON && level.isDarkOutside();
+        final var moonAngle = level.environmentAttributes().getValue(EnvironmentAttributes.MOON_ANGLE, pos) % 360;
+        boolean moonVisible = (moonAngle >= 270 || moonAngle <= 87.5);
+        return moonPhase == MoonPhase.FULL_MOON && moonVisible;
     }
 
     private void headbang(@Nullable Level level, CowJarRenderState renderState, int bpm) {
