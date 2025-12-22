@@ -2,15 +2,14 @@ package net.blay09.mods.cookingforblockheads;
 
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.client.BalmClient;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
+import net.blay09.mods.balm.forge.platform.capabilities.internal.ForgeBalmCapabilities;
 import net.blay09.mods.balm.forge.platform.runtime.ForgeLoadContext;
-import net.blay09.mods.balm.forge.capability.ForgeBalmCapabilities;
+import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
-import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.world.Container;
@@ -29,8 +28,8 @@ public class ForgeCookingForBlockheads {
 
     public ForgeCookingForBlockheads(FMLJavaModLoadingContext context) {
         final var loadContext = new ForgeLoadContext(context.getModBusGroup());
-        Balm.events().onEvent(OvenItemSmeltedEvent.class, orig -> {
-            final var event = new PlayerEvent.ItemSmeltedEvent(orig.getPlayer(), orig.getResultItem());
+        OvenItemSmeltedEvent.EVENT.register( orig -> {
+            final var event = new PlayerEvent.ItemSmeltedEvent(orig.player(), orig.resultItem());
             PlayerEvent.ItemSmeltedEvent.BUS.post(event);
         });
 
