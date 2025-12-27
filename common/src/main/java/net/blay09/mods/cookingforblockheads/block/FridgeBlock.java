@@ -231,11 +231,13 @@ public class FridgeBlock extends BaseKitchenBlock {
         if (blockEntity instanceof FridgeBlockEntity fridge) {
             BlockPos bottomPos = fridge.getBaseFridge().getBlockPos();
             BlockPos topPos = bottomPos.above();
-            return super.recolorBlock(world.getBlockState(bottomPos), world, bottomPos, facing, color) && super.recolorBlock(world.getBlockState(topPos),
-                    world,
-                    topPos,
-                    facing,
-                    color);
+
+            if (world.getBlockState(bottomPos).getBlock().equals(world.getBlockState(topPos).getBlock())) {
+                return super.recolorBlock(world.getBlockState(bottomPos), world, bottomPos, facing, color) && 
+                super.recolorBlock(world.getBlockState(topPos), world, topPos, facing, color);
+            } else {
+                return super.recolorBlock(world.getBlockState(bottomPos), world, bottomPos, facing, color);
+            }
         }
 
         return false;
