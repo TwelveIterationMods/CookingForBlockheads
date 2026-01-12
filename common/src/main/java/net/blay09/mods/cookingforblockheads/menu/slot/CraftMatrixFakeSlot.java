@@ -26,8 +26,7 @@ public class CraftMatrixFakeSlot extends FakeSlot {
         if (ingredients != null) {
             for (ItemStack itemStack : ingredients) {
                 if (!itemStack.isEmpty()) {
-                    itemStack.setCount(1);
-                    visibleStacks.add(itemStack);
+                    visibleStacks.add(itemStack.copyWithCount(1));
                 }
             }
         }
