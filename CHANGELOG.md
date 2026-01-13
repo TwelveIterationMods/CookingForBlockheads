@@ -1,1 +1,1 @@
-- Fixed Ingredient ItemStack being modified when displaying in fake slot #774
+- Fixed recipe items displayed in fake slots being modified, possibly resulting in compatibility issues
