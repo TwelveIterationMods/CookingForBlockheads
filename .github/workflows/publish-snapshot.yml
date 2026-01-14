@@ -59,6 +59,9 @@ jobs:
           version: ${{ steps.extract-version.outputs.version }}
           bump: patch
         id: bump-version
+      - name: Workaround for FG7
+        run: ./gradlew
+        if: matrix.loader == 'forge'
       - name: Publish
         run: ./gradlew :${{ matrix.loader }}:${{ matrix.task }} '-Pversion=${{ steps.bump-version.outputs.version }}-SNAPSHOT' '-PmavenUsername=${{ secrets.MAVEN_USER }}' '-PmavenPassword=${{ secrets.MAVEN_PASSWORD }}'
     needs: prepare-matrix
