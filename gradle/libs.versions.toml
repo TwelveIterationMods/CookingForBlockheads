@@ -1,5 +1,5 @@
 [versions]
-balm = "21.11.2"
+balm = "21.11.5"
 minecraft = "1.21.11"
 neoForm = "1.21.11-20251209.172050"
 neoForge = "21.11.0-beta"
@@ -25,9 +25,9 @@ fabricLoader = { module = "net.fabricmc:fabric-loader", version.ref = "fabricLoa
 mixin = { module = "org.spongepowered:mixin", version = "0.8.7" }
 
 [plugins]
-fabricLoom = { id = "fabric-loom", version = "1.13-SNAPSHOT" }
-modDevGradle = { id = "net.neoforged.moddev", version = "2.0.107" }
-forgeGradle = { id = "net.minecraftforge.gradle", version = "[6.0.25,6.2)" }
+fabricLoom = { id = "fabric-loom", version = "1.14-SNAPSHOT" }
+modDevGradle = { id = "net.neoforged.moddev", version = "2.0.139" }
+forgeGradle = { id = "net.minecraftforge.gradle", version = "[7,8)" }
 mixin = { id = "org.spongepowered.mixin", version = "0.7-SNAPSHOT" }
 curseForgeGradle = { id = "net.darkhax.curseforgegradle", version = "1.1.26" }
 modrinthMinotaur = { id = "com.modrinth.minotaur", version = "2.+" }
