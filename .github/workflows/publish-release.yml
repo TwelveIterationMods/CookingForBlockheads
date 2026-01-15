@@ -139,6 +139,9 @@ jobs:
           cache: 'gradle'
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
+      - name: Workaround for FG7
+        run: ./gradlew
+        if: matrix.loader == 'forge'
       - name: Build common artifact
         run: ./gradlew :common:build '-Pversion=${{needs.create-release.outputs.version}}'
       - name: Upload common artifact
@@ -172,6 +175,9 @@ jobs:
         with:
           name: common-artifact
           path: common/build
+      - name: Workaround for FG7
+        run: ./gradlew
+        if: matrix.loader == 'forge'
       - name: Build ${{ matrix.loader }} artifact
         run: ./gradlew :${{ matrix.loader }}:build '-Pversion=${{needs.create-release.outputs.version}}'
       - name: Upload ${{ matrix.loader }} artifact
