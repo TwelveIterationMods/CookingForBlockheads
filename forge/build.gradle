@@ -49,12 +49,6 @@ tasks.named('jar', Jar) {
     }
 }
 
-fgtools {
-    configure('mavenizer') {
-        classpath = configurations.detachedConfiguration(dependencies.create('net.minecraftforge:minecraft-mavenizer:0.4.19'))
-    }
-}
-
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 apply from: rootProject.file('repositories.gradle')
