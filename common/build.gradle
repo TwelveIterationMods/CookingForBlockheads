@@ -13,12 +13,12 @@ neoForge {
     parchment.parchmentArtifact = libs.parchment.get().toString()
 }
 
+apply from: rootProject.file('repositories.gradle')
+apply from: 'dependencies.gradle'
+
 dependencies {
     compileOnly libs.mixin
 }
-
-apply from: rootProject.file('repositories.gradle')
-apply from: 'dependencies.gradle'
 
 configurations {
     commonJava {

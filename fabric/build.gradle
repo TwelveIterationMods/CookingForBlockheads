@@ -7,6 +7,9 @@ plugins {
     alias libs.plugins.modrinthMinotaur
 }
 
+apply from: rootProject.file('repositories.gradle')
+apply from: 'dependencies.gradle'
+
 dependencies {
     minecraft libs.minecraft
     mappings loom.layered() {
@@ -18,9 +21,6 @@ dependencies {
     modImplementation libs.fabricLoader
     modImplementation libs.fabricApi
 }
-
-apply from: rootProject.file('repositories.gradle')
-apply from: 'dependencies.gradle'
 
 loom {
     def aw = project(":common").file("src/main/resources/${mod_id}.accesswidener")

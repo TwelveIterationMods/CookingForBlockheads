@@ -25,6 +25,9 @@ minecraft {
     }
 }
 
+apply from: rootProject.file('repositories.gradle')
+apply from: 'dependencies.gradle'
+
 repositories {
     maven minecraft.mavenizer
     maven fg.forgeMaven
@@ -50,9 +53,6 @@ tasks.named('jar', Jar) {
 }
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
-
-apply from: rootProject.file('repositories.gradle')
-apply from: 'dependencies.gradle'
 
 tasks.register('curseforge', TaskPublishCurseForge) {
     dependsOn('build')
