@@ -255,6 +255,7 @@ public class FridgeBlock extends BaseKitchenBlock {
                 .setValue(FACING, state.getValue(FACING))
                 .setValue(MODEL_TYPE, state.getValue(MODEL_TYPE))
                 .setValue(PRESERVATION_CHAMBER, state.getValue(PRESERVATION_CHAMBER))
-                .setValue(ICE_UNIT, state.getValue(ICE_UNIT));
+                .setValue(ICE_UNIT, state.getValue(ICE_UNIT))
+                .setValue(FLIPPED, state.getValue(FLIPPED));
     }
 }
