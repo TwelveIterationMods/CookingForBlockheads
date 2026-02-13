@@ -202,19 +202,16 @@ public class FridgeBlock extends BaseKitchenBlock {
     }
 
     @Override
-    protected boolean recolorBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction facing, DyeColor color) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof FridgeBlockEntity fridge) {
-            BlockPos bottomPos = fridge.getBaseFridge().getBlockPos();
-            BlockPos topPos = bottomPos.above();
-            return super.recolorBlock(world.getBlockState(bottomPos), world, bottomPos, facing, color) && super.recolorBlock(world.getBlockState(topPos),
-                    world,
-                    topPos,
-                    facing,
-                    color);
+    protected boolean recolorBlock(BlockState state, LevelAccessor level, BlockPos pos, Direction facing, DyeColor color) {
+        final var otherPos = switch(state.getValue(MODEL_TYPE)) {
+            case SMALL -> null;
+            case LARGE_LOWER -> pos.above();
+            case LARGE_UPPER -> pos.below();
+        };
+        if (otherPos != null) {
+            super.recolorBlock(level.getBlockState(otherPos), level, otherPos, facing, color);
         }
-
-        return false;
+        return super.recolorBlock(state, level, pos, facing, color);
     }
 
     @Override
