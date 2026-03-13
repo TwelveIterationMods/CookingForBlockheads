@@ -1,2 +1,2 @@
-- Updated to Forge and Fabric
-- Fixed usage of environment attributes
+- Fixed fridges sometimes flipping when dyeing them
+- Fixed possible crash when dying a fridge
