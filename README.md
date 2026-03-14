@@ -55,10 +55,10 @@ repositories {
 dependencies {
     // Replace ${cookingforblockheads_file_id} and ${balm_file_id} with the id of the file you want to depend on.
     // You can find it in the URL of the file on CurseForge (e.g. 3914527).
-    // Forge: implementation fg.deobf("curse.maven:balm-531761:${balm_file_id}")
+    // Forge: implementation "curse.maven:balm-531761:${balm_file_id}"
     // Fabric: modImplementation "curse.maven:balm-fabric-500525:${balm_file_id}"
     
-    // Forge: implementation fg.deobf("curse.maven:cooking-for-blockheads-231484:${cookingforblockheads_file_id}")
+    // Forge: implementation "curse.maven:cooking-for-blockheads-231484:${cookingforblockheads_file_id}"
     // Fabric: modImplementation "curse.maven:cooking-for-blockheads-fabric-634546:${cookingforblockheads_file_id}"
 }
 ```
@@ -82,11 +82,11 @@ dependencies {
     // Replace ${cookingforblockheads_version} and ${balm_version} with the version you want to depend on. 
     // You can find the latest version for a given Minecraft version at https://maven.twelveiterations.com/service/rest/repository/browse/maven-public/net/blay09/mods/balm-common/ and https://maven.twelveiterations.com/service/rest/repository/browse/maven-public/net/blay09/mods/cookingforblockheads-common/
     // Common (mojmap): implementation "net.blay09.mods:balm-common:${balm_version}"
-    // Forge: implementation fg.deobf("net.blay09.mods:balm-forge:${balm_version}")
+    // Forge: implementation "net.blay09.mods:balm-forge:${balm_version}"
     // Fabric: modImplementation "net.blay09.mods:balm-fabric:${balm_version}"
     
     // Common (mojmap): implementation "net.blay09.mods:cookingforblockheads-common:${cookingforblockheads_version}"
-    // Forge: implementation fg.deobf("net.blay09.mods:cookingforblockheads-forge:${cookingforblockheads_version}")
+    // Forge: implementation "net.blay09.mods:cookingforblockheads-forge:${cookingforblockheads_version}"
     // Fabric: modImplementation "net.blay09.mods:cookingforblockheads-fabric:${cookingforblockheads_version}"
 }
 ```
