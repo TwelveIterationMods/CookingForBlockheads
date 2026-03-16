@@ -11,11 +11,31 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.SoundType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public class ModBlocks {
+
+    public static final Set<DyeColor> supportedColors = Collections.synchronizedSet(new HashSet<>());
+
+    static {
+        supportedColors.add(DyeColor.WHITE);
+        supportedColors.add(DyeColor.ORANGE);
+        supportedColors.add(DyeColor.MAGENTA);
+        supportedColors.add(DyeColor.LIGHT_BLUE);
+        supportedColors.add(DyeColor.YELLOW);
+        supportedColors.add(DyeColor.LIME);
+        supportedColors.add(DyeColor.PINK);
+        supportedColors.add(DyeColor.GRAY);
+        supportedColors.add(DyeColor.LIGHT_GRAY);
+        supportedColors.add(DyeColor.CYAN);
+        supportedColors.add(DyeColor.PURPLE);
+        supportedColors.add(DyeColor.BLUE);
+        supportedColors.add(DyeColor.BROWN);
+        supportedColors.add(DyeColor.GREEN);
+        supportedColors.add(DyeColor.RED);
+        supportedColors.add(DyeColor.BLACK);
+    }
 
     public static DiscriminatedBlocks<DyeColor> cookingTables;
     public static DiscriminatedBlocks<DyeColor> counters;
@@ -67,7 +87,7 @@ public class ModBlocks {
                 .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cutting_board.description")))
                 .asDeferredBlock();
 
-        final var colors = Set.of(DyeColor.values());
+        final var colors = supportedColors;
         final var colorsWithNull = new HashSet<@Nullable DyeColor>(colors);
         colorsWithNull.add(null);
         ovens = blocks.registerDiscriminated(colors,
