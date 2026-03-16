@@ -44,7 +44,7 @@ public class InternalMethodsImpl implements InternalMethods {
     }
 
     @Override
-    public <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler) {
+    public <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler) {
         CookingForBlockheadsRegistry.registerKitchenRecipeHandler(recipeClass, kitchenRecipeHandler);
     }
 

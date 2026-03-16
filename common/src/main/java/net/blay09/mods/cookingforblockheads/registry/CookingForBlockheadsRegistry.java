@@ -8,8 +8,8 @@ import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeGroup;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
 import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -27,17 +27,21 @@ public class CookingForBlockheadsRegistry {
     private static final Map<Class<? extends Recipe<?>>, KitchenRecipeHandler<?, ?>> kitchenRecipeHandlers = new HashMap<>();
 
     public static void initialize() {
-        ServerLifecycleCallback.Reloaded.EVENT.register(server -> reload(server.getRecipeManager(), server.registryAccess()));
-        ServerLifecycleCallback.Started.EVENT.register(server -> reload(server.getRecipeManager(), server.registryAccess()));
+        ServerLifecycleCallback.Reloaded.EVENT.register(server -> reload(server.getRecipeManager()));
+        ServerLifecycleCallback.Started.EVENT.register(server -> reload(server.getRecipeManager()));
     }
 
-    private static void reload(RecipeManager recipeManager, RegistryAccess registryAccess) {
+    private static void reload(RecipeManager recipeManager) {
         recipesByItemId.clear();
-        loadRecipesByType(recipeManager, registryAccess, RecipeType.CRAFTING);
-        loadRecipesByType(recipeManager, registryAccess, RecipeType.SMELTING);
+        loadRecipesByType(recipeManager, ModRecipes.ovenRecipes.type());
+        loadRecipesByType(recipeManager, RecipeType.CRAFTING);
+        loadRecipesByType(recipeManager, RecipeType.CAMPFIRE_COOKING);
+        loadRecipesByType(recipeManager, RecipeType.SMOKING);
+        loadRecipesByType(recipeManager, RecipeType.SMELTING);
     }
 
-    private static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
+    @SuppressWarnings("unchecked")
+    private static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RecipeType<T> recipeType) {
         final var recipeMap = ((RecipeManagerAccessor) recipeManager).getRecipes();
         for (final var recipeHolder : recipeMap.byType(recipeType)) {
             if (!isEligibleRecipe(recipeHolder)) {
@@ -52,8 +56,10 @@ public class CookingForBlockheadsRegistry {
 
             final var resultItem = recipeHandler.predictResultItem(recipe);
             if (isEligibleResultItem(resultItem)) {
-                final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
-                recipesByItemId.put(itemId, recipeHolder);
+                if (recipe instanceof AbstractCookingRecipe cookingRecipe && isOvenDuplicate(cookingRecipe, (KitchenRecipeHandler<?, AbstractCookingRecipe>) recipeHandler, resultItem)) {
+                    continue;
+                }
+                recipesByItemId.put(BuiltInRegistries.ITEM.getKey(resultItem.getItem()), recipeHolder);
 
                 final var groups = getGroups();
                 for (final var group : groups) {
@@ -67,6 +73,22 @@ public class CookingForBlockheadsRegistry {
                 }
             }
         }
+    }
+
+    private static <T extends Recipe<?>> boolean isOvenDuplicate(T recipe, KitchenRecipeHandler<?, T> recipeHandler, ItemStack resultItem) {
+        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
+        final var existing = recipesByItemId.get(itemId);
+        final var ingredients = recipeHandler.getIngredients(recipe);
+        for (final var recipeHolder : existing) {
+            final var otherRecipeHandler = getKitchenRecipeHandler(recipeHolder.value());
+            final var otherIngredients = otherRecipeHandler.getIngredients(recipeHolder);
+            final var otherResultItem = otherRecipeHandler.predictResultItem(recipeHolder);
+            if (ItemStack.isSameItemSameComponents(resultItem, otherResultItem) && ingredients.equals(otherIngredients)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static List<KitchenRecipeGroup> getGroups() {
@@ -85,7 +107,7 @@ public class CookingForBlockheadsRegistry {
         return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id().identifier());
     }
 
-    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<C, T> handler) {
+    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeType, KitchenRecipeHandler<C, T> handler) {
         kitchenRecipeHandlers.put(recipeType, handler);
     }
 

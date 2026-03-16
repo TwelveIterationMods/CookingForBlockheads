@@ -20,7 +20,7 @@ public interface InternalMethods {
 
     FoodStatsProvider getFoodStatsProvider();
 
-    <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler);
+    <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler);
 
     <C extends RecipeInput, T extends Recipe<C>> KitchenRecipeHandler<C, T> getKitchenRecipeHandler(T recipe);
 }

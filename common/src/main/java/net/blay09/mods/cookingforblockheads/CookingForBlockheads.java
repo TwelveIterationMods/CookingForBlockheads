@@ -17,7 +17,7 @@ import net.blay09.mods.cookingforblockheads.compat.hudinfo.ModHudInfo;
 import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
-import net.blay09.mods.cookingforblockheads.crafting.KitchenSmeltingRecipeHandler;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenAbstractCookingRecipeHandler;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
@@ -31,9 +31,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,7 +65,9 @@ public class CookingForBlockheads {
 
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(ShapedRecipe.class, new KitchenShapedRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(ShapelessRecipe.class, new KitchenShapelessRecipeHandler());
-        CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
+        CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenAbstractCookingRecipeHandler());
+        CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmokingRecipe.class, new KitchenAbstractCookingRecipeHandler());
+        CookingForBlockheadsAPI.registerKitchenRecipeHandler(CampfireCookingRecipe.class, new KitchenAbstractCookingRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
         registrars.dataComponentTypes(ModDataComponents::initialize);

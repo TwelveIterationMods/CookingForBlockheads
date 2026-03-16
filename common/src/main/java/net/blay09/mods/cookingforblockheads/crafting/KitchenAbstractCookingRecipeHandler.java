@@ -5,26 +5,26 @@ import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
 import net.blay09.mods.cookingforblockheads.mixin.SingleItemRecipeAccessor;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 
 import java.util.List;
 import java.util.Optional;
 
-public class KitchenSmeltingRecipeHandler implements KitchenRecipeHandler<SingleRecipeInput, SmeltingRecipe> {
+public class KitchenAbstractCookingRecipeHandler implements KitchenRecipeHandler<SingleRecipeInput, AbstractCookingRecipe> {
     @Override
-    public int mapToMatrixSlot(SmeltingRecipe recipe, int ingredientIndex) {
+    public int mapToMatrixSlot(AbstractCookingRecipe recipe, int ingredientIndex) {
         return 4;
     }
 
     @Override
-    public List<Optional<Ingredient>> getIngredients(SmeltingRecipe recipe) {
+    public List<Optional<Ingredient>> getIngredients(AbstractCookingRecipe recipe) {
         return List.of(Optional.of(recipe.input()));
     }
 
     @Override
-    public ItemStack assemble(CraftingContext context, SmeltingRecipe recipe, List<IngredientToken> ingredientTokens, RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingContext context, AbstractCookingRecipe recipe, List<IngredientToken> ingredientTokens, RegistryAccess registryAccess) {
         for (final var itemProcessor : context.getItemProcessors()) {
             if (itemProcessor.canProcess(recipe.getType())) {
                 context.notify(itemProcessor.processRecipe(recipe, ingredientTokens));
@@ -36,7 +36,7 @@ public class KitchenSmeltingRecipeHandler implements KitchenRecipeHandler<Single
     }
 
     @Override
-    public ItemStack predictResultItem(SmeltingRecipe recipe) {
+    public ItemStack predictResultItem(AbstractCookingRecipe recipe) {
         return ((SingleItemRecipeAccessor) recipe).getResult();
     }
 }

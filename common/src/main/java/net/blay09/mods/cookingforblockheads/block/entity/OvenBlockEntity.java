@@ -420,7 +420,10 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
 
     @Override
     public boolean canProcess(RecipeType<?> recipeType) {
-        return recipeType == RecipeType.SMELTING;
+        return recipeType == RecipeType.SMELTING
+                || recipeType == RecipeType.SMOKING
+                || recipeType == RecipeType.CAMPFIRE_COOKING
+                || recipeType == ModRecipes.ovenRecipes.type();
     }
 
     @Override
