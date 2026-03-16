@@ -92,7 +92,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         addRenderableWidget(btnNextRecipe);
 
         searchBar = new EditBox(minecraft.font, leftPos + imageWidth - 78, topPos - 5, 70, 10, searchBar, Component.empty());
-        setInitialFocus(searchBar);
         addRenderableWidget(searchBar);
 
         int yOffset = -80;
@@ -155,6 +154,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             if (searchBar.mouseClicked(mouseX, mouseY, button)) {
                 setFocused(searchBar);
                 return true;
+            } else {
+                clearFocus();
             }
         }
 
