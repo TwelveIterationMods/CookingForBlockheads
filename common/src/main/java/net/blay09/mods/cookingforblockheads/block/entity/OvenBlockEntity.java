@@ -305,13 +305,20 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     }
 
     public ItemStack getSmeltingResult(ItemStack itemStack) {
+        final var recipeTypes = List.of(ModRecipes.ovenRecipes.type(), RecipeType.CAMPFIRE_COOKING, RecipeType.SMOKING, RecipeType.SMELTING);
         final var recipeInput = new SingleRecipeInput(itemStack);
-        final var ovenRecipeResult = getSmeltingResult(ModRecipes.ovenRecipes.type(), recipeInput);
-        if (!ovenRecipeResult.isEmpty()) {
-            return ovenRecipeResult;
+        for (final var recipeType : recipeTypes) {
+            final var recipeResult = getSmeltingResult(recipeType, recipeInput);
+            if (recipeType == RecipeType.SMELTING && !recipeResult.has(DataComponents.FOOD)) {
+                continue;
+            }
+
+            if (!recipeResult.isEmpty()) {
+                return recipeResult;
+            }
         }
 
-        return getSmeltingResult(RecipeType.SMELTING, recipeInput);
+        return ItemStack.EMPTY;
     }
 
     public <T extends RecipeInput> ItemStack getSmeltingResult(RecipeType<? extends Recipe<T>> recipeType, T recipeInput) {
@@ -319,10 +326,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         if (server != null) {
             final var recipe = server.getRecipeManager().getRecipeFor(recipeType, recipeInput, level).orElse(null);
             if (recipe != null) {
-                final var result = recipe.value().assemble(recipeInput, level.registryAccess());
-                if (!result.isEmpty() && result.has(DataComponents.FOOD)) {
-                    return result;
-                }
+                return recipe.value().assemble(recipeInput, level.registryAccess());
             }
         }
 
