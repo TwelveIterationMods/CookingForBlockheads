@@ -6,7 +6,6 @@
     "#c:dyes/lime"
   ],
   "result": {
-    "count": 1,
-    "id": "cookingforblockheads:lime_sink"
+    "id": "cookingforblockheads:lime_connector"
   }
 }

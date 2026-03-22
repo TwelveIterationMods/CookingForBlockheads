@@ -6,7 +6,6 @@
     "#c:dyes/blue"
   ],
   "result": {
-    "count": 1,
-    "id": "cookingforblockheads:blue_sink"
+    "id": "cookingforblockheads:blue_connector"
   }
 }

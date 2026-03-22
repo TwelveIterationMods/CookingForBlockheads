@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:remove_dye_from_cooking_table"
+        "recipe": "cookingforblockheads:remove_dye_from_cooking_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:remove_dye_from_cooking_table"
+      "cookingforblockheads:remove_dye_from_cooking_table"
     ]
   }
 }

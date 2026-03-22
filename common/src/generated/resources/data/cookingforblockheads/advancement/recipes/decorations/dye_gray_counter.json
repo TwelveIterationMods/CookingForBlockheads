@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dye_gray_counter"
+        "recipe": "cookingforblockheads:dye_gray_counter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dye_gray_counter"
+      "cookingforblockheads:dye_gray_counter"
     ]
   }
 }

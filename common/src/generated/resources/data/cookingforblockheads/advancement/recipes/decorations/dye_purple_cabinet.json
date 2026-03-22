@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dye_purple_cabinet"
+        "recipe": "cookingforblockheads:dye_purple_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dye_purple_cabinet"
+      "cookingforblockheads:dye_purple_cabinet"
     ]
   }
 }

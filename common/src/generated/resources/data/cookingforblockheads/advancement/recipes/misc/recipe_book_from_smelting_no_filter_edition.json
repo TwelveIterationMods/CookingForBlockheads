@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recipe_book_from_smelting_no_filter_edition"
+        "recipe": "cookingforblockheads:recipe_book_from_smelting_no_filter_edition"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recipe_book_from_smelting_no_filter_edition"
+      "cookingforblockheads:recipe_book_from_smelting_no_filter_edition"
     ]
   }
 }

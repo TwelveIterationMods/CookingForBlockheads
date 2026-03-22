@@ -6,7 +6,6 @@
     "#c:dyes/gray"
   ],
   "result": {
-    "count": 1,
-    "id": "cookingforblockheads:gray_sink"
+    "id": "cookingforblockheads:gray_connector"
   }
 }

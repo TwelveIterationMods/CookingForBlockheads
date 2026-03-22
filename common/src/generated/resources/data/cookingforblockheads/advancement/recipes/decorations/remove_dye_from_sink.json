@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:remove_dye_from_sink"
+        "recipe": "cookingforblockheads:remove_dye_from_sink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:remove_dye_from_sink"
+      "cookingforblockheads:remove_dye_from_sink"
     ]
   }
 }

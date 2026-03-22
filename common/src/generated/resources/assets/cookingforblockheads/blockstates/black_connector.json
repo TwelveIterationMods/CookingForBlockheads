@@ -112,8 +112,7 @@
     },
     "facing=south,half=bottom,shape=straight": {
       "model": "cookingforblockheads:block/black_connector_straight_bottom",
-      "uvlock": true,
-      "y": 0
+      "uvlock": true
     },
     "facing=south,half=top,shape=inner_left": {
       "model": "cookingforblockheads:block/black_connector_inner_top",
@@ -135,8 +134,7 @@
     },
     "facing=south,half=top,shape=straight": {
       "model": "cookingforblockheads:block/black_connector_straight_top",
-      "uvlock": true,
-      "y": 0
+      "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left": {
       "model": "cookingforblockheads:block/black_connector_inner_bottom",

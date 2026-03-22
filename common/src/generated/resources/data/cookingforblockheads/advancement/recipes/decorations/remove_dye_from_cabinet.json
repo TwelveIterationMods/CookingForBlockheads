@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:remove_dye_from_cabinet"
+        "recipe": "cookingforblockheads:remove_dye_from_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:remove_dye_from_cabinet"
+      "cookingforblockheads:remove_dye_from_cabinet"
     ]
   }
 }

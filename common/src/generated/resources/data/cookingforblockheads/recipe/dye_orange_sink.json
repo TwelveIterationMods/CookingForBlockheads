@@ -6,7 +6,6 @@
     "#c:dyes/orange"
   ],
   "result": {
-    "count": 1,
-    "id": "cookingforblockheads:orange_sink"
+    "id": "cookingforblockheads:orange_connector"
   }
 }

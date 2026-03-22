@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dye_blue_sink"
+        "recipe": "cookingforblockheads:dye_blue_sink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dye_blue_sink"
+      "cookingforblockheads:dye_blue_sink"
     ]
   }
 }
