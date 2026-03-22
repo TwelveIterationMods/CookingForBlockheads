@@ -19,6 +19,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -319,9 +320,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.RED).asBlock(), BalmItemTags.RED_DYES).save(exporter);
                 dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLACK).asBlock(), BalmItemTags.BLACK_DYES).save(exporter);
 
-                smelting(Ingredient.of(Items.BOOK), RecipeCategory.MISC, ModItems.recipeBook, 0.15f, 200).unlockedBy("has_book", has(Items.BOOK))
+                smelting(Ingredient.of(Items.BOOK), RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.recipeBook, 0.15f, 200).unlockedBy("has_book", has(Items.BOOK))
                         .save(exporter);
-                smelting(Ingredient.of(ModItems.noFilterBook), RecipeCategory.MISC, ModItems.recipeBook, 0f, 200).unlockedBy("has_no_filter_edition",
+                smelting(Ingredient.of(ModItems.noFilterBook), RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.recipeBook, 0f, 200).unlockedBy("has_no_filter_edition",
                         has(ModItems.noFilterBook)).save(exporter, "recipe_book_from_smelting_no_filter_edition");
             }
 
