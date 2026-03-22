@@ -9,24 +9,20 @@ plugins {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+
 minecraft {
     mappings channel: 'official', version: libs.minecraft.get().version
-
     runs {
         configureEach {
             workingDir.convention layout.projectDirectory.dir('run')
             // Mixin requires either specifying the config via command line, or in the Manifest
             args "--mixin.config=${mod_id}.mixins.json,${mod_id}-api.mixins.json,${mod_id}-forge.mixins.json"
         }
-
         register('client') {
             systemProperty 'forge.enabledGameTestNamespaces', mod_id
         }
     }
 }
-
-apply from: rootProject.file('repositories.gradle')
-apply from: 'dependencies.gradle'
 
 repositories {
     maven minecraft.mavenizer
@@ -39,7 +35,7 @@ dependencies {
     def mcVersion = libs.minecraft.get().version
     def forgeVersion = libs.forge.get().version
     implementation minecraft.dependency("net.minecraftforge:forge:$mcVersion-$forgeVersion")
-    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
+    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0.0'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -48,11 +44,20 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('jar', Jar) {
     manifest {
-        attributes["MixinConfigs"] = "${mod_id}.mixins.json,${mod_id}.forge.mixins.json"
+        attributes["MixinConfigs"] = "${mod_id}.mixins.json,${mod_id}.api.mixins.json,${mod_id}.forge.mixins.json"
+    }
+}
+
+fgtools {
+    configure('mavenizer') {
+        classpath = configurations.detachedConfiguration(dependencies.create('net.minecraftforge:minecraft-mavenizer:0.4.19'))
     }
 }
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
+
+apply from: rootProject.file('repositories.gradle')
+apply from: 'dependencies.gradle'
 
 tasks.register('curseforge', TaskPublishCurseForge) {
     dependsOn('build')
@@ -83,9 +88,14 @@ modrinth {
     uploadFile = jar
     changelog = rootProject.file("CHANGELOG.md").text
     gameVersions = [libs.minecraft.get().version]
-    syncBodyFrom = rootProject.file("modpage.md").text
     loaders = ['forge']
     dependencies {
         required.project "balm"
     }
+}
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }

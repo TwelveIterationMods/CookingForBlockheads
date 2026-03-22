@@ -7,15 +7,14 @@ plugins {
     alias libs.plugins.modrinthMinotaur
 }
 
-apply from: rootProject.file('repositories.gradle')
-apply from: 'dependencies.gradle'
-
 dependencies {
     minecraft libs.minecraft
-
     implementation libs.fabricLoader
     implementation libs.fabricApi
 }
+
+apply from: rootProject.file('repositories.gradle')
+apply from: 'dependencies.gradle'
 
 loom {
     def aw = project(":common").file("src/main/resources/${mod_id}.classtweaker")
@@ -84,7 +83,6 @@ modrinth {
     uploadFile = jar
     changelog = rootProject.file("CHANGELOG.md").text
     gameVersions = [libs.minecraft.get().version]
-    syncBodyFrom = rootProject.file("modpage.md").text
     loaders = ['fabric']
     dependencies {
         required.project "fabric-api"
