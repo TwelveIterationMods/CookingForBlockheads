@@ -56,7 +56,7 @@ public class ModItems {
                             output.accept(heatingUnit);
                             output.accept(noFilterBook);
 
-                            ModBlocks.cookingTables.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.cookingTables.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
 
                             ModBlocks.fridges.forEach((color, block) -> {
                                 if (color != DyeColor.WHITE) {
@@ -70,9 +70,9 @@ public class ModItems {
                                 }
                             });
 
-                            ModBlocks.sinks.filterNonNullDiscriminators().forEach(output::accept);
-                            ModBlocks.counters.filterNonNullDiscriminators().forEach(output::accept);
-                            ModBlocks.cabinets.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.sinks.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
+                            ModBlocks.counters.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
+                            ModBlocks.cabinets.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
 
                             ModBlocks.kitchenFloors.forEach((color, block) -> {
                                 if (color != DyeColor.WHITE) {
@@ -80,7 +80,7 @@ public class ModItems {
                                 }
                             });
 
-                            ModBlocks.connectors.filterNonNullDiscriminators().forEach(output::accept);
+                            ModBlocks.connectors.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
                         }));
     }
 
