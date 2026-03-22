@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"particle": "block/water_still",
@@ -10,7 +11,7 @@
 			"from": [2.5, 8, 2.5],
 			"to": [13.5, 14, 13.5],
 			"faces": {
-				"up": {"uv": [5.5, 5.5, 16.5, 16.5], "texture": "#milk", "tintindex": 0}
+				"up": {"uv": [2, 2, 13, 13], "texture": "#milk", "tintindex": 0}
 			}
 		}
 	]
