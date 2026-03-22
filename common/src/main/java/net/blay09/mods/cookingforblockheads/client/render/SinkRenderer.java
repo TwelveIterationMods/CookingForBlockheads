@@ -21,7 +21,6 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
     public static class SinkRenderState extends BlockEntityRenderState {
         public final BlockModelRenderState water = new BlockModelRenderState();
         public float fluidLevel;
-        public int waterColor;
     }
 
     public SinkRenderer(BlockEntityRendererProvider.Context context) {
@@ -42,7 +41,8 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
 
         renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
         final var level = blockEntity.getLevel();
-        renderState.waterColor = level != null ? level.getBiome(blockEntity.getBlockPos()).value().getWaterColor() : 0xFFFFFFFF;
+        final var waterColor = level != null ? level.getBiome(blockEntity.getBlockPos()).value().getWaterColor() : 0xFFFFFFFF;
+        renderState.water.tintLayers().add(0, waterColor);
     }
 
     @Override
@@ -52,12 +52,6 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
             float filledPercentage = renderState.fluidLevel;
             poseStack.translate(0f, 0.5f - 0.5f * filledPercentage, 0f);
             poseStack.scale(1f, filledPercentage, 1f);
-
-            int color = renderState.waterColor;
-            float red = (float) (color >> 16 & 255) / 255f;
-            float green = (float) (color >> 8 & 255) / 255f;
-            float blue = (float) (color & 255) / 255f;
-            // TODO tint water?
             renderState.water.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
