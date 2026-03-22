@@ -232,6 +232,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
         if (menu.isScrollOffsetDirty()) {
             setCurrentOffset(currentOffset);
             menu.setScrollOffsetDirty(false);

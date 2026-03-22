@@ -31,6 +31,7 @@ public class CuttingBoardScreen extends AbstractRecipeBookScreen<CuttingBoardMen
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
         int x = leftPos;
         int y = (height - imageHeight) / 2;
         graphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TABLE_LOCATION, x, y, 0f, 0f, imageWidth, imageHeight, 256, 256);

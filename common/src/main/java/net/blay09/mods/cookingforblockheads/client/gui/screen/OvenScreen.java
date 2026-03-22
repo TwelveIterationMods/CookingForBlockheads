@@ -60,6 +60,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
         // Draw background
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos + 22, topPos, 0, 0, imageWidth - 22, imageHeight, 256, 256);
 
