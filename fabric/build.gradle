@@ -12,12 +12,13 @@ apply from: 'dependencies.gradle'
 
 dependencies {
     minecraft libs.minecraft
+
     implementation libs.fabricLoader
     implementation libs.fabricApi
 }
 
 loom {
-    def aw = project(":common").file("src/main/resources/${mod_id}.accesswidener")
+    def aw = project(":common").file("src/main/resources/${mod_id}.classtweaker")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
     }
