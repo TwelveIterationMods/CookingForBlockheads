@@ -18,12 +18,4 @@ public class Compat {
         return Balm.modSupport().milkFluid().get();
     }
 
-    private static TagKey<Item> cookingOilTag;
-    @Deprecated(forRemoval = true)
-    public static TagKey<Item> getCookingOilTag() {
-        if(cookingOilTag == null) {
-            cookingOilTag = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "cooking_oil"));
-        }
-        return cookingOilTag;
-    }
 }
