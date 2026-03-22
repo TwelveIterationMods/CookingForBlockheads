@@ -49,8 +49,6 @@
   "tooltip.cookingforblockheads.ice_unit.description": "為食譜提供雪和冰",
   "tooltip.cookingforblockheads.preservation_chamber.description": "防止插槽的最後一項用完",
   "tooltip.cookingforblockheads.cutting_board.description": "為菜譜提供砧板",
-  "tooltip.cookingforblockheads.requires_pams": "需要 Pam's Harvestcraft 潘馬斯農場",
-  "tooltip.cookingforblockheads.cutting_board_deprecated": "已棄用該項目 \\nPam's 切菜板現在可以直接放置",
   "tooltip.cookingforblockheads.can_be_placed_in_world": "可以放置在世界上",
 
   "gui.cookingforblockheads.no_ingredients": "食材不足",

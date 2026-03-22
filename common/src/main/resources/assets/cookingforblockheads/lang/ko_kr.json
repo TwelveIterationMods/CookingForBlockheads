@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "얼음과 눈을 보관할 수 있습니다.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "음식과 재료의 신선도를 유지시킵니다.",
     "tooltip.cookingforblockheads.cutting_board.description": "도마를 사용하여 음식을 만들 수 있습니다.",
-    "tooltip.cookingforblockheads.requires_pams": "하베스트 크래프트(Pam's HarvestCraft) 가 필요합니다!",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "이 아이템은 사용되지 않습니다.\\n하베스트 크래프트(Pam's HarvestCraft)의 도마를 사용해주십시오.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "배치 할 수 있습니다.",
 
     "gui.cookingforblockheads.no_ingredients": "재료가\\n부족합니다",

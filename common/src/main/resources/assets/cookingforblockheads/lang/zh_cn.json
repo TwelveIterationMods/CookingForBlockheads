@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "提供合成所需的雪和冰。",
     "tooltip.cookingforblockheads.preservation_chamber.description": "阻止格子中的最后一个物品被使用。",
     "tooltip.cookingforblockheads.cutting_board.description": "提供合成所需的切肉板。",
-    "tooltip.cookingforblockheads.requires_pams": "需要潘马斯农场",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "此物品已弃用。\\n潘马斯中的切肉板可以直接放置了。",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "可以在世界中放置。",
     
     "gui.cookingforblockheads.no_ingredients": "食材不足",

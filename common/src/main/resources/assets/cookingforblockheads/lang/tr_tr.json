@@ -49,8 +49,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Yemek tariflerine kar ve buz sağlar.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Bir slottaki son öğenin kalmasını sağlar.",
     "tooltip.cookingforblockheads.cutting_board.description": "Yemek tarifleri için kesme tahtası sağlar.",
-    "tooltip.cookingforblockheads.requires_pams": "Pam's Harvestcraft gerektirir.",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Bu öğe kullanımdan kaldırılmıştır.\\nPam'ın kesme tahtası doğrudan yerleştirilebilir.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Dünyaya yerleştirilebilir.",
 
     "gui.cookingforblockheads.no_ingredients": "Yeterli\\nmalzeme\\nyok.",

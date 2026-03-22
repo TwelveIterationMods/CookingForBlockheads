@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Proporciona nieve y hielo a las recetas",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Evita que se agote el último elemento de una ranura",
     "tooltip.cookingforblockheads.cutting_board.description": "Proporciona una tabla de cortar para las recetas",
-    "tooltip.cookingforblockheads.requires_pams": "Requiere Pam's Harvestcraft",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Este elemento está obsoleto.\nAhora se puede colocar directamente la tabla de cortar de Pam",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Se puede colocar en el mundo",
 
     "gui.cookingforblockheads.no_ingredients": "Sin\\nsuficientes\\ningredientes",

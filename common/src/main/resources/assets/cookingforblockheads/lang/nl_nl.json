@@ -51,8 +51,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Biedt sneeuw en ijs aan recepten.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Voorkomt dat het laatste item van een slot wordt opgebruikt.",
     "tooltip.cookingforblockheads.cutting_board.description": "Biedt een snijplank voor recepten.",
-    "tooltip.cookingforblockheads.requires_pams": "Hiervoor is Pam's Harvestcraft vereist",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Dit item is verouderd. \\nPan's Cutting Board kan nu direct worden geplaatst.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Kan in de wereld worden geplaatst.",
 
     "_comment": "##",

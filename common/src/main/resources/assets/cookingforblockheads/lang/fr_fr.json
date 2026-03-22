@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Fournit neige et glace pour les recettes.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Empêche d'utiliser le dernier élément des emplacements.",
     "tooltip.cookingforblockheads.cutting_board.description": "Fournit une planche à découper pour les recettes.",
-    "tooltip.cookingforblockheads.requires_pams": "Nécessite Pam's Harvestcraft",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Cet élément est obsolète. La planche à découper\\nde Pam peut désormais être placée directement.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Peut être placé dans le monde.",
 
     "gui.cookingforblockheads.no_ingredients": "Pas\\nassez\\nd'ingrédients",

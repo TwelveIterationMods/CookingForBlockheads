@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Provêm neve e gelo para receitas.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Impede o último item de um espaço de ser usado.",
     "tooltip.cookingforblockheads.cutting_board.description": "Provêm uma mesa de cortar para receitas.",
-    "tooltip.cookingforblockheads.requires_pams": "Requer o Pam's Harvestcraft",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Esse item foi descontinuado.\\n A mesa de cortar do Pam's Harvestcraft agora pode ser colocada diretamente.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Pode ser colocado no mundo.",
 
     "gui.cookingforblockheads.no_ingredients": "Ingredientes\\ninsuficientes",

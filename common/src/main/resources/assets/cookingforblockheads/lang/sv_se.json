@@ -51,8 +51,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Förser recept med snö och is.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Förhindrar det sista föremålet i en plats från att användas.",
     "tooltip.cookingforblockheads.cutting_board.description": "Förser recept med ett skärbräde.",
-    "tooltip.cookingforblockheads.requires_pams": "Kräver Pam's Harvestcraft",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Detta föremål är föråldrat.\\nPams skärbräde kan placeras direkt numera.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Kan placeras i världen.",
 
     "_comment": "##",

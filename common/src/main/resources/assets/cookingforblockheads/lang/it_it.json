@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Fornisce neve e ghiaccio per le ricette.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Conserva un elemento per ogni slot",
     "tooltip.cookingforblockheads.cutting_board.description": "Fornisce un tagliere per le ricette",
-    "tooltip.cookingforblockheads.requires_pams": "Richiede Pam's Harvestcraft",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Questo oggetto è deprecato\\nIl tagliere della Pam può essere posizionato direttamente adesso.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Può essere piazzato nel mondo",
 
     "gui.cookingforblockheads.no_ingredients": "Ingredienti\\ninsufficienti",

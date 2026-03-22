@@ -66,8 +66,6 @@
     "tooltip.cookingforblockheads.ice_unit.description": "Stellt Schnee und Eis für Rezepte bereit.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Verhindert, dass das letzte Item eines Slots aufgebraucht wird.",
     "tooltip.cookingforblockheads.cutting_board.description": "Stellt ein Schneidebrett für Rezepte bereit.",
-    "tooltip.cookingforblockheads.requires_pams": "Braucht Pam's Harvestcraft",
-    "tooltip.cookingforblockheads.cutting_board_deprecated": "Dieser Artikel ist veraltet.\\nPam's Schneidebrett kann jetzt direkt platziert werden.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Kann in der Welt platziert werden.",
     
     "gui.cookingforblockheads.no_ingredients": "Nicht\\ngenug\\nZutaten",
