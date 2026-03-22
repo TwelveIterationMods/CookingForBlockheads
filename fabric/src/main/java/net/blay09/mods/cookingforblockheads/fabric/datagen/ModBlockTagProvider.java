@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
+import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.HolderLookup;
@@ -21,14 +22,14 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
     protected void addTags(HolderLookup.Provider arg) {
         final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/pickaxe"));
         final var mineablePickaxeBuilder = tag(mineablePickaxeTag);
-        ModBlocks.cookingTables.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.sinks.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.counters.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.cabinets.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.connectors.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.fridges.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.ovens.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
-        ModBlocks.kitchenFloors.forEach((discriminator, block) -> mineablePickaxeBuilder.add(block.asBlock()));
+        ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.sinks.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.fridges.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.ovens.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
@@ -37,8 +38,8 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
 
         final var kitchenItemProviders = tag(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         kitchenItemProviders.add(ModBlocks.toolRack.asBlock());
-        ModBlocks.cabinets.forEach((discriminator, block) -> kitchenItemProviders.add(block.asBlock()));
-        ModBlocks.counters.forEach((discriminator, block) -> kitchenItemProviders.add(block.asBlock()));
+        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
+        ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
 
         final var rawKitchenItemProviders = getOrCreateRawBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("farmersdelight", "basket"));
@@ -179,11 +180,11 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("storagedrawers", "fractional_drawers_3"));
 
         final var cookingTables = tag(ModBlockTags.COOKING_TABLES);
-        ModBlocks.cookingTables.forEach((discriminator, block) -> cookingTables.add(block.asBlock()));
+        ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(cookingTables::add);
 
         final var kitchenConnectors = tag(ModBlockTags.KITCHEN_CONNECTORS);
-        ModBlocks.connectors.forEach((discriminator, block) -> kitchenConnectors.add(block.asBlock()));
-        ModBlocks.kitchenFloors.forEach((discriminator, block) -> kitchenConnectors.add(block.asBlock()));
+        ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
+        ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
 
         final var rawKitchenConnectors = getOrCreateRawBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         rawKitchenConnectors.addOptionalElement(Identifier.fromNamespaceAndPath("buildersaddition", "counter_oak_andesite"));
