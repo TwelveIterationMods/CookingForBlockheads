@@ -3,11 +3,14 @@ package net.blay09.mods.cookingforblockheads;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
-import net.blay09.mods.cookingforblockheads.network.message.SyncedEffectMessage;
 import net.blay09.mods.cookingforblockheads.tag.ModEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,7 +47,10 @@ public class CowJarHandler {
                     }
                 }
 
-                Balm.networking().sendToTracking(entity, new SyncedEffectMessage(pos, SyncedEffectMessage.Type.COW_IN_A_JAR));
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
+                    level.playSound(null, pos, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 1f, 1f);
+                }
                 entity.remove(Entity.RemovalReason.DISCARDED);
                 return 0f;
             }).orElse(damageAmount);

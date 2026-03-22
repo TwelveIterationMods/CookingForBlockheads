@@ -13,7 +13,6 @@ public class ModNetworking {
 
         networking.registerClientboundPacket(AvailableCraftablesListMessage.TYPE, AvailableCraftablesListMessage.class, AvailableCraftablesListMessage.STREAM_CODEC, AvailableCraftablesListMessage::handle);
         networking.registerClientboundPacket(SelectionRecipesListMessage.TYPE, SelectionRecipesListMessage.class, SelectionRecipesListMessage.STREAM_CODEC, SelectionRecipesListMessage::handle);
-        networking.registerClientboundPacket(SyncedEffectMessage.TYPE, SyncedEffectMessage.class, SyncedEffectMessage.STREAM_CODEC, SyncedEffectMessage::handle);
         networking.registerClientboundPacket(ClientboundOvenResultsPacket.TYPE, ClientboundOvenResultsPacket.class, ClientboundOvenResultsPacket.STREAM_CODEC, ClientboundOvenResultsPacket::handle);
         networking.registerClientboundPacket(KitchenFeedbackMessage.TYPE, KitchenFeedbackMessage.class, KitchenFeedbackMessage.STREAM_CODEC, KitchenFeedbackMessage::handle);
         networking.registerClientboundPacket(FavoriteListMessage.TYPE, FavoriteListMessage.class, FavoriteListMessage.STREAM_CODEC, FavoriteListMessage::handle);
