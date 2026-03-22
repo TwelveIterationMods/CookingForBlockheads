@@ -2,11 +2,12 @@ package net.blay09.mods.cookingforblockheads.client;
 
 import net.blay09.mods.balm.client.color.block.BalmBlockColorRegistrar;
 import net.blay09.mods.balm.client.renderer.blockentity.BalmBlockEntityRendererRegistrar;
-import net.blay09.mods.balm.client.renderer.chunk.BalmBlockRenderTypeRegistrar;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.client.render.*;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.color.block.BlockTintSources;
+
+import java.util.List;
 
 public class ModRenderers {
 
@@ -26,14 +27,7 @@ public class ModRenderers {
     }
 
     public static void initialize(BalmBlockColorRegistrar blockColors) {
-        blockColors.register((state, world, pos, i) -> 0x3f76e4, ModBlocks.sinks.values());
-    }
-
-    public static void initialize(BalmBlockRenderTypeRegistrar blockRenderTypes) {
-        ModBlocks.ovens.forEach((color, block) -> blockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT));
-        ModBlocks.fridges.forEach((color, block) -> blockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT));
-        blockRenderTypes.setRenderLayer(ModBlocks.milkJar, ChunkSectionLayer.CUTOUT);
-        blockRenderTypes.setRenderLayer(ModBlocks.cowJar, ChunkSectionLayer.CUTOUT);
+        blockColors.register(List.of(BlockTintSources.constant(0x3f76e4)), ModBlocks.sinks.values());
     }
 
 }

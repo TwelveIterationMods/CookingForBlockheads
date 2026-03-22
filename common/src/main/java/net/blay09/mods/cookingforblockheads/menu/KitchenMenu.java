@@ -21,7 +21,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
@@ -110,15 +110,15 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void clicked(int slotNumber, int dragType, ClickType clickType, Player player) {
+    public void clicked(int slotNumber, int dragType, ContainerInput clickType, Player player) {
         var handled = false;
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             Slot slot = slots.get(slotNumber);
             if (slot instanceof CraftableListingFakeSlot craftableSlot) {
                 if (player.level().isClientSide()) {
                     if (isSelectedSlot(craftableSlot)) {
-                        if (clickType == ClickType.PICKUP || clickType == ClickType.PICKUP_ALL || clickType == ClickType.QUICK_MOVE || clickType == ClickType.CLONE) {
-                            requestCraft(clickType == ClickType.QUICK_MOVE, clickType == ClickType.CLONE);
+                        if (clickType == ContainerInput.PICKUP || clickType == ContainerInput.PICKUP_ALL || clickType == ContainerInput.QUICK_MOVE || clickType == ContainerInput.CLONE) {
+                            requestCraft(clickType == ContainerInput.QUICK_MOVE, clickType == ContainerInput.CLONE);
                             handled = true;
                         }
                     } else {
@@ -257,7 +257,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private <C extends RecipeInput, T extends Recipe<C>> @Nullable CraftableWithStatus craftableWithStatusFromRecipe(CraftingContext context, RecipeHolder<?> recipeHolder) {
         final var recipe = recipeHolder.value();
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe);
-        final var resultItem = recipeHandler.predictResultItem(recipeHolder);
+        final var resultItem = recipeHandler.predictResultItem(recipeHolder).create();
         if (isGroupItem(resultItem)) {
             return null;
         }
@@ -340,7 +340,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         });
         final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs);
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
-        final var resultItem = recipeHandler.predictResultItem(recipe);
+        final var resultItem = recipeHandler.predictResultItem(recipe).create();
         final var repeats = craftFullStack ? resultItem.getMaxStackSize() / resultItem.getCount() : 1;
         for (int i = 0; i < repeats; i++) {
             operation.prepare();

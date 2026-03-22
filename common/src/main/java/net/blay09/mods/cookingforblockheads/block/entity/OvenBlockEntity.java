@@ -224,7 +224,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
                         currentItemBurnTime = furnaceBurnTime = (int) Math.max(1,
                                 (float) getBurnTime(level, fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
-                            ItemStack containerItem = Balm.hooks().getCraftingRemainingItem(fuelItem);
+                            ItemStack containerItem = Balm.hooks().getCraftingRemainingItem(fuelItem).create();
                             fuelItem.shrink(1);
                             if (fuelItem.isEmpty()) {
                                 fuelContainer.setItem(i, containerItem);
@@ -326,7 +326,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         if (server != null) {
             final var recipe = server.getRecipeManager().getRecipeFor(recipeType, recipeInput, level).orElse(null);
             if (recipe != null) {
-                return recipe.value().assemble(recipeInput, level.registryAccess());
+                return recipe.value().assemble(recipeInput);
             }
         }
 

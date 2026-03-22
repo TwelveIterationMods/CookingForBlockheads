@@ -6,21 +6,21 @@ import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +29,8 @@ import java.util.List;
 public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRenderer.OvenRenderState> {
 
     public static class OvenRenderState extends BlockEntityRenderState {
+        public final BlockModelRenderState door = new BlockModelRenderState();
+        public final BlockModelRenderState handle = new BlockModelRenderState();
         public final ItemStackRenderState firstTool = new ItemStackRenderState();
         public final ItemStackRenderState secondTool = new ItemStackRenderState();
         public final ItemStackRenderState thirdTool = new ItemStackRenderState();
@@ -54,6 +56,14 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
     @Override
     public void extractRenderState(OvenBlockEntity blockEntity, OvenRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
+
+        final var doorParts = renderState.door.setupModel(new Matrix4f(), false);
+        final var doorModel = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(renderState.dye) : ModModels.ovenDoors.get(renderState.dye);
+        doorModel.asBlockStateModel().collectParts(renderState.door.scratchRandomSource(42), doorParts);
+
+        final var handleParts = renderState.handle.setupModel(new Matrix4f(), false);
+        final var handleModel = ModModels.ovenDoorHandles.get(renderState.dye);
+        handleModel.asBlockStateModel().collectParts(renderState.handle.scratchRandomSource(42), handleParts);
 
         itemModelResolver.updateForTopItem(renderState.firstTool, blockEntity.getToolItem(0), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
         itemModelResolver.updateForTopItem(renderState.secondTool, blockEntity.getToolItem(1), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
@@ -86,11 +96,10 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         // Render the oven door
         poseStack.pushPose();
         poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(renderState.doorAngle)));
-        final var model = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(renderState.dye) : ModModels.ovenDoors.get(renderState.dye);
-        submitNodeCollector.submitBlockModel(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), model.asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+
+        renderState.door.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.translate(0f, 0f, -1f);
-        final var handleModel = ModModels.ovenDoorHandles.get(renderState.dye);
-        submitNodeCollector.submitBlockModel(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), handleModel.asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        renderState.handle.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         // Render the oven tools

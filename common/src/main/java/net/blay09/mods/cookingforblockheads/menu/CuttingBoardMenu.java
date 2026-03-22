@@ -49,7 +49,7 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
             final var foundRecipeHolder = foundRecipe.get();
             final var craftingRecipe = foundRecipeHolder.value();
             if (resultContainer.setRecipeUsed(serverPlayer, foundRecipeHolder)) {
-                final var assembledStack = craftingRecipe.assemble(craftInput, level.registryAccess());
+                final var assembledStack = craftingRecipe.assemble(craftInput);
                 if (assembledStack.isItemEnabled(level.enabledFeatures())) {
                     resultStack = assembledStack;
                 }

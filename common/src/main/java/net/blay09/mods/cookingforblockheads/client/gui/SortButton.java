@@ -22,7 +22,7 @@ public class SortButton extends Button {
     }
 
     @Override
-    public void renderContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
         int texY = button.getIconTextureY();

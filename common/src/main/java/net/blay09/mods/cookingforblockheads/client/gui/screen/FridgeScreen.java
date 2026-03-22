@@ -14,22 +14,21 @@ public class FridgeScreen extends AbstractContainerScreen<FridgeMenu> {
     private final int inventoryRows;
 
     public FridgeScreen(FridgeMenu container, Inventory playerInventory, Component displayName) {
-        super(container, playerInventory, displayName);
+        super(container, playerInventory, displayName, DEFAULT_IMAGE_WIDTH, 114 + container.getNumRows() * 18);
         this.inventoryRows = container.getNumRows();
-        this.imageHeight = 114 + this.inventoryRows * 18;
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+        extractTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, this.imageWidth, this.inventoryRows * 18 + 17, 256, 256);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos + this.inventoryRows * 18 + 17, 0, 126, this.imageWidth, 96, 256, 256);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, this.imageWidth, this.inventoryRows * 18 + 17, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos + this.inventoryRows * 18 + 17, 0, 126, this.imageWidth, 96, 256, 256);
     }
 
 }

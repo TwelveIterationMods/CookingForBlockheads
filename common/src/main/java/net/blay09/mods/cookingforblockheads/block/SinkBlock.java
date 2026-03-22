@@ -85,7 +85,7 @@ public class SinkBlock extends BaseKitchenBlock {
                 }
             }
             spawnParticlesAndPlaySound(level, pos, state);
-            level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1f, level.random.nextFloat() + 0.5f);
+            level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1f, level.getRandom().nextFloat() + 0.5f);
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockEntity = level.getBlockEntity(pos);
@@ -148,7 +148,7 @@ public class SinkBlock extends BaseKitchenBlock {
                     0);
         }
 
-        level.playSound(null, pos, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 0.1f, level.random.nextFloat() + 0.5f);
+        level.playSound(null, pos, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 0.1f, level.getRandom().nextFloat() + 0.5f);
     }
 
     @Nullable

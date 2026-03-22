@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
 import net.blay09.mods.cookingforblockheads.mixin.SingleItemRecipeAccessor;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -36,7 +37,7 @@ public class KitchenAbstractCookingRecipeHandler implements KitchenRecipeHandler
     }
 
     @Override
-    public ItemStack predictResultItem(AbstractCookingRecipe recipe) {
+    public ItemStackTemplate predictResultItem(AbstractCookingRecipe recipe) {
         return ((SingleItemRecipeAccessor) recipe).getResult();
     }
 }

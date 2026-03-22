@@ -36,7 +36,6 @@ public class CookingForBlockheadsClient {
         registrars.blockEntityRenderers(ModRenderers::initialize);
         registrars.menuScreens(ModMenuScreens::initialize);
         registrars.blockColors(ModRenderers::initialize);
-        registrars.blockRenderTypes(ModRenderers::initialize);
         registrars.blockStateModels(ModModels::initialize);
 
         Balm.modSupport().recipeViewers().register(id("recipes"), registrar -> {

@@ -161,7 +161,7 @@ public class ToasterBlockEntity extends BlockEntity {
     private ItemStack toastItem(ItemStack itemStack) {
         final var recipeInput = new SingleRecipeInput(itemStack);
         final var toastRecipe = ModRecipes.toasterRecipes.getRecipeFor(level, recipeInput);
-        final var outputItem = toastRecipe.map(recipeHolder -> recipeHolder.value().assemble(recipeInput, level.registryAccess())).orElse(itemStack);
+        final var outputItem = toastRecipe.map(recipeHolder -> recipeHolder.value().assemble(recipeInput)).orElse(itemStack);
         if (outputItem.is(Items.BREAD)) {
             return toastBread(outputItem);
         } else {

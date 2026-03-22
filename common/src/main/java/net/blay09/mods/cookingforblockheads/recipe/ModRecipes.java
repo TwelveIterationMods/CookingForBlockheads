@@ -11,12 +11,12 @@ public class ModRecipes {
 
     public static void initialize(BalmRecipeTypeRegistrar recipeTypes) {
         toasterRecipes = recipeTypes.register("toaster", ToasterRecipe.class)
-                .withSerializer(ToasterRecipe.Serializer::new)
+                .withSerializer(ToasterRecipe::serializer)
                 .withRecipeBookCategory()
                 .asDeferredRecipeType();
 
         ovenRecipes = recipeTypes.register("oven", OvenRecipe.class)
-                .withSerializer(OvenRecipe.Serializer::new)
+                .withSerializer(OvenRecipe::serializer)
                 .withRecipeBookCategory()
                 .asDeferredRecipeType();
     }

@@ -22,7 +22,7 @@ public class CowJarHandler {
             return damageAmount;
         }
 
-        if (damageSource.getMsgId().equals("anvil") && entity.getType().is(ModEntityTypeTags.COW)) {
+        if (damageSource.getMsgId().equals("anvil") && entity.is(ModEntityTypeTags.COW)) {
             final var level = entity.level();
             return findMilkJar(level, entity.blockPosition()).map(pos -> {
                 level.setBlockAndUpdate(pos, ModBlocks.cowJar.defaultBlockState());

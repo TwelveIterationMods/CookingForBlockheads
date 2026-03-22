@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.block.MilkJarBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -16,18 +17,17 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements BlockEntityRenderer<TBlockEntity, MilkJarRenderer.MilkJarRenderState> {
 
     public static class MilkJarRenderState extends BlockEntityRenderState {
+        public final BlockModelRenderState milk = new BlockModelRenderState();
         public float fluidLevel;
         public Direction facing = Direction.NORTH;
     }
-
-    private static final RandomSource random = RandomSource.create();
 
     public MilkJarRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -40,6 +40,10 @@ public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements
     @Override
     public void extractRenderState(TBlockEntity blockEntity, MilkJarRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
+
+        final var milkParts = renderState.milk.setupModel(new Matrix4f(), false);
+        final var milkModel = getLiquidModel().asBlockStateModel();
+        milkModel.collectParts(renderState.milk.scratchRandomSource(42), milkParts);
 
         renderState.facing = blockEntity.getBlockState().getValue(MilkJarBlock.FACING);
         renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
@@ -55,7 +59,7 @@ public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements
             poseStack.translate(-0.5f, 0f, -0.5f);
 
             poseStack.scale(1f, renderState.fluidLevel, 1f);
-            submitNodeCollector.submitBlockModel(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), getLiquidModel().asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            renderState.milk.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
     }

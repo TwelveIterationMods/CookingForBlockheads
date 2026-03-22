@@ -70,7 +70,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private final String[] noSelection;
 
     public KitchenScreen(KitchenMenu menu, Inventory playerInventory, Component displayName) {
-        super(menu, playerInventory, displayName);
+        super(menu, playerInventory, displayName, DEFAULT_IMAGE_WIDTH, 174);
 
         noIngredients = I18n.get("gui.cookingforblockheads.no_ingredients").split("\\\\n");
         noSelection = I18n.get("gui.cookingforblockheads.no_selection").split("\\\\n");
@@ -78,7 +78,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     protected void init() {
-        imageHeight = 174;
         super.init();
 
         btnPrevRecipe = Button.builder(Component.literal("<"), it -> menu.nextRecipe(-1))
@@ -232,13 +231,13 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if (menu.isScrollOffsetDirty()) {
             setCurrentOffset(currentOffset);
             menu.setScrollOffsetDirty(false);
         }
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1,
@@ -268,37 +267,37 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         if (selection == null) {
             int curY = topPos + 79 / 2 - noSelection.length / 2 * font.lineHeight;
             for (String s : noSelection) {
-                guiGraphics.drawString(font, s, leftPos + 23 + 27 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
+                graphics.text(font, s, leftPos + 23 + 27 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
                 curY += font.lineHeight + 5;
             }
         } else if (selection.recipeDisplayEntry().display() instanceof FurnaceRecipeDisplay) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
         } else {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);
         }
 
         if (selection != null) {
             for (CraftMatrixFakeSlot slot : menu.getMatrixSlots()) {
                 if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
-                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16, 256, 256);
+                    graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16, 256, 256);
                 }
             }
         }
 
-        guiGraphics.fill(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
+        graphics.fill(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
 
         if (menu.getItemListCount() == 0) {
-            guiGraphics.fill(leftPos + 97, topPos + 7, leftPos + 168, topPos + 85, 0xAA222222);
+            graphics.fill(leftPos + 97, topPos + 7, leftPos + 168, topPos + 85, 0xAA222222);
             int curY = topPos + 79 / 2 - noIngredients.length / 2 * font.lineHeight;
             for (String s : noIngredients) {
-                guiGraphics.drawString(font, s, leftPos + 97 + 36 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
+                graphics.text(font, s, leftPos + 97 + 36 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
                 curY += font.lineHeight + 5;
             }
         }
     }
 
     @Override
-    protected void renderLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
             var poseStack = guiGraphics.pose();
             poseStack.pushMatrix();
@@ -329,8 +328,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
         if (kitchenFeedback != null && kitchenFeedbackTimeLeft > 0) {
             float alpha = 1f;
@@ -338,7 +337,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
             }
             // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
-            guiGraphics.drawCenteredString(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
+            guiGraphics.centeredText(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
             // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             kitchenFeedbackTimeLeft -= partialTicks;
         }
@@ -359,7 +358,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             matrixSlot.updateSlot(partialTicks);
         }
 
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
+        this.extractTooltip(guiGraphics, mouseX, mouseY);
     }
 
     private void recalculateScrollBar() {

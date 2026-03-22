@@ -7,21 +7,21 @@ import net.blay09.mods.cookingforblockheads.block.FridgeBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +30,8 @@ import java.util.List;
 public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, FridgeRenderer.FridgeRenderState> {
 
     public static class FridgeRenderState extends BlockEntityRenderState {
+        public final BlockModelRenderState lower = new BlockModelRenderState();
+        public final BlockModelRenderState upper = new BlockModelRenderState();
         public boolean skip;
         public List<ItemStackRenderState> items = Collections.emptyList();
         public FridgeBlock.FridgeModelType modelType = FridgeBlock.FridgeModelType.SMALL;
@@ -54,7 +56,27 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
     public void extractRenderState(FridgeBlockEntity blockEntity, FridgeRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
-        renderState.dye = renderState.blockState.getBlock() instanceof FridgeBlock fridgeBlock ? fridgeBlock.getColor() : DyeColor.WHITE;
+        DeferredBlockStateModel lowerModel;
+        DeferredBlockStateModel upperModel = null;
+        boolean isLarge = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_LOWER;
+        if (isLarge) {
+            lowerModel = renderState.flipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(renderState.dye) : ModModels.fridgeDoorsLargeLower.get(renderState.dye);
+            upperModel = renderState.flipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(renderState.dye) : ModModels.fridgeDoorsLargeUpper.get(renderState.dye);
+        } else {
+            lowerModel = renderState.flipped ? ModModels.fridgeDoorsFlipped.get(renderState.dye) : ModModels.fridgeDoors.get(renderState.dye);
+        }
+
+        final var lowerParts = renderState.lower.setupModel(new Matrix4f(), false);
+        lowerModel.asBlockStateModel().collectParts(renderState.lower.scratchRandomSource(42), lowerParts);
+
+        if (upperModel != null) {
+            final var upperParts = renderState.upper.setupModel(new Matrix4f(), false);
+            upperModel.asBlockStateModel().collectParts(renderState.upper.scratchRandomSource(42), upperParts);
+        } else {
+            renderState.upper.clear();
+        }
+
+        renderState.dye = blockEntity.getBlockState().getBlock() instanceof FridgeBlock fridgeBlock ? fridgeBlock.getColor() : DyeColor.WHITE;
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.modelType = blockEntity.getBlockState().getValue(FridgeBlock.MODEL_TYPE);
         renderState.skip = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_UPPER;
@@ -78,7 +100,6 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         }
 
         // Render the fridge door
-        boolean isLarge = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_LOWER;
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
@@ -96,19 +117,11 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(renderState.flipped ? -renderState.doorAngle : renderState.doorAngle)));
         poseStack.translate(-originX, 0f, -originZ);
 
-        DeferredBlockStateModel lowerModel;
-        DeferredBlockStateModel upperModel = null;
-        if (isLarge) {
-            lowerModel = renderState.flipped ? ModModels.fridgeDoorsLargeLowerFlipped.get(renderState.dye) : ModModels.fridgeDoorsLargeLower.get(renderState.dye);
-            upperModel = renderState.flipped ? ModModels.fridgeDoorsLargeUpperFlipped.get(renderState.dye) : ModModels.fridgeDoorsLargeUpper.get(renderState.dye);
-        } else {
-            lowerModel = renderState.flipped ? ModModels.fridgeDoorsFlipped.get(renderState.dye) : ModModels.fridgeDoors.get(renderState.dye);
-        }
+        renderState.lower.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 
-        submitNodeCollector.submitBlockModel(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), lowerModel.asBlockStateModel(), 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
-        if (upperModel != null) {
+        if (!renderState.upper.isEmpty()) {
             poseStack.translate(0, 1, 0);
-            submitNodeCollector.submitBlockModel(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), upperModel.asBlockStateModel(), 1f, 1f, 1f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            renderState.upper.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         }
 
         poseStack.popPose();

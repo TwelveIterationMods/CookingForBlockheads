@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.cookingforblockheads.mixin.ShapedRecipeAccessor;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
@@ -27,7 +27,7 @@ public class KitchenShapedRecipeHandler extends AbstractKitchenCraftingRecipeHan
     }
 
     @Override
-    public ItemStack predictResultItem(ShapedRecipe recipe) {
+    public ItemStackTemplate predictResultItem(ShapedRecipe recipe) {
         return ((ShapedRecipeAccessor) recipe).getResult();
     }
 }

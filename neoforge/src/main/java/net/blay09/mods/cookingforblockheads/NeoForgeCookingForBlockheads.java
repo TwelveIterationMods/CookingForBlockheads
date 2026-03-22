@@ -10,6 +10,7 @@ import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.world.Container;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -21,11 +22,11 @@ import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 @Mod(CookingForBlockheads.MOD_ID)
 public class NeoForgeCookingForBlockheads {
 
-    public NeoForgeCookingForBlockheads(IEventBus eventBus) {
+    public NeoForgeCookingForBlockheads(ModContainer modContainer, IEventBus eventBus) {
         OvenItemSmeltedEvent.EVENT.register(event
                 -> NeoForge.EVENT_BUS.post(new PlayerEvent.ItemSmeltedEvent(event.player(), event.resultItem(), 1)));
 
-        final var context = new NeoForgeLoadContext(eventBus);
+        final var context = new NeoForgeLoadContext(modContainer, eventBus);
         Balm.initializeMod(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
 
         Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");

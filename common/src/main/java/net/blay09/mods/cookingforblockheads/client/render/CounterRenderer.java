@@ -7,21 +7,21 @@ import net.blay09.mods.cookingforblockheads.block.CounterBlock;
 import net.blay09.mods.cookingforblockheads.client.ModModels;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +30,7 @@ import java.util.List;
 public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntityRenderer<T, CounterRenderer.CounterRenderState> {
 
     public static class CounterRenderState extends BlockEntityRenderState {
+        public final BlockModelRenderState door = new BlockModelRenderState();
         public List<ItemStackRenderState> items = Collections.emptyList();
         @Nullable
         public DyeColor dye;
@@ -76,8 +77,13 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
     public void extractRenderState(T blockEntity, CounterRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
-        renderState.dye = renderState.blockState.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
-        renderState.facing = renderState.blockState.getValue(CounterBlock.FACING);
+        final var doorParts = renderState.door.setupModel(new Matrix4f(), false);
+        final var doorModel = getDoorModel(renderState.dye, renderState.flipped);
+        doorModel.asBlockStateModel().collectParts(renderState.door.scratchRandomSource(42), doorParts);
+
+        final var state = blockEntity.getBlockState();
+        renderState.dye = state.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
+        renderState.facing = state.getValue(CounterBlock.FACING);
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.flipped = blockEntity.isFlipped();
 
@@ -110,8 +116,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         poseStack.mulPose(Axis.YP.rotationDegrees(doorDirection * (float) Math.toDegrees(renderState.doorAngle)));
         poseStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
-        final var model = getDoorModel(renderState.dye, renderState.flipped);
-        submitNodeCollector.submitBlockModel(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), model.asBlockStateModel(), 0f, 0f, 0f, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        renderState.door.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         // Render the content if the door is open

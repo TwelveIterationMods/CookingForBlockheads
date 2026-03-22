@@ -14,6 +14,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 
 import java.util.*;
@@ -54,7 +55,7 @@ public class CookingForBlockheadsRegistry {
                 continue;
             }
 
-            final var resultItem = recipeHandler.predictResultItem(recipe);
+            final var resultItem = recipeHandler.predictResultItem(recipe).create();
             if (isEligibleResultItem(resultItem)) {
                 if (recipe instanceof AbstractCookingRecipe cookingRecipe && isOvenDuplicate(cookingRecipe, (KitchenRecipeHandler<?, AbstractCookingRecipe>) recipeHandler, resultItem)) {
                     continue;
@@ -82,7 +83,7 @@ public class CookingForBlockheadsRegistry {
         for (final var recipeHolder : existing) {
             final var otherRecipeHandler = getKitchenRecipeHandler(recipeHolder.value());
             final var otherIngredients = otherRecipeHandler.getIngredients(recipeHolder);
-            final var otherResultItem = otherRecipeHandler.predictResultItem(recipeHolder);
+            final var otherResultItem = otherRecipeHandler.predictResultItem(recipeHolder).create();
             if (ItemStack.isSameItemSameComponents(resultItem, otherResultItem) && ingredients.equals(otherIngredients)) {
                 return true;
             }

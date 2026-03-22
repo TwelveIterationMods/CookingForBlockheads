@@ -14,20 +14,19 @@ public class SpiceRackScreen extends AbstractContainerScreen<SpiceRackMenu> {
     private static final Identifier texture = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/spice_rack.png");
 
     public SpiceRackScreen(SpiceRackMenu container, Inventory playerInventory, Component displayName) {
-        super(container, playerInventory, displayName);
-        imageHeight = 132;
+        super(container, playerInventory, displayName, DEFAULT_IMAGE_WIDTH, 132);
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+        extractTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 
 }
