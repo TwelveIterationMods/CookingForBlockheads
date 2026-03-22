@@ -14,7 +14,7 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -232,7 +232,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
         if (menu.isScrollOffsetDirty()) {
             setCurrentOffset(currentOffset);
             menu.setScrollOffsetDirty(false);
@@ -298,7 +298,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
             var poseStack = guiGraphics.pose();
             poseStack.pushMatrix();
@@ -329,7 +329,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
         if (kitchenFeedback != null && kitchenFeedbackTimeLeft > 0) {

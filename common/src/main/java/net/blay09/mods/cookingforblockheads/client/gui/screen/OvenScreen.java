@@ -2,8 +2,8 @@ package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.menu.OvenMenu;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -27,7 +27,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
@@ -39,7 +39,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         super.renderLabels(guiGraphics, mouseX, mouseY);
         // TODO 1.21.6: guiGraphics.flush();
 
@@ -62,7 +62,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
         // Draw background
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos + 22, topPos, 0, 0, imageWidth - 22, imageHeight, 256, 256);
 

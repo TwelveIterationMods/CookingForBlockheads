@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
 import net.blay09.mods.cookingforblockheads.menu.CuttingBoardMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.recipebook.CraftingRecipeBookComponent;
@@ -30,7 +30,7 @@ public class CuttingBoardScreen extends AbstractRecipeBookScreen<CuttingBoardMen
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphicsExtractor guiGraphics, float delta, int mouseX, int mouseY) {
         int x = leftPos;
         int y = (height - imageHeight) / 2;
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TABLE_LOCATION, x, y, 0f, 0f, imageWidth, imageHeight, 256, 256);
