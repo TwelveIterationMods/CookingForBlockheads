@@ -24,10 +24,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
-        extractTooltip(guiGraphics, mouseX, mouseY);
-
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         OvenBlockEntity tileEntity = menu.getOven();
         if (tileEntity.hasPowerUpgrade() && mouseX >= leftPos + imageWidth - 25 && mouseY >= topPos + 22 && mouseX < leftPos + imageWidth - 25 + 35 + 18 && mouseY < topPos + 22 + 72) {
             final var energyStorage = tileEntity.getEnergyStorage();

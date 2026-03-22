@@ -329,8 +329,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+    public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractContents(graphics, mouseX, mouseY, a);
 
         if (kitchenFeedback != null && kitchenFeedbackTimeLeft > 0) {
             float alpha = 1f;
@@ -338,28 +338,26 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
             }
             // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
-            guiGraphics.centeredText(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
+            graphics.centeredText(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
             // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            kitchenFeedbackTimeLeft -= partialTicks;
+            kitchenFeedbackTimeLeft -= a;
         }
 
-        var poseStack = guiGraphics.pose();
+        var poseStack = graphics.pose();
         poseStack.pushMatrix();
         // TODO 1.21.6: poseStack.translate(0, 0, 300);
         for (Slot slot : menu.slots) {
             if (slot instanceof CraftMatrixFakeSlot fakeSlot) {
                 if (fakeSlot.isMissing() && !slot.getItem().isEmpty()) {
-                    guiGraphics.fillGradient(leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0x77FF4444, 0x77FF5555);
+                    graphics.fillGradient(leftPos + slot.x, topPos + slot.y, leftPos + slot.x + 16, topPos + slot.y + 16, 0x77FF4444, 0x77FF5555);
                 }
             }
         }
         poseStack.popMatrix();
 
         for (CraftMatrixFakeSlot matrixSlot : menu.getMatrixSlots()) {
-            matrixSlot.updateSlot(partialTicks);
+            matrixSlot.updateSlot(a);
         }
-
-        this.extractTooltip(guiGraphics, mouseX, mouseY);
     }
 
     private void recalculateScrollBar() {
