@@ -46,9 +46,9 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
                 if (!itemStack.isEmpty()) {
                     final var pose = guiGraphics.pose();
                     pose.pushMatrix();
-                    // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, oven.getCookProgress(i));
-                    // TODO 1.21.6: guiGraphics.renderItem(itemStack, slot.x, slot.y);
-                    // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                    // TODO RenderSystem.setShaderColor(1f, 1f, 1f, oven.getCookProgress(i));
+                    // TODO guiGraphics.renderItem(itemStack, slot.x, slot.y);
+                    // TODO RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                     pose.popMatrix();
                 }
             }

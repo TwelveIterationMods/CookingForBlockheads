@@ -302,7 +302,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         if (CookingForBlockheadsConfig.getActive().showIngredientIcon) {
             var poseStack = guiGraphics.pose();
             poseStack.pushMatrix();
-            // TODO 1.21.6: poseStack.translate(0, 0, 300);
             for (Slot slot : menu.slots) {
                 if (slot instanceof CraftableListingFakeSlot fakeSlot) {
                     if (slot.getItem().is(ModItemTags.INGREDIENTS)) {
