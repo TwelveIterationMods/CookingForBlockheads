@@ -46,9 +46,11 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
                 if (!itemStack.isEmpty()) {
                     final var pose = guiGraphics.pose();
                     pose.pushMatrix();
-                    // TODO RenderSystem.setShaderColor(1f, 1f, 1f, oven.getCookProgress(i));
-                    // TODO guiGraphics.renderItem(itemStack, slot.x, slot.y);
-                    // TODO RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                    // TODO GuiRenderer#submitBlitFromItemAtlas hardcodes color to -1.
+                    //      Maybe Balm could introduce an optional color field to GuiItemRenderState, because
+                    //      right now it's impossible to render an item with an alpha.
+                    // float alpha = oven.getCookProgress(i);
+                    // guiGraphics.item(itemStack, slot.x, slot.y);
                     pose.popMatrix();
                 }
             }
