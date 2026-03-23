@@ -337,15 +337,13 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             if (kitchenFeedbackTimeLeft < KITCHEN_FEEDBACK_HINT_TIME / 2f) {
                 alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
             }
-            // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
-            graphics.centeredText(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
-            // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            int alphaColor = ((int) (alpha * 255f) << 24) | 0xFFFFFF;
+            graphics.centeredText(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, alphaColor);
             kitchenFeedbackTimeLeft -= a;
         }
 
         var poseStack = graphics.pose();
         poseStack.pushMatrix();
-        // TODO 1.21.6: poseStack.translate(0, 0, 300);
         for (Slot slot : menu.slots) {
             if (slot instanceof CraftMatrixFakeSlot fakeSlot) {
                 if (fakeSlot.isMissing() && !slot.getItem().isEmpty()) {

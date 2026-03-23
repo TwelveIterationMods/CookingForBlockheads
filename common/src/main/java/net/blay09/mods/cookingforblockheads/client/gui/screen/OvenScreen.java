@@ -37,7 +37,6 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
     @Override
     protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         super.extractLabels(guiGraphics, mouseX, mouseY);
-        // TODO 1.21.6: guiGraphics.flush();
 
         final var oven = menu.getOven();
         for (int i = 0; i < 9; i++) {
@@ -47,7 +46,6 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
                 if (!itemStack.isEmpty()) {
                     final var pose = guiGraphics.pose();
                     pose.pushMatrix();
-                    // TODO 1.21.6: pose.translate(0f, 0f, 200f);
                     // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, oven.getCookProgress(i));
                     // TODO 1.21.6: guiGraphics.renderItem(itemStack, slot.x, slot.y);
                     // TODO 1.21.6: RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
