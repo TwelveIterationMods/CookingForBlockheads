@@ -1,5 +1,1 @@
-- Added support for oven, smoking and campfire recipes to the Cooking Table (previously only smelting recipes would show)
-- Added support for processing campfire and smoking recipes in the oven (previously only smelting and oven recipes would work)
-- Changed search bar to not be focused by default
-- Fixed search bar not losing focus when clicking elsewhere
-- Fixed blocks with broken models being created by default when other mods expand colors; it is up to addon mods to explicitly enable more colors if they provide the assets for them
+- Updated to Minecraft 26.1
