@@ -26,6 +26,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -374,7 +375,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     private void setCurrentOffset(int currentOffset) {
-        this.currentOffset = Math.clamp(currentOffset, 0, (int) Math.ceil(menu.getItemListCount() / (float) VISIBLE_COLS) - VISIBLE_ROWS);
+        this.currentOffset = Math.clamp(currentOffset, 0, Mth.abs(Mth.ceil(menu.getItemListCount() / (float) VISIBLE_COLS) - VISIBLE_ROWS));
 
         menu.setScrollOffset(this.currentOffset);
 
