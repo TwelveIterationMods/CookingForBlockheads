@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.menu.slot;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SlotOvenTool extends Slot {
 
@@ -32,4 +32,3 @@ public class SlotOvenTool extends Slot {
         return ovenToolIcons[iconIndex];
     }
 }
-

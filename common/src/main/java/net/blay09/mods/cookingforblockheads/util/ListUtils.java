@@ -1,7 +1,7 @@
 package net.blay09.mods.cookingforblockheads.util;
 
 import net.minecraft.core.NonNullList;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -19,4 +19,3 @@ public class ListUtils {
         return result;
     }
 }
-

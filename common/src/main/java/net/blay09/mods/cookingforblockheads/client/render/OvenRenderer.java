@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
     }
 
     @Override
-    public void extractRenderState(OvenBlockEntity blockEntity, OvenRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(OvenBlockEntity blockEntity, OvenRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         final var doorParts = renderState.door.setupModel(new Matrix4f(), false);

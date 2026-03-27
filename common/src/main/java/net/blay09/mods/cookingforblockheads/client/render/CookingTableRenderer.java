@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlockEntity, CookingTableRenderer.CookingTableRenderState> {
 
@@ -37,7 +37,7 @@ public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlo
     }
 
     @Override
-    public void extractRenderState(CookingTableBlockEntity blockEntity, CookingTableRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(CookingTableBlockEntity blockEntity, CookingTableRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         renderState.facing = blockEntity.getBlockState().getValue(CookingTableBlock.FACING);

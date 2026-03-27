@@ -3,7 +3,7 @@ package net.blay09.mods.cookingforblockheads.menu.slot;
 import net.blay09.mods.cookingforblockheads.crafting.CraftableWithStatus;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class CraftableListingFakeSlot extends AbstractFakeSlot {
 
@@ -42,4 +42,3 @@ public class CraftableListingFakeSlot extends AbstractFakeSlot {
         return true;
     }
 }
-

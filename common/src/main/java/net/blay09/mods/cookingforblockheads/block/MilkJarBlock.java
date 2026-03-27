@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -54,7 +54,7 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
         if (itemStack.isEmpty()) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
-        
+
         final var blockEntity = level.getBlockEntity(pos);
         if (!(blockEntity instanceof MilkJarBlockEntity milkJar)) {
             return InteractionResult.FAIL;

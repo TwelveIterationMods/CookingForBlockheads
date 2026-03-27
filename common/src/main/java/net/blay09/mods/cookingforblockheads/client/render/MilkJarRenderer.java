@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements BlockEntityRenderer<TBlockEntity, MilkJarRenderer.MilkJarRenderState> {
@@ -38,7 +38,7 @@ public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements
     }
 
     @Override
-    public void extractRenderState(TBlockEntity blockEntity, MilkJarRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(TBlockEntity blockEntity, MilkJarRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         final var milkParts = renderState.milk.setupModel(new Matrix4f(), false);
