@@ -1,24 +1,19 @@
 {
-    "item.cookingforblockheads.recipe_book_tier0": "Cooking for Blockheads",
-    "item.cookingforblockheads.recipe_book_tier1": "Cooking for Blockheads I",
-    "item.cookingforblockheads.recipe_book_tier2": "Cooking for Blockheads II",
     "item.cookingforblockheads.heating_unit": "Verwarmingseenheid",
     "item.cookingforblockheads.ice_unit": "Ijseenheid",
     "item.cookingforblockheads.preservation_chamber": "Preservings Kamer",
 
-    "tooltip.cookingforblockheads.recipe_book_tier0": "#Filterloze versie",
-    "tooltip.cookingforblockheads.recipe_book_tier0.description": "Toont alle voedselrecepten.",
-    "tooltip.cookingforblockheads.recipe_book_tier1": "Receptboek",
-    "tooltip.cookingforblockheads.recipe_book_tier1.description": "Toont voedsel dat je kunt maken met\\nde dingen die je in je inventaris hebt.",
-    "tooltip.cookingforblockheads.recipe_book_tier2": "Crafting Boek",
-    "tooltip.cookingforblockheads.recipe_book_tier2.description": "Kan voedsel maken met de dingen\\ndie je in je inventaris hebt.",
-
-    "_comment": "##",
+    "tooltip.cookingforblockheads.no_filter_edition": "#Filterloze versie",
+    "tooltip.cookingforblockheads.no_filter_edition.description": "Toont alle voedselrecepten.",
+    "tooltip.cookingforblockheads.recipe_book": "Receptboek",
+    "tooltip.cookingforblockheads.recipe_book.description": "Toont voedsel dat je kunt maken met\\nde dingen die je in je inventaris hebt.",
+    "tooltip.cookingforblockheads.crafting_book": "Crafting Boek",
+    "tooltip.cookingforblockheads.crafting_book.description": "Kan voedsel maken met de dingen\\ndie je in je inventaris hebt.",
 
     "item.cookingforblockheads.cooking_table": "Kooktafel",
-    "item.cookingforblockheads.oven": "Oven",
+    "item.cookingforblockheads.white_oven": "Oven",
     "item.cookingforblockheads.fruit_basket": "Fruitmand",
-    "item.cookingforblockheads.fridge": "Koelkast",
+    "item.cookingforblockheads.white_fridge": "Koelkast",
     "item.cookingforblockheads.sink": "Wastafel",
     "item.cookingforblockheads.tool_rack": "Gereedschapsrek",
     "item.cookingforblockheads.milk_jar": "Melkglas",
@@ -27,8 +22,6 @@
     "item.cookingforblockheads.spice_rack": "Kruidenrek",
     "item.cookingforblockheads.counter": "Aanrecht",
     "item.cookingforblockheads.cabinet": "Keukenkast",
-    "item.cookingforblockheads.corner": "Keukenhoek",
-    "item.cookingforblockheads.kitchen_floor": "Keukenvloer",
     "item.cookingforblockheads.cutting_board": "Snijplank",
 
     "tooltip.cookingforblockheads.multiblock_kitchen": "Multiblock-keuken",
@@ -45,15 +38,12 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Serveert specerijen aan ingrediënten.",
     "tooltip.cookingforblockheads.counter.description": "Slaat ingrediënten op voor recepten.",
     "tooltip.cookingforblockheads.cabinet.description": "Kan boven de keukenblokken op de muur worden geplaatst.",
-    "tooltip.cookingforblockheads.corner.description": "Geen gebruik in het bijzonder.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Geen gebruik in het bijzonder.",
     "tooltip.cookingforblockheads.heating_unit.description": "Maakt het mogelijk om een oven te verwarmen met energie.",
     "tooltip.cookingforblockheads.ice_unit.description": "Biedt sneeuw en ijs aan recepten.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Voorkomt dat het laatste item van een slot wordt opgebruikt.",
     "tooltip.cookingforblockheads.cutting_board.description": "Biedt een snijplank voor recepten.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Kan in de wereld worden geplaatst.",
-
-    "_comment": "##",
 
     "gui.cookingforblockheads.no_ingredients": "Niet\\ngenoeg\\ningrediënten",
     "gui.cookingforblockheads.no_selection": "Selecteer een item aan\\nde rechterkant om het recept te zien.",
@@ -76,8 +66,6 @@
     "tooltip.cookingforblockheads.oven_upgrade": "Upgrade van de oven",
     "tooltip.cookingforblockheads.fridge_upgrade": "Upgrade van de koelkast",
 
-    "_comment": "##",
-
     "container.cookingforblockheads.oven": "Kookoven",
     "container.cookingforblockheads.fridge": "Koelkast",
     "container.cookingforblockheads.spice_rack": "Kruidenrek",
@@ -87,24 +75,16 @@
 
     "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
-    "_comment": "##",
-
     "waila.cookingforblockheads.milk_stored": "Melk opgeslagen: %d/%d",
     "waila.cookingforblockheads.toast_progress": "Roosteren... (%s)",
     "waila.cookingforblockheads.heating_unit": "Upgrade: Verwarmingseenheid",
     "waila.cookingforblockheads.ice_unit": "Upgrade: Ijseenheid",
     "waila.cookingforblockheads.preservation_chamber": "Upgrade: Preservings Kamer",
 
-    "_comment": "##",
-
     "cookingforblockheads.subtitle.fridge_open": "Koelkast gaat open",
     "cookingforblockheads.subtitle.fridge_close": "Koelkast sluit",
     "cookingforblockheads.subtitle.oven_open": "Oven wordt geopend",
     "cookingforblockheads.subtitle.oven_close": "Oven sluit",
     "cookingforblockheads.subtitle.toaster_start": "Broodrooster begint te roosteren",
-    "cookingforblockheads.subtitle.toaster_stop": "Broodrooster is klaar met roosteren",
-
-    "_comment": "##",
-
-    "jei.cookingforblockheads.cow_jar": "Koe in een pot"
+    "cookingforblockheads.subtitle.toaster_stop": "Broodrooster is klaar met roosteren"
 }

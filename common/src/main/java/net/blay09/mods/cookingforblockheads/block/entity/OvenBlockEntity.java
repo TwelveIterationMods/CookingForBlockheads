@@ -116,7 +116,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
             return 11;
         }
     };
-    private Component customName;
+    private @Nullable Component customName;
     private boolean isFirstTick = true;
     private boolean isDirty;
     private final DefaultContainer container = new DefaultContainer(20) {
@@ -146,7 +146,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     private final SubContainer toolsContainer = new SubContainer(container, 16, 20);
     private final KitchenItemProvider itemProvider = new ContainerKitchenItemProvider(new CombinedContainer(toolsContainer, outputContainer));
     private boolean hasPowerUpgrade;
-    private Direction facing;
+    private Direction facing = Direction.NORTH;
 
     public OvenBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.oven.value(), pos, state);
@@ -451,7 +451,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     }
 
     @Override
-    public Container getContainer(Direction side) {
+    public @Nullable Container getContainer(@Nullable Direction side) {
         if (CookingForBlockheadsConfig.getActive().disallowOvenAutomation) {
             return null;
         }
@@ -486,7 +486,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     }
 
     public Direction getFacing() {
-        return facing == null ? Direction.NORTH : facing;
+        return facing;
     }
 
     @Nullable
@@ -509,9 +509,8 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         return customName != null;
     }
 
-    @Nullable
     @Override
-    public Component getCustomName() {
+    public @Nullable Component getCustomName() {
         return customName;
     }
 
@@ -536,7 +535,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     }
 
     @Override
-    public Container getContainer() {
+    public @Nullable Container getContainer() {
         if (CookingForBlockheadsConfig.getActive().disallowOvenAutomation) {
             return null;
         }

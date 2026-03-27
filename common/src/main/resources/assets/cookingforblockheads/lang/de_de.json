@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "Kann mit Dingen, die Du in\\ndeinem Inventar hast, Essen craften.",
     
     "item.cookingforblockheads.cooking_table": "Kochtisch",
-    "item.cookingforblockheads.fridge": "Kühlschrank",
+    "item.cookingforblockheads.white_fridge": "Kühlschrank",
     "item.cookingforblockheads.sink": "Spülbecken",
     "item.cookingforblockheads.counter": "Küchentheke",
     "item.cookingforblockheads.cabinet": "Küchenschrank",
-    "item.cookingforblockheads.corner": "Küchenecke",
-    "item.cookingforblockheads.hanging_corner": "Hängende Küchenecke",
-    "item.cookingforblockheads.oven": "Ofen",
+    "item.cookingforblockheads.white_oven": "Ofen",
     "item.cookingforblockheads.fruit_basket": "Fruchtkorb",
     "item.cookingforblockheads.tool_rack": "Werkzeugregal",
     "item.cookingforblockheads.milk_jar": "Milchglas",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Lagert Gewürze und Zutaten.",
     "tooltip.cookingforblockheads.counter.description": "Lagert Zutaten für Rezepte.",
     "tooltip.cookingforblockheads.cabinet.description": "Kann an der Wand über Küchenblöcken plaziert werden.",
-    "tooltip.cookingforblockheads.corner.description": "Verbinde Küchenblöcke über Ecken hinweg.",
-    "tooltip.cookingforblockheads.hanging_corner.description": "Verbinde Küchenblöcke über Ecken hinweg.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Verbinde Küchenblöcke über Distanzen.",
     "tooltip.cookingforblockheads.heating_unit.description": "Ermöglicht das Erhitzen eines Ofens mit Energie.",
     "tooltip.cookingforblockheads.ice_unit.description": "Stellt Schnee und Eis für Rezepte bereit.",
@@ -110,7 +106,5 @@
     "cookingforblockheads.subtitle.oven_open": "Ofen öffnet",
     "cookingforblockheads.subtitle.oven_close": "Ofen schließt",
     "cookingforblockheads.subtitle.toaster_start": "Toaster beginnt mit dem Toasten",
-    "cookingforblockheads.subtitle.toaster_stop": "Toaster fertig getoastet",
-    
-    "jei.cookingforblockheads.cow_jar": "Kuh im Glas"
+    "cookingforblockheads.subtitle.toaster_stop": "Toaster fertig getoastet"
 }

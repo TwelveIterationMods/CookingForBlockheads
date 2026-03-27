@@ -41,7 +41,7 @@ import org.jspecify.annotations.Nullable;
 public class FruitBasketBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private boolean hasPreservationUpgrade;
-    private Component customName;
+    private @Nullable Component customName;
     private boolean isDirty;
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -105,9 +105,8 @@ public class FruitBasketBlockEntity extends BlockEntity implements BalmMenuProvi
         return customName != null;
     }
 
-    @Nullable
     @Override
-    public Component getCustomName() {
+    public @Nullable Component getCustomName() {
         return customName;
     }
 

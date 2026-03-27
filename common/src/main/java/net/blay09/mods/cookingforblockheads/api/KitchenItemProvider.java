@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.api;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -21,7 +22,7 @@ public interface KitchenItemProvider {
      * @param cacheHint        a hint on where to start looking, based on {@link #getCacheHint(IngredientToken)} for the last returned token for this type of ingredient
      * @return an ingredient token that matches the given ingredient, or null if none was found
      */
-    IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
+    @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
 
     /**
      * @param itemStack        the item to find
@@ -29,7 +30,7 @@ public interface KitchenItemProvider {
      * @param cacheHint        a hint on where to start looking, based on {@link #getCacheHint(IngredientToken)} for the last returned token for this type of ingredient
      * @return an ingredient token that matches the given ingredient, or null if none was found
      */
-    IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
+    @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
 
     CacheHint getCacheHint(IngredientToken ingredientToken);
 }

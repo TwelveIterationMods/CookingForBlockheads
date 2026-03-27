@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "Pode fazer comida com as coisas\\n com o que você tem no inventário.",
 
     "item.cookingforblockheads.cooking_table": "Mesa de Cozinha",
-    "item.cookingforblockheads.fridge": "Geladeira",
+    "item.cookingforblockheads.white_fridge": "Geladeira",
     "item.cookingforblockheads.sink": "Pia",
     "item.cookingforblockheads.counter": "Balcão de Cozinha",
     "item.cookingforblockheads.cabinet": "Armário de Cozinha",
-    "item.cookingforblockheads.corner": "Balcão de Canto",
-    "item.cookingforblockheads.hanging_corner": "Balcão de Canto Suspenso",
-    "item.cookingforblockheads.oven": "Forno",
+    "item.cookingforblockheads.white_oven": "Forno",
     "item.cookingforblockheads.fruit_basket": "Cesto de Frutas",
     "item.cookingforblockheads.tool_rack": "Prateleira de Utensílios",
     "item.cookingforblockheads.milk_jar": "Jarra de Leite",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Guarda temperos para receitas.",
     "tooltip.cookingforblockheads.counter.description": "Guarda ingredientes para receitas.",
     "tooltip.cookingforblockheads.cabinet.description": "Pode ser colocado na parede acima de blocos de cozinha.",
-    "tooltip.cookingforblockheads.corner.description": "Sem usos em particular.",
-    "tooltip.cookingforblockheads.hanging_corner.description": "Conecte blocos de cozinha nos cantos.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Sem usos em particular.",
     "tooltip.cookingforblockheads.heating_unit.description": "Permite aquecer um forno com energia.",
     "tooltip.cookingforblockheads.ice_unit.description": "Provêm neve e gelo para receitas.",
@@ -117,8 +113,6 @@
     "cookingforblockheads.subtitle.oven_close": "Forno fecha",
     "cookingforblockheads.subtitle.toaster_start": "Torradeira começa a torrar",
     "cookingforblockheads.subtitle.toaster_stop": "Torradeira acabada de torrar",
-
-    "jei.cookingforblockheads.cow_jar": "Vaca em uma jarra",
 
     "config.jade.plugin_cookingforblockheads.oven": "Forno",
     "config.jade.plugin_cookingforblockheads.milk_jar": "Jarra de Leite",

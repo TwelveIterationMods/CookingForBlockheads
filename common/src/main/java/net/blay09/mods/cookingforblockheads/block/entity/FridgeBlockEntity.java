@@ -60,7 +60,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
 
         @Override
-        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var providedItem : providedItems) {
                 if (ingredient.test(providedItem)) {
                     return new IceUnitIngredientToken(providedItem);
@@ -70,7 +70,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         }
 
         @Override
-        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var providedItem : providedItems) {
                 if (ItemStack.isSameItem(providedItem, itemStack)) {
                     return new IceUnitIngredientToken(providedItem);
@@ -87,7 +87,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
     public boolean hasIceUpgrade;
     public boolean hasPreservationUpgrade;
-    private Component customName;
+    private @Nullable Component customName;
     private boolean isDirty;
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -278,9 +278,8 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         return customName != null;
     }
 
-    @Nullable
     @Override
-    public Component getCustomName() {
+    public @Nullable Component getCustomName() {
         return customName;
     }
 

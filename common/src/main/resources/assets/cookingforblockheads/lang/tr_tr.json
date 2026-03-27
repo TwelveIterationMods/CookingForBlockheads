@@ -1,22 +1,22 @@
 {
-    "item.cookingforblockheads.recipe_book_tier0": "Cooking for Blockheads",
-    "item.cookingforblockheads.recipe_book_tier1": "Cooking for Blockheads I",
-    "item.cookingforblockheads.recipe_book_tier2": "Cooking for Blockheads II",
+    "item.cookingforblockheads.no_filter_edition": "Cooking for Blockheads",
+    "item.cookingforblockheads.recipe_book": "Cooking for Blockheads I",
+    "item.cookingforblockheads.crafting_book": "Cooking for Blockheads II",
     "item.cookingforblockheads.heating_unit": "Isıtma Ünitesi",
     "item.cookingforblockheads.ice_unit": "Soğutma Ünitesi",
     "item.cookingforblockheads.preservation_chamber": "Koruyucu Bölme",
 
-    "tooltip.cookingforblockheads.recipe_book_tier0": "#FiltresizSürüm",
-    "tooltip.cookingforblockheads.recipe_book_tier0.description": "Tüm yemek tariflerini gösterir.",
-    "tooltip.cookingforblockheads.recipe_book_tier1": "Yemek Tarifi Kitabı",
-    "tooltip.cookingforblockheads.recipe_book_tier1.description": "Envanterinizdeki öğelerle\\nyapabileceğiniz yiyecekleri gösterir.",
-    "tooltip.cookingforblockheads.recipe_book_tier2": "Üretim Kitabı",
-    "tooltip.cookingforblockheads.recipe_book_tier2.description": "Envanterinizde bulunan öğeleri kullanarak\\nyemek hazırlayabilirsiniz.",
+    "tooltip.cookingforblockheads.no_filter_edition": "#FiltresizSürüm",
+    "tooltip.cookingforblockheads.no_filter_edition.description": "Tüm yemek tariflerini gösterir.",
+    "tooltip.cookingforblockheads.recipe_book": "Yemek Tarifi Kitabı",
+    "tooltip.cookingforblockheads.recipe_book.description": "Envanterinizdeki öğelerle\\nyapabileceğiniz yiyecekleri gösterir.",
+    "tooltip.cookingforblockheads.crafting_book": "Üretim Kitabı",
+    "tooltip.cookingforblockheads.crafting_book.description": "Envanterinizde bulunan öğeleri kullanarak\\nyemek hazırlayabilirsiniz.",
 
     "item.cookingforblockheads.cooking_table": "Pişirme Masası",
-    "item.cookingforblockheads.oven": "Ocak",
+    "item.cookingforblockheads.white_oven": "Ocak",
     "item.cookingforblockheads.fruit_basket": "Meyve Sepeti",
-    "item.cookingforblockheads.fridge": "Buzdolabı",
+    "item.cookingforblockheads.white_fridge": "Buzdolabı",
     "item.cookingforblockheads.sink": "Lavabo",
     "item.cookingforblockheads.tool_rack": "Alet Rafı",
     "item.cookingforblockheads.milk_jar": "Süt Kavanozu",
@@ -25,8 +25,6 @@
     "item.cookingforblockheads.spice_rack": "Baharat Rafı",
     "item.cookingforblockheads.counter": "Mutfak Tezgahı",
     "item.cookingforblockheads.cabinet": "Mutfak Dolabı",
-    "item.cookingforblockheads.corner": "Mutfak Köşesi",
-    "item.cookingforblockheads.kitchen_floor": "Mutfak Zemini",
     "item.cookingforblockheads.cutting_board": "Kesme Tahtası",
 
     "tooltip.cookingforblockheads.multiblock_kitchen": "Mutfak",
@@ -43,7 +41,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Baharat ve malzemeleri depolar.",
     "tooltip.cookingforblockheads.counter.description": "Yemek tarifleri için malzeme depolar.",
     "tooltip.cookingforblockheads.cabinet.description": "Mutfak bloklarının üstünde duvara yerleştirilebilir.",
-    "tooltip.cookingforblockheads.corner.description": "Bir özelliği yok.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Bir özelliği yok.",
     "tooltip.cookingforblockheads.heating_unit.description": "Enerji ile ocağın ısınmasına izin verir.",
     "tooltip.cookingforblockheads.ice_unit.description": "Yemek tariflerine kar ve buz sağlar.",
@@ -92,7 +89,5 @@
     "cookingforblockheads.subtitle.oven_open": "Ocak açılır",
     "cookingforblockheads.subtitle.oven_close": "Ocak kapanır",
     "cookingforblockheads.subtitle.toaster_start": "Tost makinesi kızartmaya başlar",
-    "cookingforblockheads.subtitle.toaster_stop": "Tost makinesi kızartmayı bitirir",
-
-    "jei.cookingforblockheads.cow_jar": "İnekli Kavanoz"
+    "cookingforblockheads.subtitle.toaster_stop": "Tost makinesi kızartmayı bitirir"
 }

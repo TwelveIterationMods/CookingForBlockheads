@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "Puede elaborar comida usando las cosas que tiene en su inventario",
 
     "item.cookingforblockheads.cooking_table": "Mesa de cocina",
-    "item.cookingforblockheads.fridge": "Nevera",
+    "item.cookingforblockheads.white_fridge": "Nevera",
     "item.cookingforblockheads.sink": "Fregadero",
     "item.cookingforblockheads.counter": "Encimera de cocina",
     "item.cookingforblockheads.cabinet": "Armario de cocina",
-    "item.cookingforblockheads.corner": "Esquina de cocina",
-    "item.cookingforblockheads.hanging_corner": "Esquina de cocina de colgar",
-    "item.cookingforblockheads.oven": "Horno",
+    "item.cookingforblockheads.white_oven": "Horno",
     "item.cookingforblockheads.fruit_basket": "Cesta de frutas",
     "item.cookingforblockheads.tool_rack": "Estante de herramientas",
     "item.cookingforblockheads.milk_jar": "Jarra de leche",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Almacena especias e ingredientes",
     "tooltip.cookingforblockheads.counter.description": "Almacena ingredientes para las recetas",
     "tooltip.cookingforblockheads.cabinet.description": "Puede colocarse en la pared sobre los bloques de cocina",
-    "tooltip.cookingforblockheads.corner.description": "Conecta los bloques de cocina sobre las esquinas",
-    "tooltip.cookingforblockheads.hanging_corner.description": "Conecta los bloques de cocina sobre las esquinas",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Conecta los bloques de cocina sobre las distancias",
     "tooltip.cookingforblockheads.heating_unit.description": "Permite calentar un horno utilizando energía",
     "tooltip.cookingforblockheads.ice_unit.description": "Proporciona nieve y hielo a las recetas",
@@ -90,10 +86,8 @@
     "tooltip.cookingforblockheads.oven_upgrade": "Mejora del horno",
     "tooltip.cookingforblockheads.fridge_upgrade": "Mejora de la nevera",
 
-    "_comment": "##",
-
     "container.cookingforblockheads.oven": "Horno de cocina",
-    "contenedor.cookingforblockheads.fridge": "Refrigerador",
+    "container.cookingforblockheads.fridge": "Refrigerador",
     "container.cookingforblockheads.spice_rack": "Estante de especias",
     "container.cookingforblockheads.counter": "Encimera de cocina",
     "container.cookingforblockheads.cabinet": "Armario de cocina",
@@ -116,7 +110,5 @@
     "cookingforblockheads.subtitle.oven_open": "El horno se abre",
     "cookingforblockheads.subtitle.oven_close": "El horno se cierra",
     "cookingforblockheads.subtitle.toaster_start": "La tostadora empieza a tostar",
-    "cookingforblockheads.subtitle.toaster_stop": "La tostadora ha terminado de tostar",
-
-    "jei.cookingforblockheads.cow_jar": "Vaca en un frasco"
+    "cookingforblockheads.subtitle.toaster_stop": "La tostadora ha terminado de tostar"
 }

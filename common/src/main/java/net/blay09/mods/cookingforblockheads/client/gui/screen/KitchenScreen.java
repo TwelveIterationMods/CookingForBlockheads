@@ -9,9 +9,9 @@ import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -30,6 +30,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -52,17 +53,17 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private int scrollBarYPos;
     private int currentOffset;
 
-    private Component kitchenFeedback;
+    private @Nullable Component kitchenFeedback;
     private float kitchenFeedbackTimeLeft;
 
     private double mouseClickY = -1;
     private int indexWhenClicked;
     private int lastNumberOfMoves;
 
-    private Button btnNextRecipe;
-    private Button btnPrevRecipe;
+    private @Nullable Button btnNextRecipe;
+    private @Nullable Button btnPrevRecipe;
 
-    private EditBox searchBar;
+    private @Nullable EditBox searchBar;
 
     private final List<SortButton> sortButtons = new ArrayList<>();
 
@@ -80,12 +81,12 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     protected void init() {
         super.init();
 
-        btnPrevRecipe = Button.builder(Component.literal("<"), it -> menu.nextRecipe(-1))
+        btnPrevRecipe = Button.builder(Component.literal("<"), _ -> menu.nextRecipe(-1))
                 .pos(width / 2 - 79, height / 2 - 51).size(13, 20).build();
         btnPrevRecipe.visible = false;
         addRenderableWidget(btnPrevRecipe);
 
-        btnNextRecipe = Button.builder(Component.literal(">"), it -> menu.nextRecipe(1))
+        btnNextRecipe = Button.builder(Component.literal(">"), _ -> menu.nextRecipe(1))
                 .pos(width / 2 - 9, height / 2 - 51).size(13, 20).build();
         btnNextRecipe.visible = false;
         addRenderableWidget(btnNextRecipe);
@@ -97,9 +98,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         sortButtons.clear();
         for (final var sortButton : CookingForBlockheadsRegistry.getSortButtons()) {
-            SortButton button = new SortButton(width / 2 + 87, height / 2 + yOffset, sortButton, it -> {
-                menu.setSortComparator(sortButton.getComparator(Minecraft.getInstance().player));
-            });
+            SortButton button = new SortButton(width / 2 + 87, height / 2 + yOffset, sortButton, _ -> menu.setSortComparator(sortButton.getComparator(Minecraft.getInstance().player)));
             addRenderableWidget(button);
             sortButtons.add(button);
 
@@ -143,14 +142,14 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (event.button() == 1 && event.x() >= searchBar.getX() && event.x() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
+        if (searchBar != null && event.button() == 1 && event.x() >= searchBar.getX() && event.x() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.search(null);
             menu.updateCraftableSlots();
             setCurrentOffset(currentOffset);
             return true;
         } else {
-            if (searchBar.mouseClicked(event, doubleClick)) {
+            if (searchBar != null && searchBar.mouseClicked(event, doubleClick)) {
                 setFocused(searchBar);
                 return true;
             } else {
@@ -198,9 +197,11 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     public boolean charTyped(CharacterEvent event) {
         boolean result = super.charTyped(event);
 
-        menu.search(searchBar.getValue());
-        menu.updateCraftableSlots();
-        setCurrentOffset(currentOffset);
+        if (searchBar != null) {
+            menu.search(searchBar.getValue());
+            menu.updateCraftableSlots();
+            setCurrentOffset(currentOffset);
+        }
 
         return result;
     }
@@ -212,19 +213,21 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         }
 
-        if (!searchBar.isFocused() && event.key() == GLFW.GLFW_KEY_BACKSPACE) {
+        if ((searchBar == null || !searchBar.isFocused()) && event.key() == GLFW.GLFW_KEY_BACKSPACE) {
             menu.popHistory();
             return true;
         }
 
-        final var previousSearch = searchBar.getValue();
-        if (searchBar.keyPressed(event) || searchBar.isFocused()) {
-            if (!searchBar.getValue().equals(previousSearch)) {
-                menu.search(searchBar.getValue());
-                menu.updateCraftableSlots();
-                setCurrentOffset(currentOffset);
+        if (searchBar != null) {
+            final var previousSearch = searchBar.getValue();
+            if (searchBar.keyPressed(event) || searchBar.isFocused()) {
+                if (!searchBar.getValue().equals(previousSearch)) {
+                    menu.search(searchBar.getValue());
+                    menu.updateCraftableSlots();
+                    setCurrentOffset(currentOffset);
+                }
+                return true;
             }
-            return true;
         }
 
         return super.keyPressed(event);
@@ -252,10 +255,14 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             }
         }
 
-        btnPrevRecipe.visible = menu.selectionHasRecipeVariants();
-        btnPrevRecipe.active = menu.selectionHasPreviousRecipe();
-        btnNextRecipe.visible = menu.selectionHasRecipeVariants();
-        btnNextRecipe.active = menu.selectionHasNextRecipe();
+        if (btnPrevRecipe != null) {
+            btnPrevRecipe.visible = menu.selectionHasRecipeVariants();
+            btnPrevRecipe.active = menu.selectionHasPreviousRecipe();
+        }
+        if (btnNextRecipe != null) {
+            btnNextRecipe.visible = menu.selectionHasRecipeVariants();
+            btnNextRecipe.active = menu.selectionHasNextRecipe();
+        }
 
         boolean hasRecipes = menu.getItemListCount() > 0;
 
@@ -367,7 +374,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     private void setCurrentOffset(int currentOffset) {
-        this.currentOffset = Math.max(0, Math.min(currentOffset, (int) Math.ceil(menu.getItemListCount() / (float) VISIBLE_COLS) - VISIBLE_ROWS));
+        this.currentOffset = Math.clamp(currentOffset, 0, (int) Math.ceil(menu.getItemListCount() / (float) VISIBLE_COLS) - VISIBLE_ROWS);
 
         menu.setScrollOffset(this.currentOffset);
 

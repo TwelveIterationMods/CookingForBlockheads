@@ -34,7 +34,7 @@ public class CounterBlock extends BaseKitchenBlock {
                     .forGetter(CounterBlock::getColor),
             propertiesCodec()).apply(it, CounterBlock::new));
 
-    private final DyeColor color;
+    private final @Nullable DyeColor color;
 
     public CounterBlock(Properties properties) {
         this(null, properties);
@@ -45,8 +45,7 @@ public class CounterBlock extends BaseKitchenBlock {
         this.color = color;
     }
 
-    @Nullable
-    public DyeColor getColor() {
+    public @Nullable DyeColor getColor() {
         return color;
     }
 

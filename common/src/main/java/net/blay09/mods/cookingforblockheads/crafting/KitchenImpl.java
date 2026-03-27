@@ -26,7 +26,7 @@ public class KitchenImpl implements Kitchen {
 
     private final ItemStack activatingItemStack;
     private final BlockState activatingBlockState;
-    private final BlockEntity activatingBlockEntity;
+    private final @Nullable BlockEntity activatingBlockEntity;
     private final Set<BlockPos> checkedPos = new HashSet<>();
     private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
     private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();

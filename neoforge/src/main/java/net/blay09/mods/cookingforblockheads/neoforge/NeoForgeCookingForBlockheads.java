@@ -1,8 +1,9 @@
-package net.blay09.mods.cookingforblockheads;
+package net.blay09.mods.cookingforblockheads.neoforge;
 
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.neoforge.platform.runtime.NeoForgeLoadContext;
 import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -12,7 +13,6 @@ import net.minecraft.world.Container;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -29,7 +29,7 @@ public class NeoForgeCookingForBlockheads {
         final var context = new NeoForgeLoadContext(modContainer, eventBus);
         Balm.initializeMod(CookingForBlockheads.MOD_ID, context, CookingForBlockheads::initialize);
 
-        Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");
+        Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.neoforge.compat.SpiceOfLifeAddon");
 
         Balm.capabilities()
                 .registerFallbackBlockEntityProvider(id("kitchen_item_providers_tag"), ModCapabilities.KITCHEN_ITEM_PROVIDER, (blockEntity, direction) -> {

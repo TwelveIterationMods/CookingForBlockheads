@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "cookingforblockheads",
   "version": "${version}",
 
   "name": "${mod_name}",
@@ -16,7 +16,7 @@
   },
 
   "license": "${license}",
-  "icon": "${mod_id}.png",
+  "icon": "cookingforblockheads.png",
 
   "environment": "*",
   "entrypoints": {

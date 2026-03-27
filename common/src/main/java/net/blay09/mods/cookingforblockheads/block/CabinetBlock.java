@@ -38,7 +38,6 @@ public class CabinetBlock extends CounterBlock {
         super(color, properties);
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CabinetBlockEntity(pos, state);

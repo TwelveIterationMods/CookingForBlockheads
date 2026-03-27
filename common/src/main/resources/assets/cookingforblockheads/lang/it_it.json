@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "Può creare cibi usando gli ingredienti\\nnel tuo inventario.",
 
     "item.cookingforblockheads.cooking_table": "Tavolo da Cucina",
-    "item.cookingforblockheads.fridge": "Frigo",
+    "item.cookingforblockheads.white_fridge": "Frigo",
     "item.cookingforblockheads.sink": "Lavello",
     "item.cookingforblockheads.counter": "Bancone da cucina",
     "item.cookingforblockheads.cabinet": "Armadio da cucina",
-    "item.cookingforblockheads.corner": "Angolo da cucina",
-    "item.cookingforblockheads.hanging_corner": "Angolo da cucina sospeso",
-    "item.cookingforblockheads.oven": "Forno",
+    "item.cookingforblockheads.white_oven": "Forno",
     "item.cookingforblockheads.fruit_basket": "Cesto della frutta",
     "item.cookingforblockheads.tool_rack": "Portautensili",
     "item.cookingforblockheads.milk_jar": "Barattolo di latte",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Conserva le spezie e gli ingredienti.",
     "tooltip.cookingforblockheads.counter.description": "Conserva gli ingredienti per le ricette.",
     "tooltip.cookingforblockheads.cabinet.description": "Può essere posizionato sul muro sopra i blocchi da cucina.",
-    "tooltip.cookingforblockheads.corner.description": "Connette i blocchi da cucina negli angoli.",
-    "tooltip.cookingforblockheads.hanging_corner.description": "Connette i blocchi da cucina negli angoli.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Connette i blocchi da cucina a distanza.",
     "tooltip.cookingforblockheads.heating_unit.description": "Permette di riscaldare il forno con la corrente.",
     "tooltip.cookingforblockheads.ice_unit.description": "Fornisce neve e ghiaccio per le ricette.",
@@ -90,8 +86,6 @@
     "tooltip.cookingforblockheads.oven_upgrade": "Potenziamento del Forno",
     "tooltip.cookingforblockheads.fridge_upgrade": "Potenziamento del Frigo",
 
-    "_comment": "##",
-
     "container.cookingforblockheads.oven": "Forno da Cucina",
     "container.cookingforblockheads.fridge": "Frigo",
     "container.cookingforblockheads.spice_rack": "Porta Spezie",
@@ -116,7 +110,5 @@
     "cookingforblockheads.subtitle.oven_open": "Apertura forno",
     "cookingforblockheads.subtitle.oven_close": "Apertura forno",
     "cookingforblockheads.subtitle.toaster_start": "Tostapane inizia la cottura",
-    "cookingforblockheads.subtitle.toaster_stop": "Tostapane finisce la cottura",
-
-    "jei.cookingforblockheads.cow_jar": "Mucca in bottiglia"
+    "cookingforblockheads.subtitle.toaster_stop": "Tostapane finisce la cottura"
 }

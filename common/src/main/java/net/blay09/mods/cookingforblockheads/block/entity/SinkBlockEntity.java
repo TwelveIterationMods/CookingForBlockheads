@@ -176,7 +176,7 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
 
     private record SinkItemProvider(SinkBlockEntity sink) implements KitchenItemProvider {
         @Override
-        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var waterItem : BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.WATER))
                 if (ingredient.acceptsItem(waterItem)) {
                     final var waterUnitsUsed = ingredientTokens.size();
@@ -192,7 +192,7 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
         }
 
         @Override
-        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             if (!itemStack.is(ModItemTags.WATER)) {
                 return null;
             }

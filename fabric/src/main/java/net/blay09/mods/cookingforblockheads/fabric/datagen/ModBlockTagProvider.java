@@ -3,25 +3,24 @@ package net.blay09.mods.cookingforblockheads.fabric.datagen;
 import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
-    public ModBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.BLOCK, registriesFuture, (block) -> block.builtInRegistryHolder().key());
+public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
+    public ModBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
         final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/pickaxe"));
-        final var mineablePickaxeBuilder = tag(mineablePickaxeTag);
+        final var mineablePickaxeBuilder = valueLookupBuilder(mineablePickaxeTag);
         ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.sinks.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
@@ -33,10 +32,10 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
         mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
-        final var mineableAxeBuilder = tag(mineableAxeTag);
+        final var mineableAxeBuilder = valueLookupBuilder(mineableAxeTag);
         mineableAxeBuilder.add(ModBlocks.toolRack.asBlock(), ModBlocks.spiceRack.asBlock(), ModBlocks.fruitBasket.asBlock(), ModBlocks.cuttingBoard.asBlock());
 
-        final var kitchenItemProviders = tag(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
+        final var kitchenItemProviders = valueLookupBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         kitchenItemProviders.add(ModBlocks.toolRack.asBlock());
         ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
         ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
@@ -179,10 +178,10 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("storagedrawers", "standard_drawers_4"));
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("storagedrawers", "fractional_drawers_3"));
 
-        final var cookingTables = tag(ModBlockTags.COOKING_TABLES);
+        final var cookingTables = valueLookupBuilder(ModBlockTags.COOKING_TABLES);
         ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(cookingTables::add);
 
-        final var kitchenConnectors = tag(ModBlockTags.KITCHEN_CONNECTORS);
+        final var kitchenConnectors = valueLookupBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
         ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
 

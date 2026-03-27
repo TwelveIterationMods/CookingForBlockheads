@@ -101,7 +101,7 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
 
     private record MilkJarItemProvider(MilkJarBlockEntity milkJar) implements KitchenItemProvider {
         @Override
-        public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             for (final var milkItem : BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.MILK))
                 if (ingredient.acceptsItem(milkItem)) {
                     final var milkUnitsUsed = ingredientTokens.size();
@@ -117,7 +117,7 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
         }
 
         @Override
-        public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
             if (!itemStack.is(ModItemTags.MILK)) {
                 return null;
             }

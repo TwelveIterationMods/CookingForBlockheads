@@ -1,22 +1,22 @@
 {
-  "item.cookingforblockheads.recipe_book_tier0": "傻瓜烹飪手冊",
-  "item.cookingforblockheads.recipe_book_tier1": "傻瓜烹飪手冊 I",
-  "item.cookingforblockheads.recipe_book_tier2": "傻瓜烹飪手冊 II",
+  "item.cookingforblockheads.no_filter_edition": "傻瓜烹飪手冊",
+  "item.cookingforblockheads.recipe_book": "傻瓜烹飪手冊 I",
+  "item.cookingforblockheads.crafting_book": "傻瓜烹飪手冊 II",
   "item.cookingforblockheads.heating_unit": "加熱單元",
   "item.cookingforblockheads.ice_unit": "冰單元",
   "item.cookingforblockheads.preservation_chamber": "保存室",
 
-  "tooltip.cookingforblockheads.recipe_book_tier0": "#無過濾版",
-  "tooltip.cookingforblockheads.recipe_book_tier0.description": "顯示所有的食譜",
-  "tooltip.cookingforblockheads.recipe_book_tier1": "食譜",
-  "tooltip.cookingforblockheads.recipe_book_tier1.description": "顯示你背包食材能夠烹飪的食物",
-  "tooltip.cookingforblockheads.recipe_book_tier2": "合成書",
-  "tooltip.cookingforblockheads.recipe_book_tier2.description": "能夠使用背包食材合成食物",
+  "tooltip.cookingforblockheads.no_filter_edition": "#無過濾版",
+  "tooltip.cookingforblockheads.no_filter_edition.description": "顯示所有的食譜",
+  "tooltip.cookingforblockheads.recipe_book": "食譜",
+  "tooltip.cookingforblockheads.recipe_book.description": "顯示你背包食材能夠烹飪的食物",
+  "tooltip.cookingforblockheads.crafting_book": "合成書",
+  "tooltip.cookingforblockheads.crafting_book.description": "能夠使用背包食材合成食物",
 
   "item.cookingforblockheads.cooking_table": "烹飪桌",
-  "item.cookingforblockheads.oven": "烤箱",
+  "item.cookingforblockheads.white_oven": "烤箱",
   "item.cookingforblockheads.fruit_basket": "水果籃",
-  "item.cookingforblockheads.fridge": "冰箱",
+  "item.cookingforblockheads.white_fridge": "冰箱",
   "item.cookingforblockheads.sink": "水槽",
   "item.cookingforblockheads.tool_rack": "廚具架",
   "item.cookingforblockheads.milk_jar": "牛奶罐",
@@ -25,8 +25,6 @@
   "item.cookingforblockheads.spice_rack": "調料架",
   "item.cookingforblockheads.counter": "廚房櫥櫃檯",
   "item.cookingforblockheads.cabinet": "廚房櫥櫃",
-  "item.cookingforblockheads.corner": "廚房轉角",
-  "item.cookingforblockheads.kitchen_floor": "廚房地板",
   "item.cookingforblockheads.cutting_board": "切菜板",
 
   "tooltip.cookingforblockheads.multiblock_kitchen": "多方塊廚房",
@@ -43,7 +41,6 @@
   "tooltip.cookingforblockheads.spice_rack.description": "存儲調料和原料",
   "tooltip.cookingforblockheads.counter.description": "儲存烹飪所需原料",
   "tooltip.cookingforblockheads.cabinet.description": "可以放在廚櫃上方的牆上",
-  "tooltip.cookingforblockheads.corner.description": "沒有特殊的使用方式",
   "tooltip.cookingforblockheads.kitchen_floor.description": "沒有特殊的使用方式",
   "tooltip.cookingforblockheads.heating_unit.description": "允許使用能量加熱烤箱",
   "tooltip.cookingforblockheads.ice_unit.description": "為食譜提供雪和冰",
@@ -92,7 +89,5 @@
   "cookingforblockheads.subtitle.oven_open": "烤箱打開",
   "cookingforblockheads.subtitle.oven_close": "烤箱關上",
   "cookingforblockheads.subtitle.toaster_start": "吐司機烤製吐司",
-  "cookingforblockheads.subtitle.toaster_stop": "吐司機完成烤製",
-
-  "jei.cookingforblockheads.cow_jar": "罐中奶牛"
+  "cookingforblockheads.subtitle.toaster_stop": "吐司機完成烤製"
 }

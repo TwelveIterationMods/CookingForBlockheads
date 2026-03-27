@@ -1,28 +1,33 @@
-package net.blay09.mods.cookingforblockheads;
+package net.blay09.mods.cookingforblockheads.neoforge;
 
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 
-public record ItemHandlerKitchenItemProvider(IItemHandler itemHandler) implements KitchenItemProvider {
+public record ResourceHandlerKitchenItemProvider(
+        ResourceHandler<ItemResource> itemHandler) implements KitchenItemProvider {
 
     @Override
-    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
-            final var slotStack = itemHandler.getStackInSlot(itemHandlerIngredientToken.slot);
+            final var slotResource = itemHandler.getResource(itemHandlerIngredientToken.slot);
+            final var slotStack = slotResource.toStack();
             if (ingredient.test(slotStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
                 return itemHandlerIngredientToken;
             }
         }
 
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            final var slotStack = itemHandler.getStackInSlot(i);
+        for (int i = 0; i < itemHandler.size(); i++) {
+            final var slotResource = itemHandler.getResource(i);
+            final var slotStack = slotResource.toStack();
             if (ingredient.test(slotStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
                 return new ItemHandlerIngredientToken(i);
             }
@@ -31,16 +36,18 @@ public record ItemHandlerKitchenItemProvider(IItemHandler itemHandler) implement
     }
 
     @Override
-    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
-            final var slotStack = itemHandler.getStackInSlot(itemHandlerIngredientToken.slot);
+            final var slotResource = itemHandler.getResource(itemHandlerIngredientToken.slot);
+            final var slotStack = slotResource.toStack();
             if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
                 return itemHandlerIngredientToken;
             }
         }
 
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            final var slotStack = itemHandler.getStackInSlot(i);
+        for (int i = 0; i < itemHandler.size(); i++) {
+            final var slotResource = itemHandler.getResource(i);
+            final var slotStack = slotResource.toStack();
             if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
                 return new ItemHandlerIngredientToken(i);
             }
@@ -75,22 +82,30 @@ public record ItemHandlerKitchenItemProvider(IItemHandler itemHandler) implement
 
         @Override
         public ItemStack peek() {
-            return itemHandler.getStackInSlot(slot);
+            return itemHandler.getResource(slot).toStack();
         }
 
         @Override
         public ItemStack consume() {
-            return itemHandler.extractItem(slot, 1, false);
+            final var slotResource = itemHandler.getResource(slot);
+            try (final var transaction = Transaction.open(null)) {
+                int count = itemHandler.extract(slot, slotResource, 1, transaction);
+                transaction.commit();
+                return slotResource.toStack(count);
+            }
         }
 
         @Override
         public ItemStack restore(ItemStack itemStack) {
-            final var restItem = itemHandler.insertItem(slot, itemStack, false);
-            if (!restItem.isEmpty()) {
-                return ItemHandlerHelper.insertItemStacked(itemHandler, restItem, false);
-            }
+            try (final var transaction = Transaction.open(null)) {
+                var restCount = itemHandler.insert(slot, ItemResource.of(itemStack), itemStack.getCount(), transaction);
+                if (restCount > 0) {
+                    restCount = itemHandler.insert(ItemResource.of(itemStack), itemStack.getCount(), transaction);
+                }
+                transaction.commit();
 
-            return ItemStack.EMPTY;
+                return restCount > 0 ? itemStack.copyWithCount(restCount) : ItemStack.EMPTY;
+            }
         }
     }
 }

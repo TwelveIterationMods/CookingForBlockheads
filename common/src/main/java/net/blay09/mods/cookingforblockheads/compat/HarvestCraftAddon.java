@@ -12,8 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -25,32 +25,22 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 
 public class HarvestCraftAddon {
 
-    private boolean cuttingBoardFound;
+    private final Item cuttingBoard;
 
     public HarvestCraftAddon() {
-        final var cuttingBoardItem = BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem"));
-        if (cuttingBoardItem != null && cuttingBoardItem != Items.AIR) {
-            cuttingBoardFound = true;
-        }
+        final var cuttingBoardId = Identifier.fromNamespaceAndPath(Compat.HARVESTCRAFT_FOOD_CORE, "cuttingboarditem");
+        cuttingBoard = BuiltInRegistries.ITEM.getValue(cuttingBoardId);
 
         ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, flags) -> {
-            if (!cuttingBoardFound) {
-                return;
-            }
-
-            if (itemStack.getItem() == cuttingBoardItem) {
+            if (!itemStack.isEmpty() && itemStack.is(cuttingBoard)) {
                 tooltip.add(Component.translatable("tooltip.cookingforblockheads.multiblock_kitchen").withStyle(ChatFormatting.YELLOW));
                 tooltip.add(Component.translatable("tooltip.cookingforblockheads.can_be_placed_in_world"));
             }
         });
 
         BlockCallback.Use.EVENT.register((player, level, hand, hitResult) -> {
-            if (!cuttingBoardFound) {
-                return InteractionEventResult.DEFAULT;
-            }
-
             ItemStack heldItem = player.getItemInHand(hand);
-            if (heldItem.getItem() != cuttingBoardItem) {
+            if (heldItem.isEmpty() || !heldItem.is(cuttingBoard)) {
                 return InteractionEventResult.DEFAULT;
             }
 

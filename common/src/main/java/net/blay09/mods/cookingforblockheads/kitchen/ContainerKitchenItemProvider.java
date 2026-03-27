@@ -7,6 +7,7 @@ import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -19,7 +20,7 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
     }
 
     @Override
-    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         if (cacheHint instanceof ContainerIngredientToken containerIngredientToken) {
             final var slotStack = container.getItem(containerIngredientToken.slot);
             if (ingredient.test(slotStack) && hasUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens)) {
@@ -37,7 +38,7 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
     }
 
     @Override
-    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         if (cacheHint instanceof ContainerIngredientToken containerIngredientToken) {
             final var slotStack = container.getItem(containerIngredientToken.slot);
             if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens)) {

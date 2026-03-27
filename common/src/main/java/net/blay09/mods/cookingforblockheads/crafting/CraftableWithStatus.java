@@ -22,7 +22,7 @@ public record CraftableWithStatus(ItemStack itemStack, boolean missingIngredient
     public static final StreamCodec<RegistryFriendlyByteBuf, List<CraftableWithStatus>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.collection(
             ArrayList::new));
 
-    public static CraftableWithStatus best(@Nullable CraftableWithStatus first, @Nullable CraftableWithStatus second) {
+    public static @Nullable CraftableWithStatus best(@Nullable CraftableWithStatus first, @Nullable CraftableWithStatus second) {
         if (first == null) {
             return second;
         } else if (second == null) {

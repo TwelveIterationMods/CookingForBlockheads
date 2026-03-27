@@ -1,11 +1,10 @@
-package net.blay09.mods.cookingforblockheads.compat;
+package net.blay09.mods.cookingforblockheads.neoforge.compat;
 
 import com.cazsius.solcarrot.api.SOLCarrotAPI;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.crafting.CraftableWithStatus;
-import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;

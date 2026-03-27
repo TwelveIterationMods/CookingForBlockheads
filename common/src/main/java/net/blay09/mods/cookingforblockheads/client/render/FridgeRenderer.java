@@ -137,13 +137,13 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
                 final var itemStackRenderState = renderState.items.get(i);
                 if (!itemStackRenderState.isEmpty()) {
                     float offsetX, offsetY, offsetZ;
+                    int rowIndex;
                     if (renderState.modelType == FridgeBlock.FridgeModelType.LARGE_LOWER) {
-                        int rowIndex = i % 18;
+                        rowIndex = i % 18;
                         offsetX = 0.7f - (rowIndex % 9) * 0.175f;
                         offsetY = topY - (int) (i / 18f) * 1.25f;
-                        offsetZ = 0.5f - (int) (rowIndex / 9f) * 0.9f;
                     } else {
-                        int rowIndex = i % 13;
+                        rowIndex = i % 13;
                         offsetX = 0.7f;
                         float spacing = 0.175f;
                         if (rowIndex / 9 > 0) {
@@ -152,8 +152,8 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
                         }
                         offsetX -= (rowIndex % 9) * spacing;
                         offsetY = topY - (int) (i / 14f) * 1.25f;
-                        offsetZ = 0.5f - (int) (rowIndex / 9f) * 0.9f;
                     }
+                    offsetZ = 0.5f - (int) (rowIndex / 9f) * 0.9f;
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
                     poseStack.mulPose(Axis.YP.rotationDegrees(45f));

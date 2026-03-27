@@ -45,10 +45,10 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     private final NonNullList<ItemStack> lockedInputs = NonNullList.withSize(9, ItemStack.EMPTY);
 
-    private final List<CraftableWithStatus> filteredCraftables = new ArrayList<>();
+    private final List<@Nullable CraftableWithStatus> filteredCraftables = new ArrayList<>();
     private final List<CraftableWithStatus> history = new ArrayList<>();
 
-    private String currentSearch;
+    private @Nullable String currentSearch;
     private Comparator<CraftableWithStatus> currentSorting = new FavoriteComparator(new ComparatorName());
 
     private List<CraftableWithStatus> craftables = new ArrayList<>();
@@ -58,8 +58,8 @@ public class KitchenMenu extends AbstractContainerMenu {
     private boolean scrollOffsetDirty;
     private int scrollOffset;
 
-    private CraftableWithStatus selectedCraftable;
-    private List<RecipeWithStatus> recipesForSelection;
+    private @Nullable CraftableWithStatus selectedCraftable;
+    private @Nullable List<RecipeWithStatus> recipesForSelection;
     private int recipesForSelectionIndex;
 
     public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, KitchenImpl kitchen) {
@@ -563,14 +563,14 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void setRecipesForSelection(List<RecipeWithStatus> recipes) {
         recipesForSelection = !recipes.isEmpty() ? recipes : null;
-        recipesForSelectionIndex = recipesForSelection != null ? Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex)) : 0;
+        recipesForSelectionIndex = recipesForSelection != null ? Math.clamp(recipesForSelectionIndex, 0, recipesForSelection.size() - 1) : 0;
 
         updateMatrixSlots();
     }
 
     public void nextRecipe(int dir) {
         if (recipesForSelection != null) {
-            recipesForSelectionIndex = Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex + dir));
+            recipesForSelectionIndex = Math.clamp(recipesForSelectionIndex + dir, 0, recipesForSelection.size() - 1);
             updateCraftableSlots();
         }
 

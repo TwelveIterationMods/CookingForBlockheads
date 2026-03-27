@@ -1,14 +1,13 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
-import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Comparator;
 
@@ -20,7 +19,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
     private final KitchenMenu menu;
 
     private int ingredientIndex;
-    private SlotDisplay slotDisplay;
+    private @Nullable SlotDisplay slotDisplay;
     private float variantTimePassed;
     private int currentVariantIndex;
     private boolean isLocked;
@@ -31,7 +30,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
         this.menu = menu;
     }
 
-    public void setIngredient(final int ingredientIndex, final SlotDisplay slotDisplay, final ItemStack lockedInput) {
+    public void setIngredient(final int ingredientIndex, @Nullable SlotDisplay slotDisplay, final ItemStack lockedInput) {
         this.ingredientIndex = ingredientIndex;
 
         final var previousIngredient = this.slotDisplay;

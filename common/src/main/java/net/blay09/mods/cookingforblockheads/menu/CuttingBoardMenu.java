@@ -140,7 +140,6 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
     }
 
     public Slot getResultSlot() {
-        //noinspection SequencedCollectionMethodCanBeUsed
         return this.slots.get(RESULT_SLOT);
     }
 

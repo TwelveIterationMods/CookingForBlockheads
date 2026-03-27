@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 
 public class CraftableListingFakeSlot extends AbstractFakeSlot {
 
-    private CraftableWithStatus craftable;
+    private @Nullable CraftableWithStatus craftable;
 
     public CraftableListingFakeSlot(Container container, int slotId, int x, int y) {
         super(container, slotId, x, y);
@@ -32,8 +32,7 @@ public class CraftableListingFakeSlot extends AbstractFakeSlot {
         this.craftable = craftable;
     }
 
-    @Nullable
-    public CraftableWithStatus getCraftable() {
+    public @Nullable CraftableWithStatus getCraftable() {
         return craftable;
     }
 

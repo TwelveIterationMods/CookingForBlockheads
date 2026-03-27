@@ -7,7 +7,6 @@ import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
-import net.blay09.mods.cookingforblockheads.util.ListUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,7 +21,7 @@ public class CraftingOperation {
 
     public record IngredientTokenKey(int providerIndex, Ingredient ingredient) {
         @Override
-        public boolean equals(Object o) {
+        public boolean equals(@Nullable Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             IngredientTokenKey that = (IngredientTokenKey) o;
@@ -42,7 +41,7 @@ public class CraftingOperation {
     private final List<IngredientToken> ingredientTokens = new ArrayList<>();
     private final List<Ingredient> missingIngredients = new ArrayList<>();
 
-    private NonNullList<ItemStack> lockedInputs;
+    private @Nullable NonNullList<ItemStack> lockedInputs;
     private int missingIngredientsMask;
 
     public CraftingOperation(final CraftingContext context, RecipeHolder<?> recipe) {
@@ -154,7 +153,7 @@ public class CraftingOperation {
         return recipeTypeHandler.assemble(context, recipe, ingredientTokens, registryAccess);
     }
 
-    public NonNullList<ItemStack> getLockedInputs() {
+    public @Nullable NonNullList<ItemStack> getLockedInputs() {
         return lockedInputs;
     }
 

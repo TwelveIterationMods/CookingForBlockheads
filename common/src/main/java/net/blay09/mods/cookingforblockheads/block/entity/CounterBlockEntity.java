@@ -63,7 +63,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
     private boolean hasPreservationUpgrade;
-    private Component customName;
+    private @Nullable Component customName;
 
     private boolean isDirty;
 
@@ -186,9 +186,8 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
         return customName != null;
     }
 
-    @Nullable
     @Override
-    public Component getCustomName() {
+    public @Nullable Component getCustomName() {
         return customName;
     }
 

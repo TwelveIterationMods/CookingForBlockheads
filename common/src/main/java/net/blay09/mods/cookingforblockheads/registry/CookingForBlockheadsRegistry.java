@@ -14,8 +14,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
@@ -113,7 +113,7 @@ public class CookingForBlockheadsRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public static <C extends RecipeInput, T extends Recipe<C>, V extends KitchenRecipeHandler<C, T>> V getKitchenRecipeHandler(T recipe) {
+    public static <C extends RecipeInput, T extends Recipe<C>, V extends KitchenRecipeHandler<C, T>> @Nullable V getKitchenRecipeHandler(T recipe) {
         for (Class<? extends Recipe<?>> handlerClass : kitchenRecipeHandlers.keySet()) {
             if (handlerClass.isAssignableFrom(recipe.getClass())) {
                 return (V) kitchenRecipeHandlers.get(handlerClass);

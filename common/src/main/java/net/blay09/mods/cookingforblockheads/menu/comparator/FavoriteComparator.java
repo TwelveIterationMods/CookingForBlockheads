@@ -2,7 +2,6 @@ package net.blay09.mods.cookingforblockheads.menu.comparator;
 
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
 import net.blay09.mods.cookingforblockheads.crafting.CraftableWithStatus;
-import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 
 import java.util.Comparator;
 

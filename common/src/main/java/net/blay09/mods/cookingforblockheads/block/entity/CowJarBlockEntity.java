@@ -24,11 +24,11 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     private boolean isDirty;
     private int ticksSinceUpdate;
 
-    private Component customName;
-    private Holder<CowVariant> variant;
+    private @Nullable Component customName;
+    private @Nullable Holder<CowVariant> variant;
     private boolean compressedCow;
 
-    private BlockPos jukebox;
+    private @Nullable BlockPos jukebox;
     private int partyBpm;
 
     public CowJarBlockEntity(BlockPos pos, BlockState state) {
@@ -80,12 +80,12 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
         if (milkTank.getAmount() < MILK_CAPACITY) {
             CookingForBlockheadsConfig config = CookingForBlockheadsConfig.getActive();
 
-            int milkToAdd = config.cowJarMilkPerTick;
+            double milkToAdd = config.cowJarMilkPerTick;
             if (compressedCow) {
                 milkToAdd *= config.compressedCowJarMilkMultiplier;
             }
 
-            milkTank.fill(Compat.getMilkFluid(), milkToAdd, false);
+            milkTank.fill(Compat.getMilkFluid(), (int) milkToAdd, false);
             isDirty = true;
         }
 
@@ -112,7 +112,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     }
 
     @Override
-    public Component getCustomName() {
+    public @Nullable Component getCustomName() {
         return customName;
     }
 
@@ -140,12 +140,11 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
         return Component.translatable("container.cookingforblockheads.cow_jar");
     }
 
-    @Nullable
-    public Holder<CowVariant> getVariant() {
+    public @Nullable Holder<CowVariant> getVariant() {
         return variant;
     }
 
-    public void setVariant(Holder<CowVariant> variant) {
+    public void setVariant(@Nullable Holder<CowVariant> variant) {
         this.variant = variant;
     }
 

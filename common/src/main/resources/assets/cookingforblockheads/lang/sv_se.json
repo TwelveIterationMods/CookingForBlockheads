@@ -1,24 +1,22 @@
 {
-    "item.cookingforblockheads.recipe_book_tier0": "Matlagning för dumskallar",
-    "item.cookingforblockheads.recipe_book_tier1": "Matlagning för dumskallar I",
-    "item.cookingforblockheads.recipe_book_tier2": "Matlagning för dumskallar II",
+    "item.cookingforblockheads.no_filter_edition": "Matlagning för dumskallar",
+    "item.cookingforblockheads.recipe_book": "Matlagning för dumskallar I",
+    "item.cookingforblockheads.crafting_book": "Matlagning för dumskallar II",
     "item.cookingforblockheads.heating_unit": "Uppvärmningsenhet",
     "item.cookingforblockheads.ice_unit": "Isenhet",
     "item.cookingforblockheads.preservation_chamber": "Konserveringskammare",
 
-    "tooltip.cookingforblockheads.recipe_book_tier0": "Den filterlösa utgåvan",
-    "tooltip.cookingforblockheads.recipe_book_tier0.description": "Visar alla matrecept.",
-    "tooltip.cookingforblockheads.recipe_book_tier1": "Receptbok",
-    "tooltip.cookingforblockheads.recipe_book_tier1.description": "Visar mat som du kan göra med\\nsakerna du har i din utrustning.",
-    "tooltip.cookingforblockheads.recipe_book_tier2": "Tillverkningsbok",
-    "tooltip.cookingforblockheads.recipe_book_tier2.description": "Kan tillverka mata med sakerna\\ndu har i din utrustning.",
-
-    "_comment": "##",
+    "tooltip.cookingforblockheads.no_filter_edition": "Den filterlösa utgåvan",
+    "tooltip.cookingforblockheads.no_filter_edition.description": "Visar alla matrecept.",
+    "tooltip.cookingforblockheads.recipe_book": "Receptbok",
+    "tooltip.cookingforblockheads.recipe_book.description": "Visar mat som du kan göra med\\nsakerna du har i din utrustning.",
+    "tooltip.cookingforblockheads.crafting_book": "Tillverkningsbok",
+    "tooltip.cookingforblockheads.crafting_book.description": "Kan tillverka mata med sakerna\\ndu har i din utrustning.",
 
     "item.cookingforblockheads.cooking_table": "Matlagningsbänk",
-    "item.cookingforblockheads.oven": "Ugn",
+    "item.cookingforblockheads.white_oven": "Ugn",
     "item.cookingforblockheads.fruit_basket": "Fruktkorg",
-    "item.cookingforblockheads.fridge": "Kylskåp",
+    "item.cookingforblockheads.white_fridge": "Kylskåp",
     "item.cookingforblockheads.sink": "Diskho",
     "item.cookingforblockheads.tool_rack": "Verktygshylla",
     "item.cookingforblockheads.milk_jar": "Mjölk i glasburk",
@@ -27,8 +25,7 @@
     "item.cookingforblockheads.spice_rack": "Kryddhylla",
     "item.cookingforblockheads.counter": "Köksbänk",
     "item.cookingforblockheads.cabinet": "Kökslucka",
-    "item.cookingforblockheads.corner": "Köksbänkhörn",
-    "item.cookingforblockheads.kitchen_floor": "Köksgolv",
+    "item.cookingforblockheads.white_kitchen_floor": "Köksgolv",
     "item.cookingforblockheads.cutting_board": "Skärbräde",
 
     "tooltip.cookingforblockheads.multiblock_kitchen": "Multiblockskök",
@@ -45,15 +42,12 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Lagrar kryddor och ingredienser.",
     "tooltip.cookingforblockheads.counter.description": "Lagrar ingredienser för recept.",
     "tooltip.cookingforblockheads.cabinet.description": "Kan placeras på väggen ovanför köksblock.",
-    "tooltip.cookingforblockheads.corner.description": "Ingen speciell användning.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Ingen speciell användning.",
     "tooltip.cookingforblockheads.heating_unit.description": "Gör det möjligt att värma upp en ugn med energi.",
     "tooltip.cookingforblockheads.ice_unit.description": "Förser recept med snö och is.",
     "tooltip.cookingforblockheads.preservation_chamber.description": "Förhindrar det sista föremålet i en plats från att användas.",
     "tooltip.cookingforblockheads.cutting_board.description": "Förser recept med ett skärbräde.",
     "tooltip.cookingforblockheads.can_be_placed_in_world": "Kan placeras i världen.",
-
-    "_comment": "##",
 
     "gui.cookingforblockheads.no_ingredients": "En eller\\nflera\\ningredienser\\nsaknas",
     "gui.cookingforblockheads.no_selection": "Välj ett föremål\\ntill höger för\\natt se receptet.",
@@ -76,8 +70,6 @@
     "tooltip.cookingforblockheads.oven_upgrade": "Ugnuppgradering",
     "tooltip.cookingforblockheads.fridge_upgrade": "Kylskåpsuppgradering",
 
-    "_comment": "##",
-
     "container.cookingforblockheads.oven": "Matlagningsugn",
     "container.cookingforblockheads.fridge": "Kylskåp",
     "container.cookingforblockheads.spice_rack": "Kryddhylla",
@@ -87,24 +79,16 @@
 
     "itemGroup.cookingforblockheads.cookingforblockheads": "Cooking for Blockheads",
 
-    "_comment": "##",
-
     "waila.cookingforblockheads.milk_stored": "Lagrad mjölk: %d/%d",
     "waila.cookingforblockheads.toast_progress": "Rostar... (%s)",
     "waila.cookingforblockheads.heating_unit": "Uppgradering: Uppvärmningsenhet",
     "waila.cookingforblockheads.ice_unit": "Uppgradering: Isenhet",
     "waila.cookingforblockheads.preservation_chamber": "Uppgradering: Konserveringskammare",
 
-    "_comment": "##",
-
     "cookingforblockheads.subtitle.fridge_open": "Kylskåp öppnas",
     "cookingforblockheads.subtitle.fridge_close": "Kylskåp stängs",
     "cookingforblockheads.subtitle.oven_open": "Ugn öppnas",
     "cookingforblockheads.subtitle.oven_close": "Ugn stängs",
     "cookingforblockheads.subtitle.toaster_start": "Brödrost börjar rosta",
-    "cookingforblockheads.subtitle.toaster_stop": "Brödrost slutar rosta",
-
-    "_comment": "##",
-
-    "jei.cookingforblockheads.cow_jar": "Ko i glasburk"
+    "cookingforblockheads.subtitle.toaster_stop": "Brödrost slutar rosta"
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import org.jspecify.annotations.Nullable;
 
 public class DoorAnimator {
 
@@ -18,8 +19,8 @@ public class DoorAnimator {
     private float prevAngle;
     private int numPlayersUsing;
     private int ticksSinceSync;
-    private SoundEvent soundEventOpen;
-    private SoundEvent soundEventClose;
+    private @Nullable SoundEvent soundEventOpen;
+    private @Nullable SoundEvent soundEventClose;
     private float openRadius = 2.5f;
     private boolean isForcedOpen;
 
@@ -47,7 +48,6 @@ public class DoorAnimator {
         int y = blockEntity.getBlockPos().getY();
         int z = blockEntity.getBlockPos().getZ();
         if (!blockEntity.getLevel().isClientSide() && numPlayersUsing != 0 && (ticksSinceSync + x + y + z) % 200 == 0) {
-            // This is Mojang's bad fix for chests staying open. Because it makes so much more sense to do this than to ensure onContainerClosed is always called properly.
             numPlayersUsing = 0;
             float range = 5f;
             for (Player player : blockEntity.getLevel().getEntitiesOfClass(Player.class, new AABB(x - range, y - range, z - range, x + 1 + range, y + 1 + range, z + 1 + range))) {

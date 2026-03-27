@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,13 +33,13 @@ public record CombinedKitchenItemProvider(List<KitchenItemProvider> providers) i
     }
 
     @Override
-    public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
-        if (cacheHint instanceof CacheHintWrapper wrapper) {
-            final var provider = providers.get(wrapper.providerIndex);
-            final var filteredIngredientTokens = getFilteredIngredientTokens(ingredientTokens, wrapper.providerIndex);
-            final var token = provider.findIngredient(ingredient, filteredIngredientTokens, wrapper.cacheHint);
+    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        if (cacheHint instanceof CacheHintWrapper(int providerIndex, CacheHint hint)) {
+            final var provider = providers.get(providerIndex);
+            final var filteredIngredientTokens = getFilteredIngredientTokens(ingredientTokens, providerIndex);
+            final var token = provider.findIngredient(ingredient, filteredIngredientTokens, hint);
             if (token != null) {
-                return new IngredientTokenWrapper(wrapper.providerIndex, token);
+                return new IngredientTokenWrapper(providerIndex, token);
             }
             return null;
         }
@@ -56,12 +57,12 @@ public record CombinedKitchenItemProvider(List<KitchenItemProvider> providers) i
     }
 
     @Override
-    public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
-        if (cacheHint instanceof CacheHintWrapper wrapper) {
-            final var provider = providers.get(wrapper.providerIndex);
-            final var token = provider.findIngredient(itemStack, ingredientTokens, wrapper.cacheHint);
+    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        if (cacheHint instanceof CacheHintWrapper(int providerIndex, CacheHint hint)) {
+            final var provider = providers.get(providerIndex);
+            final var token = provider.findIngredient(itemStack, ingredientTokens, hint);
             if (token != null) {
-                return new IngredientTokenWrapper(wrapper.providerIndex, token);
+                return new IngredientTokenWrapper(providerIndex, token);
             }
             return null;
         }
@@ -80,10 +81,10 @@ public record CombinedKitchenItemProvider(List<KitchenItemProvider> providers) i
 
     @Override
     public CacheHint getCacheHint(IngredientToken ingredientToken) {
-        if (ingredientToken instanceof IngredientTokenWrapper wrapper) {
-            final var provider = providers.get(wrapper.providerIndex);
-            final var cacheHint = provider.getCacheHint(wrapper.token);
-            return new CacheHintWrapper(wrapper.providerIndex, cacheHint);
+        if (ingredientToken instanceof IngredientTokenWrapper(int providerIndex, IngredientToken token)) {
+            final var provider = providers.get(providerIndex);
+            final var cacheHint = provider.getCacheHint(token);
+            return new CacheHintWrapper(providerIndex, cacheHint);
         }
 
         return CacheHint.NONE;

@@ -1,10 +1,6 @@
 package net.blay09.mods.cookingforblockheads.compat;
 
 import net.blay09.mods.balm.Balm;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
 
 public class Compat {

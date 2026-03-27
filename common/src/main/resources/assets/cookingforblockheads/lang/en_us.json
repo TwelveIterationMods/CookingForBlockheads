@@ -227,6 +227,7 @@
   "config.jade.plugin_cookingforblockheads.sink": "Sink",
   "config.jade.plugin_cookingforblockheads.preservation_chamber": "Preservation Chamber",
   "cookingforblockheads.configuration": "Cooking for Blockheads",
+  "cookingforblockheads.configuration.title": "Cooking for Blockheads",
   "cookingforblockheads.configuration.cowJarEnabled": "Enable Cow in a Jar",
   "cookingforblockheads.configuration.cowJarEnabled.tooltip": "If true, a cow can be squished into a Milk Jar by dropping an anvil on top.",
   "cookingforblockheads.configuration.cowJarMilkPerTick": "Milk Generation per Tick in Jar",

@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "보관함에 있는 아이템으로\\n음식을 만들 수 있습니다.",
 
     "item.cookingforblockheads.cooking_table": "요리 테이블",
-    "item.cookingforblockheads.fridge": "냉장고",
+    "item.cookingforblockheads.white_fridge": "냉장고",
     "item.cookingforblockheads.sink": "싱크대",
     "item.cookingforblockheads.counter": "주방 카운터",
     "item.cookingforblockheads.cabinet": "주방 캐비닛",
-    "item.cookingforblockheads.corner": "주방 코너",
-    "item.cookingforblockheads.hanging_corner": "매달린 주방 코너",
-    "item.cookingforblockheads.oven": "오븐",
+    "item.cookingforblockheads.white_oven": "오븐",
     "item.cookingforblockheads.fruit_basket": "과일 접시",
     "item.cookingforblockheads.tool_rack": "조리도구 걸이",
     "item.cookingforblockheads.milk_jar": "우유병",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "향신료나 재료들을 보관해 둘 수 있습니다.",
     "tooltip.cookingforblockheads.counter.description": "재료들을 보관해 둘 수 있습니다.",
     "tooltip.cookingforblockheads.cabinet.description": "벽에다 걸어둘 수 있습니다.",
-    "tooltip.cookingforblockheads.corner.description": "주방 블럭들의 구석을 연결가능합니다.",
-    "tooltip.cookingforblockheads.hanging_corner.description": "주방 블럭들의 구석을 연결가능합니다, 다만 벽에 걸려있습니다.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "주방을 예쁘게 꾸밀 수 있습니다.",
     "tooltip.cookingforblockheads.heating_unit.description": "에너지를 사용하여 가열시킬 수 있습니다.",
     "tooltip.cookingforblockheads.ice_unit.description": "얼음과 눈을 보관할 수 있습니다.",
@@ -90,8 +86,6 @@
     "tooltip.cookingforblockheads.oven_upgrade": "오븐 업그레이드",
     "tooltip.cookingforblockheads.fridge_upgrade": "냉장고 업그레이드",
 
-    "_comment": "##",
-
     "container.cookingforblockheads.oven": "오븐",
     "container.cookingforblockheads.fridge": "냉장고",
     "container.cookingforblockheads.spice_rack": "선반",
@@ -112,7 +106,5 @@
     "cookingforblockheads.subtitle.oven_open": "오븐 열기",
     "cookingforblockheads.subtitle.oven_close": "오븐 닫기",
     "cookingforblockheads.subtitle.toaster_start": "토스트 굽기 시작함",
-    "cookingforblockheads.subtitle.toaster_stop": "토스트를 다 구웠음",
-
-    "jei.cookingforblockheads.cow_jar": "소가 든 병"
+    "cookingforblockheads.subtitle.toaster_stop": "토스트를 다 구웠음"
 }

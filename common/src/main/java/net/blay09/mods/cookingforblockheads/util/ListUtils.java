@@ -6,7 +6,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class ListUtils {
-    public static <T> NonNullList<T> nonNullListOf(@Nullable List<T> list, T defaultValue) {
+    public static <T> @Nullable NonNullList<T> nonNullListOf(@Nullable List<@Nullable T> list, T defaultValue) {
         if (list == null) {
             return null;
         }

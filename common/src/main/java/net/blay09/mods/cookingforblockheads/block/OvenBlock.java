@@ -36,7 +36,7 @@ public class OvenBlock extends BaseKitchenBlock {
     public static final MapCodec<OvenBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color").forGetter(OvenBlock::getColor),
             propertiesCodec()).apply(it, OvenBlock::new));
 
-    public static BooleanProperty ACTIVE = BooleanProperty.create("active");
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     private static final Random random = new Random();
     private final DyeColor color;
@@ -78,33 +78,7 @@ public class OvenBlock extends BaseKitchenBlock {
         if (blockHitResult.getDirection() == Direction.UP) {
             if (itemStack.is(ModItemTags.UTENSILS)) {
                 Direction stateFacing = state.getValue(FACING);
-                double hx = blockHitResult.getLocation().x;
-                double hz = blockHitResult.getLocation().z;
-                switch (stateFacing) {
-                    case NORTH -> {
-                        hx = 1f - blockHitResult.getLocation().x;
-                        hz = 1f - blockHitResult.getLocation().z;
-                    }
-//                    case SOUTH: hx = hitX; hz = hitZ; break;
-                    case WEST -> {
-                        hz = 1f - blockHitResult.getLocation().x;
-                        hx = blockHitResult.getLocation().z;
-                    }
-                    case EAST -> {
-                        hz = blockHitResult.getLocation().x;
-                        hx = 1f - blockHitResult.getLocation().z;
-                    }
-                }
-                int index = -1;
-                if (hx < 0.5f && hz < 0.5f) {
-                    index = 1;
-                } else if (hx >= 0.5f && hz < 0.5f) {
-                    index = 0;
-                } else if (hx < 0.5f && hz >= 0.5f) {
-                    index = 3;
-                } else if (hx >= 0.5f && hz >= 0.5f) {
-                    index = 2;
-                }
+                int index = resolveToolHitIndex(blockHitResult, stateFacing);
                 if (index != -1) {
                     OvenBlockEntity tileOven = (OvenBlockEntity) level.getBlockEntity(pos);
                     if (tileOven != null && tileOven.getToolItem(index).isEmpty()) {
@@ -128,6 +102,37 @@ public class OvenBlock extends BaseKitchenBlock {
         }
 
         return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);
+    }
+
+    private static int resolveToolHitIndex(BlockHitResult blockHitResult, Direction stateFacing) {
+        double hx = blockHitResult.getLocation().x;
+        double hz = blockHitResult.getLocation().z;
+        switch (stateFacing) {
+            case NORTH -> {
+                hx = 1f - blockHitResult.getLocation().x;
+                hz = 1f - blockHitResult.getLocation().z;
+            }
+//                    case SOUTH: hx = hitX; hz = hitZ; break;
+            case WEST -> {
+                hz = 1f - blockHitResult.getLocation().x;
+                hx = blockHitResult.getLocation().z;
+            }
+            case EAST -> {
+                hz = blockHitResult.getLocation().x;
+                hx = 1f - blockHitResult.getLocation().z;
+            }
+        }
+        int index = -1;
+        if (hx < 0.5f && hz < 0.5f) {
+            index = 1;
+        } else if (hx >= 0.5f && hz < 0.5f) {
+            index = 0;
+        } else if (hx < 0.5f && hz >= 0.5f) {
+            index = 3;
+        } else if (hx >= 0.5f && hz >= 0.5f) {
+            index = 2;
+        }
+        return index;
     }
 
     @Override

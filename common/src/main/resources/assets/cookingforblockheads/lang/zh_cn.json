@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "可以用物品栏中的物品合成食物。",
     
     "item.cookingforblockheads.cooking_table": "烹饪桌",
-    "item.cookingforblockheads.fridge": "冰箱",
+    "item.cookingforblockheads.white_fridge": "冰箱",
     "item.cookingforblockheads.sink": "水槽",
     "item.cookingforblockheads.counter": "厨柜",
     "item.cookingforblockheads.cabinet": "厨房橱柜",
-    "item.cookingforblockheads.corner": "厨房转角",
-    "item.cookingforblockheads.hanging_corner": "悬挂厨房转角",
-    "item.cookingforblockheads.oven": "烤箱",
+    "item.cookingforblockheads.white_oven": "烤箱",
     "item.cookingforblockheads.fruit_basket": "水果篮",
     "item.cookingforblockheads.tool_rack": "厨具架",
     "item.cookingforblockheads.milk_jar": "奶罐",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "储存调料和原料。",
     "tooltip.cookingforblockheads.counter.description": "提供合成所需的原料。",
     "tooltip.cookingforblockheads.cabinet.description": "可以放在厨房方块上方的墙上。",
-    "tooltip.cookingforblockheads.corner.description": "可以在转角处连接厨房方块。",
-    "tooltip.cookingforblockheads.hanging_corner.description": "可以在转角处连接厨房方块。",
     "tooltip.cookingforblockheads.kitchen_floor.description": "可以远距离连接厨房方块。",
     "tooltip.cookingforblockheads.heating_unit.description": "允许使用能量加热烤箱。",
     "tooltip.cookingforblockheads.ice_unit.description": "提供合成所需的雪和冰。",
@@ -117,8 +113,6 @@
     "cookingforblockheads.subtitle.oven_close": "烤箱：关闭",
     "cookingforblockheads.subtitle.toaster_start": "吐司机：烤制吐司",
     "cookingforblockheads.subtitle.toaster_stop": "吐司机：完成烤制",
-    
-    "jei.cookingforblockheads.cow_jar": "罐中牛",
     
     "config.jade.plugin_cookingforblockheads.oven": "烤箱",
     "config.jade.plugin_cookingforblockheads.milk_jar": "奶罐",

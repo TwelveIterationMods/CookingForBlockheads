@@ -6,6 +6,7 @@ import net.blay09.mods.balm.platform.config.reflection.Config;
 import net.blay09.mods.balm.platform.config.reflection.NestedType;
 import net.minecraft.resources.Identifier;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Config(CookingForBlockheads.MOD_ID)
@@ -49,7 +50,7 @@ public class CookingForBlockheadsConfig {
     public Set<Identifier> excludedRecipes = Set.of();
 
     public static CookingForBlockheadsConfig getActive() {
-        return Balm.config().getActiveConfig(CookingForBlockheadsConfig.class);
+        return Objects.requireNonNull(Balm.config().getActiveConfig(CookingForBlockheadsConfig.class));
     }
 
     public static void initialize() {

@@ -14,13 +14,11 @@
     "tooltip.cookingforblockheads.crafting_book.description": "Peut fabriquer les plats en utilisant les éléments\\nque vous possédez dans votre inventaire.",
 
     "item.cookingforblockheads.cooking_table": "Établis culinaire",
-    "item.cookingforblockheads.fridge": "Réfrigérateur",
+    "item.cookingforblockheads.white_fridge": "Réfrigérateur",
     "item.cookingforblockheads.sink": "Évier",
     "item.cookingforblockheads.counter": "Meuble bas",
     "item.cookingforblockheads.cabinet": "Meuble haut",
-    "item.cookingforblockheads.corner": "Meuble d'angle",
-    "item.cookingforblockheads.hanging_corner": "Meuble haut d'angle",
-    "item.cookingforblockheads.oven": "Cuisinière",
+    "item.cookingforblockheads.white_oven": "Cuisinière",
     "item.cookingforblockheads.fruit_basket": "Panier à Fruits",
     "item.cookingforblockheads.tool_rack": "Étagère à Ustensiles",
     "item.cookingforblockheads.milk_jar": "Bocal à lait",
@@ -59,8 +57,6 @@
     "tooltip.cookingforblockheads.spice_rack.description": "Stocke les épices et les ingrédients.",
     "tooltip.cookingforblockheads.counter.description": "Stocke les ingrédients pour les recettes.",
     "tooltip.cookingforblockheads.cabinet.description": "Peut être placé sur le mur au dessus des éléments bas.",
-    "tooltip.cookingforblockheads.corner.description": "Connecte les blocs de cuisine autour de l'angle.",
-    "tooltip.cookingforblockheads.hanging_corner.description": "Connecte les blocs de cuisine autour de l'angle.",
     "tooltip.cookingforblockheads.kitchen_floor.description": "Connecte des blocs de cuisine distants.",
     "tooltip.cookingforblockheads.heating_unit.description": "Permet de chauffer un four avec de l'énergie.",
     "tooltip.cookingforblockheads.ice_unit.description": "Fournit neige et glace pour les recettes.",
@@ -90,8 +86,6 @@
     "tooltip.cookingforblockheads.oven_upgrade": "Amélioration de la Cuisinière",
     "tooltip.cookingforblockheads.fridge_upgrade": "Amélioration du Réfrigérateur",
 
-    "_comment": "##",
-
     "container.cookingforblockheads.oven": "Cuisinière",
     "container.cookingforblockheads.fridge": "Réfrigérateur",
     "container.cookingforblockheads.spice_rack": "Étagère à Épice",
@@ -112,7 +106,5 @@
     "cookingforblockheads.subtitle.oven_open": "La porte du four s'ouvre",
     "cookingforblockheads.subtitle.oven_close": "La porte du four se ferme",
     "cookingforblockheads.subtitle.toaster_start": "Le grille-pain commence à griller",
-    "cookingforblockheads.subtitle.toaster_stop": "Le grille-pain a fini de griller",
-
-    "jei.cookingforblockheads.cow_jar": "Vache en Bocal"
+    "cookingforblockheads.subtitle.toaster_stop": "Le grille-pain a fini de griller"
 }
