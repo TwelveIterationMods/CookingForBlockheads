@@ -3,6 +3,10 @@
   "values": [
     "minecraft:cake",
     {
+      "id": "c:foods/edible_when_placed",
+      "required": false
+    },
+    {
       "id": "farmersdelight:milk_bottle",
       "required": false
     },
