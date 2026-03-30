@@ -18,6 +18,7 @@ import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistr
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -563,14 +564,14 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void setRecipesForSelection(List<RecipeWithStatus> recipes) {
         recipesForSelection = !recipes.isEmpty() ? recipes : null;
-        recipesForSelectionIndex = recipesForSelection != null ? Math.clamp(recipesForSelectionIndex, 0, recipesForSelection.size() - 1) : 0;
+        recipesForSelectionIndex = recipesForSelection != null ? Mth.clamp(recipesForSelectionIndex, 0, recipesForSelection.size() - 1) : 0;
 
         updateMatrixSlots();
     }
 
     public void nextRecipe(int dir) {
         if (recipesForSelection != null) {
-            recipesForSelectionIndex = Math.clamp(recipesForSelectionIndex + dir, 0, recipesForSelection.size() - 1);
+            recipesForSelectionIndex = Mth.clamp(recipesForSelectionIndex + dir, 0, recipesForSelection.size() - 1);
             updateCraftableSlots();
         }
 

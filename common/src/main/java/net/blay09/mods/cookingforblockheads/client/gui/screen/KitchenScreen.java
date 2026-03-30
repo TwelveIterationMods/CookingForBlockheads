@@ -375,7 +375,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     private void setCurrentOffset(int currentOffset) {
-        this.currentOffset = Math.clamp(currentOffset, 0, Mth.abs(Mth.ceil(menu.getItemListCount() / (float) VISIBLE_COLS) - VISIBLE_ROWS));
+        this.currentOffset = Math.clamp(currentOffset, 0, Math.max(0, Mth.ceil(menu.getItemListCount() / (float) VISIBLE_COLS) - VISIBLE_ROWS));
 
         menu.setScrollOffset(this.currentOffset);
 
