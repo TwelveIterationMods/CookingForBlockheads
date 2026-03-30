@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -68,6 +69,8 @@ public class NeoForgeCookingForBlockheads {
         });
 
         Balm.initializeIfLoaded(Compat.SPICE_OF_LIFE, "net.blay09.mods.cookingforblockheads.compat.SpiceOfLifeAddon");
+
+        eventBus.addListener((FMLLoadCompleteEvent event) -> Balm.initializeIfLoaded(Compat.FARMERS_DELIGHT, "net.blay09.mods.cookingforblockheads.compat.FarmersDelightAddon"));
     }
 
     private void enqueueIMC(InterModEnqueueEvent event) {

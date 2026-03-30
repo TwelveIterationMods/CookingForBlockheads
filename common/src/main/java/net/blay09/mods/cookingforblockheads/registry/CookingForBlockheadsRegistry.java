@@ -11,9 +11,11 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.ISortButton;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeGroup;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeHandler;
+import net.blay09.mods.cookingforblockheads.api.event.PopulateCookingRegistryEvent;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -22,11 +24,15 @@ import java.util.*;
 
 public class CookingForBlockheadsRegistry {
 
+    public record ProcessorRecipeType(RecipeType<?> recipeType, Component missingProcessorComponent) {
+    }
+
     private static final Multimap<ResourceLocation, RecipeHolder<Recipe<?>>> recipesByItemId = ArrayListMultimap.create();
     private static final Multimap<ResourceLocation, RecipeHolder<Recipe<?>>> recipesByGroup = ArrayListMultimap.create();
     private static final List<ISortButton> sortButtons = new ArrayList<>();
     private static final Map<ItemStack, Integer> ovenFuelItems = new HashMap<>();
     private static final Map<Class<? extends Recipe<?>>, KitchenRecipeHandler<? extends Recipe<?>>> kitchenRecipeHandlers = new HashMap<>();
+    private static final Map<RecipeType<?>, ProcessorRecipeType> processorRecipeTypes = new HashMap<>();
 
     public static void initialize(BalmEvents events) {
         events.onEvent(RecipesUpdatedEvent.class, event -> reload(event.getRecipeManager(), event.getRegistryAccess()));
@@ -37,11 +43,13 @@ public class CookingForBlockheadsRegistry {
 
     private static void reload(RecipeManager recipeManager, RegistryAccess registryAccess) {
         recipesByItemId.clear();
+        recipesByGroup.clear();
         loadRecipesByType(recipeManager, registryAccess, RecipeType.CRAFTING);
         loadRecipesByType(recipeManager, registryAccess, RecipeType.SMELTING);
+        Balm.getEvents().fireEvent(new PopulateCookingRegistryEvent(recipeManager, registryAccess));
     }
 
-    private static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
+    public static <C extends RecipeInput, T extends Recipe<C>> void loadRecipesByType(RecipeManager recipeManager, RegistryAccess registryAccess, RecipeType<T> recipeType) {
         for (final var recipe : recipeManager.getAllRecipesFor(recipeType)) {
             if (!isEligibleRecipe(recipe)) {
                 continue;
@@ -82,8 +90,16 @@ public class CookingForBlockheadsRegistry {
         return !CookingForBlockheadsConfig.getActive().excludedRecipes.contains(recipe.id());
     }
 
-    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<T> recipeType, KitchenRecipeHandler<T> handler) {
+    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeType, KitchenRecipeHandler<? extends T> handler) {
         kitchenRecipeHandlers.put(recipeType, handler);
+    }
+
+    public static void registerProcessorRecipeType(RecipeType<?> recipeType, Component missingProcessorComponent) {
+        processorRecipeTypes.put(recipeType, new ProcessorRecipeType(recipeType, missingProcessorComponent));
+    }
+
+    public static Optional<ProcessorRecipeType> getProcessorRecipeType(RecipeType<?> recipeType) {
+        return Optional.ofNullable(processorRecipeTypes.get(recipeType));
     }
 
     @SuppressWarnings("unchecked")

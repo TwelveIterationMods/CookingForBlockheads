@@ -11,9 +11,9 @@ import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,6 +32,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
@@ -50,7 +51,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private int scrollBarYPos;
     private int currentOffset;
 
-    private Component kitchenFeedback;
+    private Component kitchenFeedback = Component.empty();
+    private int kitchenFeedbackStacked;
     private float kitchenFeedbackTimeLeft;
 
     private double mouseClickY = -1;
@@ -333,16 +335,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-        if (kitchenFeedback != null && kitchenFeedbackTimeLeft > 0) {
-            float alpha = 1f;
-            if (kitchenFeedbackTimeLeft < KITCHEN_FEEDBACK_HINT_TIME / 2f) {
-                alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
-            }
-            guiGraphics.setColor(1f, 1f, 1f, alpha);
-            guiGraphics.drawCenteredString(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, 0xFFFFFFFF);
-            kitchenFeedbackTimeLeft -= partialTicks;
-        }
-
         var poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 300);
@@ -358,6 +350,20 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         for (CraftMatrixFakeSlot matrixSlot : menu.getMatrixSlots()) {
             matrixSlot.updateSlot(partialTicks);
         }
+
+        poseStack.pushPose();
+        poseStack.translate(0, 0, 301);
+        if (kitchenFeedbackTimeLeft > 0) {
+            final var feedback = getStackedFeedback();
+            final var textWidth = font.width(feedback);
+            final var topOffset = 114;
+            final var paddingX = 4;
+            final var paddingY = 2;
+            guiGraphics.fill(leftPos + imageWidth / 2 - textWidth / 2 - paddingX, topPos + topOffset - paddingY, leftPos + imageWidth / 2 + textWidth / 2 + paddingX, topPos + topOffset + font.lineHeight + paddingY - 1, 0xFF000000);
+            guiGraphics.drawCenteredString(font, feedback, leftPos + imageWidth / 2, topPos + topOffset, 0xFFFFFFFF);
+            kitchenFeedbackTimeLeft -= partialTicks;
+        }
+        poseStack.popPose();
 
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
@@ -384,7 +390,24 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     public void displayKitchenFeedback(Component component) {
+        if (kitchenFeedback.getString().equals(component.getString()) && kitchenFeedbackTimeLeft > 0) {
+            kitchenFeedbackStacked++;
+        } else {
+            kitchenFeedbackStacked = 1;
+        }
         kitchenFeedback = component;
         kitchenFeedbackTimeLeft = KITCHEN_FEEDBACK_HINT_TIME;
+    }
+
+    private Component getStackedFeedback() {
+        if (kitchenFeedbackStacked > 1) {
+            return Component.translatable("gui.cookingforblockheads.feedback_stacked", kitchenFeedback, kitchenFeedbackStacked);
+        }
+        return kitchenFeedback;
+    }
+
+    public Optional<Component> getKitchenFeedback() {
+        return kitchenFeedbackTimeLeft > 0 ? Optional.of(getStackedFeedback()) : Optional.empty();
+
     }
 }

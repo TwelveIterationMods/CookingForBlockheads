@@ -26,9 +26,11 @@ import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistr
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
@@ -66,6 +68,7 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(ShapedRecipe.class, new KitchenShapedRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(ShapelessRecipe.class, new KitchenShapelessRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenSmeltingRecipeHandler());
+        CookingForBlockheadsRegistry.registerProcessorRecipeType(RecipeType.SMELTING, Component.translatable("tooltip.cookingforblockheads.missing_oven"));
 
         CookingForBlockheadsConfig.initialize();
         ModNetworking.initialize(Balm.getNetworking());

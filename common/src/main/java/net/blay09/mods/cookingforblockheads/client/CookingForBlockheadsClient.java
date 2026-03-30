@@ -7,15 +7,16 @@ import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,34 +52,37 @@ public class CookingForBlockheadsClient {
                 final var selectedRecipe = selectedRecipeWithStatus.recipe(player).value();
 
                 if (menu.isSelectedSlot(listingSlot) && kitchen.canProcess(RecipeType.CRAFTING)) {
-                    if (selectedRecipe.getType() == RecipeType.SMELTING) {
-                        if (!kitchen.canProcess(RecipeType.SMELTING)) {
-                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
-                        } else {
-                            if (Screen.hasShiftDown()) {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
+                    screen.getKitchenFeedback().ifPresentOrElse(component -> event.getToolTip().add(component), () -> {
+                        final var processorRecipeType = CookingForBlockheadsRegistry.getProcessorRecipeType(selectedRecipe.getType());
+                        if (processorRecipeType.isPresent()) {
+                            if (!kitchen.canProcess(selectedRecipe.getType())) {
+                                event.getToolTip().add(processorRecipeType.get().missingProcessorComponent().copy().withStyle(ChatFormatting.RED));
                             } else {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_one").withStyle(ChatFormatting.GREEN));
+                                if (Screen.hasShiftDown()) {
+                                    event.getToolTip()
+                                            .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
+                                } else {
+                                    event.getToolTip()
+                                            .add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_one").withStyle(ChatFormatting.GREEN));
+                                }
+                            }
+                        } else {
+                            final var missingIngredients = selectedRecipeWithStatus.missingIngredients();
+                            if (selectedRecipeWithStatus.isMissingUtensils()) {
+                                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
+                            } else if (!missingIngredients.isEmpty()) {
+                                event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
+                            } else {
+                                if (Screen.hasShiftDown()) {
+                                    event.getToolTip()
+                                            .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_stack").withStyle(ChatFormatting.GREEN));
+                                } else {
+                                    event.getToolTip()
+                                            .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_one").withStyle(ChatFormatting.GREEN));
+                                }
                             }
                         }
-                    } else {
-                        final var missingIngredients = selectedRecipeWithStatus.missingIngredients();
-                        if (selectedRecipeWithStatus.isMissingUtensils()) {
-                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
-                        } else if (!missingIngredients.isEmpty()) {
-                            event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
-                        } else {
-                            if (Screen.hasShiftDown()) {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_stack").withStyle(ChatFormatting.GREEN));
-                            } else {
-                                event.getToolTip()
-                                        .add(Component.translatable("tooltip.cookingforblockheads.click_to_craft_one").withStyle(ChatFormatting.GREEN));
-                            }
-                        }
-                    }
+                    });
                 } else {
                     event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
