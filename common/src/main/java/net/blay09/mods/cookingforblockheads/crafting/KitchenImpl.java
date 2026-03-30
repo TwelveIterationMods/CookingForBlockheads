@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.balm.Balm;
+import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
@@ -8,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,6 +31,7 @@ public class KitchenImpl implements Kitchen {
     private final @Nullable BlockEntity activatingBlockEntity;
     private final Set<BlockPos> checkedPos = new HashSet<>();
     private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
+    private final List<KitchenRecipeProvider> recipeProviderList = new ArrayList<>();
     private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();
 
     public KitchenImpl(ItemStack itemStack) {
@@ -60,12 +63,17 @@ public class KitchenImpl implements Kitchen {
                             itemProviderList.add(itemProvider);
                         }
 
+                        final var recipeProvider = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_RECIPE_PROVIDER);
+                        if (recipeProvider != null) {
+                            recipeProviderList.add(recipeProvider);
+                        }
+
                         final var itemProcessor = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROCESSOR);
                         if (itemProcessor != null) {
                             itemProcessorList.add(itemProcessor);
                         }
 
-                        if (itemProvider != null || itemProcessor != null || state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
+                        if (itemProvider != null || recipeProvider != null || itemProcessor != null || state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
                             findNeighbourCraftingBlocks(level, position, true);
                         }
                     } else if (state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
@@ -86,12 +94,21 @@ public class KitchenImpl implements Kitchen {
     }
 
     @Override
+    public List<KitchenRecipeProvider> getRecipeProviders() {
+        return recipeProviderList;
+    }
+
+    @Override
     public List<KitchenItemProcessor> getItemProcessors() {
         return itemProcessorList;
     }
 
     @Override
     public boolean canProcess(RecipeType<?> recipeType) {
+        if (recipeType == ModRecipes.kitchenRecipes.type()) {
+            return true;
+        }
+
         if (recipeType == RecipeType.CRAFTING) {
             return activatingBlockState.is(ModBlockTags.COOKING_TABLES) || activatingItemStack.is(ModItems.craftingBook);
         }

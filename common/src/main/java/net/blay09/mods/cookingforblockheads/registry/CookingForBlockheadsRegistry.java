@@ -13,6 +13,7 @@ import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import org.jspecify.annotations.Nullable;
@@ -60,13 +61,13 @@ public class CookingForBlockheadsRegistry {
                 if (recipe instanceof AbstractCookingRecipe cookingRecipe && isOvenDuplicate(cookingRecipe, (KitchenRecipeHandler<?, AbstractCookingRecipe>) recipeHandler, resultItem)) {
                     continue;
                 }
-                recipesByItemId.put(BuiltInRegistries.ITEM.getKey(resultItem.getItem()), recipeHolder);
+                recipesByItemId.put(getRecipeItemId(resultItem), recipeHolder);
 
                 final var groups = getGroups();
                 for (final var group : groups) {
                     for (final var ingredient : group.getChildren()) {
                         if (ingredient.test(resultItem)) {
-                            final var groupItemId = BuiltInRegistries.ITEM.getKey(group.getParentItem());
+                            final var groupItemId = getRecipeItemId(group.getParentItem());
                             recipesByGroup.put(groupItemId, recipeHolder);
                             break;
                         }
@@ -77,7 +78,7 @@ public class CookingForBlockheadsRegistry {
     }
 
     private static <T extends Recipe<?>> boolean isOvenDuplicate(T recipe, KitchenRecipeHandler<?, T> recipeHandler, ItemStack resultItem) {
-        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
+        final var itemId = getRecipeItemId(resultItem);
         final var existing = recipesByItemId.get(itemId);
         final var ingredients = recipeHandler.getIngredients(recipe);
         for (final var recipeHolder : existing) {
@@ -145,16 +146,24 @@ public class CookingForBlockheadsRegistry {
     }
 
     public static Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem) {
-        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
+        final var itemId = getRecipeItemId(resultItem);
         return recipesByItemId.get(itemId);
     }
 
     public static Collection<? extends RecipeHolder<?>> getRecipesInGroup(ItemStack resultItem) {
-        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
+        final var itemId = getRecipeItemId(resultItem);
         return recipesByGroup.get(itemId);
     }
 
     public static Multimap<Identifier, RecipeHolder<?>> getRecipesByItemId() {
         return recipesByItemId;
+    }
+
+    public static Identifier getRecipeItemId(ItemStack itemStack) {
+        return getRecipeItemId(itemStack.getItem());
+    }
+
+    public static Identifier getRecipeItemId(Item item) {
+        return BuiltInRegistries.ITEM.getKey(item);
     }
 }

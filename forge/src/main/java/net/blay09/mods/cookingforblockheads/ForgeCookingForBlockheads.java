@@ -7,6 +7,7 @@ import net.blay09.mods.balm.forge.platform.runtime.ForgeLoadContext;
 import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.api.event.OvenItemSmeltedEvent;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.client.CookingForBlockheadsClient;
@@ -35,6 +36,8 @@ public class ForgeCookingForBlockheads {
 
         final var forgeCapabilities = (ForgeBalmCapabilities) Balm.capabilities();
         forgeCapabilities.preRegisterType(id("kitchen_item_provider"), CapabilityManager.get(new CapabilityToken<KitchenItemProvider>() {
+        }));
+        forgeCapabilities.preRegisterType(id("kitchen_recipe_provider"), CapabilityManager.get(new CapabilityToken<KitchenRecipeProvider>() {
         }));
         forgeCapabilities.preRegisterType(id("kitchen_item_processor"), CapabilityManager.get(new CapabilityToken<KitchenItemProcessor>() {
         }));

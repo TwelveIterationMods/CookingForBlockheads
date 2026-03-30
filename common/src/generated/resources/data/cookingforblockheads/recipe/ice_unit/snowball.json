@@ -1,0 +1,7 @@
+{
+  "type": "cookingforblockheads:kitchen",
+  "result": {
+    "id": "minecraft:snowball"
+  },
+  "source": "cookingforblockheads:ice_unit"
+}

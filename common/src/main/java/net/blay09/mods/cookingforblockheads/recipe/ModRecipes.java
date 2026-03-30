@@ -8,6 +8,7 @@ public class ModRecipes {
 
     public static DeferredRecipeType<SingleRecipeInput, ToasterRecipe> toasterRecipes;
     public static DeferredRecipeType<SingleRecipeInput, OvenRecipe> ovenRecipes;
+    public static DeferredRecipeType<SingleRecipeInput, KitchenProvidedRecipe> kitchenRecipes;
 
     public static void initialize(BalmRecipeTypeRegistrar recipeTypes) {
         toasterRecipes = recipeTypes.register("toaster", ToasterRecipe.class)
@@ -17,6 +18,11 @@ public class ModRecipes {
 
         ovenRecipes = recipeTypes.register("oven", OvenRecipe.class)
                 .withSerializer(OvenRecipe::serializer)
+                .withRecipeBookCategory()
+                .asDeferredRecipeType();
+
+        kitchenRecipes = recipeTypes.register("kitchen", KitchenProvidedRecipe.class)
+                .withSerializer(KitchenProvidedRecipe::serializer)
                 .withRecipeBookCategory()
                 .asDeferredRecipeType();
     }

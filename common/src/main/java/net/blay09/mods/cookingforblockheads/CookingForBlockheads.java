@@ -18,10 +18,12 @@ import net.blay09.mods.cookingforblockheads.component.ModDataComponents;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenShapelessRecipeHandler;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenAbstractCookingRecipeHandler;
+import net.blay09.mods.cookingforblockheads.crafting.KitchenProvidedRecipeHandler;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
 import net.blay09.mods.cookingforblockheads.network.message.FavoriteListMessage;
+import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
@@ -68,6 +70,7 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmeltingRecipe.class, new KitchenAbstractCookingRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmokingRecipe.class, new KitchenAbstractCookingRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(CampfireCookingRecipe.class, new KitchenAbstractCookingRecipeHandler());
+        CookingForBlockheadsAPI.registerKitchenRecipeHandler(KitchenProvidedRecipe.class, new KitchenProvidedRecipeHandler());
 
         CookingForBlockheadsConfig.initialize();
         registrars.dataComponentTypes(ModDataComponents::initialize);

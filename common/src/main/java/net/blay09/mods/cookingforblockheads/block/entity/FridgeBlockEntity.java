@@ -7,11 +7,13 @@ import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
+import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
+import net.blay09.mods.cookingforblockheads.capability.KitchenRecipeProviderHolder;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.CombinedKitchenItemProvider;
@@ -33,6 +35,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -54,7 +57,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+
+public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder, KitchenRecipeProviderHolder {
+
+    private static final Identifier ICE_UNIT_SOURCE = id("ice_unit");
 
     private final KitchenItemProvider iceUnitItemProvider = new KitchenItemProvider() {
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
@@ -85,6 +92,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         }
     };
     private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
+    private final KitchenRecipeProvider recipeProvider = () -> hasIceUpgrade() ? Set.of(ICE_UNIT_SOURCE) : Set.of();
     public boolean hasIceUpgrade;
     public boolean hasPreservationUpgrade;
     private @Nullable Component customName;
@@ -230,6 +238,11 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
     @Override
     public KitchenItemProvider getKitchenItemProvider() {
         return itemProvider;
+    }
+
+    @Override
+    public KitchenRecipeProvider getKitchenRecipeProvider() {
+        return recipeProvider;
     }
 
     public DoorAnimator getDoorAnimator() {

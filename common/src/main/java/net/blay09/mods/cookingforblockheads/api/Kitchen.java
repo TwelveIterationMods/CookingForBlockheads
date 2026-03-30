@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface Kitchen {
     List<KitchenItemProvider> getItemProviders(@Nullable Player player);
+    List<KitchenRecipeProvider> getRecipeProviders();
     List<KitchenItemProcessor> getItemProcessors();
 
     boolean canProcess(RecipeType<?> recipeType);

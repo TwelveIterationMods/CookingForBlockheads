@@ -13,11 +13,15 @@ import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.menu.comparator.FavoriteComparator;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.cookingforblockheads.network.message.*;
+import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
+import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +36,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.display.*;
+import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -243,13 +248,11 @@ public class KitchenMenu extends AbstractContainerMenu {
     public List<CraftableWithStatus> getAvailableCraftables() {
         final var result = new HashMap<Identifier, CraftableWithStatus>();
         final var context = new CraftingContext(kitchen, player);
-        final var recipesByItemId = CookingForBlockheadsRegistry.getRecipesByItemId();
-        for (final var itemId : recipesByItemId.keySet()) {
-            for (final var recipeHolder : recipesByItemId.get(itemId)) {
-                final var craftableWithStatus = craftableWithStatusFromRecipe(context, recipeHolder);
-                if (craftableWithStatus != null) {
-                    result.compute(itemId, (k, v) -> CraftableWithStatus.best(v, craftableWithStatus));
-                }
+        for (final var recipeHolder : getAvailableRecipes(player.level())) {
+            final var craftableWithStatus = craftableWithStatusFromRecipe(context, recipeHolder);
+            if (craftableWithStatus != null) {
+                final var itemId = CookingForBlockheadsRegistry.getRecipeItemId(craftableWithStatus.itemStack());
+                result.compute(itemId, (_, v) -> CraftableWithStatus.best(v, craftableWithStatus));
             }
         }
         return result.values().stream().toList();
@@ -294,7 +297,43 @@ public class KitchenMenu extends AbstractContainerMenu {
     private Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem) {
         final var recipes = new ArrayList<>(CookingForBlockheadsRegistry.getRecipesFor(resultItem));
         recipes.addAll(CookingForBlockheadsRegistry.getRecipesInGroup(resultItem));
+        getProvidedRecipes(player.level()).stream()
+                .filter(it -> ItemStack.isSameItemSameComponents(it.value().resultItem().create(), resultItem))
+                .forEach(recipes::add);
         return recipes;
+    }
+
+    private Collection<RecipeHolder<?>> getAvailableRecipes(Level level) {
+        final var recipes = new LinkedHashMap<Identifier, RecipeHolder<?>>();
+        final var recipesByItemId = CookingForBlockheadsRegistry.getRecipesByItemId();
+        for (final var itemId : recipesByItemId.keySet()) {
+            for (final var recipeHolder : recipesByItemId.get(itemId)) {
+                recipes.put(recipeHolder.id().identifier(), recipeHolder);
+            }
+        }
+
+        getProvidedRecipes(level).forEach(recipeHolder -> recipes.put(recipeHolder.id().identifier(), recipeHolder));
+        return recipes.values();
+    }
+
+    private Collection<RecipeHolder<KitchenProvidedRecipe>> getProvidedRecipes(Level level) {
+        final var recipes = new LinkedHashMap<Identifier, RecipeHolder<KitchenProvidedRecipe>>();
+        final var providedRecipeSources = getAvailableRecipeSources();
+        if (level instanceof ServerLevel serverLevel) {
+            final var recipeMap = ((RecipeManagerAccessor) serverLevel.getServer().getRecipeManager()).getRecipes();
+            recipeMap.byType(ModRecipes.kitchenRecipes.type()).stream()
+                    .filter(it -> providedRecipeSources.contains(it.value().source()))
+                    .forEach(recipeHolder -> recipes.put(recipeHolder.id().identifier(), recipeHolder));
+        }
+        return recipes.values();
+    }
+
+    private Set<Identifier> getAvailableRecipeSources() {
+        final var result = new HashSet<Identifier>();
+        for (final var craftableProvider : kitchen.getRecipeProviders()) {
+            result.addAll(craftableProvider.getKitchenRecipeSources());
+        }
+        return result;
     }
 
     public void broadcastAvailableRecipes() {

@@ -4,6 +4,7 @@ import net.blay09.mods.balm.tags.BalmItemTags;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -14,10 +15,12 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 import static net.minecraft.data.recipes.SimpleCookingRecipeBuilder.smelting;
 
 public class ModRecipeProvider extends FabricRecipeProvider {
@@ -324,6 +328,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .save(exporter);
                 smelting(Ingredient.of(ModItems.noFilterBook), RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.recipeBook, 0f, 200).unlockedBy("has_no_filter_edition",
                         has(ModItems.noFilterBook)).save(exporter, "recipe_book_from_smelting_no_filter_edition");
+
+                kitchenProvidedRecipe(exporter, id("ice_unit/snowball"), id("ice_unit"), new ItemStackTemplate(Items.SNOWBALL));
+                kitchenProvidedRecipe(exporter, id("ice_unit/ice"), id("ice_unit"), new ItemStackTemplate(Items.ICE));
             }
 
             private ShapedRecipeBuilder dyedKitchenFloorRecipe(Block kitchenFloor, TagKey<Item> dyeTag) {
@@ -335,6 +342,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('F', whiteKitchenFloor)
                         .define('D', dyeTag)
                         .unlockedBy("has_kitchen_floor", has(whiteKitchenFloor));
+            }
+
+            private void kitchenProvidedRecipe(RecipeOutput exporter, Identifier recipeId, Identifier source, ItemStackTemplate result) {
+                exporter.accept(ResourceKey.create(Registries.RECIPE, recipeId), new KitchenProvidedRecipe(source, result), null);
             }
         };
     }
