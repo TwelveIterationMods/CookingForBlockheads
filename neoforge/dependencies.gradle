@@ -7,6 +7,7 @@ dependencies {
     compileOnly "mcp.mobius.waila:wthit-api:forge-$wthit_version"
     compileOnly "curse.maven:the-one-probe-245211:$theoneprobe_version"
 
+    implementation "curse.maven:farmers-delight-398521:6917256"
     implementation "curse.maven:spice-of-life-carrot-edition-277616:5957429"
 }
 
