@@ -56,6 +56,13 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
     public void extractRenderState(FridgeBlockEntity blockEntity, FridgeRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
+        renderState.dye = blockEntity.getBlockState().getBlock() instanceof FridgeBlock fridgeBlock ? fridgeBlock.getColor() : DyeColor.WHITE;
+        renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
+        renderState.modelType = blockEntity.getBlockState().getValue(FridgeBlock.MODEL_TYPE);
+        renderState.skip = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_UPPER;
+        renderState.flipped = blockEntity.getBlockState().getValue(FridgeBlock.FLIPPED);
+        renderState.facing = blockEntity.getBlockState().getValue(FridgeBlock.FACING);
+
         DeferredBlockStateModel lowerModel;
         DeferredBlockStateModel upperModel = null;
         boolean isLarge = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_LOWER;
@@ -75,13 +82,6 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         } else {
             renderState.upper.clear();
         }
-
-        renderState.dye = blockEntity.getBlockState().getBlock() instanceof FridgeBlock fridgeBlock ? fridgeBlock.getColor() : DyeColor.WHITE;
-        renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
-        renderState.modelType = blockEntity.getBlockState().getValue(FridgeBlock.MODEL_TYPE);
-        renderState.skip = renderState.modelType == FridgeBlock.FridgeModelType.LARGE_UPPER;
-        renderState.flipped = blockEntity.getBlockState().getValue(FridgeBlock.FLIPPED);
-        renderState.facing = blockEntity.getBlockState().getValue(FridgeBlock.FACING);
 
         final var id = (int) blockEntity.getBlockPos().asLong();
         renderState.items = new ArrayList<>();
