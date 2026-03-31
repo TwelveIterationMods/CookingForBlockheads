@@ -77,15 +77,15 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
     public void extractRenderState(T blockEntity, CounterRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
-        final var doorParts = renderState.door.setupModel(new Matrix4f(), false);
-        final var doorModel = getDoorModel(renderState.dye, renderState.flipped);
-        doorModel.asBlockStateModel().collectParts(renderState.door.scratchRandomSource(42), doorParts);
-
         final var state = blockEntity.getBlockState();
         renderState.dye = state.getBlock() instanceof CounterBlock counterBlock ? counterBlock.getColor() : null;
         renderState.facing = state.getValue(CounterBlock.FACING);
         renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
         renderState.flipped = blockEntity.isFlipped();
+
+        final var doorParts = renderState.door.setupModel(new Matrix4f(), false);
+        final var doorModel = getDoorModel(renderState.dye, renderState.flipped);
+        doorModel.asBlockStateModel().collectParts(renderState.door.scratchRandomSource(42), doorParts);
 
         final var id = (int) blockEntity.getBlockPos().asLong();
         renderState.items = new ArrayList<>();
