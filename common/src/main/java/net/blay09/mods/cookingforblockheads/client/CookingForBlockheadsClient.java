@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.compat.recipeviewers.CowJarRecipe;
+import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.kuma.api.Kuma;
@@ -54,7 +55,7 @@ public class CookingForBlockheadsClient {
                                 .icon(ModBlocks.cowJar)
                                 .background(id("textures/gui/jei_cow_jar.png"))
                                 .size(150, 110)
-                                .slots((recipe, slots) -> {
+                                .slots((_, slots) -> {
                                     slots.inputSlot(65, 1).add(Items.ANVIL);
                                     slots.craftingStationSlot(65, 77).withSlotBackground().add(ModBlocks.milkJar);
                                     slots.outputSlot(123, 77).withSlotBackground().add(ModBlocks.cowJar);
@@ -63,7 +64,7 @@ public class CookingForBlockheadsClient {
             }
         });
 
-        ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, flags) -> {
+        ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, _) -> {
             if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
                 return;
             }
@@ -112,6 +113,8 @@ public class CookingForBlockheadsClient {
                     tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
             } else if (hoverSlot instanceof CraftMatrixFakeSlot && itemStack == hoverSlot.getItem()) {
+                tooltip.add(Component.translatable("tooltip.cookingforblockheads.available_ingredients", formatIngredientAmount(((CraftMatrixFakeSlot) hoverSlot).getDisplayedAmount()))
+                        .withStyle(ChatFormatting.GRAY));
                 if (((CraftMatrixFakeSlot) hoverSlot).getVisibleStacks().size() > 1) {
                     if (((CraftMatrixFakeSlot) hoverSlot).isLocked()) {
                         tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_unlock").withStyle(ChatFormatting.GREEN));
@@ -133,5 +136,9 @@ public class CookingForBlockheadsClient {
     public static boolean isFavoriteItem(ItemStack itemStack) {
         final var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
         return favoriteItemIds.contains(itemId);
+    }
+
+    private static String formatIngredientAmount(int amount) {
+        return amount >= CraftingContext.COUNT_CUTOFF ? CraftingContext.COUNT_CUTOFF + "+" : Integer.toString(amount);
     }
 }

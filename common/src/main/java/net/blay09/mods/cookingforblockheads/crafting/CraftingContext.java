@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jspecify.annotations.Nullable;
@@ -13,6 +14,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CraftingContext {
+
+    public static final int COUNT_CUTOFF = 999;
 
     private final List<KitchenItemProvider> itemProviders;
     private final List<KitchenItemProcessor> itemProcessors;
@@ -58,5 +61,29 @@ public class CraftingContext {
         for (final var listener : listeners) {
             listener.accept(operation);
         }
+    }
+
+    public int countAvailable(ItemStack itemStack) {
+        int amount = 0;
+        for (final var itemProvider : itemProviders) {
+            final var ingredientTokens = new ArrayList<IngredientToken>();
+            CacheHint cacheHint = CacheHint.NONE;
+            while (amount < COUNT_CUTOFF) {
+                final var ingredientToken = itemProvider.findIngredient(itemStack, ingredientTokens, cacheHint, true);
+                if (ingredientToken == null) {
+                    break;
+                }
+
+                ingredientTokens.add(ingredientToken);
+                cacheHint = itemProvider.getCacheHint(ingredientToken);
+                amount += ingredientToken.reservedCount();
+            }
+
+            if (amount >= COUNT_CUTOFF) {
+                return COUNT_CUTOFF;
+            }
+        }
+
+        return amount;
     }
 }

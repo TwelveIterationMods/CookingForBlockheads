@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingredient> missingIngredients,
-                               int missingIngredientsMask, List<ItemStack> lockedInputs) {
+                               int missingIngredientsMask, List<ItemStack> lockedInputs, List<List<IngredientAmount>> ingredientAmounts) {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, RecipeWithStatus> STREAM_CODEC = StreamCodec.composite(
             RecipeDisplayEntry.STREAM_CODEC,
@@ -25,6 +25,8 @@ public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingre
             RecipeWithStatus::missingIngredientsMask,
             ItemStack.OPTIONAL_LIST_STREAM_CODEC,
             RecipeWithStatus::lockedInputs,
+            IngredientAmount.LIST_STREAM_CODEC.apply(ByteBufCodecs.collection(ArrayList::new)),
+            RecipeWithStatus::ingredientAmounts,
             RecipeWithStatus::new
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, List<RecipeWithStatus>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.collection(

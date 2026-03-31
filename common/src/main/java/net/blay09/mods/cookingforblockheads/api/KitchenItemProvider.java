@@ -20,17 +20,19 @@ public interface KitchenItemProvider {
      * @param ingredient       the ingredient to find
      * @param ingredientTokens the ingredient tokens that have already been provided for this type of ingredient by this provider
      * @param cacheHint        a hint on where to start looking, based on {@link #getCacheHint(IngredientToken)} for the last returned token for this type of ingredient
+     * @param greedy           whether ingredient tokens should greedily track a full stack instead of a single item
      * @return an ingredient token that matches the given ingredient, or null if none was found
      */
-    @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
+    @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy);
 
     /**
      * @param itemStack        the item to find
      * @param ingredientTokens the ingredient tokens that have already been provided for this type of ingredient by this provider
      * @param cacheHint        a hint on where to start looking, based on {@link #getCacheHint(IngredientToken)} for the last returned token for this type of ingredient
+     * @param greedy           whether ingredient tokens should greedily track a full stack instead of a single item
      * @return an ingredient token that matches the given ingredient, or null if none was found
      */
-    @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint);
+    @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy);
 
     CacheHint getCacheHint(IngredientToken ingredientToken);
 }

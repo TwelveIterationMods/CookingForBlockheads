@@ -20,7 +20,7 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
     }
 
     @Override
-    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
         if (cacheHint instanceof ContainerIngredientToken containerIngredientToken) {
             final var slotStack = container.getItem(containerIngredientToken.slot);
             if (ingredient.test(slotStack) && hasUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens)) {
@@ -30,26 +30,29 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
 
         for (int i = 0; i < container.getContainerSize(); i++) {
             final var slotStack = container.getItem(i);
-            if (ingredient.test(slotStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
-                return new ContainerIngredientToken(i);
+            final var usesLeft = getUsesLeft(i, slotStack, ingredientTokens);
+            if (ingredient.test(slotStack) && usesLeft > 0) {
+                return new ContainerIngredientToken(i, greedy ? usesLeft : 1);
             }
         }
         return null;
     }
 
     @Override
-    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
         if (cacheHint instanceof ContainerIngredientToken containerIngredientToken) {
             final var slotStack = container.getItem(containerIngredientToken.slot);
-            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens)) {
-                return containerIngredientToken;
+            final var usesLeft = getUsesLeft(containerIngredientToken.slot, slotStack, ingredientTokens);
+            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && usesLeft > 0) {
+                return greedy ? new ContainerIngredientToken(containerIngredientToken.slot, usesLeft) : containerIngredientToken;
             }
         }
 
         for (int i = 0; i < container.getContainerSize(); i++) {
             final var slotStack = container.getItem(i);
-            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
-                return new ContainerIngredientToken(i);
+            final var usesLeft = getUsesLeft(i, slotStack, ingredientTokens);
+            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && usesLeft > 0) {
+                return new ContainerIngredientToken(i, greedy ? usesLeft : 1);
             }
         }
         return null;
@@ -60,7 +63,7 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
         for (IngredientToken ingredientToken : ingredientTokens) {
             if (ingredientToken instanceof ContainerIngredientToken containerIngredientToken) {
                 if (containerIngredientToken.slot == slot) {
-                    usesLeft--;
+                    usesLeft -= containerIngredientToken.reservedCount();
                 }
             }
         }
@@ -79,9 +82,11 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
 
     public class ContainerIngredientToken implements IngredientToken, CacheHint {
         private final int slot;
+        private final int count;
 
-        public ContainerIngredientToken(int slot) {
+        public ContainerIngredientToken(int slot, int count) {
             this.slot = slot;
+            this.count = count;
         }
 
         @Override
@@ -102,6 +107,11 @@ public class ContainerKitchenItemProvider implements KitchenItemProvider {
             }
 
             return ItemStack.EMPTY;
+        }
+
+        @Override
+        public int reservedCount() {
+            return count;
         }
     }
 }

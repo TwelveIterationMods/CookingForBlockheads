@@ -186,6 +186,7 @@
   "tooltip.cookingforblockheads.missing_tools": "Missing tools to craft",
   "tooltip.cookingforblockheads.missing_ingredients": "Missing ingredients to craft",
   "tooltip.cookingforblockheads.missing_oven": "Missing oven to cook",
+  "tooltip.cookingforblockheads.available_ingredients": "Available: %s",
   "tooltip.cookingforblockheads.sort_by_name": "Sort by Name",
   "tooltip.cookingforblockheads.sort_by_hunger": "Sort by Hunger Restored",
   "tooltip.cookingforblockheads.sort_by_saturation": "Sort by Saturation",

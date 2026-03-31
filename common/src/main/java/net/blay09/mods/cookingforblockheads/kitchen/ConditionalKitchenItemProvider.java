@@ -18,21 +18,21 @@ public record ConditionalKitchenItemProvider<T extends KitchenItemProvider>(Supp
     }
 
     @Override
-    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
         if (!condition.get()) {
-            return fallback != null ? fallback.findIngredient(ingredient, ingredientTokens, cacheHint) : null;
+            return fallback != null ? fallback.findIngredient(ingredient, ingredientTokens, cacheHint, greedy) : null;
         }
 
-        return delegate.findIngredient(ingredient, ingredientTokens, cacheHint);
+        return delegate.findIngredient(ingredient, ingredientTokens, cacheHint, greedy);
     }
 
     @Override
-    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
         if (!condition.get()) {
-            return fallback != null ? fallback.findIngredient(itemStack, ingredientTokens, cacheHint) : null;
+            return fallback != null ? fallback.findIngredient(itemStack, ingredientTokens, cacheHint, greedy) : null;
         }
 
-        return delegate.findIngredient(itemStack, ingredientTokens, cacheHint);
+        return delegate.findIngredient(itemStack, ingredientTokens, cacheHint, greedy);
     }
 
     @Override

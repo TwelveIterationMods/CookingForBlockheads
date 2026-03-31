@@ -77,7 +77,7 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
         return itemProvider;
     }
 
-    private record MilkJarIngredientToken(MilkJarBlockEntity milkJar, ItemStack itemStack) implements IngredientToken {
+    private record MilkJarIngredientToken(MilkJarBlockEntity milkJar, ItemStack itemStack, int count) implements IngredientToken {
         @Override
         public ItemStack peek() {
             final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, true);
@@ -97,17 +97,22 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
             }
             return ItemStack.EMPTY;
         }
+
+        @Override
+        public int reservedCount() {
+            return count;
+        }
     }
 
     private record MilkJarItemProvider(MilkJarBlockEntity milkJar) implements KitchenItemProvider {
         @Override
-        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
             for (final var milkItem : BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.MILK))
                 if (ingredient.acceptsItem(milkItem)) {
                     final var milkUnitsUsed = ingredientTokens.size();
                     final var milkUnitsAvailable = milkJar.getFluidTank().getAmount() / 1000 - milkUnitsUsed;
-                    if (milkUnitsAvailable > 1) {
-                        return new MilkJarIngredientToken(milkJar, new ItemStack(milkItem));
+                    if (milkUnitsAvailable >= 1) {
+                        return new MilkJarIngredientToken(milkJar, new ItemStack(milkItem), greedy ? milkUnitsAvailable : 1);
                     } else {
                         return null;
                     }
@@ -117,15 +122,15 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
         }
 
         @Override
-        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
             if (!itemStack.is(ModItemTags.MILK)) {
                 return null;
             }
 
             final var milkUnitsUsed = ingredientTokens.size();
             final var milkUnitsAvailable = milkJar.getFluidTank().getAmount() / 1000 - milkUnitsUsed;
-            if (milkUnitsAvailable > 1) {
-                return new MilkJarIngredientToken(milkJar, itemStack);
+            if (milkUnitsAvailable >= 1) {
+                return new MilkJarIngredientToken(milkJar, itemStack, greedy ? milkUnitsAvailable : 0);
             } else {
                 return null;
             }

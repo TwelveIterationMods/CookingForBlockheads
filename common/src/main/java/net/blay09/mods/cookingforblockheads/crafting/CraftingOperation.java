@@ -129,9 +129,9 @@ public class CraftingOperation {
     private IngredientToken findIngredient(KitchenItemProvider itemProvider, Ingredient ingredient, ItemStack lockedInput, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         IngredientToken ingredientToken;
         if (lockedInput.isEmpty()) {
-            ingredientToken = itemProvider.findIngredient(ingredient, ingredientTokens, cacheHint);
+            ingredientToken = itemProvider.findIngredient(ingredient, ingredientTokens, cacheHint, false);
         } else {
-            ingredientToken = itemProvider.findIngredient(lockedInput, ingredientTokens, cacheHint);
+            ingredientToken = itemProvider.findIngredient(lockedInput, ingredientTokens, cacheHint, false);
         }
         return ingredientToken;
     }

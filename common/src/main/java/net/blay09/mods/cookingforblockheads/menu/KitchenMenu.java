@@ -5,10 +5,7 @@ import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
-import net.blay09.mods.cookingforblockheads.crafting.CraftableWithStatus;
-import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
-import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
-import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
+import net.blay09.mods.cookingforblockheads.crafting.*;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.menu.comparator.FavoriteComparator;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
@@ -352,11 +349,47 @@ public class KitchenMenu extends AbstractContainerMenu {
             recipeManager.listDisplaysForRecipe(recipe.id(), recipeDisplayEntry -> result.add(new RecipeWithStatus(recipeDisplayEntry,
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
-                    operation.getLockedInputs())));
+                    operation.getLockedInputs(),
+                    getIngredientAmounts(context, recipeDisplayEntry.display()))));
         }
 
         this.recipesForSelection = result;
         Balm.networking().sendTo(player, new SelectionRecipesListMessage(result));
+    }
+
+    private List<List<IngredientAmount>> getIngredientAmounts(CraftingContext context, RecipeDisplay recipeDisplay) {
+        final var ingredientAmounts = new ArrayList<List<IngredientAmount>>();
+        switch (recipeDisplay) {
+            case ShapedCraftingRecipeDisplay shapedCraftingRecipeDisplay -> shapedCraftingRecipeDisplay.ingredients()
+                    .forEach(slotDisplay -> ingredientAmounts.add(getIngredientAmounts(context, slotDisplay)));
+            case ShapelessCraftingRecipeDisplay shapelessCraftingRecipeDisplay -> shapelessCraftingRecipeDisplay.ingredients()
+                    .forEach(slotDisplay -> ingredientAmounts.add(getIngredientAmounts(context, slotDisplay)));
+            case FurnaceRecipeDisplay furnaceRecipeDisplay -> ingredientAmounts.add(getIngredientAmounts(context, furnaceRecipeDisplay.ingredient()));
+            default -> {
+            }
+        }
+        return ingredientAmounts;
+    }
+
+    private List<IngredientAmount> getIngredientAmounts(CraftingContext context, SlotDisplay slotDisplay) {
+        final var ingredientAmounts = new ArrayList<IngredientAmount>();
+        final var countedStacks = new ArrayList<ItemStack>();
+        for (final var itemStack : slotDisplay.resolveForStacks(SlotDisplayContext.fromLevel(player.level()))) {
+            if (itemStack.isEmpty()) {
+                continue;
+            }
+
+            final var normalizedStack = itemStack.copyWithCount(1);
+            final var alreadyCounted = countedStacks.stream().anyMatch(existing -> ItemStack.isSameItemSameComponents(existing, normalizedStack));
+            if (alreadyCounted) {
+                continue;
+            }
+
+            countedStacks.add(normalizedStack);
+            ingredientAmounts.add(new IngredientAmount(normalizedStack, context.countAvailable(normalizedStack)));
+        }
+        ingredientAmounts.sort(Comparator.comparing(it -> BuiltInRegistries.ITEM.getKey(it.itemStack().getItem()).toString()));
+        return ingredientAmounts;
     }
 
     public void craft(RecipeDisplayId recipeDisplayId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
@@ -526,6 +559,7 @@ public class KitchenMenu extends AbstractContainerMenu {
             final int ingredientIndex = ingredientIndexMatrix[i];
             final var lockedInput = lockedInputs.get(ingredientIndex);
             matrixSlot.setIngredient(ingredientIndex, matrix.get(i), lockedInput);
+            matrixSlot.setIngredientAmounts(ingredientIndex < recipe.ingredientAmounts().size() ? recipe.ingredientAmounts().get(ingredientIndex) : List.of());
             matrixSlot.setMissing(missingMatrix[i]);
         }
     }

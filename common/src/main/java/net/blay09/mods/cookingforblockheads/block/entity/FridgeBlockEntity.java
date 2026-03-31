@@ -67,7 +67,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         private final Set<ItemStack> providedItems = Set.of(new ItemStack(Items.SNOWBALL), new ItemStack(Items.SNOW_BLOCK), new ItemStack(Items.ICE));
 
         @Override
-        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
             for (final var providedItem : providedItems) {
                 if (ingredient.test(providedItem)) {
                     return new IceUnitIngredientToken(providedItem);
@@ -77,7 +77,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         }
 
         @Override
-        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+        public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
             for (final var providedItem : providedItems) {
                 if (ItemStack.isSameItem(providedItem, itemStack)) {
                     return new IceUnitIngredientToken(providedItem);
@@ -363,6 +363,11 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
         @Override
         public ItemStack restore(ItemStack itemStack) {
             return ItemStack.EMPTY;
+        }
+
+        @Override
+        public int reservedCount() {
+            return Integer.MAX_VALUE;
         }
     }
 

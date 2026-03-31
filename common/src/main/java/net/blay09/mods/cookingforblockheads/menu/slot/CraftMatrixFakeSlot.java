@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
+import net.blay09.mods.cookingforblockheads.crafting.IngredientAmount;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.List;
 
 public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
@@ -17,6 +19,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
     private final NonNullList<ItemStack> visibleStacks = NonNullList.create();
     private final KitchenMenu menu;
+    private List<IngredientAmount> ingredientAmounts = List.of();
 
     private int ingredientIndex;
     private @Nullable SlotDisplay slotDisplay;
@@ -70,6 +73,10 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
     public void setMissing(boolean missing) {
         this.missing = missing;
+    }
+
+    public void setIngredientAmounts(List<IngredientAmount> ingredientAmounts) {
+        this.ingredientAmounts = ingredientAmounts;
     }
 
     public boolean isMissing() {
@@ -134,5 +141,18 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
     public int getIngredientIndex() {
         return ingredientIndex;
+    }
+
+    public int getDisplayedAmount() {
+        final var displayedStack = getItem();
+        if (displayedStack.isEmpty()) {
+            return 0;
+        }
+
+        return ingredientAmounts.stream()
+                .filter(it -> ItemStack.isSameItemSameComponents(it.itemStack(), displayedStack))
+                .mapToInt(IngredientAmount::amount)
+                .findFirst()
+                .orElse(0);
     }
 }

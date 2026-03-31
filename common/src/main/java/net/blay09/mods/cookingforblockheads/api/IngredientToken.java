@@ -25,6 +25,11 @@ public interface IngredientToken {
      */
     ItemStack restore(ItemStack itemStack);
 
+    /**
+     * @return the effective count backing this ingredient token. Usually 1, unless you're searching in greedy mode.
+     */
+    int reservedCount();
+
     IngredientToken EMPTY = new IngredientToken() {
         @Override
         public ItemStack peek() {
@@ -39,6 +44,11 @@ public interface IngredientToken {
         @Override
         public ItemStack restore(ItemStack itemStack) {
             return itemStack;
+        }
+
+        @Override
+        public int reservedCount() {
+            return 0;
         }
     };
 }

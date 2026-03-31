@@ -16,56 +16,64 @@ public record ResourceHandlerKitchenItemProvider(
         ResourceHandler<ItemResource> itemHandler) implements KitchenItemProvider {
 
     @Override
-    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
         if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
             final var slotResource = itemHandler.getResource(itemHandlerIngredientToken.slot);
             final var slotStack = slotResource.toStack();
-            if (ingredient.test(slotStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
-                return itemHandlerIngredientToken;
+            final var usesLeft = getUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens);
+            if (ingredient.test(slotStack) && usesLeft > 0) {
+                return greedy ? new ItemHandlerIngredientToken(itemHandlerIngredientToken.slot, usesLeft) : itemHandlerIngredientToken;
             }
         }
 
         for (int i = 0; i < itemHandler.size(); i++) {
             final var slotResource = itemHandler.getResource(i);
             final var slotStack = slotResource.toStack();
-            if (ingredient.test(slotStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
-                return new ItemHandlerIngredientToken(i);
+            final var usesLeft = getUsesLeft(i, slotStack, ingredientTokens);
+            if (ingredient.test(slotStack) && usesLeft > 0) {
+                return new ItemHandlerIngredientToken(i, greedy ? usesLeft : 1);
             }
         }
         return null;
     }
 
     @Override
-    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
+    public @Nullable IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint, boolean greedy) {
         if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
             final var slotResource = itemHandler.getResource(itemHandlerIngredientToken.slot);
             final var slotStack = slotResource.toStack();
+            final var usesLeft = getUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens);
             if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
-                return itemHandlerIngredientToken;
+                return greedy ? new ItemHandlerIngredientToken(itemHandlerIngredientToken.slot, usesLeft) : itemHandlerIngredientToken;
             }
         }
 
         for (int i = 0; i < itemHandler.size(); i++) {
             final var slotResource = itemHandler.getResource(i);
             final var slotStack = slotResource.toStack();
-            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(i, slotStack, ingredientTokens)) {
-                return new ItemHandlerIngredientToken(i);
+            final var usesLeft = getUsesLeft(i, slotStack, ingredientTokens);
+            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && usesLeft > 0) {
+                return new ItemHandlerIngredientToken(i, greedy ? usesLeft : 1);
             }
         }
         return null;
     }
 
     private boolean hasUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
-        var uses = slotStack.getCount();
+        return getUsesLeft(slot, slotStack, ingredientTokens) > 0;
+    }
+
+    private int getUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
+        var usesLeft = slotStack.getCount();
         for (IngredientToken ingredientToken : ingredientTokens) {
             if (ingredientToken instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
                 if (itemHandlerIngredientToken.slot == slot) {
-                    uses--;
+                    usesLeft -= itemHandlerIngredientToken.reservedCount();
                 }
             }
         }
 
-        return uses > 0;
+        return usesLeft;
     }
 
     @Override
@@ -75,9 +83,11 @@ public record ResourceHandlerKitchenItemProvider(
 
     public class ItemHandlerIngredientToken implements IngredientToken, CacheHint {
         private final int slot;
+        private final int count;
 
-        public ItemHandlerIngredientToken(int slot) {
+        public ItemHandlerIngredientToken(int slot, int count) {
             this.slot = slot;
+            this.count = count;
         }
 
         @Override
@@ -106,6 +116,11 @@ public record ResourceHandlerKitchenItemProvider(
 
                 return restCount > 0 ? itemStack.copyWithCount(restCount) : ItemStack.EMPTY;
             }
+        }
+
+        @Override
+        public int reservedCount() {
+            return count;
         }
     }
 }
