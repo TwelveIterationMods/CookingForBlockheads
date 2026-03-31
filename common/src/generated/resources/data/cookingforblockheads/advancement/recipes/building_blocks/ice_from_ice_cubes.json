@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ice_cubes": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cookingforblockheads:ice_cubes"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "cookingforblockheads:ice_from_ice_cubes"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ice_cubes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "cookingforblockheads:ice_from_ice_cubes"
+    ]
+  }
+}

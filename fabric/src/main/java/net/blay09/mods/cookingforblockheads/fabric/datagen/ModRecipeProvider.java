@@ -292,6 +292,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_redstone", has(Items.REDSTONE))
                         .save(exporter);
 
+                shaped(RecipeCategory.BUILDING_BLOCKS, Items.ICE)
+                        .pattern("##")
+                        .pattern("##")
+                        .define('#', ModItems.iceCubes)
+                        .unlockedBy("has_ice_cubes", has(ModItems.iceCubes))
+                        .save(exporter, "ice_from_ice_cubes");
+
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.kitchenFloors.get(DyeColor.WHITE), 12)
                         .pattern("BW")
                         .pattern("WB")
@@ -330,7 +337,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         has(ModItems.noFilterBook)).save(exporter, "recipe_book_from_smelting_no_filter_edition");
 
                 kitchenProvidedRecipe(exporter, id("ice_unit/snowball"), id("ice_unit"), new ItemStackTemplate(Items.SNOWBALL));
-                kitchenProvidedRecipe(exporter, id("ice_unit/ice"), id("ice_unit"), new ItemStackTemplate(Items.ICE));
+                kitchenProvidedRecipe(exporter, id("ice_unit/ice_cubes"), id("ice_unit"), new ItemStackTemplate(ModItems.iceCubes.asItem()));
             }
 
             private ShapedRecipeBuilder dyedKitchenFloorRecipe(Block kitchenFloor, TagKey<Item> dyeTag) {

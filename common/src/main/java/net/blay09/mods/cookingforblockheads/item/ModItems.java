@@ -6,7 +6,9 @@ import net.blay09.mods.balm.world.item.DeferredItem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
@@ -18,6 +20,7 @@ public class ModItems {
     public static DeferredItem craftingBook;
     public static DeferredItem heatingUnit;
     public static DeferredItem iceUnit;
+    public static DeferredItem iceCubes;
     public static DeferredItem preservationChamber;
 
     public static void initialize(BalmItemRegistrar items) {
@@ -26,6 +29,11 @@ public class ModItems {
         craftingBook = items.register("crafting_book", ItemRecipeBook::craftingBook).asDeferredItem();
         heatingUnit = items.register("heating_unit", ItemHeatingUnit::new).asDeferredItem();
         iceUnit = items.register("ice_unit", ItemIceUnit::new).asDeferredItem();
+        iceCubes = items.register("ice_cubes", properties -> new Item(properties.stacksTo(16).food(new FoodProperties.Builder()
+                .nutrition(0)
+                .saturationModifier(0f)
+                .alwaysEdible()
+                .build()))).asDeferredItem();
         preservationChamber = items.register("preservation_chamber", ItemPreservationChamber::new).asDeferredItem();
     }
 
@@ -52,6 +60,7 @@ public class ModItems {
                             output.accept(ModBlocks.fruitBasket);
                             output.accept(ModBlocks.cuttingBoard);
                             output.accept(iceUnit);
+                            output.accept(iceCubes);
                             output.accept(preservationChamber);
                             output.accept(heatingUnit);
                             output.accept(noFilterBook);
