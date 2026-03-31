@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "cookingforblockheads_gui",
+      "prefix": "cookingforblockheads/"
+    }
+  ]
+}

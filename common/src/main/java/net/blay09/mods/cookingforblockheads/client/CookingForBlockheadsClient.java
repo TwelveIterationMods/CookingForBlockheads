@@ -113,7 +113,7 @@ public class CookingForBlockheadsClient {
                     tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
             } else if (hoverSlot instanceof CraftMatrixFakeSlot && itemStack == hoverSlot.getItem()) {
-                tooltip.add(Component.translatable("tooltip.cookingforblockheads.available_ingredients", formatIngredientAmount(((CraftMatrixFakeSlot) hoverSlot).getDisplayedAmount()))
+                tooltip.add(Component.translatable("tooltip.cookingforblockheads.available_ingredients", formatCount(((CraftMatrixFakeSlot) hoverSlot).getDisplayedAmount()))
                         .withStyle(ChatFormatting.GRAY));
                 if (((CraftMatrixFakeSlot) hoverSlot).getVisibleStacks().size() > 1) {
                     if (((CraftMatrixFakeSlot) hoverSlot).isLocked()) {
@@ -138,7 +138,7 @@ public class CookingForBlockheadsClient {
         return favoriteItemIds.contains(itemId);
     }
 
-    private static String formatIngredientAmount(int amount) {
+    public static String formatCount(int amount) {
         return amount >= CraftingContext.COUNT_CUTOFF ? CraftingContext.COUNT_CUTOFF + "+" : Integer.toString(amount);
     }
 }

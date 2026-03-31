@@ -140,6 +140,32 @@ public class CraftingOperation {
         return missingIngredients.isEmpty();
     }
 
+    public int countCraftableRepeats(int maxRepeats) {
+        if (!canCraft() || maxRepeats <= 0) {
+            return 0;
+        }
+
+        final var recipeMapper = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
+        final var ingredients = recipeMapper.getIngredients(recipe);
+        int repeats = 1;
+        while (repeats < maxRepeats) {
+            for (int i = 0; i < ingredients.size(); i++) {
+                if (ingredients.get(i).isEmpty()) {
+                    continue;
+                }
+
+                final var ingredient = ingredients.get(i).get();
+                final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
+                if (accountForIngredient(ingredient, lockedInput) == null) {
+                    return repeats;
+                }
+            }
+            repeats++;
+        }
+
+        return repeats;
+    }
+
     public ItemStack craft(AbstractContainerMenu menu, RegistryAccess registryAccess) {
         return craft(menu, registryAccess, recipe);
     }

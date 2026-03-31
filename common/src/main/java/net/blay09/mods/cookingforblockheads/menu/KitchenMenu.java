@@ -350,7 +350,8 @@ public class KitchenMenu extends AbstractContainerMenu {
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
                     operation.getLockedInputs(),
-                    getIngredientAmounts(context, recipeDisplayEntry.display()))));
+                    getIngredientAmounts(context, recipeDisplayEntry.display()),
+                    getCraftableAmount(operation, recipe))));
         }
 
         this.recipesForSelection = result;
@@ -390,6 +391,19 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
         ingredientAmounts.sort(Comparator.comparing(it -> BuiltInRegistries.ITEM.getKey(it.itemStack().getItem()).toString()));
         return ingredientAmounts;
+    }
+
+    private int getCraftableAmount(CraftingOperation operation, RecipeHolder<?> recipe) {
+        if (!operation.canCraft() || !kitchen.canProcess(recipe.value().getType())) {
+            return 0;
+        }
+
+        final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
+        final var resultItem = recipeHandler.predictResultItem(recipe).create();
+        final int resultCount = Math.max(1, resultItem.getCount());
+        final int maxExecutions = Math.max(1, Mth.ceil(CraftingContext.COUNT_CUTOFF / (float) resultCount));
+        final int craftableExecutions = operation.countCraftableRepeats(maxExecutions);
+        return Math.min(CraftingContext.COUNT_CUTOFF, craftableExecutions * resultCount);
     }
 
     public void craft(RecipeDisplayId recipeDisplayId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {

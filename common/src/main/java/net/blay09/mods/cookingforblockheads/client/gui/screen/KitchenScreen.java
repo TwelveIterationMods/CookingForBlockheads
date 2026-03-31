@@ -37,6 +37,8 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+
 public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     private static final float KITCHEN_FEEDBACK_HINT_TIME = 40f;
@@ -45,6 +47,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private static final int SCROLLBAR_WIDTH = 7;
     private static final int SCROLLBAR_HEIGHT = 77;
 
+    private static final Identifier craftableSprite = Identifier.withDefaultNamespace("cookingforblockheads/craftable");
     private static final Identifier guiTexture = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
     private static final int VISIBLE_ROWS = 4;
     private static final int VISIBLE_COLS = 3;
@@ -283,6 +286,13 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);
         } else {
             graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 0, 184, 54, 54, 256, 256);
+        }
+
+        if (selection != null) {
+            final var craftableAmount = Component.literal(CookingForBlockheadsClient.formatCount(selection.craftableAmount()));
+            final var textWidth = font.width(craftableAmount);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, craftableSprite, leftPos + 23 + 27 - textWidth / 2 - 5, topPos + 76, 7, 6,0xFFFFFFFF);
+            graphics.centeredText(font, craftableAmount, leftPos + 23 + 27 + 3, topPos + 75, 0xFFFFFFFF);
         }
 
         if (selection != null) {
