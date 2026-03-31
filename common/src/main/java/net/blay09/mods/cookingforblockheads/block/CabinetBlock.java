@@ -46,10 +46,14 @@ public class CabinetBlock extends CounterBlock {
             propertiesCodec()).apply(it, CabinetBlock::new));
     public static final EnumProperty<CabinetModelType> MODEL_TYPE = EnumProperty.create("model", CabinetModelType.class);
 
-    private static final VoxelShape BOUNDING_BOX_NORTH = Block.box(0, 2, 2, 16, 16, 16);
-    private static final VoxelShape BOUNDING_BOX_EAST = Block.box(0, 2, 0, 14, 16, 16);
-    private static final VoxelShape BOUNDING_BOX_WEST = Block.box(2, 2, 0, 16, 16, 16);
-    private static final VoxelShape BOUNDING_BOX_SOUTH = Block.box(0, 2, 0, 16, 16, 14);
+    private static final VoxelShape SMALL_BOUNDING_BOX_NORTH = Block.box(0, 2, 2, 16, 16, 16);
+    private static final VoxelShape SMALL_BOUNDING_BOX_EAST = Block.box(0, 2, 0, 14, 16, 16);
+    private static final VoxelShape SMALL_BOUNDING_BOX_WEST = Block.box(2, 2, 0, 16, 16, 16);
+    private static final VoxelShape SMALL_BOUNDING_BOX_SOUTH = Block.box(0, 2, 0, 16, 16, 14);
+    private static final VoxelShape LARGE_BOUNDING_BOX_NORTH = Block.box(0, 0, 2, 16, 16, 16 - 0.25);
+    private static final VoxelShape LARGE_BOUNDING_BOX_EAST = Block.box(0.25, 0, 0, 14, 16, 16);
+    private static final VoxelShape LARGE_BOUNDING_BOX_WEST = Block.box(2, 0, 0, 16 - 0.25, 16, 16);
+    private static final VoxelShape LARGE_BOUNDING_BOX_SOUTH = Block.box(0, 0, 0.25, 16, 16, 14);
 
     public CabinetBlock(Properties properties) {
         this(null, properties);
@@ -72,11 +76,12 @@ public class CabinetBlock extends CounterBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        final var isLarge = state.getValue(MODEL_TYPE) != CabinetModelType.SMALL;
         return switch (state.getValue(FACING)) {
-            case EAST -> BOUNDING_BOX_EAST;
-            case WEST -> BOUNDING_BOX_WEST;
-            case SOUTH -> BOUNDING_BOX_SOUTH;
-            default -> BOUNDING_BOX_NORTH;
+            case EAST -> isLarge ? LARGE_BOUNDING_BOX_EAST : SMALL_BOUNDING_BOX_EAST;
+            case WEST -> isLarge ? LARGE_BOUNDING_BOX_WEST : SMALL_BOUNDING_BOX_WEST;
+            case SOUTH -> isLarge ? LARGE_BOUNDING_BOX_SOUTH : SMALL_BOUNDING_BOX_SOUTH;
+            default -> isLarge ? LARGE_BOUNDING_BOX_NORTH : SMALL_BOUNDING_BOX_NORTH;
         };
     }
 
