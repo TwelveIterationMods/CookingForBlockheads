@@ -19,9 +19,9 @@ public abstract class AbstractKitchenCraftingRecipeHandler<T extends Recipe<Craf
             final var matrixSlot = mapToMatrixSlot(recipe, i);
             final var consumedItem = ingredientToken.consume();
             craftingContainer.setItem(matrixSlot, consumedItem);
-            final var remainingItem = Balm.hooks().getCraftingRemainingItem(consumedItem).create();
-            if (!remainingItem.isEmpty()) {
-                ingredientToken.restore(remainingItem);
+            final var remainingItem = Balm.hooks().getCraftingRemainingItem(consumedItem);
+            if (remainingItem != null) {
+                ingredientToken.restore(remainingItem.create());
             }
         }
         return recipe.assemble(craftingContainer.asCraftInput());

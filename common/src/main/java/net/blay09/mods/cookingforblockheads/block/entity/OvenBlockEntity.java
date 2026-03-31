@@ -47,6 +47,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -224,10 +225,10 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
                         currentItemBurnTime = furnaceBurnTime = (int) Math.max(1,
                                 (float) getBurnTime(level, fuelItem) * CookingForBlockheadsConfig.getActive().ovenFuelTimeMultiplier);
                         if (furnaceBurnTime != 0) {
-                            ItemStack containerItem = Balm.hooks().getCraftingRemainingItem(fuelItem).create();
+                            final var containerItem = Balm.hooks().getCraftingRemainingItem(fuelItem);
                             fuelItem.shrink(1);
                             if (fuelItem.isEmpty()) {
-                                fuelContainer.setItem(i, containerItem);
+                                fuelContainer.setItem(i, containerItem != null ? containerItem.create() : ItemStack.EMPTY);
                             }
                             hasChanged = true;
                         }
