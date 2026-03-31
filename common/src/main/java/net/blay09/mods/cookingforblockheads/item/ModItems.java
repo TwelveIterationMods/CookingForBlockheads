@@ -20,6 +20,7 @@ public class ModItems {
     public static DeferredItem craftingBook;
     public static DeferredItem heatingUnit;
     public static DeferredItem iceUnit;
+    public static DeferredItem saltFilter;
     public static DeferredItem iceCubes;
     public static DeferredItem preservationChamber;
 
@@ -29,6 +30,7 @@ public class ModItems {
         craftingBook = items.register("crafting_book", ItemRecipeBook::craftingBook).asDeferredItem();
         heatingUnit = items.register("heating_unit", ItemHeatingUnit::new).asDeferredItem();
         iceUnit = items.register("ice_unit", ItemIceUnit::new).asDeferredItem();
+        saltFilter = items.register("salt_filter", SaltFilterItem::new).asDeferredItem();
         iceCubes = items.register("ice_cubes", properties -> new Item(properties.stacksTo(16).food(new FoodProperties.Builder()
                 .nutrition(0)
                 .saturationModifier(0f)
@@ -60,6 +62,7 @@ public class ModItems {
                             output.accept(ModBlocks.fruitBasket);
                             output.accept(ModBlocks.cuttingBoard);
                             output.accept(iceUnit);
+                            output.accept(saltFilter);
                             output.accept(iceCubes);
                             output.accept(preservationChamber);
                             output.accept(heatingUnit);

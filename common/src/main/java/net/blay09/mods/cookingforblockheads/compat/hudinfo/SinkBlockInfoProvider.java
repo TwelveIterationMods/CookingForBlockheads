@@ -11,6 +11,9 @@ public class SinkBlockInfoProvider implements BlockInfoProvider {
     @Override
     public void apply(BlockInfoContext context, HudInfoOutput output) {
         if (context.blockEntity() instanceof SinkBlockEntity sink) {
+            if (sink.hasSaltFilter()) {
+                output.text(Component.translatable("waila.cookingforblockheads.salt_filter"));
+            }
             if (CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                 output.text(Component.translatable("waila.cookingforblockheads.water_stored", sink.getFluidTank().getAmount(), sink.getFluidTank().getCapacity()));
             }

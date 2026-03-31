@@ -6,6 +6,7 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.platform.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.SinkBlockEntity;
+import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -66,6 +67,10 @@ public class SinkBlock extends BaseKitchenBlock {
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (itemStack.isEmpty()) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+
+        if (itemStack.is(ModItems.saltFilter)) {
+            return InteractionResult.PASS;
         }
 
         if (tryRecolorBlock(state, itemStack, level, pos, player, blockHitResult)) {

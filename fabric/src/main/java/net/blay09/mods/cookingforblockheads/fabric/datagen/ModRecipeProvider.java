@@ -292,6 +292,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_redstone", has(Items.REDSTONE))
                         .save(exporter);
 
+                shaped(RecipeCategory.MISC, ModItems.saltFilter)
+                        .pattern("SSS")
+                        .pattern("ICI")
+                        .define('S', Items.SAND)
+                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('C', Blocks.COMPARATOR)
+                        .unlockedBy("has_sand", has(Items.SAND))
+                        .save(exporter);
+
                 shaped(RecipeCategory.BUILDING_BLOCKS, Items.ICE)
                         .pattern("##")
                         .pattern("##")

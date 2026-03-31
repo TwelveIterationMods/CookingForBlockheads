@@ -46,6 +46,9 @@ public class ModCapabilities {
         capabilities.registerProvider(id("kitchen_recipe_provider"),
                 KITCHEN_RECIPE_PROVIDER,
                 (blockEntity, context) -> blockEntity instanceof KitchenRecipeProviderHolder holder ? holder.getKitchenRecipeProvider() : null,
-                () -> Set.of(ModBlockEntities.fridge.value()));
+                () -> Set.of(
+                        ModBlockEntities.fridge.value(),
+                        ModBlockEntities.sink.value()
+                ));
     }
 }

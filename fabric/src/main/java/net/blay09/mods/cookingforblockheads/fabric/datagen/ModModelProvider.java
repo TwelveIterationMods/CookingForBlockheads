@@ -449,6 +449,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(ModItems.noFilterBook.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.heatingUnit.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.iceUnit.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.saltFilter.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.iceCubes.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.preservationChamber.asItem(), ModelTemplates.FLAT_ITEM);
     }

@@ -8,8 +8,10 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
+import net.blay09.mods.cookingforblockheads.capability.KitchenRecipeProviderHolder;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
@@ -18,6 +20,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -30,13 +33,19 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Set;
 
-public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer>, KitchenItemProviderHolder {
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+
+public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer>, KitchenItemProviderHolder, KitchenRecipeProviderHolder {
 
     private static final int SYNC_INTERVAL = 10;
+    private static final Identifier SALT_FILTER_SOURCE = id("salt_filter");
     private final SinkItemProvider itemProvider = new SinkItemProvider(this);
     private int ticksSinceSync;
     private boolean isDirty;
+    private boolean hasSaltFilter;
+    private final KitchenRecipeProvider recipeProvider = () -> hasSaltFilter ? Set.of(SALT_FILTER_SOURCE) : Set.of();
     private final DefaultFluidTank sinkTank = new DefaultFluidTank(16000) {
 
         @Override
@@ -101,14 +110,29 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
         blockEntity.serverTick(level, pos, state);
     }
 
+    public boolean hasSaltFilter() {
+        return hasSaltFilter;
+    }
+
+    public void setHasSaltFilter(boolean hasSaltFilter) {
+        this.hasSaltFilter = hasSaltFilter;
+        setChanged();
+        if (hasLevel() && !level.isClientSide()) {
+            BalmBlockEntityUtils.sync(this);
+            isDirty = false;
+        }
+    }
+
     @Override
     public void saveAdditional(ValueOutput output) {
         sinkTank.serialize(output.child("FluidTank"));
+        output.putBoolean("HasSaltFilter", hasSaltFilter);
     }
 
     @Override
     public void loadAdditional(ValueInput input) {
         input.child("FluidTank").ifPresent(sinkTank::deserialize);
+        hasSaltFilter = input.getBooleanOr("HasSaltFilter", false);
     }
 
     @Override
@@ -119,6 +143,11 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
     @Override
     public KitchenItemProvider getKitchenItemProvider() {
         return itemProvider;
+    }
+
+    @Override
+    public KitchenRecipeProvider getKitchenRecipeProvider() {
+        return recipeProvider;
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
