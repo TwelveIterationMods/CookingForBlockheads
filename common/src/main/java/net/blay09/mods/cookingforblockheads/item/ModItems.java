@@ -5,11 +5,17 @@ import net.blay09.mods.balm.world.item.BalmItemRegistrar;
 import net.blay09.mods.balm.world.item.DeferredItem;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.sounds.SoundEvents;
 
 import java.util.Map;
 
@@ -23,6 +29,7 @@ public class ModItems {
     public static DeferredItem saltFilter;
     public static DeferredItem iceCubes;
     public static DeferredItem preservationChamber;
+    public static DeferredItem chefHat;
 
     public static void initialize(BalmItemRegistrar items) {
         recipeBook = items.register("recipe_book", ItemRecipeBook::recipeBook).asDeferredItem();
@@ -37,6 +44,12 @@ public class ModItems {
                 .alwaysEdible()
                 .build()))).asDeferredItem();
         preservationChamber = items.register("preservation_chamber", ItemPreservationChamber::new).asDeferredItem();
+        chefHat = items.register("chef_hat", properties -> new Item(properties.stacksTo(1).component(
+                DataComponents.EQUIPPABLE,
+                Equippable.builder(EquipmentSlot.HEAD)
+                        .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                        .setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, CookingForBlockheads.id("chef_hat")))
+                        .build()))).asDeferredItem();
     }
 
     public static void initialize(BalmCreativeModeTabRegistrar creativeModeTabs) {
@@ -65,6 +78,7 @@ public class ModItems {
                             output.accept(saltFilter);
                             output.accept(iceCubes);
                             output.accept(preservationChamber);
+                            output.accept(chefHat);
                             output.accept(heatingUnit);
                             output.accept(noFilterBook);
 

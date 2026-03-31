@@ -479,6 +479,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.generateFlatItem(ModItems.saltFilter.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.iceCubes.asItem(), ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.preservationChamber.asItem(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.chefHat.asItem(), ModelTemplates.FLAT_ITEM);
     }
 
     private void createOvenBlock(BlockModelGenerators blockStateModelGenerator, Block block, DyeColor color) {

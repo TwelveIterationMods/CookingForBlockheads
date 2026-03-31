@@ -301,6 +301,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_sand", has(Items.SAND))
                         .save(exporter);
 
+                shaped(RecipeCategory.COMBAT, ModItems.chefHat)
+                        .pattern("WWW")
+                        .pattern("WSW")
+                        .define('W', Items.WHITE_WOOL)
+                        .define('S', Items.STRING)
+                        .unlockedBy("has_white_wool", has(Items.WHITE_WOOL))
+                        .save(exporter);
+
                 shaped(RecipeCategory.BUILDING_BLOCKS, Items.ICE)
                         .pattern("##")
                         .pattern("##")
