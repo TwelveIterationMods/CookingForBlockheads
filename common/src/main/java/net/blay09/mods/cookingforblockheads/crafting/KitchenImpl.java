@@ -88,7 +88,7 @@ public class KitchenImpl implements Kitchen {
     public List<KitchenItemProvider> getItemProviders(@Nullable Player player) {
         final var sourceInventories = new ArrayList<>(itemProviderList);
         if (player != null) {
-            sourceInventories.add(new ContainerKitchenItemProvider(player.getInventory()));
+            sourceInventories.addFirst(new ContainerKitchenItemProvider(player.getInventory()));
         }
         return sourceInventories;
     }
