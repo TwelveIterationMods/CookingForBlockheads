@@ -1,0 +1,35 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Hand-authored large cabinet lower door (flipped)",
+	"textures": {
+		"particle": "block/terracotta",
+		"all": "block/terracotta",
+		"handle": "cookingforblockheads:block/handle"
+	},
+	"elements": [
+		{
+			"from": [2.5, 1, 2],
+			"to": [13.5, 16, 3],
+			"faces": {
+				"north": {"uv": [2.5, 1, 13.5, 16], "texture": "#all"},
+				"east": {"uv": [14.5, 1, 15.5, 16], "texture": "#all"},
+				"south": {"uv": [2.5, 1, 13.5, 16], "texture": "#all"},
+				"west": {"uv": [0.5, 1, 1.5, 16], "texture": "#all"},
+				"up": {"uv": [2.5, 0, 13.5, 1], "texture": "#all"},
+				"down": {"uv": [2.5, 15, 13.5, 16], "texture": "#all"}
+			}
+		},
+		{
+			"from": [11.5, 13, 1.5],
+			"to": [12.5, 16, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 3, 0]},
+			"faces": {
+				"north": {"uv": [11.5, 6, 12.5, 8], "texture": "#handle"},
+				"east": {"uv": [15.5, 6, 16, 8], "texture": "#handle"},
+				"west": {"uv": [0, 6, 0.5, 8], "texture": "#handle"},
+				"up": {"uv": [3.5, 0, 4.5, 0.5], "texture": "#handle"},
+				"down": {"uv": [3.5, 15.5, 4.5, 16], "texture": "#handle"}
+			}
+		}
+	]
+}

@@ -27,6 +27,10 @@ public class ModModels {
     public static Map<@Nullable DyeColor, DeferredBlockStateModel> counterDoorsFlipped;
     public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoors;
     public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsFlipped;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsLargeLower;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsLargeUpper;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsLargeLowerFlipped;
+    public static Map<@Nullable DyeColor, DeferredBlockStateModel> cabinetDoorsLargeUpperFlipped;
 
     private static Identifier modelId(String name, @Nullable DyeColor color) {
         return id("block/" + (color != null ? color.getSerializedName() + "_" : "") + name);
@@ -54,5 +58,9 @@ public class ModModels {
         counterDoorsFlipped = models.registerDiscriminated(colorsWithNull, color -> modelId("counter_door_flipped", color));
         cabinetDoors = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_door", color));
         cabinetDoorsFlipped = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_door_flipped", color));
+        cabinetDoorsLargeLower = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_large_door_lower", color));
+        cabinetDoorsLargeUpper = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_large_door_upper", color));
+        cabinetDoorsLargeLowerFlipped = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_large_door_lower_flipped", color));
+        cabinetDoorsLargeUpperFlipped = models.registerDiscriminated(colorsWithNull, color -> modelId("cabinet_large_door_upper_flipped", color));
     }
 }

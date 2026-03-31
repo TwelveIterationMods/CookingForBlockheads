@@ -77,11 +77,21 @@ public class ModModelProvider extends FabricModelProvider {
         });
 
         ModBlocks.cabinets.forEach((color, cabinet) -> {
+            Identifier cabinetModel = ModelLocationUtils.getModelLocation(cabinet.asBlock());
+            Identifier cabinetLargeLowerModel = ModelLocationUtils.getModelLocation(cabinet.asBlock(), "_large_lower");
+            Identifier cabinetLargeUpperModel = ModelLocationUtils.getModelLocation(cabinet.asBlock(), "_large_upper");
             if (color != null) {
                 final var cabinetParent = new ModelTemplate(Optional.of(Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/cabinet")),
                         Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
                 TextureMapping textureMapping = TextureMapping.cube(getTerracottaByColor(color));
-                cabinetParent.create(cabinet.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
+                cabinetModel = cabinetParent.create(cabinet.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
+
+                final var cabinetLargeLowerParent = new ModelTemplate(Optional.of(id("block/cabinet_large_lower")),
+                        Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                cabinetLargeLowerModel = cabinetLargeLowerParent.createWithSuffix(cabinet.asBlock(), "_large_lower", textureMapping, blockStateModelGenerator.modelOutput);
+                final var cabinetLargeUpperParent = new ModelTemplate(Optional.of(id("block/cabinet_large_upper")),
+                        Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                cabinetLargeUpperModel = cabinetLargeUpperParent.createWithSuffix(cabinet.asBlock(), "_large_upper", textureMapping, blockStateModelGenerator.modelOutput);
 
                 textureMapping.putForced(TextureSlot.PARTICLE, getBlockTexture(getTerracottaByColor(color)));
                 final var cabinetDoorTemplate = new ModelTemplate(Optional.of(id("block/cabinet_door")),
@@ -91,8 +101,25 @@ public class ModModelProvider extends FabricModelProvider {
                         "block/cabinet_door_flipped")),
                         Optional.empty(), TextureSlot.ALL);
                 cabinetDoorFlippedTemplate.createWithSuffix(cabinet.asBlock(), "_door_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+
+                final var cabinetLargeDoorLowerTemplate = new ModelTemplate(Optional.of(id("block/cabinet_large_door_lower")),
+                        Optional.empty(), TextureSlot.ALL);
+                cabinetLargeDoorLowerTemplate.createWithSuffix(cabinet.asBlock(), "_large_door_lower", textureMapping, blockStateModelGenerator.modelOutput);
+                final var cabinetLargeDoorLowerFlippedTemplate = new ModelTemplate(Optional.of(id("block/cabinet_large_door_lower_flipped")),
+                        Optional.empty(), TextureSlot.ALL);
+                cabinetLargeDoorLowerFlippedTemplate.createWithSuffix(cabinet.asBlock(), "_large_door_lower_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+                final var cabinetLargeDoorUpperTemplate = new ModelTemplate(Optional.of(id("block/cabinet_large_door_upper")),
+                        Optional.empty(), TextureSlot.ALL);
+                cabinetLargeDoorUpperTemplate.createWithSuffix(cabinet.asBlock(), "_large_door_upper", textureMapping, blockStateModelGenerator.modelOutput);
+                final var cabinetLargeDoorUpperFlippedTemplate = new ModelTemplate(Optional.of(id("block/cabinet_large_door_upper_flipped")),
+                        Optional.empty(), TextureSlot.ALL);
+                cabinetLargeDoorUpperFlippedTemplate.createWithSuffix(cabinet.asBlock(), "_large_door_upper_flipped", textureMapping, blockStateModelGenerator.modelOutput);
             }
-            blockStateModelGenerator.createNonTemplateHorizontalBlock(cabinet.asBlock());
+            blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(cabinet.asBlock()).with(PropertyDispatch.initial(CabinetBlock.MODEL_TYPE)
+                    .select(CabinetBlock.CabinetModelType.SMALL, plainVariant(cabinetModel))
+                    .select(CabinetBlock.CabinetModelType.LARGE_LOWER, plainVariant(cabinetLargeLowerModel))
+                    .select(CabinetBlock.CabinetModelType.LARGE_UPPER, plainVariant(cabinetLargeUpperModel))
+            ).with(ROTATION_HORIZONTAL_FACING));
             blockStateModelGenerator.registerSimpleItemModel(cabinet.asBlock(), ModelLocationUtils.getModelLocation(cabinet.asItem()));
         });
 

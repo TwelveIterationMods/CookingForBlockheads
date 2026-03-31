@@ -2,28 +2,49 @@ package net.blay09.mods.cookingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.blay09.mods.cookingforblockheads.block.entity.CabinetBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class CabinetBlock extends CounterBlock {
 
+    public enum CabinetModelType implements StringRepresentable {
+        SMALL,
+        LARGE_LOWER,
+        LARGE_UPPER;
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase();
+        }
+    }
+
     public static final MapCodec<CabinetBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
                     .orElse(null)
                     .forGetter(CabinetBlock::getColor),
             propertiesCodec()).apply(it, CabinetBlock::new));
+    public static final EnumProperty<CabinetModelType> MODEL_TYPE = EnumProperty.create("model", CabinetModelType.class);
 
     private static final VoxelShape BOUNDING_BOX_NORTH = Block.box(0, 2, 2, 16, 16, 16);
     private static final VoxelShape BOUNDING_BOX_EAST = Block.box(0, 2, 0, 14, 16, 16);
@@ -36,6 +57,12 @@ public class CabinetBlock extends CounterBlock {
 
     public CabinetBlock(@Nullable DyeColor color, Properties properties) {
         super(color, properties);
+        registerDefaultState(getStateDefinition().any().setValue(MODEL_TYPE, CabinetModelType.SMALL));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, FLIPPED, MODEL_TYPE);
     }
 
     @Override
@@ -62,6 +89,69 @@ public class CabinetBlock extends CounterBlock {
     }
 
     @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        boolean below = level.getBlockState(pos.below()).getBlock() == this;
+        boolean above = level.getBlockState(pos.above()).getBlock() == this;
+        return !(below && above)
+                && !(below && level.getBlockState(pos.below(2)).getBlock() == this)
+                && !(above && level.getBlockState(pos.above(2)).getBlock() == this)
+                && super.canSurvive(state, level, pos);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        var state = super.getStateForPlacement(context);
+        final var level = context.getLevel();
+        final var pos = context.getClickedPos();
+        final var stateBelow = level.getBlockState(pos.below());
+        final var stateAbove = level.getBlockState(pos.above());
+        if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == CabinetModelType.SMALL) {
+            state = state.setValue(MODEL_TYPE, CabinetModelType.LARGE_UPPER)
+                    .setValue(FACING, stateBelow.getValue(FACING))
+                    .setValue(FLIPPED, stateBelow.getValue(FLIPPED));
+        } else if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == CabinetModelType.SMALL) {
+            state = state.setValue(MODEL_TYPE, CabinetModelType.LARGE_LOWER)
+                    .setValue(FACING, stateAbove.getValue(FACING))
+                    .setValue(FLIPPED, stateAbove.getValue(FLIPPED));
+        }
+        return state;
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource randomSource) {
+        final var stateBelow = level.getBlockState(pos.below());
+        final var stateAbove = level.getBlockState(pos.above());
+        if (stateBelow.getBlock() == this && stateBelow.getValue(MODEL_TYPE) == CabinetModelType.LARGE_LOWER) {
+            return state.setValue(MODEL_TYPE, CabinetModelType.LARGE_UPPER)
+                    .setValue(FACING, stateBelow.getValue(FACING))
+                    .setValue(FLIPPED, stateBelow.getValue(FLIPPED));
+        } else if (stateAbove.getBlock() == this && stateAbove.getValue(MODEL_TYPE) == CabinetModelType.LARGE_UPPER) {
+            return state.setValue(MODEL_TYPE, CabinetModelType.LARGE_LOWER)
+                    .setValue(FACING, stateAbove.getValue(FACING))
+                    .setValue(FLIPPED, stateAbove.getValue(FLIPPED));
+        } else if (state.getValue(MODEL_TYPE) == CabinetModelType.LARGE_LOWER && stateAbove.getBlock() != this) {
+            return state.setValue(MODEL_TYPE, CabinetModelType.SMALL);
+        } else if (state.getValue(MODEL_TYPE) == CabinetModelType.LARGE_UPPER && stateBelow.getBlock() != this) {
+            return state.setValue(MODEL_TYPE, CabinetModelType.SMALL);
+        }
+
+        return super.updateShape(state, level, scheduledTickAccess, pos, facing, facingPos, facingState, randomSource);
+    }
+
+    @Override
+    protected boolean recolorBlock(BlockState state, LevelAccessor level, BlockPos pos, Direction facing, DyeColor color) {
+        final var otherPos = switch (state.getValue(MODEL_TYPE)) {
+            case SMALL -> null;
+            case LARGE_LOWER -> pos.above();
+            case LARGE_UPPER -> pos.below();
+        };
+        if (otherPos != null) {
+            super.recolorBlock(level.getBlockState(otherPos), level, otherPos, facing, color);
+        }
+        return super.recolorBlock(state, level, pos, facing, color);
+    }
+
+    @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
@@ -71,6 +161,7 @@ public class CabinetBlock extends CounterBlock {
         return ModBlocks.cabinets.get(color)
                 .defaultBlockState()
                 .setValue(FACING, state.getValue(FACING))
-                .setValue(FLIPPED, state.getValue(FLIPPED));
+                .setValue(FLIPPED, state.getValue(FLIPPED))
+                .setValue(MODEL_TYPE, state.getValue(MODEL_TYPE));
     }
 }

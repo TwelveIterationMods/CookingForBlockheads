@@ -52,7 +52,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
-    private final DefaultContainer container = new DefaultContainer(containerSize) {
+    protected final DefaultContainer container = new DefaultContainer(containerSize) {
         @Override
         public void setChanged() {
             isDirty = true;
@@ -60,9 +60,9 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
         }
     };
 
-    private final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
+    protected final DoorAnimator doorAnimator = new DoorAnimator(this, 1, 2);
 
-    private boolean hasPreservationUpgrade;
+    protected boolean hasPreservationUpgrade;
     private @Nullable Component customName;
 
     private boolean isDirty;
@@ -247,7 +247,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         dropItems(level, pos);
-        if (hasPreservationUpgrade()) {
+        if (hasPreservationUpgrade) {
             ItemUtils.spawnItemStack(level, pos.getX() + 0.5f, pos.getY() + 0.5, pos.getZ() + 0.5, ModItems.preservationChamber.createStack());
         }
     }

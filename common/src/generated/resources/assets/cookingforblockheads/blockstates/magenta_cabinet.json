@@ -1,17 +1,47 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,model=large_lower": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_lower",
+      "y": 90
+    },
+    "facing=east,model=large_upper": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_upper",
+      "y": 90
+    },
+    "facing=east,model=small": {
       "model": "cookingforblockheads:block/magenta_cabinet",
       "y": 90
     },
-    "facing=north": {
+    "facing=north,model=large_lower": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_lower"
+    },
+    "facing=north,model=large_upper": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_upper"
+    },
+    "facing=north,model=small": {
       "model": "cookingforblockheads:block/magenta_cabinet"
     },
-    "facing=south": {
+    "facing=south,model=large_lower": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_lower",
+      "y": 180
+    },
+    "facing=south,model=large_upper": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_upper",
+      "y": 180
+    },
+    "facing=south,model=small": {
       "model": "cookingforblockheads:block/magenta_cabinet",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,model=large_lower": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_lower",
+      "y": 270
+    },
+    "facing=west,model=large_upper": {
+      "model": "cookingforblockheads:block/magenta_cabinet_large_upper",
+      "y": 270
+    },
+    "facing=west,model=small": {
       "model": "cookingforblockheads:block/magenta_cabinet",
       "y": 270
     }

@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/cabinet_large_door_upper_flipped",
+  "textures": {
+    "all": "minecraft:block/light_blue_terracotta",
+    "particle": "minecraft:block/light_blue_terracotta"
+  }
+}
