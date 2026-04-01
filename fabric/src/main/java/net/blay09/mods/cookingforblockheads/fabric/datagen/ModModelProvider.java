@@ -173,6 +173,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar.value());
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar.value());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cookieJar.value());
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket.value());
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cuttingBoard.value());
         ModBlocks.connectors.forEach((color, connector) -> createConnector(blockStateModelGenerator, connector.asBlock(), color));

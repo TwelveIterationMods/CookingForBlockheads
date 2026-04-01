@@ -71,6 +71,7 @@ public class ModItems {
                             output.accept(ModBlocks.milkJar);
                             output.accept(ModBlocks.cowJar);
                             output.accept(ModBlocks.toaster);
+                            output.accept(ModBlocks.cookieJar);
                             output.accept(ModBlocks.toolRack);
                             output.accept(ModBlocks.spiceRack);
                             output.accept(ModBlocks.fruitBasket);

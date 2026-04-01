@@ -30,7 +30,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         ModBlocks.fridges.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.ovens.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock());
+        mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock(), ModBlocks.cookieJar.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
         final var mineableAxeBuilder = valueLookupBuilder(mineableAxeTag);
@@ -41,6 +41,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
         ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
         ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
+        kitchenItemProviders.add(ModBlocks.cookieJar.asBlock());
 
         final var rawKitchenItemProviders = getOrCreateRawBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("farmersdelight", "basket"));

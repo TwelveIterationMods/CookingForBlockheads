@@ -15,6 +15,7 @@ public class ModRenderers {
         blockEntityRenderers.register(ModBlockEntities.toolRack, ToolRackRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.milkJar, MilkJarRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.cowJar, CowJarRenderer::new);
+        blockEntityRenderers.register(ModBlockEntities.cookieJar, CookieJarRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.toaster, ToasterRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.cookingTable, CookingTableRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.oven, OvenRenderer::new);

@@ -52,6 +52,7 @@
     "cookingforblockheads:green_counter",
     "cookingforblockheads:red_counter",
     "cookingforblockheads:black_counter",
+    "cookingforblockheads:cookie_jar",
     {
       "id": "farmersdelight:basket",
       "required": false

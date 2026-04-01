@@ -12,6 +12,7 @@ public class ModMenuScreens {
         screens.register(ModMenus.fridge, FridgeScreen::new);
         screens.register(ModMenus.fruitBasket, FruitBasketScreen::new);
         screens.register(ModMenus.chickenSink, ChickenSinkScreen::new);
+        screens.register(ModMenus.cookieJar, CookieJarScreen::new);
         screens.register(ModMenus.noFilterBook, KitchenScreen::new);
         screens.register(ModMenus.recipeBook, KitchenScreen::new);
         screens.register(ModMenus.craftingBook, KitchenScreen::new);

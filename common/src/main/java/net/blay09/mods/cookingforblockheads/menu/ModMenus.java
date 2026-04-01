@@ -22,6 +22,7 @@ public class ModMenus {
     public static Holder<MenuType<FridgeMenu>> fridge;
     public static Holder<MenuType<FruitBasketMenu>> fruitBasket;
     public static Holder<MenuType<ChickenSinkMenu>> chickenSink;
+    public static Holder<MenuType<CookieJarMenu>> cookieJar;
     public static Holder<MenuType<OvenMenu>> oven;
     public static Holder<MenuType<SpiceRackMenu>> spiceRack;
     public static Holder<MenuType<KitchenMenu>> recipeBook;
@@ -72,6 +73,17 @@ public class ModMenus {
             @Override
             public ChickenSinkMenu create(int windowId, Inventory inventory, Unit pos) {
                 return new ChickenSinkMenu(windowId, inventory);
+            }
+
+            @Override
+            public StreamCodec<RegistryFriendlyByteBuf, Unit> getStreamCodec() {
+                return Unit.STREAM_CODEC.cast();
+            }
+        }).asHolder();
+        cookieJar = menuTypes.register("cookie_jar", new BalmMenuFactory<CookieJarMenu, Unit>() {
+            @Override
+            public CookieJarMenu create(int windowId, Inventory inventory, Unit data) {
+                return new CookieJarMenu(windowId, inventory);
             }
 
             @Override

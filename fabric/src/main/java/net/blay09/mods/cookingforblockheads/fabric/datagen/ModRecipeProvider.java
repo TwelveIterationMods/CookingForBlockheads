@@ -116,6 +116,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_milk_bucket", has(Items.MILK_BUCKET))
                         .save(exporter);
 
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.cookieJar)
+                        .pattern("PPP")
+                        .pattern("G G")
+                        .pattern("GGG")
+                        .define('G', Blocks.GLASS)
+                        .define('P', ItemTags.PLANKS)
+                        .unlockedBy("has_glass", has(Blocks.GLASS))
+                        .save(exporter);
+
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.connectors.get(null))
                         .pattern("SSS")
                         .pattern("CCC")

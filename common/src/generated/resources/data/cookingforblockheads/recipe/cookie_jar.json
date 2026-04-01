@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:glass",
+    "P": "#minecraft:planks"
+  },
+  "pattern": [
+    "PPP",
+    "G G",
+    "GGG"
+  ],
+  "result": {
+    "id": "cookingforblockheads:cookie_jar"
+  }
+}

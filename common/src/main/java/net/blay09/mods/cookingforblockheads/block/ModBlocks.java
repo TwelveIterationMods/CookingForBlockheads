@@ -45,6 +45,7 @@ public class ModBlocks {
     public static DeferredBlock toaster;
     public static DeferredBlock milkJar;
     public static DeferredBlock cowJar;
+    public static DeferredBlock cookieJar;
     public static DeferredBlock spiceRack;
     public static DeferredBlock fruitBasket;
     public static DeferredBlock cuttingBoard;
@@ -74,6 +75,10 @@ public class ModBlocks {
 
         cowJar = blocks.register("cow_jar", CowJarBlock::new, it -> it.sound(SoundType.GLASS).strength(0.6f))
                 .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cow_jar.description")))
+                .asDeferredBlock();
+
+        cookieJar = blocks.register("cookie_jar", CookieJarBlock::new, it -> it.sound(SoundType.GLASS).strength(0.6f))
+                .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cookie_jar.description")))
                 .asDeferredBlock();
 
         spiceRack = blocks.register("spice_rack", SpiceRackBlock::new, it -> it.sound(SoundType.WOOD).strength(2.5f))

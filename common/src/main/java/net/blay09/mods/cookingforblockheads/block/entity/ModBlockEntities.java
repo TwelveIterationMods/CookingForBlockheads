@@ -16,6 +16,7 @@ public class ModBlockEntities {
     public static Holder<BlockEntityType<ToasterBlockEntity>> toaster;
     public static Holder<BlockEntityType<MilkJarBlockEntity>> milkJar;
     public static Holder<BlockEntityType<CowJarBlockEntity>> cowJar;
+    public static Holder<BlockEntityType<CookieJarBlockEntity>> cookieJar;
     public static Holder<BlockEntityType<SpiceRackBlockEntity>> spiceRack;
     public static Holder<BlockEntityType<CounterBlockEntity>> counter;
     public static Holder<BlockEntityType<CabinetBlockEntity>> cabinet;
@@ -32,6 +33,7 @@ public class ModBlockEntities {
         toaster = blockEntityTypes.register("toaster", ToasterBlockEntity::new, ModBlocks.toaster).asHolder();
         milkJar = blockEntityTypes.register("milk_jar", MilkJarBlockEntity::new, ModBlocks.milkJar).asHolder();
         cowJar = blockEntityTypes.register("cow_jar", CowJarBlockEntity::new, ModBlocks.cowJar).asHolder();
+        cookieJar = blockEntityTypes.register("cookie_jar", CookieJarBlockEntity::new, ModBlocks.cookieJar).asHolder();
         spiceRack = blockEntityTypes.register("spice_rack", SpiceRackBlockEntity::new, ModBlocks.spiceRack).asHolder();
         counter = blockEntityTypes.register("counter", CounterBlockEntity::new, ModBlocks.counters.values()).asHolder();
         cabinet = blockEntityTypes.register("cabinet", CabinetBlockEntity::new, ModBlocks.cabinets.values()).asHolder();

@@ -18,6 +18,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         dropSelf(ModBlocks.toaster.value());
         dropSelf(ModBlocks.milkJar.value());
         dropSelf(ModBlocks.cowJar.value());
+        add(ModBlocks.cookieJar.value(), this::createNameableBlockEntityTable);
         dropSelf(ModBlocks.cuttingBoard.value());
         ModBlocks.ovens.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.fridges.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
