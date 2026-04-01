@@ -41,6 +41,15 @@ public class ModItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
         final var dyedSinks = valueLookupBuilder(ModItemTags.DYED_SINKS);
         ModBlocks.sinks.sortedValues().map(ItemLike::asItem).forEach(dyedSinks::add);
 
+        final var chickenSinks = valueLookupBuilder(ModItemTags.CHICKEN_SINKS).add(ModBlocks.chickenSinks.get(null).asItem());
+        ModBlocks.chickenSinks.sortedValues().map(ItemLike::asItem).forEach(chickenSinks::add);
+
+        final var dyedChickenSinks = valueLookupBuilder(ModItemTags.DYED_CHICKEN_SINKS);
+        ModBlocks.chickenSinks.sortedValues()
+                .filter(it -> it != ModBlocks.chickenSinks.get(null))
+                .map(ItemLike::asItem)
+                .forEach(dyedChickenSinks::add);
+
         final var cookingTables = valueLookupBuilder(ModItemTags.COOKING_TABLES);
         ModBlocks.cookingTables.sortedValues().map(ItemLike::asItem).forEach(cookingTables::add);
 

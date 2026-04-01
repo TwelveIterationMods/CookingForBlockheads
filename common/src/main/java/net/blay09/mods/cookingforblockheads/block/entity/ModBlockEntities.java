@@ -11,6 +11,7 @@ public class ModBlockEntities {
     public static Holder<BlockEntityType<OvenBlockEntity>> oven;
     public static Holder<BlockEntityType<FridgeBlockEntity>> fridge;
     public static Holder<BlockEntityType<SinkBlockEntity>> sink;
+    public static Holder<BlockEntityType<ChickenSinkBlockEntity>> chickenSink;
     public static Holder<BlockEntityType<ToolRackBlockEntity>> toolRack;
     public static Holder<BlockEntityType<ToasterBlockEntity>> toaster;
     public static Holder<BlockEntityType<MilkJarBlockEntity>> milkJar;
@@ -26,6 +27,7 @@ public class ModBlockEntities {
         oven = blockEntityTypes.register("oven", OvenBlockEntity::new, ModBlocks.ovens.values()).asHolder();
         fridge = blockEntityTypes.register("fridge", FridgeBlockEntity::new, ModBlocks.fridges.values()).asHolder();
         sink = blockEntityTypes.register("sink", SinkBlockEntity::new, ModBlocks.sinks.values()).asHolder();
+        chickenSink = blockEntityTypes.register("chicken_sink", ChickenSinkBlockEntity::new, ModBlocks.chickenSinks.values()).asHolder();
         toolRack = blockEntityTypes.register("tool_rack", ToolRackBlockEntity::new, ModBlocks.toolRack).asHolder();
         toaster = blockEntityTypes.register("toaster", ToasterBlockEntity::new, ModBlocks.toaster).asHolder();
         milkJar = blockEntityTypes.register("milk_jar", MilkJarBlockEntity::new, ModBlocks.milkJar).asHolder();

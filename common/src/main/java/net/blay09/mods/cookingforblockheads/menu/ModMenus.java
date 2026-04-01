@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
@@ -20,6 +21,7 @@ public class ModMenus {
     public static Holder<MenuType<CounterMenu>> counter;
     public static Holder<MenuType<FridgeMenu>> fridge;
     public static Holder<MenuType<FruitBasketMenu>> fruitBasket;
+    public static Holder<MenuType<ChickenSinkMenu>> chickenSink;
     public static Holder<MenuType<OvenMenu>> oven;
     public static Holder<MenuType<SpiceRackMenu>> spiceRack;
     public static Holder<MenuType<KitchenMenu>> recipeBook;
@@ -64,6 +66,17 @@ public class ModMenus {
             @Override
             public StreamCodec<RegistryFriendlyByteBuf, BlockPos> getStreamCodec() {
                 return BlockPos.STREAM_CODEC.cast();
+            }
+        }).asHolder();
+        chickenSink = menuTypes.register("chicken_sink", new BalmMenuFactory<ChickenSinkMenu, Unit>() {
+            @Override
+            public ChickenSinkMenu create(int windowId, Inventory inventory, Unit pos) {
+                return new ChickenSinkMenu(windowId, inventory);
+            }
+
+            @Override
+            public StreamCodec<RegistryFriendlyByteBuf, Unit> getStreamCodec() {
+                return Unit.STREAM_CODEC.cast();
             }
         }).asHolder();
         oven = menuTypes.register("oven", new BalmMenuFactory<OvenMenu, BlockPos>() {

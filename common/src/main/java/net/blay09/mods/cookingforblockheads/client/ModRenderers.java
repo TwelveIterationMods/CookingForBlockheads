@@ -23,11 +23,13 @@ public class ModRenderers {
         blockEntityRenderers.register(ModBlockEntities.counter, CounterRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.cabinet, CabinetRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.sink, SinkRenderer::new);
+        blockEntityRenderers.register(ModBlockEntities.chickenSink, ChickenSinkRenderer::new);
         blockEntityRenderers.register(ModBlockEntities.fruitBasket, FruitBasketRenderer::new);
     }
 
     public static void initialize(BalmBlockColorRegistrar blockColors) {
-        blockColors.register(List.of(BlockTintSources.constant(0x3f76e4)), ModBlocks.sinks.values());
+        blockColors.register(List.of(BlockTintSources.constant(0xff3f76e4)), ModBlocks.sinks.values());
+        blockColors.register(List.of(BlockTintSources.constant(0xff3f76e4)), ModBlocks.chickenSinks.values());
     }
 
 }

@@ -5,6 +5,7 @@ import net.blay09.mods.cookingforblockheads.block.*;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
@@ -140,6 +141,26 @@ public class ModModelProvider extends FabricModelProvider {
                         .with(createBooleanModelDispatch(SinkBlock.FLIPPED, plainVariant(sinkModelFlipped), plainVariant(sinkModel)))
                         .with(ROTATION_HORIZONTAL_FACING));
             }
+        });
+
+        final var chickenSinkModel = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/chicken_sink");
+        final var chickenSinkModelFlipped = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/chicken_sink_flipped");
+        ModBlocks.chickenSinks.forEach((color, sink) -> {
+            if (color != null) {
+                final var sinkParent = new ModelTemplate(Optional.of(chickenSinkModel), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                final var sinkFlippedParent = new ModelTemplate(Optional.of(chickenSinkModelFlipped), Optional.empty(), TextureSlot.ALL, TextureSlot.PARTICLE);
+                final var textureMapping = TextureMapping.cube(getTerracottaByColor(color));
+                final var dyedSinkModel = sinkParent.create(sink.asBlock(), textureMapping, blockStateModelGenerator.modelOutput);
+                final var dyedSinkModelFlipped = sinkFlippedParent.createWithSuffix(sink.asBlock(), "_flipped", textureMapping, blockStateModelGenerator.modelOutput);
+                blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(sink.asBlock())
+                        .with(createBooleanModelDispatch(ChickenSinkBlock.FLIPPED, plainVariant(dyedSinkModelFlipped), plainVariant(dyedSinkModel)))
+                        .with(ROTATION_HORIZONTAL_FACING));
+            } else {
+                blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.chickenSinks.get(null).asBlock())
+                        .with(createBooleanModelDispatch(ChickenSinkBlock.FLIPPED, plainVariant(chickenSinkModelFlipped), plainVariant(chickenSinkModel)))
+                        .with(ROTATION_HORIZONTAL_FACING));
+            }
+            blockStateModelGenerator.registerSimpleTintedItemModel(sink.asBlock(), ModelLocationUtils.getModelLocation(sink.asBlock()), new Constant(0xff3f76e4));
         });
 
         ModBlocks.ovens.forEach((color, oven) -> createOvenBlock(blockStateModelGenerator, oven.asBlock(), color));

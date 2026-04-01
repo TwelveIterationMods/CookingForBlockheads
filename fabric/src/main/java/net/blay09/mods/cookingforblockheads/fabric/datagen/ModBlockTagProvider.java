@@ -23,6 +23,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         final var mineablePickaxeBuilder = valueLookupBuilder(mineablePickaxeTag);
         ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.sinks.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
+        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
@@ -37,6 +38,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
         final var kitchenItemProviders = valueLookupBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         kitchenItemProviders.add(ModBlocks.toolRack.asBlock());
+        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
         ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
         ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
 

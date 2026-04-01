@@ -2,4 +2,6 @@ dependencies {
     implementation(libs.balmFabric) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
+    api(libs.shogiApi)
+    include(libs.shogiApi)
 }

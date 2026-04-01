@@ -185,19 +185,55 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
                         .save(exporter);
 
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(null))
+                        .pattern("HEH")
+                        .pattern("WSW")
+                        .define('H', Blocks.HAY_BLOCK)
+                        .define('E', ItemTags.EGGS)
+                        .define('W', ItemTags.PLANKS)
+                        .define('S', ModBlocks.sinks.get(null))
+                        .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
+                        .save(exporter);
+
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.sinks.get(null))
                         .requires(ModItemTags.DYED_SINKS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_sink", has(ModItemTags.DYED_SINKS))
                         .save(exporter, "remove_dye_from_sink");
 
-                ModBlocks.connectors.forEach((color, block) -> {
+                shapeless(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(null))
+                        .requires(ModItemTags.DYED_CHICKEN_SINKS)
+                        .requires(Items.BONE_MEAL)
+                        .unlockedBy("has_dyed_chicken_sink", has(ModItemTags.DYED_CHICKEN_SINKS))
+                        .save(exporter, "remove_dye_from_chicken_sink");
+
+                ModBlocks.sinks.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.SINKS)
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_sink");
+                    }
+                });
+
+                ModBlocks.chickenSinks.forEach((color, block) -> {
+                    if (color != null) {
+                        shapeless(RecipeCategory.DECORATIONS, block)
+                                .requires(ModItemTags.CHICKEN_SINKS)
+                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .unlockedBy("has_chicken_sink", has(ModBlocks.chickenSinks.get(null)))
+                                .save(exporter, "dye_" + color.getSerializedName() + "_chicken_sink");
+
+                        shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(color))
+                                .pattern("HEH")
+                                .pattern("WSW")
+                                .define('H', Blocks.HAY_BLOCK)
+                                .define('E', ItemTags.EGGS)
+                                .define('W', ItemTags.PLANKS)
+                                .define('S', ModBlocks.sinks.get(color))
+                                .unlockedBy("has_sink", has(ModBlocks.sinks.get(color)))
+                                .save(exporter);
                     }
                 });
 

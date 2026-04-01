@@ -1,5 +1,6 @@
 [versions]
 balm = "26.1.0.1"
+shogi = "26.1.0.3-SNAPSHOT"
 minecraft = "26.1"
 neoForm = "26.1-1"
 neoForge = "26.1.0.1-beta"
@@ -15,6 +16,7 @@ balmCommon = { module = "net.blay09.mods:balm-common", version.ref = "balm" }
 balmNeoForge = { module = "net.blay09.mods:balm-neoforge", version.ref = "balm" }
 balmForge = { module = "net.blay09.mods:balm-forge", version.ref = "balm" }
 balmFabric = { module = "net.blay09.mods:balm-fabric", version.ref = "balm" }
+shogiApi = { module = "net.blay09.mods:shogi-api", version.ref = "shogi" }
 
 neoForm = { module = "net.neoforged:neoform", version.ref = "neoForm" }
 neoForge = { module = "net.neoforged:neoforge", version.ref = "neoForge" }

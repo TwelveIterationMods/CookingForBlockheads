@@ -2,6 +2,12 @@ dependencies {
     implementation(libs.balmNeoForge) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
+    api(libs.shogiApi)
+    jarJar("net.blay09.mods:shogi-api") {
+        version {
+            prefer libs.shogiApi.get().version
+        }
+    }
 
     compileOnly "curse.maven:spice-of-life-carrot-edition-277616:6695035"
 }

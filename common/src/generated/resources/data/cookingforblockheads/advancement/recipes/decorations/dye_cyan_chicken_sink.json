@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_chicken_sink": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cookingforblockheads:chicken_sink"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "cookingforblockheads:dye_cyan_chicken_sink"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_chicken_sink"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "cookingforblockheads:dye_cyan_chicken_sink"
+    ]
+  }
+}

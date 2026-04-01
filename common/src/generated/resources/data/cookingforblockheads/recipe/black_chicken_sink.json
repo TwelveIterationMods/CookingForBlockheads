@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "#minecraft:eggs",
+    "H": "minecraft:hay_block",
+    "S": "cookingforblockheads:black_sink",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "HEH",
+    "WSW"
+  ],
+  "result": {
+    "id": "cookingforblockheads:black_chicken_sink"
+  }
+}

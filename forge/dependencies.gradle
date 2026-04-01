@@ -2,4 +2,6 @@ dependencies {
     implementation(libs.balmForge) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
+    api(libs.shogiApi)
+    jarJar("net.blay09.mods:shogi-api:${libs.shogiApi.get().version}")
 }

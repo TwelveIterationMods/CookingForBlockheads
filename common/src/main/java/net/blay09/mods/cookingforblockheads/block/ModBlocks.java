@@ -50,6 +50,7 @@ public class ModBlocks {
     public static DeferredBlock cuttingBoard;
     public static DiscriminatedBlocks<DyeColor> fridges;
     public static DiscriminatedBlocks<DyeColor> sinks;
+    public static DiscriminatedBlocks<DyeColor> chickenSinks;
     public static DiscriminatedBlocks<DyeColor> connectors;
     public static DiscriminatedBlocks<DyeColor> kitchenFloors;
 
@@ -144,6 +145,13 @@ public class ModBlocks {
                         SinkBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.sink.description")))
+                .asDiscriminatedBlocks();
+
+        chickenSinks = blocks.registerDiscriminated(colorsWithNull,
+                        it -> DiscriminatedBlocks.prefix(it, "chicken_sink"),
+                        ChickenSinkBlock::new,
+                        it -> it.strength(1.25f, 4.2f))
+                .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.chicken_sink.description")))
                 .asDiscriminatedBlocks();
     }
 

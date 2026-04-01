@@ -63,6 +63,7 @@ public class ModItems {
                             output.accept(ModBlocks.fridges.get(DyeColor.WHITE));
                             output.accept(ModBlocks.ovens.get(DyeColor.WHITE));
                             output.accept(ModBlocks.sinks.get(null));
+                            output.accept(ModBlocks.chickenSinks.get(null));
                             output.accept(ModBlocks.counters.get(null));
                             output.accept(ModBlocks.cabinets.get(null));
                             output.accept(ModBlocks.connectors.get(null));
@@ -97,6 +98,7 @@ public class ModItems {
                             });
 
                             ModBlocks.sinks.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
+                            ModBlocks.chickenSinks.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
                             ModBlocks.counters.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
                             ModBlocks.cabinets.sortedEntries().filter(it -> it.getKey() != null).map(Map.Entry::getValue).forEach(output::accept);
 

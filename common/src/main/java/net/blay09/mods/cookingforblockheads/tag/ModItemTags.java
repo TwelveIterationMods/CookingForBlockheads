@@ -19,6 +19,8 @@ public class ModItemTags {
     public static final TagKey<Item> DYED_CABINETS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "dyed_cabinets"));
     public static final TagKey<Item> SINKS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "sinks"));
     public static final TagKey<Item> DYED_SINKS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "dyed_sinks"));
+    public static final TagKey<Item> CHICKEN_SINKS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "chicken_sinks"));
+    public static final TagKey<Item> DYED_CHICKEN_SINKS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "dyed_chicken_sinks"));
     public static final TagKey<Item> CONNECTORS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "connectors"));
     public static final TagKey<Item> DYED_CONNECTORS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "dyed_connectors"));
     public static final TagKey<Item> UTENSILS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "utensils"));

@@ -2,5 +2,8 @@ dependencies {
     implementation(libs.balmCommon) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
+    compileOnly(libs.shogiApi) {
+        changing = libs.versions.shogi.get().contains("SNAPSHOT")
+    }
     accessTransformers(libs.balmCommon)
 }

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#cookingforblockheads:chicken_sinks",
+    "#c:dyes/gray"
+  ],
+  "result": {
+    "id": "cookingforblockheads:gray_chicken_sink"
+  }
+}

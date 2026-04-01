@@ -1,0 +1,7 @@
+{
+  "parent": "cookingforblockheads:block/chicken_sink_flipped",
+  "textures": {
+    "all": "minecraft:block/magenta_terracotta",
+    "particle": "minecraft:block/magenta_terracotta"
+  }
+}

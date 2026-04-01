@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sink": {
+      "conditions": {
+        "items": [
+          {
+            "items": "cookingforblockheads:green_sink"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "cookingforblockheads:green_chicken_sink"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sink"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "cookingforblockheads:green_chicken_sink"
+    ]
+  }
+}

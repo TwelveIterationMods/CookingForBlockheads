@@ -24,6 +24,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         add(ModBlocks.toolRack.value(), this::createNameableBlockEntityTable);
         add(ModBlocks.spiceRack.value(), this::createNameableBlockEntityTable);
         add(ModBlocks.fruitBasket.value(), this::createNameableBlockEntityTable);
+        ModBlocks.chickenSinks.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.counters.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.cabinets.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.kitchenFloors.values().stream().map(DeferredBlock::asBlock).forEach(this::dropSelf);
