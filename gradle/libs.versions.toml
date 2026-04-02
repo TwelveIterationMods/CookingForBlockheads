@@ -1,6 +1,6 @@
 [versions]
 balm = "26.1.0.1"
-shogi = "26.1.0.3-SNAPSHOT"
+shogi = "26.1.0.4-SNAPSHOT"
 minecraft = "26.1"
 neoForm = "26.1-1"
 neoForge = "26.1.0.1-beta"
