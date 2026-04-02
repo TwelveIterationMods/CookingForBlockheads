@@ -9,7 +9,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class ChickenSinkMenu extends AbstractContainerMenu {
 
@@ -30,7 +29,7 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
         container.startOpen(playerInventory.player);
 
         for (int i = 0; i < 5; i++) {
-            addSlot(new EggSlot(container, i, 44 + i * 18, 20));
+            addSlot(new Slot(container, i, 44 + i * 18, 20));
         }
 
 
@@ -52,11 +51,11 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack slotStack = slot.getItem();
             itemStack = slotStack.copy();
-            if (slotIndex < 3) {
-                if (!moveItemStackTo(slotStack, 3, slots.size(), true)) {
+            if (slotIndex < 5) {
+                if (!moveItemStackTo(slotStack, 5, slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!moveItemStackTo(slotStack, 0, 3, false)) {
+            } else if (!moveItemStackTo(slotStack, 0, 5, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -81,14 +80,4 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    private static class EggSlot extends Slot {
-        public EggSlot(Container container, int slot, int x, int y) {
-            super(container, slot, x, y);
-        }
-
-        @Override
-        public boolean mayPlace(ItemStack stack) {
-            return stack.is(Items.EGG);
-        }
-    }
 }
