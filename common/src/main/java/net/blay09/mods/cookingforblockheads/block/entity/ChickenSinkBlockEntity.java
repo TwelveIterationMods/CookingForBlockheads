@@ -38,6 +38,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -61,6 +62,8 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     private int eggLayTime;
     private int eggLayTimeTarget = defaultEggLayTime();
     private @Nullable Component customName;
+    private @Nullable BlockPos jukebox;
+    private int partyBpm;
 
     public ChickenSinkBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.chickenSink.value(), pos, state);
@@ -68,6 +71,14 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ChickenSinkBlockEntity blockEntity) {
         blockEntity.serverTick(level);
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, ChickenSinkBlockEntity blockEntity) {
+        final var jukebox = blockEntity.jukebox;
+        if (jukebox == null || !jukebox.closerToCenterThan(pos.getCenter(), 3.46f) || !level.getBlockState(jukebox).is(Blocks.JUKEBOX)) {
+            blockEntity.partyBpm = 0;
+            blockEntity.jukebox = null;
+        }
     }
 
     @Override
@@ -239,6 +250,15 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return BalmBlockEntityUtils.createUpdatePacket(this);
+    }
+
+    public boolean isPartying() {
+        return partyBpm > 0;
+    }
+
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.jukebox = pos;
+        this.partyBpm = playing ? 85 : 0;
     }
 
     public record TransferData(TransferableContainer container, int eggLayTime, int eggLayTimeTarget) {

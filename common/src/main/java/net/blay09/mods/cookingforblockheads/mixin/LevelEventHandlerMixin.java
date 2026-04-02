@@ -1,6 +1,7 @@
 package net.blay09.mods.cookingforblockheads.mixin;
 
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
+import net.blay09.mods.cookingforblockheads.block.entity.ChickenSinkBlockEntity;
 import net.minecraft.client.renderer.LevelEventHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -23,6 +24,8 @@ public class LevelEventHandlerMixin {
                     final var blockEntity = level.getBlockEntity(mutablePos);
                     if (blockEntity instanceof CowJarBlockEntity cowJar) {
                         cowJar.setRecordPlayingNearby(pos, playing);
+                    } else if (blockEntity instanceof ChickenSinkBlockEntity chickenSink) {
+                        chickenSink.setRecordPlayingNearby(pos, playing);
                     }
                 }
             }

@@ -79,7 +79,9 @@ public class ChickenSinkBlock extends BaseKitchenBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.chickenSink.value(), ChickenSinkBlockEntity::serverTick) : null;
+        return level.isClientSide()
+                ? createTickerHelper(type, ModBlockEntities.chickenSink.value(), ChickenSinkBlockEntity::clientTick)
+                : createTickerHelper(type, ModBlockEntities.chickenSink.value(), ChickenSinkBlockEntity::serverTick);
     }
 
     @Override
