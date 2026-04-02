@@ -30,7 +30,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         ModBlocks.fridges.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.ovens.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
         ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock(), ModBlocks.cookieJar.asBlock());
+        mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.coffeeMachine.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock(), ModBlocks.cookieJar.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
         final var mineableAxeBuilder = valueLookupBuilder(mineableAxeTag);

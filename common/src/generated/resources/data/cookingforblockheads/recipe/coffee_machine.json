@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:stone_button",
+    "C": "minecraft:black_dye",
+    "I": "#c:ingots/iron",
+    "T": "minecraft:iron_trapdoor",
+    "W": "minecraft:water_bucket"
+  },
+  "pattern": [
+    " B ",
+    "ITI",
+    "CWI"
+  ],
+  "result": {
+    "id": "cookingforblockheads:coffee_machine"
+  }
+}

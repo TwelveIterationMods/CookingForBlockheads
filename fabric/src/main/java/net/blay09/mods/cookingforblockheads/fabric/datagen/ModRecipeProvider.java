@@ -295,6 +295,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
                         .save(exporter);
 
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.coffeeMachine)
+                        .pattern(" B ")
+                        .pattern("ITI")
+                        .pattern("CWI")
+                        .define('B', Blocks.STONE_BUTTON)
+                        .define('C', Items.BLACK_DYE)
+                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('T', Blocks.IRON_TRAPDOOR)
+                        .define('W', Items.WATER_BUCKET)
+                        .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
+                        .save(exporter);
+
                 shaped(RecipeCategory.MISC, ModItems.craftingBook)
                         .pattern(" D ")
                         .pattern("CBC")

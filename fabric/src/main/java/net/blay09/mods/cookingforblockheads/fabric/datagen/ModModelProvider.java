@@ -170,6 +170,7 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.toaster.value())
                 .with(createBooleanModelDispatch(ToasterBlock.ACTIVE, plainVariant(toasterModelActive), plainVariant(toasterModel)))
                 .with(ROTATION_HORIZONTAL_FACING));
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.coffeeMachine.value());
 
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar.value());
         blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar.value());

@@ -49,6 +49,7 @@ public class ModBlocks {
     public static DeferredBlock spiceRack;
     public static DeferredBlock fruitBasket;
     public static DeferredBlock cuttingBoard;
+    public static DeferredBlock coffeeMachine;
     public static DiscriminatedBlocks<DyeColor> fridges;
     public static DiscriminatedBlocks<DyeColor> sinks;
     public static DiscriminatedBlocks<DyeColor> chickenSinks;
@@ -91,6 +92,10 @@ public class ModBlocks {
 
         cuttingBoard = blocks.register("cutting_board", CuttingBoardBlock::new, it -> it.sound(SoundType.WOOD).strength(2.5f))
                 .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cutting_board.description")))
+                .asDeferredBlock();
+
+        coffeeMachine = blocks.register("coffee_machine", CoffeeMachineBlock::new, it -> it.sound(SoundType.METAL).strength(2.5f))
+                .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.coffee_machine.description")))
                 .asDeferredBlock();
 
         final var colors = supportedColors;

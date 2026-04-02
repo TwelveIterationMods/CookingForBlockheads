@@ -16,6 +16,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
     @Override
     public void generate() {
         dropSelf(ModBlocks.toaster.value());
+        dropSelf(ModBlocks.coffeeMachine.value());
         dropSelf(ModBlocks.milkJar.value());
         dropSelf(ModBlocks.cowJar.value());
         add(ModBlocks.cookieJar.value(), this::createNameableBlockEntityTable);
