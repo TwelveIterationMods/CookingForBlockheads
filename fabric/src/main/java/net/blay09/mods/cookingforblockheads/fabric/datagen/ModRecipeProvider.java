@@ -296,11 +296,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .save(exporter);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.coffeeMachine)
-                        .pattern(" B ")
+                        .pattern("FFB")
                         .pattern("ITI")
-                        .pattern("CWI")
+                        .pattern("IWI")
+                        .define('F', Items.FLINT)
                         .define('B', Blocks.STONE_BUTTON)
-                        .define('C', Items.BLACK_DYE)
                         .define('I', BalmItemTags.IRON_INGOTS)
                         .define('T', Blocks.IRON_TRAPDOOR)
                         .define('W', Items.WATER_BUCKET)

@@ -31,6 +31,7 @@ public class ModRenderers {
     public static void initialize(BalmBlockColorRegistrar blockColors) {
         blockColors.register(List.of(BlockTintSources.constant(0xff3f76e4)), ModBlocks.sinks.values());
         blockColors.register(List.of(BlockTintSources.constant(0xff3f76e4)), ModBlocks.chickenSinks.values());
+        blockColors.register(List.of(BlockTintSources.constant(0xff3f76e4)), ModBlocks.coffeeMachine);
     }
 
 }
