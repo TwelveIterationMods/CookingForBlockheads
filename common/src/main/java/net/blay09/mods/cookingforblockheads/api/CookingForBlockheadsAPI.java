@@ -37,8 +37,8 @@ public class CookingForBlockheadsAPI {
         return internalMethods.createKitchen(level, pos);
     }
 
-    public static Kitchen createKitchen(ItemStack itemStack) {
-        return internalMethods.createKitchen(itemStack);
+    public static Kitchen createKitchen(Level level, ItemStack itemStack) {
+        return internalMethods.createKitchen(level, itemStack);
     }
 
     public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler) {

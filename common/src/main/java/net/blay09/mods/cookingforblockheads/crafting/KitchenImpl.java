@@ -9,12 +9,18 @@ import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
+import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
+import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -22,13 +28,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class KitchenImpl implements Kitchen {
 
+    private final Level level;
     private final ItemStack activatingItemStack;
     private final BlockState activatingBlockState;
     private final @Nullable BlockEntity activatingBlockEntity;
@@ -37,13 +41,15 @@ public class KitchenImpl implements Kitchen {
     private final List<KitchenRecipeProvider> recipeProviderList = new ArrayList<>();
     private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();
 
-    public KitchenImpl(ItemStack itemStack) {
+    public KitchenImpl(Level level, ItemStack itemStack) {
+        this.level = level;
         activatingItemStack = itemStack;
         activatingBlockState = Blocks.AIR.defaultBlockState();
         activatingBlockEntity = null;
     }
 
     public KitchenImpl(Level level, BlockPos pos) {
+        this.level = level;
         activatingBlockState = level.getBlockState(pos);
         activatingItemStack = ItemStack.EMPTY;
         activatingBlockEntity = level.getBlockEntity(pos);
@@ -97,11 +103,6 @@ public class KitchenImpl implements Kitchen {
     }
 
     @Override
-    public List<KitchenRecipeProvider> getRecipeProviders() {
-        return recipeProviderList;
-    }
-
-    @Override
     public boolean canProcess(RecipeType<?> recipeType) {
         if (recipeType == ModRecipes.kitchenRecipes.type()) {
             return true;
@@ -114,6 +115,8 @@ public class KitchenImpl implements Kitchen {
         return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
     }
 
+    @Deprecated
+    @Override
     public boolean isRecipeAvailable(CraftingOperation operation) {
         final var isNoFilter = activatingItemStack.is(ModItems.noFilterBook) || (activatingBlockEntity instanceof CookingTableBlockEntity cookingTable && cookingTable.hasNoFilterBook());
         if (isNoFilter) {
@@ -121,5 +124,49 @@ public class KitchenImpl implements Kitchen {
         }
 
         return operation.canCraft();
+    }
+
+    @Override
+    public Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem) {
+        final var recipes = new ArrayList<>(CookingForBlockheadsRegistry.getRecipesFor(resultItem));
+        recipes.addAll(CookingForBlockheadsRegistry.getRecipesInGroup(resultItem));
+        getProvidedRecipes(level).stream()
+                .filter(it -> ItemStack.isSameItemSameComponents(it.value().resultItem().create(), resultItem))
+                .forEach(recipes::add);
+        return recipes;
+    }
+
+    @Override
+    public Collection<RecipeHolder<?>> getAvailableRecipes() {
+        final var recipes = new LinkedHashMap<Identifier, RecipeHolder<?>>();
+        final var recipesByItemId = CookingForBlockheadsRegistry.getRecipesByItemId();
+        for (final var itemId : recipesByItemId.keySet()) {
+            for (final var recipeHolder : recipesByItemId.get(itemId)) {
+                recipes.put(recipeHolder.id().identifier(), recipeHolder);
+            }
+        }
+
+        getProvidedRecipes(level).forEach(recipeHolder -> recipes.put(recipeHolder.id().identifier(), recipeHolder));
+        return recipes.values();
+    }
+
+    private Collection<RecipeHolder<KitchenProvidedRecipe>> getProvidedRecipes(Level level) {
+        final var recipes = new LinkedHashMap<Identifier, RecipeHolder<KitchenProvidedRecipe>>();
+        final var providedRecipeSources = getAvailableRecipeSources();
+        if (level instanceof ServerLevel serverLevel) {
+            final var recipeMap = ((RecipeManagerAccessor) serverLevel.getServer().getRecipeManager()).getRecipes();
+            recipeMap.byType(ModRecipes.kitchenRecipes.type()).stream()
+                    .filter(it -> providedRecipeSources.contains(it.value().source()))
+                    .forEach(recipeHolder -> recipes.put(recipeHolder.id().identifier(), recipeHolder));
+        }
+        return recipes.values();
+    }
+
+    private Set<Identifier> getAvailableRecipeSources() {
+        final var result = new HashSet<Identifier>();
+        for (final var craftableProvider : recipeProviderList) {
+            result.addAll(craftableProvider.getKitchenRecipeSources());
+        }
+        return result;
     }
 }

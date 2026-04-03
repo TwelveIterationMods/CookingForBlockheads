@@ -24,8 +24,8 @@ public class InternalMethodsImpl implements InternalMethods {
     }
 
     @Override
-    public Kitchen createKitchen(ItemStack itemStack) {
-        return new KitchenImpl(itemStack);
+    public Kitchen createKitchen(Level level, ItemStack itemStack) {
+        return new KitchenImpl(level, itemStack);
     }
 
     @Override

@@ -80,7 +80,7 @@ public class ItemRecipeBook extends Item {
 
                 @Override
                 public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                    return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, new KitchenImpl(itemStack));
+                    return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, new KitchenImpl(playerEntity.level(), itemStack));
                 }
 
                 @Override

@@ -12,7 +12,7 @@ public interface InternalMethods {
 
     Kitchen createKitchen(Level level, BlockPos pos);
 
-    Kitchen createKitchen(ItemStack itemStack);
+    Kitchen createKitchen(Level level, ItemStack itemStack);
 
     void addSortButton(ISortButton button);
 

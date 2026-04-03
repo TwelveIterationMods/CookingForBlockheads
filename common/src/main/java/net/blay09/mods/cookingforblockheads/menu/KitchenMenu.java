@@ -41,7 +41,7 @@ import java.util.*;
 public class KitchenMenu extends AbstractContainerMenu {
 
     public final Player player;
-    private final KitchenImpl kitchen;
+    private final Kitchen kitchen;
 
     private final List<CraftableListingFakeSlot> recipeListingSlots = new ArrayList<>();
     private final List<CraftMatrixFakeSlot> matrixSlots = new ArrayList<>();
@@ -65,7 +65,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private @Nullable List<RecipeWithStatus> recipesForSelection;
     private int recipesForSelectionIndex;
 
-    public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, KitchenImpl kitchen) {
+    public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, Kitchen kitchen) {
         super(containerType, windowId);
 
         this.player = player;
@@ -245,7 +245,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     public List<CraftableWithStatus> getAvailableCraftables() {
         final var result = new HashMap<Identifier, CraftableWithStatus>();
         final var context = kitchen.createCraftingContext(player);
-        for (final var recipeHolder : getAvailableRecipes(player.level())) {
+        for (final var recipeHolder : kitchen.getAvailableRecipes()) {
             final var craftableWithStatus = craftableWithStatusFromRecipe(context, recipeHolder);
             if (craftableWithStatus != null) {
                 final var itemId = CookingForBlockheadsRegistry.getRecipeItemId(craftableWithStatus.itemStack());
@@ -291,48 +291,6 @@ public class KitchenMenu extends AbstractContainerMenu {
         return false;
     }
 
-    private Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem) {
-        final var recipes = new ArrayList<>(CookingForBlockheadsRegistry.getRecipesFor(resultItem));
-        recipes.addAll(CookingForBlockheadsRegistry.getRecipesInGroup(resultItem));
-        getProvidedRecipes(player.level()).stream()
-                .filter(it -> ItemStack.isSameItemSameComponents(it.value().resultItem().create(), resultItem))
-                .forEach(recipes::add);
-        return recipes;
-    }
-
-    private Collection<RecipeHolder<?>> getAvailableRecipes(Level level) {
-        final var recipes = new LinkedHashMap<Identifier, RecipeHolder<?>>();
-        final var recipesByItemId = CookingForBlockheadsRegistry.getRecipesByItemId();
-        for (final var itemId : recipesByItemId.keySet()) {
-            for (final var recipeHolder : recipesByItemId.get(itemId)) {
-                recipes.put(recipeHolder.id().identifier(), recipeHolder);
-            }
-        }
-
-        getProvidedRecipes(level).forEach(recipeHolder -> recipes.put(recipeHolder.id().identifier(), recipeHolder));
-        return recipes.values();
-    }
-
-    private Collection<RecipeHolder<KitchenProvidedRecipe>> getProvidedRecipes(Level level) {
-        final var recipes = new LinkedHashMap<Identifier, RecipeHolder<KitchenProvidedRecipe>>();
-        final var providedRecipeSources = getAvailableRecipeSources();
-        if (level instanceof ServerLevel serverLevel) {
-            final var recipeMap = ((RecipeManagerAccessor) serverLevel.getServer().getRecipeManager()).getRecipes();
-            recipeMap.byType(ModRecipes.kitchenRecipes.type()).stream()
-                    .filter(it -> providedRecipeSources.contains(it.value().source()))
-                    .forEach(recipeHolder -> recipes.put(recipeHolder.id().identifier(), recipeHolder));
-        }
-        return recipes.values();
-    }
-
-    private Set<Identifier> getAvailableRecipeSources() {
-        final var result = new HashSet<Identifier>();
-        for (final var craftableProvider : kitchen.getRecipeProviders()) {
-            result.addAll(craftableProvider.getKitchenRecipeSources());
-        }
-        return result;
-    }
-
     public void broadcastAvailableRecipes() {
         craftables = getAvailableCraftables();
         Balm.networking().sendTo(player, new AvailableCraftablesListMessage(craftables));
@@ -343,7 +301,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var recipeManager = player.level().getServer().getRecipeManager();
 
         final var context = kitchen.createCraftingContext(player);
-        final var recipesForResult = getRecipesFor(resultItem);
+        final var recipesForResult = kitchen.getRecipesFor(resultItem);
         for (final var recipe : recipesForResult) {
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
             recipeManager.listDisplaysForRecipe(recipe.id(), recipeDisplayEntry -> result.add(new RecipeWithStatus(recipeDisplayEntry,
