@@ -1,10 +1,8 @@
 package net.blay09.mods.cookingforblockheads.api;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.level.Level;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -31,14 +29,6 @@ public class CookingForBlockheadsAPI {
 
     public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {
         internalMethods.addOvenFuel(fuelItem, fuelTime);
-    }
-
-    public static Kitchen createKitchen(Level level, BlockPos pos) {
-        return internalMethods.createKitchen(level, pos);
-    }
-
-    public static Kitchen createKitchen(Level level, ItemStack itemStack) {
-        return internalMethods.createKitchen(level, itemStack);
     }
 
     public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler) {

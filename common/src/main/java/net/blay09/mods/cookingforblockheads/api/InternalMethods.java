@@ -1,18 +1,12 @@
 package net.blay09.mods.cookingforblockheads.api;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.level.Level;
 
 public interface InternalMethods {
 
     void addOvenFuel(ItemStack fuelItem, int fuelTime);
-
-    Kitchen createKitchen(Level level, BlockPos pos);
-
-    Kitchen createKitchen(Level level, ItemStack itemStack);
 
     void addSortButton(ISortButton button);
 
