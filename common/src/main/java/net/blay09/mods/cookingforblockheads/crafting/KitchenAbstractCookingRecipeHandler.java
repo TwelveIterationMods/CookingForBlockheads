@@ -28,8 +28,8 @@ public class KitchenAbstractCookingRecipeHandler implements KitchenRecipeHandler
     public ItemStack assemble(CraftingContext context, AbstractCookingRecipe recipe, List<IngredientToken> ingredientTokens, RegistryAccess registryAccess) {
         for (final var itemProcessor : context.getItemProcessors()) {
             if (itemProcessor.canProcess(recipe.getType())) {
-                context.notify(itemProcessor.processRecipe(recipe, ingredientTokens));
-                return ItemStack.EMPTY;
+                final var operation = context.notify(itemProcessor.processRecipe(recipe, ingredientTokens));
+                return operation.getImmediateResult();
             }
         }
 

@@ -57,10 +57,11 @@ public class CraftingContext {
         listeners.add(listener);
     }
 
-    public void notify(KitchenOperation operation) {
+    public KitchenOperation notify(KitchenOperation operation) {
         for (final var listener : listeners) {
             listener.accept(operation);
         }
+        return operation;
     }
 
     public int countAvailable(ItemStack itemStack) {
