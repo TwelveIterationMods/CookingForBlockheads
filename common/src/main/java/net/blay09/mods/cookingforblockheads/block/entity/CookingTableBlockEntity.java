@@ -1,11 +1,15 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.BalmMenuProvider;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
+import net.blay09.mods.cookingforblockheads.menu.KitchenMenuAccess;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
+import net.blay09.mods.cookingforblockheads.menu.ServerKitchenMenuState;
+import net.blay09.mods.cookingforblockheads.network.message.KitchenFeedbackMessage;
 import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -71,7 +75,9 @@ public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProv
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new KitchenMenu(ModMenus.cookingTable.value(), i, player, new KitchenImpl(level, worldPosition), hasNoFilterBook());
+        final var kitchen = new KitchenImpl(level, worldPosition);
+        final var kitchenMenuAccess = KitchenMenuAccess.create(kitchen, new ServerKitchenMenuState(kitchen.createCraftingContext(player), hasNoFilterBook()));
+        return new KitchenMenu(ModMenus.cookingTable.value(), i, player, kitchenMenuAccess);
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
+import net.blay09.mods.cookingforblockheads.network.message.KitchenFeedbackMessage;
 import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
@@ -31,9 +32,9 @@ public class KitchenImpl implements Kitchen {
     private final Level level;
     /**
      * @deprecated Not fully happy with this. I think we should try to merge RecipeHandlers and ItemProcessors,
-     *             and detangle them to have them provide the assembling as well as a more customizable preview
-     *             configuration. Then a kitchen doesn't need this state separately, it would just know from either
-     *             having a crafting processor or not.
+     * and detangle them to have them provide the assembling as well as a more customizable preview
+     * configuration. Then a kitchen doesn't need this state separately, it would just know from either
+     * having a crafting processor or not.
      */
     @Deprecated
     private final boolean allowCrafting;
@@ -96,7 +97,12 @@ public class KitchenImpl implements Kitchen {
         if (player != null) {
             itemProviders.addFirst(new ContainerKitchenItemProvider(player.getInventory()));
         }
-        return new CraftingContext(itemProviders, itemProcessorList, allowCrafting);
+        return new CraftingContext(itemProviders, itemProcessorList, allowCrafting).addListener(operation -> {
+            if (player != null) {
+                final var feedback = operation.getFeedback();
+                feedback.ifPresent(component -> Balm.networking().sendTo(player, new KitchenFeedbackMessage(component)));
+            }
+        });
     }
 
     @Override

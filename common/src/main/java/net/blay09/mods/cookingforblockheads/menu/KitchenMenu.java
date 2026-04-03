@@ -4,7 +4,6 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
-import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.crafting.*;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.menu.comparator.FavoriteComparator;
@@ -36,9 +35,7 @@ import java.util.*;
 public class KitchenMenu extends AbstractContainerMenu {
 
     public final Player player;
-    private final @Nullable Kitchen kitchen;
-    private final @Nullable CraftingContext craftingContext;
-    private final boolean showUncraftable;
+    private final KitchenMenuAccess kitchenMenuAccess;
 
     private final List<CraftableListingFakeSlot> recipeListingSlots = new ArrayList<>();
     private final List<CraftMatrixFakeSlot> matrixSlots = new ArrayList<>();
@@ -63,23 +60,13 @@ public class KitchenMenu extends AbstractContainerMenu {
     private int recipesForSelectionIndex;
 
     public KitchenMenu(MenuType<KitchenMenu> menuType, int windowId, Player player) {
-        this(menuType, windowId, player, null, true);
+        this(menuType, windowId, player, KitchenMenuAccess.NULL);
     }
 
-    public KitchenMenu(MenuType<KitchenMenu> menuType, int windowId, Player player, @Nullable Kitchen kitchen, boolean showUncraftable) {
+    public KitchenMenu(MenuType<KitchenMenu> menuType, int windowId, Player player, KitchenMenuAccess kitchenMenuAccess) {
         super(menuType, windowId);
         this.player = player;
-        this.kitchen = kitchen;
-        if (kitchen != null) {
-            this.craftingContext = kitchen.createCraftingContext(player).addListener(operation -> {
-                final var feedback = operation.getFeedback();
-                feedback.ifPresent(component -> Balm.networking().sendTo(player, new KitchenFeedbackMessage(component)));
-            });
-        } else {
-            this.craftingContext = null;
-        }
-
-        this.showUncraftable = showUncraftable;
+        this.kitchenMenuAccess = kitchenMenuAccess;
 
         final var fakeInventory = new DefaultContainer(4 * 3 + 3 * 3);
 
@@ -254,7 +241,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public List<CraftableWithStatus> buildAvailableCraftables() {
         final var result = new HashMap<Identifier, CraftableWithStatus>();
-        if (kitchen != null) {
+        kitchenMenuAccess.execute((kitchen, state) -> {
             for (final var recipeHolder : kitchen.getAvailableRecipes()) {
                 final var craftableWithStatus = craftableWithStatusFromRecipe(recipeHolder);
                 if (craftableWithStatus != null) {
@@ -262,15 +249,11 @@ public class KitchenMenu extends AbstractContainerMenu {
                     result.compute(itemId, (_, v) -> CraftableWithStatus.best(v, craftableWithStatus));
                 }
             }
-        }
+        });
         return result.values().stream().toList();
     }
 
     private <C extends RecipeInput, T extends Recipe<C>> @Nullable CraftableWithStatus craftableWithStatusFromRecipe(RecipeHolder<?> recipeHolder) {
-        if (craftingContext == null) {
-            return null;
-        }
-
         final var recipe = recipeHolder.value();
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe);
         final var resultItem = recipeHandler.predictResultItem(recipeHolder).create();
@@ -278,14 +261,16 @@ public class KitchenMenu extends AbstractContainerMenu {
             return null;
         }
 
-        final var operation = craftingContext.createOperation(recipeHolder).prepare();
-        if (!operation.hasIngredients() && !showUncraftable) {
-            return null;
-        }
+        return kitchenMenuAccess.evaluate((_, state) -> {
+            final var operation = state.craftingContext().createOperation(recipeHolder).prepare();
+            if (!operation.hasIngredients() && !state.showUncraftable()) {
+                return null;
+            }
 
-        final var missingIngredients = operation.getMissingIngredients();
-        final var missingUtensils = operation.getMissingIngredients();
-        return new CraftableWithStatus(resultItem, !missingIngredients.isEmpty(), !missingUtensils.isEmpty());
+            final var missingIngredients = operation.getMissingIngredients();
+            final var missingUtensils = operation.getMissingIngredients();
+            return new CraftableWithStatus(resultItem, !missingIngredients.isEmpty(), !missingUtensils.isEmpty());
+        }).orElse(null);
     }
 
     private boolean isGroupItem(ItemStack resultItem) {
@@ -313,7 +298,8 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void broadcastRecipesForResultItem(ItemStack resultItem) {
         final List<RecipeWithStatus> result = new ArrayList<>();
-        if (kitchen != null && craftingContext != null) {
+        kitchenMenuAccess.execute((kitchen, state) -> {
+            final var craftingContext = state.craftingContext();
             final var recipeManager = player.level().getServer().getRecipeManager();
             final var recipesForResult = kitchen.getRecipesFor(resultItem);
             for (final var recipe : recipesForResult) {
@@ -326,7 +312,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                         getCraftableAmount(operation, recipe),
                         operation.reasonIfUncraftable())));
             }
-        }
+        });
         this.recipesForSelection = result;
         Balm.networking().sendTo(player, new SelectionRecipesListMessage(result));
     }
@@ -348,27 +334,25 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     private List<IngredientAmount> getIngredientAmounts(SlotDisplay slotDisplay) {
-        if (craftingContext == null) {
-            return List.of();
-        }
-
         final var ingredientAmounts = new ArrayList<IngredientAmount>();
-        final var countedStacks = new ArrayList<ItemStack>();
-        for (final var itemStack : slotDisplay.resolveForStacks(SlotDisplayContext.fromLevel(player.level()))) {
-            if (itemStack.isEmpty()) {
-                continue;
-            }
+        kitchenMenuAccess.execute((_, state) -> {
+            final var countedStacks = new ArrayList<ItemStack>();
+            for (final var itemStack : slotDisplay.resolveForStacks(SlotDisplayContext.fromLevel(player.level()))) {
+                if (itemStack.isEmpty()) {
+                    continue;
+                }
 
-            final var normalizedStack = itemStack.copyWithCount(1);
-            final var alreadyCounted = countedStacks.stream().anyMatch(existing -> ItemStack.isSameItemSameComponents(existing, normalizedStack));
-            if (alreadyCounted) {
-                continue;
-            }
+                final var normalizedStack = itemStack.copyWithCount(1);
+                final var alreadyCounted = countedStacks.stream().anyMatch(existing -> ItemStack.isSameItemSameComponents(existing, normalizedStack));
+                if (alreadyCounted) {
+                    continue;
+                }
 
-            countedStacks.add(normalizedStack);
-            ingredientAmounts.add(new IngredientAmount(normalizedStack, craftingContext.countAvailable(normalizedStack)));
-        }
-        ingredientAmounts.sort(Comparator.comparing(it -> BuiltInRegistries.ITEM.getKey(it.itemStack().getItem()).toString()));
+                countedStacks.add(normalizedStack);
+                ingredientAmounts.add(new IngredientAmount(normalizedStack, state.craftingContext().countAvailable(normalizedStack)));
+            }
+            ingredientAmounts.sort(Comparator.comparing(it -> BuiltInRegistries.ITEM.getKey(it.itemStack().getItem()).toString()));
+        });
         return ingredientAmounts;
     }
 
@@ -386,10 +370,6 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void craft(RecipeDisplayId recipeDisplayId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
-        if (craftingContext == null) {
-            return;
-        }
-
         if (recipesForSelection == null || recipesForSelection.stream()
                 .map(RecipeWithStatus::recipeDisplayEntry)
                 .map(RecipeDisplayEntry::id)
@@ -405,47 +385,48 @@ public class KitchenMenu extends AbstractContainerMenu {
             return;
         }
 
-        final var recipe = serverDisplayInfo.parent();
-        final var operation = craftingContext.createOperation(recipe).withLockedInputs(lockedInputs);
-        final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
-        final var resultItem = recipeHandler.predictResultItem(recipe).create();
-        final var repeats = craftFullStack ? resultItem.getMaxStackSize() / resultItem.getCount() : 1;
-        for (int i = 0; i < repeats; i++) {
-            operation.prepare();
-            if (operation.hasIngredients()) {
-                final var carried = getCarried();
-                if (!carried.isEmpty() && (!ItemStack.isSameItemSameComponents(carried, resultItem) || carried.getCount() >= carried.getMaxStackSize())) {
-                    if (craftFullStack || addToInventory) {
-                        addToInventory = true;
-                    } else {
-                        break;
-                    }
-                }
-                final var itemStack = operation.craft(this, player.level().registryAccess());
-                if (!itemStack.isEmpty()) {
-                    if (addToInventory) {
-                        if (!player.getInventory().add(itemStack)) {
-                            player.drop(itemStack, false);
+        kitchenMenuAccess.execute((_, state) -> {
+            final var recipe = serverDisplayInfo.parent();
+            final var operation = state.craftingContext().createOperation(recipe).withLockedInputs(lockedInputs);
+            final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
+            final var resultItem = recipeHandler.predictResultItem(recipe).create();
+            final var repeats = craftFullStack ? resultItem.getMaxStackSize() / resultItem.getCount() : 1;
+            for (int i = 0; i < repeats; i++) {
+                operation.prepare();
+                if (operation.hasIngredients()) {
+                    final var carried = getCarried();
+                    if (!carried.isEmpty() && (!ItemStack.isSameItemSameComponents(carried, resultItem) || carried.getCount() >= carried.getMaxStackSize())) {
+                        if (!craftFullStack && !addToInventory) {
+                            break;
                         }
-                    } else {
-
-                        if (carried.isEmpty()) {
-                            setCarried(itemStack);
-                        } else if (ItemStack.isSameItemSameComponents(carried, itemStack) && carried.getCount() < carried.getMaxStackSize()) {
-                            carried.grow(itemStack.getCount());
-                        } else {
+                    }
+                    final var itemStack = operation.craft(this, player.level().registryAccess());
+                    if (!itemStack.isEmpty()) {
+                        if (craftFullStack || addToInventory) {
                             if (!player.getInventory().add(itemStack)) {
                                 player.drop(itemStack, false);
                             }
+                        } else {
+
+                            if (carried.isEmpty()) {
+                                setCarried(itemStack);
+                            } else if (ItemStack.isSameItemSameComponents(carried, itemStack) && carried.getCount() < carried.getMaxStackSize()) {
+                                carried.grow(itemStack.getCount());
+                            } else {
+                                if (!player.getInventory().add(itemStack)) {
+                                    player.drop(itemStack, false);
+                                }
+                            }
                         }
+                    } else {
+                        break;
                     }
                 } else {
                     break;
                 }
-            } else {
-                break;
             }
-        }
+        });
+
 
         craftablesDirty = true;
         recipesDirty = true;

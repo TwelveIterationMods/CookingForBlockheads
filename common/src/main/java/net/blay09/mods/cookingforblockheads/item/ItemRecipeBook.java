@@ -4,7 +4,9 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.BalmMenuProvider;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
+import net.blay09.mods.cookingforblockheads.menu.KitchenMenuAccess;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
+import net.blay09.mods.cookingforblockheads.menu.ServerKitchenMenuState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -80,7 +82,9 @@ public class ItemRecipeBook extends Item {
 
                 @Override
                 public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                    return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, new KitchenImpl(playerEntity.level(), itemStack.is(ModItems.craftingBook)), itemStack.is(ModItems.noFilterBook));
+                    final var kitchen = new KitchenImpl(level, itemStack.is(ModItems.craftingBook));
+                    final var kitchenMenuAccess = KitchenMenuAccess.create(kitchen, new ServerKitchenMenuState(kitchen.createCraftingContext(player), itemStack.is(ModItems.noFilterBook)));
+                    return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, kitchenMenuAccess);
                 }
 
                 @Override
