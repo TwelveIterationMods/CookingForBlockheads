@@ -5,7 +5,6 @@ import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
-import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
@@ -35,7 +34,6 @@ public class KitchenImpl implements Kitchen {
     private final Level level;
     private final ItemStack activatingItemStack;
     private final BlockState activatingBlockState;
-    private final @Nullable BlockEntity activatingBlockEntity;
     private final Set<BlockPos> checkedPos = new HashSet<>();
     private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
     private final List<KitchenRecipeProvider> recipeProviderList = new ArrayList<>();
@@ -45,14 +43,12 @@ public class KitchenImpl implements Kitchen {
         this.level = level;
         activatingItemStack = itemStack;
         activatingBlockState = Blocks.AIR.defaultBlockState();
-        activatingBlockEntity = null;
     }
 
     public KitchenImpl(Level level, BlockPos pos) {
         this.level = level;
         activatingBlockState = level.getBlockState(pos);
         activatingItemStack = ItemStack.EMPTY;
-        activatingBlockEntity = level.getBlockEntity(pos);
         findNeighbourCraftingBlocks(level, pos, true);
     }
 
@@ -113,17 +109,6 @@ public class KitchenImpl implements Kitchen {
         }
 
         return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
-    }
-
-    @Deprecated
-    @Override
-    public boolean isRecipeAvailable(CraftingOperation operation) {
-        final var isNoFilter = activatingItemStack.is(ModItems.noFilterBook) || (activatingBlockEntity instanceof CookingTableBlockEntity cookingTable && cookingTable.hasNoFilterBook());
-        if (isNoFilter) {
-            return true;
-        }
-
-        return operation.canCraft();
     }
 
     @Override

@@ -42,6 +42,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public final Player player;
     private final Kitchen kitchen;
+    private final boolean showUncraftable;
 
     private final List<CraftableListingFakeSlot> recipeListingSlots = new ArrayList<>();
     private final List<CraftMatrixFakeSlot> matrixSlots = new ArrayList<>();
@@ -65,11 +66,12 @@ public class KitchenMenu extends AbstractContainerMenu {
     private @Nullable List<RecipeWithStatus> recipesForSelection;
     private int recipesForSelectionIndex;
 
-    public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, Kitchen kitchen) {
+    public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, Kitchen kitchen, boolean showUncraftable) {
         super(containerType, windowId);
 
         this.player = player;
         this.kitchen = kitchen;
+        this.showUncraftable = showUncraftable;
 
         final var fakeInventory = new DefaultContainer(4 * 3 + 3 * 3);
 
@@ -264,7 +266,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
 
         final var operation = context.createOperation(recipeHolder).prepare();
-        if (!kitchen.isRecipeAvailable(operation)) {
+        if (!operation.canCraft() && !showUncraftable) {
             return null;
         }
 

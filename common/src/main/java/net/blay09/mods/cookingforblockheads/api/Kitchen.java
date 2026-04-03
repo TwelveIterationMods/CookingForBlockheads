@@ -13,10 +13,8 @@ import java.util.List;
 
 public interface Kitchen {
     CraftingContext createCraftingContext(@Nullable Player player);
-    boolean canProcess(RecipeType<?> recipeType);
 
-    @Deprecated
-    boolean isRecipeAvailable(CraftingOperation operation);
+    boolean canProcess(RecipeType<?> recipeType);
 
     Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem);
 

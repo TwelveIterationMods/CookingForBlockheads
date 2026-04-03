@@ -119,7 +119,7 @@ public class ModMenus {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
                 final var kitchen = new KitchenImpl(inventory.player.level(), itemStack);
-                return new KitchenMenu(recipeBook.value(), windowId, inventory.player, kitchen);
+                return new KitchenMenu(recipeBook.value(), windowId, inventory.player, kitchen, false);
             }
 
             @Override
@@ -132,7 +132,7 @@ public class ModMenus {
             public KitchenMenu create(int windowId, Inventory inventory, BlockPos pos) {
                 final var level = inventory.player.level();
                 final var kitchen = new KitchenImpl(level, pos);
-                return new KitchenMenu(cookingTable.value(), windowId, inventory.player, kitchen);
+                return new KitchenMenu(cookingTable.value(), windowId, inventory.player, kitchen, false);
             }
 
             @Override
@@ -144,7 +144,7 @@ public class ModMenus {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
                 final var kitchen = new KitchenImpl(inventory.player.level(), itemStack);
-                return new KitchenMenu(noFilterBook.value(), windowId, inventory.player, kitchen);
+                return new KitchenMenu(noFilterBook.value(), windowId, inventory.player, kitchen, true);
             }
 
             @Override
@@ -156,7 +156,7 @@ public class ModMenus {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
                 final var kitchen = new KitchenImpl(inventory.player.level(), itemStack);
-                return new KitchenMenu(craftingBook.value(), windowId, inventory.player, kitchen);
+                return new KitchenMenu(craftingBook.value(), windowId, inventory.player, kitchen, false);
             }
 
             @Override
