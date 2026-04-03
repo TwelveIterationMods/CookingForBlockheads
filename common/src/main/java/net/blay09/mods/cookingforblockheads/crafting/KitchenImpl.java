@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.balm.Balm;
-import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -22,7 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class KitchenImpl implements Kitchen {
 
@@ -85,22 +88,17 @@ public class KitchenImpl implements Kitchen {
     }
 
     @Override
-    public List<KitchenItemProvider> getItemProviders(@Nullable Player player) {
-        final var sourceInventories = new ArrayList<>(itemProviderList);
+    public CraftingContext createCraftingContext(@Nullable Player player) {
+        final var itemProviders = new ArrayList<>(itemProviderList);
         if (player != null) {
-            sourceInventories.addFirst(new ContainerKitchenItemProvider(player.getInventory()));
+            itemProviders.addFirst(new ContainerKitchenItemProvider(player.getInventory()));
         }
-        return sourceInventories;
+        return new CraftingContext(itemProviders, itemProcessorList);
     }
 
     @Override
     public List<KitchenRecipeProvider> getRecipeProviders() {
         return recipeProviderList;
-    }
-
-    @Override
-    public List<KitchenItemProcessor> getItemProcessors() {
-        return itemProcessorList;
     }
 
     @Override

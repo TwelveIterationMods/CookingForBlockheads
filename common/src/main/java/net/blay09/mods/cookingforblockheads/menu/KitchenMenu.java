@@ -244,7 +244,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public List<CraftableWithStatus> getAvailableCraftables() {
         final var result = new HashMap<Identifier, CraftableWithStatus>();
-        final var context = new CraftingContext(kitchen, player);
+        final var context = kitchen.createCraftingContext(player);
         for (final var recipeHolder : getAvailableRecipes(player.level())) {
             final var craftableWithStatus = craftableWithStatusFromRecipe(context, recipeHolder);
             if (craftableWithStatus != null) {
@@ -342,7 +342,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         final List<RecipeWithStatus> result = new ArrayList<>();
         final var recipeManager = player.level().getServer().getRecipeManager();
 
-        final var context = new CraftingContext(kitchen, player);
+        final var context = kitchen.createCraftingContext(player);
         final var recipesForResult = getRecipesFor(resultItem);
         for (final var recipe : recipesForResult) {
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
@@ -420,7 +420,7 @@ public class KitchenMenu extends AbstractContainerMenu {
             return;
         }
 
-        final var context = new CraftingContext(kitchen, player);
+        final var context = kitchen.createCraftingContext(player);
         context.addListener(operation -> {
             final var feedback = operation.getFeedback();
             feedback.ifPresent(component -> Balm.networking().sendTo(player, new KitchenFeedbackMessage(component)));

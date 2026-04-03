@@ -23,9 +23,9 @@ public class CraftingContext {
     private final Map<CraftingOperation.IngredientTokenKey, CacheHint> cacheHintsByIngredient = new HashMap<>();
     private final List<Consumer<KitchenOperation>> listeners = new ArrayList<>();
 
-    public CraftingContext(final Kitchen kitchen, final @Nullable Player player) {
-        itemProviders = kitchen.getItemProviders(player);
-        itemProcessors = kitchen.getItemProcessors();
+    public CraftingContext(List<KitchenItemProvider> itemProviders, List<KitchenItemProcessor> itemProcessors) {
+        this.itemProviders = itemProviders;
+        this.itemProcessors = itemProcessors;
     }
 
     public CraftingOperation createOperation(RecipeHolder<?> recipe) {
