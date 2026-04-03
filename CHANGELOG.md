@@ -1,2 +1,2 @@
-- Fixed fridges sometimes flipping when dyeing them
-- Fixed possible crash when dying a fridge
+- Added support for Farmer's Delight Cooking Pot
+- Fixed support for Storage Drawers
