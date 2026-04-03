@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.menu;
 import net.blay09.mods.balm.world.BalmMenuFactory;
 import net.blay09.mods.balm.world.inventory.BalmMenuTypeRegistrar;
 import net.blay09.mods.cookingforblockheads.block.entity.*;
-import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -126,17 +125,15 @@ public class ModMenus {
                 return ItemStack.STREAM_CODEC.cast();
             }
         }).asHolder();
-        cookingTable = menuTypes.register("cooking_table", new BalmMenuFactory<KitchenMenu, BlockPos>() {
+        cookingTable = menuTypes.register("cooking_table", new BalmMenuFactory<KitchenMenu, Unit>() {
             @Override
-            public KitchenMenu create(int windowId, Inventory inventory, BlockPos pos) {
-                final var level = inventory.player.level();
-                final var kitchen = new KitchenImpl(level, pos);
+            public KitchenMenu create(int windowId, Inventory inventory, Unit data) {
                 return new KitchenMenu(cookingTable.value(), windowId, inventory.player);
             }
 
             @Override
-            public StreamCodec<RegistryFriendlyByteBuf, BlockPos> getStreamCodec() {
-                return BlockPos.STREAM_CODEC.cast();
+            public StreamCodec<RegistryFriendlyByteBuf, Unit> getStreamCodec() {
+                return Unit.STREAM_CODEC.cast();
             }
         }).asHolder();
         noFilterBook = menuTypes.register("no_filter_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {

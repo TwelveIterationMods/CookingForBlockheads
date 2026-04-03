@@ -48,13 +48,11 @@ public class KitchenImpl implements Kitchen {
         this.allowCrafting = allowCrafting;
     }
 
-    public KitchenImpl(Level level, BlockPos pos) {
-        this.level = level;
-        this.allowCrafting = true;
+    public void findNeighbourCraftingBlocks(Level level, BlockPos pos) {
         findNeighbourCraftingBlocks(level, pos, true);
     }
 
-    private void findNeighbourCraftingBlocks(Level level, BlockPos pos, boolean extendedUpSearch) {
+    public void findNeighbourCraftingBlocks(Level level, BlockPos pos, boolean extendedUpSearch) {
         for (Direction direction : Direction.values()) {
             int upSearch = (extendedUpSearch && direction == Direction.UP) ? 2 : 1;
             for (int n = 1; n <= upSearch; n++) {

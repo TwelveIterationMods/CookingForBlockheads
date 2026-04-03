@@ -20,6 +20,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -31,7 +32,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 
-public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, TransferableBlockEntity<ItemStack> {
+public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProvider<Unit>, TransferableBlockEntity<ItemStack> {
 
     private ItemStack noFilterBook = ItemStack.EMPTY;
 
@@ -75,19 +76,20 @@ public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProv
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        final var kitchen = new KitchenImpl(level, worldPosition);
+        final var kitchen = new KitchenImpl(level, true);
+        kitchen.findNeighbourCraftingBlocks(level, worldPosition);
         final var kitchenMenuAccess = KitchenMenuAccess.create(kitchen, new ServerKitchenMenuState(kitchen.createCraftingContext(player), hasNoFilterBook()));
         return new KitchenMenu(ModMenus.cookingTable.value(), i, player, kitchenMenuAccess);
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return worldPosition;
+    public Unit getScreenOpeningData(ServerPlayer player) {
+        return Unit.INSTANCE;
     }
 
     @Override
-    public StreamCodec<RegistryFriendlyByteBuf, BlockPos> getScreenStreamCodec() {
-        return BlockPos.STREAM_CODEC.cast();
+    public StreamCodec<RegistryFriendlyByteBuf, Unit> getScreenStreamCodec() {
+        return Unit.STREAM_CODEC.cast();
     }
 
     @Override
