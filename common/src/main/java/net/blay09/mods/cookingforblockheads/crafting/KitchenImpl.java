@@ -19,7 +19,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -97,20 +96,7 @@ public class KitchenImpl implements Kitchen {
         if (player != null) {
             itemProviders.addFirst(new ContainerKitchenItemProvider(player.getInventory()));
         }
-        return new CraftingContext(itemProviders, itemProcessorList);
-    }
-
-    @Override
-    public boolean canProcess(RecipeType<?> recipeType) {
-        if (recipeType == ModRecipes.kitchenRecipes.type()) {
-            return true;
-        }
-
-        if (recipeType == RecipeType.CRAFTING) {
-            return allowCrafting;
-        }
-
-        return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
+        return new CraftingContext(itemProviders, itemProcessorList, allowCrafting);
     }
 
     @Override

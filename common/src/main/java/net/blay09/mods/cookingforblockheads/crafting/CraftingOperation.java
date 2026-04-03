@@ -6,6 +6,7 @@ import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
+import net.minecraft.network.chat.Component;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -136,12 +137,20 @@ public class CraftingOperation {
         return ingredientToken;
     }
 
-    public boolean canCraft() {
+    public boolean hasIngredients() {
         return missingIngredients.isEmpty();
     }
 
+    public boolean canCraft() {
+        return hasIngredients() && reasonIfUncraftable().isEmpty();
+    }
+
+    public Optional<Component> reasonIfUncraftable() {
+        return context.reasonIfUncraftable(recipe);
+    }
+
     public int countCraftableRepeats(int maxRepeats) {
-        if (!canCraft() || maxRepeats <= 0) {
+        if (!hasIngredients() || maxRepeats <= 0) {
             return 0;
         }
 

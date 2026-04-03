@@ -14,8 +14,6 @@ import java.util.List;
 public interface Kitchen {
     CraftingContext createCraftingContext(@Nullable Player player);
 
-    boolean canProcess(RecipeType<?> recipeType);
-
     Collection<RecipeHolder<?>> getRecipesFor(ItemStack resultItem);
 
     Collection<RecipeHolder<?>> getAvailableRecipes();

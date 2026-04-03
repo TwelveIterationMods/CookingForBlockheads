@@ -237,7 +237,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
     }
 
-    public List<CraftableWithStatus> getAvailableCraftables() {
+    public List<CraftableWithStatus> buildAvailableCraftables() {
         final var result = new HashMap<Identifier, CraftableWithStatus>();
         final var context = kitchen.createCraftingContext(player);
         for (final var recipeHolder : kitchen.getAvailableRecipes()) {
@@ -259,7 +259,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
 
         final var operation = context.createOperation(recipeHolder).prepare();
-        if (!operation.canCraft() && !showUncraftable) {
+        if (!operation.hasIngredients() && !showUncraftable) {
             return null;
         }
 
@@ -287,7 +287,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void broadcastAvailableRecipes() {
-        craftables = getAvailableCraftables();
+        craftables = buildAvailableCraftables();
         Balm.networking().sendTo(player, new AvailableCraftablesListMessage(craftables));
     }
 
@@ -304,7 +304,8 @@ public class KitchenMenu extends AbstractContainerMenu {
                     operation.getMissingIngredientsMask(),
                     operation.getLockedInputs(),
                     getIngredientAmounts(context, recipeDisplayEntry.display()),
-                    getCraftableAmount(operation, recipe))));
+                    getCraftableAmount(operation, recipe),
+                    operation.reasonIfUncraftable())));
         }
 
         this.recipesForSelection = result;
@@ -347,7 +348,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     private int getCraftableAmount(CraftingOperation operation, RecipeHolder<?> recipe) {
-        if (!operation.canCraft() || !kitchen.canProcess(recipe.value().getType())) {
+        if (!operation.canCraft()) {
             return 0;
         }
 
@@ -360,31 +361,34 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void craft(RecipeDisplayId recipeDisplayId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
+        if (recipesForSelection.stream()
+                .map(RecipeWithStatus::recipeDisplayEntry)
+                .map(RecipeDisplayEntry::id)
+                .noneMatch(it -> it.equals(recipeDisplayId))) {
+            CookingForBlockheads.logger.error("Received unavailable recipe from client: {}", recipeDisplayId);
+            return;
+        }
+
         final var level = player.level();
         final var serverDisplayInfo = level.getServer().getRecipeManager().getRecipeFromDisplay(recipeDisplayId);
         if (serverDisplayInfo == null) {
             CookingForBlockheads.logger.error("Received invalid recipe from client: {}", recipeDisplayId);
             return;
         }
-
-        final var recipe = serverDisplayInfo.parent();
-        if (!kitchen.canProcess(recipe.value().getType())) {
-            CookingForBlockheads.logger.error("Received invalid craft request, unprocessable recipe {}", recipeDisplayId);
-            return;
-        }
-
+        
         final var context = kitchen.createCraftingContext(player);
         context.addListener(operation -> {
             final var feedback = operation.getFeedback();
             feedback.ifPresent(component -> Balm.networking().sendTo(player, new KitchenFeedbackMessage(component)));
         });
+        final var recipe = serverDisplayInfo.parent();
         final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs);
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
         final var resultItem = recipeHandler.predictResultItem(recipe).create();
         final var repeats = craftFullStack ? resultItem.getMaxStackSize() / resultItem.getCount() : 1;
         for (int i = 0; i < repeats; i++) {
             operation.prepare();
-            if (operation.canCraft()) {
+            if (operation.hasIngredients()) {
                 final var carried = getCarried();
                 if (!carried.isEmpty() && (!ItemStack.isSameItemSameComponents(carried, resultItem) || carried.getCount() >= carried.getMaxStackSize())) {
                     if (craftFullStack || addToInventory) {
@@ -667,7 +671,4 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean canProcess(RecipeType<?> recipeType) {
-        return kitchen.canProcess(recipeType);
-    }
 }

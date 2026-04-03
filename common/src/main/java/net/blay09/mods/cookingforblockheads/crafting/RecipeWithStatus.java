@@ -3,6 +3,8 @@ package net.blay09.mods.cookingforblockheads.crafting;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -12,10 +14,11 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingredient> missingIngredients,
                                int missingIngredientsMask, List<ItemStack> lockedInputs, List<List<IngredientAmount>> ingredientAmounts,
-                               int craftableAmount) {
+                               int craftableAmount, Optional<Component> error) {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, RecipeWithStatus> STREAM_CODEC = StreamCodec.composite(
             RecipeDisplayEntry.STREAM_CODEC,
@@ -30,6 +33,8 @@ public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingre
             RecipeWithStatus::ingredientAmounts,
             ByteBufCodecs.INT,
             RecipeWithStatus::craftableAmount,
+            ComponentSerialization.STREAM_CODEC.apply(ByteBufCodecs::optional),
+            RecipeWithStatus::error,
             RecipeWithStatus::new
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, List<RecipeWithStatus>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.collection(
@@ -51,12 +56,16 @@ public record RecipeWithStatus(RecipeDisplayEntry recipeDisplayEntry, List<Ingre
         return first;
     }
 
-    public boolean canCraft() {
-        return missingIngredients.isEmpty();
+    public boolean isMissingIngredients() {
+        return !missingIngredients.isEmpty();
     }
 
     public boolean isMissingUtensils() {
         return missingIngredients.stream().anyMatch(RecipeWithStatus::isUtensil);
+    }
+
+    public boolean canCraft() {
+        return !isMissingIngredients() && error.isEmpty();
     }
 
     private static boolean isUtensil(Ingredient ingredient) {

@@ -20,11 +20,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
-import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
-import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,13 +75,7 @@ public class CookingForBlockheadsClient {
                 }
 
                 final var selectedRecipeDisplay = selectedRecipeWithStatus.recipeDisplayEntry().display();
-                final var canActivateSelectedRecipe = switch (selectedRecipeDisplay) {
-                    case FurnaceRecipeDisplay _ -> menu.canProcess(RecipeType.SMELTING);
-                    case ShapedCraftingRecipeDisplay _, ShapelessCraftingRecipeDisplay _ -> menu.canProcess(RecipeType.CRAFTING);
-                    default -> true;
-                };
-
-                if (menu.isSelectedSlot(listingSlot) && canActivateSelectedRecipe) {
+                if (menu.isSelectedSlot(listingSlot) && selectedRecipeWithStatus.canCraft()) {
                     if (selectedRecipeDisplay instanceof FurnaceRecipeDisplay) {
                         if (Kuma.hasShiftDown()) {
                             tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_stack").withStyle(ChatFormatting.GREEN));
@@ -92,10 +83,9 @@ public class CookingForBlockheadsClient {
                             tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_smelt_one").withStyle(ChatFormatting.GREEN));
                         }
                     } else {
-                        final var missingIngredients = selectedRecipeWithStatus.missingIngredients();
                         if (selectedRecipeWithStatus.isMissingUtensils()) {
                             tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
-                        } else if (!missingIngredients.isEmpty()) {
+                        } else if (selectedRecipeWithStatus.isMissingIngredients()) {
                             tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
                         } else {
                             if (Kuma.hasShiftDown()) {
@@ -105,8 +95,14 @@ public class CookingForBlockheadsClient {
                             }
                         }
                     }
-                } else if (menu.isSelectedSlot(listingSlot) && selectedRecipeDisplay instanceof FurnaceRecipeDisplay) {
-                    tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_oven").withStyle(ChatFormatting.RED));
+                } else if (menu.isSelectedSlot(listingSlot) && selectedRecipeWithStatus.error().isPresent()) {
+                    tooltip.add(selectedRecipeWithStatus.error().orElseThrow().copy().withStyle(ChatFormatting.RED));
+                } else if (menu.isSelectedSlot(listingSlot)) {
+                    if (selectedRecipeWithStatus.isMissingUtensils()) {
+                        tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_tools").withStyle(ChatFormatting.RED));
+                    } else if (selectedRecipeWithStatus.isMissingIngredients()) {
+                        tooltip.add(Component.translatable("tooltip.cookingforblockheads.missing_ingredients").withStyle(ChatFormatting.RED));
+                    }
                 } else {
                     tooltip.add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
