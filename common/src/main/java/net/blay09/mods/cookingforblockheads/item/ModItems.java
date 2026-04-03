@@ -8,6 +8,7 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.DyeColor;
@@ -15,9 +16,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.Equippable;
-import net.minecraft.sounds.SoundEvents;
 
 import java.util.Map;
+
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
 public class ModItems {
 
@@ -38,25 +40,28 @@ public class ModItems {
         heatingUnit = items.register("heating_unit", ItemHeatingUnit::new).asDeferredItem();
         iceUnit = items.register("ice_unit", ItemIceUnit::new).asDeferredItem();
         saltFilter = items.register("salt_filter", SaltFilterItem::new).asDeferredItem();
-        iceCubes = items.register("ice_cubes", properties -> new Item(properties.stacksTo(16).food(new FoodProperties.Builder()
-                .nutrition(0)
-                .saturationModifier(0f)
-                .alwaysEdible()
-                .build()))).asDeferredItem();
+        iceCubes = items.register("ice_cubes", Item::new, it -> it.stacksTo(16)
+                .food(new FoodProperties.Builder()
+                        .nutrition(0)
+                        .saturationModifier(0f)
+                        .alwaysEdible()
+                        .build())
+        ).asDeferredItem();
         preservationChamber = items.register("preservation_chamber", ItemPreservationChamber::new).asDeferredItem();
-        chefHat = items.register("chef_hat", properties -> new Item(properties.stacksTo(1).component(
-                DataComponents.EQUIPPABLE,
-                Equippable.builder(EquipmentSlot.HEAD)
-                        .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-                        .setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, CookingForBlockheads.id("chef_hat")))
-                        .build()))).asDeferredItem();
+        chefHat = items.register("chef_hat", Item::new, it -> it.stacksTo(1)
+                .component(DataComponents.EQUIPPABLE,
+                        Equippable.builder(EquipmentSlot.HEAD)
+                                .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                                .setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, id("chef_hat")))
+                                .build())
+        ).asDeferredItem();
     }
 
     public static void initialize(BalmCreativeModeTabRegistrar creativeModeTabs) {
         creativeModeTabs.register(CookingForBlockheads.MOD_ID, builder ->
                 builder.title(Component.translatable("itemGroup.cookingforblockheads.cookingforblockheads"))
                         .icon(() -> new ItemStack(ModBlocks.cowJar))
-                        .displayItems((parameters, output) -> {
+                        .displayItems((_, output) -> {
                             output.accept(recipeBook);
                             output.accept(craftingBook);
                             output.accept(ModBlocks.cookingTables.get(null));
