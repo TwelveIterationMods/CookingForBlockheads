@@ -1,1 +1,22 @@
-- Updated to Minecraft 26.1
+- Added Chicken Sink
+  - Provides eggs to recipes over time
+- Added Coffee Machine
+  - No functionality yet; will be added once mods adding coffee are ported to 26.1
+  - Model created by HeckinChloe
+- Added Cookie Jar
+  - Put cookies or other sweets in it
+- Added Chef Hat
+  - Wear it to look professional
+- Added stacked cabinets
+  - Place a cabinet on another cabinet to transform it
+- Added display of craftable count after selecting a recipe
+- Added display of ingredient count when hovering an ingredient
+- Changed cooking so ingredients from the inventory are prioritized over kitchen storage
+- Added salt filter
+  - Provides salt to recipes
+- Changed Ice Unit so it allows crafting of snowballs and ice cubes
+  - Ice Cubes can be crafted into Ice Blocks
+- Added `c:foods/edible_when_placed` to `cookingforblockheads:foods`, ensuring items like cakes show up in the recipe book
+- Fixed rendering of counter and fridge doors
+- Fixed error when crafting items that have no remainder
+- Some breaking changes in the API as well as some performance improvements
