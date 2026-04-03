@@ -72,7 +72,6 @@ public class CookingForBlockheadsClient {
             final var menu = screen.getMenu();
             Slot hoverSlot = ((AbstractContainerScreenAccessor) screen).getHoveredSlot();
             if (hoverSlot instanceof CraftableListingFakeSlot listingSlot && itemStack == hoverSlot.getItem()) {
-                final var kitchen = menu.getKitchen();
                 final var selectedRecipeWithStatus = menu.getSelectedRecipe();
                 if (selectedRecipeWithStatus == null) {
                     return;
@@ -80,9 +79,8 @@ public class CookingForBlockheadsClient {
 
                 final var selectedRecipeDisplay = selectedRecipeWithStatus.recipeDisplayEntry().display();
                 final var canActivateSelectedRecipe = switch (selectedRecipeDisplay) {
-                    case FurnaceRecipeDisplay _ -> kitchen.canProcess(RecipeType.SMELTING);
-                    case ShapedCraftingRecipeDisplay _ -> kitchen.canProcess(RecipeType.CRAFTING);
-                    case ShapelessCraftingRecipeDisplay shapelessCraftingRecipeDisplay -> shapelessCraftingRecipeDisplay.ingredients().isEmpty() || kitchen.canProcess(RecipeType.CRAFTING);
+                    case FurnaceRecipeDisplay _ -> menu.canProcess(RecipeType.SMELTING);
+                    case ShapedCraftingRecipeDisplay _, ShapelessCraftingRecipeDisplay _ -> menu.canProcess(RecipeType.CRAFTING);
                     default -> true;
                 };
 

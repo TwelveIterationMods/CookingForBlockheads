@@ -10,15 +10,11 @@ import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
 import net.blay09.mods.cookingforblockheads.menu.comparator.FavoriteComparator;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
-import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.cookingforblockheads.network.message.*;
-import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
-import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -29,11 +25,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.*;
-import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -646,10 +639,6 @@ public class KitchenMenu extends AbstractContainerMenu {
         return craftables.stream().filter(it -> ItemStack.isSameItemSameComponents(it.itemStack(), resultItem)).findAny().orElse(null);
     }
 
-    public Kitchen getKitchen() {
-        return kitchen;
-    }
-
     public void setLockedInput(int i, ItemStack lockedInput) {
         lockedInputs.set(i, lockedInput);
         if (selectedCraftable != null) {
@@ -676,5 +665,9 @@ public class KitchenMenu extends AbstractContainerMenu {
             final var entry = history.removeLast();
             selectCraftable(entry);
         }
+    }
+
+    public boolean canProcess(RecipeType<?> recipeType) {
+        return kitchen.canProcess(recipeType);
     }
 }
