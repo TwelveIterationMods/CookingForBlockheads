@@ -5,24 +5,18 @@ import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
-import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.cookingforblockheads.network.message.KitchenFeedbackMessage;
 import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
-import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -38,64 +32,33 @@ public class KitchenImpl implements Kitchen {
      */
     @Deprecated
     private final boolean allowCrafting;
-    private final Set<BlockPos> checkedPos = new HashSet<>();
-    private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
-    private final List<KitchenRecipeProvider> recipeProviderList = new ArrayList<>();
-    private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();
+    private final List<KitchenItemProvider> itemProviders;
+    private final List<KitchenRecipeProvider> recipeProviders;
+    private final List<KitchenItemProcessor> itemProcessors;
 
     public KitchenImpl(Level level, boolean allowCrafting) {
+        this(level, allowCrafting, List.of(), List.of(), List.of());
+    }
+
+    public KitchenImpl(Level level,
+                       boolean allowCrafting,
+                       List<KitchenItemProvider> itemProviders,
+                       List<KitchenRecipeProvider> recipeProviders,
+                       List<KitchenItemProcessor> itemProcessors) {
         this.level = level;
         this.allowCrafting = allowCrafting;
-    }
-
-    public void findNeighbourCraftingBlocks(Level level, BlockPos pos) {
-        findNeighbourCraftingBlocks(level, pos, true);
-    }
-
-    public void findNeighbourCraftingBlocks(Level level, BlockPos pos, boolean extendedUpSearch) {
-        for (Direction direction : Direction.values()) {
-            int upSearch = (extendedUpSearch && direction == Direction.UP) ? 2 : 1;
-            for (int n = 1; n <= upSearch; n++) {
-                BlockPos position = pos.relative(direction, n);
-                if (!checkedPos.contains(position)) {
-                    checkedPos.add(position);
-
-                    BlockState state = level.getBlockState(position);
-                    BlockEntity blockEntity = level.getBlockEntity(position);
-                    if (blockEntity != null) {
-                        var itemProvider = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROVIDER);
-                        if (itemProvider != null) {
-                            itemProviderList.add(itemProvider);
-                        }
-
-                        final var recipeProvider = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_RECIPE_PROVIDER);
-                        if (recipeProvider != null) {
-                            recipeProviderList.add(recipeProvider);
-                        }
-
-                        final var itemProcessor = Balm.capabilities().getCapability(blockEntity, ModCapabilities.KITCHEN_ITEM_PROCESSOR);
-                        if (itemProcessor != null) {
-                            itemProcessorList.add(itemProcessor);
-                        }
-
-                        if (itemProvider != null || recipeProvider != null || itemProcessor != null || state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
-                            findNeighbourCraftingBlocks(level, position, true);
-                        }
-                    } else if (state.is(ModBlockTags.KITCHEN_CONNECTORS)) {
-                        findNeighbourCraftingBlocks(level, position, false);
-                    }
-                }
-            }
-        }
+        this.itemProviders = itemProviders;
+        this.recipeProviders = recipeProviders;
+        this.itemProcessors = itemProcessors;
     }
 
     @Override
     public CraftingContext createCraftingContext(@Nullable Player player) {
-        final var itemProviders = new ArrayList<>(itemProviderList);
+        final var itemProviders = new ArrayList<>(this.itemProviders);
         if (player != null) {
             itemProviders.addFirst(new ContainerKitchenItemProvider(player.getInventory()));
         }
-        return new CraftingContext(itemProviders, itemProcessorList, allowCrafting).addListener(operation -> {
+        return new CraftingContext(itemProviders, itemProcessors, allowCrafting).addListener(operation -> {
             if (player != null) {
                 final var feedback = operation.getFeedback();
                 feedback.ifPresent(component -> Balm.networking().sendTo(player, new KitchenFeedbackMessage(component)));
@@ -141,7 +104,7 @@ public class KitchenImpl implements Kitchen {
 
     private Set<Identifier> getAvailableRecipeSources() {
         final var result = new HashSet<Identifier>();
-        for (final var craftableProvider : recipeProviderList) {
+        for (final var craftableProvider : recipeProviders) {
             result.addAll(craftableProvider.getKitchenRecipeSources());
         }
         return result;
