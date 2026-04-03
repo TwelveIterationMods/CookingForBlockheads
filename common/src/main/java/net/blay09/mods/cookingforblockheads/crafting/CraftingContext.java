@@ -61,8 +61,9 @@ public class CraftingContext {
         cachedProviderIndexByIngredient.put(ingredientTokenKey.ingredient(), itemProviderIndex);
     }
 
-    public void addListener(Consumer<KitchenOperation> listener) {
+    public CraftingContext addListener(Consumer<KitchenOperation> listener) {
         listeners.add(listener);
+        return this;
     }
 
     public KitchenOperation notify(KitchenOperation operation) {

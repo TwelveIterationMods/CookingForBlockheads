@@ -118,8 +118,7 @@ public class ModMenus {
         recipeBook = menuTypes.register("recipe_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
-                final var kitchen = new KitchenImpl(inventory.player.level(), false);
-                return new KitchenMenu(recipeBook.value(), windowId, inventory.player, kitchen, false);
+                return new KitchenMenu(recipeBook.value(), windowId, inventory.player);
             }
 
             @Override
@@ -132,7 +131,7 @@ public class ModMenus {
             public KitchenMenu create(int windowId, Inventory inventory, BlockPos pos) {
                 final var level = inventory.player.level();
                 final var kitchen = new KitchenImpl(level, pos);
-                return new KitchenMenu(cookingTable.value(), windowId, inventory.player, kitchen, false);
+                return new KitchenMenu(cookingTable.value(), windowId, inventory.player);
             }
 
             @Override
@@ -143,8 +142,7 @@ public class ModMenus {
         noFilterBook = menuTypes.register("no_filter_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
-                final var kitchen = new KitchenImpl(inventory.player.level(), false);
-                return new KitchenMenu(noFilterBook.value(), windowId, inventory.player, kitchen, true);
+                return new KitchenMenu(noFilterBook.value(), windowId, inventory.player);
             }
 
             @Override
@@ -155,8 +153,7 @@ public class ModMenus {
         craftingBook = menuTypes.register("crafting_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
-                final var kitchen = new KitchenImpl(inventory.player.level(), true);
-                return new KitchenMenu(craftingBook.value(), windowId, inventory.player, kitchen, false);
+                return new KitchenMenu(craftingBook.value(), windowId, inventory.player);
             }
 
             @Override
