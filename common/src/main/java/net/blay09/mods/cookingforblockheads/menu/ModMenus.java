@@ -118,7 +118,7 @@ public class ModMenus {
         recipeBook = menuTypes.register("recipe_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
-                final var kitchen = new KitchenImpl(inventory.player.level(), itemStack);
+                final var kitchen = new KitchenImpl(inventory.player.level(), false);
                 return new KitchenMenu(recipeBook.value(), windowId, inventory.player, kitchen, false);
             }
 
@@ -143,7 +143,7 @@ public class ModMenus {
         noFilterBook = menuTypes.register("no_filter_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
-                final var kitchen = new KitchenImpl(inventory.player.level(), itemStack);
+                final var kitchen = new KitchenImpl(inventory.player.level(), false);
                 return new KitchenMenu(noFilterBook.value(), windowId, inventory.player, kitchen, true);
             }
 
@@ -155,7 +155,7 @@ public class ModMenus {
         craftingBook = menuTypes.register("crafting_book", new BalmMenuFactory<KitchenMenu, ItemStack>() {
             @Override
             public KitchenMenu create(int windowId, Inventory inventory, ItemStack itemStack) {
-                final var kitchen = new KitchenImpl(inventory.player.level(), itemStack);
+                final var kitchen = new KitchenImpl(inventory.player.level(), true);
                 return new KitchenMenu(craftingBook.value(), windowId, inventory.player, kitchen, false);
             }
 

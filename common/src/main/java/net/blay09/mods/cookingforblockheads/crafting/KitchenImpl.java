@@ -6,7 +6,6 @@ import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.capability.ModCapabilities;
-import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
@@ -22,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
@@ -32,23 +30,27 @@ import java.util.*;
 public class KitchenImpl implements Kitchen {
 
     private final Level level;
-    private final ItemStack activatingItemStack;
-    private final BlockState activatingBlockState;
+    /**
+     * @deprecated Not fully happy with this. I think we should try to merge RecipeHandlers and ItemProcessors,
+     *             and detangle them to have them provide the assembling as well as a more customizable preview
+     *             configuration. Then a kitchen doesn't need this state separately, it would just know from either
+     *             having a crafting processor or not.
+     */
+    @Deprecated
+    private final boolean allowCrafting;
     private final Set<BlockPos> checkedPos = new HashSet<>();
     private final List<KitchenItemProvider> itemProviderList = new ArrayList<>();
     private final List<KitchenRecipeProvider> recipeProviderList = new ArrayList<>();
     private final List<KitchenItemProcessor> itemProcessorList = new ArrayList<>();
 
-    public KitchenImpl(Level level, ItemStack itemStack) {
+    public KitchenImpl(Level level, boolean allowCrafting) {
         this.level = level;
-        activatingItemStack = itemStack;
-        activatingBlockState = Blocks.AIR.defaultBlockState();
+        this.allowCrafting = allowCrafting;
     }
 
     public KitchenImpl(Level level, BlockPos pos) {
         this.level = level;
-        activatingBlockState = level.getBlockState(pos);
-        activatingItemStack = ItemStack.EMPTY;
+        this.allowCrafting = true;
         findNeighbourCraftingBlocks(level, pos, true);
     }
 
@@ -105,7 +107,7 @@ public class KitchenImpl implements Kitchen {
         }
 
         if (recipeType == RecipeType.CRAFTING) {
-            return activatingBlockState.is(ModBlockTags.COOKING_TABLES) || activatingItemStack.is(ModItems.craftingBook);
+            return allowCrafting;
         }
 
         return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
