@@ -62,6 +62,8 @@ public class ModBlocks {
     }
 
     public static void initialize(BalmBlockRegistrar blocks) {
+        blocks.enableBlockDescriptionPrefixForItems();
+
         toolRack = blocks.register("tool_rack", ToolRackBlock::new, it -> it.sound(SoundType.WOOD).strength(2.5f))
                 .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.tool_rack.description")))
                 .asDeferredBlock();

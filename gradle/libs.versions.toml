@@ -1,5 +1,5 @@
 [versions]
-balm = "26.1.0.7"
+balm = "26.1.1.1-SNAPSHOT"
 shogi = "26.1.0.4-SNAPSHOT"
 minecraft = "26.1.1"
 neoForm = "26.1.1-1"
