@@ -34,6 +34,10 @@
     "cookingforblockheads:red_connector",
     "cookingforblockheads:black_connector",
     {
+      "id": "farmersdelight:stove",
+      "required": false
+    },
+    {
       "id": "buildersaddition:counter_oak_andesite",
       "required": false
     },

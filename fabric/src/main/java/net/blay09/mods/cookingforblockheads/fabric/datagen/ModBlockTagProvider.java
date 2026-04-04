@@ -282,6 +282,7 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
         for (final var connector : ModBlocks.dyedConnectors) {
             kitchenConnectors.add(connector);
         }
+        kitchenConnectors.addOptional(ResourceLocation.fromNamespaceAndPath("farmersdelight", "stove"));
         kitchenConnectors.addOptional(ResourceLocation.fromNamespaceAndPath("buildersaddition", "counter_oak_andesite"));
         kitchenConnectors.addOptional(ResourceLocation.fromNamespaceAndPath("buildersaddition", "counter_oak_diorite"));
         kitchenConnectors.addOptional(ResourceLocation.fromNamespaceAndPath("buildersaddition", "counter_oak_granite"));
