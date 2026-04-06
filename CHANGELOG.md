@@ -1,2 +1,1 @@
-- Added support for Farmer's Delight Cooking Pot
-- Fixed support for Storage Drawers
+- Fixed Farmers Delight Stove not being recognized as a kitchen connector
