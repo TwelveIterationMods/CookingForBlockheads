@@ -134,7 +134,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
     public void saveAdditional(ValueOutput output) {
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
         output.putBoolean("HasPreservationUpgrade", hasPreservationUpgrade);
-        output.storeNullable("CustomName", ComponentSerialization.CODEC, customName);
+        output.storeNullable("CustomNameV2", ComponentSerialization.CODEC, customName);
     }
 
     @Override
