@@ -39,7 +39,7 @@
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": "*",
     "balm-fabric": ">=${balm_version}",
-    "minecraft": ">=${minecraft_version}",
+    "minecraft": "${fabric_minecraft_version_range}",
     "java": ">=${java_version}"
   },
   "suggests": {
