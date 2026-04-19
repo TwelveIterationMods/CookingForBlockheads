@@ -76,7 +76,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity> {
 
         // Render the oven tools
         poseStack.pushPose();
-        poseStack.translate(0f, 1.05, 0f);
+        poseStack.translate(0f, 1.1f, 0f);
         RenderUtils.applyBlockAngle(poseStack, blockEntity.getBlockState());
         poseStack.scale(0.4f, 0.4f, 0.4f);
         ItemStack itemStack = blockEntity.getToolItem(0);
