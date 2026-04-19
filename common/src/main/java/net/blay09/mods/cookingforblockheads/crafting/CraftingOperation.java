@@ -137,6 +137,10 @@ public class CraftingOperation {
         return ingredientToken;
     }
 
+    public boolean hasIngredients() {
+        return missingIngredients.isEmpty();
+    }
+
     public boolean canCraft() {
         return missingIngredients.isEmpty();
     }

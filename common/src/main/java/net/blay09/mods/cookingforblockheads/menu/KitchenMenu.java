@@ -5,6 +5,7 @@ import net.blay09.mods.balm.api.container.DefaultContainer;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.api.Kitchen;
 import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
+import net.blay09.mods.cookingforblockheads.crafting.CraftingOperation;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.crafting.RecipeWithStatus;
 import net.blay09.mods.cookingforblockheads.menu.comparator.ComparatorName;
@@ -255,7 +256,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                 }
 
                 final var operation = context.createOperation(recipe).prepare();
-                if (!kitchen.isRecipeAvailable(recipe, operation)) {
+                if (!shouldShowRecipe(operation)) {
                     continue;
                 }
 
@@ -307,6 +308,9 @@ public class KitchenMenu extends AbstractContainerMenu {
         for (final var recipe : recipesForResult) {
             final var recipeResultItem = recipe.value().getResultItem(player.level().registryAccess());
             final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
+            if (!shouldShowRecipe(operation)) {
+                continue;
+            }
 
             result.add(new RecipeWithStatus(recipe.id(),
                     recipeResultItem,
@@ -318,6 +322,10 @@ public class KitchenMenu extends AbstractContainerMenu {
         result.sort(currentSorting);
         this.recipesForSelection = result;
         Balm.getNetworking().sendTo(player, new SelectionRecipesListMessage(result));
+    }
+
+    private boolean shouldShowRecipe(CraftingOperation operation) {
+        return operation.hasIngredients() || kitchen.isNoFilter();
     }
 
     public void craft(ResourceLocation recipeId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {

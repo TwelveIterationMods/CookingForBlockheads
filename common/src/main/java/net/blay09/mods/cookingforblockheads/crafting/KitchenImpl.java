@@ -104,6 +104,10 @@ public class KitchenImpl implements Kitchen {
         return itemProcessorList.stream().anyMatch(it -> it.canProcess(recipeType));
     }
 
+    public boolean isNoFilter() {
+        return activatingItemStack.is(ModItems.noFilterBook) || (activatingBlockEntity instanceof CookingTableBlockEntity cookingTable && cookingTable.hasNoFilterBook());
+    }
+
     public boolean isRecipeAvailable(RecipeHolder<Recipe<?>> recipe, CraftingOperation operation) {
         final var isNoFilter = activatingItemStack.is(ModItems.noFilterBook) || (activatingBlockEntity instanceof CookingTableBlockEntity cookingTable && cookingTable.hasNoFilterBook());
         if (isNoFilter) {
