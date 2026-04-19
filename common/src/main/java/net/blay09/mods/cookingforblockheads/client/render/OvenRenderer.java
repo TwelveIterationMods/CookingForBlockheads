@@ -104,7 +104,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
 
         // Render the oven tools
         poseStack.pushPose();
-        poseStack.translate(0.5f, 1.05, 0.5f);
+        poseStack.translate(0.5f, 1.1f, 0.5f);
         poseStack.scale(0.4f, 0.4f, 0.4f);
 
         if (!renderState.firstTool.isEmpty()) {
