@@ -266,7 +266,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
         return kitchenMenuAccess.evaluate((_, state) -> {
             final var operation = state.craftingContext().createOperation(recipeHolder).prepare();
-            if (!operation.hasIngredients() && !state.showUncraftable()) {
+            if (!shouldShowRecipe(operation, state)) {
                 return null;
             }
 
@@ -307,6 +307,10 @@ public class KitchenMenu extends AbstractContainerMenu {
             final var recipesForResult = kitchen.getRecipesFor(resultItem);
             for (final var recipe : recipesForResult) {
                 final var operation = craftingContext.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
+                if (!shouldShowRecipe(operation, state)) {
+                    continue;
+                }
+
                 recipeManager.listDisplaysForRecipe(recipe.id(), recipeDisplayEntry -> result.add(new RecipeWithStatus(recipeDisplayEntry,
                         operation.getMissingIngredients(),
                         operation.getMissingIngredientsMask(),
@@ -318,6 +322,10 @@ public class KitchenMenu extends AbstractContainerMenu {
         });
         this.recipesForSelection = result;
         Balm.networking().sendTo(player, new SelectionRecipesListMessage(result));
+    }
+
+    private boolean shouldShowRecipe(CraftingOperation operation, ServerKitchenMenuState state) {
+        return operation.hasIngredients() || state.showUncraftable();
     }
 
     private List<List<IngredientAmount>> getIngredientAmounts(RecipeDisplay recipeDisplay) {
