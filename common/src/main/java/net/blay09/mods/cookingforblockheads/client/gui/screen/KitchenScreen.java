@@ -277,10 +277,12 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         Font font = minecraft.font;
         final var selection = menu.getSelectedRecipe();
         if (selection == null) {
-            int curY = topPos + 79 / 2 - noSelection.length / 2 * font.lineHeight;
-            for (String s : noSelection) {
-                graphics.text(font, s, leftPos + 23 + 27 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
-                curY += font.lineHeight + 5;
+            if (!menu.isSelectionRecipesPending()) {
+                int curY = topPos + 79 / 2 - noSelection.length / 2 * font.lineHeight;
+                for (String s : noSelection) {
+                    graphics.text(font, s, leftPos + 23 + 27 - font.width(s) / 2, curY, 0xFFFFFFFF, true);
+                    curY += font.lineHeight + 5;
+                }
             }
         } else if (selection.recipeDisplayEntry().display() instanceof FurnaceRecipeDisplay) {
             graphics.blit(RenderPipelines.GUI_TEXTURED, guiTexture, leftPos + 23, topPos + 19, 54, 184, 54, 54, 256, 256);

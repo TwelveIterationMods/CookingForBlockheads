@@ -57,6 +57,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     private @Nullable CraftableWithStatus selectedCraftable;
     private @Nullable List<RecipeWithStatus> recipesForSelection;
+    private boolean selectionRecipesPending;
     private int recipesForSelectionIndex;
 
     public KitchenMenu(MenuType<KitchenMenu> menuType, int windowId, Player player) {
@@ -196,9 +197,11 @@ public class KitchenMenu extends AbstractContainerMenu {
         if (recipe != null) {
             if (player.level().isClientSide()) {
                 lockedInputs.clear();
+                selectionRecipesPending = true;
                 requestSelectionRecipes(recipe);
             }
         } else {
+            selectionRecipesPending = false;
             resetSelectedRecipe();
             updateMatrixSlots();
         }
@@ -597,6 +600,10 @@ public class KitchenMenu extends AbstractContainerMenu {
         return recipesForSelection != null ? recipesForSelection.get(recipesForSelectionIndex) : null;
     }
 
+    public boolean isSelectionRecipesPending() {
+        return selectionRecipesPending;
+    }
+
     public boolean isSelectedSlot(CraftableListingFakeSlot slot) {
         return selectedCraftable != null
                 && slot.getCraftable() != null
@@ -612,6 +619,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void setRecipesForSelection(List<RecipeWithStatus> recipes) {
+        selectionRecipesPending = false;
         recipesForSelection = !recipes.isEmpty() ? recipes : null;
         recipesForSelectionIndex = recipesForSelection != null ? Mth.clamp(recipesForSelectionIndex, 0, recipesForSelection.size() - 1) : 0;
 
