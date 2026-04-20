@@ -13,6 +13,7 @@ public class ModHudInfo {
         ModBlocks.ovens.forEach((color, oven) -> hudInfo.registerBlockInfo(id("oven"), oven, new OvenBlockInfoProvider()));
         ModBlocks.fridges.forEach((color, fridge) -> hudInfo.registerBlockInfo(id("fridge"), fridge, new FridgeBlockInfoProvider()));
         ModBlocks.sinks.forEach((color, sink) -> hudInfo.registerBlockInfo(id("sink"), sink, new SinkBlockInfoProvider()));
+        ModBlocks.chickenSinks.forEach((color, sink) -> hudInfo.registerBlockInfo(id("chicken_sink"), sink, new ChickenSinkBlockInfoProvider()));
 
         hudInfo.registerGlobalBlockInfo(id("preservation_chamber"), new UpgradeablePreservationBlockInfoProvider());
     }

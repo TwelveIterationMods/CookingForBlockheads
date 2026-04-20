@@ -364,6 +364,30 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         return chickenAge;
     }
 
+    public float getIncubationProgress() {
+        if (chickenType != null || !hasIncubatingEgg()) {
+            return 0f;
+        }
+
+        return Mth.clamp((chickenAge - EGG_INCUBATION_AGE) / (float) -EGG_INCUBATION_AGE, 0f, 1f);
+    }
+
+    public float getGrowthProgress() {
+        if (chickenType == null || chickenAge >= 0) {
+            return 0f;
+        }
+
+        return Mth.clamp((chickenAge - CHICK_GROWTH_AGE) / (float) -CHICK_GROWTH_AGE, 0f, 1f);
+    }
+
+    public float getEggLayProgress() {
+        if (chickenType == null || chickenAge < 0 || eggLayTimeTarget <= 0) {
+            return 0f;
+        }
+
+        return Mth.clamp(eggLayTime / (float) eggLayTimeTarget, 0f, 1f);
+    }
+
     public boolean tryCaptureChicken(Chicken chicken) {
         if (level == null || level.isClientSide() || chickenType != null || chicken.isRemoved()) {
             return false;
