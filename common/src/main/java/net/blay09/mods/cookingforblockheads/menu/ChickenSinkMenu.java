@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.menu;
 
 import net.blay09.mods.balm.world.inventory.QuickMove;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
@@ -84,7 +85,7 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, ModBlocks.chickenSinks.get(null).value());
+        return access.evaluate((level, pos) -> level.getBlockState(pos).is(ModBlockTags.CHICKEN_SINKS) && player.isWithinBlockInteractionRange(pos, 4f), true);
     }
 
     @Override
