@@ -57,6 +57,11 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
     public void extractRenderState(OvenBlockEntity blockEntity, OvenRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
+        renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
+        renderState.dye = blockEntity.getBlockState().getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
+        renderState.facing = blockEntity.getBlockState().getValue(OvenBlock.FACING);
+        renderState.active = blockEntity.isBurning();
+
         final var doorParts = renderState.door.setupModel(new Matrix4f(), false);
         final var doorModel = renderState.doorAngle < 0.3f && renderState.active ? ModModels.ovenDoorsActive.get(renderState.dye) : ModModels.ovenDoors.get(renderState.dye);
         doorModel.asBlockStateModel().collectParts(renderState.door.scratchRandomSource(42), doorParts);
@@ -69,11 +74,6 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         itemModelResolver.updateForTopItem(renderState.secondTool, blockEntity.getToolItem(1), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
         itemModelResolver.updateForTopItem(renderState.thirdTool, blockEntity.getToolItem(2), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
         itemModelResolver.updateForTopItem(renderState.fourthTool, blockEntity.getToolItem(3), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
-
-        renderState.doorAngle = blockEntity.getDoorAnimator().getRenderAngle(delta);
-        renderState.dye = blockEntity.getBlockState().getBlock() instanceof OvenBlock oven ? oven.getColor() : DyeColor.WHITE;
-        renderState.facing = blockEntity.getBlockState().getValue(OvenBlock.FACING);
-        renderState.active = blockEntity.isBurning();
 
         final var id = (int) blockEntity.getBlockPos().asLong();
         renderState.items = new ArrayList<>();
