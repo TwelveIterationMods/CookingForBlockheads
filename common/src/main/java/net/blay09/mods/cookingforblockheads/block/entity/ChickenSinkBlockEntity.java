@@ -1,10 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.world.BalmContainerProvider;
-import net.blay09.mods.balm.world.BalmMenuProvider;
-import net.blay09.mods.balm.world.ContainerUtils;
-import net.blay09.mods.balm.world.DefaultContainer;
-import net.blay09.mods.balm.world.SubContainer;
+import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
@@ -14,6 +10,7 @@ import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider
 import net.blay09.mods.cookingforblockheads.menu.ChickenSinkMenu;
 import net.blay09.mods.cookingforblockheads.rules.CookingForBlockheadsRules;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
@@ -25,6 +22,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -34,18 +32,20 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.jspecify.annotations.Nullable;
 
 public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvider<Unit>, IMutableNameable, BalmContainerProvider, KitchenItemProviderHolder, TransferableBlockEntity<ChickenSinkBlockEntity.TransferData> {
@@ -67,6 +67,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     private int eggLayTime;
     private int eggLayTimeTarget = defaultEggLayTime();
     private @Nullable Component customName;
+    private @Nullable Holder<ChickenVariant> chickenType;
     private @Nullable BlockPos jukebox;
     private int partyBpm;
 
@@ -103,6 +104,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     public void loadAdditional(ValueInput input) {
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
         customName = input.read("CustomName", ComponentSerialization.CODEC).orElse(null);
+        chickenType = input.read("ChickenType", ChickenVariant.CODEC).orElse(null);
         eggLayTime = input.getIntOr("EggLayTime", 0);
         eggLayTimeTarget = input.getIntOr("EggLayTimeTarget", resolveEggLayTimeTarget(false));
     }
@@ -111,6 +113,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     public void saveAdditional(ValueOutput output) {
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
         output.storeNullable("CustomName", ComponentSerialization.CODEC, customName);
+        output.storeNullable("ChickenType", ChickenVariant.CODEC, chickenType);
         output.putInt("EggLayTime", eggLayTime);
         output.putInt("EggLayTimeTarget", eggLayTimeTarget);
     }
@@ -121,14 +124,16 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     }
 
     public void serverTick(Level level) {
-        if (eggLayTime < eggLayTimeTarget) {
-            eggLayTime++;
-            setChanged();
-        } else if (CookingForBlockheadsRules.chickenSinkMayLayEgg.getOrDefault(this) && tryProduceEgg()) {
-            eggLayTime = 0;
-            eggLayTimeTarget = resolveEggLayTimeTarget(true);
-            setChanged();
-            level.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.75f, Mth.nextFloat(level.getRandom(), 0.9f, 1.1f));
+        if (chickenType != null) {
+            if (eggLayTime < eggLayTimeTarget) {
+                eggLayTime++;
+                setChanged();
+            } else if (CookingForBlockheadsRules.chickenSinkMayLayEgg.getOrDefault(this) && tryProduceEgg(level)) {
+                eggLayTime = 0;
+                eggLayTimeTarget = resolveEggLayTimeTarget(true);
+                setChanged();
+                level.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.75f, Mth.nextFloat(level.getRandom(), 0.9f, 1.1f));
+            }
         }
 
         ticksSinceSync++;
@@ -141,8 +146,16 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         }
     }
 
-    private boolean tryProduceEgg() {
-        return ContainerUtils.insertItemStacked(eggContainer, new ItemStack(Items.EGG), false).isEmpty();
+    private boolean tryProduceEgg(Level level) {
+        if (!(level instanceof ServerLevel serverLevel) || chickenType == null) {
+            return false;
+        }
+
+        final var chicken = new Chicken(EntityType.CHICKEN, serverLevel);
+        chicken.setVariant(chickenType);
+        chicken.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
+        return chicken.dropFromGiftLootTable(serverLevel, BuiltInLootTables.CHICKEN_LAY,
+                (_, itemStack) -> ContainerUtils.insertItemStacked(eggContainer, itemStack, false));
     }
 
     public int defaultEggLayTime() {
@@ -212,6 +225,15 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         return Component.translatable("container.cookingforblockheads.chicken_sink");
     }
 
+    public @Nullable Holder<ChickenVariant> getChickenType() {
+        return chickenType;
+    }
+
+    public void setChickenType(@Nullable Holder<ChickenVariant> chickenType) {
+        this.chickenType = chickenType;
+        setChanged();
+    }
+
     @Override
     public Container getContainer() {
         return container;
@@ -240,7 +262,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
     @Override
     public TransferData snapshotDataForTransfer() {
-        return new TransferData(TransferableContainer.copyAndClear(container), eggLayTime, eggLayTimeTarget);
+        return new TransferData(TransferableContainer.copyAndClear(container), eggLayTime, eggLayTimeTarget, chickenType);
     }
 
     @Override
@@ -248,6 +270,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         data.container().applyTo(container);
         eggLayTime = data.eggLayTime();
         eggLayTimeTarget = data.eggLayTimeTarget();
+        chickenType = data.chickenType();
     }
 
     @Override
@@ -270,6 +293,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         this.partyBpm = playing ? 85 : 0;
     }
 
-    public record TransferData(TransferableContainer container, int eggLayTime, int eggLayTimeTarget) {
+    public record TransferData(TransferableContainer container, int eggLayTime, int eggLayTimeTarget,
+                               @Nullable Holder<ChickenVariant> chickenType) {
     }
 }

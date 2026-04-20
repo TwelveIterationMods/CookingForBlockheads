@@ -18,12 +18,9 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
-import net.minecraft.world.entity.animal.chicken.ChickenVariants;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,8 +28,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlockEntity, ChickenSinkRenderer.ChickenSinkRenderState> {
-
-    private static final Identifier DEFAULT_CHICKEN_TEXTURE = Identifier.withDefaultNamespace("entity/chicken/chicken_temperate");
 
     public static class ChickenSinkRenderState extends BlockEntityRenderState {
         public final ChickenRenderState chicken = new ChickenRenderState();
@@ -125,16 +120,16 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, delta, vec, crumblingOverlay);
 
         renderState.facing = blockEntity.getBlockState().getValue(ChickenSinkBlock.FACING);
-        renderState.variant = blockEntity.getLevel() instanceof Level level
-                ? level.registryAccess().lookup(Registries.CHICKEN_VARIANT)
-                  .flatMap(it -> it.getOptional(ChickenVariants.DEFAULT))
-                  .orElse(null)
-                : null;
+        renderState.variant = blockEntity.getChickenType() != null ? blockEntity.getChickenType().value() : null;
         updateChickenPose(blockEntity, delta, renderState);
     }
 
     @Override
     public void submit(ChickenSinkRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        if (renderState.variant == null) {
+            return;
+        }
+
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
@@ -150,7 +145,7 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
 
         final var scale = 0.9f;
         poseStack.scale(scale, scale, scale);
-        final var renderType = renderState.variant != null ? RenderTypes.entityCutout(renderState.variant.modelAndTexture().asset().texturePath()) : RenderTypes.entityCutout(DEFAULT_CHICKEN_TEXTURE);
+        final var renderType = RenderTypes.entityCutout(renderState.variant.modelAndTexture().asset().texturePath());
         submitNodeCollector.submitModel(model, renderState.chicken, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, renderState.breakProgress);
 
         poseStack.popPose();
