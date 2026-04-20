@@ -8,6 +8,8 @@ import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -74,6 +76,15 @@ public class ChickenSinkBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new ChickenSinkBlockEntity(pos, state);
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        super.stepOn(level, pos, state, entity);
+
+        if (!level.isClientSide() && entity instanceof Chicken chicken && level.getBlockEntity(pos) instanceof ChickenSinkBlockEntity chickenSink) {
+            chickenSink.tryCaptureChicken(chicken);
+        }
     }
 
     @Nullable

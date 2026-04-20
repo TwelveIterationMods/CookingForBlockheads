@@ -15,6 +15,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
@@ -232,6 +234,20 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     public void setChickenType(@Nullable Holder<ChickenVariant> chickenType) {
         this.chickenType = chickenType;
         setChanged();
+    }
+
+    public boolean tryCaptureChicken(Chicken chicken) {
+        if (level == null || level.isClientSide() || chickenType != null || chicken.isRemoved()) {
+            return false;
+        }
+
+        setChickenType(chicken.getVariant());
+        chicken.remove(Entity.RemovalReason.DISCARDED);
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION, worldPosition.getX() + 0.5, worldPosition.getY() + 1.5, worldPosition.getZ() + 0.5, 1, 0, 0, 0, 0);
+            level.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 1f, 1f);
+        }
+        return true;
     }
 
     @Override
