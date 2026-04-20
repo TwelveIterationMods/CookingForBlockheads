@@ -2,13 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": "#minecraft:eggs",
     "H": "minecraft:hay_block",
     "S": "cookingforblockheads:sink",
     "W": "#minecraft:planks"
   },
   "pattern": [
-    "HEH",
+    "HHH",
     "WSW"
   ],
   "result": {
