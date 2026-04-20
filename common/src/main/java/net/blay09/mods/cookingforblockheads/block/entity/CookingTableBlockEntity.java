@@ -1,16 +1,12 @@
 package net.blay09.mods.cookingforblockheads.block.entity;
 
-import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.BalmMenuProvider;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.crafting.KitchenImpl;
 import net.blay09.mods.cookingforblockheads.crafting.KitchenMultiblockScanner;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenuAccess;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.menu.ServerKitchenMenuState;
-import net.blay09.mods.cookingforblockheads.network.message.KitchenFeedbackMessage;
 import net.blay09.mods.cookingforblockheads.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -33,7 +29,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 
-public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProvider<Unit>, TransferableBlockEntity<ItemStack> {
+public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProvider<Unit> {
 
     private ItemStack noFilterBook = ItemStack.EMPTY;
 
@@ -93,18 +89,6 @@ public class CookingTableBlockEntity extends BlockEntity implements BalmMenuProv
     @Override
     public StreamCodec<RegistryFriendlyByteBuf, Unit> getScreenStreamCodec() {
         return Unit.STREAM_CODEC.cast();
-    }
-
-    @Override
-    public ItemStack snapshotDataForTransfer() {
-        final var snapshot = noFilterBook;
-        noFilterBook = ItemStack.EMPTY;
-        return snapshot;
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(ItemStack data) {
-        setNoFilterBook(data);
     }
 
     @Override

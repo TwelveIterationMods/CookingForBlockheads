@@ -7,6 +7,7 @@ import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.OvenBlockEntity;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -160,6 +161,11 @@ public class OvenBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new OvenBlockEntity(pos, state);
+    }
+
+    @Override
+    protected boolean shouldChangedStateKeepBlockEntity(BlockState oldState) {
+        return oldState.is(ModBlockTags.OVENS);
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.blay09.mods.balm.platform.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.SinkBlockEntity;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -160,6 +161,11 @@ public class SinkBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SinkBlockEntity(pos, state);
+    }
+
+    @Override
+    protected boolean shouldChangedStateKeepBlockEntity(BlockState oldState) {
+        return oldState.is(ModBlockTags.SINKS);
     }
 
     @Override

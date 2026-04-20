@@ -15,8 +15,6 @@ import net.blay09.mods.cookingforblockheads.api.KitchenOperation;
 import net.blay09.mods.cookingforblockheads.api.event.OvenCookedEvent;
 import net.blay09.mods.cookingforblockheads.block.OvenBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProcessorHolder;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -47,7 +45,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -64,7 +61,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, TransferableBlockEntity<TransferableContainer>, KitchenItemProviderHolder, KitchenItemProcessorHolder {
+public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, KitchenItemProviderHolder, KitchenItemProcessorHolder {
 
     private static final int COOK_TIME = 200;
     private final DefaultEnergyStorage energyStorage = new DefaultEnergyStorage(10000) {
@@ -561,16 +558,6 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     @Override
     public BlockPos getScreenOpeningData(ServerPlayer serverPlayer) {
         return worldPosition;
-    }
-
-    @Override
-    public TransferableContainer snapshotDataForTransfer() {
-        return TransferableContainer.copyAndClear(container);
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(TransferableContainer data) {
-        data.applyTo(container);
     }
 
     @Override

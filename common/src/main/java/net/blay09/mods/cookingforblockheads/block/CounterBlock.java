@@ -6,6 +6,7 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -57,6 +58,11 @@ public class CounterBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CounterBlockEntity(pos, state);
+    }
+
+    @Override
+    protected boolean shouldChangedStateKeepBlockEntity(BlockState oldState) {
+        return oldState.is(ModBlockTags.COUNTERS);
     }
 
     @Override

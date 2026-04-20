@@ -9,7 +9,6 @@ import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.capability.KitchenRecipeProviderHolder;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
@@ -37,7 +36,7 @@ import java.util.Set;
 
 import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
-public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvider, TransferableBlockEntity<Integer>, KitchenItemProviderHolder, KitchenRecipeProviderHolder {
+public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvider, KitchenItemProviderHolder, KitchenRecipeProviderHolder {
 
     private static final int SYNC_INTERVAL = 10;
     private static final Identifier SALT_FILTER_SOURCE = id("salt_filter");
@@ -171,16 +170,6 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
     @Override
     public FluidTank getFluidTank() {
         return sinkTank;
-    }
-
-    @Override
-    public Integer snapshotDataForTransfer() {
-        return sinkTank.getAmount();
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(Integer data) {
-        sinkTank.setFluid(Fluids.WATER, data);
     }
 
     private record SinkIngredientToken(SinkBlockEntity milkJar, ItemStack itemStack, int count) implements IngredientToken {

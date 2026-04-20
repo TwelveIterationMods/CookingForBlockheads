@@ -3,7 +3,6 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.ChickenSinkMenu;

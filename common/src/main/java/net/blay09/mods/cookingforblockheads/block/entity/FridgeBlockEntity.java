@@ -11,8 +11,6 @@ import net.blay09.mods.cookingforblockheads.api.KitchenRecipeProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.entity.util.DoorAnimator;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.capability.KitchenRecipeProviderHolder;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -59,7 +57,7 @@ import java.util.Set;
 
 import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 
-public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder, KitchenRecipeProviderHolder {
+public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder, KitchenRecipeProviderHolder {
 
     private static final Identifier ICE_UNIT_SOURCE = id("ice_unit");
 
@@ -325,16 +323,6 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
     @Override
     public BlockPos getScreenOpeningData(ServerPlayer serverPlayer) {
         return worldPosition;
-    }
-
-    @Override
-    public TransferableContainer snapshotDataForTransfer() {
-        return TransferableContainer.copyAndClear(container);
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(TransferableContainer data) {
-        data.applyTo(container);
     }
 
     @Override

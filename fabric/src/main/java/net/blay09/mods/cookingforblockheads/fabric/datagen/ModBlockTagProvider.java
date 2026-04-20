@@ -246,6 +246,21 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         final var cookingTables = valueLookupBuilder(ModBlockTags.COOKING_TABLES);
         ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(cookingTables::add);
 
+        final var counters = valueLookupBuilder(ModBlockTags.COUNTERS);
+        ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(counters::add);
+
+        final var cabinets = valueLookupBuilder(ModBlockTags.CABINETS);
+        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(cabinets::add);
+
+        final var fridges = valueLookupBuilder(ModBlockTags.FRIDGES);
+        ModBlocks.fridges.sortedValues().map(DeferredBlock::asBlock).forEach(fridges::add);
+
+        final var ovens = valueLookupBuilder(ModBlockTags.OVENS);
+        ModBlocks.ovens.sortedValues().map(DeferredBlock::asBlock).forEach(ovens::add);
+
+        final var sinks = valueLookupBuilder(ModBlockTags.SINKS);
+        ModBlocks.sinks.sortedValues().map(DeferredBlock::asBlock).forEach(sinks::add);
+
         final var chickenSinks = valueLookupBuilder(ModBlockTags.CHICKEN_SINKS);
         ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(chickenSinks::add);
 

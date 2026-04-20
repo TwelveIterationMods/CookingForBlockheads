@@ -8,8 +8,6 @@ import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.UpgradeablePreservation;
 import net.blay09.mods.cookingforblockheads.block.CounterBlock;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.kitchen.ConditionalKitchenItemProvider;
@@ -48,7 +46,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
-public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, KitchenItemProviderHolder {
+public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
 
     private final int containerSize = CookingForBlockheadsConfig.getActive().largeCounters ? 54 : 27;
 
@@ -220,16 +218,6 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
     @Override
     public StreamCodec<RegistryFriendlyByteBuf, BlockPos> getScreenStreamCodec() {
         return BlockPos.STREAM_CODEC.cast();
-    }
-
-    @Override
-    public TransferableContainer snapshotDataForTransfer() {
-        return TransferableContainer.copyAndClear(container);
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(TransferableContainer data) {
-        data.applyTo(container);
     }
 
     @Override
