@@ -131,11 +131,10 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     public void serverTick(Level level) {
         if (chickenType != null) {
             if (chickenAge < 0) {
-                chickenAge++;
-                setChanged();
-            } else if (chickenAge > 0) {
-                chickenAge--;
-                setChanged();
+                if (chickenAge % 1200 != 0 || tryConsumeFeed()) {
+                    chickenAge++;
+                    setChanged();
+                }
             } else if (eggLayTime < eggLayTimeTarget) {
                 eggLayTime++;
                 setChanged();
