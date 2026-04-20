@@ -2,7 +2,9 @@ package net.blay09.mods.cookingforblockheads.block.entity;
 
 import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.balm.world.BalmMenuProvider;
+import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.SubContainer;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
@@ -26,6 +28,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
@@ -49,13 +52,15 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
     private static final int SYNC_INTERVAL = 10;
 
-    private final DefaultContainer container = new DefaultContainer(5) {
+    private final DefaultContainer container = new DefaultContainer(6) {
         @Override
         public void setChanged() {
             ChickenSinkBlockEntity.this.setChanged();
         }
     };
-    private final KitchenItemProvider itemProvider = new ContainerKitchenItemProvider(container);
+    private final SubContainer feedContainer = new SubContainer(container, 0, 1);
+    private final SubContainer eggContainer = new SubContainer(container, 1, 5);
+    private final KitchenItemProvider itemProvider = new ContainerKitchenItemProvider(eggContainer);
 
     private boolean isDirty;
     private int ticksSinceSync;
@@ -99,7 +104,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
         customName = input.read("CustomName", ComponentSerialization.CODEC).orElse(null);
         eggLayTime = input.getIntOr("EggLayTime", 0);
-        eggLayTimeTarget = input.getIntOr("EggLayTimeTarget", resolveEggLayTimeTarget());
+        eggLayTimeTarget = input.getIntOr("EggLayTimeTarget", resolveEggLayTimeTarget(false));
     }
 
     @Override
@@ -121,7 +126,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
             setChanged();
         } else if (CookingForBlockheadsRules.chickenSinkMayLayEgg.getOrDefault(this) && tryProduceEgg()) {
             eggLayTime = 0;
-            eggLayTimeTarget = resolveEggLayTimeTarget();
+            eggLayTimeTarget = resolveEggLayTimeTarget(true);
             setChanged();
             level.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.75f, Mth.nextFloat(level.getRandom(), 0.9f, 1.1f));
         }
@@ -137,29 +142,33 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     }
 
     private boolean tryProduceEgg() {
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            final var slotStack = container.getItem(i);
-            if (slotStack.isEmpty()) {
-                container.setItem(i, new ItemStack(Items.EGG));
-                return true;
-            }
-            if (slotStack.is(Items.EGG) && slotStack.getCount() < slotStack.getMaxStackSize()) {
-                slotStack.grow(1);
-                container.setChanged();
-                return true;
-            }
-        }
-        return false;
+        return ContainerUtils.insertItemStacked(eggContainer, new ItemStack(Items.EGG), false).isEmpty();
     }
 
     public int defaultEggLayTime() {
-        final int minTime = 6000;
-        final int maxTime = 12000;
+        final int minTime = 12000;
+        final int maxTime = 24000;
         return minTime + levelRandom().nextInt(maxTime - minTime + 1);
     }
 
-    private int resolveEggLayTimeTarget() {
-        return Math.max(1, CookingForBlockheadsRules.chickenSinkEggLayTime.getOrDefault(this));
+    private int resolveEggLayTimeTarget(boolean consumeFeed) {
+        final var baseEggLayTime = Math.max(1, CookingForBlockheadsRules.chickenSinkEggLayTime.getOrDefault(this));
+        if (consumeFeed && tryConsumeFeed()) {
+            return Mth.ceil(baseEggLayTime / 2f);
+        }
+
+        return baseEggLayTime;
+    }
+
+    private boolean tryConsumeFeed() {
+        final var seedStack = feedContainer.getItem(0);
+        if (seedStack.is(ItemTags.CHICKEN_FOOD)) {
+            seedStack.shrink(1);
+            feedContainer.setChanged();
+            return true;
+        }
+
+        return false;
     }
 
     private RandomSource levelRandom() {

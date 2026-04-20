@@ -1,6 +1,9 @@
 package net.blay09.mods.cookingforblockheads.menu;
 
+import net.blay09.mods.balm.world.inventory.QuickMove;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -9,13 +12,17 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import org.jspecify.annotations.Nullable;
 
 public class ChickenSinkMenu extends AbstractContainerMenu {
 
-    private static final int SLOT_COUNT = 5;
+    private static final Identifier WHEAT_SEEDS_SLOT_ICON = Identifier.withDefaultNamespace("container/slot/wheat_seeds");
+    private static final int SLOT_COUNT = 6;
 
     private final Container container;
     private final ContainerLevelAccess access;
+    private final QuickMove.Routing quickMove;
 
     public ChickenSinkMenu(int windowId, Inventory playerInventory) {
         this(windowId, playerInventory, new SimpleContainer(SLOT_COUNT), ContainerLevelAccess.NULL);
@@ -28,8 +35,25 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
         this.access = access;
         container.startOpen(playerInventory.player);
 
-        for (int i = 0; i < 5; i++) {
-            addSlot(new Slot(container, i, 44 + i * 18, 20));
+        addSlot(new Slot(container, 0, 26, 20) {
+            @Override
+            public boolean mayPlace(ItemStack itemStack) {
+                return itemStack.is(ItemTags.CHICKEN_FOOD);
+            }
+
+            @Override
+            public Identifier getNoItemIcon() {
+                return WHEAT_SEEDS_SLOT_ICON;
+            }
+        });
+
+        for (int i = 1; i < SLOT_COUNT; i++) {
+            addSlot(new Slot(container, i, 44 + i * 18, 20) {
+                @Override
+                public boolean mayPlace(ItemStack itemStack) {
+                    return itemStack.is(Items.EGG);
+                }
+            });
         }
 
 
@@ -42,31 +66,20 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; i++) {
             addSlot(new Slot(playerInventory, i, 8 + i * 18, 109));
         }
+
+        quickMove = QuickMove.create(this, this::moveItemStackTo)
+                .slot("chicken_food", 0)
+                .slotRange("eggs", 1, SLOT_COUNT)
+                .disableDefaultRoutes()
+                .route(QuickMove.CONTAINER, QuickMove.PLAYER, true)
+                .route(it -> it.is(ItemTags.CHICKEN_FOOD), QuickMove.PLAYER, "chicken_food")
+                .route(it -> it.is(Items.EGG), QuickMove.PLAYER, "eggs")
+                .build();
     }
 
     @Override
     public ItemStack quickMoveStack(Player player, int slotIndex) {
-        ItemStack itemStack = ItemStack.EMPTY;
-        Slot slot = slots.get(slotIndex);
-        if (slot != null && slot.hasItem()) {
-            ItemStack slotStack = slot.getItem();
-            itemStack = slotStack.copy();
-            if (slotIndex < 5) {
-                if (!moveItemStackTo(slotStack, 5, slots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!moveItemStackTo(slotStack, 0, 5, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (slotStack.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-        }
-
-        return itemStack;
+        return quickMove.transfer(this, player, slotIndex);
     }
 
     @Override
