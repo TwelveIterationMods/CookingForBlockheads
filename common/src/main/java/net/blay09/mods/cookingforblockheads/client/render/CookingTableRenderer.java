@@ -53,7 +53,7 @@ public class CookingTableRenderer implements BlockEntityRenderer<CookingTableBlo
             poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
             poseStack.translate(-0.5f, 0f, -0.5f);
 
-            poseStack.translate(0, 1.0725f, 0);
+            poseStack.translate(0.5f, 1.0725f, 0.5f);
             poseStack.mulPose(Axis.XP.rotationDegrees(90f));
             poseStack.scale(0.5f, 0.5f, 0.5f);
             renderState.item.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
