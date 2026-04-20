@@ -68,6 +68,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     private int ticksSinceSync;
     private int eggLayTime;
     private int eggLayTimeTarget = defaultEggLayTime();
+    private int chickenAge;
     private @Nullable Component customName;
     private @Nullable Holder<ChickenVariant> chickenType;
     private @Nullable BlockPos jukebox;
@@ -107,6 +108,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
         customName = input.read("CustomName", ComponentSerialization.CODEC).orElse(null);
         chickenType = input.read("ChickenType", ChickenVariant.CODEC).orElse(null);
+        chickenAge = input.getIntOr("ChickenAge", 0);
         eggLayTime = input.getIntOr("EggLayTime", 0);
         eggLayTimeTarget = input.getIntOr("EggLayTimeTarget", resolveEggLayTimeTarget(false));
     }
@@ -116,6 +118,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
         output.storeNullable("CustomName", ComponentSerialization.CODEC, customName);
         output.storeNullable("ChickenType", ChickenVariant.CODEC, chickenType);
+        output.putInt("ChickenAge", chickenAge);
         output.putInt("EggLayTime", eggLayTime);
         output.putInt("EggLayTimeTarget", eggLayTimeTarget);
     }
@@ -127,7 +130,13 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
     public void serverTick(Level level) {
         if (chickenType != null) {
-            if (eggLayTime < eggLayTimeTarget) {
+            if (chickenAge < 0) {
+                chickenAge++;
+                setChanged();
+            } else if (chickenAge > 0) {
+                chickenAge--;
+                setChanged();
+            } else if (eggLayTime < eggLayTimeTarget) {
                 eggLayTime++;
                 setChanged();
             } else if (CookingForBlockheadsRules.chickenSinkMayLayEgg.getOrDefault(this) && tryProduceEgg(level)) {
@@ -155,6 +164,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
         final var chicken = new Chicken(EntityType.CHICKEN, serverLevel);
         chicken.setVariant(chickenType);
+        chicken.setAge(chickenAge);
         chicken.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
         return chicken.dropFromGiftLootTable(serverLevel, BuiltInLootTables.CHICKEN_LAY,
                 (_, itemStack) -> ContainerUtils.insertItemStacked(eggContainer, itemStack, false));
@@ -236,12 +246,18 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         setChanged();
     }
 
+    public int getChickenAge() {
+        return chickenAge;
+    }
+
     public boolean tryCaptureChicken(Chicken chicken) {
         if (level == null || level.isClientSide() || chickenType != null || chicken.isRemoved()) {
             return false;
         }
 
         setChickenType(chicken.getVariant());
+        chickenAge = chicken.getAge();
+        setChanged();
         chicken.remove(Entity.RemovalReason.DISCARDED);
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.EXPLOSION, worldPosition.getX() + 0.5, worldPosition.getY() + 1.5, worldPosition.getZ() + 0.5, 1, 0, 0, 0, 0);
@@ -278,7 +294,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
     @Override
     public TransferData snapshotDataForTransfer() {
-        return new TransferData(TransferableContainer.copyAndClear(container), eggLayTime, eggLayTimeTarget, chickenType);
+        return new TransferData(TransferableContainer.copyAndClear(container), eggLayTime, eggLayTimeTarget, chickenAge, chickenType);
     }
 
     @Override
@@ -286,6 +302,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         data.container().applyTo(container);
         eggLayTime = data.eggLayTime();
         eggLayTimeTarget = data.eggLayTimeTarget();
+        chickenAge = data.chickenAge();
         chickenType = data.chickenType();
     }
 
@@ -309,7 +326,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         this.partyBpm = playing ? 85 : 0;
     }
 
-    public record TransferData(TransferableContainer container, int eggLayTime, int eggLayTimeTarget,
+    public record TransferData(TransferableContainer container, int eggLayTime, int eggLayTimeTarget, int chickenAge,
                                @Nullable Holder<ChickenVariant> chickenType) {
     }
 }

@@ -1,12 +1,16 @@
 package net.blay09.mods.cookingforblockheads.client.render;
 
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.AdultAndBabyModelPair;
 import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.ChickenSinkBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.ChickenSinkBlockEntity;
 import net.minecraft.client.model.animal.chicken.AdultChickenModel;
+import net.minecraft.client.model.animal.chicken.BabyChickenModel;
 import net.minecraft.client.model.animal.chicken.ChickenModel;
+import net.minecraft.client.model.animal.chicken.ColdChickenModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -27,6 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Map;
+
 public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlockEntity, ChickenSinkRenderer.ChickenSinkRenderState> {
 
     public static class ChickenSinkRenderState extends BlockEntityRenderState {
@@ -36,10 +42,20 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         public ChickenVariant variant;
     }
 
-    private final ChickenModel model;
+    private final Map<ChickenVariant.ModelType, AdultAndBabyModelPair<ChickenModel>> models;
 
     public ChickenSinkRenderer(BlockEntityRendererProvider.Context context) {
-        model = new AdultChickenModel(context.bakeLayer(ModelLayers.CHICKEN));
+        models = bakeModels(context);
+    }
+
+    private static Map<ChickenVariant.ModelType, AdultAndBabyModelPair<ChickenModel>> bakeModels(BlockEntityRendererProvider.Context context) {
+        return Maps.newEnumMap(Map.of(
+                ChickenVariant.ModelType.NORMAL, new AdultAndBabyModelPair<>(
+                        new AdultChickenModel(context.bakeLayer(ModelLayers.CHICKEN)),
+                        new BabyChickenModel(context.bakeLayer(ModelLayers.CHICKEN_BABY))),
+                ChickenVariant.ModelType.COLD, new AdultAndBabyModelPair<>(
+                        new ColdChickenModel(context.bakeLayer(ModelLayers.COLD_CHICKEN)),
+                        new BabyChickenModel(context.bakeLayer(ModelLayers.CHICKEN_BABY)))));
     }
 
     @Override
@@ -121,6 +137,7 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
 
         renderState.facing = blockEntity.getBlockState().getValue(ChickenSinkBlock.FACING);
         renderState.variant = blockEntity.getChickenType() != null ? blockEntity.getChickenType().value() : null;
+        renderState.chicken.isBaby = blockEntity.getChickenAge() < 0;
         updateChickenPose(blockEntity, delta, renderState);
     }
 
@@ -140,12 +157,16 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         poseStack.mulPose(Axis.ZP.rotationDegrees(180));
         poseStack.translate(-0.5f, -0.5f, -0.5f);
 
-        poseStack.translate(0.4f, -1f, 0.5f);
+        poseStack.translate(renderState.chicken.isBaby ? 0.35f : 0.4f, renderState.chicken.isBaby ? -1.1f : -1f, 0.5f);
         poseStack.mulPose(Axis.YP.rotationDegrees(-10f));
 
         final var scale = 0.9f;
         poseStack.scale(scale, scale, scale);
-        final var renderType = RenderTypes.entityCutout(renderState.variant.modelAndTexture().asset().texturePath());
+        final var model = models.get(renderState.variant.modelAndTexture().model()).getModel(renderState.chicken.isBaby);
+        final var texture = renderState.chicken.isBaby
+                ? renderState.variant.babyTexture().texturePath()
+                : renderState.variant.modelAndTexture().asset().texturePath();
+        final var renderType = RenderTypes.entityCutout(texture);
         submitNodeCollector.submitModel(model, renderState.chicken, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, renderState.breakProgress);
 
         poseStack.popPose();
