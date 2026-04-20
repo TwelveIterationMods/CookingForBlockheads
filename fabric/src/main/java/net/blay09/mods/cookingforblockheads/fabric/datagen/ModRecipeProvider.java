@@ -195,10 +195,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .save(exporter);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(null))
-                        .pattern("HEH")
+                        .pattern("HHH")
                         .pattern("WSW")
                         .define('H', Blocks.HAY_BLOCK)
-                        .define('E', ItemTags.EGGS)
                         .define('W', ItemTags.PLANKS)
                         .define('S', ModBlocks.sinks.get(null))
                         .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
