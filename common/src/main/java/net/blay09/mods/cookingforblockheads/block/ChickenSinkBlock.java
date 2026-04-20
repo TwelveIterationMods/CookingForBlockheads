@@ -62,6 +62,13 @@ public class ChickenSinkBlock extends BaseKitchenBlock {
             return InteractionResult.SUCCESS;
         }
 
+        if (level.getBlockEntity(pos) instanceof ChickenSinkBlockEntity chickenSink && chickenSink.canAcceptEgg(itemStack)) {
+            if (!level.isClientSide()) {
+                chickenSink.tryInsertEgg(itemStack);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);
     }
 

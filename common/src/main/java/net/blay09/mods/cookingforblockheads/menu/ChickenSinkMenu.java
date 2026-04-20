@@ -13,7 +13,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.jspecify.annotations.Nullable;
 
 public class ChickenSinkMenu extends AbstractContainerMenu {
@@ -52,7 +51,7 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
             addSlot(new Slot(container, i, 44 + i * 18, 20) {
                 @Override
                 public boolean mayPlace(ItemStack itemStack) {
-                    return itemStack.is(Items.EGG);
+                    return itemStack.is(ItemTags.EGGS);
                 }
             });
         }
@@ -74,7 +73,7 @@ public class ChickenSinkMenu extends AbstractContainerMenu {
                 .disableDefaultRoutes()
                 .route(QuickMove.CONTAINER, QuickMove.PLAYER, true)
                 .route(it -> it.is(ItemTags.CHICKEN_FOOD), QuickMove.PLAYER, "chicken_food")
-                .route(it -> it.is(Items.EGG), QuickMove.PLAYER, "eggs")
+                .route(it -> it.is(ItemTags.EGGS), QuickMove.PLAYER, "eggs")
                 .build();
     }
 

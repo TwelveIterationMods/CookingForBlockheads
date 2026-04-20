@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -25,6 +27,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,15 +40,18 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
 
     public static class ChickenSinkRenderState extends BlockEntityRenderState {
         public final ChickenRenderState chicken = new ChickenRenderState();
+        public final ItemStackRenderState egg = new ItemStackRenderState();
         public Direction facing = Direction.NORTH;
         @Nullable
         public ChickenVariant variant;
     }
 
     private final Map<ChickenVariant.ModelType, AdultAndBabyModelPair<ChickenModel>> models;
+    private final ItemModelResolver itemModelResolver;
 
     public ChickenSinkRenderer(BlockEntityRendererProvider.Context context) {
         models = bakeModels(context);
+        itemModelResolver = context.itemModelResolver();
     }
 
     private static Map<ChickenVariant.ModelType, AdultAndBabyModelPair<ChickenModel>> bakeModels(BlockEntityRendererProvider.Context context) {
@@ -138,12 +144,26 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         renderState.facing = blockEntity.getBlockState().getValue(ChickenSinkBlock.FACING);
         renderState.variant = blockEntity.getChickenType() != null ? blockEntity.getChickenType().value() : null;
         renderState.chicken.isBaby = blockEntity.getChickenAge() < 0;
+        itemModelResolver.updateForTopItem(renderState.egg, blockEntity.getIncubatingEgg(), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
         updateChickenPose(blockEntity, delta, renderState);
     }
 
     @Override
     public void submit(ChickenSinkRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         if (renderState.variant == null) {
+            if (!renderState.egg.isEmpty()) {
+                poseStack.pushPose();
+
+                poseStack.translate(0.5f, 0f, 0.5f);
+                poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 190f));
+                poseStack.translate(-0.5f, 0f, -0.5f);
+
+                poseStack.translate(0.68f, 0.95f, 0.5f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+                poseStack.scale(0.35f, 0.35f, 0.35f);
+                renderState.egg.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+                poseStack.popPose();
+            }
             return;
         }
 

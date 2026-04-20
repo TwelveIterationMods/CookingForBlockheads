@@ -14,6 +14,8 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -35,10 +37,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
+import net.minecraft.world.entity.animal.chicken.ChickenVariants;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,9 +53,13 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
+
 public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvider<Unit>, IMutableNameable, BalmContainerProvider, KitchenItemProviderHolder {
 
     private static final int SYNC_INTERVAL = 10;
+    private static final int EGG_INCUBATION_AGE = -12000;
+    private static final int CHICK_GROWTH_AGE = -24000;
 
     private final DefaultContainer container = new DefaultContainer(6) {
         @Override
@@ -147,6 +156,19 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
                 setChanged();
                 level.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.75f, Mth.nextFloat(level.getRandom(), 0.9f, 1.1f));
             }
+        } else if (hasIncubatingEgg()) {
+            if (chickenAge >= 0) {
+                chickenAge = EGG_INCUBATION_AGE;
+            } else {
+                chickenAge++;
+                if (chickenAge == 0) {
+                    hatchEgg(level);
+                }
+            }
+            setChanged();
+        } else if (chickenAge != 0) {
+            chickenAge = 0;
+            setChanged();
         }
 
         ticksSinceSync++;
@@ -199,6 +221,93 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         }
 
         return false;
+    }
+
+    public boolean canAcceptEgg(ItemStack itemStack) {
+        if (chickenType != null || !itemStack.is(ItemTags.EGGS)) {
+            return false;
+        }
+
+        final var singleEgg = itemStack.copyWithCount(1);
+        return ContainerUtils.insertItemStacked(eggContainer, singleEgg, true).isEmpty();
+    }
+
+    public boolean tryInsertEgg(ItemStack itemStack) {
+        if (!canAcceptEgg(itemStack)) {
+            return false;
+        }
+
+        final var singleEgg = itemStack.copyWithCount(1);
+        final var remainder = ContainerUtils.insertItemStacked(eggContainer, singleEgg, false);
+        if (!remainder.isEmpty()) {
+            return false;
+        }
+
+        itemStack.shrink(1);
+        if (chickenAge >= 0) {
+            chickenAge = EGG_INCUBATION_AGE;
+        }
+        setChanged();
+        return true;
+    }
+
+    public ItemStack getIncubatingEgg() {
+        if (chickenType != null) {
+            return ItemStack.EMPTY;
+        }
+
+        for (int i = 0; i < eggContainer.getContainerSize(); i++) {
+            final var itemStack = eggContainer.getItem(i);
+            if (itemStack.is(ItemTags.EGGS)) {
+                return itemStack;
+            }
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    private boolean hasIncubatingEgg() {
+        return !getIncubatingEgg().isEmpty();
+    }
+
+    private void hatchEgg(Level level) {
+        final var eggStack = getIncubatingEgg();
+        if (eggStack.isEmpty()) {
+            return;
+        }
+
+        resolveChickenVariant(eggStack).ifPresent(it -> {
+            eggStack.shrink(1);
+            chickenType = it;
+            chickenAge = CHICK_GROWTH_AGE;
+            eggLayTime = 0;
+            eggLayTimeTarget = resolveEggLayTimeTarget(false);
+
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, worldPosition.getX() + 0.5, worldPosition.getY() + 1.25, worldPosition.getZ() + 0.5, 8, 0.25, 0.15, 0.25, 0);
+                serverLevel.sendParticles(ParticleTypes.EGG_CRACK, worldPosition.getX() + 0.5, worldPosition.getY() + 1.1, worldPosition.getZ() + 0.5, 8, 0.2, 0.1, 0.2, 0);
+                level.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.9f, Mth.nextFloat(level.getRandom(), 0.9f, 1.1f));
+            }
+        });
+    }
+
+    private Optional<Holder<ChickenVariant>> resolveChickenVariant(ItemStack eggStack) {
+        if (level == null) {
+            return Optional.empty();
+        }
+
+        return level.registryAccess().lookup(Registries.CHICKEN_VARIANT)
+                .flatMap(it -> it.get(resolveChickenVariantKey(eggStack)));
+    }
+
+    private ResourceKey<ChickenVariant> resolveChickenVariantKey(ItemStack eggStack) {
+        if (eggStack.is(Items.BROWN_EGG)) {
+            return ChickenVariants.WARM;
+        } else if (eggStack.is(Items.BLUE_EGG)) {
+            return ChickenVariants.COLD;
+        }
+
+        return ChickenVariants.TEMPERATE;
     }
 
     private RandomSource levelRandom() {
