@@ -22,7 +22,9 @@ import net.blay09.mods.cookingforblockheads.crafting.KitchenProvidedRecipeHandle
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.menu.ModMenus;
 import net.blay09.mods.cookingforblockheads.network.ModNetworking;
+import net.blay09.mods.cookingforblockheads.network.message.ClientboundSetPreferencesPayload;
 import net.blay09.mods.cookingforblockheads.network.message.FavoriteListMessage;
+import net.blay09.mods.cookingforblockheads.platform.attachment.ModDataAttachments;
 import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
@@ -74,6 +76,7 @@ public class CookingForBlockheads {
 
         CookingForBlockheadsConfig.initialize();
         registrars.dataComponentTypes(ModDataComponents::initialize);
+        registrars.dataAttachmentTypes(ModDataAttachments::initialize);
         ModNetworking.initialize(Balm.networking());
         registrars.blocks(ModBlocks::initialize);
         registrars.blockEntityTypes(ModBlockEntities::initialize);
@@ -94,6 +97,9 @@ public class CookingForBlockheads {
                     .flatMap(it -> it.getCompound("FavoriteItemIds"))
                     .map(it -> it.keySet().stream().map(Identifier::parse).collect(Collectors.toSet())).orElse(Set.of());
             Balm.networking().sendTo(player, new FavoriteListMessage(favoriteItemIds));
+
+            final var preferences = ModDataAttachments.preferences.getOrCreate(player);
+            Balm.networking().sendTo(player, new ClientboundSetPreferencesPayload(preferences));
         });
 
         LivingEntityCallback.Damage.Before.EVENT.register(CowJarHandler::onLivingDamage);

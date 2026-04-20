@@ -5,12 +5,15 @@ import net.blay09.mods.balm.client.BalmClientRegistrars;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.balm.platform.event.callback.ItemCallback;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
+import net.blay09.mods.cookingforblockheads.Preferences;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.client.gui.screen.KitchenScreen;
 import net.blay09.mods.cookingforblockheads.compat.recipeviewers.CowJarRecipe;
 import net.blay09.mods.cookingforblockheads.crafting.CraftingContext;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.platform.attachment.ModDataAttachments;
+import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.kuma.api.Kuma;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -31,7 +34,6 @@ import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
 public class CookingForBlockheadsClient {
 
     private static final Set<Identifier> favoriteItemIds = new HashSet<>();
-
     public static void initialize(BalmClientRegistrars registrars) {
         registrars.blockEntityRenderers(ModRenderers::initialize);
         registrars.menuScreens(ModMenuScreens::initialize);
@@ -125,6 +127,25 @@ public class CookingForBlockheadsClient {
     public static void setFavoriteItems(Set<Identifier> favoriteItemIds) {
         CookingForBlockheadsClient.favoriteItemIds.clear();
         CookingForBlockheadsClient.favoriteItemIds.addAll(favoriteItemIds);
+    }
+
+    public static void setPreferences(Preferences preferences) {
+        final var player = Minecraft.getInstance().player;
+        if (player != null) {
+            ModDataAttachments.preferences.update(player, preferences);
+        }
+    }
+
+    public static Preferences getPreferences() {
+        final var player = Minecraft.getInstance().player;
+        return player != null ? ModDataAttachments.preferences.getOrCreate(player) : Preferences.DEFAULT;
+    }
+
+    public static Identifier getKitchenSortOrder() {
+        final var preferences = getPreferences();
+        return CookingForBlockheadsRegistry.getSortButton(preferences.kitchenSortOrder())
+                .map(it -> preferences.kitchenSortOrder())
+                .orElseGet(() -> CookingForBlockheadsRegistry.getDefaultSortButton().getId());
     }
 
     public static boolean isFavoriteItem(ItemStack itemStack) {

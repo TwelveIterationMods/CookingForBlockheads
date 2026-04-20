@@ -10,9 +10,17 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
 
+import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+
 public class HungerSortButton implements ISortButton {
 
+    public static final Identifier ID = id("hunger");
     private static final Identifier icon = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "textures/gui/gui.png");
+
+    @Override
+    public Identifier getId() {
+        return ID;
+    }
 
     @Override
     public Identifier getIcon() {

@@ -9,6 +9,7 @@ import net.blay09.mods.cookingforblockheads.client.gui.SortButton;
 import net.blay09.mods.cookingforblockheads.menu.KitchenMenu;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftMatrixFakeSlot;
 import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
+import net.blay09.mods.cookingforblockheads.network.message.ServerboundSetPreferencesPayload;
 import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
@@ -36,8 +37,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.blay09.mods.cookingforblockheads.CookingForBlockheads.id;
+import java.util.Objects;
 
 public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
@@ -102,12 +102,18 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         sortButtons.clear();
         for (final var sortButton : CookingForBlockheadsRegistry.getSortButtons()) {
-            SortButton button = new SortButton(width / 2 + 87, height / 2 + yOffset, sortButton, _ -> menu.setSortComparator(sortButton.getComparator(Minecraft.getInstance().player)));
+            SortButton button = new SortButton(width / 2 + 87, height / 2 + yOffset, sortButton, _ -> {
+                menu.setSortComparator(sortButton.getComparator(menu.player));
+                final var preferences = CookingForBlockheadsClient.getPreferences().withKitchenSortOrder(sortButton.getId());
+                CookingForBlockheadsClient.setPreferences(preferences);
+                Balm.networking().sendToServer(new ServerboundSetPreferencesPayload(preferences));
+            });
             addRenderableWidget(button);
             sortButtons.add(button);
 
             yOffset += 20;
         }
+        applySortOrder(CookingForBlockheadsClient.getKitchenSortOrder());
 
         recalculateScrollBar();
     }
@@ -401,5 +407,12 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     public void displayKitchenFeedback(Component component) {
         kitchenFeedback = component;
         kitchenFeedbackTimeLeft = KITCHEN_FEEDBACK_HINT_TIME;
+    }
+
+    public void applySortOrder(Identifier sortId) {
+        CookingForBlockheadsRegistry.getSortButton(sortId)
+                .ifPresent(sortButton -> {
+                    menu.setSortComparator(sortButton.getComparator(menu.player));
+                });
     }
 }

@@ -132,6 +132,14 @@ public class CookingForBlockheadsRegistry {
         return sortButtons;
     }
 
+    public static ISortButton getDefaultSortButton() {
+        return getSortButton(Identifier.fromNamespaceAndPath("cookingforblockheads", "name")).orElseGet(sortButtons::getFirst);
+    }
+
+    public static Optional<ISortButton> getSortButton(Identifier sortId) {
+        return sortButtons.stream().filter(it -> it.getId().equals(sortId)).findFirst();
+    }
+
     public static void addOvenFuel(ItemStack fuelItem, int fuelTime) {
         ovenFuelItems.put(fuelItem, fuelTime);
     }

@@ -10,12 +10,14 @@ public class ModNetworking {
         networking.registerServerboundPacket(RequestSelectionRecipesMessage.TYPE, RequestSelectionRecipesMessage.class, RequestSelectionRecipesMessage.STREAM_CODEC, RequestSelectionRecipesMessage::handle);
         networking.registerServerboundPacket(CraftRecipeMessage.TYPE, CraftRecipeMessage.class, CraftRecipeMessage.STREAM_CODEC, CraftRecipeMessage::handle);
         networking.registerServerboundPacket(ToggleFavoriteMessage.TYPE, ToggleFavoriteMessage.class, ToggleFavoriteMessage.STREAM_CODEC, ToggleFavoriteMessage::handle);
+        networking.registerServerboundPacket(ServerboundSetPreferencesPayload.TYPE, ServerboundSetPreferencesPayload.class, ServerboundSetPreferencesPayload.STREAM_CODEC, ServerboundSetPreferencesPayload::handle);
 
         networking.registerClientboundPacket(AvailableCraftablesListMessage.TYPE, AvailableCraftablesListMessage.class, AvailableCraftablesListMessage.STREAM_CODEC, AvailableCraftablesListMessage::handle);
         networking.registerClientboundPacket(SelectionRecipesListMessage.TYPE, SelectionRecipesListMessage.class, SelectionRecipesListMessage.STREAM_CODEC, SelectionRecipesListMessage::handle);
         networking.registerClientboundPacket(ClientboundOvenResultsPacket.TYPE, ClientboundOvenResultsPacket.class, ClientboundOvenResultsPacket.STREAM_CODEC, ClientboundOvenResultsPacket::handle);
         networking.registerClientboundPacket(KitchenFeedbackMessage.TYPE, KitchenFeedbackMessage.class, KitchenFeedbackMessage.STREAM_CODEC, KitchenFeedbackMessage::handle);
         networking.registerClientboundPacket(FavoriteListMessage.TYPE, FavoriteListMessage.class, FavoriteListMessage.STREAM_CODEC, FavoriteListMessage::handle);
+        networking.registerClientboundPacket(ClientboundSetPreferencesPayload.TYPE, ClientboundSetPreferencesPayload.class, ClientboundSetPreferencesPayload.STREAM_CODEC, ClientboundSetPreferencesPayload::handle);
     }
 
 }
