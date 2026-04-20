@@ -15,7 +15,6 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -23,6 +22,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -146,6 +146,8 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
                         }
                     }
                     setChanged();
+                } else if (level instanceof ServerLevel serverLevel && level.getRandom().nextFloat() < 0.01f) {
+                    serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5, 1, 0.2, 0.1, 0.2, 0);
                 }
             } else if (eggLayTime < eggLayTimeTarget) {
                 eggLayTime++;
