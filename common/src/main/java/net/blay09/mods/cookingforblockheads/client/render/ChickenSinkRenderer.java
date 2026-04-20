@@ -3,10 +3,10 @@ package net.blay09.mods.cookingforblockheads.client.render;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.model.AdultAndBabyModelPair;
 import net.blay09.mods.cookingforblockheads.block.BaseKitchenBlock;
 import net.blay09.mods.cookingforblockheads.block.ChickenSinkBlock;
 import net.blay09.mods.cookingforblockheads.block.entity.ChickenSinkBlockEntity;
+import net.minecraft.client.model.AdultAndBabyModelPair;
 import net.minecraft.client.model.animal.chicken.AdultChickenModel;
 import net.minecraft.client.model.animal.chicken.BabyChickenModel;
 import net.minecraft.client.model.animal.chicken.ChickenModel;
@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -42,9 +43,13 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         public final ChickenRenderState chicken = new ChickenRenderState();
         public final ItemStackRenderState egg = new ItemStackRenderState();
         public Direction facing = Direction.NORTH;
+        public float wiggle;
         @Nullable
         public ChickenVariant variant;
     }
+
+    private static final int WIGGLE_INTERVAL_TICKS = 160;
+    private static final int WIGGLE_DURATION_TICKS = 18;
 
     private final Map<ChickenVariant.ModelType, AdultAndBabyModelPair<ChickenModel>> models;
     private final ItemModelResolver itemModelResolver;
@@ -69,7 +74,7 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         return new ChickenSinkRenderState();
     }
 
-    private boolean shouldCreepyStare(@Nullable Level level, net.minecraft.core.BlockPos pos) {
+    private boolean shouldCreepyStare(@Nullable Level level, BlockPos pos) {
         if (level == null) {
             return false;
         }
@@ -88,7 +93,7 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         renderState.chicken.yRot = (float) Math.cos(gameTime * headbangSpeed * 0.7f) * 10f;
     }
 
-    private void creepyStare(Level level, net.minecraft.core.BlockPos pos, BlockState state, float delta, ChickenSinkRenderState renderState) {
+    private void creepyStare(Level level, BlockPos pos, BlockState state, float delta, ChickenSinkRenderState renderState) {
         final var nearestPlayer = level.getNearestPlayer(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, 16f, false);
         if (nearestPlayer != null) {
             final var chickenPos = new Vec3(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
@@ -145,7 +150,26 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         renderState.variant = blockEntity.getChickenType() != null ? blockEntity.getChickenType().value() : null;
         renderState.chicken.isBaby = blockEntity.getChickenAge() < 0;
         itemModelResolver.updateForTopItem(renderState.egg, blockEntity.getIncubatingEgg(), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        if (!renderState.egg.isEmpty()) {
+            renderState.wiggle = getWiggle(blockEntity.getLevel(), blockEntity.getBlockPos(), delta, 0.1f);
+        } else if (renderState.chicken.isBaby) {
+            renderState.wiggle = getWiggle(blockEntity.getLevel(), blockEntity.getBlockPos(), delta, 0.5f);
+        } else {
+            renderState.wiggle = 0f;
+        }
         updateChickenPose(blockEntity, delta, renderState);
+    }
+
+    private float getWiggle(@Nullable Level level, BlockPos pos, float delta, float scale) {
+        long gameTime = level != null ? level.getGameTime() : 0L;
+        float wiggleTime = Math.floorMod(gameTime + pos.asLong(), WIGGLE_INTERVAL_TICKS) + delta;
+        if (wiggleTime >= WIGGLE_DURATION_TICKS) {
+            return 0f;
+        }
+
+        float progress = wiggleTime / WIGGLE_DURATION_TICKS;
+        float envelope = Mth.sin(progress * Mth.PI);
+        return Mth.sin(wiggleTime * 1.4f) * envelope * scale;
     }
 
     @Override
@@ -156,6 +180,9 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
 
                 poseStack.translate(0.5f, 0f, 0.5f);
                 poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 190f));
+                if (renderState.wiggle != 0f) {
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.wiggle));
+                }
                 poseStack.translate(-0.5f, 0f, -0.5f);
 
                 poseStack.translate(0.68f, 0.95f, 0.5f);
@@ -171,6 +198,9 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
 
         poseStack.translate(0.5f, 0f, 0.5f);
         poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        if (renderState.wiggle != 0f) {
+            poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.wiggle));
+        }
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(0.5f, 0.5f, 0.5f);
