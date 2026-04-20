@@ -133,6 +133,11 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
             if (chickenAge < 0) {
                 if (chickenAge % 1200 != 0 || tryConsumeFeed()) {
                     chickenAge++;
+                    if (chickenAge == 0) {
+                        if (level instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.HEART, worldPosition.getX() + 0.5, worldPosition.getY() + 1.25, worldPosition.getZ() + 0.5, 5, 0.2, 0.1, 0.2, 0);
+                        }
+                    }
                     setChanged();
                 }
             } else if (eggLayTime < eggLayTimeTarget) {
@@ -189,6 +194,9 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
         if (seedStack.is(ItemTags.CHICKEN_FOOD)) {
             seedStack.shrink(1);
             feedContainer.setChanged();
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, worldPosition.getX() + 0.5, worldPosition.getY() + 1.25, worldPosition.getZ() + 0.5, 5, 0.2, 0.1, 0.2, 0);
+            }
             return true;
         }
 
