@@ -4,7 +4,6 @@ import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableBlockEntity;
-import net.blay09.mods.cookingforblockheads.block.entity.util.TransferableContainer;
 import net.blay09.mods.cookingforblockheads.capability.KitchenItemProviderHolder;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.menu.ChickenSinkMenu;
@@ -50,7 +49,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.jspecify.annotations.Nullable;
 
-public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvider<Unit>, IMutableNameable, BalmContainerProvider, KitchenItemProviderHolder, TransferableBlockEntity<ChickenSinkBlockEntity.TransferData> {
+public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvider<Unit>, IMutableNameable, BalmContainerProvider, KitchenItemProviderHolder {
 
     private static final int SYNC_INTERVAL = 10;
 
@@ -300,23 +299,23 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     }
 
     @Override
-    public TransferData snapshotDataForTransfer() {
-        return new TransferData(TransferableContainer.copyAndClear(container), eggLayTime, eggLayTimeTarget, chickenAge, chickenType);
-    }
-
-    @Override
-    public void restoreFromTransferSnapshot(TransferData data) {
-        data.container().applyTo(container);
-        eggLayTime = data.eggLayTime();
-        eggLayTimeTarget = data.eggLayTimeTarget();
-        chickenAge = data.chickenAge();
-        chickenType = data.chickenType();
-    }
-
-    @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
+        spawnCapturedChicken(pos);
         dropItems(level, pos);
+    }
+
+    private void spawnCapturedChicken(BlockPos pos) {
+        if (!(level instanceof ServerLevel serverLevel) || chickenType == null) {
+            return;
+        }
+
+        final var chicken = new Chicken(EntityType.CHICKEN, serverLevel);
+        chicken.setVariant(chickenType);
+        chicken.setAge(chickenAge);
+        chicken.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        serverLevel.addFreshEntity(chicken);
+        chickenType = null;
     }
 
     @Override
@@ -331,9 +330,5 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
     public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
         this.jukebox = pos;
         this.partyBpm = playing ? 85 : 0;
-    }
-
-    public record TransferData(TransferableContainer container, int eggLayTime, int eggLayTimeTarget, int chickenAge,
-                               @Nullable Holder<ChickenVariant> chickenType) {
     }
 }

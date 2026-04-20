@@ -246,6 +246,9 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         final var cookingTables = valueLookupBuilder(ModBlockTags.COOKING_TABLES);
         ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(cookingTables::add);
 
+        final var chickenSinks = valueLookupBuilder(ModBlockTags.CHICKEN_SINKS);
+        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(chickenSinks::add);
+
         final var kitchenConnectors = valueLookupBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
         ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);

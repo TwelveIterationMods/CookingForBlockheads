@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.ChickenSinkBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
+import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -76,6 +77,11 @@ public class ChickenSinkBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new ChickenSinkBlockEntity(pos, state);
+    }
+
+    @Override
+    protected boolean shouldChangedStateKeepBlockEntity(BlockState oldState) {
+        return oldState.is(ModBlockTags.CHICKEN_SINKS);
     }
 
     @Override
