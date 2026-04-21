@@ -30,7 +30,7 @@
     "block.cookingforblockheads.green_cooking_table": "초록색 요리 테이블",
     "block.cookingforblockheads.red_cooking_table": "빨간색 요리 테이블",
     "block.cookingforblockheads.black_cooking_table": "검은색 요리 테이블",
-    
+
     "block.cookingforblockheads.fridge": "냉장고",
     "block.cookingforblockheads.white_fridge": "냉장고",
     "block.cookingforblockheads.orange_fridge": "주황색 냉장고",
@@ -48,7 +48,7 @@
     "block.cookingforblockheads.green_fridge": "초록색 냉장고",
     "block.cookingforblockheads.red_fridge": "빨간색 냉장고",
     "block.cookingforblockheads.black_fridge": "검은색 냉장고",
-    
+
     "block.cookingforblockheads.sink": "싱크대",
     "block.cookingforblockheads.white_sink": "흰색 싱크대",
     "block.cookingforblockheads.orange_sink": "주황색 싱크대",
@@ -66,7 +66,7 @@
     "block.cookingforblockheads.green_sink": "초록색 싱크대",
     "block.cookingforblockheads.red_sink": "빨간색 싱크대",
     "block.cookingforblockheads.black_sink": "검은색 싱크대",
-    
+
     "block.cookingforblockheads.counter": "주방 카운터",
     "block.cookingforblockheads.white_counter": "흰색 주방 카운터",
     "block.cookingforblockheads.orange_counter": "주황색 주방 카운터",
@@ -120,7 +120,7 @@
     "block.cookingforblockheads.green_connector": "초록색 주방 모서리",
     "block.cookingforblockheads.red_connector": "빨간색 주방 모서리",
     "block.cookingforblockheads.black_connector": "검은색 주방 모서리",
-    
+
     "block.cookingforblockheads.hanging_corner": "매달린 주방 코너",
     "block.cookingforblockheads.oven": "오븐",
     "block.cookingforblockheads.white_oven": "오븐",
@@ -139,7 +139,7 @@
     "block.cookingforblockheads.green_oven": "초록색 오븐",
     "block.cookingforblockheads.red_oven": "빨간색 오븐",
     "block.cookingforblockheads.black_oven": "검은색 오븐",
-    
+
     "block.cookingforblockheads.fruit_basket": "과일 접시",
     "block.cookingforblockheads.tool_rack": "조리도구 걸이",
     "block.cookingforblockheads.milk_jar": "우유병",
@@ -240,39 +240,38 @@
     "cookingforblockheads.subtitle.toaster_stop": "토스트를 다 구웠음",
 
     "jei.cookingforblockheads.cow_jar": "소가 든 병",
-    
+
     "config.jade.plugin_cookingforblockheads.oven": "오븐",
     "config.jade.plugin_cookingforblockheads.milk_jar": "우유병",
     "config.jade.plugin_cookingforblockheads.toaster": "토스터",
     "config.jade.plugin_cookingforblockheads.fridge": "냉장고",
     "config.jade.plugin_cookingforblockheads.sink": "싱크대",
 
-    "config.cookingforblockheads": "멍청이도 가능한 요리",
-    "config.cookingforblockheads.cowJarEnabled": "소가 든 병 활성화",
-    "config.cookingforblockheads.cowJarEnabled.tooltip": "켜져있으면 우유병 위에 소를 놓고 모루로 찍어서 소를 병에 우겨넣을 수 있습니다.",
-    "config.cookingforblockheads.cowJarMilkPerTick": "소가 든 병의 틱당 우유 생성량",
-    "config.cookingforblockheads.cowJarMilkPerTick.tooltip": "소가 든 병이 1틱마다 생성할 우유의 양입니다.",
-    "config.cookingforblockheads.compressedCowJarMilkMultiplier": "압축된 소가 든 병 배율",
-    "config.cookingforblockheads.compressedCowJarMilkMultiplier.tooltip": "Ex Compressum 호환성. 압축된 소가 든 병에 적용할 생성량 배율입니다.",
-    "config.cookingforblockheads.sinkRequiresWater": "싱크대에 물이 필요함",
-    "config.cookingforblockheads.sinkRequiresWater.tooltip": "켜져있으면 싱크대가 물을 생성하지 않고, 물을 담습니다.",
-    "config.cookingforblockheads.largeCounters": "거대한 주방 카운터",
-    "config.cookingforblockheads.largeCounters.tooltip": "켜져있으면 주방 카운터 용량이 두 배가 됩니다.",
-    "config.cookingforblockheads.disallowOvenAutomation": "오븐 자동화 허용하지 않기",
-    "config.cookingforblockheads.disallowOvenAutomation.tooltip": "켜져있으면 오븐에 자동으로 아이템을 넣거나 뺄 수 없게 됩니다.",
-    "config.cookingforblockheads.ovenFuelTimeMultiplier": "오븐이 연료를 태우는 시간 배율",
-    "config.cookingforblockheads.ovenFuelTimeMultiplier.tooltip": "오븐이 얼마나 오랫동안 연료를 태울지 지정합니다. 높게 설정하면 연료가 더 오래 탑니다. 기본은 1.",
-    "config.cookingforblockheads.ovenCookTimeMultiplier": "오븐이 재료를 굽는 시간 배율",
-    "config.cookingforblockheads.ovenCookTimeMultiplier.tooltip": "오븐이 얼마나 느리게 재료를 구울지 지정합니다. 높게 설정하면 요리가 더 오래 걸립니다.",
-    "config.cookingforblockheads.ovenRequiresCookingOil": "오븐이 식용유만 태움",
-    "config.cookingforblockheads.ovenRequiresCookingOil.tooltip": "켜져있으면 오븐 연료로 식용유만 사용할 수 있습니다. (Pam's Harvestcraft 필요)",
-    "config.cookingforblockheads.showIngredientIcon": "재료 아이콘 표시",
-    "config.cookingforblockheads.showIngredientIcon.tooltip": "꺼져있으면 재료가 레시피 북에서 별도의 아이콘으로 표시되지 않습니다.",
-    "config.cookingforblockheads.allowVeryToastedBread": "빵 태워먹기 허용",
-    "config.cookingforblockheads.allowVeryToastedBread.tooltip": "켜져있으면 구운 빵을 또 구워서 숯을 만들 수 있습니다. (토스트를 추가하는 다른 모드가 없을 때만)",
-    "config.cookingforblockheads.excludedRecipes": "제외할 레시피 목록",
-    "config.cookingforblockheads.excludedRecipes.tooltip": "레시피 북에 표시되지 않을 레시피 ID 목록",
-    
+    "cookingforblockheads.configuration.cowJarEnabled": "소가 든 병 활성화",
+    "cookingforblockheads.configuration.cowJarEnabled.tooltip": "켜져있으면 우유병 위에 소를 놓고 모루로 찍어서 소를 병에 우겨넣을 수 있습니다.",
+    "cookingforblockheads.configuration.cowJarMilkPerTick": "소가 든 병의 틱당 우유 생성량",
+    "cookingforblockheads.configuration.cowJarMilkPerTick.tooltip": "소가 든 병이 1틱마다 생성할 우유의 양입니다.",
+    "cookingforblockheads.configuration.compressedCowJarMilkMultiplier": "압축된 소가 든 병 배율",
+    "cookingforblockheads.configuration.compressedCowJarMilkMultiplier.tooltip": "Ex Compressum 호환성. 압축된 소가 든 병에 적용할 생성량 배율입니다.",
+    "cookingforblockheads.configuration.sinkRequiresWater": "싱크대에 물이 필요함",
+    "cookingforblockheads.configuration.sinkRequiresWater.tooltip": "켜져있으면 싱크대가 물을 생성하지 않고, 물을 담습니다.",
+    "cookingforblockheads.configuration.largeCounters": "거대한 주방 카운터",
+    "cookingforblockheads.configuration.largeCounters.tooltip": "켜져있으면 주방 카운터 용량이 두 배가 됩니다.",
+    "cookingforblockheads.configuration.disallowOvenAutomation": "오븐 자동화 허용하지 않기",
+    "cookingforblockheads.configuration.disallowOvenAutomation.tooltip": "켜져있으면 오븐에 자동으로 아이템을 넣거나 뺄 수 없게 됩니다.",
+    "cookingforblockheads.configuration.ovenFuelTimeMultiplier": "오븐이 연료를 태우는 시간 배율",
+    "cookingforblockheads.configuration.ovenFuelTimeMultiplier.tooltip": "오븐이 얼마나 오랫동안 연료를 태울지 지정합니다. 높게 설정하면 연료가 더 오래 탑니다. 기본은 1.",
+    "cookingforblockheads.configuration.ovenCookTimeMultiplier": "오븐이 재료를 굽는 시간 배율",
+    "cookingforblockheads.configuration.ovenCookTimeMultiplier.tooltip": "오븐이 얼마나 느리게 재료를 구울지 지정합니다. 높게 설정하면 요리가 더 오래 걸립니다.",
+    "cookingforblockheads.configuration.ovenRequiresCookingOil": "오븐이 식용유만 태움",
+    "cookingforblockheads.configuration.ovenRequiresCookingOil.tooltip": "켜져있으면 오븐 연료로 식용유만 사용할 수 있습니다. (Pam's Harvestcraft 필요)",
+    "cookingforblockheads.configuration.showIngredientIcon": "재료 아이콘 표시",
+    "cookingforblockheads.configuration.showIngredientIcon.tooltip": "꺼져있으면 재료가 레시피 북에서 별도의 아이콘으로 표시되지 않습니다.",
+    "cookingforblockheads.configuration.allowVeryToastedBread": "빵 태워먹기 허용",
+    "cookingforblockheads.configuration.allowVeryToastedBread.tooltip": "켜져있으면 구운 빵을 또 구워서 숯을 만들 수 있습니다. (토스트를 추가하는 다른 모드가 없을 때만)",
+    "cookingforblockheads.configuration.excludedRecipes": "제외할 레시피 목록",
+    "cookingforblockheads.configuration.excludedRecipes.tooltip": "레시피 북에 표시되지 않을 레시피 ID 목록",
+
     "tag.item.cookingforblockheads.kitchen_item_providers": "주방 아이템 제공자",
     "tag.item.cookingforblockheads.foods": "음식",
     "tag.item.cookingforblockheads.ingredients": "식재료",
