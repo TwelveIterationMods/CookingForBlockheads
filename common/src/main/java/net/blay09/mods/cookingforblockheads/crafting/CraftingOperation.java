@@ -2,18 +2,20 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.CookingForBlockheadsAPI;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
-import net.minecraft.network.chat.Component;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -158,6 +160,18 @@ public class CraftingOperation {
         final var ingredients = recipeMapper.getIngredients(recipe);
         int repeats = 1;
         while (repeats < maxRepeats) {
+            // On crafting recipes, we free up claimed ingredients that remain themselves (like tools) while counting.
+            if (recipe.value().getType() == RecipeType.CRAFTING) {
+                tokensByIngredient.entries().removeIf(entry -> {
+                    final var ingredient = entry.getKey().ingredient();
+                    final var token = entry.getValue();
+                    final var consumedItem = token.peek();
+                    final var remainingItem = Balm.hooks().getCraftingRemainingItem(consumedItem);
+                    return remainingItem != null
+                            && ingredient.acceptsItem(remainingItem.item())
+                            && ingredient.test(remainingItem.create());
+                });
+            }
             for (int i = 0; i < ingredients.size(); i++) {
                 if (ingredients.get(i).isEmpty()) {
                     continue;
