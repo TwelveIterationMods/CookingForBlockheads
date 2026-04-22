@@ -176,6 +176,7 @@
   "gui.cookingforblockheads.no_ingredients": "Not\\nenough\\ningredients",
   "gui.cookingforblockheads.no_selection": "Select an item\\non the right to\\nsee its recipe.",
   "gui.cookingforblockheads.moved_to_oven": "Moved to Oven",
+  "gui.cookingforblockheads.feedback_stacked": "%s x%d",
   "tooltip.cookingforblockheads.multiblock_kitchen": "Multiblock Kitchen",
   "tooltip.cookingforblockheads.dyeable": "Dyeable",
   "tooltip.cookingforblockheads.cooking_table.description": "Enables crafting abilities.",

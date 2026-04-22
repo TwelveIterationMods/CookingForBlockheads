@@ -31,7 +31,7 @@ public class CookingForBlockheadsAPI {
         internalMethods.addOvenFuel(fuelItem, fuelTime);
     }
 
-    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeClass, KitchenRecipeHandler<C, T> kitchenRecipeHandler) {
+    public static <C extends RecipeInput, T extends Recipe<C>> void registerKitchenRecipeHandler(Class<? extends T> recipeClass, KitchenRecipeHandler<C, ? extends T> kitchenRecipeHandler) {
         internalMethods.registerKitchenRecipeHandler(recipeClass, kitchenRecipeHandler);
     }
 

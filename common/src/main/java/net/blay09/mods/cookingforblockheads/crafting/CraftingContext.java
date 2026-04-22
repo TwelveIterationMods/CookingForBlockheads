@@ -2,6 +2,7 @@ package net.blay09.mods.cookingforblockheads.crafting;
 
 import net.blay09.mods.cookingforblockheads.api.*;
 import net.blay09.mods.cookingforblockheads.recipe.ModRecipes;
+import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -120,6 +121,10 @@ public class CraftingContext {
             final var recipeType = recipe.value().getType();
             if (recipeType == RecipeType.SMELTING || recipeType == RecipeType.SMOKING || recipeType == RecipeType.CAMPFIRE_COOKING) {
                 return Optional.of(Component.translatable("tooltip.cookingforblockheads.missing_oven"));
+            }
+            final var processorRecipeType = CookingForBlockheadsRegistry.getProcessorRecipeType(recipe.value().getType()).orElse(null);
+            if (processorRecipeType != null) {
+                return Optional.of(processorRecipeType.missingProcessorComponent());
             }
         }
 

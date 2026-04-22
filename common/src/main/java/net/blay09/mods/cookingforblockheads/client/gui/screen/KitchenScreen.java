@@ -13,7 +13,6 @@ import net.blay09.mods.cookingforblockheads.network.message.ServerboundSetPrefer
 import net.blay09.mods.cookingforblockheads.network.message.ToggleFavoriteMessage;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -37,7 +36,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
@@ -58,6 +57,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private int currentOffset;
 
     private @Nullable Component kitchenFeedback;
+    private int kitchenFeedbackStacked;
     private float kitchenFeedbackTimeLeft;
 
     private double mouseClickY = -1;
@@ -357,16 +357,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractContents(graphics, mouseX, mouseY, a);
 
-        if (kitchenFeedback != null && kitchenFeedbackTimeLeft > 0) {
-            float alpha = 1f;
-            if (kitchenFeedbackTimeLeft < KITCHEN_FEEDBACK_HINT_TIME / 2f) {
-                alpha = Math.max(0f, kitchenFeedbackTimeLeft / (KITCHEN_FEEDBACK_HINT_TIME / 2f));
-            }
-            int alphaColor = ((int) (alpha * 255f) << 24) | 0xFFFFFF;
-            graphics.centeredText(font, kitchenFeedback, leftPos + 8 + 84 / 2, topPos + 18, alphaColor);
-            kitchenFeedbackTimeLeft -= a;
-        }
-
         var poseStack = graphics.pose();
         poseStack.pushMatrix();
         for (Slot slot : menu.slots) {
@@ -380,6 +370,17 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         for (CraftMatrixFakeSlot matrixSlot : menu.getMatrixSlots()) {
             matrixSlot.updateSlot(a);
+        }
+
+        if (kitchenFeedbackTimeLeft > 0) {
+            final var feedback = getStackedFeedback();
+            final var textWidth = font.width(feedback);
+            final var topOffset = 114;
+            final var paddingX = 4;
+            final var paddingY = 2;
+            graphics.fill(leftPos + imageWidth / 2 - textWidth / 2 - paddingX, topPos + topOffset - paddingY, leftPos + imageWidth / 2 + textWidth / 2 + paddingX, topPos + topOffset + font.lineHeight + paddingY - 1, 0xFF000000);
+            graphics.centeredText(font, feedback, leftPos + imageWidth / 2, topPos + topOffset, 0xFFFFFFFF);
+            kitchenFeedbackTimeLeft -= a;
         }
     }
 
@@ -405,6 +406,11 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     public void displayKitchenFeedback(Component component) {
+        if (kitchenFeedback.getString().equals(component.getString()) && kitchenFeedbackTimeLeft > 0) {
+            kitchenFeedbackStacked++;
+        } else {
+            kitchenFeedbackStacked = 1;
+        }
         kitchenFeedback = component;
         kitchenFeedbackTimeLeft = KITCHEN_FEEDBACK_HINT_TIME;
     }
@@ -414,5 +420,17 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                 .ifPresent(sortButton -> {
                     menu.setSortComparator(sortButton.getComparator(menu.player));
                 });
+    }
+
+    private Component getStackedFeedback() {
+        if (kitchenFeedbackStacked > 1) {
+            return Component.translatable("gui.cookingforblockheads.feedback_stacked", kitchenFeedback, kitchenFeedbackStacked);
+        }
+        return kitchenFeedback;
+    }
+
+    public Optional<Component> getKitchenFeedback() {
+        return kitchenFeedbackTimeLeft > 0 ? Optional.of(getStackedFeedback()) : Optional.empty();
+
     }
 }

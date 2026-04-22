@@ -31,6 +31,7 @@ import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistr
 import net.blay09.mods.cookingforblockheads.sound.ModSounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
@@ -73,6 +74,7 @@ public class CookingForBlockheads {
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(SmokingRecipe.class, new KitchenAbstractCookingRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(CampfireCookingRecipe.class, new KitchenAbstractCookingRecipeHandler());
         CookingForBlockheadsAPI.registerKitchenRecipeHandler(KitchenProvidedRecipe.class, new KitchenProvidedRecipeHandler());
+        CookingForBlockheadsRegistry.registerProcessorRecipeType(RecipeType.SMELTING, Component.translatable("tooltip.cookingforblockheads.missing_oven"));
 
         CookingForBlockheadsConfig.initialize();
         registrars.dataComponentTypes(ModDataComponents::initialize);

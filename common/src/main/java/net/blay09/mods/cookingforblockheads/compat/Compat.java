@@ -9,6 +9,7 @@ public class Compat {
     public static final String APPLECORE = "applecore";
     public static final String EX_COMPRESSUM = "excompressum";
     public static final String SPICE_OF_LIFE = "solcarrot";
+    public static final String FARMERS_DELIGHT = "farmersdelight";
 
     public static Fluid getMilkFluid() {
         return Balm.modSupport().milkFluid().get();
