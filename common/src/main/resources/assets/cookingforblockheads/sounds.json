@@ -1,26 +1,26 @@
 {
   "fridge_open": {
-    "subtitle": "cookingforblockheads:subtitle.fridge_open",
+    "subtitle": "cookingforblockheads.subtitle.fridge_open",
     "sounds": [ "cookingforblockheads:fridge_open" ]
   },
   "fridge_close": {
-    "subtitle": "cookingforblockheads:subtitle.fridge_close",
+    "subtitle": "cookingforblockheads.subtitle.fridge_close",
     "sounds": [ "cookingforblockheads:fridge_close" ]
   },
   "oven_open": {
-    "subtitle": "cookingforblockheads:subtitle.oven_open",
+    "subtitle": "cookingforblockheads.subtitle.oven_open",
     "sounds": [ "cookingforblockheads:oven_open" ]
   },
   "oven_close": {
-    "subtitle": "cookingforblockheads:subtitle.oven_close",
+    "subtitle": "cookingforblockheads.subtitle.oven_close",
     "sounds": [ "cookingforblockheads:oven_close" ]
   },
   "toaster_start": {
-    "subtitle": "cookingforblockheads:subtitle.toaster_start",
+    "subtitle": "cookingforblockheads.subtitle.toaster_start",
     "sounds": [ "cookingforblockheads:toaster_start" ]
   },
   "toaster_stop": {
-    "subtitle": "cookingforblockheads:subtitle.toaster_stop",
+    "subtitle": "cookingforblockheads.subtitle.toaster_stop",
     "sounds": [ "cookingforblockheads:toaster_stop" ]
   }
 }
