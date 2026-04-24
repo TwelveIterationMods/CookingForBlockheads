@@ -1,22 +1,20 @@
-- Added Chicken Sink
-  - Provides eggs to recipes over time
-- Added Coffee Machine
-  - No functionality yet; will be added once mods adding coffee are ported to 26.1
-  - Model created by HeckinChloe
-- Added Cookie Jar
-  - Put cookies or other sweets in it
-- Added Chef Hat
-  - Wear it to look professional
-- Added stacked cabinets
-  - Place a cabinet on another cabinet to transform it
-- Added display of craftable count after selecting a recipe
-- Added display of ingredient count when hovering an ingredient
-- Changed cooking so ingredients from the inventory are prioritized over kitchen storage
-- Added salt filter
-  - Provides salt to recipes
-- Changed Ice Unit so it allows crafting of snowballs and ice cubes
-  - Ice Cubes can be crafted into Ice Blocks
-- Added `c:foods/edible_when_placed` to `cookingforblockheads:foods`, ensuring items like cakes show up in the recipe book
-- Fixed rendering of counter and fridge doors
-- Fixed error when crafting items that have no remainder
-- Some breaking changes in the API as well as some performance improvements
+- Added automatic saving of the selected sort order in the Cooking Table
+- Changed Chicken Sink to require either a chicken to be lead to it, or a egg to be hatched in it
+  - The chicken sink will now respect and reflect the Chicken Variant, and produce its regional eggs
+  - The first egg in an empty sink will hatch into a Baby Chicken
+  - The Chicken Sink now has a slot for seeds, which is used both to feed baby chicken, as well as increase the egg laying speed
+  - Baby Chicken in an empty sink will grow up to adults, as long as they are fed
+  - The recipe no longer takes an egg upfront, instead it can be placed inside with right-click
+  - Breaking a Chicken Sink will release the chicken
+- Fixed wrong craftable count being displayed for recipes with tool ingredients
+- Fixed wrong block language keys in translations
+- Fixed subtitles showing up untranslated
+- Fixed NoFilter Edition rendering in wrong position when placed on Cooking Table
+- Fixed dyed chicken sink menu immediately closing
+- Fixed oven door rendering in wrong dye
+- Fixed recipes with missing ingredients showing up as options when selecting a craftable
+- Fixed kitchen blocks overflowing their inventory slot visually
+- Fixed oven tool items rendering too low
+- Fixed 'no selection' text flicker when switching between selected craftable
+- Fixed counter custom name saving to a wrong name compared to loading
+- Fixed incorrect translation keys for item blocks
