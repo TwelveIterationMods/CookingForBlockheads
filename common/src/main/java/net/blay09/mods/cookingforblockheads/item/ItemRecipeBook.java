@@ -82,8 +82,8 @@ public class ItemRecipeBook extends Item {
 
                 @Override
                 public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                    final var kitchen = new KitchenImpl(level, itemStack.is(ModItems.craftingBook));
-                    final var kitchenMenuAccess = KitchenMenuAccess.create(kitchen, new ServerKitchenMenuState(kitchen.createCraftingContext(player), itemStack.is(ModItems.noFilterBook)));
+                    final var kitchen = new KitchenImpl(level, itemStack.is(ModItems.craftingBook.asItem()));
+                    final var kitchenMenuAccess = KitchenMenuAccess.create(kitchen, new ServerKitchenMenuState(kitchen.createCraftingContext(player), itemStack.is(ModItems.noFilterBook.asItem())));
                     return new KitchenMenu(edition.getMenuTypeSupplier().get(), i, playerEntity, kitchenMenuAccess);
                 }
 

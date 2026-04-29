@@ -51,14 +51,14 @@ public class HarvestCraftAddon {
 
             BlockPos pos = hitResult.getBlockPos();
             BlockState clickedBlock = level.getBlockState(pos);
-            if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.is(ModBlocks.cuttingBoard)) {
+            if (clickedBlock.getBlock() == Blocks.CHEST || clickedBlock.getBlock() == Blocks.CRAFTING_TABLE || clickedBlock.is(ModBlocks.cuttingBoard.asBlock())) {
                 return InteractionEventResult.DEFAULT;
             }
 
             BlockPos relativePos = pos.relative(face);
             if (canPlace(player, ModBlocks.cuttingBoard.defaultBlockState(), level, relativePos)) {
                 BlockPlaceContext useContext = new BlockPlaceContext(new UseOnContext(player, hand, new BlockHitResult(Vec3.atLowerCornerOf(relativePos), face, relativePos, true)));
-                BlockState placedState = ModBlocks.cuttingBoard.value().getStateForPlacement(useContext);
+                BlockState placedState = ModBlocks.cuttingBoard.asBlock().getStateForPlacement(useContext);
                 level.setBlockAndUpdate(relativePos, placedState);
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);

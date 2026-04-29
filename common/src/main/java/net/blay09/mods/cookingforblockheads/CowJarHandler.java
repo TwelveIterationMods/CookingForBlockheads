@@ -60,11 +60,11 @@ public class CowJarHandler {
     }
 
     private static Optional<BlockPos> findMilkJar(Level level, BlockPos pos) {
-        if (level.getBlockState(pos).is(ModBlocks.milkJar)) {
+        if (level.getBlockState(pos).is(ModBlocks.milkJar.asBlock())) {
             return Optional.of(pos);
         }
         final var posBelow = pos.below();
-        if (level.getBlockState(posBelow).is(ModBlocks.milkJar)) {
+        if (level.getBlockState(posBelow).is(ModBlocks.milkJar.asBlock())) {
             return Optional.of(posBelow);
         }
 
@@ -73,7 +73,7 @@ public class CowJarHandler {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {
                     mutablePos.setWithOffset(pos, x, y, z);
-                    if (level.getBlockState(mutablePos).is(ModBlocks.milkJar)) {
+                    if (level.getBlockState(mutablePos).is(ModBlocks.milkJar.asBlock())) {
                         return Optional.of(mutablePos.immutable());
                     }
                 }

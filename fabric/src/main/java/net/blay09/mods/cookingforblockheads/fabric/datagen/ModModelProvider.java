@@ -44,7 +44,7 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        blockStateModelGenerator.registerSimpleItemModel(ModBlocks.cowJar.value(), ModelLocationUtils.getModelLocation(ModBlocks.cowJar.asItem()));
+        blockStateModelGenerator.registerSimpleItemModel(ModBlocks.cowJar.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.cowJar.asItem()));
 
 
         ModBlocks.cookingTables.forEach((color, cookingTable) -> {
@@ -167,16 +167,16 @@ public class ModModelProvider extends FabricModelProvider {
 
         final var toasterModel = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/toaster");
         final var toasterModelActive = Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/toaster_active");
-        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.toaster.value())
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.toaster.asBlock())
                 .with(createBooleanModelDispatch(ToasterBlock.ACTIVE, plainVariant(toasterModelActive), plainVariant(toasterModel)))
                 .with(ROTATION_HORIZONTAL_FACING));
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.coffeeMachine.value());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.coffeeMachine.asBlock());
 
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar.value());
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar.value());
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cookieJar.value());
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket.value());
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cuttingBoard.value());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.milkJar.asBlock());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cowJar.asBlock());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cookieJar.asBlock());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.fruitBasket.asBlock());
+        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.cuttingBoard.asBlock());
         ModBlocks.connectors.forEach((color, connector) -> createConnector(blockStateModelGenerator, connector.asBlock(), color));
 
         final var kitchenFloorParent = new ModelTemplate(Optional.of(Identifier.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "block/kitchen_floor")),
@@ -282,22 +282,22 @@ public class ModModelProvider extends FabricModelProvider {
             return Blocks.TERRACOTTA;
         }
         return switch (color) {
-            case WHITE -> Blocks.WHITE_TERRACOTTA;
-            case ORANGE -> Blocks.ORANGE_TERRACOTTA;
-            case MAGENTA -> Blocks.MAGENTA_TERRACOTTA;
-            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_TERRACOTTA;
-            case YELLOW -> Blocks.YELLOW_TERRACOTTA;
-            case LIME -> Blocks.LIME_TERRACOTTA;
-            case PINK -> Blocks.PINK_TERRACOTTA;
-            case GRAY -> Blocks.GRAY_TERRACOTTA;
-            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_TERRACOTTA;
-            case CYAN -> Blocks.CYAN_TERRACOTTA;
-            case PURPLE -> Blocks.PURPLE_TERRACOTTA;
-            case BLUE -> Blocks.BLUE_TERRACOTTA;
-            case BROWN -> Blocks.BROWN_TERRACOTTA;
-            case GREEN -> Blocks.GREEN_TERRACOTTA;
-            case RED -> Blocks.RED_TERRACOTTA;
-            case BLACK -> Blocks.BLACK_TERRACOTTA;
+            case WHITE -> Blocks.DYED_TERRACOTTA.white();
+            case ORANGE -> Blocks.DYED_TERRACOTTA.orange();
+            case MAGENTA -> Blocks.DYED_TERRACOTTA.magenta();
+            case LIGHT_BLUE -> Blocks.DYED_TERRACOTTA.lightBlue();
+            case YELLOW -> Blocks.DYED_TERRACOTTA.yellow();
+            case LIME -> Blocks.DYED_TERRACOTTA.lime();
+            case PINK -> Blocks.DYED_TERRACOTTA.pink();
+            case GRAY -> Blocks.DYED_TERRACOTTA.gray();
+            case LIGHT_GRAY -> Blocks.DYED_TERRACOTTA.lightGray();
+            case CYAN -> Blocks.DYED_TERRACOTTA.cyan();
+            case PURPLE -> Blocks.DYED_TERRACOTTA.purple();
+            case BLUE -> Blocks.DYED_TERRACOTTA.blue();
+            case BROWN -> Blocks.DYED_TERRACOTTA.brown();
+            case GREEN -> Blocks.DYED_TERRACOTTA.green();
+            case RED -> Blocks.DYED_TERRACOTTA.red();
+            case BLACK -> Blocks.DYED_TERRACOTTA.black();
         };
     }
 

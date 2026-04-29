@@ -65,7 +65,7 @@ public class CookingForBlockheadsClient {
         });
 
         ItemCallback.Tooltip.EVENT.register((itemStack, tooltip, _) -> {
-            if (!(Minecraft.getInstance().screen instanceof KitchenScreen screen)) {
+            if (!(Minecraft.getInstance().gui.screen() instanceof KitchenScreen screen)) {
                 return;
             }
 

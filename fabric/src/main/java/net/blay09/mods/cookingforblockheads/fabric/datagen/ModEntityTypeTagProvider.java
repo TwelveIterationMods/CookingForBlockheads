@@ -4,7 +4,7 @@ import net.blay09.mods.cookingforblockheads.tag.ModEntityTypeTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -15,6 +15,6 @@ public class ModEntityTypeTagProvider extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        tag(ModEntityTypeTags.COW).add(EntityType.COW);
+        tag(ModEntityTypeTags.COW).add(EntityTypes.COW.builtInRegistryHolder().key());
     }
 }

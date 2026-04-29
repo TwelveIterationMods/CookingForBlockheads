@@ -15,17 +15,17 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
 
     @Override
     public void generate() {
-        dropSelf(ModBlocks.toaster.value());
-        dropSelf(ModBlocks.coffeeMachine.value());
-        dropSelf(ModBlocks.milkJar.value());
-        dropSelf(ModBlocks.cowJar.value());
-        add(ModBlocks.cookieJar.value(), this::createNameableBlockEntityTable);
-        dropSelf(ModBlocks.cuttingBoard.value());
+        dropSelf(ModBlocks.toaster.asBlock());
+        dropSelf(ModBlocks.coffeeMachine.asBlock());
+        dropSelf(ModBlocks.milkJar.asBlock());
+        dropSelf(ModBlocks.cowJar.asBlock());
+        add(ModBlocks.cookieJar.asBlock(), this::createNameableBlockEntityTable);
+        dropSelf(ModBlocks.cuttingBoard.asBlock());
         ModBlocks.ovens.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.fridges.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
-        add(ModBlocks.toolRack.value(), this::createNameableBlockEntityTable);
-        add(ModBlocks.spiceRack.value(), this::createNameableBlockEntityTable);
-        add(ModBlocks.fruitBasket.value(), this::createNameableBlockEntityTable);
+        add(ModBlocks.toolRack.asBlock(), this::createNameableBlockEntityTable);
+        add(ModBlocks.spiceRack.asBlock(), this::createNameableBlockEntityTable);
+        add(ModBlocks.fruitBasket.asBlock(), this::createNameableBlockEntityTable);
         ModBlocks.chickenSinks.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.counters.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));
         ModBlocks.cabinets.forEach((discriminator, it) -> add(it.asBlock(), this::createNameableBlockEntityTable));

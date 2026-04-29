@@ -24,7 +24,7 @@ public record KitchenFeedbackMessage(Component component) implements CustomPacke
     );
 
     public static void handle(Player player, KitchenFeedbackMessage message) {
-        if (Minecraft.getInstance().screen instanceof KitchenScreen kitchenScreen) {
+        if (Minecraft.getInstance().gui.screen() instanceof KitchenScreen kitchenScreen) {
             kitchenScreen.displayKitchenFeedback(message.component);
         }
     }

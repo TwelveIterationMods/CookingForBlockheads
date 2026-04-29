@@ -70,7 +70,7 @@ public class CookieJarMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, ModBlocks.cookieJar.value());
+        return stillValid(access, player, ModBlocks.cookieJar.asBlock());
     }
 
     @Override

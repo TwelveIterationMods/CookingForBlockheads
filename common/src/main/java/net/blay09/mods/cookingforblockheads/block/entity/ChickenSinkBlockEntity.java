@@ -35,6 +35,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.chicken.ChickenVariants;
@@ -188,7 +189,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
             return false;
         }
 
-        final var chicken = new Chicken(EntityType.CHICKEN, serverLevel);
+        final var chicken = new Chicken(EntityTypes.CHICKEN, serverLevel);
         chicken.setVariant(chickenType);
         chicken.setAge(chickenAge);
         chicken.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
@@ -444,7 +445,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
             return;
         }
 
-        final var chicken = new Chicken(EntityType.CHICKEN, serverLevel);
+        final var chicken = new Chicken(EntityTypes.CHICKEN, serverLevel);
         chicken.setVariant(chickenType);
         chicken.setAge(chickenAge);
         chicken.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);

@@ -80,7 +80,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("IFI")
                         .pattern("III")
                         .define('I', BalmItemTags.IRON_INGOTS)
-                        .define('G', Blocks.BLACK_STAINED_GLASS)
+                        .define('G', Blocks.STAINED_GLASS.black())
                         .define('F', Blocks.FURNACE)
                         .unlockedBy("has_furnace", has(Blocks.FURNACE))
                         .save(exporter);
@@ -360,9 +360,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 shaped(RecipeCategory.COMBAT, ModItems.chefHat)
                         .pattern("WWW")
                         .pattern("WSW")
-                        .define('W', Items.WHITE_WOOL)
+                        .define('W', Items.WOOL.white())
                         .define('S', Items.STRING)
-                        .unlockedBy("has_white_wool", has(Items.WHITE_WOOL))
+                        .unlockedBy("has_white_wool", has(Items.WOOL.white()))
                         .save(exporter);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS, Items.ICE)
@@ -383,9 +383,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.kitchenFloors.get(DyeColor.WHITE), 4)
                         .pattern("BW")
                         .pattern("WB")
-                        .define('B', Blocks.WHITE_CONCRETE)
-                        .define('W', Blocks.BLACK_CONCRETE)
-                        .unlockedBy("has_white_concrete", has(Items.WHITE_CONCRETE))
+                        .define('B', Blocks.CONCRETE.white())
+                        .define('W', Blocks.CONCRETE.black())
+                        .unlockedBy("has_white_concrete", has(Items.CONCRETE.white()))
                         .save(exporter, "kitchen_floor_from_concrete");
 
                 dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.ORANGE).asBlock(), BalmItemTags.ORANGE_DYES).save(exporter);

@@ -70,7 +70,7 @@ public class SinkBlock extends BaseKitchenBlock {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
-        if (itemStack.is(ModItems.saltFilter)) {
+        if (itemStack.is(ModItems.saltFilter.asItem())) {
             return InteractionResult.PASS;
         }
 

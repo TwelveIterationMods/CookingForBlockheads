@@ -19,29 +19,27 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/pickaxe"));
-        final var mineablePickaxeBuilder = valueLookupBuilder(mineablePickaxeTag);
-        ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.sinks.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.fridges.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.ovens.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(mineablePickaxeBuilder::add);
-        mineablePickaxeBuilder.add(ModBlocks.toaster.asBlock(), ModBlocks.coffeeMachine.asBlock(), ModBlocks.milkJar.asBlock(), ModBlocks.cowJar.asBlock(), ModBlocks.cookieJar.asBlock());
+        final var mineablePickaxeTag = tag(TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/pickaxe")));
+        ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.sinks.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.counters.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.connectors.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.fridges.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.ovens.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asResourceKey).forEach(mineablePickaxeTag::add);
+        mineablePickaxeTag.add(ModBlocks.toaster.asResourceKey(), ModBlocks.coffeeMachine.asResourceKey(), ModBlocks.milkJar.asResourceKey(), ModBlocks.cowJar.asResourceKey(), ModBlocks.cookieJar.asResourceKey());
 
-        final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
-        final var mineableAxeBuilder = valueLookupBuilder(mineableAxeTag);
-        mineableAxeBuilder.add(ModBlocks.toolRack.asBlock(), ModBlocks.spiceRack.asBlock(), ModBlocks.fruitBasket.asBlock(), ModBlocks.cuttingBoard.asBlock());
+        final var mineableAxeTag = tag(TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe")));
+        mineableAxeTag.add(ModBlocks.toolRack.asResourceKey(), ModBlocks.spiceRack.asResourceKey(), ModBlocks.fruitBasket.asResourceKey(), ModBlocks.cuttingBoard.asResourceKey());
 
-        final var kitchenItemProviders = valueLookupBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
-        kitchenItemProviders.add(ModBlocks.toolRack.asBlock());
-        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
-        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
-        ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenItemProviders::add);
-        kitchenItemProviders.add(ModBlocks.cookieJar.asBlock());
+        final var kitchenItemProviders = tag(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
+        kitchenItemProviders.add(ModBlocks.toolRack.asResourceKey());
+        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asResourceKey).forEach(kitchenItemProviders::add);
+        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asResourceKey).forEach(kitchenItemProviders::add);
+        ModBlocks.counters.sortedValues().map(DeferredBlock::asResourceKey).forEach(kitchenItemProviders::add);
+        kitchenItemProviders.add(ModBlocks.cookieJar.asResourceKey());
 
         final var rawKitchenItemProviders = getOrCreateRawBuilder(ModBlockTags.KITCHEN_ITEM_PROVIDERS);
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("farmersdelight", "basket"));
@@ -243,30 +241,30 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("storagedrawers", "warped_half_drawers_2"));
         rawKitchenItemProviders.addOptionalElement(Identifier.fromNamespaceAndPath("storagedrawers", "warped_half_drawers_4"));
 
-        final var cookingTables = valueLookupBuilder(ModBlockTags.COOKING_TABLES);
-        ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asBlock).forEach(cookingTables::add);
+        final var cookingTables = tag(ModBlockTags.COOKING_TABLES);
+        ModBlocks.cookingTables.sortedValues().map(DeferredBlock::asResourceKey).forEach(cookingTables::add);
 
-        final var counters = valueLookupBuilder(ModBlockTags.COUNTERS);
-        ModBlocks.counters.sortedValues().map(DeferredBlock::asBlock).forEach(counters::add);
+        final var counters = tag(ModBlockTags.COUNTERS);
+        ModBlocks.counters.sortedValues().map(DeferredBlock::asResourceKey).forEach(counters::add);
 
-        final var cabinets = valueLookupBuilder(ModBlockTags.CABINETS);
-        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asBlock).forEach(cabinets::add);
+        final var cabinets = tag(ModBlockTags.CABINETS);
+        ModBlocks.cabinets.sortedValues().map(DeferredBlock::asResourceKey).forEach(cabinets::add);
 
-        final var fridges = valueLookupBuilder(ModBlockTags.FRIDGES);
-        ModBlocks.fridges.sortedValues().map(DeferredBlock::asBlock).forEach(fridges::add);
+        final var fridges = tag(ModBlockTags.FRIDGES);
+        ModBlocks.fridges.sortedValues().map(DeferredBlock::asResourceKey).forEach(fridges::add);
 
-        final var ovens = valueLookupBuilder(ModBlockTags.OVENS);
-        ModBlocks.ovens.sortedValues().map(DeferredBlock::asBlock).forEach(ovens::add);
+        final var ovens = tag(ModBlockTags.OVENS);
+        ModBlocks.ovens.sortedValues().map(DeferredBlock::asResourceKey).forEach(ovens::add);
 
-        final var sinks = valueLookupBuilder(ModBlockTags.SINKS);
-        ModBlocks.sinks.sortedValues().map(DeferredBlock::asBlock).forEach(sinks::add);
+        final var sinks = tag(ModBlockTags.SINKS);
+        ModBlocks.sinks.sortedValues().map(DeferredBlock::asResourceKey).forEach(sinks::add);
 
-        final var chickenSinks = valueLookupBuilder(ModBlockTags.CHICKEN_SINKS);
-        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asBlock).forEach(chickenSinks::add);
+        final var chickenSinks = tag(ModBlockTags.CHICKEN_SINKS);
+        ModBlocks.chickenSinks.sortedValues().map(DeferredBlock::asResourceKey).forEach(chickenSinks::add);
 
-        final var kitchenConnectors = valueLookupBuilder(ModBlockTags.KITCHEN_CONNECTORS);
-        ModBlocks.connectors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
-        ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asBlock).forEach(kitchenConnectors::add);
+        final var kitchenConnectors = tag(ModBlockTags.KITCHEN_CONNECTORS);
+        ModBlocks.connectors.sortedValues().map(DeferredBlock::asResourceKey).forEach(kitchenConnectors::add);
+        ModBlocks.kitchenFloors.sortedValues().map(DeferredBlock::asResourceKey).forEach(kitchenConnectors::add);
 
         final var rawKitchenConnectors = getOrCreateRawBuilder(ModBlockTags.KITCHEN_CONNECTORS);
         rawKitchenConnectors.addOptionalElement(Identifier.fromNamespaceAndPath("buildersaddition", "counter_oak_andesite"));

@@ -75,7 +75,7 @@ public class CounterBlock extends BaseKitchenBlock {
             return InteractionResult.SUCCESS;
         }
 
-        if (itemStack.is(ModItems.preservationChamber)) {
+        if (itemStack.is(ModItems.preservationChamber.asItem())) {
             return InteractionResult.PASS;
         }
 

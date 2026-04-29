@@ -68,7 +68,7 @@ public class OvenBlock extends BaseKitchenBlock {
             return InteractionResult.FAIL;
         }
 
-        if (itemStack.is(ModItems.heatingUnit)) {
+        if (itemStack.is(ModItems.heatingUnit.asItem())) {
             return InteractionResult.PASS;
         }
 

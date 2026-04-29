@@ -126,13 +126,13 @@ public class ToasterBlockEntity extends BlockEntity {
         this.active = active;
         if (active) {
             toastTicks = TOAST_TICKS;
-            level.blockEvent(worldPosition, ModBlocks.toaster.value(), 0, 0);
+            level.blockEvent(worldPosition, ModBlocks.toaster.asBlock(), 0, 0);
         } else {
             toastTicks = 0;
-            level.blockEvent(worldPosition, ModBlocks.toaster.value(), 1, 0);
+            level.blockEvent(worldPosition, ModBlocks.toaster.asBlock(), 1, 0);
         }
 
-        level.blockEvent(worldPosition, ModBlocks.toaster.value(), 2, 0);
+        level.blockEvent(worldPosition, ModBlocks.toaster.asBlock(), 2, 0);
 
         BlockState state = level.getBlockState(worldPosition);
         level.setBlockAndUpdate(worldPosition, state.setValue(ToasterBlock.ACTIVE, active));

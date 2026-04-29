@@ -62,8 +62,6 @@ public class ModBlocks {
     }
 
     public static void initialize(BalmBlockRegistrar blocks) {
-        blocks.enableBlockDescriptionPrefixForItems();
-
         toolRack = blocks.register("tool_rack", ToolRackBlock::new, it -> it.sound(SoundType.WOOD).strength(2.5f))
                 .withDefaultItem(configureTooltip(Component.translatable("tooltip.cookingforblockheads.tool_rack.description")))
                 .asDeferredBlock();
@@ -104,63 +102,63 @@ public class ModBlocks {
         final var colorsWithNull = new HashSet<@Nullable DyeColor>(colors);
         colorsWithNull.add(null);
         ovens = blocks.registerDiscriminated(colors,
-                        it -> DiscriminatedBlocks.prefix(it, "oven"),
+                        DiscriminatedBlocks.suffixWith("oven"),
                         OvenBlock::new,
                         it -> it.sound(SoundType.METAL).strength(5f, 10f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.oven.description")))
                 .asDiscriminatedBlocks();
 
         fridges = blocks.registerDiscriminated(colors,
-                        it -> DiscriminatedBlocks.prefix(it, "fridge"),
+                        DiscriminatedBlocks.suffixWith("fridge"),
                         FridgeBlock::new,
                         it -> it.sound(SoundType.METAL).strength(5f, 10f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.fridge.description")))
                 .asDiscriminatedBlocks();
 
         connectors = blocks.registerDiscriminated(colorsWithNull,
-                        it -> DiscriminatedBlocks.prefix(it, "connector"),
+                        DiscriminatedBlocks.suffixWith("connector"),
                         ConnectorBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cooking_table.description")))
                 .asDiscriminatedBlocks();
 
         kitchenFloors = blocks.registerDiscriminated(colors,
-                        it -> DiscriminatedBlocks.prefix(it, "kitchen_floor"),
+                        DiscriminatedBlocks.suffixWith("kitchen_floor"),
                         KitchenFloorBlock::new,
                         it -> it.sound(SoundType.STONE).strength(0.8f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.kitchen_floor.description")))
                 .asDiscriminatedBlocks();
 
         cookingTables = blocks.registerDiscriminated(colorsWithNull,
-                        it -> DiscriminatedBlocks.prefix(it, "cooking_table"),
+                        DiscriminatedBlocks.suffixWith("cooking_table"),
                         CookingTableBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cooking_table.description")))
                 .asDiscriminatedBlocks();
 
         counters = blocks.registerDiscriminated(colorsWithNull,
-                        it -> DiscriminatedBlocks.prefix(it, "counter"),
+                        DiscriminatedBlocks.suffixWith("counter"),
                         CounterBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.counter.description")))
                 .asDiscriminatedBlocks();
 
         cabinets = blocks.registerDiscriminated(colorsWithNull,
-                        it -> DiscriminatedBlocks.prefix(it, "cabinet"),
+                        DiscriminatedBlocks.suffixWith("cabinet"),
                         CabinetBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.cabinet.description")))
                 .asDiscriminatedBlocks();
 
         sinks = blocks.registerDiscriminated(colorsWithNull,
-                        it -> DiscriminatedBlocks.prefix(it, "sink"),
+                        DiscriminatedBlocks.suffixWith("sink"),
                         SinkBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.sink.description")))
                 .asDiscriminatedBlocks();
 
         chickenSinks = blocks.registerDiscriminated(colorsWithNull,
-                        it -> DiscriminatedBlocks.prefix(it, "chicken_sink"),
+                        DiscriminatedBlocks.suffixWith("chicken_sink"),
                         ChickenSinkBlock::new,
                         it -> it.strength(1.25f, 4.2f))
                 .withDefaultItems(configureTooltip(Component.translatable("tooltip.cookingforblockheads.chicken_sink.description")))
