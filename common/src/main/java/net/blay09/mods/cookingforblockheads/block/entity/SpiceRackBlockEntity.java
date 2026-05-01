@@ -22,6 +22,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation {
+public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, Clearable {
 
     private final DefaultContainer container = new DefaultContainer(9) {
         @Override
@@ -177,5 +178,10 @@ public class SpiceRackBlockEntity extends BalmBlockEntity implements BalmMenuPro
     @Override
     public List<BalmProvider<?>> getProviders() {
         return Lists.newArrayList(new BalmProvider<>(KitchenItemProvider.class, itemProvider));
+    }
+
+    @Override
+    public void clearContent() {
+        container.clearContent();
     }
 }
