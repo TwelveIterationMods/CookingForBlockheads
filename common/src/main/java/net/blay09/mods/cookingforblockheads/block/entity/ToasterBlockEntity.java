@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -24,7 +25,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ToasterBlockEntity extends BalmBlockEntity {
+public class ToasterBlockEntity extends BalmBlockEntity implements Clearable {
 
     private static final int UPDATE_INTERVAL = 20;
     private static final int TOAST_TICKS = 1200;
@@ -193,5 +194,10 @@ public class ToasterBlockEntity extends BalmBlockEntity {
                 .getRecipeFor(ModRecipes.toasterRecipeType, new SingleRecipeInput(itemStack), level)
                 .map(it -> true)
                 .orElseGet(() -> itemStack.is(Items.BREAD));
+    }
+
+    @Override
+    public void clearContent() {
+        container.clearContent();
     }
 }

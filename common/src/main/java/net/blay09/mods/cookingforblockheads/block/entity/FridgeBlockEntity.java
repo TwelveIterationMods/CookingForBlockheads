@@ -31,6 +31,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -47,7 +48,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation {
+public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, UpgradeablePreservation, Clearable {
 
     private final DefaultContainer container = new DefaultContainer(27) {
         @Override
@@ -56,6 +57,11 @@ public class FridgeBlockEntity extends BalmBlockEntity implements BalmMenuProvid
             FridgeBlockEntity.this.setChanged();
         }
     };
+
+    @Override
+    public void clearContent() {
+        container.clearContent();
+    }
 
     public record IceUnitIngredientToken(ItemStack itemStack) implements IngredientToken {
         @Override

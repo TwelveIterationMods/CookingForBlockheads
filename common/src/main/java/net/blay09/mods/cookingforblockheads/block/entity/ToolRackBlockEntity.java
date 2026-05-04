@@ -6,10 +6,11 @@ import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContainerProvider {
+public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContainerProvider, Clearable {
 
     private final DefaultContainer container = new DefaultContainer(2) {
         @Override
@@ -43,4 +44,8 @@ public class ToolRackBlockEntity extends BalmBlockEntity implements BalmContaine
         return container;
     }
 
+    @Override
+    public void clearContent() {
+        container.clearContent();
+    }
 }

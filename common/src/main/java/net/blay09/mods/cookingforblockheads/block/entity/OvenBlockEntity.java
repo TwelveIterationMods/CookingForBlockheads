@@ -37,6 +37,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -53,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer> {
+public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProcessor, BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, BalmEnergyStorageProvider, CustomRenderBoundingBox, TransferableBlockEntity<TransferableContainer>, Clearable {
 
     private static final int COOK_TIME = 200;
 
@@ -577,6 +578,11 @@ public class OvenBlockEntity extends BalmBlockEntity implements KitchenItemProce
     @Override
     public void restoreFromTransferSnapshot(TransferableContainer data) {
         data.applyTo(container);
+    }
+
+    @Override
+    public void clearContent() {
+        container.clearContent();
     }
 
     private static class OvenOperation implements KitchenOperation {
