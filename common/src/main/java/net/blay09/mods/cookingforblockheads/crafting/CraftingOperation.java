@@ -76,10 +76,12 @@ public class CraftingOperation {
                 continue;
             }
 
-            // TODO Should do this only if we found one, reusing the found ingredientToken
             final var options = getIngredientOptions(ingredient);
-            ingredientOptions.add(options);
             final var lockedInput = lockedInputs != null && i < lockedInputs.size() ? lockedInputs.get(i) : ItemStack.EMPTY;
+            if (options.stream().noneMatch(it -> ItemStack.isSameItemSameComponents(it, lockedInput))) {
+                options.add(lockedInput);
+            }
+            ingredientOptions.add(options);
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
                 if (options.size() > 1) {
@@ -147,12 +149,14 @@ public class CraftingOperation {
     }
 
     private List<ItemStack> getIngredientOptions(Ingredient ingredient) {
+        final var result = new ArrayList<ItemStack>();
+
         final var candidateItems = ingredient.getItems();
         if (candidateItems.length == 1) {
-            return List.of(candidateItems[0]);
+            result.add(candidateItems[0]);
+            return result;
         }
 
-        final var result = new ArrayList<ItemStack>();
         for (final var itemStack : candidateItems) {
             if (itemStack.isEmpty()) {
                 continue;
