@@ -86,13 +86,8 @@ public class CookingForBlockheadsClient {
                 } else {
                     event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_see_recipe").withStyle(ChatFormatting.YELLOW));
                 }
-            } else if (hoverSlot instanceof CraftMatrixFakeSlot && event.getItemStack() == hoverSlot.getItem()) {
-                if (((CraftMatrixFakeSlot) hoverSlot).getVisibleStacks().size() > 1) {
-                    if (((CraftMatrixFakeSlot) hoverSlot).isLocked()) {
-                        event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_unlock").withStyle(ChatFormatting.GREEN));
-                    } else {
-                        event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.click_to_lock").withStyle(ChatFormatting.GREEN));
-                    }
+            } else if (hoverSlot instanceof CraftMatrixFakeSlot matrixSlot && event.getItemStack() == hoverSlot.getItem()) {
+                if (matrixSlot.hasMultipleOptions()) {
                     event.getToolTip().add(Component.translatable("tooltip.cookingforblockheads.scroll_to_switch").withStyle(ChatFormatting.YELLOW));
                 }
             }

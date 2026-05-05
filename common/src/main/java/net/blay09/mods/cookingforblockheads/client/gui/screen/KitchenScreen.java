@@ -118,8 +118,8 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         if (menu.getSelectedRecipe() != null && mouseX >= leftPos + 24 && mouseY >= topPos + 20 && mouseX < leftPos + 78 && mouseY < topPos + 74) {
             Slot slot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
-            if (slot instanceof CraftMatrixFakeSlot fakeSlot && fakeSlot.getVisibleStacks().size() > 1) {
-                final var lockedInput = fakeSlot.scrollDisplayListAndLock(deltaY > 0 ? -1 : 1);
+            if (slot instanceof CraftMatrixFakeSlot fakeSlot && fakeSlot.hasMultipleOptions()) {
+                final var lockedInput = fakeSlot.scrollDisplayList(deltaY > 0 ? -1 : 1);
                 menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
         } else {
@@ -165,7 +165,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
         }
 
         Slot mouseSlot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
-        if (mouseSlot instanceof CraftMatrixFakeSlot fakeSlot) {
+        if (mouseSlot instanceof CraftMatrixFakeSlot) {
             if (button == 0) {
                 ItemStack itemStack = mouseSlot.getItem();
                 RecipeWithStatus recipe = menu.findRecipeForResultItem(itemStack);
@@ -175,9 +175,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                     setCurrentOffset(menu.getRecipesForSelectionIndex());
                     setFocused(null);
                 }
-            } else if (button == 1) {
-                final var lockedInput = fakeSlot.toggleLock();
-                menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
             return true;
         } else if (mouseSlot instanceof CraftableListingFakeSlot recipeFakeSlot) {
@@ -284,7 +281,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         if (selection != null) {
             for (CraftMatrixFakeSlot slot : menu.getMatrixSlots()) {
-                if (slot.isLocked() && slot.getVisibleStacks().size() > 1) {
+                if (slot.hasMultipleOptions()) {
                     guiGraphics.blit(guiTexture, leftPos + slot.x, topPos + slot.y, 176, 60, 16, 16);
                 }
             }
@@ -349,10 +346,6 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             }
         }
         poseStack.popPose();
-
-        for (CraftMatrixFakeSlot matrixSlot : menu.getMatrixSlots()) {
-            matrixSlot.updateSlot(partialTicks);
-        }
 
         poseStack.pushPose();
         poseStack.translate(0, 0, 301);

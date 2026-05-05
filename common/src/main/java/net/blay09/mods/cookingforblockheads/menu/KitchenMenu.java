@@ -265,7 +265,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                         operation.getMissingIngredients(),
                         operation.getMissingIngredientsMask(),
                         operation.getLockedInputs(),
-                        operation.getAvailableInputs());
+                        operation.getIngredientOptions());
                 result.compute(itemId, (k, v) -> RecipeWithStatus.best(v, recipeWithStatus));
             }
         }
@@ -318,7 +318,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
                     operation.getLockedInputs(),
-                    operation.getAvailableInputs()));
+                    operation.getIngredientOptions()));
         }
 
         result.sort(currentSorting);
@@ -459,7 +459,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         } else {
             for (int i = 0; i < matrixSlots.size(); i++) {
                 CraftMatrixFakeSlot matrixSlot = matrixSlots.get(i);
-                matrixSlot.setIngredient(i, Ingredient.EMPTY, List.of(), ItemStack.EMPTY);
+                matrixSlot.setIngredient(i, List.of(), -1);
                 matrixSlot.setMissing(true);
             }
         }
@@ -484,11 +484,18 @@ public class KitchenMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < matrixSlots.size(); i++) {
             final var matrixSlot = matrixSlots.get(i);
-            final var availableInputs = status.availableInputs();
+            final var ingredientOptions = status.ingredientOptions();
             final int ingredientIndex = ingredientIndexMatrix[i];
             final var lockedInput = ingredientIndex >= 0 && ingredientIndex < lockedInputs.size() ? lockedInputs.get(ingredientIndex) : ItemStack.EMPTY;
-            final var availableInputList = ingredientIndex >= 0 && ingredientIndex < availableInputs.size() ? availableInputs.get(ingredientIndex) : List.<ItemStack>of();
-            matrixSlot.setIngredient(ingredientIndex, matrix.get(i), availableInputList, lockedInput);
+            final var options = ingredientIndex >= 0 && ingredientIndex < ingredientOptions.size() ? ingredientOptions.get(ingredientIndex) : List.<ItemStack>of();
+            var optionIndex = 0;
+            for (int j = 0; j < options.size(); j++) {
+                if (ItemStack.isSameItemSameComponents(options.get(j), lockedInput)) {
+                    optionIndex = j;
+                    break;
+                }
+            }
+            matrixSlot.setIngredient(ingredientIndex, options, optionIndex);
             matrixSlot.setMissing(missingMatrix[i]);
         }
     }

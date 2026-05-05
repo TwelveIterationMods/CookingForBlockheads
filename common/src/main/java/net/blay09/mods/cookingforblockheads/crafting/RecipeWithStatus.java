@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, List<Ingredient> missingIngredients,
-                               int missingIngredientsMask, NonNullList<ItemStack> lockedInputs, List<List<ItemStack>> availableInputs) {
+                               int missingIngredientsMask, NonNullList<ItemStack> lockedInputs, List<List<ItemStack>> ingredientOptions) {
 
     public RecipeHolder<?> recipe(Player player) {
         return player.level().getRecipeManager().byKey(recipeId).orElse(null);
@@ -37,9 +37,9 @@ public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, 
             buf.writeInt(0);
         }
 
-        if (availableInputs != null) {
-            buf.writeInt(availableInputs.size());
-            for (final var availableInputList : availableInputs) {
+        if (ingredientOptions != null) {
+            buf.writeInt(ingredientOptions.size());
+            for (final var availableInputList : ingredientOptions) {
                 buf.writeInt(availableInputList.size());
                 for (final var availableInput : availableInputList) {
                     ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, availableInput);
@@ -64,17 +64,17 @@ public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, 
         for (int j = 0; j < lockedInputCount; j++) {
             lockedInputs.set(j, ItemStack.OPTIONAL_STREAM_CODEC.decode(buf));
         }
-        final var availableInputCount = buf.readInt();
-        final var availableInputs = new ArrayList<List<ItemStack>>(availableInputCount);
-        for (int j = 0; j < availableInputCount; j++) {
+        final var ingredientOptionsCount = buf.readInt();
+        final var ingredientOptions = new ArrayList<List<ItemStack>>(ingredientOptionsCount);
+        for (int j = 0; j < ingredientOptionsCount; j++) {
             final var availableVariantCount = buf.readInt();
             final var availableVariantList = new ArrayList<ItemStack>(availableVariantCount);
             for (int k = 0; k < availableVariantCount; k++) {
                 availableVariantList.add(ItemStack.OPTIONAL_STREAM_CODEC.decode(buf));
             }
-            availableInputs.add(availableVariantList);
+            ingredientOptions.add(availableVariantList);
         }
-        return new RecipeWithStatus(recipeId, resultItem, missingIngredients, missingIngredientsMask, lockedInputs, availableInputs);
+        return new RecipeWithStatus(recipeId, resultItem, missingIngredients, missingIngredientsMask, lockedInputs, ingredientOptions);
     }
 
     public static RecipeWithStatus best(@Nullable RecipeWithStatus first, @Nullable RecipeWithStatus second) {

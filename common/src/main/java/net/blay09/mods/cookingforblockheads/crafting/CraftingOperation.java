@@ -17,7 +17,10 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 public class CraftingOperation {
 
@@ -42,7 +45,7 @@ public class CraftingOperation {
     private final Multimap<IngredientTokenKey, IngredientToken> tokensByIngredient = ArrayListMultimap.create();
     private final List<IngredientToken> ingredientTokens = new ArrayList<>();
     private final List<Ingredient> missingIngredients = new ArrayList<>();
-    private final List<List<ItemStack>> availableInputs = new ArrayList<>();
+    private final List<List<ItemStack>> ingredientOptions = new ArrayList<>();
 
     private NonNullList<ItemStack> lockedInputs;
     private int missingIngredientsMask;
@@ -61,19 +64,19 @@ public class CraftingOperation {
         tokensByIngredient.clear();
         ingredientTokens.clear();
         missingIngredients.clear();
-        availableInputs.clear();
+        ingredientOptions.clear();
         missingIngredientsMask = 0;
 
         final var ingredients = recipe.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
             final var ingredient = ingredients.get(i);
             if (ingredient.isEmpty()) {
-                availableInputs.add(List.of());
+                ingredientOptions.add(List.of());
                 ingredientTokens.add(IngredientToken.EMPTY);
                 continue;
             }
 
-            availableInputs.add(getAvailableInputs(ingredient));
+            ingredientOptions.add(getIngredientOptions(ingredient));
             final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
@@ -141,9 +144,14 @@ public class CraftingOperation {
         return ingredientToken;
     }
 
-    private List<ItemStack> getAvailableInputs(Ingredient ingredient) {
+    private List<ItemStack> getIngredientOptions(Ingredient ingredient) {
+        final var candidateItems = ingredient.getItems();
+        if (candidateItems.length == 1) {
+            return List.of(candidateItems[0]);
+        }
+
         final var result = new ArrayList<ItemStack>();
-        for (final var itemStack : ingredient.getItems()) {
+        for (final var itemStack : candidateItems) {
             if (itemStack.isEmpty()) {
                 continue;
             }
@@ -220,7 +228,7 @@ public class CraftingOperation {
         return missingIngredientsMask;
     }
 
-    public List<List<ItemStack>> getAvailableInputs() {
-        return availableInputs;
+    public List<List<ItemStack>> getIngredientOptions() {
+        return ingredientOptions;
     }
 }

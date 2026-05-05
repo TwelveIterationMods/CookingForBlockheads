@@ -1,66 +1,31 @@
 package net.blay09.mods.cookingforblockheads.menu.slot;
 
-import net.blay09.mods.balm.api.Balm;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
-    private static final float ITEM_SWITCH_TIME = 40f;
-
-    private final NonNullList<ItemStack> visibleStacks = NonNullList.create();
-
     private int ingredientIndex;
-    private Ingredient ingredient;
-    private float variantTimePassed;
-    private int currentVariantIndex;
-    private boolean isLocked;
+    private List<ItemStack> options = new ArrayList<>();
+    private int optionIndex;
     private boolean missing = true;
 
     public CraftMatrixFakeSlot(Container container, int slotId, int x, int y) {
         super(container, slotId, x, y);
     }
 
-    public void setIngredient(final int ingredientIndex, final Ingredient ingredient, final List<ItemStack> availableInputs, final ItemStack lockedInput) {
+    public void setIngredient(final int ingredientIndex, final List<ItemStack> options, final int optionIndex) {
         this.ingredientIndex = ingredientIndex;
 
-        final var previousIngredient = this.ingredient;
-        var effectiveLockedInput = isLocked ? getItem() : ItemStack.EMPTY;
-        if (!lockedInput.isEmpty()) {
-            effectiveLockedInput = lockedInput;
+        this.options.clear();
+        for (final var itemStack : options) {
+            this.options.add(itemStack.copyWithCount(1));
         }
-        visibleStacks.clear();
-        this.ingredient = ingredient;
-        final var sourceStacks = !availableInputs.isEmpty() ? availableInputs : List.of(ingredient.getItems());
-        for (ItemStack itemStack : sourceStacks) {
-            if (!itemStack.isEmpty()) {
-                visibleStacks.add(itemStack.copyWithCount(1));
-            }
-        }
-        visibleStacks.sort(Comparator.comparing(it -> Balm.getRegistries().getKey(it.getItem()).toString()));
-
-        variantTimePassed = 0;
-        if (previousIngredient != ingredient) {
-            currentVariantIndex = 0;
-        } else {
-            currentVariantIndex = !visibleStacks.isEmpty() ? currentVariantIndex % visibleStacks.size() : 0;
-        }
-        isLocked = false;
-
-        if (!effectiveLockedInput.isEmpty()) {
-            for (int i = 0; i < visibleStacks.size(); i++) {
-                if (ItemStack.isSameItemSameComponents(visibleStacks.get(i), effectiveLockedInput)) {
-                    currentVariantIndex = i;
-                    isLocked = true;
-                    break;
-                }
-            }
-        }
+        this.optionIndex = optionIndex;
+        setDisplayStack(optionIndex >= 0 && optionIndex < this.options.size() ? this.options.get(optionIndex) : ItemStack.EMPTY);
     }
 
     public void setMissing(boolean missing) {
@@ -71,68 +36,21 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
         return missing;
     }
 
-    public void updateSlot(float partialTicks) {
-        if (!isLocked) {
-            variantTimePassed += partialTicks;
-            if (variantTimePassed >= ITEM_SWITCH_TIME) {
-                currentVariantIndex++;
-                if (currentVariantIndex >= visibleStacks.size()) {
-                    currentVariantIndex = 0;
-                }
-                variantTimePassed = 0;
-            }
-        }
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return !visibleStacks.isEmpty() ? visibleStacks.get(currentVariantIndex) : ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean hasItem() {
-        return !visibleStacks.isEmpty();
-    }
-
     @Override
     public boolean isActive() {
-        return !visibleStacks.isEmpty();
-    }
-
-    public NonNullList<ItemStack> getVisibleStacks() {
-        return visibleStacks;
-    }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
-
-    public ItemStack scrollDisplayListAndLock(int i) {
-        isLocked = true;
-        return scrollDisplayList(i);
+        return hasItem();
     }
 
     public ItemStack scrollDisplayList(int i) {
-        currentVariantIndex += i;
-        if (currentVariantIndex >= visibleStacks.size()) {
-            currentVariantIndex = 0;
-        } else if (currentVariantIndex < 0) {
-            currentVariantIndex = visibleStacks.size() - 1;
-        }
-        variantTimePassed = 0;
-        return visibleStacks.get(currentVariantIndex);
-    }
-
-    public ItemStack toggleLock() {
-        isLocked = !isLocked;
-        return isLocked ? getItem() : ItemStack.EMPTY;
+        optionIndex = (optionIndex + i + options.size()) % options.size();
+        return options.get(optionIndex);
     }
 
     public int getIngredientIndex() {
         return ingredientIndex;
+    }
+
+    public boolean hasMultipleOptions() {
+        return options.size() > 1;
     }
 }
