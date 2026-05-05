@@ -77,11 +77,12 @@ public class CraftingOperation {
             }
 
             // TODO Should do this only if we found one, reusing the found ingredientToken
-            ingredientOptions.add(getIngredientOptions(ingredient));
+            final var options = getIngredientOptions(ingredient);
+            ingredientOptions.add(options);
             final var lockedInput = lockedInputs != null && i < lockedInputs.size() ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
-                if (ingredient.getItems().length > 1) {
+                if (options.size() > 1) {
                     if (lockedInputs == null || lockedInputs.size() != ingredients.size()) {
                         lockedInputs = NonNullList.withSize(ingredients.size(), ItemStack.EMPTY);
                     }
