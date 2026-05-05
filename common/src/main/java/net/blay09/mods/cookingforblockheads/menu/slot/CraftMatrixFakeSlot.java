@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Comparator;
+import java.util.List;
 
 public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
@@ -25,7 +26,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
         super(container, slotId, x, y);
     }
 
-    public void setIngredient(final int ingredientIndex, final Ingredient ingredient, final ItemStack lockedInput) {
+    public void setIngredient(final int ingredientIndex, final Ingredient ingredient, final List<ItemStack> availableInputs, final ItemStack lockedInput) {
         this.ingredientIndex = ingredientIndex;
 
         final var previousIngredient = this.ingredient;
@@ -35,7 +36,8 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
         }
         visibleStacks.clear();
         this.ingredient = ingredient;
-        for (ItemStack itemStack : ingredient.getItems()) {
+        final var sourceStacks = !availableInputs.isEmpty() ? availableInputs : List.of(ingredient.getItems());
+        for (ItemStack itemStack : sourceStacks) {
             if (!itemStack.isEmpty()) {
                 visibleStacks.add(itemStack.copyWithCount(1));
             }
@@ -55,6 +57,7 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
                 if (ItemStack.isSameItemSameComponents(visibleStacks.get(i), effectiveLockedInput)) {
                     currentVariantIndex = i;
                     isLocked = true;
+                    break;
                 }
             }
         }
@@ -110,12 +113,17 @@ public class CraftMatrixFakeSlot extends AbstractFakeSlot {
 
     public ItemStack scrollDisplayListAndLock(int i) {
         isLocked = true;
+        return scrollDisplayList(i);
+    }
+
+    public ItemStack scrollDisplayList(int i) {
         currentVariantIndex += i;
         if (currentVariantIndex >= visibleStacks.size()) {
             currentVariantIndex = 0;
         } else if (currentVariantIndex < 0) {
             currentVariantIndex = visibleStacks.size() - 1;
         }
+        variantTimePassed = 0;
         return visibleStacks.get(currentVariantIndex);
     }
 

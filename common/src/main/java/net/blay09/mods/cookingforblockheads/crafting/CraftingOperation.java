@@ -42,6 +42,7 @@ public class CraftingOperation {
     private final Multimap<IngredientTokenKey, IngredientToken> tokensByIngredient = ArrayListMultimap.create();
     private final List<IngredientToken> ingredientTokens = new ArrayList<>();
     private final List<Ingredient> missingIngredients = new ArrayList<>();
+    private final List<List<ItemStack>> availableInputs = new ArrayList<>();
 
     private NonNullList<ItemStack> lockedInputs;
     private int missingIngredientsMask;
@@ -60,16 +61,19 @@ public class CraftingOperation {
         tokensByIngredient.clear();
         ingredientTokens.clear();
         missingIngredients.clear();
+        availableInputs.clear();
         missingIngredientsMask = 0;
 
         final var ingredients = recipe.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
             final var ingredient = ingredients.get(i);
             if (ingredient.isEmpty()) {
+                availableInputs.add(List.of());
                 ingredientTokens.add(IngredientToken.EMPTY);
                 continue;
             }
 
+            availableInputs.add(getAvailableInputs(ingredient));
             final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
@@ -137,6 +141,52 @@ public class CraftingOperation {
         return ingredientToken;
     }
 
+    private List<ItemStack> getAvailableInputs(Ingredient ingredient) {
+        final var result = new ArrayList<ItemStack>();
+        for (final var itemStack : ingredient.getItems()) {
+            if (itemStack.isEmpty()) {
+                continue;
+            }
+
+            final var availableToken = findAvailableIngredientToken(ingredient, itemStack);
+            if (availableToken != null) {
+                result.add(itemStack.copyWithCount(1));
+            }
+        }
+        return result;
+    }
+
+    @Nullable
+    private IngredientToken findAvailableIngredientToken(Ingredient ingredient, ItemStack lockedInput) {
+        final var itemProviders = context.getItemProviders();
+        final var cachedProviderIndex = context.getCachedItemProviderIndexFor(ingredient);
+        if (cachedProviderIndex != -1) {
+            final var itemProvider = itemProviders.get(cachedProviderIndex);
+            final var ingredientToken = findAvailableIngredientToken(cachedProviderIndex, itemProvider, ingredient, lockedInput, true);
+            if (ingredientToken != null) {
+                return ingredientToken;
+            }
+        }
+
+        for (int j = 0; j < itemProviders.size(); j++) {
+            final var itemProvider = itemProviders.get(j);
+            IngredientToken ingredientToken = findAvailableIngredientToken(j, itemProvider, ingredient, lockedInput, false);
+            if (ingredientToken != null) {
+                return ingredientToken;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private IngredientToken findAvailableIngredientToken(int itemProviderIndex, KitchenItemProvider itemProvider, Ingredient ingredient, ItemStack lockedInput, boolean useCache) {
+        final var ingredientTokenKey = new IngredientTokenKey(itemProviderIndex, ingredient.getStackingIds());
+        final var scopedIngredientTokens = tokensByIngredient.get(ingredientTokenKey);
+        final var cacheHint = useCache ? context.getCacheHintFor(ingredientTokenKey) : CacheHint.NONE;
+        return findIngredient(itemProvider, ingredient, lockedInput, scopedIngredientTokens, cacheHint);
+    }
+
     public boolean hasIngredients() {
         return missingIngredients.isEmpty();
     }
@@ -168,5 +218,9 @@ public class CraftingOperation {
 
     public int getMissingIngredientsMask() {
         return missingIngredientsMask;
+    }
+
+    public List<List<ItemStack>> getAvailableInputs() {
+        return availableInputs;
     }
 }

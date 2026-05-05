@@ -264,7 +264,8 @@ public class KitchenMenu extends AbstractContainerMenu {
                         resultItem,
                         operation.getMissingIngredients(),
                         operation.getMissingIngredientsMask(),
-                        operation.getLockedInputs());
+                        operation.getLockedInputs(),
+                        operation.getAvailableInputs());
                 result.compute(itemId, (k, v) -> RecipeWithStatus.best(v, recipeWithStatus));
             }
         }
@@ -316,7 +317,8 @@ public class KitchenMenu extends AbstractContainerMenu {
                     recipeResultItem,
                     operation.getMissingIngredients(),
                     operation.getMissingIngredientsMask(),
-                    operation.getLockedInputs()));
+                    operation.getLockedInputs(),
+                    operation.getAvailableInputs()));
         }
 
         result.sort(currentSorting);
@@ -457,7 +459,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         } else {
             for (int i = 0; i < matrixSlots.size(); i++) {
                 CraftMatrixFakeSlot matrixSlot = matrixSlots.get(i);
-                matrixSlot.setIngredient(i, Ingredient.EMPTY, ItemStack.EMPTY);
+                matrixSlot.setIngredient(i, Ingredient.EMPTY, List.of(), ItemStack.EMPTY);
                 matrixSlot.setMissing(true);
             }
         }
@@ -468,6 +470,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var matrix = NonNullList.withSize(9, Ingredient.EMPTY);
         final var missingMatrix = new boolean[9];
         final var ingredientIndexMatrix = new int[9];
+        Arrays.fill(ingredientIndexMatrix, -1);
         final var recipeTypeHandler = CookingForBlockheadsRegistry.getRecipeWorkshopHandler(recipe);
         if (recipeTypeHandler != null) {
             for (int i = 0; i < ingredients.size(); i++) {
@@ -481,10 +484,11 @@ public class KitchenMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < matrixSlots.size(); i++) {
             final var matrixSlot = matrixSlots.get(i);
-            final var lockedInputs = status.lockedInputs();
+            final var availableInputs = status.availableInputs();
             final int ingredientIndex = ingredientIndexMatrix[i];
-            final var lockedInput = lockedInputs.get(ingredientIndex);
-            matrixSlot.setIngredient(ingredientIndex, matrix.get(i), lockedInput);
+            final var lockedInput = ingredientIndex >= 0 && ingredientIndex < lockedInputs.size() ? lockedInputs.get(ingredientIndex) : ItemStack.EMPTY;
+            final var availableInputList = ingredientIndex >= 0 && ingredientIndex < availableInputs.size() ? availableInputs.get(ingredientIndex) : List.<ItemStack>of();
+            matrixSlot.setIngredient(ingredientIndex, matrix.get(i), availableInputList, lockedInput);
             matrixSlot.setMissing(missingMatrix[i]);
         }
     }
