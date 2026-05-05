@@ -572,9 +572,17 @@ public class KitchenMenu extends AbstractContainerMenu {
 
     public void setRecipesForSelection(List<RecipeWithStatus> recipes) {
         selectionRecipesPending = false;
-        recipesForSelection = recipes.size() > 0 ? recipes : null;
-        recipesForSelectionIndex = recipesForSelection != null ? Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex)) : 0;
+        if (recipes.isEmpty()) {
+            selectedCraftable = null;
+            resetSelectedRecipe();
+            updateCraftableSlots();
+            return;
+        }
 
+        recipesForSelection = recipes;
+        recipesForSelectionIndex = Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex));
+
+        updateCraftableSlots();
         updateMatrixSlots();
     }
 
