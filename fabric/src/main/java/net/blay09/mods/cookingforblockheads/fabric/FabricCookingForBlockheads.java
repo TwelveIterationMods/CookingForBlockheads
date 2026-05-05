@@ -7,13 +7,16 @@ import net.blay09.mods.balm.api.fluid.FluidTank;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.balm.fabric.provider.FabricBalmProviders;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
-import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProcessor;
+import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.kitchen.ContainerKitchenItemProvider;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -44,12 +47,18 @@ public class FabricCookingForBlockheads implements ModInitializer {
         var itemProviderLookup = BlockApiLookup.get(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID, "kitchen_item_provider"),
                 KitchenItemProvider.class,
                 Void.class);
+        final var itemStorageLookup = BlockApiLookup.get(ItemStorage.SIDED.getId(), ItemStorage.SIDED.apiClass(), ItemStorage.SIDED.contextClass());
         itemProviderLookup.registerFallback((level, pos, state, blockEntity, context) -> {
             if (state.is(ModBlockTags.KITCHEN_ITEM_PROVIDERS)) {
                 if (blockEntity instanceof Container container) {
                     return new ContainerKitchenItemProvider(container);
                 } else if (blockEntity instanceof BalmContainerProvider containerProvider) {
                     return new ContainerKitchenItemProvider(containerProvider.getContainer());
+                }
+
+                final var itemStorage = itemStorageLookup.find(level, pos, state, blockEntity, null);
+                if (itemStorage instanceof SlottedStorage<ItemVariant> slottedStorage) {
+                    return new SlottedItemStorageKitchenItemProvider(slottedStorage);
                 }
             }
             return null;
