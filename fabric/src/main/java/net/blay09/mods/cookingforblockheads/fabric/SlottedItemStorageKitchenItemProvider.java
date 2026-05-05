@@ -4,9 +4,7 @@ import net.blay09.mods.cookingforblockheads.api.CacheHint;
 import net.blay09.mods.cookingforblockheads.api.IngredientToken;
 import net.blay09.mods.cookingforblockheads.api.KitchenItemProvider;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -17,13 +15,13 @@ public record SlottedItemStorageKitchenItemProvider(SlottedStorage<ItemVariant> 
     @Override
     public IngredientToken findIngredient(Ingredient ingredient, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         final var greedy = false;
-        if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
-            final var slotStorage = storage.getSlot(itemHandlerIngredientToken.slot);
+        if (cacheHint instanceof SlottedItemStorageIngredientToken slottedItemStorageIngredientToken) {
+            final var slotStorage = storage.getSlot(slottedItemStorageIngredientToken.slot);
             final var slotResource = slotStorage.getResource();
             final var slotStack = slotResource.toStack((int) slotStorage.getAmount());
-            final var usesLeft = getUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens);
+            final var usesLeft = getUsesLeft(slottedItemStorageIngredientToken.slot, slotStack, ingredientTokens);
             if (ingredient.test(slotStack) && usesLeft > 0) {
-                return greedy ? new ItemHandlerIngredientToken(itemHandlerIngredientToken.slot, usesLeft) : itemHandlerIngredientToken;
+                return greedy ? new SlottedItemStorageIngredientToken(slottedItemStorageIngredientToken.slot, usesLeft) : slottedItemStorageIngredientToken;
             }
         }
 
@@ -33,7 +31,7 @@ public record SlottedItemStorageKitchenItemProvider(SlottedStorage<ItemVariant> 
             final var slotStack = slotResource.toStack((int) slotStorage.getAmount());
             final var usesLeft = getUsesLeft(i, slotStack, ingredientTokens);
             if (ingredient.test(slotStack) && usesLeft > 0) {
-                return new ItemHandlerIngredientToken(i, greedy ? usesLeft : 1);
+                return new SlottedItemStorageIngredientToken(i, greedy ? usesLeft : 1);
             }
         }
         return null;
@@ -42,12 +40,12 @@ public record SlottedItemStorageKitchenItemProvider(SlottedStorage<ItemVariant> 
     @Override
     public IngredientToken findIngredient(ItemStack itemStack, Collection<IngredientToken> ingredientTokens, CacheHint cacheHint) {
         final var greedy = false;
-        if (cacheHint instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
-            final var slotResource = storage.getSlot(itemHandlerIngredientToken.slot).getResource();
+        if (cacheHint instanceof SlottedItemStorageIngredientToken slottedItemStorageIngredientToken) {
+            final var slotResource = storage.getSlot(slottedItemStorageIngredientToken.slot).getResource();
             final var slotStack = slotResource.toStack();
-            final var usesLeft = getUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens);
-            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(itemHandlerIngredientToken.slot, slotStack, ingredientTokens)) {
-                return greedy ? new ItemHandlerIngredientToken(itemHandlerIngredientToken.slot, usesLeft) : itemHandlerIngredientToken;
+            final var usesLeft = getUsesLeft(slottedItemStorageIngredientToken.slot, slotStack, ingredientTokens);
+            if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && hasUsesLeft(slottedItemStorageIngredientToken.slot, slotStack, ingredientTokens)) {
+                return greedy ? new SlottedItemStorageIngredientToken(slottedItemStorageIngredientToken.slot, usesLeft) : slottedItemStorageIngredientToken;
             }
         }
 
@@ -56,7 +54,7 @@ public record SlottedItemStorageKitchenItemProvider(SlottedStorage<ItemVariant> 
             final var slotStack = slotResource.toStack();
             final var usesLeft = getUsesLeft(i, slotStack, ingredientTokens);
             if (ItemStack.isSameItemSameComponents(slotStack, itemStack) && usesLeft > 0) {
-                return new ItemHandlerIngredientToken(i, greedy ? usesLeft : 1);
+                return new SlottedItemStorageIngredientToken(i, greedy ? usesLeft : 1);
             }
         }
         return null;
@@ -69,9 +67,9 @@ public record SlottedItemStorageKitchenItemProvider(SlottedStorage<ItemVariant> 
     private int getUsesLeft(int slot, ItemStack slotStack, Collection<IngredientToken> ingredientTokens) {
         var usesLeft = slotStack.getCount();
         for (IngredientToken ingredientToken : ingredientTokens) {
-            if (ingredientToken instanceof ItemHandlerIngredientToken itemHandlerIngredientToken) {
-                if (itemHandlerIngredientToken.slot == slot) {
-                    usesLeft -= itemHandlerIngredientToken.reservedCount();
+            if (ingredientToken instanceof SlottedItemStorageIngredientToken slottedItemStorageIngredientToken) {
+                if (slottedItemStorageIngredientToken.slot == slot) {
+                    usesLeft -= slottedItemStorageIngredientToken.reservedCount();
                 }
             }
         }
@@ -81,14 +79,14 @@ public record SlottedItemStorageKitchenItemProvider(SlottedStorage<ItemVariant> 
 
     @Override
     public CacheHint getCacheHint(IngredientToken ingredientToken) {
-        return ingredientToken instanceof ItemHandlerIngredientToken itemHandlerIngredientToken ? itemHandlerIngredientToken : CacheHint.NONE;
+        return ingredientToken instanceof SlottedItemStorageIngredientToken slottedItemStorageIngredientToken ? slottedItemStorageIngredientToken : CacheHint.NONE;
     }
 
-    public class ItemHandlerIngredientToken implements IngredientToken, CacheHint {
+    public class SlottedItemStorageIngredientToken implements IngredientToken, CacheHint {
         private final int slot;
         private final int count;
 
-        public ItemHandlerIngredientToken(int slot, int count) {
+        public SlottedItemStorageIngredientToken(int slot, int count) {
             this.slot = slot;
             this.count = count;
         }
