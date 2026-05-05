@@ -62,6 +62,8 @@ public class KitchenMenu extends AbstractContainerMenu {
     private List<RecipeWithStatus> recipesForSelection;
     private boolean selectionRecipesPending;
     private int recipesForSelectionIndex;
+    // I hate this code, I can't wait for 1.21.1 to be stable and die
+    private ResourceLocation serversideSelectedRecipe;
 
     public KitchenMenu(MenuType<KitchenMenu> containerType, int windowId, Player player, KitchenImpl kitchen) {
         super(containerType, windowId);
@@ -223,11 +225,13 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void requestSelectionRecipes(RecipeWithStatus craftable) {
-        Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.resultItem(), lockedInputs != null ? lockedInputs : List.of()));
+        final var selectedRecipe = getSelectedRecipe();
+        Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.resultItem(), selectedRecipe != null ? selectedRecipe.recipe(player).id() : null, lockedInputs != null ? lockedInputs : List.of()));
     }
 
-    public void handleRequestSelectionRecipes(ItemStack resultItem, List<ItemStack> lockedInputs) {
+    public void handleRequestSelectionRecipes(ItemStack resultItem, ResourceLocation selectedRecipe, List<ItemStack> lockedInputs) {
         selectedCraftable = findRecipeForResultItem(resultItem);
+        this.serversideSelectedRecipe = selectedRecipe;
         this.lockedInputs = lockedInputs;
         recipesDirty = true;
     }
@@ -306,7 +310,11 @@ public class KitchenMenu extends AbstractContainerMenu {
         final var recipesForResult = getRecipesFor(resultItem);
         for (final var recipe : recipesForResult) {
             final var recipeResultItem = recipe.value().getResultItem(player.level().registryAccess());
-            final var operation = context.createOperation(recipe).withLockedInputs(lockedInputs).prepare();
+            final var operation = context.createOperation(recipe);
+            if (recipe.id().equals(serversideSelectedRecipe)) {
+                operation.withLockedInputs(lockedInputs);
+            }
+            operation.prepare();
             if (!shouldShowRecipe(operation)) {
                 continue;
             }
@@ -325,7 +333,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     private boolean shouldShowRecipe(CraftingOperation operation) {
-        return operation.hasIngredients() || kitchen.isNoFilter();
+        return operation.hasIngredients() || operation.hasMissingLockedInputs() || kitchen.isNoFilter();
     }
 
     public void craft(ResourceLocation recipeId, List<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {

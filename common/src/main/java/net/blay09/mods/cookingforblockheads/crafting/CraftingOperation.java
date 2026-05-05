@@ -222,6 +222,20 @@ public class CraftingOperation {
         return lockedInputs;
     }
 
+    public boolean hasMissingLockedInputs() {
+        if (lockedInputs == null || missingIngredientsMask == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < lockedInputs.size(); i++) {
+            if ((missingIngredientsMask & (1 << i)) != 0 && !lockedInputs.get(i).isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public List<Ingredient> getMissingIngredients() {
         return missingIngredients;
     }
