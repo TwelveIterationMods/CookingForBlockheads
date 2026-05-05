@@ -11,15 +11,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
+
 public class RequestSelectionRecipesMessage implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<RequestSelectionRecipesMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "request_selection_recipes"));
 
     private final ItemStack outputItem;
-    private final NonNullList<ItemStack> lockedInputs;
+    private final List<ItemStack> lockedInputs;
 
-    public RequestSelectionRecipesMessage(ItemStack outputItem, NonNullList<ItemStack> lockedInputs) {
+    public RequestSelectionRecipesMessage(ItemStack outputItem, List<ItemStack> lockedInputs) {
         this.outputItem = outputItem;
         this.lockedInputs = lockedInputs;
     }

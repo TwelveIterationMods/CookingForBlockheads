@@ -47,7 +47,7 @@ public class CraftingOperation {
     private final List<Ingredient> missingIngredients = new ArrayList<>();
     private final List<List<ItemStack>> ingredientOptions = new ArrayList<>();
 
-    private NonNullList<ItemStack> lockedInputs;
+    private List<ItemStack> lockedInputs;
     private int missingIngredientsMask;
 
     public CraftingOperation(final CraftingContext context, RecipeHolder<Recipe<?>> recipe) {
@@ -55,7 +55,7 @@ public class CraftingOperation {
         this.recipe = recipe.value();
     }
 
-    public CraftingOperation withLockedInputs(@Nullable NonNullList<ItemStack> lockedInputs) {
+    public CraftingOperation withLockedInputs(@Nullable List<ItemStack> lockedInputs) {
         this.lockedInputs = lockedInputs;
         return this;
     }
@@ -76,13 +76,14 @@ public class CraftingOperation {
                 continue;
             }
 
+            // TODO Should do this only if we found one, reusing the found ingredientToken
             ingredientOptions.add(getIngredientOptions(ingredient));
-            final var lockedInput = lockedInputs != null ? lockedInputs.get(i) : ItemStack.EMPTY;
+            final var lockedInput = lockedInputs != null && i < lockedInputs.size() ? lockedInputs.get(i) : ItemStack.EMPTY;
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
                 if (ingredient.getItems().length > 1) {
-                    if (lockedInputs == null) {
-                        lockedInputs = NonNullList.withSize(recipe.getIngredients().size(), ItemStack.EMPTY);
+                    if (lockedInputs == null || lockedInputs.size() != ingredients.size()) {
+                        lockedInputs = NonNullList.withSize(ingredients.size(), ItemStack.EMPTY);
                     }
                     lockedInputs.set(i, ingredientToken.peek());
                 }
@@ -216,7 +217,7 @@ public class CraftingOperation {
         return recipeTypeHandler.assemble(context, recipe, ingredientTokens, registryAccess);
     }
 
-    public NonNullList<ItemStack> getLockedInputs() {
+    public List<ItemStack> getLockedInputs() {
         return lockedInputs;
     }
 

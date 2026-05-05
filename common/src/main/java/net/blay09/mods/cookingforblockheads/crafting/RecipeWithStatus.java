@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record RecipeWithStatus(ResourceLocation recipeId, ItemStack resultItem, List<Ingredient> missingIngredients,
-                               int missingIngredientsMask, NonNullList<ItemStack> lockedInputs, List<List<ItemStack>> ingredientOptions) {
+                               int missingIngredientsMask, List<ItemStack> lockedInputs, List<List<ItemStack>> ingredientOptions) {
 
     public RecipeHolder<?> recipe(Player player) {
         return player.level().getRecipeManager().byKey(recipeId).orElse(null);

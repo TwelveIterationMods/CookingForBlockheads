@@ -15,6 +15,7 @@ import net.blay09.mods.cookingforblockheads.menu.slot.CraftableListingFakeSlot;
 import net.blay09.mods.cookingforblockheads.network.message.*;
 import net.blay09.mods.cookingforblockheads.registry.CookingForBlockheadsRegistry;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -42,7 +43,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     private final List<CraftableListingFakeSlot> recipeListingSlots = new ArrayList<>();
     private final List<CraftMatrixFakeSlot> matrixSlots = new ArrayList<>();
 
-    private final NonNullList<ItemStack> lockedInputs = NonNullList.withSize(9, ItemStack.EMPTY);
+    private @Nullable List<ItemStack> lockedInputs;
 
     private final List<RecipeWithStatus> filteredCraftables = new ArrayList<>();
     private final List<RecipeWithStatus> history = new ArrayList<>();
@@ -195,7 +196,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
         if (recipe != null) {
             if (player.level().isClientSide) {
-                lockedInputs.clear();
+                lockedInputs = null;
                 selectionRecipesPending = true;
                 requestSelectionRecipes(recipe);
             }
@@ -209,6 +210,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     public void resetSelectedRecipe() {
         recipesForSelection = null;
         recipesForSelectionIndex = 0;
+        lockedInputs = null;
         updateMatrixSlots();
     }
 
@@ -221,16 +223,12 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void requestSelectionRecipes(RecipeWithStatus craftable) {
-        Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.resultItem(), lockedInputs));
+        Balm.getNetworking().sendToServer(new RequestSelectionRecipesMessage(craftable.resultItem(), lockedInputs != null ? lockedInputs : List.of()));
     }
 
-    public void handleRequestSelectionRecipes(ItemStack resultItem, NonNullList<ItemStack> lockedInputs) {
+    public void handleRequestSelectionRecipes(ItemStack resultItem, List<ItemStack> lockedInputs) {
         selectedCraftable = findRecipeForResultItem(resultItem);
-        this.lockedInputs.clear();
-        for (int i = 0; i < lockedInputs.size(); i++) {
-            this.lockedInputs.set(i, lockedInputs.get(i));
-        }
-
+        this.lockedInputs = lockedInputs;
         recipesDirty = true;
     }
 
@@ -273,9 +271,9 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     private boolean isGroupItem(ItemStack resultItem) {
-        final var itemId = Balm.getRegistries().getKey(resultItem.getItem());
+        final var itemId = BuiltInRegistries.ITEM.getKey(resultItem.getItem());
         for (final var group : CookingForBlockheadsRegistry.getGroups()) {
-            final var groupItemId = Balm.getRegistries().getKey(group.getParentItem());
+            final var groupItemId = BuiltInRegistries.ITEM.getKey(group.getParentItem());
             if (groupItemId.equals(itemId)) {
                 continue;
             }
@@ -330,7 +328,7 @@ public class KitchenMenu extends AbstractContainerMenu {
         return operation.hasIngredients() || kitchen.isNoFilter();
     }
 
-    public void craft(ResourceLocation recipeId, NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
+    public void craft(ResourceLocation recipeId, List<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
         final var level = player.level();
         final var recipe = (RecipeHolder<Recipe<?>>) level.getRecipeManager().byKey(recipeId).orElse(null);
         if (recipe == null) {
@@ -486,7 +484,7 @@ public class KitchenMenu extends AbstractContainerMenu {
             final var matrixSlot = matrixSlots.get(i);
             final var ingredientOptions = status.ingredientOptions();
             final int ingredientIndex = ingredientIndexMatrix[i];
-            final var lockedInput = ingredientIndex >= 0 && ingredientIndex < lockedInputs.size() ? lockedInputs.get(ingredientIndex) : ItemStack.EMPTY;
+            final var lockedInput = lockedInputs != null && ingredientIndex >= 0 && ingredientIndex < lockedInputs.size() ? lockedInputs.get(ingredientIndex) : ItemStack.EMPTY;
             final var options = ingredientIndex >= 0 && ingredientIndex < ingredientOptions.size() ? ingredientOptions.get(ingredientIndex) : List.<ItemStack>of();
             var optionIndex = 0;
             for (int j = 0; j < options.size(); j++) {
@@ -588,6 +586,7 @@ public class KitchenMenu extends AbstractContainerMenu {
 
         recipesForSelection = recipes;
         recipesForSelectionIndex = Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex));
+        lockedInputs = recipesForSelection.get(recipesForSelectionIndex).lockedInputs();
 
         updateCraftableSlots();
         updateMatrixSlots();
@@ -596,6 +595,7 @@ public class KitchenMenu extends AbstractContainerMenu {
     public void nextRecipe(int dir) {
         if (recipesForSelection != null) {
             recipesForSelectionIndex = Math.max(0, Math.min(recipesForSelection.size() - 1, recipesForSelectionIndex + dir));
+            lockedInputs = recipesForSelection.get(recipesForSelectionIndex).lockedInputs();
             updateCraftableSlots();
         }
 
@@ -628,8 +628,12 @@ public class KitchenMenu extends AbstractContainerMenu {
     }
 
     public void setLockedInput(int i, ItemStack lockedInput) {
-        lockedInputs.set(i, lockedInput);
         if (selectedCraftable != null) {
+            final var recipe = getSelectedRecipe().recipe(player).value();
+            if (lockedInputs == null || lockedInputs.size() != recipe.getIngredients().size()) {
+                lockedInputs = NonNullList.withSize(recipe.getIngredients().size(), ItemStack.EMPTY);
+            }
+            lockedInputs.set(i, lockedInput);
             requestSelectionRecipes(selectedCraftable);
         }
     }

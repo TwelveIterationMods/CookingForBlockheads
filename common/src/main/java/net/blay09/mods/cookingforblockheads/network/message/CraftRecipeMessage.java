@@ -12,17 +12,19 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class CraftRecipeMessage implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<CraftRecipeMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CookingForBlockheads.MOD_ID,
             "craft_recipe"));
 
     private final ResourceLocation recipeId;
-    private final NonNullList<ItemStack> lockedInputs;
+    private final List<ItemStack> lockedInputs;
     private final boolean craftFullStack;
     private final boolean addToInventory;
 
-    public CraftRecipeMessage(ResourceLocation recipeId, @Nullable NonNullList<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
+    public CraftRecipeMessage(ResourceLocation recipeId, @Nullable List<ItemStack> lockedInputs, boolean craftFullStack, boolean addToInventory) {
         this.recipeId = recipeId;
         this.lockedInputs = lockedInputs;
         this.craftFullStack = craftFullStack;
