@@ -257,7 +257,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                     continue;
                 }
 
-                final var operation = context.createOperation(recipe).prepare();
+                final var operation = context.createOperation(recipe).prepare(false);
                 if (!shouldShowRecipe(operation)) {
                     continue;
                 }

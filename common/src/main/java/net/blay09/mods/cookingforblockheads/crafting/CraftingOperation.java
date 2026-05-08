@@ -61,6 +61,10 @@ public class CraftingOperation {
     }
 
     public CraftingOperation prepare() {
+        return prepare(true);
+    }
+
+    public CraftingOperation prepare(boolean includeIngredientOptions) {
         tokensByIngredient.clear();
         ingredientTokens.clear();
         missingIngredients.clear();
@@ -76,15 +80,15 @@ public class CraftingOperation {
                 continue;
             }
 
-            final var options = getIngredientOptions(ingredient);
             final var lockedInput = lockedInputs != null && i < lockedInputs.size() ? lockedInputs.get(i) : ItemStack.EMPTY;
-            if (options.stream().noneMatch(it -> ItemStack.isSameItemSameComponents(it, lockedInput))) {
+            final var options = includeIngredientOptions ? getIngredientOptions(ingredient) : new ArrayList<ItemStack>(0);
+            if (includeIngredientOptions && !lockedInput.isEmpty() && options.stream().noneMatch(it -> ItemStack.isSameItemSameComponents(it, lockedInput))) {
                 options.add(lockedInput);
             }
             ingredientOptions.add(options);
             final var ingredientToken = accountForIngredient(ingredient, lockedInput);
             if (ingredientToken != null) {
-                if (options.size() > 1) {
+                if (includeIngredientOptions && options.size() > 1) {
                     if (lockedInputs == null || lockedInputs.size() != ingredients.size()) {
                         lockedInputs = NonNullList.withSize(ingredients.size(), ItemStack.EMPTY);
                     }
