@@ -1,13 +1,6 @@
-- Changed ingredients from inventory to be prioritized when cooking
-- Fixed foods tagged with `c:foods/edible_when_placed` not showing up in the Cooking Table
-- Fixed cooked item overlay not rendering in the Oven UI
-- Added support for campfire and smoking recipes in the oven
-  - However, they still won't show up in the Cooking Table.
-- Fixed config translation keys
-- Fixed subtitles showing up untranslated
-- Fixed recipes with missing ingredients showing up as options when selecting a craftable
-- Fixed oven tool items rendering too low
-- Fixed 'no selection' text flicker when switching between selected craftable
-- Fixed search bar not being able to be defocused
-- Fixed search bar being focused by default, unlike other Vanilla UIs
-- Fixed hoppers not inserting into Cooking for Blockheads containers on NeoForge
+- Added support for custom `kitchen_item_provider` blocks on Fabric
+- Fixed recipe display closing when scrolling an ingredient in the grid
+- Fixed incosistent selection state if recipes become unavailable
+- Fixed tag ingredients showing all tag items as options instead of only those that are available
+- Fixed compatibility issues with Sable regarding Clearable containers
+- Removed auto-cycling and lock toggle of tag ingredients - they are now always locked onto a first candidate and can be manually scrolled through for explicit selection
