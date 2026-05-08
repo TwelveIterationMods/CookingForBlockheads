@@ -1,3 +1,5 @@
+- Hotfixed performance regression when opening kitchen menu
+
 - Added support for custom `kitchen_item_provider` blocks on Fabric
 - Fixed recipe display closing when scrolling an ingredient in the grid
 - Fixed incosistent selection state if recipes become unavailable
