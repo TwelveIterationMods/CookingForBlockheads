@@ -98,7 +98,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_iron_ingot", has(BalmItemTags.IRON_INGOTS))
                         .save(exporter);
 
-                ModBlocks.ovens.forEach((color, block) ->
+                ModBlocks.fridges.forEach((color, block) ->
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.FRIDGES)
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
@@ -166,7 +166,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_dyed_counter", has(ModItemTags.DYED_COUNTERS))
                         .save(exporter, "remove_dye_from_counter");
 
-                ModBlocks.connectors.forEach((color, block) -> {
+                ModBlocks.counters.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.COUNTERS)
