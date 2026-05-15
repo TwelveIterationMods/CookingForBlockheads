@@ -1,20 +1,2 @@
-- Added automatic saving of the selected sort order in the Cooking Table
-- Changed Chicken Sink to require either a chicken to be lead to it, or a egg to be hatched in it
-  - The chicken sink will now respect and reflect the Chicken Variant, and produce its regional eggs
-  - The first egg in an empty sink will hatch into a Baby Chicken
-  - The Chicken Sink now has a slot for seeds, which is used both to feed baby chicken, as well as increase the egg laying speed
-  - Baby Chicken in an empty sink will grow up to adults, as long as they are fed
-  - The recipe no longer takes an egg upfront, instead it can be placed inside with right-click
-  - Breaking a Chicken Sink will release the chicken
-- Fixed wrong craftable count being displayed for recipes with tool ingredients
-- Fixed wrong block language keys in translations
-- Fixed subtitles showing up untranslated
-- Fixed NoFilter Edition rendering in wrong position when placed on Cooking Table
-- Fixed dyed chicken sink menu immediately closing
-- Fixed oven door rendering in wrong dye
-- Fixed recipes with missing ingredients showing up as options when selecting a craftable
-- Fixed kitchen blocks overflowing their inventory slot visually
-- Fixed oven tool items rendering too low
-- Fixed 'no selection' text flicker when switching between selected craftable
-- Fixed counter custom name saving to a wrong name compared to loading
-- Fixed incorrect translation keys for item blocks
+- Fixed wrong dye recipes for fridges and counters
+- Data Packs: Added support for custom `kitchen_item_provider` blocks on Fabric
