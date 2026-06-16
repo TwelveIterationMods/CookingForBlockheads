@@ -61,23 +61,23 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
 
         FluidTank milkTank = milkJar.getFluidTank();
         if (itemStack.getItem() == Items.MILK_BUCKET) {
-            if (milkTank.getAmount() <= milkTank.getCapacity() - 1000) {
-                milkTank.fill(Compat.getMilkFluid(), 1000, false);
+            if (milkTank.getAmount(0) <= milkTank.getCapacity(0) - 1000) {
+                milkTank.fill(0, Compat.getMilkFluid(), 1000, false);
                 if (!player.getAbilities().instabuild) {
                     player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                 }
             }
             return InteractionResult.SUCCESS;
         } else if (itemStack.getItem() == Items.BUCKET) {
-            if (milkTank.getAmount() >= 1000) {
+            if (milkTank.getAmount(0) >= 1000) {
                 if (itemStack.getCount() == 1) {
-                    milkTank.drain(Compat.getMilkFluid(), 1000, false);
+                    milkTank.drain(0, Compat.getMilkFluid(), 1000, false);
                     if (!player.getAbilities().instabuild) {
                         player.setItemInHand(hand, new ItemStack(Items.MILK_BUCKET));
                     }
                 } else {
                     if (player.getInventory().add(new ItemStack(Items.MILK_BUCKET))) {
-                        milkTank.drain(Compat.getMilkFluid(), 1000, false);
+                        milkTank.drain(0, Compat.getMilkFluid(), 1000, false);
                         if (!player.getAbilities().instabuild) {
                             itemStack.shrink(1);
                         }
@@ -99,8 +99,8 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
     @Override
     public ItemStack pickupBlock(@Nullable LivingEntity entity, LevelAccessor level, BlockPos pos, BlockState state) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof MilkJarBlockEntity milkJar && milkJar.getFluidTank().getAmount() >= 1000) {
-            int drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, false);
+        if (blockEntity instanceof MilkJarBlockEntity milkJar && milkJar.getFluidTank().getAmount(0) >= 1000) {
+            int drained = milkJar.getFluidTank().drain(0, Compat.getMilkFluid(), 1000, false);
             return drained >= 1000 ? new ItemStack(Items.MILK_BUCKET) : ItemStack.EMPTY;
         }
         return ItemStack.EMPTY;

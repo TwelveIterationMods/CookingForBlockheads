@@ -10,7 +10,7 @@ public class MilkJarBlockInfoProvider implements BlockInfoProvider {
     @Override
     public void apply(BlockInfoContext context, HudInfoOutput output) {
         if (context.blockEntity() instanceof MilkJarBlockEntity milkJar) {
-            output.text(Component.translatable("waila.cookingforblockheads.milk_stored", milkJar.getFluidTank().getAmount(), milkJar.getFluidTank().getCapacity()));
+            output.text(Component.translatable("waila.cookingforblockheads.milk_stored", milkJar.getFluidTank().getAmount(0), milkJar.getFluidTank().getCapacity(0)));
         }
     }
 }

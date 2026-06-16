@@ -49,6 +49,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
@@ -264,7 +265,7 @@ public class FridgeBlockEntity extends BlockEntity implements BalmMenuProvider<B
     }
 
     public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 2, 2).getCenter());
+        return new AABB(Vec3.atCenterOf(worldPosition.offset(-1, 0, -1)), Vec3.atCenterOf(worldPosition.offset(2, 2, 2)));
     }
 
     public void markDirtyAndUpdate() {

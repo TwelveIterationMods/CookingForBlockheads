@@ -15,7 +15,7 @@ public class SinkBlockInfoProvider implements BlockInfoProvider {
                 output.text(Component.translatable("waila.cookingforblockheads.salt_filter"));
             }
             if (CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
-                output.text(Component.translatable("waila.cookingforblockheads.water_stored", sink.getFluidTank().getAmount(), sink.getFluidTank().getCapacity()));
+                output.text(Component.translatable("waila.cookingforblockheads.water_stored", sink.getFluidTank().getAmount(0), sink.getFluidTank().getCapacity(0)));
             }
         }
     }

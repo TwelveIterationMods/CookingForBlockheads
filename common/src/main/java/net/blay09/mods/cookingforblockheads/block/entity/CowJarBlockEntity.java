@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNameable {
@@ -66,7 +67,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, CowJarBlockEntity blockEntity) {
         final var jukebox = blockEntity.jukebox;
-        if (jukebox == null || !jukebox.closerToCenterThan(pos.getCenter(), 3.46f) || !level.getBlockState(jukebox).is(Blocks.JUKEBOX)) {
+        if (jukebox == null || !jukebox.closerToCenterThan(Vec3.atCenterOf(pos), 3.46f) || !level.getBlockState(jukebox).is(Blocks.JUKEBOX)) {
             blockEntity.partyBpm = 0;
             blockEntity.jukebox = null;
         }
@@ -77,7 +78,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
     }
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
-        if (milkTank.getAmount() < MILK_CAPACITY) {
+        if (milkTank.getAmount(0) < MILK_CAPACITY) {
             CookingForBlockheadsConfig config = CookingForBlockheadsConfig.getActive();
 
             double milkToAdd = config.cowJarMilkPerTick;
@@ -85,7 +86,7 @@ public class CowJarBlockEntity extends MilkJarBlockEntity implements IMutableNam
                 milkToAdd *= config.compressedCowJarMilkMultiplier;
             }
 
-            milkTank.fill(Compat.getMilkFluid(), (int) milkToAdd, false);
+            milkTank.fill(0, Compat.getMilkFluid(), (int) milkToAdd, false);
             isDirty = true;
         }
 

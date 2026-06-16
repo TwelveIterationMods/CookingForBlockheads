@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class CabinetBlockEntity extends CounterBlockEntity {
@@ -95,8 +96,8 @@ public class CabinetBlockEntity extends CounterBlockEntity {
     @Override
     public AABB getRenderBoundingBox() {
         if (getBlockState().getValue(CabinetBlock.MODEL_TYPE) == CabinetBlock.CabinetModelType.LARGE_UPPER) {
-            return new AABB(worldPosition.below().offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 1, 2).getCenter());
+            return new AABB(Vec3.atCenterOf(worldPosition.below().offset(-1, 0, -1)), Vec3.atCenterOf(worldPosition.offset(2, 1, 2)));
         }
-        return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 2, 2).getCenter());
+        return new AABB(Vec3.atCenterOf(worldPosition.offset(-1, 0, -1)), Vec3.atCenterOf(worldPosition.offset(2, 2, 2)));
     }
 }

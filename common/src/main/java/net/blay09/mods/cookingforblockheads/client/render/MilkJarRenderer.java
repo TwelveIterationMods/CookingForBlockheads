@@ -44,7 +44,7 @@ public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements
         milkModel.collectParts(renderState.milk.scratchRandomSource(42), milkParts);
 
         renderState.facing = blockEntity.getBlockState().getValue(MilkJarBlock.FACING);
-        renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
+        renderState.fluidLevel = blockEntity.getFluidTank().getAmount(0) / (float) blockEntity.getFluidTank().getCapacity(0);
     }
 
     @Override

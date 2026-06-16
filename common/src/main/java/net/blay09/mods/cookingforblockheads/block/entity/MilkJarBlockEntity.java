@@ -33,8 +33,8 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
     protected static final int MILK_CAPACITY = 32000;
     protected final DefaultFluidTank milkTank = new DefaultFluidTank(MILK_CAPACITY) {
         @Override
-        public boolean canFill(Fluid fluid) {
-            return fluid.isSame(Compat.getMilkFluid()) && super.canFill(fluid);
+        public boolean canFill(int slot, Fluid fluid) {
+            return fluid.isSame(Compat.getMilkFluid()) && super.canFill(slot, fluid);
         }
 
         @Override
@@ -80,20 +80,20 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
     private record MilkJarIngredientToken(MilkJarBlockEntity milkJar, ItemStack itemStack, int count) implements IngredientToken {
         @Override
         public ItemStack peek() {
-            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, true);
+            final var drained = milkJar.getFluidTank().drain(0, Compat.getMilkFluid(), 1000, true);
             return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack consume() {
-            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, false);
+            final var drained = milkJar.getFluidTank().drain(0, Compat.getMilkFluid(), 1000, false);
             return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack restore(ItemStack itemStack) {
             if (itemStack.is(ModItemTags.MILK)) {
-                milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
+                milkJar.getFluidTank().fill(0, Compat.getMilkFluid(), 1000, false);
             }
             return ItemStack.EMPTY;
         }
@@ -110,7 +110,7 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
             for (final var milkItem : BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.MILK))
                 if (ingredient.acceptsItem(milkItem)) {
                     final var milkUnitsUsed = ingredientTokens.size();
-                    final var milkUnitsAvailable = milkJar.getFluidTank().getAmount() / 1000 - milkUnitsUsed;
+                    final var milkUnitsAvailable = milkJar.getFluidTank().getAmount(0) / 1000 - milkUnitsUsed;
                     if (milkUnitsAvailable >= 1) {
                         return new MilkJarIngredientToken(milkJar, new ItemStack(milkItem), greedy ? milkUnitsAvailable : 1);
                     } else {
@@ -128,7 +128,7 @@ public class MilkJarBlockEntity extends BlockEntity implements BalmFluidTankProv
             }
 
             final var milkUnitsUsed = ingredientTokens.size();
-            final var milkUnitsAvailable = milkJar.getFluidTank().getAmount() / 1000 - milkUnitsUsed;
+            final var milkUnitsAvailable = milkJar.getFluidTank().getAmount(0) / 1000 - milkUnitsUsed;
             if (milkUnitsAvailable >= 1) {
                 return new MilkJarIngredientToken(milkJar, itemStack, greedy ? milkUnitsAvailable : 0);
             } else {

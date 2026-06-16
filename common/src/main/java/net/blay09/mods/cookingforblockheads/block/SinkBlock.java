@@ -100,9 +100,9 @@ public class SinkBlock extends BaseKitchenBlock {
                 if (!Balm.hooks().useFluidTank(state, level, pos, player, hand, blockHitResult)) {
                     // Special case for bottles, they can hold 1/3 of a bucket
                     if (itemStack.getItem() == Items.GLASS_BOTTLE) {
-                        int simulated = fluidTank.drain(Fluids.WATER, 333, true);
+                        int simulated = fluidTank.drain(0, Fluids.WATER, 333, true);
                         if (simulated == 333) {
-                            fluidTank.drain(Fluids.WATER, 333, false);
+                            fluidTank.drain(0, Fluids.WATER, 333, false);
                             ItemStack filledBottle = PotionContents.createItemStack(Items.POTION, Potions.WATER);
                             if (itemStack.getCount() == 1) {
                                 player.setItemInHand(hand, filledBottle);

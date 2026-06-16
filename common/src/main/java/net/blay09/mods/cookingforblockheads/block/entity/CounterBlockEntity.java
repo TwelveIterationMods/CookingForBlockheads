@@ -44,6 +44,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos>, IMutableNameable, BalmContainerProvider, UpgradeablePreservation, KitchenItemProviderHolder {
@@ -165,7 +166,7 @@ public class CounterBlockEntity extends BlockEntity implements BalmMenuProvider<
     }
 
     public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-1, 0, -1).getCenter(), worldPosition.offset(2, 1, 2).getCenter());
+        return new AABB(Vec3.atCenterOf(worldPosition.offset(-1, 0, -1)), Vec3.atCenterOf(worldPosition.offset(2, 1, 2)));
     }
 
     @Override

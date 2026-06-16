@@ -52,6 +52,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
@@ -92,7 +93,7 @@ public class ChickenSinkBlockEntity extends BlockEntity implements BalmMenuProvi
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, ChickenSinkBlockEntity blockEntity) {
         final var jukebox = blockEntity.jukebox;
-        if (jukebox == null || !jukebox.closerToCenterThan(pos.getCenter(), 3.46f) || !level.getBlockState(jukebox).is(Blocks.JUKEBOX)) {
+        if (jukebox == null || !jukebox.closerToCenterThan(Vec3.atCenterOf(pos), 3.46f) || !level.getBlockState(jukebox).is(Blocks.JUKEBOX)) {
             blockEntity.partyBpm = 0;
             blockEntity.jukebox = null;
         }

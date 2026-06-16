@@ -48,34 +48,34 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
     private final DefaultFluidTank sinkTank = new DefaultFluidTank(16000) {
 
         @Override
-        public Fluid getFluid() {
+        public Fluid getFluid(int slot) {
             if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                 return Fluids.WATER;
             }
 
-            return super.getFluid();
+            return super.getFluid(slot);
         }
 
         @Override
-        public int getAmount() {
+        public int getAmount(int slot) {
             if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                 return Integer.MAX_VALUE;
             }
 
-            return super.getAmount();
+            return super.getAmount(slot);
         }
 
         @Override
-        public int getCapacity() {
+        public int getCapacity(int slot) {
             if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                 return Integer.MAX_VALUE;
             }
 
-            return super.getCapacity();
+            return super.getCapacity(slot);
         }
 
         @Override
-        public int drain(Fluid fluid, int maxDrain, boolean simulate) {
+        public int drain(int slot, Fluid fluid, int maxDrain, boolean simulate) {
             if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater && fluid == Fluids.WATER) {
                 return maxDrain;
             }
@@ -86,18 +86,18 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
 
             SinkBlockEntity.this.setChanged();
 
-            return super.drain(fluid, maxDrain, simulate);
+            return super.drain(slot, fluid, maxDrain, simulate);
         }
 
         @Override
-        public int fill(Fluid fluid, int maxFill, boolean simulate) {
+        public int fill(int slot, Fluid fluid, int maxFill, boolean simulate) {
             if (!CookingForBlockheadsConfig.getActive().sinkRequiresWater) {
                 return maxFill;
             }
 
             SinkBlockEntity.this.setChanged();
 
-            return super.fill(fluid, maxFill, simulate);
+            return super.fill(slot, fluid, maxFill, simulate);
         }
     };
 
@@ -175,19 +175,19 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
     private record SinkIngredientToken(SinkBlockEntity milkJar, ItemStack itemStack, int count) implements IngredientToken {
         @Override
         public ItemStack peek() {
-            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, true);
+            final var drained = milkJar.getFluidTank().drain(0, Compat.getMilkFluid(), 1000, true);
             return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack consume() {
-            final var drained = milkJar.getFluidTank().drain(Compat.getMilkFluid(), 1000, false);
+            final var drained = milkJar.getFluidTank().drain(0, Compat.getMilkFluid(), 1000, false);
             return drained >= 1000 ? itemStack : ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack restore(ItemStack itemStack) {
-            milkJar.getFluidTank().fill(Compat.getMilkFluid(), 1000, false);
+            milkJar.getFluidTank().fill(0, Compat.getMilkFluid(), 1000, false);
             return ItemStack.EMPTY;
         }
 
@@ -203,7 +203,7 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
             for (final var waterItem : BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.WATER))
                 if (ingredient.acceptsItem(waterItem)) {
                     final var waterUnitsUsed = ingredientTokens.size();
-                    final var waterUnitsAvailable = sink.getFluidTank().getAmount() / 1000 - waterUnitsUsed;
+                    final var waterUnitsAvailable = sink.getFluidTank().getAmount(0) / 1000 - waterUnitsUsed;
                     if (waterUnitsAvailable >= 1) {
                         return new SinkIngredientToken(sink, new ItemStack(waterItem), greedy ? waterUnitsAvailable : 1);
                     } else {
@@ -221,7 +221,7 @@ public class SinkBlockEntity extends BlockEntity implements BalmFluidTankProvide
             }
 
             final var waterUnitsUsed = ingredientTokens.size();
-            final var waterUnitsAvailable = sink.getFluidTank().getAmount() / 1000 - waterUnitsUsed;
+            final var waterUnitsAvailable = sink.getFluidTank().getAmount(0) / 1000 - waterUnitsUsed;
             if (waterUnitsAvailable >= 1) {
                 return new SinkIngredientToken(sink, itemStack, greedy ? waterUnitsAvailable : 1);
             } else {

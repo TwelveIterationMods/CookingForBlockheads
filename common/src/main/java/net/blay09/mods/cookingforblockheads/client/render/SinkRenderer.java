@@ -39,7 +39,7 @@ public class SinkRenderer implements BlockEntityRenderer<SinkBlockEntity, SinkRe
         final var waterModel = ModModels.sinkLiquid.asBlockStateModel();
         waterModel.collectParts(renderState.water.scratchRandomSource(42), waterParts);
 
-        renderState.fluidLevel = blockEntity.getFluidTank().getAmount() / (float) blockEntity.getFluidTank().getCapacity();
+        renderState.fluidLevel = blockEntity.getFluidTank().getAmount(0) / (float) blockEntity.getFluidTank().getCapacity(0);
         final var level = blockEntity.getLevel();
         final var waterColor = level != null ? level.getBiome(blockEntity.getBlockPos()).value().getWaterColor() : 0xFFFFFFFF;
         renderState.water.tintLayers().add(0, waterColor);
