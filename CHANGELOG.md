@@ -1,2 +1,1 @@
-- Fixed wrong dye recipes for fridges and counters
-- Data Packs: Added support for custom `kitchen_item_provider` blocks on Fabric
+- Updated to Minecraft 26.2
