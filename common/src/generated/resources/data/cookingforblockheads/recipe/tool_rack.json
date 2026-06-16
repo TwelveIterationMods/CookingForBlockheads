@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "I": "#c:nuggets/iron",
     "S": "#minecraft:wooden_slabs"

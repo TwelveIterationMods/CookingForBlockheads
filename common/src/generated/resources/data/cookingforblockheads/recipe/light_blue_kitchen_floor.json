@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "D": "#c:dyes/light_blue",
     "F": "cookingforblockheads:white_kitchen_floor"

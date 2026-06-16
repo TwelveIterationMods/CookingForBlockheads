@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "#cookingforblockheads:dyed_cooking_tables",
     "minecraft:bone_meal"

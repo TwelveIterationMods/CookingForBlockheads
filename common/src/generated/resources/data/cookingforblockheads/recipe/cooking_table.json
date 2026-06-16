@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "B": "cookingforblockheads:crafting_book",
     "C": "minecraft:terracotta",

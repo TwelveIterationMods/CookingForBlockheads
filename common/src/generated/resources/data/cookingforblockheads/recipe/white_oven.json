@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "F": "minecraft:furnace",
     "G": "minecraft:black_stained_glass",

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "H": "minecraft:hay_block",
     "S": "cookingforblockheads:sink",

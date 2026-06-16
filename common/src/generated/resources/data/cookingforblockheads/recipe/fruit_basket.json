@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "P": "#minecraft:wooden_pressure_plates",
     "S": "#minecraft:wooden_slabs"
