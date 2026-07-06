@@ -27,10 +27,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -395,7 +392,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                             }
                         }
                     }
-                } else {
+                } else if (recipe.value().getType() == RecipeType.CRAFTING) {
                     break;
                 }
             } else {
