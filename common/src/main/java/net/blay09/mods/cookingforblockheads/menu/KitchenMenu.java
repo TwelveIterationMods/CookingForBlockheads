@@ -429,7 +429,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                                 }
                             }
                         }
-                    } else {
+                    } else if (!(recipeHandler instanceof KitchenAbstractCookingRecipeHandler)) { // not pretty, but a proper solution would break API
                         break;
                     }
                 } else {
