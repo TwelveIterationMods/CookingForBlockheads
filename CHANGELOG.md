@@ -1,1 +1,1 @@
-- Updated to Minecraft 26.2
+- Fixed shift-clicking oven recipes still only moving a single item instead of a stack
