@@ -1,5 +1,6 @@
 package net.blay09.mods.cookingforblockheads.client.gui.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.mixin.AbstractContainerScreenAccessor;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
@@ -32,7 +33,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 import org.jspecify.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +152,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (searchBar != null && event.button() == 1 && event.x() >= searchBar.getX() && event.x() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
+        if (searchBar != null && event.button() == InputConstants.MOUSE_BUTTON_RIGHT && event.x() >= searchBar.getX() && event.x() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.search(null);
             menu.updateCraftableSlots();
@@ -174,7 +174,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
 
         Slot mouseSlot = ((AbstractContainerScreenAccessor) this).getHoveredSlot();
         if (mouseSlot instanceof CraftMatrixFakeSlot fakeSlot) {
-            if (event.button() == 0) {
+            if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
                 ItemStack itemStack = mouseSlot.getItem();
                 final var recipe = menu.findCraftableForResultItem(itemStack);
                 if (recipe != null) {
@@ -183,7 +183,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
                     setCurrentOffset(menu.getRecipesForSelectionIndex());
                     setFocused(null);
                 }
-            } else if (event.button() == 1) {
+            } else if (event.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
                 final var lockedInput = fakeSlot.toggleLock();
                 menu.setLockedInput(fakeSlot.getIngredientIndex(), lockedInput);
             }
@@ -223,7 +223,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
             return true;
         }
 
-        if ((searchBar == null || !searchBar.isFocused()) && event.key() == GLFW.GLFW_KEY_BACKSPACE) {
+        if ((searchBar == null || !searchBar.isFocused()) && event.key() == InputConstants.KEY_BACKSPACE) {
             menu.popHistory();
             return true;
         }
