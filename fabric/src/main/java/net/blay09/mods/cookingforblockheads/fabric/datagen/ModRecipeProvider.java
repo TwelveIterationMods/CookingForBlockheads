@@ -259,7 +259,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_dyed_cabinet", has(ModItemTags.DYED_CABINETS))
                         .save(exporter, "remove_dye_from_cabinet");
 
-                ModBlocks.connectors.forEach((color, block) -> {
+                ModBlocks.cabinets.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.CABINETS)
