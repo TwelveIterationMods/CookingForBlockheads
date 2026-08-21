@@ -1,1 +1,1 @@
-- Fixed shift-clicking oven recipes still only moving a single item instead of a stack
+- Fixed recipes for dying cabinets resulting in connectors instead
