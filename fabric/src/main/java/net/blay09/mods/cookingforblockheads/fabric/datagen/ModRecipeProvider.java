@@ -65,6 +65,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_cooking_table", has(ModBlocks.cookingTables.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_cooking_table");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("SSS")
+                                .pattern("CBC")
+                                .pattern("CCC")
+                                .define('S', BalmItemTags.STONES)
+                                .define('C', dyedTerracotta(color))
+                                .define('B', ModItems.craftingBook)
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(dyedTerracotta(color)))
+                                .save(exporter, color.getSerializedName() + "_cooking_table_from_terracotta");
                     }
                 });
 
@@ -147,6 +156,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_oven", has(ModBlocks.connectors.get(DyeColor.WHITE)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_connector");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("SSS")
+                                .pattern("CCC")
+                                .pattern("CCC")
+                                .define('S', BalmItemTags.STONES)
+                                .define('C', dyedTerracotta(color))
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(dyedTerracotta(color)))
+                                .save(exporter, color.getSerializedName() + "_connector_from_terracotta");
                     }
                 });
 
@@ -173,6 +190,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_counter", has(ModBlocks.counters.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_counter");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("SSS")
+                                .pattern("CBC")
+                                .pattern("CCC")
+                                .define('S', BalmItemTags.STONES)
+                                .define('C', dyedTerracotta(color))
+                                .define('B', BalmItemTags.WOODEN_CHESTS)
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(dyedTerracotta(color)))
+                                .save(exporter, color.getSerializedName() + "_counter_from_terracotta");
                     }
                 });
 
@@ -222,6 +248,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_sink");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("III")
+                                .pattern("CBC")
+                                .pattern("CCC")
+                                .define('I', BalmItemTags.IRON_INGOTS)
+                                .define('C', dyedTerracotta(color))
+                                .define('B', Items.WATER_BUCKET)
+                                .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
+                                .save(exporter, color.getSerializedName() + "_sink_from_terracotta");
                     }
                 });
 
@@ -266,6 +301,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_cabinet", has(ModBlocks.cabinets.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_cabinet");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("CCC")
+                                .pattern("CBC")
+                                .define('C', dyedTerracotta(color))
+                                .define('B', BalmItemTags.WOODEN_CHESTS)
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(dyedTerracotta(color)))
+                                .save(exporter, color.getSerializedName() + "_cabinet_from_terracotta");
                     }
                 });
 
@@ -433,5 +475,26 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     @Override
     public String getName() {
         return CookingForBlockheads.MOD_ID;
+    }
+
+    private static Block dyedTerracotta(DyeColor color) {
+        return switch (color) {
+            case WHITE -> Blocks.WHITE_TERRACOTTA;
+            case ORANGE -> Blocks.ORANGE_TERRACOTTA;
+            case MAGENTA -> Blocks.MAGENTA_TERRACOTTA;
+            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_TERRACOTTA;
+            case YELLOW -> Blocks.YELLOW_TERRACOTTA;
+            case LIME -> Blocks.LIME_TERRACOTTA;
+            case PINK -> Blocks.PINK_TERRACOTTA;
+            case GRAY -> Blocks.GRAY_TERRACOTTA;
+            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_TERRACOTTA;
+            case CYAN -> Blocks.CYAN_TERRACOTTA;
+            case PURPLE -> Blocks.PURPLE_TERRACOTTA;
+            case BLUE -> Blocks.BLUE_TERRACOTTA;
+            case BROWN -> Blocks.BROWN_TERRACOTTA;
+            case GREEN -> Blocks.GREEN_TERRACOTTA;
+            case RED -> Blocks.RED_TERRACOTTA;
+            case BLACK -> Blocks.BLACK_TERRACOTTA;
+        };
     }
 }
