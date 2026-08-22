@@ -65,6 +65,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_cooking_table", has(ModBlocks.cookingTables.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_cooking_table");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("SSS")
+                                .pattern("CBC")
+                                .pattern("CCC")
+                                .define('S', BalmItemTags.STONES)
+                                .define('C', Blocks.DYED_TERRACOTTA.pick(color))
+                                .define('B', ModItems.craftingBook)
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
+                                .save(exporter, color.getSerializedName() + "_cooking_table_from_terracotta");
                     }
                 });
 
@@ -147,6 +156,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_oven", has(ModBlocks.connectors.get(DyeColor.WHITE)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_connector");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("SSS")
+                                .pattern("CCC")
+                                .pattern("CCC")
+                                .define('S', BalmItemTags.STONES)
+                                .define('C', Blocks.DYED_TERRACOTTA.pick(color))
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
+                                .save(exporter, color.getSerializedName() + "_connector_from_terracotta");
                     }
                 });
 
@@ -173,6 +190,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_counter", has(ModBlocks.counters.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_counter");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("SSS")
+                                .pattern("CBC")
+                                .pattern("CCC")
+                                .define('S', BalmItemTags.STONES)
+                                .define('C', Blocks.DYED_TERRACOTTA.pick(color))
+                                .define('B', BalmItemTags.WOODEN_CHESTS)
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
+                                .save(exporter, color.getSerializedName() + "_counter_from_terracotta");
                     }
                 });
 
@@ -222,6 +248,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_sink");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("III")
+                                .pattern("CBC")
+                                .pattern("CCC")
+                                .define('I', BalmItemTags.IRON_INGOTS)
+                                .define('C', Blocks.DYED_TERRACOTTA.pick(color))
+                                .define('B', Items.WATER_BUCKET)
+                                .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
+                                .save(exporter, color.getSerializedName() + "_sink_from_terracotta");
                     }
                 });
 
@@ -266,6 +301,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
                                 .unlockedBy("has_cabinet", has(ModBlocks.cabinets.get(null)))
                                 .save(exporter, "dye_" + color.getSerializedName() + "_cabinet");
+                        shaped(RecipeCategory.DECORATIONS, block)
+                                .pattern("CCC")
+                                .pattern("CBC")
+                                .define('C', Blocks.DYED_TERRACOTTA.pick(color))
+                                .define('B', BalmItemTags.WOODEN_CHESTS)
+                                .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
+                                .save(exporter, color.getSerializedName() + "_cabinet_from_terracotta");
                     }
                 });
 
