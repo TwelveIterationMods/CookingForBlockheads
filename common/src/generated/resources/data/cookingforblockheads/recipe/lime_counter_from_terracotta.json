@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:chests/wooden",
+    "C": "minecraft:lime_terracotta",
+    "S": "#c:stones"
+  },
+  "pattern": [
+    "SSS",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:lime_counter"
+  }
+}

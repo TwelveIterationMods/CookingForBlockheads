@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:white_terracotta",
+    "S": "#c:stones"
+  },
+  "pattern": [
+    "SSS",
+    "CCC",
+    "CCC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:white_connector"
+  }
+}

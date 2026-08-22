@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:chests/wooden",
+    "C": "minecraft:lime_terracotta"
+  },
+  "pattern": [
+    "CCC",
+    "CBC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:lime_cabinet"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:magenta_terracotta",
+    "S": "#c:stones"
+  },
+  "pattern": [
+    "SSS",
+    "CCC",
+    "CCC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:magenta_connector"
+  }
+}

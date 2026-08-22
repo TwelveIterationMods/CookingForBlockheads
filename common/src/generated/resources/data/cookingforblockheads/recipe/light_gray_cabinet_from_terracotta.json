@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:chests/wooden",
+    "C": "minecraft:light_gray_terracotta"
+  },
+  "pattern": [
+    "CCC",
+    "CBC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:light_gray_cabinet"
+  }
+}

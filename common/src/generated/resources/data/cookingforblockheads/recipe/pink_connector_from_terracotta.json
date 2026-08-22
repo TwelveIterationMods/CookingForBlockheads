@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:pink_terracotta",
+    "S": "#c:stones"
+  },
+  "pattern": [
+    "SSS",
+    "CCC",
+    "CCC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:pink_connector"
+  }
+}

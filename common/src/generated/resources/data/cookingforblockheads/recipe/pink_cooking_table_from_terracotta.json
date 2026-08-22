@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "cookingforblockheads:crafting_book",
+    "C": "minecraft:pink_terracotta",
+    "S": "#c:stones"
+  },
+  "pattern": [
+    "SSS",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "id": "cookingforblockheads:pink_cooking_table"
+  }
+}
