@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.platform.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -34,11 +32,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class SinkBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<SinkBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
-                    .orElse(null)
-                    .forGetter(SinkBlock::getColor),
-            propertiesCodec()).apply(it, SinkBlock::new));
 
     @Nullable
     private final DyeColor color;
@@ -171,11 +164,6 @@ public class SinkBlock extends BaseKitchenBlock {
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.sink.value(), SinkBlockEntity::serverTick);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     public ItemStack cleanItem(ItemStack itemStack) {

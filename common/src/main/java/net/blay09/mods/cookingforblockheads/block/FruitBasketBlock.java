@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.Balm;
 
 import net.blay09.mods.cookingforblockheads.block.entity.FruitBasketBlockEntity;
@@ -26,8 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class FruitBasketBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<FruitBasketBlock> CODEC = simpleCodec(FruitBasketBlock::new);
 
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 1.6, 14);
 
@@ -73,8 +70,4 @@ public class FruitBasketBlock extends BaseKitchenBlock {
         return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.fruitBasket.value(), FruitBasketBlockEntity::serverTick) : null;
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

@@ -179,14 +179,14 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
                 poseStack.pushPose();
 
                 poseStack.translate(0.5f, 0f, 0.5f);
-                poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 190f));
+                poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 190f);
                 if (renderState.wiggle != 0f) {
-                    poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.wiggle));
+                    poseStack.rotateDegrees(Axis.ZP, renderState.wiggle);
                 }
                 poseStack.translate(-0.5f, 0f, -0.5f);
 
                 poseStack.translate(0.68f, 0.95f, 0.5f);
-                poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+                poseStack.rotateDegrees(Axis.XP, 45f);
                 poseStack.scale(0.35f, 0.35f, 0.35f);
                 renderState.egg.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
@@ -197,18 +197,18 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         if (renderState.wiggle != 0f) {
-            poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.wiggle));
+            poseStack.rotateDegrees(Axis.ZP, renderState.wiggle);
         }
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(0.5f, 0.5f, 0.5f);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180));
+        poseStack.rotateDegrees(Axis.ZP, 180);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
 
         poseStack.translate(renderState.chicken.isBaby ? 0.35f : 0.4f, renderState.chicken.isBaby ? -1.1f : -1f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-10f));
+        poseStack.rotateDegrees(Axis.YP, -10f);
 
         final var scale = 0.9f;
         poseStack.scale(scale, scale, scale);
@@ -217,7 +217,7 @@ public class ChickenSinkRenderer implements BlockEntityRenderer<ChickenSinkBlock
                 ? renderState.variant.babyTexture().texturePath()
                 : renderState.variant.modelAndTexture().asset().texturePath();
         final var renderType = RenderTypes.entityCutout(texture);
-        submitNodeCollector.submitModel(model, renderState.chicken, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, renderState.breakProgress);
+        submitNodeCollector.submitModel(model, renderState.chicken, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 
         poseStack.popPose();
     }

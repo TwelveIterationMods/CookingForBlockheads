@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -128,7 +129,7 @@ public class CuttingBoardMenu extends AbstractCraftingMenu {
 
             slot.onTake(player, slotStack);
             if (index == RESULT_SLOT) {
-                player.drop(slotStack, false);
+                player.drop(slotStack, false, Prediction.SERVER_ONLY);
             }
         }
 

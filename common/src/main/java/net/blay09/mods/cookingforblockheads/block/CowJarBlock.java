@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.cookingforblockheads.block.entity.CowJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -13,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class CowJarBlock extends MilkJarBlock {
-
-    public static final MapCodec<CowJarBlock> CODEC = simpleCodec(CowJarBlock::new);
 
     public CowJarBlock(Properties properties) {
         super(properties);
@@ -34,8 +31,4 @@ public class CowJarBlock extends MilkJarBlock {
                 : createTickerHelper(type, ModBlockEntities.cowJar.value(), CowJarBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

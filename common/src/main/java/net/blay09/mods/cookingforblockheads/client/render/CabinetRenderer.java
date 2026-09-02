@@ -108,11 +108,11 @@ public class CabinetRenderer implements BlockEntityRenderer<CabinetBlockEntity, 
         }
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(doorOriginX, 0f, DOOR_ORIGIN_Z);
-        poseStack.mulPose(Axis.YP.rotationDegrees(doorDirection * (float) Math.toDegrees(renderState.doorAngle)));
+        poseStack.rotateDegrees(Axis.YP, doorDirection * (float) Math.toDegrees(renderState.doorAngle));
         poseStack.translate(-doorOriginX, 0f, -DOOR_ORIGIN_Z);
 
         renderState.lower.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
@@ -154,7 +154,7 @@ public class CabinetRenderer implements BlockEntityRenderer<CabinetBlockEntity, 
 
             poseStack.pushPose();
             poseStack.translate(offsetX, offsetY, offsetZ);
-            poseStack.mulPose(Axis.YP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.YP, 45f);
             itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }

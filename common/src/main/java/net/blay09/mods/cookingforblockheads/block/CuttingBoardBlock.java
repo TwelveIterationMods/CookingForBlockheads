@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.BalmMenuProvider;
 import net.blay09.mods.cookingforblockheads.block.entity.CuttingBoardBlockEntity;
@@ -31,7 +30,6 @@ import org.jspecify.annotations.Nullable;
 
 public class CuttingBoardBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<CuttingBoardBlock> CODEC = simpleCodec(CuttingBoardBlock::new);
     private static final Component CONTAINER_TITLE = Component.translatable("container.cookingforblockheads.cutting_board");
 
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 1.6, 14);
@@ -54,11 +52,6 @@ public class CuttingBoardBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CuttingBoardBlockEntity(pos, state);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

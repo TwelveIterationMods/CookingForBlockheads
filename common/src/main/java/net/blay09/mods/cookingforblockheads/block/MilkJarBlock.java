@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.platform.fluid.FluidTank;
 import net.blay09.mods.cookingforblockheads.compat.Compat;
 import net.blay09.mods.cookingforblockheads.block.entity.MilkJarBlockEntity;
@@ -29,8 +28,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 
 public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
-
-    public static final MapCodec<MilkJarBlock> CODEC = simpleCodec(MilkJarBlock::new);
 
     private static final VoxelShape SHAPE = Block.box(4.8, 0, 4.8, 11.2, 8.0, 11.2);
 
@@ -111,8 +108,4 @@ public class MilkJarBlock extends BaseKitchenBlock implements BucketPickup {
         return Optional.empty();
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

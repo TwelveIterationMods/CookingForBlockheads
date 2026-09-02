@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.ChickenSinkBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -28,11 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class ChickenSinkBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<ChickenSinkBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
-                    .orElse(null)
-                    .forGetter(ChickenSinkBlock::getColor),
-            propertiesCodec()).apply(it, ChickenSinkBlock::new));
 
     private final @Nullable DyeColor color;
 
@@ -106,11 +99,6 @@ public class ChickenSinkBlock extends BaseKitchenBlock {
         return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.chickenSink.value(), ChickenSinkBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.chickenSink.value(), ChickenSinkBlockEntity::serverTick);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

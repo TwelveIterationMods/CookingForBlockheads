@@ -15,6 +15,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -418,7 +419,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                     if (!itemStack.isEmpty()) {
                         if (craftFullStack || addToInventory) {
                             if (!player.getInventory().add(itemStack)) {
-                                player.drop(itemStack, false);
+                                player.drop(itemStack, false, Prediction.SERVER_ONLY);
                             }
                         } else {
 
@@ -428,7 +429,7 @@ public class KitchenMenu extends AbstractContainerMenu {
                                 carried.grow(itemStack.getCount());
                             } else {
                                 if (!player.getInventory().add(itemStack)) {
-                                    player.drop(itemStack, false);
+                                    player.drop(itemStack, false, Prediction.SERVER_ONLY);
                                 }
                             }
                         }

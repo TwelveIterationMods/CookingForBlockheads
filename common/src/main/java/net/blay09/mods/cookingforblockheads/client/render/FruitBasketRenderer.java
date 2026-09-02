@@ -61,7 +61,7 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(0.5f, 0.5, 0.5f);
@@ -78,7 +78,7 @@ public class FruitBasketRenderer implements BlockEntityRenderer<FruitBasketBlock
                 float curZ = -0.75f + colIndex * 0.35f + antiZFight;
                 poseStack.pushPose();
                 poseStack.translate(curX, curY, curZ);
-                poseStack.mulPose(Axis.XP.rotationDegrees(25f));
+                poseStack.rotateDegrees(Axis.XP, 25f);
                 itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }

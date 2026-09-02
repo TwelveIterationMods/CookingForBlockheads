@@ -140,7 +140,7 @@ public class OvenMenu extends AbstractContainerMenu implements IContainerWithDoo
     }
 
     public boolean isFuel(ItemStack itemStack) {
-        return OvenBlockEntity.isItemFuel(oven.getLevel(), itemStack);
+        return oven.isItemFuel(oven.getLevel(), itemStack);
     }
 
     public void setResultItems(NonNullList<ItemStack> resultItems) {

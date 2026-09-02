@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -21,8 +20,6 @@ import org.jspecify.annotations.Nullable;
 
 public class CoffeeMachineBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<CoffeeMachineBlock> CODEC = simpleCodec(CoffeeMachineBlock::new);
-
     private static final VoxelShape SHAPE = Block.box(3, 0, 4, 13, 11, 12);
 
     public CoffeeMachineBlock(Properties properties) {
@@ -38,11 +35,6 @@ public class CoffeeMachineBlock extends BaseKitchenBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return null;
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

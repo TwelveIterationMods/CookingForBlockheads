@@ -90,12 +90,12 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         // Render the oven door
         poseStack.pushPose();
-        poseStack.mulPose(Axis.XN.rotationDegrees((float) Math.toDegrees(renderState.doorAngle)));
+        poseStack.rotateDegrees(Axis.XN, (float) Math.toDegrees(renderState.doorAngle));
 
         renderState.door.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.translate(0f, 0f, -1f);
@@ -110,7 +110,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         if (!renderState.firstTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, 0.5f);
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.XP, 45f);
             renderState.firstTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
@@ -118,7 +118,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         if (!renderState.secondTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, 0.5f);
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.XP, 45f);
             renderState.secondTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
@@ -126,7 +126,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         if (!renderState.thirdTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(-0.55f, 0f, -0.5f);
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.XP, 45f);
             renderState.thirdTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
@@ -134,7 +134,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
         if (!renderState.fourthTool.isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(0.55f, 0f, -0.5f);
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.XP, 45f);
             renderState.fourthTool.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
@@ -153,7 +153,7 @@ public class OvenRenderer implements BlockEntityRenderer<OvenBlockEntity, OvenRe
                 if (!itemStackRenderState.isEmpty()) {
                     poseStack.pushPose();
                     poseStack.translate(offsetX, 0f, offsetZ);
-                    poseStack.mulPose(Axis.XP.rotationDegrees(90f));
+                    poseStack.rotateDegrees(Axis.XP, 90f);
                     itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                     poseStack.popPose();
                 }

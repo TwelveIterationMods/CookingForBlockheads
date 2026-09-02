@@ -1,7 +1,6 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.cookingforblockheads.block.entity.ToasterBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -27,8 +26,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class ToasterBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<ToasterBlock> CODEC = simpleCodec(ToasterBlock::new);
 
     private static final VoxelShape SHAPE = Block.box(4.4, 0, 4.4, 11.6, 6.4, 11.6);
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -129,8 +126,4 @@ public class ToasterBlock extends BaseKitchenBlock {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.toaster.value(), ToasterBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

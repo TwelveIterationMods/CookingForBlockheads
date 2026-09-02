@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.CookieJarBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -24,8 +23,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class CookieJarBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<CookieJarBlock> CODEC = simpleCodec(CookieJarBlock::new);
 
     private static final VoxelShape SHAPE = Block.box(5, 0, 5, 11, 9, 11);
 
@@ -70,8 +67,4 @@ public class CookieJarBlock extends BaseKitchenBlock {
         return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.cookieJar.value(), CookieJarBlockEntity::serverTick) : null;
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

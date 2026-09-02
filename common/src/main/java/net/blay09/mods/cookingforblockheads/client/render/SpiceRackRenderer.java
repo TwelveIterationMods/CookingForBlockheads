@@ -61,18 +61,18 @@ public class SpiceRackRenderer implements BlockEntityRenderer<SpiceRackBlockEnti
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(0.1, 0.75, 0.8);
-        poseStack.mulPose(Axis.YP.rotationDegrees(90f));
+        poseStack.rotateDegrees(Axis.YP, 90f);
         poseStack.scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < renderState.items.size(); i++) {
             final var itemStackRenderState = renderState.items.get(i);
             if (!itemStackRenderState.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0f, 0f, 0.2f * i);
-                poseStack.mulPose(Axis.YN.rotationDegrees(20));
+                poseStack.rotateDegrees(Axis.YN, 20);
                 itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }

@@ -109,11 +109,11 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
         }
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(doorOriginX, 0f, doorOriginZ);
-        poseStack.mulPose(Axis.YP.rotationDegrees(doorDirection * (float) Math.toDegrees(renderState.doorAngle)));
+        poseStack.rotateDegrees(Axis.YP, doorDirection * (float) Math.toDegrees(renderState.doorAngle));
         poseStack.translate(-doorOriginX, 0f, -doorOriginZ);
 
         renderState.door.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
@@ -138,7 +138,7 @@ public class CounterRenderer<T extends CounterBlockEntity> implements BlockEntit
                     offsetZ = shelfIndex < itemsPerRow ? 0.5f : -0.5f;
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
-                    poseStack.mulPose(Axis.YP.rotationDegrees(45f));
+                    poseStack.rotateDegrees(Axis.YP, 45f);
                     itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                     poseStack.popPose();
                 }

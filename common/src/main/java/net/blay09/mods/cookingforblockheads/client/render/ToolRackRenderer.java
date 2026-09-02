@@ -52,7 +52,7 @@ public class ToolRackRenderer implements BlockEntityRenderer<ToolRackBlockEntity
             poseStack.pushPose();
 
             poseStack.translate(0.5f, 0f, 0.5f);
-            poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+            poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
             poseStack.translate(-0.5f, 0f, -0.5f);
 
             poseStack.translate(0.5f, 0.6f, 0.9f);

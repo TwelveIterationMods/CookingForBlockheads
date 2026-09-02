@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -64,7 +65,7 @@ public class HarvestCraftAddon {
                     heldItem.shrink(1);
                 }
 
-                player.swing(hand);
+                player.swing(hand, SwingAnimation.DEFAULT, true);
                 player.playSound(SoundEvents.WOOD_PLACE, 1f, 1f);
                 return InteractionEventResult.SUCCESS;
             }

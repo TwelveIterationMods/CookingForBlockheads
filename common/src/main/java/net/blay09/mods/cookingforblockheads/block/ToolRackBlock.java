@@ -1,10 +1,10 @@
 package net.blay09.mods.cookingforblockheads.block;
 
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.cookingforblockheads.block.entity.ToolRackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,8 +24,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class ToolRackBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<ToolRackBlock> CODEC = simpleCodec(ToolRackBlock::new);
 
     private static final VoxelShape[] SHAPES = new VoxelShape[]{
             Block.box(0, 4, 14, 16, 16, 16),
@@ -123,7 +121,7 @@ public class ToolRackBlock extends BaseKitchenBlock {
         final var toolItem = itemStack.split(1);
         if (!oldToolItem.isEmpty()) {
             if (!player.getInventory().add(oldToolItem)) {
-                player.drop(oldToolItem, false);
+                player.drop(oldToolItem, false, Prediction.SERVER_ONLY);
             }
             toolRack.getContainer().setItem(hitSlot, toolItem);
         } else {
@@ -149,8 +147,4 @@ public class ToolRackBlock extends BaseKitchenBlock {
         return hit > 0.5f ? 0 : 1;
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

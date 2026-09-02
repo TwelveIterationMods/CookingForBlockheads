@@ -152,11 +152,11 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
             poseStack.pushPose();
 
             poseStack.translate(0.5f, 0f, 0.5f);
-            poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+            poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
             poseStack.translate(-0.5f, 0f, -0.5f);
 
             poseStack.translate(0.5f, 0.5f, 0.5f);
-            poseStack.mulPose(Axis.ZP.rotationDegrees(180));
+            poseStack.rotateDegrees(Axis.ZP, 180);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
 
             poseStack.translate(0.5f, 0.675f, 0.5f);
@@ -165,7 +165,7 @@ public class CowJarRenderer extends MilkJarRenderer<CowJarBlockEntity> {
             final var modelAndTexture = cowJarRenderState.variant.modelAndTexture();
             final var model = models.get(modelAndTexture.model()).getModel(cowJarRenderState.cow.isBaby);
             final var textureAsset = modelAndTexture.asset();
-            submitNodeCollector.submitModel(model, cowJarRenderState.cow, poseStack, RenderTypes.entityCutout(textureAsset.texturePath()), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, renderState.breakProgress);
+            submitNodeCollector.submitModel(model, cowJarRenderState.cow, poseStack, RenderTypes.entityCutout(textureAsset.texturePath()), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
     }

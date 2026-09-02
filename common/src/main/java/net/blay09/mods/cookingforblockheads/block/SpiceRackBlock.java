@@ -1,6 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.Balm;
 
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -28,8 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class SpiceRackBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<SpiceRackBlock> CODEC = simpleCodec(SpiceRackBlock::new);
 
     private static final VoxelShape[] SHAPES = new VoxelShape[]{
             Block.box(0, 4, 14, 16, 16, 16),
@@ -105,8 +102,4 @@ public class SpiceRackBlock extends BaseKitchenBlock {
         return !level.isClientSide() ? createTickerHelper(type, ModBlockEntities.spiceRack.value(), SpiceRackBlockEntity::serverTick) : null;
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

@@ -76,7 +76,7 @@ public class CookieJarRenderer implements BlockEntityRenderer<CookieJarBlockEnti
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         poseStack.translate(0.5f, 0.2f, 0.5f);
@@ -94,8 +94,8 @@ public class CookieJarRenderer implements BlockEntityRenderer<CookieJarBlockEnti
                 final var slotOffset = SLOT_OFFSETS[i];
                 poseStack.pushPose();
                 poseStack.translate(slotOffset[0], slotOffset[1], slotOffset[2] + i * 0.03f);
-                poseStack.mulPose(Axis.XP.rotationDegrees(50f));
-                poseStack.mulPose(Axis.YP.rotationDegrees(i % 2 == 0 ? 20f : -20f));
+                poseStack.rotateDegrees(Axis.XP, 50f);
+                poseStack.rotateDegrees(Axis.YP, i % 2 == 0 ? 20f : -20f);
                 itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }

@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.CounterBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -29,11 +27,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class CounterBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<CounterBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
-                    .orElse(null)
-                    .forGetter(CounterBlock::getColor),
-            propertiesCodec()).apply(it, CounterBlock::new));
 
     private final @Nullable DyeColor color;
 
@@ -124,11 +117,6 @@ public class CounterBlock extends BaseKitchenBlock {
         return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.counter.value(), CounterBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.counter.value(), CounterBlockEntity::serverTick);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -1,12 +1,11 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.CookingTableBlockEntity;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -22,11 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class CookingTableBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<CookingTableBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
-                    .orElse(null)
-                    .forGetter(CookingTableBlock::getColor),
-            propertiesCodec()).apply(it, CookingTableBlock::new));
 
     @Nullable
     private final DyeColor color;
@@ -58,7 +52,7 @@ public class CookingTableBlock extends BaseKitchenBlock {
                 ItemStack noFilterBook = cookingTable.getNoFilterBook();
                 if (!noFilterBook.isEmpty()) {
                     if (!player.getInventory().add(noFilterBook)) {
-                        player.drop(noFilterBook, false);
+                        player.drop(noFilterBook, false, Prediction.SERVER_ONLY);
                     }
                     cookingTable.setNoFilterBook(ItemStack.EMPTY);
                     return InteractionResult.SUCCESS;
@@ -102,11 +96,6 @@ public class CookingTableBlock extends BaseKitchenBlock {
     @Override
     protected boolean shouldChangedStateKeepBlockEntity(BlockState oldState) {
         return oldState.is(ModBlockTags.COOKING_TABLES);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

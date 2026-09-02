@@ -103,7 +103,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
         poseStack.pushPose();
 
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         float originX = 0.9375f - 0.5f / 16f;
@@ -114,7 +114,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
 
         poseStack.pushPose();
         poseStack.translate(originX, 0f, originZ);
-        poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(renderState.flipped ? -renderState.doorAngle : renderState.doorAngle)));
+        poseStack.rotateDegrees(Axis.YN, (float) Math.toDegrees(renderState.flipped ? -renderState.doorAngle : renderState.doorAngle));
         poseStack.translate(-originX, 0f, -originZ);
 
         renderState.lower.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
@@ -156,7 +156,7 @@ public class FridgeRenderer implements BlockEntityRenderer<FridgeBlockEntity, Fr
                     offsetZ = 0.5f - (int) (rowIndex / 9f) * 0.9f;
                     poseStack.pushPose();
                     poseStack.translate(offsetX, offsetY, offsetZ);
-                    poseStack.mulPose(Axis.YP.rotationDegrees(45f));
+                    poseStack.rotateDegrees(Axis.YP, 45f);
                     itemStackRenderState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                     poseStack.popPose();
                 }

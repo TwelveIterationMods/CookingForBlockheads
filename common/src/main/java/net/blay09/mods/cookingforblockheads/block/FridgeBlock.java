@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.cookingforblockheads.block.entity.FridgeBlockEntity;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -36,10 +34,6 @@ import org.jspecify.annotations.Nullable;
 
 public class FridgeBlock extends BaseKitchenBlock {
 
-    public static final MapCodec<FridgeBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
-                    .forGetter(FridgeBlock::getColor),
-            propertiesCodec()).apply(it, FridgeBlock::new));
-
     public enum FridgeModelType implements StringRepresentable {
         SMALL,
         LARGE_LOWER,
@@ -61,7 +55,7 @@ public class FridgeBlock extends BaseKitchenBlock {
     private final DyeColor color;
 
     public FridgeBlock(DyeColor color, Properties properties) {
-        super(properties.pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).strength(5f, 10f));
+        super(properties.pushReaction(PushReaction.IMMOVEABLE).sound(SoundType.METAL).strength(5f, 10f));
         this.color = color;
         registerDefaultState(getStateDefinition().any().setValue(PRESERVATION_CHAMBER, false).setValue(ICE_UNIT, false));
     }
@@ -218,11 +212,6 @@ public class FridgeBlock extends BaseKitchenBlock {
             super.recolorBlock(level.getBlockState(otherPos), level, otherPos, facing, color);
         }
         return super.recolorBlock(state, level, pos, facing, color);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

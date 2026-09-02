@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.cookingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -41,10 +39,6 @@ public class CabinetBlock extends CounterBlock {
         }
     }
 
-    public static final MapCodec<CabinetBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color")
-                    .orElse(null)
-                    .forGetter(CabinetBlock::getColor),
-            propertiesCodec()).apply(it, CabinetBlock::new));
     public static final EnumProperty<CabinetModelType> MODEL_TYPE = EnumProperty.create("model", CabinetModelType.class);
 
     private static final VoxelShape SMALL_BOUNDING_BOX_NORTH = Block.box(0, 2, 2, 16, 16, 16);
@@ -160,11 +154,6 @@ public class CabinetBlock extends CounterBlock {
             super.recolorBlock(level.getBlockState(otherPos), level, otherPos, facing, color);
         }
         return super.recolorBlock(state, level, pos, facing, color);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

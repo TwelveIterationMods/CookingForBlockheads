@@ -53,7 +53,7 @@ public class MilkJarRenderer<TBlockEntity extends MilkJarBlockEntity> implements
             poseStack.pushPose();
 
             poseStack.translate(0.5f, 0f, 0.5f);
-            poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot() + 180f));
+            poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot() + 180f);
             poseStack.translate(-0.5f, 0f, -0.5f);
 
             poseStack.scale(1f, renderState.fluidLevel, 1f);

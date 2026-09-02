@@ -1,7 +1,5 @@
 package net.blay09.mods.cookingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.cookingforblockheads.block.entity.ModBlockEntities;
@@ -33,9 +31,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.Random;
 
 public class OvenBlock extends BaseKitchenBlock {
-
-    public static final MapCodec<OvenBlock> CODEC = RecordCodecBuilder.mapCodec((it) -> it.group(DyeColor.CODEC.fieldOf("color").forGetter(OvenBlock::getColor),
-            propertiesCodec()).apply(it, OvenBlock::new));
 
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
@@ -197,11 +192,6 @@ public class OvenBlock extends BaseKitchenBlock {
         return level.isClientSide()
                 ? createTickerHelper(type, ModBlockEntities.oven.value(), OvenBlockEntity::clientTick)
                 : createTickerHelper(type, ModBlockEntities.oven.value(), OvenBlockEntity::serverTick);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override
