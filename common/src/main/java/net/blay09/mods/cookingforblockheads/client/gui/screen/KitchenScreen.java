@@ -56,7 +56,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     private int scrollBarYPos;
     private int currentOffset;
 
-    private @Nullable Component kitchenFeedback;
+    private Component kitchenFeedback = Component.empty();
     private int kitchenFeedbackStacked;
     private float kitchenFeedbackTimeLeft;
 
@@ -406,7 +406,7 @@ public class KitchenScreen extends AbstractContainerScreen<KitchenMenu> {
     }
 
     public void displayKitchenFeedback(Component component) {
-        if (kitchenFeedback.getString().equals(component.getString()) && kitchenFeedbackTimeLeft > 0) {
+        if (kitchenFeedbackTimeLeft > 0 && kitchenFeedback.getString().equals(component.getString())) {
             kitchenFeedbackStacked++;
         } else {
             kitchenFeedbackStacked = 1;
