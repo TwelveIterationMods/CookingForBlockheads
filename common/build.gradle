@@ -15,6 +15,7 @@ neoForge {
 
 dependencies {
     compileOnly libs.mixin
+    compileOnly libs.mixinExtras
 }
 
 apply from: rootProject.file('repositories.gradle')

@@ -4,6 +4,8 @@ policy:
       - id: [minecraftVersion]
         block-list: [other]
         label:
+          - name: Minecraft 26.3
+            keys: ['26.3']
           - name: Minecraft 26.2
             keys: ['26.2']
           - name: Minecraft 26.1
