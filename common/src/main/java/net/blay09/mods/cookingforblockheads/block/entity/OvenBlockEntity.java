@@ -38,6 +38,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
@@ -45,6 +46,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -54,6 +56,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.ArrayUtils;
@@ -161,7 +164,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         blockEntity.serverTick(level, pos, state);
     }
 
-    public static boolean isItemFuel(Level level, ItemStack itemStack) {
+    public boolean isItemFuel(Level level, ItemStack itemStack) {
         if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil) {
             return itemStack.is(BalmItemTags.COOKING_OIL);
         }
@@ -169,7 +172,7 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
         return getBurnTime(level, itemStack) > 0;
     }
 
-    protected static int getBurnTime(Level level, ItemStack itemStack) {
+    protected int getBurnTime(Level level, ItemStack itemStack) {
         if (itemStack.isEmpty()) {
             return 0;
         }
@@ -178,7 +181,14 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
             return 800;
         }
 
-        return level.fuelValues().burnDuration(itemStack);
+        if (!(level instanceof ServerLevel serverLevel)) {
+            // We're currently still calling this on the client from the menu, so just simulate a binary value for now
+            // TODO See if we can avoid client-use, OvenMenu should not even have access to the OvenBlockEntity
+            return itemStack.has(DataComponents.COOKING_FUEL) ? 1 : 0;
+        }
+
+        final var lootContext = BalmBlockEntityUtils.getLootContext(serverLevel, this);
+        return ResolvableInt.getFromItem(itemStack, DataComponents.COOKING_FUEL, CookingFuel::burnTime, lootContext, 0);
     }
 
     @Override
