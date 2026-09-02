@@ -238,8 +238,6 @@
   "cookingforblockheads.configuration.ovenFuelTimeMultiplier.tooltip": "Множитель потребления топлива духовкой. Повышение значения уменьшает затраты топлива. Значение по умолчанию - 1.0",
   "cookingforblockheads.configuration.ovenCookTimeMultiplier": "Множитель времени готовки в духовке",
   "cookingforblockheads.configuration.ovenCookTimeMultiplier.tooltip": "Множитель времени готовки в духовке. Повышение значение увеличит время готовки.",
-  "cookingforblockheads.configuration.ovenRequiresCookingOil": "Растительное масло для готовки",
-  "cookingforblockheads.configuration.ovenRequiresCookingOil.tooltip": "Установите значение true, если Вы хотите, чтобы Духовка принимала в качестве топлива только растительное масло (требуется Pam's Harvestcraft).",
   "cookingforblockheads.configuration.showIngredientIcon": "Показывать значок ингридиента",
   "cookingforblockheads.configuration.showIngredientIcon.tooltip": "Установите значение false, если Вы не хотите, чтобы ингредиенты отмечались специальным значком в книге рецептов.",
   "cookingforblockheads.configuration.allowVeryToastedBread": "Разрешить пережаренный хлеб",

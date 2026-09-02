@@ -280,8 +280,6 @@
   "cookingforblockheads.configuration.ovenFuelTimeMultiplier.tooltip": "The fuel multiplier for the cooking oven. Higher values means fuel lasts longer, 1.0 is furnace default.",
   "cookingforblockheads.configuration.ovenCookTimeMultiplier": "Oven Cooking Time Multiplier",
   "cookingforblockheads.configuration.ovenCookTimeMultiplier.tooltip": "The cooking time multiplier for the cooking oven. Higher values means it will take longer.",
-  "cookingforblockheads.configuration.ovenRequiresCookingOil": "Oven Requires Cooking Oil",
-  "cookingforblockheads.configuration.ovenRequiresCookingOil.tooltip": "Set this to true if you'd like the oven to only accept cooking oil as fuel (requires Pam's Harvestcraft)",
   "cookingforblockheads.configuration.showIngredientIcon": "Show Ingredient Icon",
   "cookingforblockheads.configuration.showIngredientIcon.tooltip": "Set to false if you don't want ingredients to be marked with a special icon in the recipe book.",
   "cookingforblockheads.configuration.allowVeryToastedBread": "Allow Very Toasted Bread",

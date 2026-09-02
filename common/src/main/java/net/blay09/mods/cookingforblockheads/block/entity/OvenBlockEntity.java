@@ -4,7 +4,6 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.platform.energy.BalmEnergyStorageProvider;
 import net.blay09.mods.balm.platform.energy.DefaultEnergyStorage;
 import net.blay09.mods.balm.platform.energy.EnergyStorage;
-import net.blay09.mods.balm.tags.BalmItemTags;
 import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheadsConfig;
@@ -165,20 +164,12 @@ public class OvenBlockEntity extends BlockEntity implements KitchenItemProcessor
     }
 
     public boolean isItemFuel(Level level, ItemStack itemStack) {
-        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil) {
-            return itemStack.is(BalmItemTags.COOKING_OIL);
-        }
-
         return getBurnTime(level, itemStack) > 0;
     }
 
     protected int getBurnTime(Level level, ItemStack itemStack) {
         if (itemStack.isEmpty()) {
             return 0;
-        }
-
-        if (CookingForBlockheadsConfig.getActive().ovenRequiresCookingOil && itemStack.is(BalmItemTags.COOKING_OIL)) {
-            return 800;
         }
 
         if (!(level instanceof ServerLevel serverLevel)) {

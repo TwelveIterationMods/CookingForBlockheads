@@ -240,8 +240,6 @@
   "cookingforblockheads.configuration.ovenFuelTimeMultiplier.tooltip": "調理オーブンの燃料倍率。1.0が炉のデフォルトです。",
   "cookingforblockheads.configuration.ovenCookTimeMultiplier": "オーブン調理時間倍率",
   "cookingforblockheads.configuration.ovenCookTimeMultiplier.tooltip": "調理オーブンの調理時間倍率。値が大きいほど調理時間が長くなります。",
-  "cookingforblockheads.configuration.ovenRequiresCookingOil": "オーブンには食用油が必要",
-  "cookingforblockheads.configuration.ovenRequiresCookingOil.tooltip": "オーブンに食用油のみを燃料として使用させたい場合は、これをtrueに設定します。(Pam's Harvestcraftが必要)",
   "cookingforblockheads.configuration.showIngredientIcon": "食材アイコンを表示",
   "cookingforblockheads.configuration.showIngredientIcon.tooltip": "レシピ本で食材に特別なアイコンを付けたくない場合はfalseに設定してください。",
   "cookingforblockheads.configuration.allowVeryToastedBread": "よくトーストしたパンを許可",

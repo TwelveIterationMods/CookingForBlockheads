@@ -36,9 +36,6 @@ public class CookingForBlockheadsConfig {
     @Comment("The cooking time multiplier for the cooking oven. Higher values means it will take longer.")
     public double ovenCookTimeMultiplier = 1f; // 0.25 - 9
 
-    @Comment("Set this to true if you'd like the oven to only accept cooking oil as fuel (requires Pam's Harvestcraft)")
-    public boolean ovenRequiresCookingOil = false;
-
     @Comment("Set to false if you don't want ingredients to be marked with a special icon in the recipe book.")
     public boolean showIngredientIcon = true;
 
