@@ -1,6 +1,6 @@
 package net.blay09.mods.cookingforblockheads.fabric.datagen;
 
-import net.blay09.mods.balm.tags.BalmItemTags;
+import net.blay09.mods.balm.tags.ConventionalItemTags;
 import net.blay09.mods.cookingforblockheads.CookingForBlockheads;
 import net.blay09.mods.cookingforblockheads.block.ModBlocks;
 import net.blay09.mods.cookingforblockheads.item.ModItems;
@@ -8,12 +8,14 @@ import net.blay09.mods.cookingforblockheads.recipe.KitchenProvidedRecipe;
 import net.blay09.mods.cookingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -38,42 +41,42 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup, RecipeOutput exporter) {
-        return new RecipeProvider(registryLookup, exporter) {
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new RecipeProvider(recipes, advancements) {
             @Override
             public void buildRecipes() {
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.cookingTables.get(null))
                         .pattern("SSS")
                         .pattern("CBC")
                         .pattern("CCC")
-                        .define('S', BalmItemTags.STONES)
+                        .define('S', ConventionalItemTags.STONES)
                         .define('C', Blocks.TERRACOTTA)
                         .define('B', ModItems.craftingBook)
                         .unlockedBy("has_crafting_book", has(ModItems.craftingBook))
-                        .save(exporter);
+                        .save(output);
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.cookingTables.get(null))
                         .requires(ModItemTags.DYED_COOKING_TABLES)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_cooking_table", has(ModItemTags.DYED_COOKING_TABLES))
-                        .save(exporter, "remove_dye_from_cooking_table");
+                        .save(output, "remove_dye_from_cooking_table");
 
                 ModBlocks.cookingTables.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.COOKING_TABLES)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_cooking_table", has(ModBlocks.cookingTables.get(null)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_cooking_table");
+                                .save(output, "dye_" + color.getSerializedName() + "_cooking_table");
                         shaped(RecipeCategory.DECORATIONS, block)
                                 .pattern("SSS")
                                 .pattern("CBC")
                                 .pattern("CCC")
-                                .define('S', BalmItemTags.STONES)
+                                .define('S', ConventionalItemTags.STONES)
                                 .define('C', Blocks.DYED_TERRACOTTA.pick(color))
                                 .define('B', ModItems.craftingBook)
                                 .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
-                                .save(exporter, color.getSerializedName() + "_cooking_table_from_terracotta");
+                                .save(output, color.getSerializedName() + "_cooking_table_from_terracotta");
                     }
                 });
 
@@ -82,37 +85,37 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('S', ItemTags.WOODEN_SLABS)
                         .define('P', ItemTags.WOODEN_PRESSURE_PLATES)
                         .unlockedBy("has_planks", has(ItemTags.PLANKS))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.ovens.get(DyeColor.WHITE))
                         .pattern("GGG")
                         .pattern("IFI")
                         .pattern("III")
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('G', Blocks.STAINED_GLASS.black())
                         .define('F', Blocks.FURNACE)
                         .unlockedBy("has_furnace", has(Blocks.FURNACE))
-                        .save(exporter);
+                        .save(output);
 
                 ModBlocks.ovens.forEach((color, block) ->
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.OVENS)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_oven", has(ModBlocks.ovens.get(DyeColor.WHITE)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_oven"));
+                                .save(output, "dye_" + color.getSerializedName() + "_oven"));
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.fridges.get(DyeColor.WHITE))
-                        .requires(BalmItemTags.WOODEN_CHESTS)
+                        .requires(ConventionalItemTags.WOODEN_CHESTS)
                         .requires(Blocks.IRON_DOOR)
-                        .unlockedBy("has_iron_ingot", has(BalmItemTags.IRON_INGOTS))
-                        .save(exporter);
+                        .unlockedBy("has_iron_ingot", has(ConventionalItemTags.IRON_INGOTS))
+                        .save(output);
 
                 ModBlocks.fridges.forEach((color, block) ->
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.FRIDGES)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_fridge", has(ModBlocks.fridges.get(DyeColor.WHITE)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_fridge"));
+                                .save(output, "dye_" + color.getSerializedName() + "_fridge"));
 
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.milkJar)
@@ -123,7 +126,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('P', ItemTags.PLANKS)
                         .define('M', Items.MILK_BUCKET)
                         .unlockedBy("has_milk_bucket", has(Items.MILK_BUCKET))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.cookieJar)
                         .pattern("PPP")
@@ -132,38 +135,38 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('G', Blocks.GLASS)
                         .define('P', ItemTags.PLANKS)
                         .unlockedBy("has_glass", has(Blocks.GLASS))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.connectors.get(null))
                         .pattern("SSS")
                         .pattern("CCC")
                         .pattern("CCC")
-                        .define('S', BalmItemTags.STONES)
+                        .define('S', ConventionalItemTags.STONES)
                         .define('C', Blocks.TERRACOTTA)
                         .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
-                        .save(exporter);
+                        .save(output);
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.connectors.get(null))
                         .requires(ModItemTags.DYED_CONNECTORS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_connector", has(ModItemTags.DYED_CONNECTORS))
-                        .save(exporter, "remove_dye_from_connector");
+                        .save(output, "remove_dye_from_connector");
 
                 ModBlocks.connectors.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.CONNECTORS)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_oven", has(ModBlocks.connectors.get(DyeColor.WHITE)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_connector");
+                                .save(output, "dye_" + color.getSerializedName() + "_connector");
                         shaped(RecipeCategory.DECORATIONS, block)
                                 .pattern("SSS")
                                 .pattern("CCC")
                                 .pattern("CCC")
-                                .define('S', BalmItemTags.STONES)
+                                .define('S', ConventionalItemTags.STONES)
                                 .define('C', Blocks.DYED_TERRACOTTA.pick(color))
                                 .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
-                                .save(exporter, color.getSerializedName() + "_connector_from_terracotta");
+                                .save(output, color.getSerializedName() + "_connector_from_terracotta");
                     }
                 });
 
@@ -171,34 +174,34 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("SSS")
                         .pattern("CBC")
                         .pattern("CCC")
-                        .define('S', BalmItemTags.STONES)
+                        .define('S', ConventionalItemTags.STONES)
                         .define('C', Blocks.TERRACOTTA)
-                        .define('B', BalmItemTags.WOODEN_CHESTS)
+                        .define('B', ConventionalItemTags.WOODEN_CHESTS)
                         .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
-                        .save(exporter);
+                        .save(output);
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.counters.get(null))
                         .requires(ModItemTags.DYED_COUNTERS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_counter", has(ModItemTags.DYED_COUNTERS))
-                        .save(exporter, "remove_dye_from_counter");
+                        .save(output, "remove_dye_from_counter");
 
                 ModBlocks.counters.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.COUNTERS)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_counter", has(ModBlocks.counters.get(null)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_counter");
+                                .save(output, "dye_" + color.getSerializedName() + "_counter");
                         shaped(RecipeCategory.DECORATIONS, block)
                                 .pattern("SSS")
                                 .pattern("CBC")
                                 .pattern("CCC")
-                                .define('S', BalmItemTags.STONES)
+                                .define('S', ConventionalItemTags.STONES)
                                 .define('C', Blocks.DYED_TERRACOTTA.pick(color))
-                                .define('B', BalmItemTags.WOODEN_CHESTS)
+                                .define('B', ConventionalItemTags.WOODEN_CHESTS)
                                 .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
-                                .save(exporter, color.getSerializedName() + "_counter_from_terracotta");
+                                .save(output, color.getSerializedName() + "_counter_from_terracotta");
                     }
                 });
 
@@ -208,17 +211,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('A', Items.IRON_AXE)
                         .define('S', ItemTags.WOODEN_SLABS)
                         .unlockedBy("has_axe", has(Items.IRON_AXE))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.sinks.get(null))
                         .pattern("III")
                         .pattern("CBC")
                         .pattern("CCC")
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('C', Blocks.TERRACOTTA)
                         .define('B', Items.WATER_BUCKET)
                         .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(null))
                         .pattern("HHH")
@@ -227,36 +230,36 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('W', ItemTags.PLANKS)
                         .define('S', ModBlocks.sinks.get(null))
                         .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
-                        .save(exporter);
+                        .save(output);
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.sinks.get(null))
                         .requires(ModItemTags.DYED_SINKS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_sink", has(ModItemTags.DYED_SINKS))
-                        .save(exporter, "remove_dye_from_sink");
+                        .save(output, "remove_dye_from_sink");
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(null))
                         .requires(ModItemTags.DYED_CHICKEN_SINKS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_chicken_sink", has(ModItemTags.DYED_CHICKEN_SINKS))
-                        .save(exporter, "remove_dye_from_chicken_sink");
+                        .save(output, "remove_dye_from_chicken_sink");
 
                 ModBlocks.sinks.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.SINKS)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_sink", has(ModBlocks.sinks.get(null)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_sink");
+                                .save(output, "dye_" + color.getSerializedName() + "_sink");
                         shaped(RecipeCategory.DECORATIONS, block)
                                 .pattern("III")
                                 .pattern("CBC")
                                 .pattern("CCC")
-                                .define('I', BalmItemTags.IRON_INGOTS)
+                                .define('I', ConventionalItemTags.IRON_INGOTS)
                                 .define('C', Blocks.DYED_TERRACOTTA.pick(color))
                                 .define('B', Items.WATER_BUCKET)
                                 .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-                                .save(exporter, color.getSerializedName() + "_sink_from_terracotta");
+                                .save(output, color.getSerializedName() + "_sink_from_terracotta");
                     }
                 });
 
@@ -264,9 +267,9 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.CHICKEN_SINKS)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_chicken_sink", has(ModBlocks.chickenSinks.get(null)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_chicken_sink");
+                                .save(output, "dye_" + color.getSerializedName() + "_chicken_sink");
 
                         shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenSinks.get(color))
                                 .pattern("HEH")
@@ -276,7 +279,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                                 .define('W', ItemTags.PLANKS)
                                 .define('S', ModBlocks.sinks.get(color))
                                 .unlockedBy("has_sink", has(ModBlocks.sinks.get(color)))
-                                .save(exporter);
+                                .save(output);
                     }
                 });
 
@@ -284,30 +287,30 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("CCC")
                         .pattern("CBC")
                         .define('C', Blocks.TERRACOTTA)
-                        .define('B', BalmItemTags.WOODEN_CHESTS)
+                        .define('B', ConventionalItemTags.WOODEN_CHESTS)
                         .unlockedBy("has_terracotta", has(Blocks.TERRACOTTA))
-                        .save(exporter);
+                        .save(output);
 
                 shapeless(RecipeCategory.DECORATIONS, ModBlocks.cabinets.get(null))
                         .requires(ModItemTags.DYED_CABINETS)
                         .requires(Items.BONE_MEAL)
                         .unlockedBy("has_dyed_cabinet", has(ModItemTags.DYED_CABINETS))
-                        .save(exporter, "remove_dye_from_cabinet");
+                        .save(output, "remove_dye_from_cabinet");
 
                 ModBlocks.cabinets.forEach((color, block) -> {
                     if (color != null) {
                         shapeless(RecipeCategory.DECORATIONS, block)
                                 .requires(ModItemTags.CABINETS)
-                                .requires(BalmItemTags.DYE_TAGS[color.ordinal()])
+                                .requires(ConventionalItemTags.COLOR_DYES.pick(color))
                                 .unlockedBy("has_cabinet", has(ModBlocks.cabinets.get(null)))
-                                .save(exporter, "dye_" + color.getSerializedName() + "_cabinet");
+                                .save(output, "dye_" + color.getSerializedName() + "_cabinet");
                         shaped(RecipeCategory.DECORATIONS, block)
                                 .pattern("CCC")
                                 .pattern("CBC")
                                 .define('C', Blocks.DYED_TERRACOTTA.pick(color))
-                                .define('B', BalmItemTags.WOODEN_CHESTS)
+                                .define('B', ConventionalItemTags.WOODEN_CHESTS)
                                 .unlockedBy("has_" + color.getSerializedName() + "_terracotta", has(Blocks.DYED_TERRACOTTA.pick(color)))
-                                .save(exporter, color.getSerializedName() + "_cabinet_from_terracotta");
+                                .save(output, color.getSerializedName() + "_cabinet_from_terracotta");
                     }
                 });
 
@@ -315,26 +318,26 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("SSS")
                         .pattern("I I")
                         .define('S', ItemTags.WOODEN_SLABS)
-                        .define('I', BalmItemTags.IRON_NUGGETS)
-                        .unlockedBy("has_iron_ingot", has(BalmItemTags.IRON_INGOTS))
-                        .save(exporter);
+                        .define('I', ConventionalItemTags.IRON_NUGGETS)
+                        .unlockedBy("has_iron_ingot", has(ConventionalItemTags.IRON_INGOTS))
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.spiceRack)
                         .pattern("SS")
                         .define('S', ItemTags.WOODEN_SLABS)
                         .unlockedBy("has_planks", has(ItemTags.PLANKS))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.toaster)
                         .pattern("  B")
                         .pattern("IDI")
                         .pattern("ILI")
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('B', Blocks.STONE_BUTTON)
                         .define('D', Blocks.IRON_TRAPDOOR)
                         .define('L', Items.LAVA_BUCKET)
                         .unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.coffeeMachine)
                         .pattern("FFB")
@@ -342,11 +345,11 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("IWI")
                         .define('F', Items.FLINT)
                         .define('B', Blocks.STONE_BUTTON)
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('T', Blocks.IRON_TRAPDOOR)
                         .define('W', Items.WATER_BUCKET)
                         .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.MISC, ModItems.craftingBook)
                         .pattern(" D ")
@@ -356,48 +359,48 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('C', Blocks.CRAFTING_TABLE)
                         .define('B', ModItems.recipeBook)
                         .unlockedBy("has_recipe_book", has(ModItems.recipeBook))
-                        .save(exporter);
+                        .save(output);
 
                 shapeless(RecipeCategory.MISC, ModItems.noFilterBook)
                         .requires(ModItems.recipeBook)
                         .unlockedBy("has_recipe_book", has(ModItems.recipeBook))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.MISC, ModItems.heatingUnit)
                         .pattern("NNN")
                         .pattern("ICI")
-                        .define('N', BalmItemTags.IRON_NUGGETS)
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('N', ConventionalItemTags.IRON_NUGGETS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('C', Blocks.COMPARATOR)
                         .unlockedBy("has_redstone", has(Items.REDSTONE))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.MISC, ModItems.preservationChamber)
                         .pattern("RRR")
                         .pattern("ICI")
                         .define('R', Items.REDSTONE)
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('C', Blocks.COMPARATOR)
                         .unlockedBy("has_redstone", has(Items.REDSTONE))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.MISC, ModItems.iceUnit)
                         .pattern("SSS")
                         .pattern("ICI")
                         .define('S', Items.SNOWBALL)
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('C', Blocks.COMPARATOR)
                         .unlockedBy("has_redstone", has(Items.REDSTONE))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.MISC, ModItems.saltFilter)
                         .pattern("SSS")
                         .pattern("ICI")
                         .define('S', Items.SAND)
-                        .define('I', BalmItemTags.IRON_INGOTS)
+                        .define('I', ConventionalItemTags.IRON_INGOTS)
                         .define('C', Blocks.COMPARATOR)
                         .unlockedBy("has_sand", has(Items.SAND))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.COMBAT, ModItems.chefHat)
                         .pattern("WWW")
@@ -405,14 +408,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('W', Items.WOOL.white())
                         .define('S', Items.STRING)
                         .unlockedBy("has_white_wool", has(Items.WOOL.white()))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.BUILDING_BLOCKS, Items.ICE)
                         .pattern("##")
                         .pattern("##")
                         .define('#', ModItems.iceCubes)
                         .unlockedBy("has_ice_cubes", has(ModItems.iceCubes))
-                        .save(exporter, "ice_from_ice_cubes");
+                        .save(output, "ice_from_ice_cubes");
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.kitchenFloors.get(DyeColor.WHITE), 12)
                         .pattern("BW")
@@ -420,7 +423,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('B', Blocks.COAL_BLOCK)
                         .define('W', Blocks.QUARTZ_BLOCK)
                         .unlockedBy("has_quartz", has(Items.QUARTZ))
-                        .save(exporter);
+                        .save(output);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.kitchenFloors.get(DyeColor.WHITE), 4)
                         .pattern("BW")
@@ -428,31 +431,31 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('B', Blocks.CONCRETE.white())
                         .define('W', Blocks.CONCRETE.black())
                         .unlockedBy("has_white_concrete", has(Items.CONCRETE.white()))
-                        .save(exporter, "kitchen_floor_from_concrete");
+                        .save(output, "kitchen_floor_from_concrete");
 
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.ORANGE).asBlock(), BalmItemTags.ORANGE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.MAGENTA).asBlock(), BalmItemTags.MAGENTA_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_BLUE).asBlock(), BalmItemTags.LIGHT_BLUE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.YELLOW).asBlock(), BalmItemTags.YELLOW_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIME).asBlock(), BalmItemTags.LIME_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PINK).asBlock(), BalmItemTags.PINK_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GRAY).asBlock(), BalmItemTags.GRAY_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_GRAY).asBlock(), BalmItemTags.LIGHT_GRAY_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.CYAN).asBlock(), BalmItemTags.CYAN_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PURPLE).asBlock(), BalmItemTags.PURPLE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLUE).asBlock(), BalmItemTags.BLUE_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BROWN).asBlock(), BalmItemTags.BROWN_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GREEN).asBlock(), BalmItemTags.GREEN_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.RED).asBlock(), BalmItemTags.RED_DYES).save(exporter);
-                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLACK).asBlock(), BalmItemTags.BLACK_DYES).save(exporter);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.ORANGE).asBlock(), ConventionalItemTags.ORANGE_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.MAGENTA).asBlock(), ConventionalItemTags.MAGENTA_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_BLUE).asBlock(), ConventionalItemTags.LIGHT_BLUE_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.YELLOW).asBlock(), ConventionalItemTags.YELLOW_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIME).asBlock(), ConventionalItemTags.LIME_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PINK).asBlock(), ConventionalItemTags.PINK_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GRAY).asBlock(), ConventionalItemTags.GRAY_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.LIGHT_GRAY).asBlock(), ConventionalItemTags.LIGHT_GRAY_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.CYAN).asBlock(), ConventionalItemTags.CYAN_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.PURPLE).asBlock(), ConventionalItemTags.PURPLE_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLUE).asBlock(), ConventionalItemTags.BLUE_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BROWN).asBlock(), ConventionalItemTags.BROWN_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.GREEN).asBlock(), ConventionalItemTags.GREEN_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.RED).asBlock(), ConventionalItemTags.RED_DYES).save(output);
+                dyedKitchenFloorRecipe(ModBlocks.kitchenFloors.get(DyeColor.BLACK).asBlock(), ConventionalItemTags.BLACK_DYES).save(output);
 
                 smelting(Ingredient.of(Items.BOOK), RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.recipeBook, 0.15f, 200).unlockedBy("has_book", has(Items.BOOK))
-                        .save(exporter);
+                        .save(output);
                 smelting(Ingredient.of(ModItems.noFilterBook), RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.recipeBook, 0f, 200).unlockedBy("has_no_filter_edition",
-                        has(ModItems.noFilterBook)).save(exporter, "recipe_book_from_smelting_no_filter_edition");
+                        has(ModItems.noFilterBook)).save(output, "recipe_book_from_smelting_no_filter_edition");
 
-                kitchenProvidedRecipe(exporter, id("ice_unit/snowball"), id("ice_unit"), new ItemStackTemplate(Items.SNOWBALL));
-                kitchenProvidedRecipe(exporter, id("ice_unit/ice_cubes"), id("ice_unit"), new ItemStackTemplate(ModItems.iceCubes.asItem()));
+                kitchenProvidedRecipe(output, id("ice_unit/snowball"), id("ice_unit"), new ItemStackTemplate(Items.SNOWBALL));
+                kitchenProvidedRecipe(output, id("ice_unit/ice_cubes"), id("ice_unit"), new ItemStackTemplate(ModItems.iceCubes.asItem()));
             }
 
             private ShapedRecipeBuilder dyedKitchenFloorRecipe(Block kitchenFloor, TagKey<Item> dyeTag) {
@@ -466,8 +469,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_kitchen_floor", has(whiteKitchenFloor));
             }
 
-            private void kitchenProvidedRecipe(RecipeOutput exporter, Identifier recipeId, Identifier source, ItemStackTemplate result) {
-                exporter.accept(ResourceKey.create(Registries.RECIPE, recipeId), new KitchenProvidedRecipe(source, result), null);
+            private void kitchenProvidedRecipe(RecipeOutput output, Identifier recipeId, Identifier source, ItemStackTemplate result) {
+                output.accept(ResourceKey.create(Registries.RECIPE, recipeId), new KitchenProvidedRecipe(source, result), null);
             }
         };
     }
