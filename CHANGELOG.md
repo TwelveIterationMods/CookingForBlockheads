@@ -1,1 +1,1 @@
-- Fixed recipes for dying cabinets resulting in connectors instead
+- Updated to Minecraft 26.3
