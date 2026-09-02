@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:ice_from_ice_cubes"
+        "recipes": "cookingforblockheads:ice_from_ice_cubes"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

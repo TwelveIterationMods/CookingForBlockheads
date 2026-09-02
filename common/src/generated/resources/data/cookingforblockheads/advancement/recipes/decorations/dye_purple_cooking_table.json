@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_purple_cooking_table"
+        "recipes": "cookingforblockheads:dye_purple_cooking_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

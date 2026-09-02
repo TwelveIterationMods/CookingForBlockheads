@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:white_cabinet_from_terracotta"
+        "recipes": "cookingforblockheads:white_cabinet_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

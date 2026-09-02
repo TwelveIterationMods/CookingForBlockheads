@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:lime_counter_from_terracotta"
+        "recipes": "cookingforblockheads:lime_counter_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

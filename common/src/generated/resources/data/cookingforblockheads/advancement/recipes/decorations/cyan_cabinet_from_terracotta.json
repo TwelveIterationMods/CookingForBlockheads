@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:cyan_cabinet_from_terracotta"
+        "recipes": "cookingforblockheads:cyan_cabinet_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

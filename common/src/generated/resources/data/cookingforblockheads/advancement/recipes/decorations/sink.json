@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:sink"
+        "recipes": "cookingforblockheads:sink"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

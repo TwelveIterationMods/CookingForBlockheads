@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:white_kitchen_floor"
+        "recipes": "cookingforblockheads:white_kitchen_floor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

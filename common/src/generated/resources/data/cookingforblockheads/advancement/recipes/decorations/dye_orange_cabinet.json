@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_orange_cabinet"
+        "recipes": "cookingforblockheads:dye_orange_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

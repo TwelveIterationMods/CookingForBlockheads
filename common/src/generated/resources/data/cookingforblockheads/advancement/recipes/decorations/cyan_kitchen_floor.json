@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:cyan_kitchen_floor"
+        "recipes": "cookingforblockheads:cyan_kitchen_floor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

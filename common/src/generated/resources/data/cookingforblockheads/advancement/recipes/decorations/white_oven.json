@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:white_oven"
+        "recipes": "cookingforblockheads:white_oven"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

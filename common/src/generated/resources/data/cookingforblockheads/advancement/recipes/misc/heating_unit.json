@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:heating_unit"
+        "recipes": "cookingforblockheads:heating_unit"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

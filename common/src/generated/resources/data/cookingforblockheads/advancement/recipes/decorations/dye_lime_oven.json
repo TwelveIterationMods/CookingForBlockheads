@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_lime_oven"
+        "recipes": "cookingforblockheads:dye_lime_oven"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:milk_jar"
+        "recipes": "cookingforblockheads:milk_jar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

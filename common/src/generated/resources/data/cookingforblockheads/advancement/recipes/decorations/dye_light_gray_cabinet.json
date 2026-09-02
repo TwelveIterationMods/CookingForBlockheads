@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_light_gray_cabinet"
+        "recipes": "cookingforblockheads:dye_light_gray_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

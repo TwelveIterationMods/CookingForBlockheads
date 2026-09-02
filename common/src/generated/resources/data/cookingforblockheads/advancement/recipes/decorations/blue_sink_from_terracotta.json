@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:blue_sink_from_terracotta"
+        "recipes": "cookingforblockheads:blue_sink_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

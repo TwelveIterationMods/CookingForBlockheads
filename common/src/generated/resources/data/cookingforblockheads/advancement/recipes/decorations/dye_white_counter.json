@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_white_counter"
+        "recipes": "cookingforblockheads:dye_white_counter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

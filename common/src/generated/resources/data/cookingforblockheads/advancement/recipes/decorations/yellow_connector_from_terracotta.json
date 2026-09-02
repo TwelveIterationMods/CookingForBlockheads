@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:yellow_connector_from_terracotta"
+        "recipes": "cookingforblockheads:yellow_connector_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

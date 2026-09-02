@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:salt_filter"
+        "recipes": "cookingforblockheads:salt_filter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

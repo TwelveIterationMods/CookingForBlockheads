@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:chef_hat"
+        "recipes": "cookingforblockheads:chef_hat"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

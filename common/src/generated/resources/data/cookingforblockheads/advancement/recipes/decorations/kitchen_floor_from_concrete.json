@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:kitchen_floor_from_concrete"
+        "recipes": "cookingforblockheads:kitchen_floor_from_concrete"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

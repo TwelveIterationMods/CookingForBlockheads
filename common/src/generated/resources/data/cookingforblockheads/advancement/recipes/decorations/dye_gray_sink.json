@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_gray_sink"
+        "recipes": "cookingforblockheads:dye_gray_sink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

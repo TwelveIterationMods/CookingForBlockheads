@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:red_cooking_table_from_terracotta"
+        "recipes": "cookingforblockheads:red_cooking_table_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:fruit_basket"
+        "recipes": "cookingforblockheads:fruit_basket"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

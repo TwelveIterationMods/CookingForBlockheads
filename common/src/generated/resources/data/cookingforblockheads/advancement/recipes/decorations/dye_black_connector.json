@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_black_connector"
+        "recipes": "cookingforblockheads:dye_black_connector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

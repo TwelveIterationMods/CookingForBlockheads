@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:coffee_machine"
+        "recipes": "cookingforblockheads:coffee_machine"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

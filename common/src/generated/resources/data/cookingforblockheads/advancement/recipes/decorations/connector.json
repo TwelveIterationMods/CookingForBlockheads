@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:connector"
+        "recipes": "cookingforblockheads:connector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

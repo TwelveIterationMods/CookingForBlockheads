@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:brown_connector_from_terracotta"
+        "recipes": "cookingforblockheads:brown_connector_from_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:crafting_book"
+        "recipes": "cookingforblockheads:crafting_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

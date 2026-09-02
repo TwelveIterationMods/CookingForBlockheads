@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:lime_chicken_sink"
+        "recipes": "cookingforblockheads:lime_chicken_sink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

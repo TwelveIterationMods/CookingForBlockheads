@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:light_blue_chicken_sink"
+        "recipes": "cookingforblockheads:light_blue_chicken_sink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

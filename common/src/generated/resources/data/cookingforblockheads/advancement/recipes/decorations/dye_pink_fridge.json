@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:dye_pink_fridge"
+        "recipes": "cookingforblockheads:dye_pink_fridge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cookingforblockheads:cutting_board"
+        "recipes": "cookingforblockheads:cutting_board"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
