@@ -14,12 +14,12 @@ public class ModSounds {
     public static Holder<SoundEvent> toasterStop;
 
     public static void initialize(BalmRegistrar.Scoped<SoundEvent> sounds) {
-        fridgeOpen = sounds.register("fridge_open", SoundEvent::createVariableRangeEvent);
-        fridgeClose = sounds.register("fridge_close", SoundEvent::createVariableRangeEvent);
-        ovenOpen = sounds.register("oven_open", SoundEvent::createVariableRangeEvent);
-        ovenClose = sounds.register("oven_close", SoundEvent::createVariableRangeEvent);
-        toasterStart = sounds.register("toaster_start", SoundEvent::createVariableRangeEvent);
-        toasterStop = sounds.register("toaster_stop", SoundEvent::createVariableRangeEvent);
+        fridgeOpen = sounds.register("fridge_open", SoundEvent::createVariableRangeEvent).asHolder();
+        fridgeClose = sounds.register("fridge_close", SoundEvent::createVariableRangeEvent).asHolder();
+        ovenOpen = sounds.register("oven_open", SoundEvent::createVariableRangeEvent).asHolder();
+        ovenClose = sounds.register("oven_close", SoundEvent::createVariableRangeEvent).asHolder();
+        toasterStart = sounds.register("toaster_start", SoundEvent::createVariableRangeEvent).asHolder();
+        toasterStop = sounds.register("toaster_stop", SoundEvent::createVariableRangeEvent).asHolder();
     }
 
 }
