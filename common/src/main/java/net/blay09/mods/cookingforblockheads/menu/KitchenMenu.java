@@ -259,7 +259,8 @@ public class KitchenMenu extends AbstractContainerMenu {
     private <C extends RecipeInput, T extends Recipe<C>> @Nullable CraftableWithStatus craftableWithStatusFromRecipe(RecipeHolder<?> recipeHolder) {
         final var recipe = recipeHolder.value();
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe);
-        final var resultItem = recipeHandler.predictResultItem(recipeHolder).create();
+        final var resultItemTemplate = recipeHandler.predictResultItem(recipeHolder);
+        final var resultItem = resultItemTemplate != null ? resultItemTemplate.create() : ItemStack.EMPTY;
         if (isGroupItem(resultItem)) {
             return null;
         }
@@ -373,7 +374,8 @@ public class KitchenMenu extends AbstractContainerMenu {
         }
 
         final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
-        final var resultItem = recipeHandler.predictResultItem(recipe).create();
+        final var resultItemTemplate = recipeHandler.predictResultItem(recipe);
+        final var resultItem = resultItemTemplate != null ? resultItemTemplate.create() : ItemStack.EMPTY;
         final int resultCount = Math.max(1, resultItem.getCount());
         final int maxExecutions = Math.max(1, Mth.ceil(CraftingContext.COUNT_CUTOFF / (float) resultCount));
         final int craftableExecutions = operation.countCraftableRepeats(maxExecutions);
@@ -400,7 +402,8 @@ public class KitchenMenu extends AbstractContainerMenu {
             final var recipe = serverDisplayInfo.parent();
             final var operation = state.craftingContext().createOperation(recipe).withLockedInputs(lockedInputs);
             final var recipeHandler = CookingForBlockheadsAPI.getKitchenRecipeHandler(recipe.value());
-            final var resultItem = recipeHandler.predictResultItem(recipe).create();
+            final var resultItemTemplate = recipeHandler.predictResultItem(recipe);
+            final var resultItem = resultItemTemplate != null ? resultItemTemplate.create() : ItemStack.EMPTY;
             final var repeats = craftFullStack ? resultItem.getMaxStackSize() / resultItem.getCount() : 1;
             for (int i = 0; i < repeats; i++) {
                 operation.prepare();

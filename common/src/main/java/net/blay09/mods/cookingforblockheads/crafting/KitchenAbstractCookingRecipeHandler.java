@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class KitchenAbstractCookingRecipeHandler implements KitchenRecipeHandler
     }
 
     @Override
-    public ItemStackTemplate predictResultItem(AbstractCookingRecipe recipe) {
+    public @Nullable ItemStackTemplate predictResultItem(AbstractCookingRecipe recipe) {
         return ((SingleItemRecipeAccessor) recipe).getResult();
     }
 }

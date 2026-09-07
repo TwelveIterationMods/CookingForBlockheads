@@ -2,11 +2,12 @@ package net.blay09.mods.cookingforblockheads.mixin;
 
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(SingleItemRecipe.class)
 public interface SingleItemRecipeAccessor {
     @Accessor
-    ItemStackTemplate getResult();
+    @Nullable ItemStackTemplate getResult();
 }
