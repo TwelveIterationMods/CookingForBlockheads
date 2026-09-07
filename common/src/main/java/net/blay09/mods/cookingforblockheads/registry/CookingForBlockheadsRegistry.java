@@ -64,7 +64,8 @@ public class CookingForBlockheadsRegistry {
                 continue;
             }
 
-            final var resultItem = recipeHandler.predictResultItem(recipe).create();
+            final var resultItemTemplate = recipeHandler.predictResultItem(recipe);
+            final var resultItem = resultItemTemplate != null ? resultItemTemplate.create() : ItemStack.EMPTY;
             if (isEligibleResultItem(resultItem)) {
                 if (recipe instanceof AbstractCookingRecipe cookingRecipe && isOvenDuplicate(cookingRecipe, (KitchenRecipeHandler<?, AbstractCookingRecipe>) recipeHandler, resultItem)) {
                     continue;
@@ -91,10 +92,13 @@ public class CookingForBlockheadsRegistry {
         final var ingredients = recipeHandler.getIngredients(recipe);
         for (final var recipeHolder : existing) {
             final var otherRecipeHandler = getKitchenRecipeHandler(recipeHolder.value());
-            final var otherIngredients = otherRecipeHandler.getIngredients(recipeHolder);
-            final var otherResultItem = otherRecipeHandler.predictResultItem(recipeHolder).create();
-            if (ItemStack.isSameItemSameComponents(resultItem, otherResultItem) && ingredients.equals(otherIngredients)) {
-                return true;
+            if (otherRecipeHandler != null) {
+                final var otherIngredients = otherRecipeHandler.getIngredients(recipeHolder);
+                final var otherResultItemTemplate = otherRecipeHandler.predictResultItem(recipeHolder);
+                final var otherResultItem = otherResultItemTemplate != null ? otherResultItemTemplate.create() : ItemStack.EMPTY;
+                if (ItemStack.isSameItemSameComponents(resultItem, otherResultItem) && ingredients.equals(otherIngredients)) {
+                    return true;
+                }
             }
         }
 

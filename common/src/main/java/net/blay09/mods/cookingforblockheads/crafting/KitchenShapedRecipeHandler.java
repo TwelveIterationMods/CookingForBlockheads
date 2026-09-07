@@ -4,6 +4,7 @@ import net.blay09.mods.cookingforblockheads.mixin.ShapedRecipeAccessor;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class KitchenShapedRecipeHandler extends AbstractKitchenCraftingRecipeHan
     }
 
     @Override
-    public ItemStackTemplate predictResultItem(ShapedRecipe recipe) {
+    public @Nullable ItemStackTemplate predictResultItem(ShapedRecipe recipe) {
         return ((ShapedRecipeAccessor) recipe).getResult();
     }
 }
