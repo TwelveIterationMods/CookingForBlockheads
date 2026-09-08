@@ -1,1 +1,3 @@
-- Fixed recipes for dying cabinets resulting in connectors instead
+- Added recipes taking dyed terracotta directly
+- Fixed crash when result ItemStackTemplate of a recipe is null
+- Fixed crash when moving items to oven
